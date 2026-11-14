@@ -5034,6 +5034,139 @@ function Get-DeviceListTop {
     return [int]($wr.Top + 230)
 }
 
+# The list rows and buttons the device recipes find, and the picker they
+# use. Both stand above Assign-DeviceToSlot, which the staging block calls:
+# PowerShell resolves a function, and a variable a function reads, from what
+# has already executed, not from the whole file.
+
+$li36 = New-Object System.Windows.Automation.PropertyCondition(
+    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+    [System.Windows.Automation.ControlType]::ListItem)
+$btn36 = New-Object System.Windows.Automation.PropertyCondition(
+    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+    [System.Windows.Automation.ControlType]::Button)
+
+function Select-DeviceByName36 {
+    param([string]$NamePart)
+    # All, an empty search and both folds open, so every row has its place
+    # on screen (#574). The recipe closes the folds after its shots.
+    Reset-DeviceFilters | Out-Null
+    Open-DeviceFolds
+    $wr = New-Object Win32+RECT
+    [Win32]::GetWindowRect($script:hwnd, [ref]$wr) | Out-Null
+    $midY  = [int](($wr.Top + $wr.Bottom) / 2)
+    # Wheel at the card list's OWN center-x, read from any realized row, NOT at
+    # a fixed Left+400. Assign-DeviceToSlot fixed exactly this in 4.1.0 ("the
+    # old fixed Left+400 landed outside its scroll viewer, so every
+    # below-the-fold device went unreachable") and this twin kept the broken
+    # constant, so the wheel spun over the page instead of the list. On a
+    # 35-device machine the search never realized anything past the H rows and
+    # devices-move silently went stale: the run reported "not found after
+    # scroll" while printing a diagnostic full of rows from the top of a list
+    # it had never moved.
+    $listX = [int]($wr.Left + 400)
+    foreach ($it0 in $script:uiaWin.FindAll($TD, $li36)) {
+        $r0 = Get-Rect $it0
+        if ($null -ne $r0 -and $r0.Width -gt 0) { $listX = [int]($r0.X + $r0.Width / 2); break }
+    }
+    # Scroll the card list to the top first so a top-of-list target (e.g. the
+    # "All Consumer Controls (Merged)" row) is realized even if a prior capture
+    # left the list scrolled down. Then step down searching each realized page.
+    [Win32]::ForceFG($script:hwnd)
+    # Forty, not eight: eight wheel steps no longer reach the top of a list
+    # left at its bottom once the owner's cache passed 40 devices.
+    for ($u = 0; $u -lt 40; $u++) { [Win32]::ScrollAt($listX, $midY, 3); Start-Sleep -Milliseconds 40 }
+    Start-Sleep -Milliseconds 300
+    # Match the card's NAME first, then its child text. A device card shows the
+    # product name on line one and its TYPE on line two, and the consumer
+    # devices on this machine are named "USB Receiver" with CONSUMER CONTROL
+    # only on the type line. A name-only match therefore could never find them,
+    # which is why devices-consumer sat stale while two such devices were
+    # enumerated three rows apart.
+    $txtCond36 = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::Text)
+    # Only ever click a row that is actually ON SCREEN. A virtualized list hands
+    # back rects for rows far below the fold, and clicking one lands nowhere:
+    # the 19:27 run clicked "All Consumer Controls (Merged)" at y=2275 on a
+    # 1550-tall window, the selection never moved, and devices-consumer shipped
+    # showing whatever had been selected before. Same rule the assignment path
+    # already uses: in view, click. Out of view, scroll toward it and re-find.
+    $listTop36 = Get-DeviceListTop
+    # 100, not 40: the list's viewport ended about 102 px above the window's
+    # bottom, over the "Drag a device onto a sidebar controller card" hint
+    # and the status bar PadForge had then. The status bar is gone since
+    # PadForge 6 and the margin stays, the safe side. Run 6 of the 5.0.0
+    # capture clicked the Razer row at y=1435 of 1550, inside the window but
+    # under the viewport's clip, the selection stayed on the Head Tracker,
+    # and devices-analog-keyboard photographed that instead.
+    $winBot36 = $wr.Bottom - 100
+    $inView36 = {
+        param($el)
+        $r = Get-Rect $el
+        if ($null -eq $r) { return $false }
+        return ($r.Y -ge $listTop36 -and ($r.Y + $r.Height) -le $winBot36)
+    }
+    # A row that matches by NAME but sits below the fold is not a miss, it is a
+    # scroll. The wheel-scroll below moves the page, not this virtualized card
+    # list: 16 steps of it left every row at the same y, so "NFC Reader" stayed
+    # parked at y=1477 against a 1499 cutoff and reported "not found after
+    # scroll" while sitting on screen the whole time. ScrollItemPattern is what
+    # the assignment path already uses for exactly this, so ask the list to
+    # bring the row up before deciding anything.
+    $scrollIntoView36 = {
+        param($el)
+        try {
+            $el.GetCurrentPattern([System.Windows.Automation.ScrollItemPattern]::Pattern).ScrollIntoView()
+            Start-Sleep -Milliseconds 400
+            return $true
+        } catch { return $false }
+    }
+    # 60, matching the sibling: a 60-row list walked end to end. Sixteen
+    # pages of a 35-device list did not reach the bottom once the owner's
+    # own cached rows were merged in, and 24 no longer did at 43.
+    for ($try = 0; $try -lt 60; $try++) {
+        $items = $script:uiaWin.FindAll($TD, $li36)
+        # Re-read the list's center-x each pass: the first pass may have run
+        # before any row was realized.
+        foreach ($it0 in $items) {
+            $r0 = Get-Rect $it0
+            if ($null -ne $r0 -and $r0.Width -gt 0) { $listX = [int]($r0.X + $r0.Width / 2); break }
+        }
+        foreach ($it in $items) {
+            if (($it.Current.Name -like "*$NamePart*") -and -not (& $inView36 $it)) {
+                & $scrollIntoView36 $it | Out-Null
+            }
+        }
+        $items = $script:uiaWin.FindAll($TD, $li36)
+        foreach ($it in $items) {
+            if (($it.Current.Name -like "*$NamePart*") -and (& $inView36 $it)) {
+                Click-El $it -Label "Device '$NamePart'" -Delay 900 | Out-Null
+                return $true
+            }
+        }
+        foreach ($it in $items) {
+            $hit = $false
+            foreach ($t in $it.FindAll($TD, $txtCond36)) {
+                if ($t.Current.Name -like "*$NamePart*") { $hit = $true; break }
+            }
+            if ($hit -and (& $inView36 $it)) {
+                Click-El $it -Label "Device '$NamePart' (matched on type line)" -Delay 900 | Out-Null
+                return $true
+            }
+        }
+        [Win32]::ForceFG($script:hwnd); [Win32]::ScrollAt($listX, $midY, -3); Start-Sleep -Milliseconds 350
+    }
+    Write-Host "  !! device '$NamePart' not found after scroll" -ForegroundColor Yellow
+    Write-Host "  Diagnostic: realized device rows at the end of the search:" -ForegroundColor Yellow
+    foreach ($it in $script:uiaWin.FindAll($TD, $li36)) {
+        $rr = Get-Rect $it
+        $yy = if ($null -eq $rr) { "no-rect" } else { "y=$($rr.Y)" }
+        Write-Host "    [$($it.Current.Name)] $yy"
+    }
+    return $false
+}
+
 function Assign-DeviceToSlot {
     param([string]$DeviceNamePart, [string]$SlotNumberLabel, [switch]$Unassign, [switch]$Reassert)
     # The device is picked as every Devices recipe picks one, and the chips
@@ -5266,13 +5399,6 @@ if ($script:StagingFailed) {
 
 # Web controller server is enabled via XML injection in Step 0. No UI click needed.
 }
-
-$li36 = New-Object System.Windows.Automation.PropertyCondition(
-    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-    [System.Windows.Automation.ControlType]::ListItem)
-$btn36 = New-Object System.Windows.Automation.PropertyCondition(
-    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-    [System.Windows.Automation.ControlType]::Button)
 
 # Scroll the content pane down until $Anchor is inside the window, then stop
 # with it comfortably in frame. Returns false rather than capturing a page
@@ -5524,131 +5650,6 @@ function Capture-MenuShots {
             Refuse-Shots @($m.Shot) "the Menus list holds no $($m.Name)"
         }
     }
-}
-
-# Defined here rather than beside the Devices block below it, because the
-# focused pass calls it and PowerShell resolves a function from what has
-# already executed, not from the whole file.
-
-function Select-DeviceByName36 {
-    param([string]$NamePart)
-    # All, an empty search and both folds open, so every row has its place
-    # on screen (#574). The recipe closes the folds after its shots.
-    Reset-DeviceFilters | Out-Null
-    Open-DeviceFolds
-    $wr = New-Object Win32+RECT
-    [Win32]::GetWindowRect($script:hwnd, [ref]$wr) | Out-Null
-    $midY  = [int](($wr.Top + $wr.Bottom) / 2)
-    # Wheel at the card list's OWN center-x, read from any realized row, NOT at
-    # a fixed Left+400. Assign-DeviceToSlot fixed exactly this in 4.1.0 ("the
-    # old fixed Left+400 landed outside its scroll viewer, so every
-    # below-the-fold device went unreachable") and this twin kept the broken
-    # constant, so the wheel spun over the page instead of the list. On a
-    # 35-device machine the search never realized anything past the H rows and
-    # devices-move silently went stale: the run reported "not found after
-    # scroll" while printing a diagnostic full of rows from the top of a list
-    # it had never moved.
-    $listX = [int]($wr.Left + 400)
-    foreach ($it0 in $script:uiaWin.FindAll($TD, $li36)) {
-        $r0 = Get-Rect $it0
-        if ($null -ne $r0 -and $r0.Width -gt 0) { $listX = [int]($r0.X + $r0.Width / 2); break }
-    }
-    # Scroll the card list to the top first so a top-of-list target (e.g. the
-    # "All Consumer Controls (Merged)" row) is realized even if a prior capture
-    # left the list scrolled down. Then step down searching each realized page.
-    [Win32]::ForceFG($script:hwnd)
-    # Forty, not eight: eight wheel steps no longer reach the top of a list
-    # left at its bottom once the owner's cache passed 40 devices.
-    for ($u = 0; $u -lt 40; $u++) { [Win32]::ScrollAt($listX, $midY, 3); Start-Sleep -Milliseconds 40 }
-    Start-Sleep -Milliseconds 300
-    # Match the card's NAME first, then its child text. A device card shows the
-    # product name on line one and its TYPE on line two, and the consumer
-    # devices on this machine are named "USB Receiver" with CONSUMER CONTROL
-    # only on the type line. A name-only match therefore could never find them,
-    # which is why devices-consumer sat stale while two such devices were
-    # enumerated three rows apart.
-    $txtCond36 = New-Object System.Windows.Automation.PropertyCondition(
-        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-        [System.Windows.Automation.ControlType]::Text)
-    # Only ever click a row that is actually ON SCREEN. A virtualized list hands
-    # back rects for rows far below the fold, and clicking one lands nowhere:
-    # the 19:27 run clicked "All Consumer Controls (Merged)" at y=2275 on a
-    # 1550-tall window, the selection never moved, and devices-consumer shipped
-    # showing whatever had been selected before. Same rule the assignment path
-    # already uses: in view, click. Out of view, scroll toward it and re-find.
-    $listTop36 = Get-DeviceListTop
-    # 100, not 40: the list's viewport ended about 102 px above the window's
-    # bottom, over the "Drag a device onto a sidebar controller card" hint
-    # and the status bar PadForge had then. The status bar is gone since
-    # PadForge 6 and the margin stays, the safe side. Run 6 of the 5.0.0
-    # capture clicked the Razer row at y=1435 of 1550, inside the window but
-    # under the viewport's clip, the selection stayed on the Head Tracker,
-    # and devices-analog-keyboard photographed that instead.
-    $winBot36 = $wr.Bottom - 100
-    $inView36 = {
-        param($el)
-        $r = Get-Rect $el
-        if ($null -eq $r) { return $false }
-        return ($r.Y -ge $listTop36 -and ($r.Y + $r.Height) -le $winBot36)
-    }
-    # A row that matches by NAME but sits below the fold is not a miss, it is a
-    # scroll. The wheel-scroll below moves the page, not this virtualized card
-    # list: 16 steps of it left every row at the same y, so "NFC Reader" stayed
-    # parked at y=1477 against a 1499 cutoff and reported "not found after
-    # scroll" while sitting on screen the whole time. ScrollItemPattern is what
-    # the assignment path already uses for exactly this, so ask the list to
-    # bring the row up before deciding anything.
-    $scrollIntoView36 = {
-        param($el)
-        try {
-            $el.GetCurrentPattern([System.Windows.Automation.ScrollItemPattern]::Pattern).ScrollIntoView()
-            Start-Sleep -Milliseconds 400
-            return $true
-        } catch { return $false }
-    }
-    # 60, matching the sibling: a 60-row list walked end to end. Sixteen
-    # pages of a 35-device list did not reach the bottom once the owner's
-    # own cached rows were merged in, and 24 no longer did at 43.
-    for ($try = 0; $try -lt 60; $try++) {
-        $items = $script:uiaWin.FindAll($TD, $li36)
-        # Re-read the list's center-x each pass: the first pass may have run
-        # before any row was realized.
-        foreach ($it0 in $items) {
-            $r0 = Get-Rect $it0
-            if ($null -ne $r0 -and $r0.Width -gt 0) { $listX = [int]($r0.X + $r0.Width / 2); break }
-        }
-        foreach ($it in $items) {
-            if (($it.Current.Name -like "*$NamePart*") -and -not (& $inView36 $it)) {
-                & $scrollIntoView36 $it | Out-Null
-            }
-        }
-        $items = $script:uiaWin.FindAll($TD, $li36)
-        foreach ($it in $items) {
-            if (($it.Current.Name -like "*$NamePart*") -and (& $inView36 $it)) {
-                Click-El $it -Label "Device '$NamePart'" -Delay 900 | Out-Null
-                return $true
-            }
-        }
-        foreach ($it in $items) {
-            $hit = $false
-            foreach ($t in $it.FindAll($TD, $txtCond36)) {
-                if ($t.Current.Name -like "*$NamePart*") { $hit = $true; break }
-            }
-            if ($hit -and (& $inView36 $it)) {
-                Click-El $it -Label "Device '$NamePart' (matched on type line)" -Delay 900 | Out-Null
-                return $true
-            }
-        }
-        [Win32]::ForceFG($script:hwnd); [Win32]::ScrollAt($listX, $midY, -3); Start-Sleep -Milliseconds 350
-    }
-    Write-Host "  !! device '$NamePart' not found after scroll" -ForegroundColor Yellow
-    Write-Host "  Diagnostic: realized device rows at the end of the search:" -ForegroundColor Yellow
-    foreach ($it in $script:uiaWin.FindAll($TD, $li36)) {
-        $rr = Get-Rect $it
-        $yy = if ($null -eq $rr) { "no-rect" } else { "y=$($rr.Y)" }
-        Write-Host "    [$($it.Current.Name)] $yy"
-    }
-    return $false
 }
 
 # ==============================================================================
@@ -6509,12 +6510,6 @@ $script:ColorwayScenes = @(
     @{ Shot = "colorway-xbox-squadrons";        Type = 0; Profile = "xbox-series-xs-bt"; Fam = "XboxSeries"; App = "Squadrons"; Name = "Star Wars: Squadrons" }
 )
 
-# The order of the Dashboard's slot cards by VirtualControllerType: Xbox 0,
-# PlayStation 1, Nintendo 5, Extended 2, Keyboard and Mouse 4, MIDI 3, VR 6
-# (VirtualControllerGroups.InOrder, VirtualControllerTypes.cs). With one slot
-# of each type, a type's card is its place in this list.
-$script:DashboardTypeOrder = @(0, 1, 5, 2, 4, 3, 6)
-
 # Writes a scene onto the staged settings and restarts PadForge on it,
 # maximized: a colorway on its family's slot (-Scene), the staged settings
 # without the slot of one type (-DropType), or the staged settings as they
@@ -6672,9 +6667,9 @@ function Capture-Colorways {
 # Add a Controller (#574), with every other type in the sidebar and every
 # tile enabled. VR allows one slot (SettingsManager.MaxVrSlots), so with the
 # staged VR slot in place its tile is dimmed, and on a fresh file the sidebar
-# is empty. The scene drops the staged slot of the last type in Dashboard
-# order, the frame is checked against one slot fewer, and the staged
-# settings come back for every recipe after this one. The staged scene
+# is empty. The scene drops the staged VR slot, the frame is checked against
+# one slot fewer, and the staged settings come back for every recipe after
+# this one. The staged scene
 # assigns every pad, so the dialog shows no Driven By. The shot keeps the
 # popup's file name, which the README and the site link.
 function Capture-AddController {
@@ -6683,8 +6678,9 @@ function Capture-AddController {
     $base = if (Test-Path $script:SnapshotXml) { $script:SnapshotXml } else { $PadForgeXml }
     $stagedCopy = Join-Path $logDir "popup-base.xml"
     Copy-Item $base $stagedCopy -Force
-    $lastType = $script:DashboardTypeOrder[-1]
-    if (-not (Write-StagedScene -BaseXmlPath $stagedCopy -XmlPath $PadForgeXml -ExePath $PadForgeExe -DropType $lastType)) {
+    # VirtualControllerType.Vr (PadForge.Engine/Common/VirtualControllerTypes.cs).
+    $vrType = 6
+    if (-not (Write-StagedScene -BaseXmlPath $stagedCopy -XmlPath $PadForgeXml -ExePath $PadForgeExe -DropType $vrType)) {
         Refuse-Shots @("add-controller-popup") "its scene could not be staged"
         return
     }

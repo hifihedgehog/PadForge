@@ -73,7 +73,7 @@
                 <controls:DecorativeStrokeIcon Data="{StaticResource SearchLineGeometry}" Size="18" StrokeWidth="1.8"
                                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                VerticalAlignment="Center" Margin="0,0,12,0"/>
-                <controls:ClickBorder x:Name="SearchCloseChip" DockPanel.Dock="Right" Style="{StaticResource KeyChip}"
+                <controls:ClickBorder x:Name="SearchCloseChip" DockPanel.Dock="Right" Style="{StaticResource KeyChip}" KeyboardNavigation.TabIndex="1"
                                       Margin="12,0,0,0" Cursor="Hand" Click="CloseChip_Click"
                                       AutomationProperties.Name="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}"
                                       AutomationProperties.AutomationId="SearchCloseChip">
@@ -96,7 +96,7 @@
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>
-                    <TextBox x:Name="SearchQueryBox" Height="32" FontSize="17" Padding="0" BorderThickness="0"
+                    <TextBox x:Name="SearchQueryBox" Height="32" FontSize="17" Padding="0" BorderThickness="0" TabIndex="0"
                              Background="Transparent" VerticalContentAlignment="Center"
                              Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                              CaretBrush="{DynamicResource TextFillColorPrimaryBrush}"

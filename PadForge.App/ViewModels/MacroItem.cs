@@ -917,11 +917,6 @@ namespace PadForge.ViewModels
                 }
             }
 
-            /// <summary>Localized axis name (Left Stick X / Left Trigger / …)
-            /// for the per-entry editor UI.</summary>
-            [System.Xml.Serialization.XmlIgnore]
-            public string AxisLabel => _axisTarget == MacroAxisTarget.None ? "" : _axisTarget.DisplayName();
-
             /// <summary>Compact tagged form for XML round-trip.
             /// Format: <c>in:GUID:ax:Target:HalfAxis:Invert:DeadZone:Bidirectional</c>
             /// (e.g. <c>in:GUID:ax:LeftStickX:1:0:50:1</c>). The trailing
@@ -2576,17 +2571,6 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>Whether a recording session is in progress for the
-        /// most recently added custom-expression variable. Used by the
-        /// editor's recording-button glyph + live-feedback text.</summary>
-        private bool _isRecordingExpressionVariable;
-        [System.Xml.Serialization.XmlIgnore]
-        public bool IsRecordingExpressionVariable
-        {
-            get => _isRecordingExpressionVariable;
-            set => SetProperty(ref _isRecordingExpressionVariable, value);
-        }
-
         /// <summary>Variable ceiling for a custom-expression macro. The
         /// editor labels each row from the ItemsControl's AlternationIndex,
         /// which WPF assigns cyclically, so past this count two rows would
@@ -2638,7 +2622,6 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _selectedAction, value))
                 {
-                    _removeActionCommand?.NotifyCanExecuteChanged();
                     // Same requery gap as the macro toolbar: Duplicate stays disabled
                     // without an explicit notify (#112).
                     _duplicateActionCommand?.NotifyCanExecuteChanged();
@@ -2799,17 +2782,6 @@ namespace PadForge.ViewModels
                 Actions.Add(action);
                 SelectedAction = action;
             });
-
-        private RelayCommand _removeActionCommand;
-        public RelayCommand RemoveActionCommand =>
-            _removeActionCommand ??= new RelayCommand(() =>
-            {
-                if (_selectedAction != null)
-                {
-                    Actions.Remove(_selectedAction);
-                    SelectedAction = Actions.LastOrDefault();
-                }
-            }, () => _selectedAction != null);
 
         private RelayCommand<MacroAction> _removeStepCommand;
         /// <summary>Removes one action, by the remove at its own step's end
@@ -8554,15 +8526,6 @@ namespace PadForge.ViewModels
         /// numbered: the two Nintendo families or the three Valve ones.</summary>
         public static bool IsLetteredProfile(string profileId) =>
             IsNintendoLetteredProfile(profileId) || IsValveLetteredProfile(profileId);
-
-        /// <summary>True for the Switch 2 Pro family specifically. Its wire
-        /// order is NOT the original Pro Controller's: the D-pad rides four
-        /// buttons instead of a hat, the left-hand controls sit above the
-        /// right-hand ones, and it carries five extra buttons the original
-        /// has no wire for.</summary>
-        public static bool IsSwitch2LetteredProfile(string profileId) =>
-            !string.IsNullOrEmpty(profileId)
-            && profileId.StartsWith("switch2-pro", StringComparison.OrdinalIgnoreCase);
 
         /// <summary>Count of role-mapped (lettered) buttons on the ORIGINAL
         /// switch-pro profile: indices 0-13. The descriptor declares 16 in

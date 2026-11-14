@@ -335,8 +335,8 @@
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Hichapụ</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>E hichapụla "{0}".</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Bubata site na Faịlụ…</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro jụrụ profile a na {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Profile a enweghị HID descriptor, ya mere enweghị ike ịme controller site na ya.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro jụrụ preset a na {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Preset a enweghị HID descriptor, ya mere enweghị ike ịme controller site na ya.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Ọ dịghị ihe e bubatara. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Bubata</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
@@ -352,9 +352,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Gbanwee gaa na nlele 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Gbanwee gaa na nlele 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Pịa ka ịnwalee motor aka ekpe</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Motor aka ekpe</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Pịa ka ịnwalee motor aka nri</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Motor aka nri</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Detuo site na...</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Tọgharịa niile</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Hichapụ niile</value></data>
@@ -452,7 +450,6 @@
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Jide</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Motor aka ekpe</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Motor aka nri</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Jide</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>N'etiti</value></data>
@@ -940,7 +937,6 @@
   <data name="Handheld_Import" xml:space="preserve"><value>Bubata…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Ebupụla bọtịn {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Ebubatala bọtịn {0}.</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Aka ekpe</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Aka nri</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Elu</value></data>
@@ -1097,7 +1093,6 @@
   <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>Stick aka nri Y</value></data>
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Deadzone etiti</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Tọgharịa ka ọ gbanyụọ</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Tọgharịa gaa na stick aka ekpe X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Tọgharịa ike (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Tọgharịa deadzone etiti (2%)</value></data>
@@ -1395,7 +1390,7 @@
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Hichapụ {0}?</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Ọ na-amalite na-enweghị controller. Ọ na-ebunye onwe ya mgbe otu n'ime egwuregwu ya nọ n'ihu.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Tinye egwuregwu na-agba ọsọ</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ọ dịghị mmemme ọzọ nwere window meghere.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ahụghị window ọzọ meghere.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Wepụ {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Aha, akara ngosi na agba nke layer Base na Shift Layer Flyout na n'ahịrị layer.</value></data>
   <data name="Voice_MoreHint" xml:space="preserve"><value>Ige ntị gbanyere ma ọ bụ gbanyụrụ, ọnọdụ, ntụkwasị obi</value></data>

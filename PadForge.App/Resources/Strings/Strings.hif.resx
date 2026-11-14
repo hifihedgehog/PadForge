@@ -337,7 +337,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Dono</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tap / Do dafe tap / Teen dafe tap</value></data>
   <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>Long press</value></data>
@@ -399,7 +398,6 @@
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
 
   <!-- ═══ Device Object Names (gamepad) ═══ -->
@@ -684,7 +682,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Ii tag ke naam do</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Naam</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Key: {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Mouse gesture reset karo</value></data>
   <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Gesture button reset karo</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Upar</value></data>
@@ -1095,7 +1092,7 @@
   <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} delete karo?</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Bina controller ke shuru hoe. Jab uske koi game aage rahe tab uu apne se load hoe.</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Koi dusra program ke window khula nai hai.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Koi dusra khula window nai mila.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} hatao</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Shift Layer Flyout pe aur layer ke row me Base layer ke naam, icon aur rang.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Import kara</value></data>

@@ -13,11 +13,9 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// The two panels Home is laid out with (#574). TileGridPanel puts the
+    /// The panel Home is laid out with (#574). TileGridPanel puts the
     /// controller cards and the extras' tiles in rows of equal columns that
-    /// end flush with the page. LineOrStackPanel keeps a card's state and
-    /// its device counts on one line while they fit and stacks them when
-    /// they do not, so a long state or a long translation is never cut off.
+    /// end flush with the page.
     /// </summary>
     public class HomePanelsTests
     {
@@ -396,82 +394,6 @@ namespace PadForge.Tests
             // One column of 400: three rows of 40 with the gap between them.
             Assert.Equal(40 * 3 + 16 * 2, grid.DesiredSize.Height);
             Assert.Equal(grid.DesiredSize.Height, list.DesiredSize.Height);
-        });
-
-        // ── one line or a stack ────────────────────────────────────────
-
-        [Theory]
-        [InlineData(100.0, 120.0, true)]
-        [InlineData(120.0, 120.0, true)]
-        [InlineData(120.5, 120.0, false)]
-        [InlineData(1000.0, double.PositiveInfinity, true)]
-        [InlineData(1000.0, double.NaN, true)]
-        public void ChildrenFitALine_WhileTheyNeedNoMoreThanThereIs(double needed, double available, bool fits)
-        {
-            Assert.Equal(fits, LineOrStackPanel.Fits(needed, available));
-        }
-
-        /// <summary>With room the children stand side by side, the separator
-        /// between them. Without it they stand one under the other at the
-        /// panel's full width, and the separator takes no room.</summary>
-        [Fact]
-        public void TheChildren_ShareALineWhileTheyFit_AndStackWithoutTheSeparatorWhenTheyDoNot() => RunSta(() =>
-        {
-            var panel = new LineOrStackPanel();
-            var state = new Border { Width = 100, Height = 20 };
-            var dot = new Border { Width = 10, Height = 20 };
-            LineOrStackPanel.SetOnLineOnly(dot, true);
-            var counts = new Border { Width = 120, Height = 16 };
-            foreach (var child in new[] { state, dot, counts }) panel.Children.Add(child);
-            Assert.True(LineOrStackPanel.GetOnLineOnly(dot));
-            Assert.False(LineOrStackPanel.GetOnLineOnly(state));
-
-            // 230 across is exactly what the three need.
-            panel.Measure(new Size(230, double.PositiveInfinity));
-            Assert.True(panel.IsOnLine);
-            Assert.Equal(new Size(230, 20), panel.DesiredSize);
-            panel.Arrange(new Rect(panel.DesiredSize));
-            Assert.Equal(new Rect(0, 0, 100, 20), LayoutInformation.GetLayoutSlot(state));
-            Assert.Equal(new Rect(100, 0, 10, 20), LayoutInformation.GetLayoutSlot(dot));
-            Assert.Equal(new Rect(110, 0, 120, 20), LayoutInformation.GetLayoutSlot(counts));
-
-            // One less and they stack: the state, then the counts under it.
-            panel.Measure(new Size(229, double.PositiveInfinity));
-            Assert.False(panel.IsOnLine);
-            Assert.Equal(new Size(120, 36), panel.DesiredSize);
-            panel.Arrange(new Rect(0, 0, 229, 36));
-            Assert.Equal(new Rect(0, 0, 229, 20), LayoutInformation.GetLayoutSlot(state));
-            Assert.Equal(new Rect(0, 20, 229, 16), LayoutInformation.GetLayoutSlot(counts));
-            Assert.Equal(new Rect(0, 0, 0, 0), LayoutInformation.GetLayoutSlot(dot));
-
-            // Wide again, and they are back on one line.
-            panel.Measure(new Size(400, double.PositiveInfinity));
-            Assert.True(panel.IsOnLine);
-            Assert.Equal(new Size(230, 20), panel.DesiredSize);
-
-            // A collapsed child is left out either way.
-            counts.Visibility = Visibility.Collapsed;
-            panel.Measure(new Size(105, double.PositiveInfinity));
-            Assert.False(panel.IsOnLine);
-            Assert.Equal(new Size(100, 20), panel.DesiredSize);
-        });
-
-        /// <summary>A text that is too long even on a line of its own trims
-        /// there: stacked, each child is measured at the panel's width.</summary>
-        [Fact]
-        public void AStackedText_IsMeasuredAtThePanelsWidth_SoItTrims() => RunSta(() =>
-        {
-            var panel = new LineOrStackPanel();
-            var state = new TextBlock { Text = new string('W', 80), FontSize = 13, TextTrimming = TextTrimming.CharacterEllipsis };
-            var counts = new TextBlock { Text = "3 mapped, 0 connected", FontSize = 12 };
-            panel.Children.Add(state);
-            panel.Children.Add(counts);
-
-            panel.Measure(new Size(200, double.PositiveInfinity));
-            Assert.False(panel.IsOnLine);
-            Assert.True(state.DesiredSize.Width <= 200, "the long text was measured wider than the panel");
-            Assert.True(panel.DesiredSize.Width <= 200);
-            Assert.Equal(state.DesiredSize.Height + counts.DesiredSize.Height, panel.DesiredSize.Height, 6);
         });
     }
 }

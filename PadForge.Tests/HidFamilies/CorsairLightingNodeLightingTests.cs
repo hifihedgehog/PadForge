@@ -16,7 +16,8 @@ namespace PadForge.Tests
     public class CorsairLightingNodeLightingTests
     {
         private const ushort Lt100 = CorsairLightingNodeLighting.Lt100;
-        private const ushort Ls100 = CorsairLightingNodeLighting.Ls100;
+        /// <summary>CORSAIR_LS100_PID (CorsairLightingNodeControllerDetect.cpp:21).</summary>
+        private const ushort Ls100 = 0x0C1E;
 
         /// <summary>The vendor collection: usage page FFC0 and usage 0C00, a
         /// 64-byte command and a 16-byte answer behind report ID 0

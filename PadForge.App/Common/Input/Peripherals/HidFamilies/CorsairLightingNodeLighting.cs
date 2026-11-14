@@ -87,9 +87,7 @@ namespace PadForge.Common.Input.Peripherals
 
         internal const string OpenRgbFamily = "CorsairLightingNodeController";
 
-        /// <summary>CORSAIR_LS100_PID and CORSAIR_LT100_PID
-        /// (CorsairLightingNodeControllerDetect.cpp:21 and 24).</summary>
-        internal const ushort Ls100 = 0x0C1E;
+        /// <summary>CORSAIR_LT100_PID (CorsairLightingNodeControllerDetect.cpp:24).</summary>
         internal const ushort Lt100 = 0x0C23;
 
         /// <summary>CORSAIR_LIGHTING_NODE_WRITE_PACKET_SIZE, _READ_PACKET_SIZE

@@ -372,6 +372,9 @@ namespace PadForge.Views
             _stickTransforms3D.Clear();
             _stickParts.Clear();
             _pickShapes.Clear();
+            // Another model is drawn elsewhere even when its matrix comes
+            // out the same, so the next frame says so (PickBoundsChanged).
+            _lastToScreen = default;
             // The retained trigger angles key on the OUTGOING model the same
             // way, and they are passed by ref as the running state of the
             // smoothing. Left set, a switch carried the old model's pull angles
@@ -781,11 +784,6 @@ namespace PadForge.Views
                 parts.Add(tg);
             if (_currentModel.ButtonMap.TryGetValue(buttonRole, out var registered))
                 foreach (var g in registered)
-                    if (g != null && !parts.Contains(g))
-                        parts.Add(g);
-            // Parts that lean without lighting. No model registers one today.
-            if (_currentModel.StickRiders.TryGetValue(thumbRing, out var riders))
-                foreach (var g in riders)
                     if (g != null && !parts.Contains(g))
                         parts.Add(g);
 

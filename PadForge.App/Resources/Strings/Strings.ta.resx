@@ -136,7 +136,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge மூடப்படுகிறது...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge தொடங்குகிறது…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>முந்தைய அமர்விலிருந்து மீதமுள்ள மெய்நிகர் கட்டுப்படுத்திகளை அகற்றுகிறது.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> சாதனங்கள்</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>கட்டுப்படுத்தியைச் சேர்</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>கட்டுப்படுத்தியைச் சேர்</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>கேம்கள் எதைப் பார்க்க வேண்டும் என்பதைத் தேர்ந்தெடுக்கவும். கிளிக் செய்ததும் கட்டுப்படுத்தி உடனே சேர்க்கப்படும்.</value></data>
@@ -280,7 +279,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>"{0}"-க்கான பதிவு நேரம் முடிந்துவிட்டது.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>இன்ஜின் தொடங்கியது.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>இன்ஜின் நிறுத்தப்பட்டது.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>மேப்பிங் இல்லை</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>பிழை: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0}-ஐ உருவாக்க முடியவில்லை.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>சுயவிவரம் மாற்றப்பட்டது: {0}</value></data>
@@ -298,7 +296,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>பதிவுசெய்கிறது...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>எப்போது</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>இதில்</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}", மெய்நிகர் கட்டுப்படுத்தி {1}-க்கு ஒதுக்கப்பட்டது.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்தி {1}-இலிருந்து "{0}"-இன் ஒதுக்கீடு நீக்கப்பட்டது.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>சாதனம் அகற்றப்பட்டது.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்தி {0} நீக்கப்பட்டது.</value></data>
@@ -529,7 +526,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>தொலை இணைப்புக்காக நீங்கள் இணைசேர்த்த PC-கள். ஒன்று இணைவதை நிறுத்த, அதன் அனுமதியைத் திரும்பப் பெறவும். அது மீண்டும் இணைசேர வேண்டியிருக்கும்.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>திரும்பப் பெறு</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>அனைத்தையும் திரும்பப் பெறு</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>மறுபெயரிடு</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>டச்பேட் மேலடுக்கு</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation டச்பேட் கேம்களுக்கான திரைமேல் தொடு பரப்பு, தொடுதிரைக்கோ சுட்டிக்கோ.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>டச்பேட் மேலடுக்கை இயக்கு</value></data>
@@ -763,7 +759,6 @@
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio உரிம விதிமுறைகள்</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK விதிமுறைகள்</value></data>
@@ -1110,9 +1105,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>மேப்பிங்குகள்</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>ஸ்டிக்குகள்</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>டிரிகர்கள்</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>ஃபோர்ஸ் ஃபீட்பேக்</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>இம்பல்ஸ் டிரிகர்கள்</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>இம்பல்ஸ் டிரிகர்கள்</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ஒவ்வொரு டிரிகருக்கும் வலிமை, மோட்டார் இடமாற்றம், அடாப்டிவ் டிரிகர் அதிர்வுகள், நிலையான டிரிகர் ஃபோர்ஸ்</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ஒவ்வொரு டிரிகருக்குமான மோட்டார் கட்டளைகளை (Xbox இம்பல்ஸ் டிரிகர்கள்) மெய்நிகர் கட்டுப்படுத்தியிலிருந்து ஒதுக்கப்பட்ட இயற்பியல் Xbox One, Elite அல்லது Series கட்டுப்படுத்திக்கு அனுப்பும். கேம் இயக்கும் டிரிகர் அதிர்வு தானாகவே கடந்து செல்லும். கீழே உள்ள கட்டுப்பாடுகள் ஒவ்வொரு டிரிகருக்கும் அதன் வலிமையைக் கூட்டிக் குறைக்கும்.</value></data>
@@ -1178,7 +1171,6 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>இடது டிரிகரை மீட்டமை</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>வலது டிரிகரை மீட்டமை</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>அடாப்டிவ் டிரிகர்கள்</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>அடாப்டிவ் டிரிகர்கள்</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>ஒதுக்கப்பட்ட இயற்பியல் DualSense-இல் டிரிகர் ஃபீட்பேக் விளைவுகளை உள்ளமைக்கவும். கேம் அல்லது கேம் மோட்டிலிருந்து வரும் டிரிகர் விளைவுகள் தானாகவே அனுப்பப்படும். இங்குள்ள அமைப்புகள், இவை இரண்டும் எழுதாதபோது இயங்கும் பயனர் உள்ளமைத்த ஓர் அடுக்கைச் சேர்க்கும்.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>ஸ்டிக்குகள்</value></data>
@@ -1224,7 +1216,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>ஒளியமைப்பு</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>ஒளியமைப்பு</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>ஒதுக்கப்பட்ட இயற்பியல் கட்டுப்படுத்தியில் லைட்பாரின் அடிப்படை நிறத்தையும் ஆடியோ நடத்தையையும் அமைக்கவும். கேம் எழுதுபவை எப்போதும் முன்னுரிமை பெறும். எந்த கேமும் லைட்பாரை இயக்காதபோது பயனர் அமைப்புகள் பொருந்தும்.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>பிளேயர் எண் என அமைக்கப்பட்டிருக்கும்போது, பேட் ஓய்வில் இருக்கையில் அதன் மெய்நிகர் கட்டுப்படுத்தியின் பிளேயர் அடையாளத்தைக் காட்டும்: லைட்பாரில் Sony பிளேயர் நிறம் (1 நீலம், 2 சிவப்பு, 3 பச்சை, 4 இளஞ்சிவப்பு), DualSense-இல் அதற்குப் பொருந்தும் பிளேயர் புள்ளிகள். ஒரே மெய்நிகர் கட்டுப்படுத்தியில் உள்ள ஒவ்வொரு சாதனமும் அதே எண்ணைக் காட்டும். கேம்கள் ஒளியமைப்பை எழுதும்போதெல்லாம் அவை பொறுப்பேற்கும், நீங்கள் இங்கே அமைக்கும் எதுவும் எப்போதும் முன்னுரிமை பெறும், ஆஃப் என்பது விளக்கை முழுவதுமாக அணைக்கும்.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>பிளேயர் எண் என அமைக்கப்பட்டிருக்கும்போது, பேட் ஓய்வில் இருக்கையில் அதன் மெய்நிகர் கட்டுப்படுத்தியின் பிளேயர் அடையாளத்தைக் காட்டும்: லைட்பாரில் Sony பிளேயர் நிறம் (1 நீலம், 2 சிவப்பு, 3 பச்சை, 4 இளஞ்சிவப்பு), DualSense-இல் அதற்குப் பொருந்தும் பிளேயர் புள்ளிகள். ஒரே மெய்நிகர் கட்டுப்படுத்தியில் உள்ள ஒவ்வொரு சாதனமும் அதே எண்ணைக் காட்டும். ஒரு கேம் ஒளியமைப்பை எழுதும்போதெல்லாம் அது பொறுப்பேற்கும். இங்கே அமைக்கும் வேறு எந்தப் பயன்முறையும் பிளேயர் நிறத்தை மாற்றும், ஆஃப் என்பது விளக்கை முழுவதுமாக அணைக்கும்.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>இந்த மெய்நிகர் கட்டுப்படுத்தி, DualSense லைட்பாரில் உள்ள அதே பயன்முறைகளைக் கொண்டு சாதனத்தை ஒளிரச் செய்யும், அவை இந்தக் கட்டுப்படுத்திக்கு மட்டும் இங்கே அமைக்கப்படும். PlayStation மெய்நிகர் கட்டுப்படுத்தியில், லைட்பாரை எழுதும் கேம், DualSense-இல் செய்வது போலவே பொறுப்பேற்கும்.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>இந்தச் சாதனத்தின் ஒளியமைப்பைக் கட்டுப்படுத்து</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>ஒளியமைப்புக் கட்டுப்பாடு</value></data>
@@ -1446,9 +1438,9 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>டிரிகர்கள்</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-கள்</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>பொத்தான்கள்</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>இறக்குமதி செய்த சுயவிவரங்கள்…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>கட்டுப்படுத்தி முன்னமைவுகள்…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>விரிவாக்கப்பட்ட கட்டுப்படுத்தி</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>பயனர் இறக்குமதி செய்த HIDMaestro சுயவிவரங்களை நிர்வகிக்கவும்: இணைக்கப்பட்ட சாதனத்திலிருந்து புதிய ஒன்றை எடுக்கவும், இருக்கும் ஒன்றை JSON-க்கு ஏற்றுமதி செய்யவும், அல்லது இனி தேவையில்லாததை நீக்கவும்.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>நீங்கள் சேர்த்த கட்டுப்படுத்தி முன்னமைவுகளை நிர்வகிக்கவும்: கோப்பிலிருந்தோ இணைக்கப்பட்ட சாதனத்திலிருந்தோ ஒன்றை இறக்குமதி செய்யவும், ஒன்றை JSON-க்கு ஏற்றுமதி செய்யவும், அல்லது இனி தேவையில்லாததை நீக்கவும்.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>சாதனத்தை 1:1 குளோன் செய்</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>தேர்ந்தெடுத்த சாதனத்தின் ஒவ்வொரு அச்சு, பொத்தான், ஹேட்டையும் அதே எண்ணுள்ள மெய்நிகர் வெளியீட்டுக்கு நேரடியாக மேப் செய்யும். தளவமைப்பைச் சாதனத்துக்கேற்ப அளவிட்டு, ஸ்லாட்டில் உள்ள இந்தச் சாதனத்தின் வரிசைகளை 1:1 பாஸ்த்ரூவால் மாற்றும்.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>சாதனத்தை 1:1 குளோன் செய்</value></data>
@@ -1463,18 +1455,18 @@
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>இணைக்கப்பட்ட சாதனத்திலிருந்து இறக்குமதி செய்</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>ஏற்றுமதி…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>நீக்கு</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>சுயவிவர JSON-ஐ ஏற்றுமதி செய்</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>முன்னமைவு JSON-ஐ ஏற்றுமதி செய்</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>முன்னமைவை நீக்கவா?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>{0}-ஐப் பயன்படுத்தும் எந்தக் கட்டுப்படுத்தியும் தனிப்பயன் உருப்படிக்குத் திரும்பும். இதைத் திரும்பப் பெற முடியாது.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>{0}-க்கு ஏற்றுமதி செய்யப்பட்டது</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>ஏற்றுமதி தோல்வியடைந்தது: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" நீக்கப்பட்டது.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>கோப்பில் இருந்து இறக்குமதி செய்…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>சுயவிவர JSON-ஐ இறக்குமதி செய்</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>முன்னமைவு JSON-ஐ இறக்குமதி செய்</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>{0}-இலிருந்து இறக்குமதி செய்யப்பட்டது.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>படித்தல் தோல்வியடைந்தது: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro இந்தச் சுயவிவரத்தை {1} இடத்தில் மறுத்தது: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>இந்தச் சுயவிவரத்தில் HID விவரிப்பி இல்லை, எனவே இதிலிருந்து கட்டுப்படுத்தியை உருவாக்க முடியாது.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro இந்த முன்னமைவை {1} இடத்தில் மறுத்தது: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>இந்த முன்னமைவில் HID விவரிப்பி இல்லை, எனவே இதிலிருந்து கட்டுப்படுத்தியை உருவாக்க முடியாது.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>எதுவும் இறக்குமதி செய்யப்படவில்லை. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>இறக்குமதி செய்</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(பெயரிடப்படாத HID சாதனம்)</value></data>
@@ -1585,9 +1577,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>2D காட்சிக்கு மாறு</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>3D காட்சிக்கு மாறு</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>இடது மோட்டாரைச் சோதிக்க கிளிக் செய்யவும்</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>இடது மோட்டார்</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>வலது மோட்டாரைச் சோதிக்க கிளிக் செய்யவும்</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>வலது மோட்டார்</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>அனைத்தையும் மேப் செய்</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>மேப் செய்: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>அனைத்து மேப்பிங்குகளையும் ஒவ்வொன்றாக வரிசையாகப் பதிவுசெய்</value></data>
@@ -1691,6 +1681,11 @@
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>உண்மை/பொய்யை மாற்று</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>நிபந்தனைத் தேர்வு, இந்த வடிவில்: (நிபந்தனை) ? உண்மை எனில் : இல்லை எனில்</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>if-then-else என்பதன் else (இல்லையெனில்) பகுதி</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>மற்றும்</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>அல்லது</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>அல்ல</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>எனில்?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>இல்லையெனில்:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>தனிமதிப்பு (குறியை நீக்கும்)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>இரு மதிப்புகளில் சிறியது</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>இரு மதிப்புகளில் பெரியது</value></data>
@@ -1759,6 +1754,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>மையத்தை அளவுத்திருத்து</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>மையப் புள்ளி</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>மையம்</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>வேகம்</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>டெட்ஜோன்</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>மையச் சமன்செய்தல், டெட்ஜோன் வடிவம் மற்றும் அச்சு மதிப்புகள், ஒவ்வொரு அச்சுக்கும் வளைவு, வீச்சு, ஸ்டீயரிங்</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>எண்களில் வீச்சு, மூல மதிப்புகள்</value></data>
@@ -1982,7 +1978,6 @@
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>நிலைத்திருக்கும் (பிடிப்பு)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>இடது மோட்டார்</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>வலது மோட்டார்</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>பிடிப்பு</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>மங்கல்</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -2091,7 +2086,6 @@
   <data name="Pad_Touchpad" xml:space="preserve"><value>டச்பேட்</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>டச்பேட்</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>ஒவ்வொரு டச்பேடுக்குமான உள்ளீடு. சைகைகளும் (ஸ்வைப்கள், தட்டல்கள், பிஞ்ச்கள், வடிவங்கள்) தொடர் வெளியீட்டுப் பயன்முறைகளும் (மெய்நிகர் ஸ்டிக் / டி-பேட், சுட்டி), எந்த வெளியீட்டுக்கும் நீங்கள் பிணைக்கக்கூடிய மேப்பிங் மூலங்களாகின்றன.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>டச்பேட்</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>டச்பேட் எண்</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>கீழே உள்ள அமைப்புகள் இந்தக் கட்டுப்படுத்தியின் எந்த டச்பேடுக்குப் பொருந்தும் என்பது. ஒவ்வொரு டச்பேடும் தனக்கெனச் சைகைகள், சுட்டி உணர்வு, சுட்டிக்குறிப் பகுதி ஆகியவற்றை வைத்திருக்கும்.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>சைகை கண்டறிதல்</value></data>
@@ -2542,8 +2536,6 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>சுட்டி அசைவு Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>உணர்திறன்</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>ஒவ்வொரு மூலத்துக்குமான IR சுட்டிக்குறி உணர்திறன். 1.0 எனில், கேமராவின் பார்வைப் புலத்தின் விளிம்பில் முழு ஸ்டிக் விலகலை எட்டும். 1.0-க்கு மேலான மதிப்புகள் குறைவான குறிவைப்பு நகர்விலேயே முழு விலகலை எட்டும். 1.0-க்குக் கீழான மதிப்புகளுக்கு அதிக நகர்வு தேவை.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>உணர்திறன்</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>சாதாரண அச்சு, ஸ்லைடர், அல்லது கேம்பேட் ஸ்டிக் / டிரிகருக்கான, ஒவ்வொரு மூலத்துக்குமான உணர்திறன். 1.0 எனில் உள்ளீடு மாறாது. 1.0-க்கு மேலான மதிப்புகள் குறைவான நகர்விலேயே முழு விலகலை எட்டும். 1.0-க்குக் கீழான மதிப்புகளுக்கு அதிக நகர்வு தேவை.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>கேம்பேட் {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>ஒவ்வொரு மூலத்துக்குமான சுட்டி அசைவின் உணர்திறன். 1.0 எனில், உண்மையான சுட்டியின் அதே வேகத்தில் முழு விலகலை எட்டும், 1.0-க்கு மேலான மதிப்புகளுக்குக் குறைவான அசைவு போதும், கீழான மதிப்புகளுக்கு அதிக அசைவு தேவை.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>பேலன்ஸ் மொத்த எடை</value></data>
@@ -2680,7 +2672,7 @@
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>சுயவிவரம், அதன் கேம்களில் ஒன்று முன்னணியில் இருக்கும்போது தானாக ஏற்றப்படும்.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>கட்டுப்படுத்திகள் எதுவும் இல்லாமல் தொடங்கும். அதன் கேம்களில் ஒன்று முன்னணியில் இருக்கும்போது தானாக ஏற்றப்படும்.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>இயங்கும் கேமைச் சேர்</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>வேறு எந்த நிரலுக்கும் சாளரம் திறந்திருக்கவில்லை.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>வேறு திறந்த சாளரம் எதுவும் காணப்படவில்லை.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0}-ஐ அகற்று</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>இந்தச் சுயவிவரம் ஏற்றப்பட்டிருக்கும்போது வாக்கெடுப்பு வீதம்</value></data>
 
@@ -3262,7 +3254,6 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>ஒவ்வொரு லாக்கிற்கும் ஒன்று என்ற வகையில் மாறிமாறி வர நிறங்களைச் சேர்க்கவும்.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>லைட்பார் பிடிப்பை மீட்டமை</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>ஆடியோ</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>சுட்டிக்குறி</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR சுட்டிக்குறி</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>இந்த Wii Remote-ஐ அதன் IR கேமரா மூலம் திரையை நோக்கிக் குறிவைக்கவும். திரைக்கு மேலே அல்லது கீழே ஒரு சென்சார் பார், அல்லது இரண்டு அகச்சிவப்பு LED-கள் தேவை. துல்லியமான இடத்தைக் குறிவைக்க, சாதனங்கள் பக்கத்தில் இதை லைட் கன்னாக அளவுத்திருத்தவும். அளவுத்திருத்தப்பட்ட ரிமோட், சென்சார் பார் இருப்பிடம் மற்றும் செங்குத்து ஆஃப்செட்டைப் புறக்கணிக்கும்.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>சுட்டிக்குறி சரிசெய்தல்</value></data>
@@ -3617,7 +3608,6 @@
   <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Bluetooth ரேடியோ எதுவும் கிடைக்கவில்லை. Bluetooth-ஐ ஆன் செய்து மீண்டும் முயலவும். வயர்லெஸ் முறையில் விளையாடுவதற்கு மட்டுமே இணைசேர்ப்பு தேவை; கேபிள் மூலம் இணைக்கப்பட்ட கட்டுப்படுத்தி அது இல்லாமலே வேலை செய்யும்.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>இணைசேர்ப்பு முடியவில்லை. தோல்வியடைந்த படி மேலே காட்டப்பட்டுள்ளது.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>மூடு</value></data>
-  <data name="Common_ResizePanes" xml:space="preserve"><value>பலகங்களின் அளவை மாற்று</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC டேக்குகள்</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>ரீடரில் ஒரு டேக்கைத் தட்டி அதற்குப் பெயரிடுங்கள். அது நீங்கள் மேப் செய்யக்கூடிய பொத்தானாகும்.</value></data>
   <data name="Nfc_TapPrompt" xml:space="preserve"><value>ரீடரில் ஒரு டேக்கைத் தட்டவும்.</value></data>
@@ -3625,7 +3615,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>இந்த டேக்குக்குப் பெயரிடு</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>பதிவுசெய்</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>பதிவுசெய்தவை</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>NFC ரீடர் எதுவும் கண்டறியப்படவில்லை. ஒரு PC/SC ரீடரை இணைத்து மீண்டும் திறக்கவும்.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>டேக் பெறப்பட்டது. ஒரு பெயரை உள்ளிட்டு, பதிவுசெய் என்பதைக் கிளிக் செய்யவும். அதை மாற்ற வேறொரு டேக்கைத் தட்டவும்.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>"{0}" பதிவுசெய்யப்பட்டது. மேலும் சேர்க்க வேறொரு டேக்கைத் தட்டவும்.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC டேக்குகளைப் பதிவுசெய் / நிர்வகி</value></data>
@@ -3652,7 +3641,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>கட்டுப்படுத்தி Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>தம்ப்ஸ்டிக் X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>தம்ப்ஸ்டிக் Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>டிரிகர்</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>கைப்பிடி</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>தம்ப்ஸ்டிக் கிளிக்</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>முதன்மைப் பொத்தான்</value></data>
@@ -3755,7 +3743,6 @@
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>கையடக்க PC பொத்தான்களை இயக்கு</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>சாதனங்கள் பக்கத்தில் ஒரு மறைந்த பொத்தான்கள் சாதனத்தையும் ஒரு கணினி அசைவுச் சாதனத்தையும் சேர்க்கும். ஆஃப் எனில் எதுவும் இயங்காது.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>நுகர்வோர் {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>சுட்டி</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>சுட்டிச் சைகைகள்</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>சைகைப் பொத்தானைப் பிடித்து, சுண்டி, விடும்போது ஒரு செயல் தூண்டப்படும்: இடது, வலது, மேல், கீழ், அல்லது சுண்டுதல் தூரத்துக்குக் கீழே எனில் சாதாரண கிளிக். ஐந்து சைகைகளையும் எந்த வெளியீட்டுக்கும் மேப் செய்யவும் அல்லது மேக்ரோ தூண்டிகளாகப் பயன்படுத்தவும்.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>சுட்டிச் சைகைகளை இயக்கு</value></data>
@@ -3944,8 +3931,9 @@
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam-ஐ அணுக முடியவில்லை</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Steam-ஐ அணுக முடியவில்லை. உங்கள் இணைப்பைச் சரிபார்க்கவும். நீங்கள் ஏற்கெனவே இறக்குமதி செய்த சுயவிவரங்கள் தொடர்ந்து வேலை செய்யும்: அவை இந்த PC-யிலேயே உள்ளன.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>மீண்டும் முயல்</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>2016 காலத்திய இந்த உள்ளமைவு, Steam-இன் உள்ளமைவு CDN-க்கு முந்தையது. Steam-இல் இதற்குக் குழுசேர்ந்தால், PadForge அதை உங்கள் Steam கோப்புறையிலிருந்து படிக்கும்.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>இந்த உள்ளமைவுக்குப் பதிவிறக்க கோப்பு எதையும் Steam பட்டியலிடவில்லை, இதன் நகலும் உங்கள் Steam கோப்புறையில் இல்லை. Steam-இல் இதற்குக் குழுசேர்ந்தால், PadForge அதை அங்கிருந்து படிக்கும்.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam Workshop-இல் திற</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>பழையது</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>வந்து சேர்வதைக் காண ஓர் உள்ளமைவைத் தேர்ந்தெடுக்கவும்.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>எவை வந்து சேரும்</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>ஆகும்</value></data>
@@ -4171,7 +4159,6 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>மெனுவில் பிணைக்கப்பட்ட கலங்கள் இல்லை</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>மெனுவின் ஹோஸ்ட் பரப்பு ஆதரிக்கப்படவில்லை ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>மெனு கல ஐகான் அடையாளம் காணப்படவில்லை ({0}), எனவே கலம் தன் உரை லேபிளையே வைத்திருக்கும்</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>பாஸ் ஷேக்கர்கள்</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>வெளியீடு</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>பட்டன்கள்</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>விசைகள் &amp; சுட்டி</value></data>
@@ -4650,7 +4637,6 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>மோட்டார்</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>திசைப்படி பிரிப்பு</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>மைய டெட்ஜோன்</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>ஆஃப் நிலைக்கு மீட்டமை</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>இடது ஸ்டிக் X-க்கு மீட்டமை</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>வலிமையை மீட்டமை (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>மைய டெட்ஜோனை மீட்டமை (2%)</value></data>
@@ -4730,7 +4716,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>உடன் வழங்கப்படும் SDL3.dll-க்குள் தொகுக்கப்பட்ட HID அடுக்கு, Alan Ott, Signal 11 Software உருவாக்கியது.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>ஐகான் மூலங்கள்</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>சுடர் கிளிஃப் Material Design Icons-இலிருந்து (Pictogrammers, Apache-2.0), பொதுவான கேம்பேட் ஐகான் Ionicons-இலிருந்து (Ionic, MIT), விரிவாக்கப்பட்ட ஜாய்ஸ்டிக் Jam Icons-இலிருந்து (Michael Amprimo, MIT), Xbox மற்றும் PlayStation ஐகான்கள் SVG Repo-விலிருந்து, ஒவ்வொரு ஐகானின் பக்கத்திலும் உள்ள உரிமத்தின் கீழ்.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>சுடர் கிளிஃப் Material Design Icons-இலிருந்து (Pictogrammers, Apache-2.0), விரிவாக்கப்பட்ட ஜாய்ஸ்டிக் Jam Icons-இலிருந்து (Michael Amprimo, MIT), Xbox மற்றும் PlayStation ஐகான்கள் SVG Repo-விலிருந்து, ஒவ்வொரு ஐகானின் பக்கத்திலும் உள்ள உரிமத்தின் கீழ்.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>தொலை இணைப்பின் மாற்றுப் பாதைக்குப் பின்னால் உள்ள ரிலே நெறிமுறை, FlexInput செய்வது போலவே n0.computer-இன் இலவசப் பொது ரிலேக்களுடன் பேசப்படுகிறது. iroh: MIT OR Apache-2.0. FlexInput: MIT. ஆவணமாக மட்டும், எந்தக் குறியீடும் சேர்க்கப்படவில்லை.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

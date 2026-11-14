@@ -12,77 +12,6 @@
     <conv:UppercaseConverter x:Key="UpperConverter"/>
 
     <!-- ═══════════════════════════════════════════
-         Controller Type Icons (DrawingImage)
-         Sources, as served by svgrepo.com:
-         Xbox: svgrepo.com/show/473838/xbox.svg (viewBox 0 0 32 32)
-         PlayStation: svgrepo.com/show/473754/playstation.svg (viewBox 0 0 32 32)
-         Gamepad: svgrepo.com/show/480458/game-controller.svg (viewBox 0 0 512 512),
-           the Ionicons game-controller-outline icon (MIT, Copyright (c) 2015-present Ionic)
-         ═══════════════════════════════════════════ -->
-
-    <!-- Xbox logo icon (32x32 viewBox) -->
-    <DrawingImage x:Key="XboxControllerIcon">
-        <DrawingImage.Drawing>
-            <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
-                             Geometry="M16 5.425c-1.888-1.125-4.106-1.922-6.473-2.249l-0.092-0.010c-0.070-0.005-0.152-0.008-0.234-0.008-0.613 0-1.188 0.16-1.687 0.441l0.017-0.009c2.357-1.634 5.277-2.61 8.426-2.61 0.008 0 0.016 0 0.024 0h0.019c0.005 0 0.011 0 0.018 0 3.157 0 6.086 0.976 8.501 2.642l-0.050-0.033c-0.478-0.272-1.051-0.433-1.662-0.433-0.085 0-0.169 0.003-0.252 0.009l0.011-0.001c-2.459 0.336-4.677 1.13-6.648 2.297l0.082-0.045zM5.554 5.268c-0.041 0.014-0.077 0.032-0.11 0.054l0.002-0.001c-2.758 2.723-4.466 6.504-4.466 10.684 0 3.584 1.256 6.875 3.353 9.457l-0.022-0.028c-1.754-3.261 4.48-12.455 7.61-16.159-3.53-3.521-5.277-4.062-6.015-4.062-0.010-0-0.021-0.001-0.032-0.001-0.115 0-0.225 0.021-0.326 0.060l0.006-0.002zM20.083 9.275c3.129 3.706 9.367 12.908 7.605 16.161 2.075-2.554 3.332-5.845 3.332-9.43 0-4.181-1.709-7.962-4.467-10.684l-0.002-0.002c-0.029-0.021-0.063-0.039-0.1-0.052l-0.003-0.001c-0.1-0.036-0.216-0.056-0.336-0.056-0.005 0-0.011 0-0.016 0h0.001c-0.741-0-2.485 0.543-6.014 4.063zM6.114 27.306c2.627 2.306 6.093 3.714 9.888 3.714s7.261-1.407 9.905-3.728l-0.017 0.015c2.349-2.393-5.402-10.901-9.89-14.29-4.483 3.39-12.24 11.897-9.886 14.29z"/>
-        </DrawingImage.Drawing>
-    </DrawingImage>
-
-    <!-- PlayStation logo icon (32x32 viewBox) -->
-    <DrawingImage x:Key="DS4ControllerIcon">
-        <DrawingImage.Drawing>
-            <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
-                             Geometry="M3.262 24.248c-2.374-0.681-2.767-2.084-1.69-2.899 0.776-0.51 1.668-0.954 2.612-1.288l0.087-0.027 7.017-2.516v2.89l-5.030 1.839c-0.881 0.339-1.031 0.79-0.299 1.032 0.365 0.093 0.783 0.147 1.214 0.147 0.615 0 1.204-0.109 1.749-0.308l-0.035 0.011 2.422-0.882v2.592c-0.15 0.037-0.32 0.055-0.487 0.091-0.775 0.136-1.667 0.214-2.577 0.214-1.778 0-3.486-0.298-5.078-0.846l0.110 0.033zM18.049 24.544l7.868-2.843c0.893-0.322 1.032-0.781 0.307-1.022-0.363-0.089-0.779-0.14-1.208-0.14-0.622 0-1.22 0.108-1.774 0.305l0.037-0.011-5.255 1.874v-2.983l0.3-0.106c1.050-0.349 2.284-0.62 3.557-0.761l0.083-0.008c0.468-0.050 1.010-0.078 1.559-0.078 1.877 0 3.677 0.331 5.343 0.939l-0.108-0.035c2.309 0.751 2.549 1.839 1.969 2.589-0.559 0.557-1.235 0.998-1.988 1.282l-0.039 0.013-10.677 3.883v-2.869zM12.231 4.248v21.927l4.892 1.576v-18.39c0-0.862 0.38-1.438 0.992-1.238 0.795 0.225 0.95 1.017 0.95 1.881v7.342c3.050 1.491 5.451-0.003 5.451-3.939 0-4.045-1.407-5.842-5.546-7.282-1.785-0.648-4.040-1.294-6.347-1.805l-0.389-0.072z"/>
-        </DrawingImage.Drawing>
-    </DrawingImage>
-
-    <!-- Nintendo Switch logo icon (32x32 box), extracted from the
-         Gamepad-Asset-Pack theme icon (MIT, same upstream as the 2D
-         controller art) via tools normalization. -->
-    <DrawingImage x:Key="NintendoControllerIcon">
-        <DrawingImage.Drawing>
-            <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
-                             Geometry="M 21.661,0 C 20.071,0 18.746,0.02 18.726,0.046 C 18.699,0.066 18.679,7.248 18.679,16.007 C 18.679,30.458 18.686,31.922 18.785,31.962 C 18.964,32.028 24.106,32.001 24.742,31.935 C 27.432,31.63 29.804,29.994 31.096,27.562 C 31.261,27.251 31.48,26.727 31.592,26.403 C 32.01,25.157 31.997,25.488 31.997,15.968 C 31.997,8.368 31.983,7.235 31.891,6.751 C 31.235,3.3 28.604,0.696 25.146,0.099 C 24.682,0.02 23.966,0 21.661,0 L 21.661,0 M 13.635,0.006 C 13.077,0.004 12.342,0.005 11.371,0.007 C 8.218,0.013 7.27,0.033 6.853,0.106 C 3.666,0.676 1.102,3.035 0.293,6.135 C 0.002,7.255 -0.018,7.911 0.015,16.597 C 0.035,24.574 0.042,24.76 0.174,25.376 C 0.91,28.695 3.268,31.061 6.621,31.842 C 7.058,31.942 7.615,31.962 11.199,31.981 C 14.909,32.008 15.294,32.001 15.393,31.902 C 15.492,31.803 15.499,30.524 15.499,16.027 C 15.499,5.281 15.479,0.219 15.433,0.126 C 15.383,0.036 15.307,0.01 13.635,0.006 L 13.635,0.006 M 12.849,2.584 L 12.849,16.007 L 12.849,29.431 L 10.152,29.397 C 7.668,29.371 7.403,29.358 6.906,29.232 C 4.772,28.682 3.189,27.039 2.745,24.899 C 2.599,24.23 2.599,7.745 2.738,7.089 C 3.136,5.228 4.428,3.684 6.17,2.988 C 7.045,2.637 7.449,2.597 10.285,2.591 L 12.849,2.584 M 7.967,6.575 C 7.787,6.577 7.605,6.596 7.423,6.632 C 7.005,6.712 6.369,7.03 6.031,7.328 C 5.335,7.931 4.991,8.785 5.044,9.793 C 5.071,10.316 5.104,10.455 5.316,10.879 C 5.627,11.522 6.097,11.992 6.74,12.31 C 7.184,12.529 7.297,12.555 7.873,12.575 C 8.396,12.595 8.582,12.575 8.933,12.456 C 10.371,11.972 11.239,10.574 10.994,9.143 C 10.74,7.627 9.43,6.557 7.967,6.575 M 25.025,14.374 C 25.283,14.376 25.543,14.41 25.802,14.477 C 26.835,14.748 27.683,15.537 28.028,16.544 C 28.247,17.167 28.24,18.081 28.021,18.651 C 27.617,19.698 26.822,20.433 25.802,20.705 C 24.145,21.135 22.383,20.135 21.899,18.492 C 21.754,17.988 21.76,17.14 21.926,16.623 C 22.345,15.254 23.637,14.361 25.025,14.374 L 25.025,14.374"/>
-        </DrawingImage.Drawing>
-    </DrawingImage>
-
-    <!-- Extended joystick icon: Jam Icons joystick-f (MIT, Copyright (c) 2017 Michael Amprimo),
-         via svgrepo.com/show/360517, translated from viewBox -4 -2 24 24 -->
-    <DrawingImage x:Key="ExtendedControllerIcon">
-        <DrawingImage.Drawing>
-            <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
-                             Geometry="M11.915 15H13V9.874A4.002 4.002 0 0 1 14 2a4 4 0 0 1 1 7.874V15h2a3 3 0 0 1 3 3v4H4v-4a3 3 0 0 1 3-3h.085A1.5 1.5 0 0 1 8.5 14h2a1.5 1.5 0 0 1 1.415 1z"/>
-        </DrawingImage.Drawing>
-    </DrawingImage>
-
-    <!-- Generic gamepad icon: Ionicons game-controller-outline (512x512 viewBox, scaled to ~32x32) -->
-    <DrawingImage x:Key="GenericControllerIcon">
-        <DrawingImage.Drawing>
-            <DrawingGroup Transform="0.0625,0,0,0.0625,0,0">
-                <!-- Controller body outline -->
-                <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
-                                 Geometry="M467.51,248.83c-18.4-83.18-45.69-136.24-89.43-149.17A91.5,91.5,0,0,0,352,96c-26.89,0-48.11,16-96,16s-69.15-16-96-16a99.09,99.09,0,0,0-27.2,3.66C89,112.59,61.94,165.7,43.33,248.83c-19,84.91-15.56,152,21.58,164.88,26,9,49.25-9.61,71.27-37,25-31.2,55.79-40.8,119.82-40.8s93.62,9.6,118.66,40.8c22,27.41,46.11,45.79,71.42,37.16C487.1,399.86,486.52,334.74,467.51,248.83Z"/>
-                <!-- D-pad cross -->
-                <GeometryDrawing Brush="{DynamicResource SolidBackgroundFillColorSecondaryBrush}"
-                                 Geometry="M161.232,178.126 L122.29,178.126 122.29,213.631 86.785,213.631 86.785,252.573 122.29,252.573 122.29,288.079 161.232,288.079 161.232,252.573 196.737,252.573 196.737,213.631 161.232,213.631Z"/>
-                <!-- Action buttons (4 circles as ellipse geometries) -->
-                <GeometryDrawing Brush="{DynamicResource SolidBackgroundFillColorSecondaryBrush}"
-                                 Geometry="M368.659,167.002c-11.331,0-20.52,9.189-20.52,20.538c0,11.341,9.189,20.538,20.52,20.538c11.35,0,20.538-9.197,20.538-20.538C389.197,176.191,380.008,167.002,368.659,167.002z M368.659,266.247c-11.331,0-20.52,9.189-20.52,20.53c0,11.349,9.189,20.538,20.52,20.538c11.35,0,20.538-9.189,20.538-20.538C389.197,275.436,380.008,266.247,368.659,266.247z M418.282,216.633c-11.341,0-20.538,9.189-20.538,20.53c0,11.349,9.197,20.529,20.538,20.529c11.35,0,20.538-9.18,20.538-20.529C438.82,225.822,429.631,216.633,418.282,216.633z M319.054,216.633c-11.349,0-20.538,9.189-20.538,20.53c0,11.349,9.189,20.529,20.538,20.529c11.341,0,20.539-9.18,20.539-20.529C339.592,225.822,330.394,216.633,319.054,216.633z"/>
-            </DrawingGroup>
-        </DrawingImage.Drawing>
-    </DrawingImage>
-
-    <!-- Keyboard+Mouse icon (Segoe MDL2 Assets E961 "Input" glyph, rendered as GlyphRun) -->
-    <!-- Uses a TextBlock in code-behind instead — MDL2 glyphs don't have SVG paths. -->
-    <!-- Placeholder DrawingImage so resource lookup doesn't fail; actual rendering uses MDL2 glyph. -->
-    <DrawingImage x:Key="KeyboardMouseControllerIcon">
-        <DrawingImage.Drawing>
-            <GeometryDrawing Brush="{DynamicResource TextFillColorPrimaryBrush}"
-                             Geometry="M2 6a2 2 0 0 1 2-2h24a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6zm4 2v2h2V8H6zm0 4v2h2v-2H6zm4-4v2h2V8h-2zm0 4v2h2v-2h-2zm4-4v2h2V8h-2zm0 4v2h2v-2h-2zm4-4v2h2V8h-2zm0 4v2h2v-2h-2zm4-4v2h2V8h-2zm0 4v2h2v-2h-2zM8 16v2h16v-2H8z"/>
-        </DrawingImage.Drawing>
-    </DrawingImage>
-
-    <!-- ═══════════════════════════════════════════
          PadPage tab icons.
 
          Sticks and Triggers icons are derivative works built on the
@@ -115,17 +44,6 @@
         <StaticResource ResourceKey="ZackslyStickInnerDiscGeometry"/>
     </GeometryGroup>
 
-    <!-- Touchpad-stick card-header icon — the Segoe Fluent Icons
-         LeftStick glyph (F108) silhouette with the "L" letter
-         omitted. Path extracted from the live Segoe Fluent Icons
-         font at FontSize=512 via FormattedText.BuildGeometry +
-         GetOutlinedPathGeometry; F108 has two figures (the L and
-         the silhouette), this is the silhouette figure verbatim.
-         Bounds are (0,160) to (512,448) within a 512x512 canvas
-         so the natural rendered size matches what F108 would look
-         like as a font glyph at the same FontSize. -->
-    <StreamGeometry x:Key="TouchpadStickIconGeometry">M62.75,160L449.25,160C457.916656494141,160 466.041656494141,161.75 473.625,165.25 481.208312988281,168.75 487.833312988281,173.416687011719 493.5,179.25 499.166656494141,185.083343505859 503.666656494141,191.875 507,199.625 510.333312988281,207.375 512,215.5 512,224 512,232.833343505859 510.291656494141,241.125 506.875,248.875 503.458312988281,256.625 498.874969482422,263.375 493.125,269.125 487.374969482422,274.875 480.583312988281,279.458343505859 472.75,282.875 464.916656494141,286.291687011719 456.666656494141,288 448,288L384,288 384,432C384,436.333343505859 382.416656494141,440.083343505859 379.25,443.25 376.083312988281,446.416687011719 372.333312988281,448 368,448 363.666656494141,448 359.916656494141,446.416687011719 356.75,443.25 353.583312988281,440.083343505859 352,436.333343505859 352,432L352,288C352,279.166687011719 355.083312988281,271.666687011719 361.25,265.5 367.583312988281,259.166687011719 375.166656494141,256 384,256L448,256C456.833312988281,256 464.333312988281,252.916687011719 470.5,246.75 476.833312988281,240.416687011719 479.999969482422,232.833343505859 480,224 479.999969482422,219.666687011719 479.166625976563,215.541687011719 477.5,211.625 475.833312988281,207.708343505859 473.541656494141,204.291687011719 470.625,201.375 467.708312988281,198.458343505859 464.291656494141,196.166687011719 460.375,194.5 456.458312988281,192.833343505859 452.333312988281,192 448,192L64,192C59.5,192 55.3333320617676,192.833343505859 51.5,194.5 47.6666641235352,196.166687011719 44.2916641235352,198.458343505859 41.375,201.375 38.4583320617676,204.291687011719 36.1666641235352,207.666687011719 34.5,211.5 32.8333320617676,215.333343505859 32,219.5 32,224 32,233 35.0833320617676,240.583343505859 41.25,246.75 47.4166641235352,252.916687011719 55,256 64,256L128,256C136.666656494141,256 144.166656494141,259.166687011719 150.5,265.5 156.83332824707,271.833343505859 160,279.333343505859 160,288L160,432C160,436.333343505859 158.416656494141,440.083343505859 155.25,443.25 152.08332824707,446.416687011719 148.33332824707,448 144,448 139.666656494141,448 135.916656494141,446.416687011719 132.75,443.25 129.58332824707,440.083343505859 128,436.333343505859 128,432L128,288 62.75,288C54.0833320617676,288 45.9583320617676,286.25 38.375,282.75 30.7916641235352,279.25 24.1666641235352,274.583343505859 18.5,268.75 12.8333330154419,262.916687011719 8.33333301544189,256.125 5,248.375 1.66666674613953,240.625 0,232.5 0,224 0,215.5 1.66666674613953,207.375 5,199.625 8.33333301544189,191.875 12.8333330154419,185.083343505859 18.5,179.25 24.1666641235352,173.416687011719 30.7916641235352,168.75 38.375,165.25 45.9583320617676,161.75 54.0833320617676,160 62.75,160z</StreamGeometry>
-
     <!-- Trigger outer-body silhouette (left side) — first subpath of
          the Zacksly Left Trigger SVG (the body shell), with the
          lettering subpaths intentionally omitted. -->
@@ -139,20 +57,9 @@
          Shared Card Styles
          ═══════════════════════════════════════════ -->
 
-    <!-- Artifact chips (#175): cold = physical fact, ember = virtual
-         fact, ghost = neutral. Border carries the chip; the child text
-         inherits the matching foreground. -->
-    <Style x:Key="ChipCold" TargetType="Border">
-        <Setter Property="CornerRadius" Value="8"/>
-        <Setter Property="Padding" Value="9,3"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="#5958B6E4"/>
-        <Setter Property="Background" Value="#1A58B6E4"/>
-        <Setter Property="TextElement.Foreground" Value="{DynamicResource ColdBrush}"/>
-        <Setter Property="TextElement.FontSize" Value="12.5"/>
-        <Setter Property="TextElement.FontWeight" Value="SemiBold"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-    </Style>
+    <!-- Artifact chips (#175): ember = virtual fact, ghost = neutral.
+         Border carries the chip. The child text inherits the matching
+         foreground. -->
     <Style x:Key="ChipEmber" TargetType="Border">
         <Setter Property="CornerRadius" Value="8"/>
         <Setter Property="Padding" Value="9,3"/>
@@ -328,15 +235,6 @@
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
-    </Style>
-
-    <!-- Divider-separated SECTION title inside a card (e.g. the per-stick
-         Steering / Sensitivity Curves sections). Card headers get their 8px
-         title-to-description gap from the header StackPanel's margin; a bare
-         section title has no wrapping panel, so the margin lives on the
-         style — same rhythm, no number to copy from a neighbor. -->
-    <Style x:Key="CardSectionTitle" TargetType="TextBlock" BasedOn="{StaticResource CardTitle}">
-        <Setter Property="Margin" Value="0,0,0,8"/>
     </Style>
 
     <!-- SUBSECTION title inside a card: one visual rank below the CardTitle

@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Isinasara ang PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Sinisimulan ang PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Nililinis ang mga virtual controller na naiwan mula sa nakaraang session.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> device</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Magdagdag ng controller</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Magdagdag ng Controller</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Piliin kung ano ang dapat makita ng mga laro. Naidaragdag ang controller sa sandaling mag-click ka.</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Nag-time out ang pag-record para sa "{0}."</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Nagsimula ang engine.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Huminto ang engine.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Walang mapping</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Error: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Hindi nagawa ang {0}.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Pinalitan ang profile: {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Nagre-record...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>kapag</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>sa</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>Itinalaga ang "{0}" sa Virtual controller {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>Inalis sa pagkakatalaga ang "{0}" mula sa Virtual controller {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Inalis ang device.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Nabura ang Virtual controller {0}.</value></data>
@@ -516,7 +513,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Mga PC na na-pair mo para sa Remote Link. Bawiin ang isa para hindi na ito makakonekta. Kailangan itong mag-pair muli.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Bawiin</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Bawiin lahat</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Palitan ang Pangalan</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Touchpad overlay</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Touch surface sa screen para sa mga larong touchpad ng PlayStation, para sa touch screen o mouse.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>I-enable ang touchpad overlay</value></data>
@@ -750,7 +746,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Mga tuntunin ng lisensya ng Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Mga tuntunin ng Corsair SDK</value></data>
@@ -1031,9 +1026,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Mga Mapping</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Mga Stick</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Mga Trigger</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Mga Impulse Trigger</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Mga Impulse Trigger</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain bawat trigger, palit ng motor, adaptive trigger vibration, Constant Trigger Force</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Ipinapasa ang mga motor command ng bawat trigger (Xbox Impulse Triggers) mula sa virtual controller papunta sa nakatalagang pisikal na Xbox One, Elite, o Series controller. Awtomatikong dumadaan ang trigger rumble na galing sa laro. Ini-scale ng mga kontrol sa ibaba ang lakas bawat trigger.</value></data>
@@ -1099,7 +1092,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>I-reset ang Kaliwang Trigger</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>I-reset ang Kanang Trigger</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Mga Adaptive Trigger</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Mga Adaptive Trigger</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>I-configure ang mga trigger feedback effect sa nakatalagang pisikal na DualSense. Awtomatikong ipinapasa ang mga trigger effect na galing sa laro o game mod. Ang mga setting dito ay nagdaragdag ng layer na itinakda ng user na tumatakbo kapag wala sa dalawa ang sumusulat.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Mga Stick</value></data>
@@ -1144,7 +1136,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>Ilaw</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Ilaw</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Itakda ang base color ng lightbar at ang audio behavior sa nakatalagang pisikal na controller. Laging nangingibabaw ang isinusulat ng laro. Nalalapat ang mga setting ng user kapag walang laro na nagpapatakbo ng lightbar.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Kapag nakatakda sa Player Number, ipinapakita ng pad kapag idle ang player identity ng virtual controller nito: ang kulay ng player ng Sony sa lightbar (1 asul, 2 pula, 3 berde, 4 pink) at ang katugmang player pip sa DualSense. Pareho ang numerong ipinapakita ng bawat device sa iisang virtual controller. Pumapalit ang mga laro tuwing sumusulat sila ng ilaw, laging nangingibabaw ang anumang itakda mo rito, at ang Off ay ganap na nagpapadilim ng ilaw.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Kapag nakatakda sa Player Number, ipinapakita ng pad kapag idle ang player identity ng virtual controller nito: ang kulay ng player ng Sony sa lightbar (1 asul, 2 pula, 3 berde, 4 pink) at ang katugmang player pip sa DualSense. Pareho ang numerong ipinapakita ng bawat device sa iisang virtual controller. Pumapalit ang laro tuwing sumusulat ito ng ilaw. Pinapalitan ng anumang ibang mode na itakda mo rito ang kulay ng player, at ang Off ay ganap na nagpapadilim ng ilaw.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Pinapailawan ng virtual controller na ito ang device gamit ang parehong mga mode ng DualSense lightbar, na itinakda rito para sa controller na ito lang. Sa PlayStation virtual controller, pumapalit ang larong sumusulat sa lightbar gaya ng ginagawa nito sa DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Kontrolin ang Ilaw ng Device na Ito</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Pinipigilan ng Off ang virtual controller na ito na pailawan ang device. Maaari pa ring magtakda ng kulay nito ang isang vendor row, o ang ibang device ng ganitong uri na pinapailawan sa pamamagitan ng parehong software. Pinipintahan pa rin ng macro na Set Chroma Color sa virtual controller na ito ang isang Razer device.</value></data>
@@ -1259,9 +1251,9 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Mga Trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Mga POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Mga Button</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Mga Na-import na Profile…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Mga Preset ng Controller…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Extended Controller</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Pamahalaan ang mga HIDMaestro profile na na-import ng user: kumuha ng bago mula sa nakakonektang device, mag-export ng umiiral sa JSON, o magbura ng hindi mo na kailangan.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Pamahalaan ang mga preset ng controller na idinagdag mo: mag-import ng isa mula sa file o sa nakakonektang device, mag-export ng isa sa JSON, o magbura ng hindi mo na kailangan.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>I-clone ang Device 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>I-map nang diretso ang bawat axis, button, at hat ng napiling device sa virtual output na kapareho ang numero. Inaayos ang layout ayon sa device at pinapalitan ang mga row ng device na ito sa slot ng 1:1 passthrough.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>I-clone ang Device 1:1</value></data>
@@ -1276,18 +1268,18 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Mag-import Mula sa Nakakonektang Device</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>I-export…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Burahin</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>I-export ang Profile JSON</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>I-export ang Preset JSON</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Burahin ang Preset?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Babalik sa Custom na entry ang anumang controller na gumagamit ng {0}. Hindi na ito mababawi.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Na-export sa {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Nabigo ang pag-export: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Binura ang "{0}".</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Mag-import Mula sa File…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>I-import ang Profile JSON</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>I-import ang Preset JSON</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Na-import mula sa {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Nabigo ang pagbasa: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Tinanggihan ng HIDMaestro ang profile na ito sa {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Walang HID descriptor ang profile na ito, kaya walang controller na magagawa mula rito.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Tinanggihan ng HIDMaestro ang preset na ito sa {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Walang HID descriptor ang preset na ito, kaya walang controller na magagawa mula rito.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Walang na-import. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>I-import</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(HID device na walang pangalan)</value></data>
@@ -1398,9 +1390,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Lumipat sa 2D view</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Lumipat sa 3D view</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>I-click para subukan ang kaliwang motor</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Kaliwang Motor</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>I-click para subukan ang kanang motor</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Kanang Motor</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>I-map Lahat</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>I-map: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>I-record nang sunud-sunod, isa-isa, ang lahat ng mapping</value></data>
@@ -1504,6 +1494,11 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Baligtarin ang totoo/mali</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>If, na may pattern (kondisyon) ? tapos : kung hindi</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Else na kalahati ng if-then-else</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>at</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>o</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>hindi</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>kung?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>kung hindi:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Magnitude (tinatanggal ang sign)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Mas maliit sa dalawang value</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Mas malaki sa dalawang value</value></data>
@@ -1571,6 +1566,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>I-calibrate ang Gitna</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Gitnang Punto</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Gitna</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Bilis</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Mga offset ng gitna, hugis ng deadzone at halaga bawat axis, curve para sa bawat axis, range, steering</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Ang range sa mga numero, mga raw value</value></data>
@@ -1794,7 +1790,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Sticky (Hawak)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Kaliwang Motor</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Kanang Motor</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Paghawak</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Fade</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1903,7 +1898,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Input kada touchpad. Ang mga gesture (swipe, tap, pinch, hugis) at tuloy-tuloy na output mode (virtual stick / D-pad, mouse) ay nagiging mapping source na maaari mong i-bind sa anumang output.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Numero ng Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Aling touchpad ng controller na ito ang sakop ng mga setting sa ibaba. May sariling gesture, pakiramdam ng mouse, at pointer region ang bawat touchpad.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Pagtukoy ng Gesture</value></data>
@@ -2350,7 +2344,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Galaw ng Mouse X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Galaw ng Mouse Y</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Sensitivity ng IR pointer kada source. Ang 1.0 ay umaabot sa buong deflection ng stick sa gilid ng field of view ng camera. Ang mga halagang mas mataas sa 1.0 ay umaabot sa buong deflection nang mas maikli ang galaw ng pag-aim. Ang mga halagang mas mababa sa 1.0 ay nangangailangan ng mas marami.</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Sensitivity kada source para sa karaniwang axis, slider, o stick / trigger ng gamepad. Hindi binabago ng 1.0 ang input. Ang mga halagang mas mataas sa 1.0 ay umaabot sa buong deflection nang mas maikli ang galaw. Ang mga halagang mas mababa sa 1.0 ay nangangailangan ng mas marami.</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Sensitivity ng galaw ng mouse kada source. Ang 1.0 ay umaabot sa buong deflection sa parehong bilis ng isang tunay na mouse, ang mga halagang mas mataas sa 1.0 ay nangangailangan ng mas kaunting galaw, ang mga mas mababa ay nangangailangan ng mas marami.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Kabuuang Timbang ng Balanse</value></data>
   <data name="Mapping_BalanceLeanX" xml:space="preserve"><value>Pagkiling sa Balanse X</value></data>
@@ -2429,7 +2422,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Kusang naglo-load ang profile kapag nasa harap ang isa sa mga laro nito.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Nagsisimula nang walang controller. Kusa itong naglo-load kapag nasa harap ang isa sa mga laro nito.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Magdagdag ng Tumatakbong Laro</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Walang ibang program na may bukas na window.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Walang ibang bukas na window na nakita.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Alisin ang {0}</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
@@ -2878,7 +2871,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Magdagdag ng mga kulay na isa-isang lilipatan, isa bawat lock.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>I-reset ang Hold ng Lightbar</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Pointer</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR Pointer</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Ituro ang Wii Remote na ito sa screen gamit ang IR camera nito. Kailangan ng sensor bar, o dalawang infrared LED, sa itaas o ibaba ng display. I-calibrate ito bilang light gun sa pahina ng Devices para maitutok sa eksaktong lugar. Hindi pinapansin ng naka-calibrate na remote ang Posisyon ng Sensor Bar at Vertical Offset.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Pointer Tuning</value></data>
@@ -3236,7 +3228,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Pangalanan ang tag na ito</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Irehistro</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Nairehistro</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Walang nakitang NFC reader. Magkabit ng PC/SC reader at buksan ulit.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Nakuha ang tag. Maglagay ng pangalan at i-click ang Irehistro. Mag-tap ng ibang tag para palitan ito.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>Nairehistro ang "{0}." Mag-tap ng ibang tag para magdagdag pa.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Magrehistro / Mamahala ng mga NFC Tag</value></data>
@@ -3263,7 +3254,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="VrCtl_Z" xml:space="preserve"><value>Z ng Controller</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Thumbstick X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Thumbstick Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Trigger</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Grip</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Thumbstick Click</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Pangunahing Button</value></data>
@@ -3341,7 +3331,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>I-enable ang Handheld PC Buttons</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Nagdaragdag ng Hidden Buttons device at System Motion device sa Devices page. Kapag naka-off, walang tumatakbo.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Consumer {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Mouse Gestures</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Hawakan ang gesture button, i-flick, at isang aksyon ang gagana kapag binitawan mo: kaliwa, kanan, taas, baba, o simpleng click kapag mas maikli sa flick distance ang galaw. I-map ang limang gesture sa anumang output o gamitin ang mga ito bilang macro trigger.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>I-enable ang Mouse Gestures</value></data>
@@ -3530,8 +3519,9 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Hindi Maabot ang Steam</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Hindi maabot ang Steam. Suriin ang koneksyon mo. Patuloy na gumagana ang mga profile na na-import mo na: nasa PC na ito ang mga ito.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Subukan Muli</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Mas matanda pa sa config CDN ng Steam ang config na ito mula 2016. Mag-subscribe dito sa Steam at babasahin ito ng PadForge mula sa Steam folder mo.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Walang inililistang file na made-download ang Steam para sa config na ito, at walang kopya nito sa Steam folder mo. Mag-subscribe dito sa Steam at babasahin ito ng PadForge mula roon.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Buksan sa Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Luma</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Pumili ng config para makita kung ano ang mapupunta.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Ano ang Mapupunta</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Magiging</value></data>
@@ -3757,7 +3747,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>walang naka-bind na cell ang menu</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>hindi sinusuportahan ang menu host surface ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>hindi nakilala ang icon ng menu cell ({0}), kaya pinananatili ng cell ang text label nito</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Output</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mga Button</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Mga Key at Mouse</value></data>
@@ -4227,7 +4216,6 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Hatiin ayon sa Direksyon</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Center Deadzone</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>I-reset sa Off</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>I-reset sa Kaliwang Stick X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>I-reset ang Strength (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>I-reset ang Center Deadzone (2%)</value></data>
@@ -4307,7 +4295,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>Ang HID layer na na-compile sa bundled na SDL3.dll, ni Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Mga source ng icon</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Ang flame glyph mula sa Material Design Icons (Pictogrammers, Apache-2.0), ang generic gamepad icon mula sa Ionicons (Ionic, MIT), ang Extended joystick mula sa Jam Icons (Michael Amprimo, MIT), at ang mga icon ng Xbox at PlayStation mula sa SVG Repo, sa ilalim ng license sa page ng bawat icon.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Ang flame glyph mula sa Material Design Icons (Pictogrammers, Apache-2.0), ang Extended joystick mula sa Jam Icons (Michael Amprimo, MIT), at ang mga icon ng Xbox at PlayStation mula sa SVG Repo, sa ilalim ng license sa page ng bawat icon.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Ang relay protocol sa likod ng fallback lane ng Remote Link, na kinakausap sa libreng pampublikong relay ng n0.computer gaya ng ginagawa ng FlexInput. iroh: MIT OR Apache-2.0. FlexInput: MIT. Dokumentasyon lamang, walang code na kasama.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

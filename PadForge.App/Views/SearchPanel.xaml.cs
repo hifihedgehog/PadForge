@@ -38,8 +38,10 @@ namespace PadForge.Views
                 if (vm.SelectedResult != null) SearchResultsList.ScrollIntoView(vm.SelectedResult);
                 e.Handled = true;
             }
-            else if (e.Key == Key.Enter && Keyboard.Modifiers == ModifierKeys.None)
+            else if (e.Key == Key.Enter && Keyboard.Modifiers == ModifierKeys.None
+                && !ReferenceEquals(Keyboard.FocusedElement, SearchCloseChip))
             {
+                // Enter on the close chip is left to the chip, which closes.
                 vm.Open();
                 e.Handled = true;
             }

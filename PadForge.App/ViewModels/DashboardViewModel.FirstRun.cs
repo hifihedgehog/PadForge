@@ -79,7 +79,10 @@ namespace PadForge.ViewModels
                 var row = _firstRunRow;
                 if (row == null) return string.Empty;
                 if (!row.HasBattery) return FirstRunLine().Lead;
-                return row.IsBluetoothLink ? Strings.Instance.Pad_Transport_Bluetooth + ", " : string.Empty;
+                // The language's own separator, as the whole line's format has.
+                return row.IsBluetoothLink
+                    ? Strings.Instance.Pad_Transport_Bluetooth + Strings.Instance.Search_WhereSeparator
+                    : string.Empty;
             }
         }
 

@@ -86,7 +86,7 @@ Bouncy Castle (bc-csharp)
   (https://www.bouncycastle.org)
   Cryptography for Remote Link pairing and transport: X25519 key agreement,
   Ed25519 signatures, and ChaCha20-Poly1305.
-  Licensed under the Bouncy Castle Licence (an adaptation of the MIT License)
+  Licensed under the MIT License
 
 bs2b
   https://github.com/kcat/openal-soft/blob/master/core/bs2b.cpp
@@ -266,8 +266,6 @@ Icon sources
   Material Design Icons (https://github.com/Templarian/MaterialDesign), by
   Pictogrammers: the flame glyph. Licensed under the Apache License 2.0
   (full text below).
-  Ionicons (https://github.com/ionic-team/ionicons): the generic gamepad
-  icon. Copyright (c) 2015-present Ionic. Licensed under the MIT License.
   Jam Icons (https://jam-icons.com/): the Extended controller joystick
   icon. Copyright (c) 2017-Present Michael Amprimo. Licensed under the MIT
   License.

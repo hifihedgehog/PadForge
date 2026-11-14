@@ -346,7 +346,6 @@
   <data name="Devices_DeviceKind_Keyboard" xml:space="preserve"><value>kiiboordii</value></data>
 
   <!-- ═══ Pad Page ═══ -->
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Tiriigarii bitaa</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Tiriigarii mirgaa</value></data>
@@ -434,8 +433,8 @@
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Baasuun hin milkoofne: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" haqameera.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Faayilii keessaa galchi…</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro piroofaayilii kana {1} irratti dide: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Piroofaayiliin kun diskiriptarii HID hin qabu, kanaaf kontirolaan tokkollee isa irraa uumamuu hin danda'u.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro qindaa'ina dursee kana {1} irratti dide: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Qindaa'inni dursee kun diskiriptarii HID hin qabu, kanaaf kontirolaan tokkollee isa irraa uumamuu hin danda'u.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Homtuu hin galchamne. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Galchi</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
@@ -450,9 +449,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Gara mul'ata 2D tti jijjiiri</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Gara mul'ata 3D tti jijjiiri</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Mootora bitaa qoruuf cuqaasi</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Mootora bitaa</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Mootora mirgaa qoruuf cuqaasi</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Mootora mirgaa</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Walqabsiisi: {0}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Hunda deebisi</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Hunda haqi</value></data>
@@ -503,6 +500,7 @@
   <data name="Pad_Formula_Var_NotYetMapped" xml:space="preserve"><value>ammallee hin walqabsiifamne</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Tuqaa giddu-galeessaa</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Giddu-galeessa</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Saffisa</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deedzoonii</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Sirreeffama giddugaleessaa, boca deedzoonii fi gatii aksisii tokkoon tokkoo, kurfii aksisii tokkoon tokkoof, daangaa, konkolaachisuu</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Daangaa lakkoofsaan, gatii dheedhii</value></data>
@@ -598,7 +596,6 @@
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Qabadhu</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Mootora bitaa</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Mootora mirgaa</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Qabadhu</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Giddu-gala</value></data>
@@ -685,7 +682,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Taachpaadii</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Taachpaadii</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Taachpaadii</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Lakkoofsa taachpaadii</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Taachpaadii kana irratti mallattoo dandeessisi</value></data>
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>Dhuunfaa qofa</value></data>
@@ -833,7 +829,6 @@
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Sochii maawusii X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Sochii maawusii Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Miira</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Miira</value></data>
 
   <!-- ═══ Device Object Names (gamepad) ═══ -->
   <data name="DevObj_LeftStickX" xml:space="preserve"><value>Sitikii bitaa X</value></data>
@@ -1420,7 +1415,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>Kontirolaa Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Sitikii X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Sitikii Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Tiriigarii</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Qabduu jalqabaa</value></data>
   <data name="VrCtl_Secondary" xml:space="preserve"><value>Qabduu lammaffaa</value></data>
   <data name="VrCtl_Menu" xml:space="preserve"><value>Qabduu baafataa</value></data>
@@ -1461,7 +1455,6 @@
   <data name="Handheld_Import" xml:space="preserve"><value>Galchi…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Qabduuwwan {0} al-ergamaniiru.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Qabduuwwan {0} galfamaniiru.</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Maawusii</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Mallattoowwan maawusii</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Mallattoowwan maawusii dandeessisi</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Qabduuwwan mallattoo</value></data>
@@ -1517,6 +1510,7 @@
   <data name="Workshop_TagAll" xml:space="preserve"><value>Hunda</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Irra deebi'ii yaali</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam Workshop keessatti bani</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Durii</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Piroofaayilii olkaa'i</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Olkaa'ii hojii irra oolchi</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>hiikameera</value></data>
@@ -1741,7 +1735,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Mootora</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Kallattiin qoodi</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Deedzoonii giddu-galeessaa</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Gara cufaatti deebisi</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Cimina deebisi (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Deedzoonii giddu-galeessaa deebisi (2%)</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Piroofaayilii</value></data>
@@ -2046,7 +2039,7 @@
   <data name="Search_Docs_Format" xml:space="preserve"><value>Galmee keessatti “{0}” barbaadi</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Kontirolaa malee jalqaba. Yeroo taphni isaa tokko fuula duraa jiru ofumaan fe'ama.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Tapha hojjechaa jiru ida'i</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Sagantaan biraa foddaa banaa hin qabu.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Foddaan banaa biraa hin argamne.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} balleessi</value></data>
   <data name="Voice_MoreHint" xml:space="preserve"><value>Dhaggeeffachuu banaa ykn cufaa, haala, amanamummaa</value></data>
   <data name="Voice_ListeningOff" xml:space="preserve"><value>Dhaggeeffachuun cufaadha. Dabalata jalatti bansiisi.</value></data>

@@ -7,8 +7,7 @@ namespace PadForge.Common.Input
     /// view model on the UI thread, read by the poll thread's device sweep.
     ///
     /// <para>The writer is <c>SettingsViewModel.GKeysEnabled</c>, on the
-    /// Settings page's Input Engine card. An earlier cut put the toggle on the
-    /// Dashboard and this comment outlived it.</para>
+    /// Settings page's Hardware Support card.</para>
     ///
     /// <para>Off by default. Turning it on loads a third-party library and
     /// starts a session with the Logitech software, which nobody who has not

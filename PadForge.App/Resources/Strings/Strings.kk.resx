@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge жабылуда...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge іске қосылуда…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Алдыңғы сеанстан қалған виртуалды контроллерлер тазалануда.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> құрылғы</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Контроллер қосу</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Контроллер қосу</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Ойындар нені көруі керегін таңдаңыз. Контроллер шерткен бойда қосылады.</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>«{0}» жазу уақыты бітті.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Қозғалтқыш іске қосылды.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Қозғалтқыш тоқтатылды.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Тағайындау жоқ</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Қате: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} жасалмады.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Профиль ауыстырылды: {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Жазылуда...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>қашан</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>құрылғысында</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>«{0}» {1}-виртуалды контроллерге тағайындалды.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>«{0}» {1}-виртуалды контроллерден ажыратылды.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Құрылғы алып тасталды.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Виртуалды контроллер {0} жойылды.</value></data>
@@ -516,7 +513,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Қашықтан байланыс үшін жұптастырылған компьютерлер. Компьютердің қосылуын тоқтату үшін оның рұқсатын қайтарып алыңыз. Содан кейін оны қайта жұптастыру керек болады.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Қайтарып алу</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Барлығын қайтарып алу</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Атын өзгерту</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Сенсорлық тақта оверлейі</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation сенсорлық тақтасы бар ойындарға арналған экрандағы сенсорлық бет, сенсорлы экран немесе тінтуір үшін.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Сенсорлық тақта оверлейін қосу</value></data>
@@ -750,7 +746,6 @@
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio лицензия шарттары</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK шарттары</value></data>
@@ -1031,9 +1026,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Тағайындаулар</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Стиктер</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Триггерлер</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Күштік кері байланыс</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Импульстік триггерлер</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Импульстік триггерлер</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Әр триггер күшейтуі, мотор алмастыру, бейімделгіш триггер дірілі, Тұрақты триггер күші</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Триггерлердің жеке мотор командаларын (Xbox Impulse Triggers) виртуалды контроллерден тағайындалған физикалық Xbox One, Elite немесе Series контроллеріне жібереді. Ойын басқаратын триггер дірілі автоматты түрде өтеді. Төмендегі басқару элементтері әр триггер үшін қарқындылықты масштабтайды.</value></data>
@@ -1099,7 +1092,6 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Сол триггерді қалпына келтіру</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Оң триггерді қалпына келтіру</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Бейімделгіш триггерлер</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Бейімделгіш триггерлер</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Тағайындалған физикалық DualSense контроллеріндегі триггердің кері байланыс эффектілерін баптаңыз. Ойыннан немесе ойын модынан келген триггер эффектілері автоматты түрде жіберіледі. Мұндағы параметрлер екеуі де жазбай тұрғанда жұмыс істейтін, пайдаланушы баптаған қабат қосады.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Стиктер</value></data>
@@ -1144,7 +1136,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Жарықтандыру</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Жарықтандыру</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Тағайындалған физикалық контроллердегі жарық жолағының негізгі түсін және дыбысқа байланысты әрекетін орнатыңыз. Ойынның жазғаны әрқашан басым болады. Пайдаланушы параметрлері ешбір ойын жарық жолағын басқармай тұрғанда қолданылады.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>«Ойыншы нөмірі» таңдалғанда, геймпад бос тұрғанда өз виртуалды контроллерінің ойыншы нөмірін көрсетеді: жарық жолағында Sony ойыншы түсі (1 көк, 2 қызыл, 3 жасыл, 4 қызғылт) және DualSense контроллерінде сәйкес ойыншы нүктелері. Бір виртуалды контроллердегі барлық құрылғылар бірдей нөмірді көрсетеді. Ойындар жарықтандыруды жазған сайын басқаруды өзіне алады, мұнда орнатқандарыңыз әрқашан басым болады, ал «Өшірулі» шамды толығымен сөндіреді.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>«Ойыншы нөмірі» таңдалғанда, геймпад бос тұрғанда өз виртуалды контроллерінің ойыншы нөмірін көрсетеді: жарық жолағында Sony ойыншы түсі (1 көк, 2 қызыл, 3 жасыл, 4 қызғылт) және DualSense контроллерінде сәйкес ойыншы нүктелері. Бір виртуалды контроллердегі барлық құрылғылар бірдей нөмірді көрсетеді. Ойын жарықтандыруды жазған сайын басқаруды өзіне алады. Мұнда таңдалған кез келген басқа режим ойыншы түсін ауыстырады, ал «Өшірулі» шамды толығымен сөндіреді.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Бұл виртуалды контроллер құрылғыны DualSense жарық жолағындағыдай режимдермен жарықтандырады, олар мұнда тек осы контроллер үшін орнатылады. PlayStation виртуалды контроллерінде жарық жолағын жазатын ойын басқаруды DualSense контроллеріндегідей өзіне алады.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Осы құрылғының жарықтандыруын басқару</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>«Өшірулі» бұл виртуалды контроллердің құрылғыны жарықтандыруын тоқтатады. Өндіруші жолы немесе сол бағдарлама арқылы жарықтандырылатын осындай басқа құрылғы оның түсін бәрібір орната алады. Бұл виртуалды контроллердегі «Chroma түсін орнату» макросы Razer құрылғысын бәрібір бояйды.</value></data>
@@ -1259,9 +1251,9 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Триггерлер</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV қосқыштары</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Түймелер</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Импортталған профильдер…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Контроллер алдын ала баптаулары…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Кеңейтілген контроллер</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Пайдаланушы импорттаған HIDMaestro профильдерін басқару: қосылған құрылғыдан жаңасын түсіріп алу, барын JSON форматына экспорттау немесе енді қажет емесін жою.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Өзіңіз қосқан алдын ала баптауларды басқару: біреуін файлдан немесе қосылған құрылғыдан импорттау, біреуін JSON форматына экспорттау немесе енді қажет емесін жою.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Құрылғыны 1:1 клондау</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Таңдалған құрылғыдағы әр осьті, түймені және POV қосқышын нөмірі бірдей виртуалды шығысқа тікелей тағайындау. Схеманы құрылғыға сәйкес өлшейді және ұяшықтағы осы құрылғының жолдарын 1:1 тікелей өткізумен ауыстырады.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Құрылғыны 1:1 клондау</value></data>
@@ -1276,18 +1268,18 @@
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Қосылған құрылғыдан импорттау</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Экспорттау…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Жою</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Профиль JSON файлын экспорттау</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Алдын ала баптау JSON файлын экспорттау</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Алдын ала баптау жойылсын ба?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>{0} пайдаланатын кез келген контроллер «Теңшелетін» жазбасына қайтады. Мұны болдырмау мүмкін емес.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Экспортталды: {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Экспорттау сәтсіз аяқталды: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>«{0}» жойылды.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Файл арқылы импорттау…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Профиль JSON файлын импорттау</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Алдын ала баптау JSON файлын импорттау</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Импортталды: {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Оқу сәтсіз аяқталды: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro бұл профильді {1} жерінде қабылдамады: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Бұл профильде HID дескрипторы жоқ, сондықтан одан контроллер жасау мүмкін емес.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro бұл алдын ала баптауды {1} жерінде қабылдамады: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Бұл алдын ала баптауда HID дескрипторы жоқ, сондықтан одан контроллер жасау мүмкін емес.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Ештеңе импортталмады. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Импорттау</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(атаусыз HID құрылғысы)</value></data>
@@ -1398,9 +1390,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>2D көрінісіне ауысу</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>3D көрінісіне ауысу</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Сол моторды сынау үшін басыңыз</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Сол мотор</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Оң моторды сынау үшін басыңыз</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Оң мотор</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Барлығын тағайындау</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Тағайындау: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Барлық тағайындауларды бірінен соң бірін жазу</value></data>
@@ -1504,6 +1494,11 @@
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Ақиқат/жалғанды ауыстыру</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Егер, үлгісі: (шарт) ? онда : әйтпесе</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>if-then-else құрылымының «әйтпесе» бөлігі</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>және</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>немесе</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>емес</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>егер?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>әйтпесе:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Модуль (таңбасы алынады)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Екі мәннің кішісі</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Екі мәннің үлкені</value></data>
@@ -1571,6 +1566,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Орталықты калибрлеу</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Орталық нүкте</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Орталық</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Жылдамдық</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Өлі аймақ</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Орталық ығысулар, өлі аймақ пішіні және осьтер бойынша мәндер, әр осьтің қисығы, ауқым, рөлдеу</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Ауқым сандармен, шикі мәндер</value></data>
@@ -1794,7 +1790,6 @@
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Жабысқақ (ұстау)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Сол мотор</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Оң мотор</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Ұстау</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Бәсеңдеу</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1903,7 +1898,6 @@
   <data name="Pad_Touchpad" xml:space="preserve"><value>Сенсорлық тақта</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Сенсорлық тақта</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Әр сенсорлық тақтаның кірісі. Қимылдар (сырғыту, түрту, қысу, пішіндер) және үздіксіз шығыс режимдері (виртуалды стик / D-pad, тінтуір) кез келген шығысқа байланыстыруға болатын тағайындау көздеріне айналады.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Сенсорлық тақта</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Сенсорлық тақта нөмірі</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Төмендегі параметрлер осы контроллердің қай сенсорлық тақтасына қолданылатыны. Әр сенсорлық тақта өз қимылдарын, тінтуір сезімін және меңзер аймағын сақтайды.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Қимылдарды анықтау</value></data>
@@ -2354,8 +2348,6 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Тінтуір қозғалысы Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Сезімталдық</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Әр көз үшін IR меңзер сезімталдығы. 1.0 мәнінде толық стик ауытқуына камераның көру өрісінің шетінде жетеді. 1.0 мәнінен жоғары мәндер толық ауытқуға азырақ көздеу жылжуымен жетеді. 1.0 мәнінен төмен мәндерге көбірек жылжу керек.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Сезімталдық</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Қарапайым ось, жүгірткі немесе геймпадтың стик / триггер осі үшін әр көздің сезімталдығы. 1.0 кірісті өзгеріссіз қалдырады. 1.0 мәнінен жоғары мәндер толық ауытқуға азырақ жылжумен жетеді. 1.0 мәнінен төмен мәндерге көбірек жылжу керек.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Геймпад {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Әр көз үшін тінтуір қозғалысының сезімталдығы. 1.0 мәнінде нақты тінтуір жететін жылдамдықта толық ауытқуға жетеді, 1.0 мәнінен жоғары мәндерге азырақ қозғалыс, төмен мәндерге көбірек қозғалыс керек.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Баланс: жалпы салмақ</value></data>
@@ -2491,7 +2483,7 @@
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Профиль ойындарының бірі алдыңғы қатарда тұрғанда өздігінен жүктеледі.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Контроллерсіз басталады. Ойындарының бірі алдыңғы қатарда тұрғанда өздігінен жүктеледі.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Жұмыс істеп тұрған ойынды қосу</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Басқа бағдарламаның ашық терезесі жоқ.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Басқа ашық терезе табылмады.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} алып тастау</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Осы профиль жүктелгендегі сұрау жиілігі</value></data>
 
@@ -3068,7 +3060,6 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Әр шекке бір-бірден кезектесетін түстерді қосыңыз.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Жарық жолағын ұстауды қалпына келтіру</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Дыбыс</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Меңзер</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR меңзер</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Бұл Wii Remote пультін IR камерасы арқылы экранға бағыттаңыз. Дисплейдің үстінде не астында сенсор жолағы немесе екі инфрақызыл LED шамы қажет. Дәл нүктеге көздеу үшін оны «Құрылғылар» бетінде жарық тапаншасы ретінде калибрлеңіз. Калибрленген пульт «Сенсор жолағының орны» мен «Тік ығысу» параметрлерін елемейді.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Меңзерді баптау</value></data>
@@ -3426,7 +3417,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Белгіге ат беріңіз</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Тіркеу</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Тіркелген</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>NFC оқу құрылғысы табылмады. PC/SC оқу құрылғысын қосып, қайта ашыңыз.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Белгі түсірілді. Атау енгізіп, «Тіркеу» түймесін басыңыз. Оны ауыстыру үшін басқа белгіні тигізіңіз.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>«{0}» тіркелді. Тағы қосу үшін басқа белгіні тигізіңіз.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC белгілерін тіркеу / басқару</value></data>
@@ -3453,7 +3443,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>Контроллер Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Стик X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Стик Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Триггер</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Тұтқа</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Стикті басу</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Негізгі түйме</value></data>
@@ -3531,7 +3520,6 @@
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Портативті компьютер түймелерін қосу</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>«Құрылғылар» бетіне «Жасырын түймелер» құрылғысын және «Жүйелік қозғалыс» құрылғысын қосады. Өшірулі болса, ештеңе жұмыс істемейді.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Медиа {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Тінтуір</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Тінтуір қимылдары</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Қимыл түймесін ұстап, сілтеңіз, жібергенде бір әрекет орындалады: солға, оңға, жоғары, төмен немесе сілтеу қашықтығынан аз болса, жай шерту. Бес қимылды кез келген шығысқа тағайындаңыз немесе оларды макрос іске қосқыштары ретінде пайдаланыңыз.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Тінтуір қимылдарын қосу</value></data>
@@ -3720,8 +3708,9 @@
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam қолжетімсіз</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Steam жүйесіне қосылу мүмкін болмады. Қосылымыңызды тексеріңіз. Бұрын импортталған профильдер жұмыс істей береді, себебі олар осы компьютерде сақталған.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Қайталау</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Бұл 2016 жылғы конфигурация Steam конфигурациялар CDN желісінен бұрын жасалған. Оған Steam ішінде жазылыңыз, сонда PadForge оны Steam қалтаңыздан оқиды.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam бұл конфигурация үшін жүктейтін файлды көрсетпейді, және оның көшірмесі Steam қалтаңызда жоқ. Оған Steam ішінде жазылыңыз, сонда PadForge оны сол жерден оқиды.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam шеберханасында ашу</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Ескі</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Не ауысатынын көру үшін конфигурацияны таңдаңыз.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Не ауысады</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Болады</value></data>
@@ -3947,7 +3936,6 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>мәзірде байланған ұяшық жоқ</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>мәзір орналастырылатын бетке қолдау жоқ ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>мәзір ұяшығының белгішесі танылмады ({0}), сондықтан ұяшық мәтіндік белгісін сақтайды</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Бас шейкерлері</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Шығыс</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Түймелер</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Пернелер және тінтуір</value></data>
@@ -4415,7 +4403,6 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Мотор</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Бағыт бойынша бөлу</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Орталық өлі аймақ</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Өшірулі күйге қайтару</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Сол жақ стик X күйіне қайтару</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Күшті қалпына келтіру (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Орталық өлі аймақты қалпына келтіру (2%)</value></data>
@@ -4495,7 +4482,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>Жинақтағы SDL3.dll ішіне құрастырылған HID деңгейі, автор Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Белгіше көздері</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Material Design Icons жалын белгісі (Pictogrammers, Apache-2.0), Ionicons жалпы геймпад белгішесі (Ionic, MIT), Jam Icons Extended джойстигі (Michael Amprimo, MIT) және SVG Repo сайтындағы Xbox және PlayStation белгішелері, әр белгішенің бетіндегі лицензия бойынша.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Material Design Icons жалын белгісі (Pictogrammers, Apache-2.0), Jam Icons Extended джойстигі (Michael Amprimo, MIT) және SVG Repo сайтындағы Xbox және PlayStation белгішелері, әр белгішенің бетіндегі лицензия бойынша.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Remote Link-тің қосалқы желісінің астарындағы ретрансляция протоколы, FlexInput сияқты n0.computer-дің тегін қоғамдық ретрансляторларымен сөйлесетін. iroh: MIT OR Apache-2.0. FlexInput: MIT. Тек құжаттама, код жеткізілмейді.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

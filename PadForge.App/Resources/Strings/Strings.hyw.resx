@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge-ը կը փակուի...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge-ը կը գործարկուի…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Կը մաքրուին նախորդ նիստէն մնացած վիրթուալ կառավարիչները։</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> սարք</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Աւելցնել կառավարիչ</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Աւելցնել կառավարիչ մը</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Ընտրեցէք, թէ խաղերը ինչ պէտք է տեսնեն։ Կառավարիչը կ՚աւելցուի սեղմելուն պէս։</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>«{0}»-ի արձանագրման ժամանակը սպառեցաւ։</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Շարժիչը գործարկուեցաւ։</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Շարժիչը կեցաւ։</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Համապատասխանեցում չկայ</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Սխալ: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} չկրցաւ ստեղծուիլ։</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Փրոֆիլը փոխուեցաւ: {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Կ՚արձանագրէ...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>երբ</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>սարքին վրայ</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>«{0}»-ը նշանակուեցաւ Վիրթուալ կառավարիչ {1}-ին։</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>«{0}»-ը հանուեցաւ Վիրթուալ կառավարիչ {1}-էն։</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Սարքը հեռացուեցաւ։</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Վիրթուալ կառավարիչ {0} ջնջուեցաւ։</value></data>
@@ -516,7 +513,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Համակարգիչներ, որոնց հետ զուգաւորած էք Հեռակայ կապի համար։ Յետ կանչեցէք մէկը, որպէսզի դադրի միանալէ։ Ան պէտք է նորէն զուգաւորուի։</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Յետ կանչել</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Բոլորը յետ կանչել</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Վերանուանել</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Հպման վահանակի վերադիր</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Պաստառի վրայի հպման մակերես՝ PlayStation-ի հպման վահանակով խաղերու համար, հպման պաստառով կամ մուկով։</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Միացնել հպման վահանակի վերադիրը</value></data>
@@ -750,7 +746,6 @@
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio-ի արտօնագրի պայմաններ</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK-ի պայմաններ</value></data>
@@ -1029,9 +1024,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Համապատասխանեցումներ</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Լծակներ</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Ձգաններ</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Ուժային արձագանգ</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse ձգաններ</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse ձգաններ</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ձգաններու ուժգնութիւն, մոթորներու փոխանակում, յարմարուող ձգանի թրթռումներ, Ձգանի մշտական ուժ</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Վիրթուալ կառավարիչէն ձգանի մոթորներու հրամանները (Xbox Impulse Triggers) կը փոխանցէ յատկացուած ֆիզիքական Xbox One, Elite կամ Series կառավարիչին։ Խաղէն եկող ձգանի թրթռումը ինքնաշխատօրէն կ'անցնի։ Ստորեւ գտնուող կառավարումները իւրաքանչիւր ձգանի համար կը չափաւորեն ուժգնութիւնը։</value></data>
@@ -1097,7 +1090,6 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Վերակայել ձախ ձգանը</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Վերակայել աջ ձգանը</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Յարմարուող ձգաններ</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Յարմարուող ձգաններ</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Կարգաւորեցէք ձգանի արձագանգի էֆեքթները յատկացուած ֆիզիքական DualSense-ին վրայ։ Խաղէն կամ խաղի յաւելուածէն եկող ձգանի էֆեքթները ինքնաշխատօրէն կը փոխանցուին։ Հոսկէ կարգաւորումները կ'աւելցնեն օգտատիրոջ կարգաւորած շերտ մը, որ կ'աշխատի, երբ անոնցմէ ոչ մէկը կը գրէ։</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Լծակներ</value></data>
@@ -1142,7 +1134,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Լուսաւորում</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Լուսաւորում</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Յատկացուած ֆիզիքական կառավարիչին վրայ սահմանեցէք լուսաշերտին հիմնական գոյնը եւ ձայնային վարքը։ Խաղի գրառումները միշտ կը գերակայեն։ Օգտատիրոջ կարգաւորումները կը կիրառուին, երբ ոչ մէկ խաղ կը վարէ լուսաշերտը։</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>«Խաղացողի թիւ» ընտրուած ատեն կառավարիչը անգործ վիճակին մէջ կը ցուցադրէ իր վիրթուալ կառավարիչին խաղացողի ինքնութիւնը՝ Sony-ի խաղացողի գոյնը լուսաշերտին վրայ (1՝ կապոյտ, 2՝ կարմիր, 3՝ կանաչ, 4՝ վարդագոյն) եւ DualSense-ի վրայ համապատասխան խաղացողի կէտերը։ Միեւնոյն վիրթուալ կառավարիչին վրայի բոլոր սարքերը միեւնոյն թիւը կը ցուցադրեն։ Խաղերը կը ստանձնեն, երբ լուսաւորում գրեն, հոս ձեր սահմանածը միշտ կը գերակայէ, իսկ «Անջատուած»-ը լոյսը ամբողջովին կը մարէ։</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>«Խաղացողի թիւ» ընտրուած ատեն կառավարիչը անգործ վիճակին մէջ կը ցուցադրէ իր վիրթուալ կառավարիչին խաղացողի ինքնութիւնը՝ Sony-ի խաղացողի գոյնը լուսաշերտին վրայ (1՝ կապոյտ, 2՝ կարմիր, 3՝ կանաչ, 4՝ վարդագոյն) եւ DualSense-ի վրայ համապատասխան խաղացողի կէտերը։ Միեւնոյն վիրթուալ կառավարիչին վրայի բոլոր սարքերը միեւնոյն թիւը կը ցուցադրեն։ Խաղը կը ստանձնէ, երբ լուսաւորում գրէ։ Հոս ընտրուած ուրիշ որեւէ ձեւ կը փոխարինէ խաղացողի գոյնը, իսկ «Անջատուած»-ը լոյսը ամբողջովին կը մարէ։</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Այս վիրթուալ կառավարիչը սարքը կը լուսաւորէ DualSense-ի լուսաշերտին ունեցած նոյն կերպերով, որոնք հոս կը սահմանուին միայն այս կառավարիչին համար։ PlayStation վիրթուալ կառավարիչի մը վրայ լուսաշերտին գրող խաղը կը ստանձնէ, ինչպէս DualSense-ի վրայ։</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Կառավարել այս սարքին լուսաւորումը</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>«Անջատուած»-ը կ'արգիլէ, որ այս վիրթուալ կառավարիչը լուսաւորէ սարքը։ Արտադրողի տող մը, կամ նոյն ծրագիրով լուսաւորուող նոյն տեսակի ուրիշ սարք մը, տակաւին կրնայ անոր գոյնը սահմանել։ Այս վիրթուալ կառավարիչին վրայի Set Chroma Color մաքրօն տակաւին կը ներկէ Razer սարքը։</value></data>
@@ -1257,9 +1249,9 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Ձգաններ</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-ներ</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Կոճակներ</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Ներածուած փրոֆիլներ…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Կառավարիչի նախադրումներ…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Ընդլայնուած կառավարիչ</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Կառավարեցէք օգտատիրոջ ներածած HIDMaestro փրոֆիլները՝ նորը գրանցեցէք միացած սարքէ մը, գոյութիւն ունեցողը արտածեցէք JSON-ի, կամ ջնջեցէք այլեւս պէտք չեղածը։</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Կառավարեցէք ձեր աւելցուցած կառավարիչի նախադրումները՝ ներմուծեցէք մէկը ֆայլէ մը կամ միացած սարքէ մը, արտածեցէք մէկը JSON-ի, կամ ջնջեցէք այլեւս պէտք չեղածը։</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Կրկնօրինակել սարքը 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Ընտրուած սարքին իւրաքանչիւր առանցք, կոճակ եւ POV համապատասխանեցուցէք ուղղակի նոյն թիւը կրող վիրթուալ ելքին։ Դասաւորութեան չափը կը յարմարցնէ սարքին եւ խցիկին վրայ այս սարքին տողերը կը փոխարինէ 1:1 փոխանցումով։</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Կրկնօրինակել սարքը 1:1</value></data>
@@ -1274,18 +1266,18 @@
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Ներմուծել միացած սարքէ մը</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Արտածել…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Ջնջել</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Արտածել փրոֆիլին JSON-ը</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Արտածել նախադրումին JSON-ը</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Ջնջե՞լ նախադրումը</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>{0} գործածող ամէն կառավարիչ կը վերադառնայ Custom տարրին։ Այս գործողութիւնը չի կրնար ետ առնուիլ։</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Արտածուեցաւ՝ {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Արտածումը ձախողեցաւ՝ {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>«{0}» ջնջուեցաւ։</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Ներմուծել ֆայլէն…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Ներածել փրոֆիլին JSON-ը</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Ներածել նախադրումին JSON-ը</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Ներածուեցաւ՝ {0}։</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Ընթերցումը ձախողեցաւ՝ {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro-ն մերժեց այս փրոֆիլը {1} դիրքին վրայ: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Այս փրոֆիլը HID նկարագրիչ չունի, ուստի անկէ կառավարիչ չի կրնար ստեղծուիլ։</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro-ն մերժեց այս նախադրումը {1} դիրքին վրայ: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Այս նախադրումը HID նկարագրիչ չունի, ուստի անկէ կառավարիչ չի կրնար ստեղծուիլ։</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Ոչինչ ներածուեցաւ։ {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Ներածել</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(անանուն HID սարք)</value></data>
@@ -1396,9 +1388,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Անցնիլ 2D տեսքին</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Անցնիլ 3D տեսքին</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Կտտացուցէք՝ ձախ մոթորը փորձարկելու համար</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Ձախ մոթոր</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Կտտացուցէք՝ աջ մոթորը փորձարկելու համար</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Աջ մոթոր</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Համապատասխանեցնել բոլորը</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Համապատասխանեցում՝ {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Հերթաբար արձանագրել բոլոր համապատասխանեցումները՝ մէկ առ մէկ</value></data>
@@ -1502,6 +1492,11 @@
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Շրջել ճիշդ/սխալ</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Եթէ, (պայման) ? ապա : այլապէս ձեւով</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Եթէ-ապա-այլապէս կառոյցի «այլապէս» մասը</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>եւ</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>կամ</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>ոչ</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>եթէ?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>այլապէս:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Մեծութիւն (կը հեռացնէ նշանը)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Երկու արժէքներէն փոքրը</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Երկու արժէքներէն մեծը</value></data>
@@ -1566,6 +1561,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Չափաբերել կեդրոնը</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Կեդրոնական կէտ</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Կեդրոն</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Արագութիւն</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Մեռեալ գօտի</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Կեդրոնի շեղումներ, մեռեալ գօտիի ձեւ եւ արժէքներ ըստ առանցքի, կոր իւրաքանչիւր առանցքի համար, միջակայք, ղեկով վարում</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Միջակայքը թիւերով, հում արժէքներ</value></data>
@@ -1789,7 +1785,6 @@
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Կպչուն (պահում)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Ձախ մոթոր</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Աջ մոթոր</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Պահում</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Մարում</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1898,7 +1893,6 @@
   <data name="Pad_Touchpad" xml:space="preserve"><value>Հպման վահանակ</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Հպման վահանակ</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Իւրաքանչիւր հպման վահանակի մուտք։ Շարժուձեւերը (սահեցումներ, թեթեւ հպումներ, մատներու մօտեցումներ, ձեւեր) եւ անընդհատ ելքի կերպերը (վիրթուալ լծակ / ուղղութեան խաչ, մուկ) կը դառնան համապատասխանեցման աղբիւրներ, որոնք կրնաք կապել որեւէ ելքի։</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Հպման վահանակ</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Հպման վահանակի թիւ</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Այս կառավարիչին որ հպման վահանակին կը վերաբերին ստորեւ բերուած կարգաւորումները։ Իւրաքանչիւր հպման վահանակ կը պահէ իր սեփական շարժուձեւերը, մուկի զգացողութիւնը եւ ցուցիչի շրջանը։</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Շարժուձեւերու ճանաչում</value></data>
@@ -2349,8 +2343,6 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Մուկի շարժում Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Զգայնութիւն</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>IR ցուցիչի զգայնութիւն՝ ըստ աղբիւրի։ 1.0-ի պարագային լծակի լման շեղումը կը հասնի քամերային տեսադաշտին եզրին։ 1.0-էն բարձր արժէքները լման շեղման կը հասնին նշանառութեան աւելի քիչ տեղաշարժով։ 1.0-էն ցած արժէքները աւելի շատ կը պահանջեն։</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Զգայնութիւն</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Զգայնութիւն՝ ըստ աղբիւրի, սովորական առանցքի, սահիչի կամ կառավարիչի լծակի / ձգանի համար։ 1.0 մուտքը անփոփոխ կը թողու։ 1.0-էն բարձր արժէքները լման շեղման կը հասնին աւելի քիչ տեղաշարժով։ 1.0-էն ցած արժէքները աւելի շատ կը պահանջեն։</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Կառավարիչ {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Մուկի շարժումին զգայնութիւնը՝ ըստ աղբիւրի։ 1.0-ի պարագային լման շեղումը կը հասնի նոյն արագութեամբ, ինչ իրական մուկը, 1.0-էն բարձր արժէքները աւելի քիչ շարժում կը պահանջեն, աւելի ցածերը՝ աւելի շատ։</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Հաւասարակշռութիւն՝ ընդհանուր կշիռ</value></data>
@@ -2482,7 +2474,7 @@
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Փրոֆիլը ինքնիրեն կը բեռնուի, երբ իր խաղերէն մէկը առջեւն է։</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Կը սկսի առանց կառավարիչներու։ Ինքնիրեն կը բեռնուի, երբ իր խաղերէն մէկը առջեւն է։</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Աւելցնել աշխատող խաղ մը</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ուրիշ ոչ մէկ ծրագիր բաց պատուհան ունի։</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ուրիշ ոչ մէկ բաց պատուհան գտնուեցաւ։</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Հեռացնել {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Հարցման յաճախականութիւն, մինչ այս փրոֆիլը բեռնուած է</value></data>
 
@@ -3035,7 +3027,6 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Աւելցուցէք գոյներ հերթականութեամբ անցնելու համար, մէկը՝ իւրաքանչիւր սահմանի համար։</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Վերակայել լուսաշերտի պահումը</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Ձայն</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Ցուցիչ</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR ցուցիչ</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Այս Wii Remote-ը ուղղեցէք պաստառին՝ անոր IR տեսախցիկով։ Պէտք է զգայիչի գօտի մը, կամ երկու ենթակարմիր LED, պաստառէն վեր կամ վար։ Զայն չափաբերեցէք որպէս լուսային ատրճանակ «Սարքեր» էջին վրայ՝ ճշգրիտ կէտին նշան առնելու համար։ Չափաբերուած հեռակառավարիչը հաշուի չ'առներ «Զգայիչի գօտիի դիրք» եւ «Ուղղահայեաց շեղում» կարգաւորումները։</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Ցուցիչի նրբակարգաւորում</value></data>
@@ -3393,7 +3384,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Անուանել այս պիտակը</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Գրանցել</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Գրանցուած</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>NFC ընթերցիչ չգտնուեցաւ։ Միացուցէք PC/SC ընթերցիչ մը եւ նորէն բացէք։</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Պիտակը ստացուեցաւ։ Մուտքագրեցէք անուն մը եւ սեղմեցէք «Գրանցել»։ Հպեցէք ուրիշ պիտակ մը՝ զայն փոխարինելու համար։</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>«{0}» գրանցուեցաւ։ Հպեցէք ուրիշ պիտակ մը՝ աւելցնելու համար։</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Գրանցել / կառավարել NFC պիտակները</value></data>
@@ -3420,7 +3410,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>Կառավարիչի Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Լծակի X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Լծակի Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Ձգան</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Բռնակ</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Լծակի սեղմում</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Առաջնային կոճակ</value></data>
@@ -3498,7 +3487,6 @@
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Միացնել ձեռքի համակարգիչի կոճակները</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>«Սարքեր» էջին կ'աւելցնէ «Թաքուն կոճակներ» եւ «Համակարգի շարժում» սարքերը։ Անջատուած ըլլալու պարագային ոչինչ կ'աշխատի։</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Սպառող {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Մուկ</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Մուկի շարժուձեւեր</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Պահեցէք շարժուձեւի կոճակը, արագ շարժեցէք, եւ ազատելու պահուն մէկ գործողութիւն կը կատարուի՝ ձախ, աջ, վեր, վար, կամ պարզ կտտոց, եթէ շարժումը թափի հեռաւորութենէն պակաս է։ Հինգ շարժուձեւերը համապատասխանեցուցէք որեւէ ելքի կամ գործածեցէք որպէս մաքրօներու գործարկիչներ։</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Միացնել մուկի շարժուձեւերը</value></data>
@@ -3687,8 +3675,9 @@
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam-ը անհասանելի է</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Steam-ին հասնիլ կարելի չեղաւ։ Ստուգեցէք ձեր կապը։ Արդէն ներածուած փրոֆիլները կը շարունակեն աշխատիլ՝ անոնք այս համակարգիչին վրայ կը գտնուին։</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Կրկին փորձել</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Այս 2016-ի շրջանի կազմաձեւը Steam-ի կազմաձեւերու CDN-էն աւելի հին է։ Steam-ի մէջ բաժանորդագրուեցէք անոր, եւ PadForge զայն կը կարդայ ձեր Steam պանակէն։</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam-ը այս կազմաձեւին համար բեռնելու ֆայլ չի ցուցադրեր, եւ անոր ոչ մէկ օրինակը կայ ձեր Steam պանակին մէջ։ Steam-ի մէջ բաժանորդագրուեցէք անոր, եւ PadForge զայն կը կարդայ այնտեղէն։</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Բանալ Steam-ի Արհեստանոցին մէջ</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Հին</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Ընտրեցէք կազմաձեւ մը՝ տեսնելու համար, թէ ինչ կը փոխանցուի։</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Ինչ կը փոխանցուի</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Կը դառնայ</value></data>
@@ -3914,7 +3903,6 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>ցանկը կապուած բջիջ չունի</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>ցանկը բացող մակերեսը չի աջակցուիր ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ցանկի բջիջի պատկերակը չճանչցուեցաւ ({0}), ուստի բջիջը կը պահէ իր գրաւոր պիտակը</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Պասի թրթռիչներ</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Ելք</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Կոճակներ</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Ստեղներ եւ մուկ</value></data>
@@ -4376,7 +4364,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Մոթոր</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Բաժնուած ըստ ուղղութեան</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Կեդրոնի մեռեալ գօտի</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Վերակայել (անջատուած)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Վերակայել (ձախ լծակ X)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Վերակայել ուժգնութիւնը (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Վերակայել կեդրոնի մեռեալ գօտին (2%)</value></data>
@@ -4455,7 +4442,7 @@
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>HID շերտը, որ կազմուած է ներառուած SDL3.dll-ին մէջ, հեղինակ՝ Alan Ott, Signal 11 Software։</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Պատկերակներու աղբիւրներ</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Կրակի նշանը՝ Material Design Icons (Pictogrammers, Apache-2.0), ընդհանուր խաղակառավարիչի պատկերակը՝ Ionicons (Ionic, MIT), Extended ճոյսթիքի պատկերակը՝ Jam Icons (Michael Amprimo, MIT), իսկ Xbox եւ PlayStation պատկերակները՝ SVG Repo, իւրաքանչիւր պատկերակի էջին վրայ նշուած արտօնագրով։</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Կրակի նշանը՝ Material Design Icons (Pictogrammers, Apache-2.0), Extended ճոյսթիքի պատկերակը՝ Jam Icons (Michael Amprimo, MIT), իսկ Xbox եւ PlayStation պատկերակները՝ SVG Repo, իւրաքանչիւր պատկերակի էջին վրայ նշուած արտօնագրով։</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Միջնորդ սպասարկիչներու արձանագրութիւնը, որուն վրայ հիմնուած է Հեռակայ կապի պահեստային ուղին, որ կը խօսի n0.computer-ի անվճար հանրային միջնորդ սպասարկիչներուն հետ այնպէս, ինչպէս FlexInput-ը։ iroh՝ MIT OR Apache-2.0։ FlexInput՝ MIT։ Միայն փաստաթղթաւորում, կոդ չի ներառուիր։</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

@@ -37,6 +37,25 @@ namespace PadForge.Services
         /// <summary>Profile id the last foreground exe matched, or null.</summary>
         public string LastMatchedProfileId => _lastMatchedProfileId;
 
+        /// <summary>The program in front now and the profile whose list
+        /// names it, for the Profiles page's In front now line. The line
+        /// reads for itself, once a second: <see cref="CheckForegroundWindow"/>
+        /// returns before it reads anything while an external pin holds or
+        /// no profile exists, and its last values would name a program from
+        /// before. A null path is a foreground nothing could be read
+        /// of.</summary>
+        public static (string ExePath, string ProfileId) ReadInFront()
+        {
+            string exePath = GetForegroundExePath();
+            var profiles = SettingsManager.Profiles;
+            if (!string.IsNullOrEmpty(exePath) && profiles != null)
+            {
+                foreach (var profile in profiles)
+                    if (MatchesExecutables(exePath, profile.ExecutableNames)) return (exePath, profile.Id);
+            }
+            return (exePath, null);
+        }
+
         /// <summary>
         /// Raised when the foreground process matches a different profile than the
         /// currently active one. The string argument is the profile ID to switch to,

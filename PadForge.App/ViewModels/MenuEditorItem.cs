@@ -410,9 +410,9 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>What the runtime will actually do with the flag.</summary>
-        /// <summary>A hotbar never stays open on its layer: its own Show or
-        /// Hide control shows the bar.</summary>
+        /// <summary>What the runtime does with the flag: the menu stays open
+        /// on a named layer only, and a hotbar never stays open on its layer,
+        /// since its own Show or Hide control shows the bar.</summary>
         public bool EffectiveLayerHoldsOpen => Entry.LayerHoldsOpen && HasNamedLayer && !IsHotbar;
 
         private void RaiseLayerDependents()
@@ -1423,9 +1423,16 @@ namespace PadForge.ViewModels
         private RelayCommand _resetGeometry;
 
         /// <summary>Back to the style's default: a quarter push engages a
-        /// ring or a grid, half a push moves a keyboard's selection.</summary>
+        /// ring or a grid, half a push moves a keyboard's selection, and a
+        /// hotbar takes Steam's own.</summary>
         public RelayCommand ResetDeadzoneCommand => _resetDeadzone ??= new RelayCommand(
-            () => EngageDeadzonePercent = IsKeyboard ? KeyboardMenuDefaults.SteerDeadzonePercent : 25);
+            () => EngageDeadzonePercent = DefaultEngageDeadzonePercent);
+
+        /// <summary>The engage deadzone a menu of this style starts with,
+        /// the value a switch to the style sets.</summary>
+        internal int DefaultEngageDeadzonePercent => IsKeyboard ? KeyboardMenuDefaults.SteerDeadzonePercent
+            : IsHotbar ? MenuHotbar.SteamDeadzonePercent
+            : 25;
         private RelayCommand _resetDeadzone;
 
         // ── Cells ────────────────────────────────────────────────

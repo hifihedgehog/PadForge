@@ -18,15 +18,15 @@ namespace PadForge.Common.Input.Peripherals
     /// <para>The color goes out as OpenRGB's Static mode sends it: DEVS on
     /// the RGB mode device, with the magic that does not store the setting
     /// (setMode, AsusTUFLaptopController_Windows.cpp:255-298). G-Helper
-    /// sends the same six bytes (AsusACPI.cs:938-959), and where that device
+    /// sends the same six bytes (AsusACPI.cs:938-959, its files as of 991145fc), and where that device
     /// does not take them, sends them to its second one, TUF_KB2 (lines
     /// 950-957), which OpenRGB does not know. PadForge does the same with the
     /// magic that does not store.</para>
     ///
     /// <para>G-Helper's look is wider than OpenRGB's. It lights "TUF", "TX Gaming"
     /// and "TX Air" this way, and Vivobook, Zenbook, ProArt, ExpertBook, V16 and
-    /// "ASUSLaptop" as well (isACPI, Aura.cs:108, AppConfig.cs:418-420 and
-    /// 423-425). Most of that second list have one white backlight, so one of
+    /// "ASUSLaptop" as well (isACPI, Aura.cs:108, AppConfig.cs:418-421 and
+    /// 438-441). Most of that second list have one white backlight, so one of
     /// them is listed only when DSTS says an RGB mode device is there
     /// (DeviceGet and IsSupported, AsusACPI.cs:490-498 and 797-803).</para>
     ///
@@ -58,11 +58,11 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>DSTS, the read method (AsusACPI.cs:35).</summary>
         internal const uint Dsts = 0x53545344;
 
-        /// <summary>IsTUF (AppConfig.cs:418-420). No check of the device, as with
+        /// <summary>IsTUF (AppConfig.cs:418-421). No check of the device, as with
         /// OpenRGB's look.</summary>
         internal static readonly string[] TufMarkers = { "TUF", "TX Gaming", "TX Air" };
 
-        /// <summary>IsVivoZenPro (AppConfig.cs:438-440).</summary>
+        /// <summary>IsVivoZenPro (AppConfig.cs:438-441).</summary>
         internal static readonly string[] OtherMarkers = { "Vivobook", "Zenbook", "ProArt", "EXPERTBOOK", " V16", "ASUSLaptop" };
 
         /// <summary>ASUS_WMI_KEYBOARD_MAGIC_USE (AsusTUFLaptopController_Windows.h:36).</summary>

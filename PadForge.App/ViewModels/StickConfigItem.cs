@@ -570,6 +570,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(CurvePresetChoices));
             OnPropertyChanged(nameof(PresetNameX));
             OnPropertyChanged(nameof(PresetNameY));
+            OnPropertyChanged(nameof(PresetNameBoth));
         }
 
         // ── Steering mode (v3.4 #94) ──

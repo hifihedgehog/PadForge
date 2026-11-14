@@ -471,7 +471,7 @@
                              profile loads for it. The three runs stay on one
                              line so no space falls between them. -->
                         <Grid x:Name="InFrontLine" Margin="0,4,0,0"
-                              Visibility="{Binding EnableAutoProfileSwitching, Converter={StaticResource BoolToVisibilityConverter}}">
+                              Visibility="{Binding ShowsInFront, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
@@ -681,24 +681,14 @@
                  The third way a profile can activate, beside the shortcut
                  combo and the program in front (#366). A launcher or script
                  activates profiles through a named pipe. Rarely used, so it
-                 folds to one line with its value beside its title. -->
+                 folds to one line with its value beside its title. It holds
+                 one setting, whose row has the reset, so its head has no
+                 Reset All: the board draws none. -->
             <controls:FoldList Margin="0,12,0,0" Gap="0">
                 <controls:FoldCard x:Name="ExternalControlFold" StateKey="Profiles.ExternalControl" HeaderMinHeight="52"
                                    Header="{Binding Profiles_ExternalControlTitle, Source={x:Static strings:Strings.Instance}}"
                                    Hint="{Binding Profiles_ExternalControl, Source={x:Static strings:Strings.Instance}}"
                                    Description="{Binding Profiles_ExternalControlTooltip, Source={x:Static strings:Strings.Instance}}">
-                    <controls:FoldCard.HeaderAction>
-                        <ui:Button Style="{StaticResource ResetAllButton}" Command="{Binding ResetSettingCommand}"
-                                   CommandParameter="EnableExternalControl" AutomationProperties.AutomationId="Profiles_ResetExternalControl"
-                                   Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}">
-                            <ui:Button.ToolTip>
-                                <MultiBinding Converter="{StaticResource FormatTextConverter}">
-                                    <Binding Path="Profiles_ExternalControlTitle" Source="{x:Static strings:Strings.Instance}"/>
-                                    <Binding Path="Pad_ResetSection_Format" Source="{x:Static strings:Strings.Instance}"/>
-                                </MultiBinding>
-                            </ui:Button.ToolTip>
-                        </ui:Button>
-                    </controls:FoldCard.HeaderAction>
                     <controls:FoldCard.Summary>
                         <MultiBinding Converter="{StaticResource OnOffTextConverter}">
                             <Binding Path="EnableExternalControl"/>

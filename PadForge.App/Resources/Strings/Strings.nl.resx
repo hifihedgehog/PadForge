@@ -132,7 +132,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge wordt afgesloten...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge wordt gestart…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Virtuele controllers van een vorige sessie worden opgeruimd.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> apparaat/apparaten</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Controller toevoegen</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Een controller toevoegen</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Kies wat games moeten zien. De controller wordt toegevoegd zodra je klikt.</value></data>
@@ -269,7 +268,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Opname verlopen voor "{0}".</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Engine gestart.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Engine gestopt.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Geen toewijzing</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Fout: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} kon niet worden gemaakt.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profiel gewisseld: {0}</value></data>
@@ -287,7 +285,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Bezig met opnemen...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>wanneer</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>op</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}" toegewezen aan virtuele controller {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}" verwijderd van virtuele controller {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Apparaat verwijderd.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtuele controller {0} verwijderd.</value></data>
@@ -601,7 +598,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Licentievoorwaarden van Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK-voorwaarden</value></data>
@@ -766,33 +762,32 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Toewijzingen</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Triggers</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Voorinstelling</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Triggers</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Knoppen</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Geïmporteerde profielen…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Controllervoorinstellingen…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Uitgebreide controller</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Door gebruiker geïmporteerde HIDMaestro-profielen beheren: een nieuw profiel vastleggen vanaf een aangesloten apparaat, een bestaand profiel exporteren naar JSON, of een profiel verwijderen dat niet meer nodig is.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>De controllervoorinstellingen beheren die je hebt toegevoegd: een voorinstelling importeren uit een bestand of van een verbonden apparaat, een voorinstelling exporteren naar JSON, of een voorinstelling verwijderen die je niet meer nodig hebt.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Controllervoorinstellingen</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Voeg een voorinstelling toe voor een controller die PadForge niet meelevert, uit een bestand of van de controller zelf.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Geïmporteerd</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Importeren vanaf een verbonden apparaat</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Exporteren…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Verwijderen</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Profiel-JSON exporteren</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Voorinstelling-JSON exporteren</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Voorinstelling verwijderen?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Elke controller die {0} gebruikt, gaat terug naar het item Custom. Dit kan niet ongedaan worden gemaakt.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Geëxporteerd naar {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Export mislukt: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" verwijderd.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Importeren uit bestand…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Profiel-JSON importeren</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Voorinstelling-JSON importeren</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Geïmporteerd uit {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Lezen mislukt: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro heeft dit profiel geweigerd bij {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Dit profiel heeft geen HID-descriptor, dus er kan geen controller van worden gemaakt.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro heeft deze voorinstelling geweigerd bij {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Deze voorinstelling heeft geen HID-descriptor, dus er kan geen controller van worden gemaakt.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Er is niets geïmporteerd. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importeren</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(naamloos HID-apparaat)</value></data>
@@ -834,9 +829,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Wisselen naar 2D-weergave</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Wisselen naar 3D-weergave</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Klik om de linkermotor te testen</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Linkermotor</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Klik om de rechtermotor te testen</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Rechtermotor</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Alles toewijzen</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Toewijzen: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Alle toewijzingen een voor een opnemen</value></data>
@@ -941,6 +934,11 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Waar/onwaar omdraaien</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Als, met patroon (voorwaarde) ? dan : anders</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Anders-gedeelte van een als-dan-anders</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>en</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>of</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>niet</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>als?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>anders:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Absolute waarde (verwijdert het teken)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Kleinste van twee waarden</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Grootste van twee waarden</value></data>
@@ -1009,6 +1007,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Midden kalibreren</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Middelpunt</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Midden</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Snelheid</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Middelpuntverschuivingen, deadzonevorm en waarden per as, een curve per as, bereik, sturen</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Het bereik in getallen, ruwe waarden</value></data>
@@ -1220,7 +1219,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Plakkerig (vasthouden)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Linkermotor</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Rechtermotor</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Houden</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Vervagen</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1293,7 +1291,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Een profiel laadt vanzelf wanneer een van de bijbehorende games vooraan staat.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Begint zonder controllers. Het laadt vanzelf wanneer een van de bijbehorende games vooraan staat.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Een draaiende game toevoegen</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Geen ander programma heeft een venster open.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Er is geen ander open venster gevonden.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} verwijderen</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Pollingfrequentie terwijl dit profiel geladen is</value></data>
 
@@ -1978,7 +1976,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Рецепт вывода на динамик по Bluetooth от awalol: разбиение Opus на кадры и структура пакетов. Спасибо также TechAntohere за находки и тестирование.</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>Referentie-implementatie voor USB-controller-audiopassthrough. Door WujekFoliarz.</value></data>
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptieve triggers</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptieve triggers</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configureer trigger-effecten op de toegewezen fysieke DualSense. Trigger-effecten van een game of gamemod worden automatisch doorgestuurd. De instellingen hier voegen een door de gebruiker geconfigureerde laag toe die actief is wanneer geen van beide schrijft.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Sticks</value></data>
@@ -2022,7 +2019,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>Verlichting</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Verlichting</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Stelt de basiskleur van de lightbar en het audiogedrag in op de toegewezen fysieke controller. Game-schrijfacties winnen altijd. Gebruikersinstellingen gelden wanneer geen spel de lightbar aanstuurt.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Zolang Spelersnummer is gekozen, toont de pad in rust de spelersidentiteit van zijn virtuele controller: de Sony-spelerkleur op de lightbar (1 blauw, 2 rood, 3 groen, 4 roze) en op een DualSense de bijbehorende speler-leds. Alle apparaten op dezelfde virtuele controller tonen hetzelfde nummer. Games nemen het over zodra ze verlichting schrijven, wat je hier instelt wint altijd, en Uit maakt dat licht volledig donker.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Zolang Spelersnummer is gekozen, toont de pad in rust de spelersidentiteit van zijn virtuele controller: de Sony-spelerkleur op de lightbar (1 blauw, 2 rood, 3 groen, 4 roze) en op een DualSense de bijbehorende speler-leds. Alle apparaten op dezelfde virtuele controller tonen hetzelfde nummer. Een game neemt het over zodra die verlichting schrijft. Elke andere modus die je hier instelt vervangt de spelerkleur, en Uit maakt een licht volledig donker.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Deze virtuele controller verlicht het apparaat met dezelfde modi als de lightbar van een DualSense, hier alleen voor deze controller ingesteld. Op een virtuele PlayStation-controller neemt een game die de lightbar instelt het over, net als op een DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Verlichting van dit apparaat regelen</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Verlichtingsbeheer</value></data>
@@ -2397,7 +2394,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>Basafkapping resetten</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Linkertrigger resetten</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Rechtertrigger resetten</value></data>
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse-triggers</value></data>
   <data name="Mapping_TouchpadGesture_SwipeUp" xml:space="preserve"><value>Veeg omhoog</value></data>
   <data name="Mapping_TouchpadGesture_SwipeDown" xml:space="preserve"><value>Veeg omlaag</value></data>
   <data name="Mapping_TouchpadGesture_SwipeLeft" xml:space="preserve"><value>Veeg naar links</value></data>
@@ -2455,7 +2451,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Invoer per touchpad. Gebaren (vegen, tikken, knijpen, vormen) en continue uitvoermodi (virtuele stick / D-pad, muis) worden mapping-bronnen die u aan elke gewenste uitvoer kunt binden.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Touchpadnummer</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Op welk touchpad van deze controller de onderstaande instellingen van toepassing zijn. Elk touchpad houdt zijn eigen gebaren, muisgedrag en aanwijzergebied.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Gebarendetectie</value></data>
@@ -2671,7 +2666,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Voeg kleuren toe om te doorlopen, één per stuuraanslag.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Lightbar-vasthouden resetten</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Aanwijzer</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-aanwijzer</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Richt deze Wii-afstandsbediening met de IR-camera op het scherm. Vereist een sensorbalk of twee infraroodleds boven of onder het scherm. Kalibreer haar op de pagina Apparaten als lichtpistool om precies op de plek te richten. Een gekalibreerde afstandsbediening negeert Positie sensorbalk en Verticale verschuiving.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Aanwijzer afstemmen</value></data>
@@ -2966,7 +2960,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve">
     <value>Alles intrekken</value>
   </data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Hernoemen</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>Luistert op {0}</value>
   </data>
@@ -3033,7 +3026,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="WiiPair_Failed" xml:space="preserve"><value>Het koppelen van de Wii kon niet worden voltooid. Probeer het opnieuw.</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Klaar</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Sluiten</value></data>
-  <data name="Common_ResizePanes" xml:space="preserve"><value>Grootte van deelvensters aanpassen</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC-tags</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>Houd een tag bij de lezer en geef hem een naam. Hij wordt een knop die je kunt toewijzen.</value></data>
   <data name="Nfc_TapPrompt" xml:space="preserve"><value>Houd een tag bij de lezer.</value></data>
@@ -3041,7 +3033,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Geef deze tag een naam</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Registreren</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Geregistreerd</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Geen NFC-lezer gedetecteerd. Sluit een PC/SC-lezer aan en open opnieuw.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Tag vastgelegd. Voer een naam in en klik op Registreren. Houd een andere tag bij om te vervangen.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>'{0}' geregistreerd. Houd een andere tag bij om er meer toe te voegen.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC-tags registreren/beheren</value></data>
@@ -3068,7 +3059,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="VrCtl_Z" xml:space="preserve"><value>Controller-Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Joystick X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Joystick Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Trekker</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Greep</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Joystickklik</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Primaire knop</value></data>
@@ -3532,7 +3522,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>Nunchuk-versnellingsmeter</value></data>
   <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>Versnellingsmeter linker Joy-Con</value></data>
   <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>Extra bewegingsversnellingsmeter</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Muis</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Muisgebaren</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Houd de gebaarknop vast, beweeg de muis, en bij het loslaten vuurt precies één actie: links, rechts, omhoog, omlaag, of een gewone klik onder de bewegingsdrempel. Wijs de vijf gebaren toe aan elke gewenste uitvoer of gebruik ze als macrotriggers.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Muisgebaren inschakelen</value></data>
@@ -3721,8 +3710,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Klik en beweeg de cursor daarna naar het doel. De positie wordt na een korte aftelling vastgelegd.</value></data>
   <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} druk</value></data>
   <data name="Mapping_TouchpadFingerRing_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} ring</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheid per bron voor een gewone as, schuifregelaar of gamepad-stick / -trigger. 1.0 laat de invoer ongewijzigd. Waarden boven 1.0 bereiken volledige uitslag met minder beweging. Waarden onder 1.0 hebben meer nodig.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Communityconfiguraties</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Blader door door de community gemaakte Steam Input-controllerconfiguraties en vertaal ze naar PadForge-profielen. PadForge maakt alleen rechtstreeks verbinding met de servers van Steam wanneer u zoekt, een configuratie opent of uw geïmporteerde configuraties op updates controleert. Het verstuurt uw zoektekst, de ID's van de betrokken games, configuraties en makers, en de versie van PadForge. De anonieme aanmelding bij Steam verstuurt ook uw Windows-versie en een machine-ID die is gemaakt van hashes van de ID van uw Windows-installatie, de adressen van uw netwerkadapters en het serienummer van uw opstartschijf. Geen telemetrie, geen externe dienst, geen Steam-account.</value></data>
@@ -3779,8 +3766,9 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam is onbereikbaar</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Kon Steam niet bereiken. Controleer uw verbinding. Al geïmporteerde profielen blijven werken: ze staan op deze pc.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Opnieuw proberen</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Deze configuratie uit het 2016-tijdperk dateert van vóór Steams configuratie-CDN. Abonneer u erop in Steam, dan leest PadForge hem uit uw Steam-map.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam biedt voor deze configuratie geen bestand om te downloaden en er staat geen kopie van in uw Steam-map. Abonneer u erop in Steam, dan leest PadForge hem van daar.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Openen in Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Verouderd</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Kies een configuratie om te zien wat er overkomt.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Wat er overkomt</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Wordt</value></data>
@@ -4129,7 +4117,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menu heeft geen toegewezen cellen</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menu-hostoppervlak niet ondersteund ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menucel-pictogram niet herkend ({0}), de cel behoudt daarom zijn tekstlabel</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Uitvoer</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Knoppen</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Toetsen en muis</value></data>
@@ -4619,7 +4606,6 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Splitsen per richting</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Dode zone rond midden</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Terugzetten naar Uit</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Terugzetten naar Linkerstick X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Sterkte terugzetten (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Dode zone rond midden terugzetten (2%)</value></data>
@@ -4699,7 +4685,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>Слой HID, скомпилированный в поставляемую SDL3.dll, от Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Bronnen van de pictogrammen</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Het vlamsymbool uit Material Design Icons (Pictogrammers, Apache-2.0), het algemene gamepadpictogram uit Ionicons (Ionic, MIT), de joystick voor Uitgebreid uit Jam Icons (Michael Amprimo, MIT), en de Xbox- en PlayStation-pictogrammen van SVG Repo, onder de licentie op de pagina van elk pictogram.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Het vlamsymbool uit Material Design Icons (Pictogrammers, Apache-2.0), de joystick voor Uitgebreid uit Jam Icons (Michael Amprimo, MIT), en de Xbox- en PlayStation-pictogrammen van SVG Repo, onder de licentie op de pagina van elk pictogram.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Het relayprotocol achter de uitwijkroute van Remote Link, gesproken met de gratis openbare relays van n0.computer zoals FlexInput dat doet. iroh: MIT OR Apache-2.0. FlexInput: MIT. Alleen documentatie, er wordt geen code meegeleverd.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

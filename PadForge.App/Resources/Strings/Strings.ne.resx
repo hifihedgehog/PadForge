@@ -136,7 +136,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge बन्द हुँदैछ...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge सुरु हुँदैछ…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>अघिल्लो सत्रबाट बाँकी रहेका भर्चुअल कन्ट्रोलरहरू सफा गरिँदैछ।</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> यन्त्रहरू</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>कन्ट्रोलर थप्नुहोस्</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>कन्ट्रोलर थप्नुहोस्</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>खेलहरूले के देख्नुपर्छ, छान्नुहोस्। क्लिक गर्नेबित्तिकै कन्ट्रोलर थपिन्छ।</value></data>
@@ -280,7 +279,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>“{0}” को रेकर्डिङको समय सकियो।</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>इन्जिन सुरु भयो।</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>इन्जिन रोकियो।</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>कुनै म्यापिङ छैन</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>त्रुटि: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} बनाउन सकिएन।</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>प्रोफाइल बदलियो: {0}</value></data>
@@ -298,7 +296,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>रेकर्ड हुँदैछ...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>जब</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>मा</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>“{0}” लाई भर्चुअल कन्ट्रोलर {1} मा तोकियो।</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>“{0}” लाई भर्चुअल कन्ट्रोलर {1} बाट हटाइयो।</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>यन्त्र हटाइयो।</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>भर्चुअल कन्ट्रोलर {0} मेटाइयो।</value></data>
@@ -529,7 +526,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>तपाईंले रिमोट लिङ्कका लागि जोडा बनाएका PC हरू। कुनै एकलाई जोडिनबाट रोक्न खारेज गर्नुहोस्। त्यसले फेरि जोडा बनाउनुपर्नेछ।</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>खारेज गर्नुहोस्</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>सबै खारेज गर्नुहोस्</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>नाम बदल्नुहोस्</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>टचप्याड ओभरले</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>टच स्क्रिन वा माउसका लागि, PlayStation टचप्याड गेमहरूका निम्ति स्क्रिनमा देखिने टच सतह।</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>टचप्याड ओभरले सक्षम गर्नुहोस्</value></data>
@@ -763,7 +759,6 @@
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio लाइसेन्स सर्तहरू</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK सर्तहरू</value></data>
@@ -1110,9 +1105,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>म्यापिङहरू</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>स्टिकहरू</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>ट्रिगरहरू</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>फोर्स फिडब्याक</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>इम्पल्स ट्रिगर</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>इम्पल्स ट्रिगर</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>प्रत्येक ट्रिगरको गेन, मोटर साटासाट, एड्याप्टिभ ट्रिगर भाइब्रेसन, स्थिर ट्रिगर बल</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>भर्चुअल कन्ट्रोलरबाट प्रति-ट्रिगर मोटर आदेशहरू (Xbox Impulse Triggers) असाइन गरिएको भौतिक Xbox One, Elite वा Series कन्ट्रोलरमा पठाउँछ। गेमले चलाउने ट्रिगर कम्पन आफैँ पास हुन्छ। तलका नियन्त्रणहरूले प्रत्येक ट्रिगरको मात्रा मापन गर्छन्।</value></data>
@@ -1178,7 +1171,6 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>बायाँ ट्रिगर रिसेट गर्नुहोस्</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>दायाँ ट्रिगर रिसेट गर्नुहोस्</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>एड्याप्टिभ ट्रिगर</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>एड्याप्टिभ ट्रिगर</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>असाइन गरिएको भौतिक DualSense मा ट्रिगर फिडब्याक प्रभावहरू कन्फिगर गर्नुहोस्। गेम वा गेम मोडबाट आउने ट्रिगर प्रभावहरू आफैँ पठाइन्छन्। यहाँका सेटिङहरूले प्रयोगकर्ताले कन्फिगर गरेको एउटा तह थप्छन्, जुन ती दुवैमध्ये कुनैले पनि नलेखिरहेको बेला चल्छ।</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>स्टिकहरू</value></data>
@@ -1224,7 +1216,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>लाइटिङ</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>लाइटिङ</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>असाइन गरिएको भौतिक कन्ट्रोलरमा लाइटबारको आधार रङ र अडियो व्यवहार सेट गर्नुहोस्। गेमले लेखेको सधैँ लागू हुन्छ। कुनै गेमले लाइटबार नचलाएको बेला प्रयोगकर्ता सेटिङहरू लागू हुन्छन्।</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>खेलाडी नम्बरमा सेट हुँदा, प्याडले निष्क्रिय अवस्थामा आफ्नो भर्चुअल कन्ट्रोलरको खेलाडी पहिचान देखाउँछ: लाइटबारमा Sony खेलाडी रङ (1 नीलो, 2 रातो, 3 हरियो, 4 गुलाबी) र DualSense मा मिल्दो खेलाडी बत्तीहरू। एउटै भर्चुअल कन्ट्रोलरका सबै यन्त्रहरूले एउटै नम्बर देखाउँछन्। गेमहरूले लाइटिङ लेख्दा नियन्त्रण लिन्छन्, यहाँ तपाईंले सेट गरेको जुनसुकै कुरा सधैँ लागू हुन्छ, र बन्दले बत्ती पूर्ण रूपमा निभाउँछ।</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>खेलाडी नम्बरमा सेट हुँदा, प्याडले निष्क्रिय अवस्थामा आफ्नो भर्चुअल कन्ट्रोलरको खेलाडी पहिचान देखाउँछ: लाइटबारमा Sony खेलाडी रङ (1 नीलो, 2 रातो, 3 हरियो, 4 गुलाबी) र DualSense मा मिल्दो खेलाडी बत्तीहरू। एउटै भर्चुअल कन्ट्रोलरका सबै यन्त्रहरूले एउटै नम्बर देखाउँछन्। गेमले लाइटिङ लेख्दा जहिले पनि नियन्त्रण लिन्छ। यहाँ सेट गरिएको अरू कुनै पनि मोडले खेलाडी रङको ठाउँ लिन्छ, र बन्दले बत्ती पूर्ण रूपमा निभाउँछ।</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>यो भर्चुअल कन्ट्रोलरले DualSense लाइटबारमा भएकै मोडहरूले यन्त्रलाई बाल्छ, जुन यहाँ यो कन्ट्रोलरका लागि मात्र सेट गरिन्छ। PlayStation भर्चुअल कन्ट्रोलरमा, लाइटबार लेख्ने गेमले DualSense मा जस्तै नियन्त्रण लिन्छ।</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>यो यन्त्रको लाइटिङ नियन्त्रण गर्नुहोस्</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>लाइटिङ नियन्त्रण</value></data>
@@ -1446,9 +1438,9 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ट्रिगरहरू</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV हरू</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>बटनहरू</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>आयात गरिएका प्रोफाइलहरू…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>कन्ट्रोलर प्रिसेटहरू…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>विस्तारित कन्ट्रोलर</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>प्रयोगकर्ताले आयात गरेका HIDMaestro प्रोफाइलहरू व्यवस्थापन गर्नुहोस्: जोडिएको यन्त्रबाट नयाँ क्याप्चर गर्नुहोस्, भएकोलाई JSON मा निर्यात गर्नुहोस्, वा अब नचाहिनेलाई मेटाउनुहोस्।</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>तपाईंले थपेका कन्ट्रोलर प्रिसेटहरू व्यवस्थापन गर्नुहोस्: फाइल वा जोडिएको यन्त्रबाट प्रिसेट आयात गर्नुहोस्, कुनै एकलाई JSON मा निर्यात गर्नुहोस्, वा अब नचाहिनेलाई मेटाउनुहोस्।</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>यन्त्र 1:1 क्लोन गर्नुहोस्</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>चयन गरिएको यन्त्रका सबै अक्ष, बटन र ह्याटलाई सोही नम्बरको भर्चुअल आउटपुटमा सिधै म्याप गर्नुहोस्। लेआउटलाई यन्त्र अनुसार मिलाउँछ र स्लटमा यो यन्त्रका पङ्क्तिहरूलाई 1:1 पासथ्रुले प्रतिस्थापन गर्छ।</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>यन्त्र 1:1 क्लोन गर्नुहोस्</value></data>
@@ -1463,18 +1455,18 @@
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>जोडिएको यन्त्रबाट आयात गर्नुहोस्</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>निर्यात गर्नुहोस्…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>मेटाउनुहोस्</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>प्रोफाइल JSON निर्यात गर्नुहोस्</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>प्रिसेट JSON निर्यात गर्नुहोस्</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>प्रिसेट मेटाउने?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>{0} प्रयोग गर्ने कुनै पनि कन्ट्रोलर Custom प्रविष्टिमा फर्किन्छ। यो पूर्ववत् गर्न सकिँदैन।</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>{0} मा निर्यात गरियो</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>निर्यात असफल भयो: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" मेटाइयो।</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>फाइलबाट आयात…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>प्रोफाइल JSON आयात गर्नुहोस्</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>प्रिसेट JSON आयात गर्नुहोस्</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>{0} बाट आयात गरियो।</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>पढ्न असफल भयो: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ले यो प्रोफाइललाई {1} मा अस्वीकार गर्यो: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>यो प्रोफाइलमा HID डिस्क्रिप्टर छैन, त्यसैले यसबाट कुनै कन्ट्रोलर बनाउन सकिँदैन।</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ले यो प्रिसेटलाई {1} मा अस्वीकार गर्यो: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>यो प्रिसेटमा HID डिस्क्रिप्टर छैन, त्यसैले यसबाट कुनै कन्ट्रोलर बनाउन सकिँदैन।</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>केही पनि आयात गरिएन। {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>आयात गर्नुहोस्</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(नाम नभएको HID यन्त्र)</value></data>
@@ -1585,9 +1577,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>2D दृश्यमा जानुहोस्</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>3D दृश्यमा जानुहोस्</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>बायाँ मोटर परीक्षण गर्न क्लिक गर्नुहोस्</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>बायाँ मोटर</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>दायाँ मोटर परीक्षण गर्न क्लिक गर्नुहोस्</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>दायाँ मोटर</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>सबै म्याप गर्नुहोस्</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>म्याप: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>सबै म्यापिङ एक-एक गरी क्रमैसँग रेकर्ड गर्नुहोस्</value></data>
@@ -1691,6 +1681,11 @@
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>सत्य/असत्य उल्टाउनुहोस्</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>यदि, ढाँचा (सर्त) ? त्यसो भए : अन्यथा सहित</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>if-then-else को अन्यथा भाग</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>र</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>वा</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>होइन</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>यदि?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>अन्यथा:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>परिमाण (चिह्न हटाउँछ)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>दुई मानमध्ये सानो</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>दुई मानमध्ये ठूलो</value></data>
@@ -1759,6 +1754,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>केन्द्र क्यालिब्रेट गर्नुहोस्</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>केन्द्र बिन्दु</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>केन्द्र</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>गति</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>डेडजोन</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>केन्द्र अफसेट, डेडजोन आकार र प्रत्येक अक्षको मान, प्रत्येक अक्षको कर्भ, दायरा, स्टियरिङ</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>संख्यामा दायरा, कच्चा मानहरू</value></data>
@@ -1982,7 +1978,6 @@
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>टाँसिने (होल्ड)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>बायाँ मोटर</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>दायाँ मोटर</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>होल्ड</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>फिका</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -2091,7 +2086,6 @@
   <data name="Pad_Touchpad" xml:space="preserve"><value>टचप्याड</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>टचप्याड</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>प्रत्येक टचप्याडको इनपुट। इसाराहरू (स्वाइप, ट्याप, पिन्च, आकार) र निरन्तर आउटपुट मोडहरू (भर्चुअल स्टिक / डी-प्याड, माउस) म्यापिङ स्रोत बन्छन्, जसलाई तपाईं जुनसुकै आउटपुटमा जोड्न सक्नुहुन्छ।</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>टचप्याड</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>टचप्याड नम्बर</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>तलका सेटिङहरू यो कन्ट्रोलरको कुन टचप्याडमा लागू हुन्छन्। प्रत्येक टचप्याडले आफ्नै इसारा, माउस अनुभूति र पोइन्टर क्षेत्र राख्छ।</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>इसारा पहिचान</value></data>
@@ -2542,8 +2536,6 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>माउस चाल Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>संवेदनशीलता</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>स्रोत-अनुसारको IR पोइन्टर संवेदनशीलता। 1.0 मा क्यामेराको दृश्य क्षेत्रको किनारामा पूर्ण स्टिक विचलन पुग्छ। 1.0 भन्दा माथिका मानहरू कम निशाना यात्रामै पूर्ण विचलनमा पुग्छन्। 1.0 भन्दा तलका मानहरूलाई बढी यात्रा चाहिन्छ।</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>संवेदनशीलता</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>साधारण अक्ष, स्लाइडर, वा गेमप्याड स्टिक / ट्रिगरका लागि स्रोत-अनुसारको संवेदनशीलता। 1.0 ले इनपुटलाई जस्ताको तस्तै राख्छ। 1.0 भन्दा माथिका मानहरू कम यात्रामै पूर्ण विचलनमा पुग्छन्। 1.0 भन्दा तलका मानहरूलाई बढी यात्रा चाहिन्छ।</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>गेमप्याड {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>स्रोत-अनुसार माउस चालको संवेदनशीलता। 1.0 मा वास्तविक माउसले पुग्ने उही गतिमा पूर्ण विचलन पुग्छ, 1.0 भन्दा माथिका मानहरूलाई कम चाल चाहिन्छ, तलका मानहरूलाई बढी।</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>ब्यालेन्स कुल तौल</value></data>
@@ -2680,7 +2672,7 @@
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>प्रोफाइल यसको कुनै खेल अगाडि हुँदा आफैँ लोड हुन्छ।</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>कुनै कन्ट्रोलरबिना सुरु हुन्छ। यसको कुनै खेल अगाडि हुँदा यो आफैँ लोड हुन्छ।</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>चलिरहेको खेल थप्नुहोस्</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>अरू कुनै प्रोग्रामको विन्डो खुला छैन।</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>अरू कुनै खुला विन्डो भेटिएन।</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} हटाउनुहोस्</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>यो प्रोफाइल लोड हुँदाको पोलिङ दर</value></data>
 
@@ -3262,7 +3254,6 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>हरेक लकमा एउटा गरी पालैपालो देखाउन रङहरू थप्नुहोस्।</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>लाइटबार कायम रहने समय रिसेट गर्नुहोस्</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>अडियो</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>पोइन्टर</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR पोइन्टर</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>यो Wii Remote लाई यसको IR क्यामेराले स्क्रिनतर्फ ताक्नुहोस्। डिस्प्लेको माथि वा तल सेन्सर बार, वा दुईवटा इन्फ्रारेड LED चाहिन्छ। ठ्याक्कै स्थानमा ताक्न यन्त्रहरू पृष्ठमा यसलाई लाइट गनका रूपमा क्यालिब्रेट गर्नुहोस्। क्यालिब्रेट गरिएको रिमोटले सेन्सर बारको स्थिति र ठाडो अफसेटलाई बेवास्ता गर्छ।</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>पोइन्टर ट्युनिङ</value></data>
@@ -3617,7 +3608,6 @@
   <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>कुनै Bluetooth रेडियो उपलब्ध छैन। Bluetooth अन गरेर फेरि प्रयास गर्नुहोस्। जोडा बनाउनु तारविहीन खेलका लागि मात्र चाहिन्छ। केबलले जोडिएको कन्ट्रोलर यस बिना नै काम गर्छ।</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>जोडा बनाउने काम पूरा भएन। असफल भएको चरण माथि देखाइएको छ।</value></data>
   <data name="Common_Close" xml:space="preserve"><value>बन्द गर्नुहोस्</value></data>
-  <data name="Common_ResizePanes" xml:space="preserve"><value>प्यानहरूको आकार बदल्नुहोस्</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC ट्यागहरू</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>रिडरमा ट्याग ट्याप गर्नुहोस् र नाम दिनुहोस्। यो तपाईंले म्याप गर्न सक्ने बटन बन्छ।</value></data>
   <data name="Nfc_TapPrompt" xml:space="preserve"><value>रिडरमा ट्याग ट्याप गर्नुहोस्।</value></data>
@@ -3625,7 +3615,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>यो ट्यागलाई नाम दिनुहोस्</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>दर्ता गर्नुहोस्</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>दर्ता गरिएका</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>कुनै NFC रिडर भेटिएन। PC/SC रिडर जडान गरेर फेरि खोल्नुहोस्।</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>ट्याग लिइयो। नाम प्रविष्ट गरेर "दर्ता गर्नुहोस्" मा क्लिक गर्नुहोस्। यसलाई बदल्न अर्को ट्याग ट्याप गर्नुहोस्।</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>"{0}" दर्ता गरियो। थप ट्याग थप्न अर्को ट्याग ट्याप गर्नुहोस्।</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC ट्यागहरू दर्ता / व्यवस्थापन गर्नुहोस्</value></data>
@@ -3652,7 +3641,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>कन्ट्रोलर Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>थम्बस्टिक X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>थम्बस्टिक Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>ट्रिगर</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>ग्रिप</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>थम्बस्टिक क्लिक</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>प्राथमिक बटन</value></data>
@@ -3755,7 +3743,6 @@
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>ह्यान्डहेल्ड PC बटनहरू सक्षम गर्नुहोस्</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>यन्त्रहरू पृष्ठमा लुकेका बटनहरू यन्त्र र प्रणाली मोसन यन्त्र थप्छ। बन्द हुँदा केही पनि चल्दैन।</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>कन्ज्युमर {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>माउस</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>माउस इसाराहरू</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>इसारा बटन थिचिराख्नुहोस्, फ्लिक गर्नुहोस्, र छोड्दा एउटा कार्य चल्छ: बायाँ, दायाँ, माथि, तल, वा फ्लिक दूरीभन्दा कमको साधारण क्लिक। पाँचवटा इसारालाई जुनसुकै आउटपुटमा म्याप गर्नुहोस् वा म्याक्रो ट्रिगरका रूपमा प्रयोग गर्नुहोस्।</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>माउस इसाराहरू सक्षम गर्नुहोस्</value></data>
@@ -3944,8 +3931,9 @@
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam मा पुग्न सकिँदैन</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Steam मा पुग्न सकिएन। आफ्नो जडान जाँच्नुहोस्। तपाईंले पहिले नै आयात गरेका प्रोफाइलहरू काम गरिरहन्छन्: तिनीहरू यही PC मा छन्।</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>पुनः प्रयास गर्नुहोस्</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>यो 2016 तिरको कन्फिग Steam को कन्फिग CDN भन्दा पुरानो हो। Steam मा यसको सदस्यता लिनुहोस्, र PadForge ले यसलाई तपाईंको Steam फोल्डरबाट पढ्छ।</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam ले यो कन्फिगका लागि डाउनलोड गर्ने कुनै फाइल सूचीमा राखेको छैन, र तपाईंको Steam फोल्डरमा पनि यसको कुनै प्रति छैन। Steam मा यसको सदस्यता लिनुहोस्, र PadForge ले यसलाई त्यहाँबाट पढ्छ।</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam Workshop मा खोल्नुहोस्</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>पुरानो</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>के आउँछ हेर्न एउटा कन्फिग छान्नुहोस्।</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>के आउँछ</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>बन्छ</value></data>
@@ -4171,7 +4159,6 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>मेनुमा कुनै बाइन्ड गरिएको सेल छैन</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>मेनु होस्ट सतह समर्थित छैन ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>मेनु सेल आइकन पहिचान भएन ({0}), त्यसैले सेलले आफ्नो पाठ लेबल राख्छ</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>बेस शेकरहरू</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>आउटपुट</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>बटनहरू</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>कुञ्जी र माउस</value></data>
@@ -4650,7 +4637,6 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>मोटर</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>दिशाअनुसार विभाजन</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>केन्द्र डेडजोन</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>बन्दमा रिसेट गर्नुहोस्</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>बायाँ स्टिक X मा रिसेट गर्नुहोस्</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>शक्ति रिसेट गर्नुहोस् (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>केन्द्र डेडजोन रिसेट गर्नुहोस् (2%)</value></data>
@@ -4730,7 +4716,7 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>बन्डल गरिएको SDL3.dll भित्र कम्पाइल गरिएको HID तह, Alan Ott, Signal 11 Software द्वारा।</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>आइकनका स्रोतहरू</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Material Design Icons (Pictogrammers, Apache-2.0) बाट ज्वालाको ग्लिफ, Ionicons (Ionic, MIT) बाट सामान्य गेमप्याड आइकन, Jam Icons (Michael Amprimo, MIT) बाट Extended जोयस्टिक, र SVG Repo बाट Xbox तथा PlayStation आइकनहरू, प्रत्येक आइकनको पेजमा दिइएको लाइसेन्सअन्तर्गत।</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Material Design Icons (Pictogrammers, Apache-2.0) बाट ज्वालाको ग्लिफ, Jam Icons (Michael Amprimo, MIT) बाट Extended जोयस्टिक, र SVG Repo बाट Xbox तथा PlayStation आइकनहरू, प्रत्येक आइकनको पेजमा दिइएको लाइसेन्सअन्तर्गत।</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>रिमोट लिङ्कको वैकल्पिक मार्गपछाडिको रिले प्रोटोकल, FlexInput ले जस्तै n0.computer का निःशुल्क सार्वजनिक रिलेहरूसँग प्रयोग गरिएको। iroh: MIT OR Apache-2.0. FlexInput: MIT. कागजात मात्र, कुनै कोड समावेश छैन।</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

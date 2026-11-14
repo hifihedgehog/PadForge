@@ -69,7 +69,16 @@ namespace PadForge.Search
                     ShowProfile(result.Payload as ProfileListItem);
                     return;
                 case SearchTarget.Docs:
-                    PadForge.Common.ShellLaunch.Start(new ProcessStartInfo(DocsAddress(result.Payload as string)) { UseShellExecute = true });
+                    try
+                    {
+                        PadForge.Common.ShellLaunch.Start(new ProcessStartInfo(DocsAddress(result.Payload as string)) { UseShellExecute = true });
+                    }
+                    catch (System.ComponentModel.Win32Exception)
+                    {
+                        // No program is registered for web pages, and the
+                        // result does nothing, as a link on the About page
+                        // does there.
+                    }
                     return;
             }
 

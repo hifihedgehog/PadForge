@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge'i sulgemine...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge'i käivitamine…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Eelmisest seansist alles jäänud virtuaalsete kontrollerite eemaldamine.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> seadet</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Lisa kontroller</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Lisa kontroller</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Valige, mida mängud peaksid nägema. Kontroller lisatakse kohe, kui klõpsate.</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>„{0}“ lindistamine aegus.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Mootor käivitati.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Mootor peatati.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Vastendus puudub</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Viga: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Ei saanud luua: {0}.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profiil vahetatud: {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Lindistamine...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>kui</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>seadmel</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>„{0}“ määrati virtuaalsele kontrollerile {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>„{0}“ eemaldati virtuaalselt kontrollerilt {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Seade eemaldatud.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtuaalne kontroller {0} kustutati.</value></data>
@@ -516,7 +513,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Arvutid, millega olete kaugühenduse jaoks sidunud. Tühistage arvuti sidumine, et see enam ühendust ei looks. Siis tuleks see uuesti siduda.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Tühista</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Tühista kõik</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Nimeta ümber</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Puuteplaadi ülekate</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Ekraanil kuvatav puutepind PlayStation-puuteplaadiga mängudele, puuteekraani või hiire jaoks.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Luba puuteplaadi ülekate</value></data>
@@ -750,7 +746,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio litsentsitingimused</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK tingimused</value></data>
@@ -1031,9 +1026,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Vastendused</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Kangid</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Päästikud</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Jõutagasiside</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulsspäästikud</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulsspäästikud</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Päästikute võimendus, mootorite vahetus, adaptiivsed vibratsioonid, Päästiku püsijõud</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Edastab päästikupõhised mootorikäsud (Xbox Impulse Triggers) virtuaalselt kontrollerilt määratud füüsilisele Xbox One, Elite või Series kontrollerile. Mängu juhitud päästikuvibratsioon edastatakse automaatselt. Allolevad juhtelemendid skaleerivad tugevust iga päästiku jaoks eraldi.</value></data>
@@ -1099,7 +1092,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Lähtesta vasak päästik</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Lähtesta parem päästik</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptiivsed päästikud</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptiivsed päästikud</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Seadistage määratud füüsilise DualSense'i päästikute tagasiside efektid. Mängu või mängumodi päästikuefektid edastatakse automaatselt. Siinsed sätted lisavad kasutaja seadistatud kihi, mis töötab siis, kui kumbki efekte ei kirjuta.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Kangid</value></data>
@@ -1144,7 +1136,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>Valgustus</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Valgustus</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Määrake määratud füüsilise kontrolleri valgusriba põhivärv ja helipõhine käitumine. Mängu kirjutatud väärtused on alati ülimuslikud. Kasutaja sätted kehtivad, kui ükski mäng valgusriba ei juhi.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Kui valitud on Mängija number, näitab mängupult jõudeolekus oma virtuaalse kontrolleri mängijatunnust: Sony mängijavärvi valgusribal (1 sinine, 2 punane, 3 roheline, 4 roosa) ja DualSense'il vastavaid mängijatulesid. Kõik sama virtuaalse kontrolleri seadmed näitavad sama numbrit. Mängud võtavad juhtimise üle alati, kui nad valgustust kirjutavad, siin määratud säte on alati ülimuslik ja Väljas kustutab tule täielikult.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Kui valitud on Mängija number, näitab mängupult jõudeolekus oma virtuaalse kontrolleri mängijatunnust: Sony mängijavärvi valgusribal (1 sinine, 2 punane, 3 roheline, 4 roosa) ja DualSense'il vastavaid mängijatulesid. Kõik sama virtuaalse kontrolleri seadmed näitavad sama numbrit. Mäng võtab juhtimise üle alati, kui ta valgustust kirjutab. Mis tahes muu siin valitud režiim asendab mängijavärvi ja Väljas kustutab tule täielikult.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>See virtuaalne kontroller valgustab seadet samade režiimidega, mis on DualSense'i valgusribal, ja need määratakse siin ainult selle kontrolleri jaoks. PlayStation-tüüpi virtuaalse kontrolleri puhul võtab valgusriba kirjutav mäng juhtimise üle samamoodi nagu DualSense'il.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Juhi selle seadme valgustust</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Väljas olekus ei valgusta see virtuaalne kontroller seadet. Tootja rida või mõni teine sama tüüpi seade, mida valgustatakse sama tarkvara kaudu, saab ikkagi selle värvi määrata. Selle virtuaalse kontrolleri makro „Määra Chroma värv“ värvib Razeri seadet endiselt.</value></data>
@@ -1259,9 +1251,9 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Päästikud</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-id</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Nupud</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Imporditud profiilid…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Kontrolleri eelseadistused…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Laiendatud kontroller</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Hallake kasutaja imporditud HIDMaestro profiile: jäädvustage uus profiil ühendatud seadmest, eksportige olemasolev JSON-faili või kustutage profiil, mida te enam ei vaja.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Hallake lisatud kontrolleri eelseadistusi: importige eelseadistus failist või ühendatud seadmest, eksportige see JSON-faili või kustutage eelseadistus, mida te enam ei vaja.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Klooni seade 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Vastendab valitud seadme iga telje, nupu ja POV-lüliti otse sama numbriga virtuaalsele väljundile. Kohandab paigutuse seadme suuruse järgi ja asendab selle seadme read pesal 1:1 läbilaskmisega.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Klooni seade 1:1</value></data>
@@ -1276,18 +1268,18 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Impordi ühendatud seadmest</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Ekspordi…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Kustuta</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Ekspordi profiili JSON</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Ekspordi eelseadistuse JSON</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Kas kustutada eelseadistus?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Iga kontroller, mis kasutab eelseadistust {0}, läheb tagasi kirjele Kohandatud. Seda ei saa tagasi võtta.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Eksporditud asukohta {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Eksportimine nurjus: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Kustutatud: „{0}“.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Impordi fail…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Impordi profiili JSON</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Impordi eelseadistuse JSON</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Imporditud asukohast {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Lugemine nurjus: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro keeldus seda profiili vastu võtmast kohas {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Selles profiilis pole HID-deskriptorit, seega ei saa selle põhjal kontrollerit luua.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro keeldus seda eelseadistust vastu võtmast kohas {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Selles eelseadistuses pole HID-deskriptorit, seega ei saa selle põhjal kontrollerit luua.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Midagi ei imporditud. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Impordi</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(nimetu HID-seade)</value></data>
@@ -1398,9 +1390,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Lülitu 2D-vaatele</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Lülitu 3D-vaatele</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Klõpsake vasaku mootori testimiseks</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Vasak mootor</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Klõpsake parema mootori testimiseks</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Parem mootor</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Vastenda kõik</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Vastenda: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Lindista kõik vastendused järjest ükshaaval</value></data>
@@ -1504,6 +1494,11 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Pööra tõene/väär ümber</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Kui, mustriga (tingimus) ? siis : muidu</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Kui-siis-muidu avaldise muidu-osa</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>ja</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>või</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>mitte</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>kui?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>muidu:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Absoluutväärtus (eemaldab märgi)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Kahest väärtusest väiksem</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Kahest väärtusest suurem</value></data>
@@ -1571,6 +1566,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibreeri keskpunkt</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Keskpunkt</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Keskpunkt</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Kiirus</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Surnud tsoon</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Keskpunkti nihked, surnud tsooni kuju ja väärtused telgede kaupa, kõver iga telje jaoks, vahemik, roolimine</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Vahemik numbritena, toorväärtused</value></data>
@@ -1794,7 +1790,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Kleepuv (hoidmine)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Vasak mootor</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Parem mootor</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Hoidmine</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Vaibumine</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1903,7 +1898,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Puuteplaat</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Puuteplaat</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Puuteplaadipõhine sisend. Žestid (pühkimised, puudutused, näpistused, kujundid) ja pidevad väljundrežiimid (virtuaalne kang / suunanupud, hiir) muutuvad vastendusallikateks, mida saate siduda mis tahes väljundiga.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Puuteplaat</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Puuteplaadi number</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Selle kontrolleri puuteplaat, millele allolevad sätted kehtivad. Igal puuteplaadil on oma žestid, hiiretunnetus ja osutiala.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Žestide tuvastamine</value></data>
@@ -2354,8 +2348,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Hiire liikumine Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Tundlikkus</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Allikapõhine IR-osuti tundlikkus. 1.0 korral saavutatakse kangi täielik kõrvalekalle kaamera vaatevälja servas. Väärtused üle 1.0 saavutavad täieliku kõrvalekalde väiksema sihtimisliikumisega. Väärtused alla 1.0 vajavad rohkem.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Tundlikkus</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Allikapõhine tundlikkus tavalise telje, liuguri või mängupuldi kangi / päästiku jaoks. 1.0 jätab sisendi muutmata. Väärtused üle 1.0 saavutavad täieliku kõrvalekalde väiksema liikumisega. Väärtused alla 1.0 vajavad rohkem.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Mängupult {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Hiire liikumise tundlikkus allika kohta. 1.0 korral saavutatakse täielik kõrvalekalle sama kiirusega nagu päris hiirega, väärtused üle 1.0 vajavad vähem liikumist, väiksemad rohkem.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Tasakaal: kogukaal</value></data>
@@ -2491,7 +2483,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profiil laaditakse ise, kui üks selle mängudest on ees.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Algab ilma kontrollerita. See laaditakse ise, kui üks selle mängudest on ees.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Lisa töötav mäng</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ühelgi teisel programmil pole akent avatud.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Muid avatud aknaid ei leitud.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Eemalda {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Küsitlussagedus, kui see profiil on laaditud</value></data>
 
@@ -3072,7 +3064,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Lisage värvid, mida läbi käia, üks iga lõppasendi kohta.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Lähtesta valgusriba hoidmine</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Heli</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Osuti</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-osuti</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Sihtige selle Wii Remote'iga ekraani poole selle IR-kaamera abil. Vajab ekraani kohal või all andurriba või kahte infrapuna-LED-i. Täpselt õigesse kohta sihtimiseks kalibreerige see lehel Seadmed valguspüssina. Kalibreeritud pult eirab sätteid Andurriba asukoht ja Vertikaalne nihe.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Osuti häälestus</value></data>
@@ -3430,7 +3421,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Pange sildile nimi</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Registreeri</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Registreeritud</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>NFC-lugejat ei tuvastatud. Ühendage PC/SC-lugeja ja avage uuesti.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Silt jäädvustatud. Sisestage nimi ja klõpsake Registreeri. Asendamiseks puudutage lugejat teise sildiga.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>Registreeritud: „{0}“. Rohkemate lisamiseks puudutage lugejat teise sildiga.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Registreeri / halda NFC-silte</value></data>
@@ -3457,7 +3447,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="VrCtl_Z" xml:space="preserve"><value>Kontroller Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Kang X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Kang Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Päästik</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Käepide</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Kangi klõps</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Põhinupp</value></data>
@@ -3535,7 +3524,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Luba pihuarvuti nupud</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Lisab lehele Seadmed seadmed Peidetud nupud ja Süsteemi liikumine. Väljas olekus ei tööta midagi.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Meediajuhtimine {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Hiir</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Hiirežestid</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Hoidke žestinuppu all, tehke nips ja vabastamisel käivitub üks toiming: vasakule, paremale, üles, alla või tavaline klõps, kui nips jääb lühemaks kui nipsu vahemaa. Vastendage need viis žesti mis tahes väljundile või kasutage neid makrode käivitajatena.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Luba hiirežestid</value></data>
@@ -3724,8 +3712,9 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam pole kättesaadav</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Steamiga ei õnnestunud ühendust saada. Kontrollige ühendust. Juba imporditud profiilid töötavad edasi, sest need asuvad selles arvutis.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Proovi uuesti</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>See 2016. aasta paiku loodud konfiguratsioon on vanem kui Steami konfiguratsioonide CDN. Tellige see Steamis ja PadForge loeb selle teie Steami kaustast.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam ei paku selle konfiguratsiooni jaoks allalaaditavat faili ja selle koopiat pole ka teie Steami kaustas. Tellige see Steamis ja PadForge loeb selle sealt.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Ava Steam Workshopis</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Vana</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Valige konfiguratsioon, et näha, mis üle tuleb.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Mis üle tuleb</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Muutub</value></data>
@@ -3951,7 +3940,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menüül pole seotud lahtreid</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menüü avajapinda ei toetata ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menüü lahtri ikooni ei tuvastatud ({0}), seega jääb lahtrile tekstisilt</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bassivibraatorid</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Väljund</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Nupud</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Klahvid ja hiir</value></data>
@@ -4418,7 +4406,6 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Mootor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Suuna järgi jagatud</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Keskme surnud tsoon</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Lähtesta: väljas</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Lähtesta: vasak kang X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Lähtesta tugevus (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Lähtesta keskme surnud tsoon (2%)</value></data>
@@ -4498,7 +4485,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>Kaasasolevasse SDL3.dll-i kompileeritud HID-kiht, autorid Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Ikoonide allikad</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Leegi glüüf kogust Material Design Icons (Pictogrammers, Apache-2.0), üldine mängupuldi ikoon kogust Ionicons (Ionic, MIT), laiendatud juhtkangi ikoon kogust Jam Icons (Michael Amprimo, MIT) ning Xbox- ja PlayStation-ikoonid saidilt SVG Repo, iga ikooni lehel toodud litsentsi alusel.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Leegi glüüf kogust Material Design Icons (Pictogrammers, Apache-2.0), laiendatud juhtkangi ikoon kogust Jam Icons (Michael Amprimo, MIT) ning Xbox- ja PlayStation-ikoonid saidilt SVG Repo, iga ikooni lehel toodud litsentsi alusel.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Releeprotokoll, millele tugineb kaugühenduse varutee, suheldes n0.computeri tasuta avalike releedega samamoodi nagu FlexInput. iroh: MIT OR Apache-2.0. FlexInput: MIT. Ainult dokumentatsioon, koodi ei levitata.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

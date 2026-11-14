@@ -136,7 +136,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForgeను మూసివేస్తోంది...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge ప్రారంభమవుతోంది…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>మునుపటి సెషన్ నుండి మిగిలిపోయిన వర్చువల్ కంట్రోలర్లను శుభ్రం చేస్తోంది.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> పరికరాలు</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>కంట్రోలర్ జోడించు</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>కంట్రోలర్‌ను జోడించండి</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>గేమ్‌లు ఏమి చూడాలో ఎంచుకోండి. క్లిక్ చేయగానే కంట్రోలర్ జోడించబడుతుంది.</value></data>
@@ -280,7 +279,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>"{0}." కోసం రికార్డింగ్ సమయం ముగిసింది.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>ఇంజిన్ ప్రారంభమైంది.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>ఇంజిన్ ఆగింది.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>మ్యాపింగ్ లేదు</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>లోపం: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} సృష్టించబడలేదు.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>ప్రొఫైల్ మార్చబడింది: {0}</value></data>
@@ -298,7 +296,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>రికార్డ్ అవుతోంది...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>ఎప్పుడు</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>లో</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}" వర్చువల్ కంట్రోలర్ {1}కు కేటాయించబడింది.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}" వర్చువల్ కంట్రోలర్ {1} నుండి కేటాయింపు తొలగించబడింది.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>పరికరం తీసివేయబడింది.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్ {0} తొలగించబడింది.</value></data>
@@ -529,7 +526,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>రిమోట్ లింక్ కోసం మీరు జత చేసిన PCలు. ఒకటి కనెక్ట్ కాకుండా ఆపడానికి దాన్ని ఉపసంహరించండి. అది మళ్లీ జత కావాల్సి ఉంటుంది.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>ఉపసంహరించు</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>అన్నీ ఉపసంహరించు</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>పేరు మార్చు</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>టచ్ ప్యాడ్ ఓవర్లే</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation టచ్ ప్యాడ్ గేమ్‌ల కోసం తెరపై టచ్ ఉపరితలం, టచ్ స్క్రీన్ లేదా మౌస్ కోసం.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>టచ్ ప్యాడ్ ఓవర్లేను ప్రారంభించు</value></data>
@@ -763,7 +759,6 @@
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio లైసెన్స్ నిబంధనలు</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK నిబంధనలు</value></data>
@@ -1110,9 +1105,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>మ్యాపింగ్లు</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>స్టిక్లు</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>ట్రిగ్గర్లు</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>ఫోర్స్ ఫీడ్బ్యాక్</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>ఇంపల్స్ ట్రిగ్గర్లు</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ఇంపల్స్ ట్రిగ్గర్లు</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ఒక్కో ట్రిగ్గర్ గెయిన్, మోటార్ల మార్పిడి, అడాప్టివ్ ట్రిగ్గర్ వైబ్రేషన్లు, స్థిర ట్రిగ్గర్ బలం</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్ నుండి ప్రతి ట్రిగ్గర్ మోటార్ ఆదేశాలను (Xbox ఇంపల్స్ ట్రిగ్గర్లు) కేటాయించిన భౌతిక Xbox One, Elite లేదా Series కంట్రోలర్కు పంపుతుంది. గేమ్ నడిపే ట్రిగ్గర్ రంబుల్ ఆటోమేటిక్గా వెళ్తుంది. కింది నియంత్రణలు ప్రతి ట్రిగ్గర్ తీవ్రతను స్కేల్ చేస్తాయి.</value></data>
@@ -1178,7 +1171,6 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>ఎడమ ట్రిగ్గర్ను రీసెట్ చేయి</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>కుడి ట్రిగ్గర్ను రీసెట్ చేయి</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>అడాప్టివ్ ట్రిగ్గర్లు</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>అడాప్టివ్ ట్రిగ్గర్లు</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>కేటాయించిన భౌతిక DualSenseపై ట్రిగ్గర్ ఫీడ్బ్యాక్ ప్రభావాలను కాన్ఫిగర్ చేయండి. గేమ్ లేదా గేమ్ మోడ్ నుండి వచ్చే ట్రిగ్గర్ ప్రభావాలు ఆటోమేటిక్గా ఫార్వర్డ్ అవుతాయి. ఇక్కడి సెట్టింగులు ఈ రెండూ రాయనప్పుడు నడిచే వినియోగదారు కాన్ఫిగర్ చేసిన పొరను జోడిస్తాయి.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>స్టిక్లు</value></data>
@@ -1224,7 +1216,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>లైటింగ్</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>లైటింగ్</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>కేటాయించిన భౌతిక కంట్రోలర్పై లైట్ బార్ బేస్ రంగు మరియు ఆడియో ప్రవర్తనను సెట్ చేయండి. గేమ్ రాతలు ఎల్లప్పుడూ గెలుస్తాయి. లైట్ బార్ను ఏ గేమ్ నడపనప్పుడు వినియోగదారు సెట్టింగులు వర్తిస్తాయి.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>ప్లేయర్ సంఖ్యకు సెట్ చేసినప్పుడు, ప్యాడ్ నిష్క్రియంగా దాని వర్చువల్ కంట్రోలర్ ప్లేయర్ గుర్తింపును చూపుతుంది: లైట్ బార్పై Sony ప్లేయర్ రంగు (1 నీలం, 2 ఎరుపు, 3 ఆకుపచ్చ, 4 గులాబీ) మరియు DualSenseపై సరిపోలే ప్లేయర్ పిప్స్. ఒకే వర్చువల్ కంట్రోలర్లోని ప్రతి పరికరం ఒకే సంఖ్యను చూపుతుంది. గేమ్లు లైటింగ్ రాసినప్పుడల్లా అవి స్వాధీనం చేసుకుంటాయి, ఇక్కడ మీరు సెట్ చేసింది ఎల్లప్పుడూ గెలుస్తుంది, ఆఫ్ లైట్ను పూర్తిగా చీకటి చేస్తుంది.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>ప్లేయర్ సంఖ్యకు సెట్ చేసినప్పుడు, ప్యాడ్ నిష్క్రియంగా దాని వర్చువల్ కంట్రోలర్ ప్లేయర్ గుర్తింపును చూపుతుంది: లైట్ బార్పై Sony ప్లేయర్ రంగు (1 నీలం, 2 ఎరుపు, 3 ఆకుపచ్చ, 4 గులాబీ) మరియు DualSenseపై సరిపోలే ప్లేయర్ పిప్స్. ఒకే వర్చువల్ కంట్రోలర్లోని ప్రతి పరికరం ఒకే సంఖ్యను చూపుతుంది. ఒక గేమ్ లైటింగ్ రాసినప్పుడల్లా అది స్వాధీనం చేసుకుంటుంది. ఇక్కడ సెట్ చేసిన ఇతర ఏ మోడ్ అయినా ప్లేయర్ రంగును భర్తీ చేస్తుంది, ఆఫ్ లైట్ను పూర్తిగా చీకటి చేస్తుంది.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>ఈ వర్చువల్ కంట్రోలర్ DualSense లైట్ బార్కు ఉండే అవే మోడ్లతో పరికరాన్ని వెలిగిస్తుంది, ఈ కంట్రోలర్కు మాత్రమే ఇక్కడ సెట్ చేయబడతాయి. PlayStation వర్చువల్ కంట్రోలర్పై, లైట్ బార్ను రాసే గేమ్ DualSenseపై చేసినట్లే స్వాధీనం చేసుకుంటుంది.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>ఈ పరికర లైటింగ్ను నియంత్రించు</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>లైటింగ్ నియంత్రణ</value></data>
@@ -1446,9 +1438,9 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ట్రిగ్గర్లు</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVలు</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>బటన్లు</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>దిగుమతి చేసిన ప్రొఫైల్లు…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>కంట్రోలర్ ప్రీసెట్లు…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>విస్తృత కంట్రోలర్</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>వినియోగదారు దిగుమతి చేసిన HIDMaestro ప్రొఫైల్లను నిర్వహించండి: కనెక్ట్ అయిన పరికరం నుండి కొత్తదాన్ని క్యాప్చర్ చేయండి, ఉన్నదాన్ని JSONకు ఎగుమతి చేయండి, లేదా అవసరం లేనిదాన్ని తొలగించండి.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>మీరు జోడించిన కంట్రోలర్ ప్రీసెట్లను నిర్వహించండి: ఫైల్ నుండి లేదా కనెక్ట్ అయిన పరికరం నుండి ఒకదాన్ని దిగుమతి చేయండి, ఒకదాన్ని JSONకు ఎగుమతి చేయండి, లేదా అవసరం లేనిదాన్ని తొలగించండి.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>పరికరాన్ని 1:1 క్లోన్ చేయి</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>ఎంచుకున్న పరికరంలోని ప్రతి అక్షం, బటన్ మరియు హ్యాట్ను అదే సంఖ్య గల వర్చువల్ అవుట్పుట్కు నేరుగా మ్యాప్ చేయండి. లేఅవుట్ను పరికరానికి తగిన పరిమాణంలో చేసి, స్లాట్పై ఈ పరికర వరుసలను 1:1 పాస్త్రూతో భర్తీ చేస్తుంది.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>పరికరాన్ని 1:1 క్లోన్ చేయి</value></data>
@@ -1463,18 +1455,18 @@
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>కనెక్ట్ అయిన పరికరం నుండి దిగుమతి చేయి</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>ఎగుమతి చేయి…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>తొలగించు</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>ప్రొఫైల్ JSON ఎగుమతి చేయండి</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>ప్రీసెట్ JSON ఎగుమతి చేయండి</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>ప్రీసెట్ తొలగించాలా?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>{0} ఉపయోగించే ఏ కంట్రోలర్ అయినా కస్టమ్ ఎంట్రీకి తిరిగి వెళ్తుంది. దీన్ని రద్దు చేయలేరు.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>{0}కు ఎగుమతి చేయబడింది</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>ఎగుమతి విఫలమైంది: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" తొలగించబడింది.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>ఫైల్ నుండి దిగుమతి…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>ప్రొఫైల్ JSON దిగుమతి చేయండి</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>ప్రీసెట్ JSON దిగుమతి చేయండి</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>{0} నుండి దిగుమతి చేయబడింది.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>చదవడం విఫలమైంది: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ఈ ప్రొఫైల్ను {1} వద్ద తిరస్కరించింది: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ఈ ప్రొఫైల్లో HID డిస్క్రిప్టర్ లేదు, కాబట్టి దీని నుండి కంట్రోలర్ను తయారు చేయలేము.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ఈ ప్రీసెట్ను {1} వద్ద తిరస్కరించింది: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ఈ ప్రీసెట్లో HID డిస్క్రిప్టర్ లేదు, కాబట్టి దీని నుండి కంట్రోలర్ను తయారు చేయలేము.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>ఏదీ దిగుమతి కాలేదు. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>దిగుమతి చేయి</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(పేరు లేని HID పరికరం)</value></data>
@@ -1585,9 +1577,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>2D వీక్షణకు మారండి</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>3D వీక్షణకు మారండి</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>ఎడమ మోటార్‌ను పరీక్షించడానికి క్లిక్ చేయండి</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>ఎడమ మోటార్</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>కుడి మోటార్‌ను పరీక్షించడానికి క్లిక్ చేయండి</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>కుడి మోటార్</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>అన్నీ మ్యాప్ చేయి</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>మ్యాప్: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>అన్ని మ్యాపింగ్‌లను ఒక్కొక్కటిగా వరుసగా రికార్డ్ చేయండి</value></data>
@@ -1691,6 +1681,11 @@
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>నిజం/అబద్ధం తిప్పండి</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>అయితే, నమూనాతో (షరతు) ? అప్పుడు : లేకపోతే</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>if-then-else లోని లేకపోతే భాగం</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>మరియు</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>లేదా</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>కాదు</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>అయితే?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>లేకపోతే:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>పరిమాణం (గుర్తును వదులుతుంది)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>రెండు విలువల్లో చిన్నది</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>రెండు విలువల్లో పెద్దది</value></data>
@@ -1759,6 +1754,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>మధ్యను క్రమాంకనం చేయి</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>మధ్య బిందువు</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>మధ్య</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>వేగం</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>డెడ్ జోన్</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>మధ్య ఆఫ్‌సెట్లు, డెడ్ జోన్ ఆకారం మరియు ఒక్కో అక్షం విలువలు, ఒక్కో అక్షానికి వక్రరేఖ, పరిధి, స్టీరింగ్</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>పరిధి సంఖ్యలలో, రా విలువలు</value></data>
@@ -1982,7 +1978,6 @@
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>స్టిక్కీ (హోల్డ్)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>ఎడమ మోటార్</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>కుడి మోటార్</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>హోల్డ్</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>ఫేడ్</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -2091,7 +2086,6 @@
   <data name="Pad_Touchpad" xml:space="preserve"><value>టచ్ ప్యాడ్</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>టచ్ ప్యాడ్</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>ప్రతి టచ్ ప్యాడ్ ఇన్పుట్. సంజ్ఞలు (స్వైప్‌లు, ట్యాప్‌లు, పించ్‌లు, ఆకారాలు) మరియు నిరంతర అవుట్‌పుట్ మోడ్‌లు (వర్చువల్ స్టిక్ / D-ప్యాడ్, మౌస్) మ్యాపింగ్ మూలాలుగా మారి, ఏ అవుట్‌పుట్‌కైనా బైండ్ చేయడానికి అందుబాటులోకి వస్తాయి.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>టచ్ ప్యాడ్</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>టచ్ ప్యాడ్ సంఖ్య</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>ఈ కంట్రోలర్‌లోని ఏ టచ్ ప్యాడ్‌కు కింది సెట్టింగులు వర్తిస్తాయో ఎంచుకోండి. ప్రతి టచ్ ప్యాడ్‌కు దాని స్వంత సంజ్ఞలు, మౌస్ అనుభూతి, పాయింటర్ ప్రాంతం ఉంటాయి.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>సంజ్ఞ గుర్తింపు</value></data>
@@ -2542,8 +2536,6 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>మౌస్ కదలిక Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>సున్నితత్వం</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>ప్రతి మూలానికి IR పాయింటర్ సున్నితత్వం. 1.0 వద్ద, కెమెరా వీక్షణ క్షేత్రం అంచున స్టిక్ పూర్తి విక్షేపం చేరుతుంది. 1.0 కంటే ఎక్కువ విలువలు తక్కువ లక్ష్య కదలికతో పూర్తి విక్షేపం చేరుతాయి. 1.0 కంటే తక్కువ విలువలకు ఎక్కువ కావాలి.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>సున్నితత్వం</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>సాధారణ అక్షం, స్లైడర్ లేదా గేమ్ ప్యాడ్ స్టిక్ / ట్రిగ్గర్ కోసం ప్రతి మూలానికి సున్నితత్వం. 1.0 ఇన్‌పుట్‌ను మార్చదు. 1.0 కంటే ఎక్కువ విలువలు తక్కువ కదలికతో పూర్తి విక్షేపం చేరుతాయి. 1.0 కంటే తక్కువ విలువలకు ఎక్కువ కావాలి.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>గేమ్ ప్యాడ్ {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>ప్రతి మూలానికి మౌస్ కదలిక సున్నితత్వం. 1.0 వద్ద నిజమైన మౌస్ కదిలే వేగంతోనే పూర్తి విక్షేపం చేరుతుంది, 1.0 కంటే ఎక్కువ విలువలకు తక్కువ కదలిక, తక్కువ విలువలకు ఎక్కువ కదలిక కావాలి.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>బ్యాలెన్స్ మొత్తం బరువు</value></data>
@@ -2680,7 +2672,7 @@
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>ప్రొఫైల్ దాని గేమ్‌లలో ఒకటి ముందున్నప్పుడు అదే లోడ్ అవుతుంది.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>కంట్రోలర్లు లేకుండా మొదలవుతుంది. దాని గేమ్‌లలో ఒకటి ముందున్నప్పుడు అదే లోడ్ అవుతుంది.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>నడుస్తున్న గేమ్ జోడించు</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>మరే ప్రోగ్రామ్‌కూ విండో తెరిచి లేదు.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>తెరిచి ఉన్న ఇతర విండో ఏదీ కనుగొనబడలేదు.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} తొలగించు</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>ఈ ప్రొఫైల్ లోడ్ అయినప్పుడు పోలింగ్ రేట్</value></data>
 
@@ -3262,7 +3254,6 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>లాక్కు ఒకటి చొప్పున, వరుసగా మారడానికి రంగులను జోడించండి.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>లైట్ బార్ హోల్డ్ రీసెట్ చేయి</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>ఆడియో</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>పాయింటర్</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR పాయింటర్</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>ఈ Wii Remote ను దాని IR కెమెరాతో స్క్రీన్ వైపు గురి పెట్టండి. డిస్ప్లే పైన లేదా కింద సెన్సార్ బార్ లేదా రెండు ఇన్ఫ్రారెడ్ LEDలు అవసరం. ఖచ్చితమైన స్థానానికి గురి పెట్టడానికి పరికరాల పేజీలో దీనిని లైట్ గన్గా క్రమాంకనం చేయండి. క్రమాంకనం చేసిన రిమోట్ సెన్సార్ బార్ స్థానం, నిలువు ఆఫ్సెట్ను పట్టించుకోదు.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>పాయింటర్ ట్యూనింగ్</value></data>
@@ -3617,7 +3608,6 @@
   <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>బ్లూటూత్ రేడియో అందుబాటులో లేదు. బ్లూటూత్ ఆన్ చేసి మళ్లీ ప్రయత్నించండి. జత చేయడం వైర్లెస్ ప్లేకు మాత్రమే అవసరం, కేబుల్ కనెక్ట్ చేసిన కంట్రోలర్ అది లేకుండా పనిచేస్తుంది.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>జత చేయడం పూర్తి కాలేదు. విఫలమైన దశ పైన చూపబడింది.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>మూసివేయి</value></data>
-  <data name="Common_ResizePanes" xml:space="preserve"><value>పేన్‌ల పరిమాణం మార్చండి</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC ట్యాగ్లు</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>రీడర్‌పై ట్యాగ్‌ను ట్యాప్ చేసి పేరు పెట్టండి. ఇది మీరు మ్యాప్ చేయగల బటన్ అవుతుంది.</value></data>
   <data name="Nfc_TapPrompt" xml:space="preserve"><value>రీడర్‌పై ట్యాగ్‌ను ట్యాప్ చేయండి.</value></data>
@@ -3625,7 +3615,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>ఈ ట్యాగ్‌కు పేరు పెట్టండి</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>నమోదు చేయి</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>నమోదు చేసినవి</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>NFC రీడర్ గుర్తించబడలేదు. PC/SC రీడర్ కనెక్ట్ చేసి మళ్లీ తెరవండి.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>ట్యాగ్ సంగ్రహించబడింది. పేరు నమోదు చేసి నమోదు చేయి క్లిక్ చేయండి. మార్చడానికి మరో ట్యాగ్ను ట్యాప్ చేయండి.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>"{0}" నమోదైంది. మరిన్ని జోడించడానికి మరో ట్యాగ్ను ట్యాప్ చేయండి.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC ట్యాగ్లను నమోదు / నిర్వహించు</value></data>
@@ -3652,7 +3641,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>కంట్రోలర్ Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>థంబ్ స్టిక్ X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>థంబ్ స్టిక్ Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>ట్రిగ్గర్</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>గ్రిప్</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>థంబ్ స్టిక్ క్లిక్</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>ప్రాథమిక బటన్</value></data>
@@ -3755,7 +3743,6 @@
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>హ్యాండ్హెల్డ్ PC బటన్లను ఎనేబుల్ చేయి</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>పరికరాల పేజీకి దాచిన బటన్ల పరికరాన్ని, సిస్టమ్ మోషన్ పరికరాన్ని జోడిస్తుంది. ఆఫ్లో ఉంటే ఏదీ నడవదు.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>కన్స్యూమర్ {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>మౌస్</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>మౌస్ సంజ్ఞలు</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>సంజ్ఞ బటన్ను నొక్కి ఉంచి ఫ్లిక్ చేయండి, విడిచినప్పుడు ఒక చర్య అమలవుతుంది: ఎడమ, కుడి, పైకి, కిందికి, లేదా ఫ్లిక్ దూరం కంటే తక్కువైతే సాధారణ క్లిక్. ఐదు సంజ్ఞలను ఏ అవుట్పుట్కైనా మ్యాప్ చేయండి లేదా మాక్రో ట్రిగ్గర్లుగా ఉపయోగించండి.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>మౌస్ సంజ్ఞలను ఎనేబుల్ చేయి</value></data>
@@ -3944,8 +3931,9 @@
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam అందుబాటులో లేదు</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Steam ను చేరుకోలేకపోయింది. మీ కనెక్షన్ను తనిఖీ చేయండి. మీరు ఇప్పటికే దిగుమతి చేసిన ప్రొఫైల్లు పని చేస్తూనే ఉంటాయి: అవి ఈ PC లో ఉంటాయి.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>మళ్లీ ప్రయత్నించు</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>ఈ 2016 నాటి కాన్ఫిగరేషన్ Steam కాన్ఫిగరేషన్ CDN కంటే పాతది. దీన్ని Steam లో సబ్స్క్రైబ్ చేయండి, PadForge దీన్ని మీ Steam ఫోల్డర్ నుండి చదువుతుంది.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>ఈ కాన్ఫిగరేషన్ కోసం డౌన్లోడ్ చేయడానికి Steam ఏ ఫైల్నూ చూపడం లేదు, మీ Steam ఫోల్డర్లో దాని కాపీ కూడా లేదు. దీన్ని Steam లో సబ్స్క్రైబ్ చేయండి, PadForge దీన్ని అక్కడి నుండి చదువుతుంది.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam Workshop లో తెరువు</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>పాత</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>ఏమి దిగుమతి అవుతుందో చూడటానికి ఒక కాన్ఫిగరేషన్‌ను ఎంచుకోండి.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>ఏమి దిగుమతి అవుతుంది</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>అవుతుంది</value></data>
@@ -4171,7 +4159,6 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>మెనూకు బైండ్ చేసిన సెల్లు లేవు</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>మెను హోస్ట్ ఉపరితలానికి మద్దతు లేదు ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>మెను సెల్ ఐకాన్ గుర్తించబడలేదు ({0}), కాబట్టి సెల్ తన పాఠ్య లేబుల్ను ఉంచుతుంది</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>బాస్ షేకర్లు</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>అవుట్పుట్</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>బటన్లు</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>కీలు &amp; మౌస్</value></data>
@@ -4650,7 +4637,6 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>మోటార్</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>దిశ వారీగా విభజన</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>మధ్య డెడ్ జోన్</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>ఆఫ్కు రీసెట్ చేయి</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>ఎడమ స్టిక్ X కు రీసెట్ చేయి</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>బలాన్ని రీసెట్ చేయి (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>మధ్య డెడ్ జోన్ రీసెట్ (2%)</value></data>
@@ -4730,7 +4716,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>బండిల్ చేసిన SDL3.dll లోకి కంపైల్ చేయబడిన HID లేయర్, Alan Ott, Signal 11 Software ద్వారా.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>ఐకాన్ మూలాలు</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Material Design Icons (Pictogrammers, Apache-2.0) నుండి జ్వాల గ్లిఫ్, Ionicons (Ionic, MIT) నుండి సాధారణ గేమ్ప్యాడ్ ఐకాన్, Jam Icons (Michael Amprimo, MIT) నుండి Extended జాయ్స్టిక్, మరియు SVG Repo నుండి Xbox మరియు PlayStation ఐకాన్లు, ప్రతి ఐకాన్ పేజీలోని లైసెన్స్ కింద.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Material Design Icons (Pictogrammers, Apache-2.0) నుండి జ్వాల గ్లిఫ్, Jam Icons (Michael Amprimo, MIT) నుండి Extended జాయ్స్టిక్, మరియు SVG Repo నుండి Xbox మరియు PlayStation ఐకాన్లు, ప్రతి ఐకాన్ పేజీలోని లైసెన్స్ కింద.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>రిమోట్ లింక్ యొక్క ఫాల్బ్యాక్ మార్గం వెనుక ఉన్న రిలే ప్రోటోకాల్, FlexInput చేసే విధంగా n0.computer యొక్క ఉచిత పబ్లిక్ రిలేలతో మాట్లాడుతుంది. iroh: MIT OR Apache-2.0. FlexInput: MIT. డాక్యుమెంటేషన్ మాత్రమే, కోడ్ ఏదీ పంపిణీ చేయబడదు.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

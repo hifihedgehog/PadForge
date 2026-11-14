@@ -84,6 +84,23 @@ namespace PadForge.Views
             return true;
         }
 
+        /// <summary>Puts the named MIDI settings back to their defaults, the
+        /// two starts first: a count is held under 128 less its start, so a
+        /// count reset against the old start stayed clamped (a start of 125
+        /// left 3 controls, not 6). False when none of the names is a
+        /// setting of the card.</summary>
+        internal static bool ResetMidiFields(MidiSlotConfig config, params string[] fields)
+        {
+            bool any = false;
+            foreach (string field in fields)
+                if (field is nameof(MidiSlotConfig.StartCc) or nameof(MidiSlotConfig.StartNote))
+                    any |= ResetMidiField(config, field);
+            foreach (string field in fields)
+                if (field is not (nameof(MidiSlotConfig.StartCc) or nameof(MidiSlotConfig.StartNote)))
+                    any |= ResetMidiField(config, field);
+            return any;
+        }
+
         /// <summary>Resets the named MIDI settings of the slot. The rows are
         /// built again once when the runs of controls or notes changed, and
         /// the card's boxes are filled from the config.</summary>
@@ -92,9 +109,7 @@ namespace PadForge.Views
             if (DataContext is not PadViewModel vm || vm.MidiConfig == null) return;
             var config = vm.MidiConfig;
             var before = (config.CcCount, config.StartCc, config.NoteCount, config.StartNote);
-            bool any = false;
-            foreach (string field in fields) any |= ResetMidiField(config, field);
-            if (!any) return;
+            if (!ResetMidiFields(config, fields)) return;
             if (before != (config.CcCount, config.StartCc, config.NoteCount, config.StartNote)) vm.RebuildMappings();
             SyncMidiConfigBar();
         }

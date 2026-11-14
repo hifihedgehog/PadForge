@@ -432,7 +432,6 @@ namespace PadForge.Tests
             Assert.True(item.IsPrimaryDescriptor);
             Assert.False(item.IsPrimaryDirect);
             Assert.False(item.IsMultiSource);
-            Assert.False(item.IsTrivialDirect);
             item.LoadDescriptor("Button 3");
             Assert.Equal("Direct", item.PrimaryKindSource.Kind);
             Assert.DoesNotContain(item.PrimaryKindOptions, k => k.Value == "RapidTrigger");

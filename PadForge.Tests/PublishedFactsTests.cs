@@ -49,7 +49,7 @@ namespace PadForge.Tests
         {
             ("About_License_Mit", new[]
             {
-                "AudioEndPointLibrary", "AutoEq", "Bs2b", "Colore", "Ds4Audio", "Ds4Drv", "Ds5Dongle", "DuaLib",
+                "AudioEndPointLibrary", "AutoEq", "BouncyCastle", "Bs2b", "Colore", "Ds4Audio", "Ds4Drv", "Ds5Dongle", "DuaLib",
                 "DsBtHaptics", "DsTester", "DualSenseWindows", "EdRefCard2", "Fusion", "GamepadBatteryMonitor",
                 "GamepadAssetPack", "GamepadMotionHelpers", "HelixToolkit", "HidHide", "HIDMaestro", "Hitboxer",
                 "Jc2Mouse", "JoyShockMapper", "Libinput", "MidiServices", "MvvmToolkit", "NAudio", "NefariusDevMgmt",
@@ -87,7 +87,6 @@ namespace PadForge.Tests
             ("About_License_CcByNcSa4", new[] { "HandheldCompanion", "ValveCad" }),
             ("About_License_CcBy3", new[] { "ZackslyIcons" }),
             ("About_License_CgTrader", new[] { "3doverstock", "Hado" }),
-            ("About_License_BouncyCastle", new[] { "BouncyCastle" }),
             ("About_License_WyvrnEula", new[] { "Interhaptics" }),
             ("About_License_VisualStudio", new[] { "VcRuntime" }),
             ("About_License_CorsairSdk", new[] { "IcueSdk" }),
@@ -1247,7 +1246,7 @@ namespace PadForge.Tests
 
             var readme = ReadmeLines();
             string Line(string start) => readme.Single(l => l.StartsWith(start, StringComparison.Ordinal));
-            Assert.EndsWith("| Bouncy Castle Licence (an adaptation of MIT) |", Line("| [Bouncy Castle]("));
+            Assert.EndsWith("| MIT |", Line("| [Bouncy Castle]("));
             Assert.EndsWith("| LGPL-2.1-or-later (license.txt), LGPL-2.1-only (package metadata) |", Line("| [SteamKit2]("));
             Assert.Contains("(Unlicense)", Line("- **Bliss-Box references**"));
             Assert.DoesNotContain("(public domain)", Line("- **Bliss-Box references**"));

@@ -125,7 +125,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Ta sera PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Ta kuminsá PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Ta limpia kontrolnan virtual ku a keda di un seshon anterior.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> aparatonan</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Agregá kontrol</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Agregá un kontrol</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Skohe kiko wega mester mira. E kontrol ta wòrdu agregá mesora ku bo klik.</value></data>
@@ -254,7 +253,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Tempu di grabashon a kaba pa "{0}".</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Motor a kuminsá.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motor a para.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Sin asignashon</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Eror: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} no por a wordu kreá.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Perfil kambiá: {0}</value></data>
@@ -269,7 +267,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Ta graba...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>ora</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>riba</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}" asigná na Kontrol virtual {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}" kitá for di Kontrol virtual {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Aparato kitá.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Kontrol virtual {0} eliminá.</value></data>
@@ -658,7 +655,6 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Asignashonnan</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Stick</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Trigger</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Trigger robes</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Trigger drechi</value></data>
@@ -756,20 +752,20 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Botònnan</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Perfilnan importá…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Preset di kontrol…</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Preset di kontrol</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Eksportá…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Eliminá</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Eksportá JSON di perfil</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Eksportá JSON di preset</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Eliminá preset?</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Eksportá na {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Eksportashon a fayá: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" eliminá.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Importá for di un archivo…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importá JSON di perfil</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importá JSON di preset</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Importá for di {0}.</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro a rechasá e perfil aki na {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>E perfil aki no tin deskriptor HID, p'esei no por traha ningun kontrol for di dje.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro a rechasá e preset aki na {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>E preset aki no tin deskriptor HID, p'esei no por traha ningun kontrol for di dje.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Nada no a wòrdu importá. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importá</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(aparato HID sin nòmber)</value></data>
@@ -820,9 +816,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Kambia pa bista 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Kambia pa bista 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Klek pa purba e motor robes</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Motor robes</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Klek pa purba e motor drechi</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Motor drechi</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Asigná tur</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Asigná: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Graba tur asignashon un pa un</value></data>
@@ -918,6 +912,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibrá sentro</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Punto sentral</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Sentro</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Velosidat</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona morto</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Desplasamentu di sentro, forma di zona morto i balor pa kada eje, un kurva pa kada eje, rango, stür</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>E rango na number, balornan kru</value></data>
@@ -1146,7 +1141,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Número di touchpad</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detekshon di gesto</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ta aktivá e gestonan di e touchpad aki</value></data>
@@ -1338,7 +1332,6 @@
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Movementu di mouse X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Movementu di mouse Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensibilidat</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensibilidat</value></data>
 
   <!-- ═══ Device Object Names (gamepad) ═══ -->
   <data name="DevObj_LeftStickX" xml:space="preserve"><value>Stick robes X</value></data>
@@ -1933,7 +1926,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Duna e etiketa aki un nòmber</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Registrá</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Registrá</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>No a detektá niun lektor NFC. Konektá un lektor PC/SC i habri atrobe.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Registrá / maneha etiketanan NFC</value></data>
   <data name="DeviceType_HeadTracker" xml:space="preserve"><value>Head tracker</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>Kontrol VR</value></data>
@@ -1955,7 +1947,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>Kontrol Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Stick X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Stick Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Trigger</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Botòn primario</value></data>
   <data name="VrCtl_Secondary" xml:space="preserve"><value>Botòn sekundario</value></data>
   <data name="VrCtl_Menu" xml:space="preserve"><value>Botòn di menu</value></data>
@@ -1991,7 +1982,6 @@
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>A importá {0} botòn.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Botònnan di PC portátil</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Aktivá botònnan di PC portátil</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Gesto di mouse</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Aktivá gesto di mouse</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Botòn di gesto</value></data>
@@ -2081,6 +2071,7 @@
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>No por a konektá ku Steam. Kontrolá bo konekshon. E perfilnan ku bo a importá kaba ta sigui funshoná: nan ta riba e PC aki.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Purba atrobe</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Habri den Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Bieu</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Wardá perfil</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Wardá i apliká</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Asignashon</value></data>
@@ -2749,7 +2740,7 @@
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>E perfil ta wòrdu kitá. Esaki no por wòrdu deshasí.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>E ta kuminsá sin kontrol. E ta karga su mes ora un di su wega ta na dilanti.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Agregá un wega ku ta kore</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>No tin otro programa ku un bentana habrí.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>No a haña ningun otro bentana habrí.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Kita {0}</value></data>
   <data name="Voice_MoreHint" xml:space="preserve"><value>Skucha sendí òf pagá, modo, konfiansa</value></data>
   <data name="Voice_ListeningOff" xml:space="preserve"><value>Skucha ta pagá. Send'é bou di Mas.</value></data>
@@ -2759,4 +2750,7 @@
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Skohe kiko e ta mustra. Nada no ta kambia te ora bo warda.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>editor di kurva</value></data>
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Aktivo: {0} di {1}</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>i</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>of</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>no</value></data>
 </root>

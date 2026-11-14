@@ -1375,8 +1375,17 @@ namespace PadForge.Tests
             {
                 Assert.Contains(w.Attributes(), a => a.Name.LocalName == "SettingRow.Fills" && a.Value == "True");
                 Assert.Equal(3, w.Elements().Count());
-                Assert.All(w.Elements(), r => Assert.Equal("{StaticResource LiveReading}", (string)r.Attribute("Style")));
             });
+            // The gyro's three are a word of the language beside a number of
+            // one width, 120 at the least together (2026-11-13). The
+            // accelerometer's are a letter and a number in one reading.
+            Assert.All(readings[0].Elements(), r =>
+            {
+                Assert.Equal("StackPanel", r.Name.LocalName);
+                Assert.Equal("120", (string)r.Attribute("MinWidth"));
+                Assert.Equal(new[] { "{StaticResource LiveReadingName}", "{StaticResource LiveReadingNumber}" }, r.Elements().Select(e => (string)e.Attribute("Style")));
+            });
+            Assert.All(readings[1].Elements(), r => Assert.Equal("{StaticResource LiveReading}", (string)r.Attribute("Style")));
             Assert.Equal("120", Setter(Style("LiveReading"), "Width"));
 
             // Sensitivity's More: a row for each axis to invert, each with
@@ -1492,13 +1501,28 @@ namespace PadForge.Tests
             // card's paragraph is its title's tooltip. Sound Macros is a
             // line that folds (#574), so it has no card title of its own.
             var titles = scroll.Descendants().Where(e => (string)e.Attribute("Style") == "{StaticResource CardTitle}").ToList();
-            Assert.Equal(4, titles.Count);
+            Assert.Equal(3, titles.Count);
+            // Sound Output's title is the fourth. Its paragraph says how a
+            // Sony pad's sound travels, so it is the title's tooltip for a
+            // Sony pad alone (2026-11-13): a style of the title's own,
+            // on the card title's, sets it while the selected device is one.
+            var soundTitle = scroll.Descendants().Single(e => e.Name.LocalName == "TextBlock"
+                && ((string)e.Attribute("Text") ?? "").Contains("Pad_Audio_Output_Header,"));
+            Assert.Null(soundTitle.Attribute("ToolTip"));
+            var soundStyle = soundTitle.Descendants().Single(e => e.Name.LocalName == "Style");
+            Assert.Equal("{StaticResource CardTitle}", (string)soundStyle.Attribute("BasedOn"));
+            var forSony = Assert.Single(soundStyle.Descendants(), e => e.Name.LocalName == "DataTrigger");
+            Assert.Equal("{Binding SelectedDeviceHasDspChain}", (string)forSony.Attribute("Binding"));
+            Assert.Equal("True", (string)forSony.Attribute("Value"));
+            var soundTip = Assert.Single(forSony.Elements());
+            Assert.Equal("ToolTip", (string)soundTip.Attribute("Property"));
+            Assert.Contains("Pad_Audio_Output_Desc,", (string)soundTip.Attribute("Value"));
+            titles.Add(soundTitle);
             Assert.All(titles, title => Assert.DoesNotContain(title.Parent!.Elements(), e => e.Name.LocalName == "GlyphText"));
             Assert.DoesNotContain(scroll.Descendants(), e => ((string)e.Attribute("Style") ?? "").Contains("TitleTextBlockStyle"));
             foreach (var (title, paragraph) in new[]
             {
                 ("Pad_Lighting_LedStrips", "Pad_Lighting_LedStrips_Description"),
-                ("Pad_Audio_Output_Header", "Pad_Audio_Output_Desc"),
             })
             {
                 var block = titles.Single(e => ((string)e.Attribute("Text")).Contains(title + ","));
@@ -1506,6 +1530,8 @@ namespace PadForge.Tests
                 Assert.DoesNotContain(scroll.Descendants(), e => e.Name.LocalName == "TextBlock"
                     && ((string)e.Attribute("Text") ?? "").Contains(paragraph + ","));
             }
+            Assert.DoesNotContain(scroll.Descendants(), e => e.Name.LocalName == "TextBlock"
+                && ((string)e.Attribute("Text") ?? "").Contains("Pad_Audio_Output_Desc,"));
             // Sound Macros' paragraph is its line's tooltip.
             var soundMacros = Named(page, "SoundMacrosFoldCard");
             Assert.Equal("{Binding Pad_Audio_Macros_Desc, Source={x:Static strings:Strings.Instance}}", (string)soundMacros.Attribute("Description"));

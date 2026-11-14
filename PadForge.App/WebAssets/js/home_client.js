@@ -129,6 +129,11 @@
             views[key] = { box: box, pad: pad, layout: layout };
             refit(views[key]);
             if (resize) resize.observe(box);
+        }, function () {
+            // No layout came, so the box asks again at its next draw. Left
+            // marked as asked, it never did, and the tile stayed empty for
+            // as long as the page was open.
+            if (box.getAttribute("data-want") === want) box.removeAttribute("data-want");
         });
     }
 

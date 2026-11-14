@@ -248,7 +248,6 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Dagiti mapping</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Dagiti stick</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Dagiti trigger</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Kannigid a trigger</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Kannawan a trigger</value></data>
@@ -330,8 +329,8 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Dagiti POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Dagiti butones</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Ikkaten</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Saan nga inawat ti HIDMaestro daytoy a profile iti {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Awan ti HID descriptor daytoy a profile, isu nga awan ti controller a maaramid manipud iti daytoy.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Saan nga inawat ti HIDMaestro daytoy a preset iti {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Awan ti HID descriptor daytoy a preset, isu nga awan ti controller a maaramid manipud iti daytoy.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Awan ti na-import. {0}</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
@@ -339,8 +338,6 @@
   <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>Awan</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>I-reset ti sensitivity</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>I-reset ti deadzone</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Kannigid a motor</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Kannawan a motor</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>I-reset amin</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Taudan</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Baliktaden</value></data>
@@ -403,7 +400,6 @@
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Iggaman</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Kannigid a motor</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Kannawan a motor</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Iggaman</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Adda iti tengnga</value></data>
@@ -473,7 +469,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tap / Mamindua a tap / Mamitlo a tap</value></data>
   <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>Long press</value></data>
   <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>Dagiti swipe ti dua a ramay</value></data>
@@ -862,7 +857,6 @@
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>Awan pay ti naadal a butones.</value></data>
   <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Nasursuro iti {0}</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Dagiti key: {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Kanigid</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Kannawan</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Ngato</value></data>
@@ -1317,7 +1311,7 @@
   <data name="Search_Docs_Format" xml:space="preserve"><value>Agsapul iti dokumentasion para iti “{0}”</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Ikkaten ti {0}?</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Mangrugi nga awan ti controller. Bukodna nga agkarga no adda iti sango ti maysa kadagiti ay-ayamna.</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Awan ti sabali a programa nga addaan iti nakalukat a window.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Awan ti nasarakan a sabali a nakalukat a window.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Ikkaten ti {0}</value></data>
   <data name="WiiPair_Step1" xml:space="preserve"><value>Lukatan ti kalub ti baterya ket ipindut ti nalabaga a button a SYNC.</value></data>
   <data name="WiiPair_Step2" xml:space="preserve"><value>Ikabil ti remote iti asideg daytoy a PC bayat nga agkurkurimed dagiti silawna.</value></data>

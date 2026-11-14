@@ -90,6 +90,9 @@ namespace PadForge.Tests
             var session = new CorsairVoidLighting.Session(() => 0);
             session.Paint(io, _ => { }, CorsairVoidLighting.Lights(), new[] { 0, 0 });
             Assert.Equal("C8 00 00", Hex(Assert.Single(session.CrashFrames)));
+            // The same frames from one read to the next: the backend tells an
+            // unchanged record by reference (HidLightingBackend.Track).
+            Assert.Same(session.CrashFrames, session.CrashFrames);
             io.Calls.Clear();
             Assert.True(session.HandBack(io, _ => { }));
             Assert.Equal(new[] { "C8 00 00" }, Calls(io).Select(c => Hex(c.Bytes)));

@@ -91,12 +91,10 @@ namespace PadForge.Services
             // Auto-create the virtual controller slot if it doesn't exist yet.
             if (!SettingsManager.SlotCreated[slotIndex])
             {
-                // Seed the category default, the same reason the create path in
-                // CreateSlotsForDevices documents: the engine falls back to this
-                // default silently when SlotProfileIds is null, so without the
-                // seed the profile dropdown shows NO selection on a slot that is
-                // in fact running the default. Every auto-create block in
-                // this file missed it.
+                // Seed the category default, as CreateSlot does: the engine
+                // falls back to this default silently when SlotProfileIds is
+                // null, so without the seed the profile dropdown shows NO
+                // selection on a slot that is in fact running the default.
                 _mainVm.Pads[slotIndex].ProfileId =
                     InputManager.GetDefaultProfileId(_mainVm.Pads[slotIndex].OutputType);
                 // The new slot's data is authored under that profile. When

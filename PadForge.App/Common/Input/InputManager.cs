@@ -328,10 +328,6 @@ namespace PadForge.Common.Input
         /// Built at startup from the in-box catalog; profile load can
         /// append the user's custom gestures via
         /// <see cref="SetShapeTemplates"/>.</summary>
-        public System.Collections.Generic.IReadOnlyList<Engine.Touchpad.ShapeTemplate> ShapeTemplates
-        {
-            get => System.Threading.Volatile.Read(ref _shapeTemplates);
-        }
         private System.Collections.Generic.IReadOnlyList<Engine.Touchpad.ShapeTemplate> _shapeTemplates
             = Engine.Touchpad.InBoxShapeTemplates.Build();
 

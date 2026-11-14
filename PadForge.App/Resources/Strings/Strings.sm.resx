@@ -309,7 +309,7 @@
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Faʻamau</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Tapeʻese</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Ua tapeʻese "{0}".</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Na teena e le HIDMaestro lenei profile i {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Na teena e le HIDMaestro lenei seti muamua i {1}: {0}</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>E leai se mea na faʻaulufale mai. {0}</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
@@ -319,9 +319,7 @@
   <data name="Pad_Socd_ButtonA_Tooltip" xml:space="preserve"><value>Le faʻamau muamua o le paga.</value></data>
   <data name="Pad_Socd_ButtonB_Tooltip" xml:space="preserve"><value>Le faʻamau lona lua o le paga.</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Kiliki e faʻataʻitaʻi le afi agavale</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Afi agavale</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Kiliki e faʻataʻitaʻi le afi taumatau</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Afi taumatau</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Toe setiina mea uma</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Filifiliga</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Faʻafeliuina</value></data>
@@ -390,7 +388,6 @@
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>ʻUʻu</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Afi agavale</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Afi taumatau</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>ʻUʻu</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Ogatotonu</value></data>
@@ -430,7 +427,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Paʻi / Paʻi faʻalua / Paʻi faʻatolu</value></data>
   <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>ʻOʻomi umi</value></data>
   <data name="Pad_Touchpad_Rotate" xml:space="preserve"><value>Faʻataʻamilo</value></data>
@@ -822,7 +818,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>Controller Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Stick X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Stick Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Trigger</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Kiliki o le stick</value></data>
   <data name="VrCtl_Menu" xml:space="preserve"><value>Faʻamau o le menu</value></data>
   <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>Port UDP</value></data>
@@ -839,7 +834,6 @@
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>E leʻi aʻoaʻoina ni faʻamau.</value></data>
   <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Aʻoaʻoina i le {0}</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Ki: {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Taga o le mouse</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Faʻamau taga</value></data>
   <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Toe setiina taga o le mouse</value></data>

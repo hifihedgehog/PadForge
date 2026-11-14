@@ -209,7 +209,7 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Hann</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Fa ahosuo ka ho</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Popa</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ampene profile yi so wɔ {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ampene nhyehyɛe yi so wɔ {1}: {0}</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Wɔamfa biribiara amma. {0}</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
@@ -252,7 +252,6 @@
   <data name="Macro_SetGyroEngaged_On" xml:space="preserve"><value>Sɔ</value></data>
   <data name="Macro_SetGyroEngaged_Off" xml:space="preserve"><value>Dum</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Kura</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Kura</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Mfinimfini</value></data>
@@ -543,6 +542,7 @@
   <data name="Workshop_TagAll" xml:space="preserve"><value>Ne nyinaa</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Sɔ hwɛ bio</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Bue wɔ Steam Workshop mu</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Dedaw</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Kora profile</value></data>
   <data name="MacroAction_AllAxes" xml:space="preserve"><value>Axis nyinaa</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Device biara)</value></data>

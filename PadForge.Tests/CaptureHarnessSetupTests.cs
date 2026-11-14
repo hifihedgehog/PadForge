@@ -726,15 +726,34 @@ namespace PadForge.Tests
         }
 
         /// <summary>A sweep that stopped short says so. The word PASS on a
-        /// harvest that reached one page in five read as the whole walk.</summary>
+        /// harvest that reached one page in five read as the whole walk.
+        /// Every step of the walk names itself when it fails, and each place
+        /// is found by the id PadForge 6 gives it: the sidebar's Nav_ entries
+        /// (Home is Nav_Dashboard), a controller's sections, the extras'
+        /// tiles, Search, Add a Controller and Get Profiles. The walk of the
+        /// old shell looked for Dashboard by its name and for Home's slot
+        /// cards, reached four pages and realized 98 elements (2026-11-13
+        /// audit).</summary>
         [Fact]
         public void TheSweep_NamesWhatItDidNotReach()
         {
             string text = AuditDelta20261002Tests.RepoText("tools", "diag-sweep.ps1");
-            Assert.Contains("if (-not $ok) { $notReached += $page }", text);
-            Assert.Contains("$notReached += 'Workshop browse'", text);
-            Assert.Contains("$notReached += 'Map Key Lights'", text);
+            Assert.Contains("if (-not $ok) { $script:notReached += $label }", text);
+            foreach (string step in new[]
+                     {
+                         "'controller page'", "\"controller $step\"", "\"extra $key\"", "'Search'", "'Add a Controller'",
+                         "'Get Profiles'", "\"Get Profiles $tabName\"", "'Map Key Lights'",
+                     })
+                Assert.Contains("$notReached += " + step, text);
             Assert.Contains("$verdict = \"PARTIAL: $verdict, for what ran. Not reached:", text);
+            foreach (string id in new[]
+                     {
+                         "'Nav_' + $tag", "'Dashboard:Home'", "'Nav_AddController'", "'AddController_Close'", "'Profiles_GetProfiles'",
+                         "'TitleSearchBox'", "'SearchQueryBox'", "'Extras_Open_' + $key", "'Section_Macros'", "'MappingsTab'",
+                     })
+                Assert.Contains(id, text);
+            Assert.DoesNotContain("SlotsItemsControl", text);
+            Assert.DoesNotContain("Find-NavItem", text);
         }
 
         private static readonly SettingsScript[] SettingsScriptList =

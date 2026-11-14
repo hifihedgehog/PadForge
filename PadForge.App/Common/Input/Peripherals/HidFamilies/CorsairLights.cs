@@ -68,7 +68,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>The handle a picture is written on. OpenRGB opens handle 1 for
         /// every device of its list (SetLEDs, CorsairPeripheralV2Controller.cpp:390-398,
         /// since 4f2d8920). A device only SignalRGB's plugin lists takes handle 0, which
-        /// the plugin opens for lighting (Corsair_Bragi_Device.js:318), as ckb-next does
+        /// the plugin opens for lighting (Corsair_Bragi_Device.js:1705-1706 and 2458), as ckb-next does
         /// (BRAGI_LIGHTING_HANDLE, bragi_proto.h:70).</summary>
         public byte PictureHandle { get; init; }
 

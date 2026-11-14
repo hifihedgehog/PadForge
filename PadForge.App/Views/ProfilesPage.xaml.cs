@@ -204,6 +204,10 @@ namespace PadForge.Views
         private void OnDeleteShortcut(ProfileShortcutViewModel shortcut)
         {
             if (DataContext is not SettingsViewModel vm) return;
+            // A row deleted while it records ends its recording here: the
+            // timer and the hold on global macros would run on to the
+            // timeout for a row that is gone.
+            if (ReferenceEquals(_recordingShortcut, shortcut)) CancelRecording();
             vm.ProfileShortcuts.Remove(shortcut);
             SaveShortcutsToSettings(vm);
         }

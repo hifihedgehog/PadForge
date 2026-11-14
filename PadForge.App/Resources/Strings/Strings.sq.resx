@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Po mbyllet PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Po niset PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Po pastrohen kontrolluesit virtualë të mbetur nga seanca e mëparshme.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> pajisje</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Shto kontrollues</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Shto një kontrollues</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Zgjidh çfarë duhet të shohin lojërat. Kontrolluesi shtohet sapo të klikosh.</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Regjistrimi skadoi për "{0}."</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Motori u nis.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motori u ndal.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Pa hartëzim</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Gabim: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} nuk mund të krijohej.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profili u ndërrua: {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Po regjistron...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>kur</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>në</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}" iu caktua kontrolluesit virtual {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}" u hoq nga kontrolluesi virtual {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Pajisja u hoq.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Kontrolluesi virtual {0} u fshi.</value></data>
@@ -516,7 +513,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>PC-të me të cilat je çiftuar për Lidhjen në distancë. Revoko një për ta ndaluar të lidhet. Do të duhej të çiftohej përsëri.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Revoko</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Revoko të gjitha</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Riemërto</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Mbivendosja e touchpad-it</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Një sipërfaqe prekëse në ekran për lojëra me touchpad PlayStation, për një ekran me prekje ose për mausin.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Aktivizo mbivendosjen e touchpad-it</value></data>
@@ -750,7 +746,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Kushtet e licencës Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Kushtet e Corsair SDK</value></data>
@@ -1030,9 +1025,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Mappings" xml:space="preserve"><value>Hartëzimet</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Levat</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Këmbëzat</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Këmbëza impulsi</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Këmbëza impulsi</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Forca për çdo këmbëz, këmbimi i motorëve, dridhjet e këmbëzave adaptive, Forca e vazhdueshme e këmbëzës</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Përcjell komandat e motorit për çdo këmbëz (Xbox Impulse Triggers) nga kontrolluesi virtual te kontrolluesi fizik i caktuar Xbox One, Elite ose Series. Dridhja e këmbëzave e drejtuar nga loja kalon automatikisht. Kontrollet më poshtë shkallëzojnë madhësinë për çdo këmbëz.</value></data>
@@ -1098,7 +1091,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Rivendos këmbëzën e majtë</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Rivendos këmbëzën e djathtë</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Këmbëza adaptive</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Këmbëza adaptive</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfiguron efektet e reagimit të këmbëzave në DualSense-in fizik të caktuar. Efektet e këmbëzave nga një lojë ose një mod loje përcillen automatikisht. Cilësimet këtu shtojnë një shtresë të konfiguruar nga përdoruesi që punon kur asnjëra nuk po shkruan.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Levat</value></data>
@@ -1143,7 +1135,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Lighting" xml:space="preserve"><value>Ndriçimi</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Ndriçimi</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Cakton ngjyrën bazë të shiritit të dritës dhe sjelljen e audios në kontrolluesin fizik të caktuar. Shkrimet e lojës fitojnë gjithmonë. Cilësimet e përdoruesit zbatohen kur asnjë lojë nuk e drejton shiritin e dritës.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Kur është caktuar Numri i lojtarit, pad-i në pushim tregon identitetin e lojtarit të kontrolluesit të tij virtual: ngjyrën e lojtarit Sony në shiritin e dritës (1 blu, 2 e kuqe, 3 jeshile, 4 rozë) dhe pikat përkatëse të lojtarit në një DualSense. Çdo pajisje në të njëjtin kontrollues virtual tregon të njëjtin numër. Lojërat marrin kontrollin sa herë që shkruajnë ndriçim, çdo gjë që caktoni këtu fiton gjithmonë, dhe Fikur e bën dritën krejt të errët.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Kur është caktuar Numri i lojtarit, pad-i në pushim tregon identitetin e lojtarit të kontrolluesit të tij virtual: ngjyrën e lojtarit Sony në shiritin e dritës (1 blu, 2 e kuqe, 3 jeshile, 4 rozë) dhe pikat përkatëse të lojtarit në një DualSense. Çdo pajisje në të njëjtin kontrollues virtual tregon të njëjtin numër. Një lojë merr kontrollin sa herë që shkruan ndriçim. Çdo mënyrë tjetër e caktuar këtu zëvendëson ngjyrën e lojtarit, dhe Fikur e bën dritën krejt të errët.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Ky kontrollues virtual ndriçon pajisjen me të njëjtat mënyra që ka një shirit drite DualSense, të caktuara këtu për këtë kontrollues vetëm. Në një kontrollues virtual PlayStation, një lojë që shkruan shiritin e dritës e merr kontrollin siç ndodh në një DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Kontrollo ndriçimin e kësaj pajisjeje</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Fikur e ndalon këtë kontrollues virtual të ndriçojë pajisjen. Një rresht i prodhuesit, ose një pajisje tjetër e të njëjtit lloj e ndriçuar përmes të njëjtit softuer, mund ta caktojë prapë ngjyrën e saj. Një makro Set Chroma Color në këtë kontrollues virtual prapë e ngjyros një pajisje Razer.</value></data>
@@ -1258,9 +1250,9 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Këmbëzat</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Butonat</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Profilet e importuara…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Paravendosjet e kontrolluesit…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Kontrolluesi i zgjeruar</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Menaxhoni profilet HIDMaestro të importuara nga përdoruesi: kapni një të ri nga një pajisje e lidhur, eksportoni një ekzistues në JSON, ose fshini një që nuk ju duhet më.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Menaxhoni paravendosjet e kontrolluesit që keni shtuar: importoni një nga një skedar ose nga një pajisje e lidhur, eksportoni një në JSON, ose fshini një që nuk ju duhet më.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Klono pajisjen 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Hartëzon çdo bosht, buton dhe POV në pajisjen e zgjedhur drejtpërdrejt te dalja virtuale me të njëjtin numër. E përshtat paraqitjen me pajisjen dhe zëvendëson rreshtat e kësaj pajisjeje në slot me një kalim të drejtpërdrejtë 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Klono pajisjen 1:1</value></data>
@@ -1275,18 +1267,18 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Importo nga një pajisje e lidhur</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Eksporto…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Fshi</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Eksporto JSON të profilit</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Eksporto JSON të paravendosjes</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Të fshihet paravendosja?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Çdo kontrollues që përdor {0} kthehet te hyrja Custom. Kjo nuk mund të zhbëhet.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>U eksportua te {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Eksportimi dështoi: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>U fshi "{0}."</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Importo nga një skedar…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importo JSON të profilit</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importo JSON të paravendosjes</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>U importua nga {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Leximi dështoi: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro e refuzoi këtë profil te {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Ky profil nuk ka përshkrues HID, ndaj nuk mund të krijohet kontrollues prej tij.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro e refuzoi këtë paravendosje te {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Kjo paravendosje nuk ka përshkrues HID, ndaj nuk mund të krijohet kontrollues prej saj.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Asgjë nuk u importua. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importo</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(pajisje HID pa emër)</value></data>
@@ -1397,9 +1389,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Kalo te pamja 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Kalo te pamja 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Kliko për të provuar motorin e majtë</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Motori i majtë</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Kliko për të provuar motorin e djathtë</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Motori i djathtë</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Hartëzo të gjitha</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Hartëzo: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Regjistro njëri pas tjetrit të gjitha hartëzimet</value></data>
@@ -1503,6 +1493,11 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Kthe të vërtetën/të rremen</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Nëse, me modelin (kusht) ? atëherë : përndryshe</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Gjysma përndryshe e një nëse-atëherë-përndryshe</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>dhe</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>ose</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>jo</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>nëse?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>përndryshe:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Madhësia (heq shenjën)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Më e vogla e dy vlerave</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Më e madhja e dy vlerave</value></data>
@@ -1570,6 +1565,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibro qendrën</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Pika qendrore</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Qendra</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Shpejtësia</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona e vdekur</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Zhvendosjet e qendrës, forma e zonës së vdekur dhe vlerat për çdo bosht, një kurbë për çdo bosht, diapazoni, drejtimi</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Diapazoni në numra, vlerat e papërpunuara</value></data>
@@ -1793,7 +1789,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>E ngjitur (mbajtje)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Motori i majtë</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Motori i djathtë</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Mbajtja</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Zbehja</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1902,7 +1897,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Hyrje për çdo touchpad. Gjestet (rrëshqitje, prekje, shtrëngime, forma) dhe mënyrat e vazhdueshme të daljes (levë virtuale / D-pad, maus) bëhen burime hartëzimi që mund t'i lidhni me çdo dalje.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Numri i touchpad-it</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Se cilit touchpad të këtij kontrolluesi i vlejnë cilësimet më poshtë. Çdo touchpad ka gjestet, ndjesinë e mausit dhe zonën e treguesit të vet.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Zbulimi i gjesteve</value></data>
@@ -2348,8 +2342,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Lëvizja e mausit Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Ndjeshmëri</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Ndjeshmëria e treguesit IR për çdo burim. 1.0 arrin devijimin e plotë të levës në skajin e fushëpamjes së kamerës. Vlerat mbi 1.0 arrijnë devijimin e plotë me më pak lëvizje të synimit. Vlerat nën 1.0 kërkojnë më shumë.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Ndjeshmëri</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Ndjeshmëria për çdo burim për një bosht të thjeshtë, një rrëshqitës ose një levë / këmbëzë të gamepad-it. 1.0 e lë hyrjen të pandryshuar. Vlerat mbi 1.0 arrijnë devijimin e plotë me më pak lëvizje. Vlerat nën 1.0 kërkojnë më shumë.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Ndjeshmëria e lëvizjes së mausit për çdo burim. 1.0 arrin devijimin e plotë me të njëjtën shpejtësi si një maus i vërtetë, vlerat mbi 1.0 kërkojnë më pak lëvizje, vlerat nën 1.0 kërkojnë më shumë.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Pesha totale e ekuilibrit</value></data>
@@ -2479,7 +2471,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Një profil ngarkohet vetë kur një nga lojërat e tij është përpara.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Fillon pa kontrollues. Ngarkohet vetë kur një nga lojërat e tij është përpara.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Shto një lojë në punë</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Asnjë program tjetër nuk ka dritare të hapur.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nuk u gjet asnjë dritare tjetër e hapur.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Hiq {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Frekuenca e leximit ndërsa ngarkohet ky profil</value></data>
 
@@ -3017,7 +3009,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Shto ngjyra për t'i kaluar një nga një, një për çdo kyçje.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Rivendos mbajtjen e shiritit të dritës</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Treguesi</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Treguesi IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Drejto këtë Wii Remote nga ekrani me kamerën e tij IR. Kërkon një sensor bar, ose dy LED infra të kuqe, mbi ose nën ekran. Kalibroje si pistoletë drite te faqja Pajisjet për të shënjuar pikën e saktë. Një telekomandë e kalibruar i injoron Pozicioni i sensor bar dhe Zhvendosja vertikale.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Akordimi i treguesit</value></data>
@@ -3375,7 +3366,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Emërtoje këtë etiketë</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Regjistro</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Të regjistruara</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Nuk u zbulua lexues NFC. Lidh një lexues PC/SC dhe hape sërish.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Etiketa u kap. Fut një emër dhe kliko Regjistro. Prek një etiketë tjetër për ta zëvendësuar.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>U regjistrua "{0}." Prek një etiketë tjetër për të shtuar më shumë.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Regjistro / Menaxho etiketat NFC</value></data>
@@ -3402,7 +3392,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="VrCtl_Z" xml:space="preserve"><value>Kontrolluesi Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Leva X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Leva Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Këmbëza</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Kapësja</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Klikimi i levës</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Butoni parësor</value></data>
@@ -3480,7 +3469,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Aktivizo butonat e PC-së portative</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Shton një pajisje Butonat e fshehur dhe një pajisje Lëvizja e sistemit te faqja Pajisjet. Kur është çaktivizuar, nuk ekzekutohet asgjë.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Konsumator {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Maus</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Gjestet e mausit</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Mbaj shtypur butonin e gjestit, bëj një goditje të shpejtë dhe një veprim aktivizohet kur e lëshon: majtas, djathtas, lart, poshtë, ose një klik i thjeshtë nën distancën e goditjes. Hartëzo pesë gjestet te çdo dalje ose përdori si aktivizues makrosh.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Aktivizo gjestet e mausit</value></data>
@@ -3669,8 +3657,9 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam nuk arrihet</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Nuk u arrit Steam. Kontrollo lidhjen. Profilet që ke importuar tashmë vazhdojnë të punojnë: ndodhen në këtë PC.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Provo përsëri</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Ky konfigurim i vitit 2016 është më i vjetër se CDN-ja e konfigurimeve të Steam. Abonohuni në të në Steam dhe PadForge e lexon nga dosja juaj e Steam.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam nuk ofron asnjë skedar për t'u shkarkuar për këtë konfigurim, dhe asnjë kopje e tij nuk gjendet në dosjen tuaj të Steam. Abonohuni në të në Steam dhe PadForge e lexon që andej.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Hap në Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>E vjetër</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Zgjidh një konfigurim për të parë çfarë kalon.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Çfarë kalon</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Bëhet</value></data>
@@ -3896,7 +3885,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menyja nuk ka qeliza të caktuara</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>sipërfaqja pritëse e menysë nuk mbështetet ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikona e qelizës së menysë nuk u njoh ({0}), ndaj qeliza mban etiketën me tekst</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass Shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Dalja</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Butonat</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tastet dhe mausi</value></data>
@@ -4366,7 +4354,6 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motori</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Ndarë sipas drejtimit</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zona e vdekur e qendrës</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Rivendos në fikur</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Rivendos te Leva e majtë X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Rivendos forcën (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Rivendos zonën e vdekur të qendrës (2%)</value></data>
@@ -4446,7 +4433,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>Shtresa HID e përpiluar në SDL3.dll të përfshirë, nga Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Burimet e ikonave</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Simboli i flakës nga Material Design Icons (Pictogrammers, Apache-2.0), ikona e përgjithshme e gamepad-it nga Ionicons (Ionic, MIT), joystick-u Extended nga Jam Icons (Michael Amprimo, MIT), dhe ikonat Xbox dhe PlayStation nga SVG Repo, sipas licencës në faqen e secilës ikonë.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Simboli i flakës nga Material Design Icons (Pictogrammers, Apache-2.0), joystick-u Extended nga Jam Icons (Michael Amprimo, MIT), dhe ikonat Xbox dhe PlayStation nga SVG Repo, sipas licencës në faqen e secilës ikonë.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Protokolli i rele-së pas korsisë rezervë të Lidhjes në distancë, i folur me reletë publike falas të n0.computer ashtu siç e bën FlexInput. iroh: MIT OR Apache-2.0. FlexInput: MIT. Vetëm dokumentim, nuk përfshihet kod.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

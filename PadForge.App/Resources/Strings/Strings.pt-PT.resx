@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>A fechar o PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>A iniciar o PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>A limpar os comandos virtuais deixados por uma sessão anterior.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> dispositivos</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Adicionar comando</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Adicionar um comando</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Escolha o que os jogos devem ver. O comando é adicionado assim que clicar.</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>O tempo de gravação esgotou-se para "{0}".</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Motor iniciado.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motor parado.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Sem mapeamento</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Erro: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Não foi possível criar {0}.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Mudou para o perfil: {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>A gravar...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>quando</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>em</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}" atribuído ao Comando virtual {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}" retirado do Comando virtual {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Dispositivo removido.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Comando virtual {0} eliminado.</value></data>
@@ -516,7 +513,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>PCs com os quais emparelhou para a Ligação Remota. Revogue um para o impedir de se ligar. Teria de voltar a emparelhar.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Revogar</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Revogar todos</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Mudar o nome</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Sobreposição de painel tátil</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Uma superfície tátil no ecrã para jogos com painel tátil da PlayStation, para um ecrã tátil ou o rato.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Ativar a sobreposição de painel tátil</value></data>
@@ -750,7 +746,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Termos de licença do Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Termos do SDK da Corsair</value></data>
@@ -1031,9 +1026,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Mapeamentos</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Manípulos</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Gatilhos</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Gatilhos de impulso</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Gatilhos de impulso</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ganho por gatilho, troca de motores, vibrações dos gatilhos adaptáveis, Força constante nos gatilhos</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Reencaminha as instruções de motor de cada gatilho (gatilhos de impulso da Xbox) do comando virtual para o comando físico Xbox One, Elite ou Series atribuído. A vibração dos gatilhos gerada pelo jogo passa automaticamente. Os controlos abaixo ajustam a intensidade de cada gatilho.</value></data>
@@ -1099,7 +1092,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Repor gatilho esquerdo</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Repor gatilho direito</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Gatilhos adaptáveis</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Gatilhos adaptáveis</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configura os efeitos de resposta dos gatilhos no DualSense físico atribuído. Os efeitos de gatilho de um jogo ou de um mod de jogo são reencaminhados automaticamente. As definições aqui acrescentam uma camada configurada pelo utilizador que funciona quando nenhum dos dois está a escrever.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Manípulos</value></data>
@@ -1144,7 +1136,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>Iluminação</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Iluminação</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Define a cor base da barra de luz e o comportamento de áudio no comando físico atribuído. As escritas do jogo prevalecem sempre. As definições do utilizador aplicam-se quando nenhum jogo está a controlar a barra de luz.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Enquanto estiver definido para “Número de jogador”, o comando em repouso mostra a identidade de jogador do respetivo comando virtual: a cor de jogador da Sony na barra de luz (1 azul, 2 vermelho, 3 verde, 4 cor-de-rosa) e as luzes de jogador correspondentes num DualSense. Todos os dispositivos do mesmo comando virtual mostram o mesmo número. Os jogos assumem o controlo sempre que escrevem iluminação, o que definir aqui prevalece sempre e “Desligado” apaga completamente a luz.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Enquanto estiver definido para “Número de jogador”, o comando em repouso mostra a identidade de jogador do respetivo comando virtual: a cor de jogador da Sony na barra de luz (1 azul, 2 vermelho, 3 verde, 4 cor-de-rosa) e as luzes de jogador correspondentes num DualSense. Todos os dispositivos do mesmo comando virtual mostram o mesmo número. Um jogo assume o controlo sempre que escreve iluminação. Qualquer outro modo definido aqui substitui a cor de jogador e “Desligado” apaga completamente a luz.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Este comando virtual ilumina o dispositivo com os mesmos modos que a barra de luz de um DualSense tem, definidos aqui apenas para este comando. Num comando virtual PlayStation, um jogo que escreva na barra de luz assume o controlo, tal como acontece num DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Controlar a iluminação deste dispositivo</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>“Desligado” impede este comando virtual de iluminar o dispositivo. Uma linha de fabricante, ou outro dispositivo do mesmo tipo iluminado através do mesmo software, pode ainda assim definir a sua cor. Uma macro “Definir cor Chroma” neste comando virtual continua a pintar um dispositivo Razer.</value></data>
@@ -1259,9 +1251,9 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gatilhos</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Botões</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Perfis importados…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Predefinições de comandos…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Comando alargado</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Gira os perfis HIDMaestro importados pelo utilizador: capture um novo a partir de um dispositivo ligado, exporte um existente para JSON ou elimine um de que já não precise.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Gira as predefinições de comando que adicionou: importe uma a partir de um ficheiro ou de um dispositivo ligado, exporte uma para JSON ou elimine uma de que já não precise.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Clonar dispositivo 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Mapeia cada eixo, botão e POV do dispositivo selecionado diretamente para a saída virtual com o mesmo número. Ajusta a disposição ao dispositivo e substitui as linhas deste dispositivo no slot por uma passagem direta 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Clonar dispositivo 1:1</value></data>
@@ -1276,18 +1268,18 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Importar de um dispositivo ligado</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Exportar…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Eliminar</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Exportar JSON do perfil</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Exportar JSON da predefinição</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Eliminar a predefinição?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Qualquer comando que use {0} volta à entrada “Personalizado”. Esta ação não pode ser anulada.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Exportado para {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Falha na exportação: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" eliminado.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Importar de um ficheiro…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importar JSON de perfil</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importar JSON de predefinição</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Importado de {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Falha na leitura: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>O HIDMaestro recusou este perfil em {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Este perfil não tem descritor HID, pelo que não é possível criar nenhum comando a partir dele.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>O HIDMaestro recusou esta predefinição em {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Esta predefinição não tem descritor HID, pelo que não é possível criar nenhum comando a partir dela.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Nada foi importado. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importar</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(dispositivo HID sem nome)</value></data>
@@ -1398,9 +1390,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Mudar para a vista 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Mudar para a vista 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Clique para testar o motor esquerdo</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Motor esquerdo</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Clique para testar o motor direito</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Motor direito</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Mapear tudo</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mapear: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Gravar todos os mapeamentos em sequência, um a um</value></data>
@@ -1504,6 +1494,11 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Inverter verdadeiro/falso</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Se, com o padrão (condição) ? então : senão</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Parte senão de um se-então-senão</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>e</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>ou</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>não</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>se?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>senão:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Magnitude (descarta o sinal)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>O menor de dois valores</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>O maior de dois valores</value></data>
@@ -1571,6 +1566,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Calibrar centro</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Ponto central</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Centro</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Velocidade</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona morta</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Desvios do centro, forma da zona morta e valores por eixo, uma curva para cada eixo, intervalo, direção</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>O intervalo em números, valores em bruto</value></data>
@@ -1794,7 +1790,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Persistente (manter)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Motor esquerdo</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Motor direito</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Retenção</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Desvanecimento</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1903,7 +1898,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Painel tátil</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Painel tátil</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Entrada por painel tátil. Os gestos (deslizes, toques, aproximações de dedos, formas) e os modos de saída contínua (manípulo virtual / D-pad, rato) tornam-se origens de mapeamento que pode associar a qualquer saída.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Painel tátil</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Número do painel tátil</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>O painel tátil deste comando a que as definições abaixo se aplicam. Cada painel tátil mantém os seus próprios gestos, comportamento de rato e região do ponteiro.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Deteção de gestos</value></data>
@@ -2354,8 +2348,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Movimento do rato Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensibilidade</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Sensibilidade do ponteiro IR por origem. 1.0 atinge a deflexão total do manípulo no limite do campo de visão da câmara. Valores acima de 1.0 atingem a deflexão total com menos deslocação da mira. Valores abaixo de 1.0 precisam de mais.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensibilidade</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Sensibilidade por origem para um eixo simples, um controlo de deslize ou um manípulo / gatilho de gamepad. 1.0 deixa a entrada inalterada. Valores acima de 1.0 atingem a deflexão total com menos curso. Valores abaixo de 1.0 precisam de mais.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Sensibilidade do movimento do rato por origem. 1.0 atinge a deflexão total à mesma velocidade de um rato real, valores acima de 1.0 precisam de menos movimento e valores abaixo precisam de mais.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Peso total da Balance Board</value></data>
@@ -2491,7 +2483,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Um perfil carrega sozinho quando um dos seus jogos está em primeiro plano.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Começa sem comandos. Carrega sozinho quando um dos seus jogos está em primeiro plano.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Adicionar um jogo em execução</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nenhum outro programa tem uma janela aberta.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Não foi encontrada nenhuma outra janela aberta.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Remover {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Taxa de sondagem enquanto este perfil está carregado</value></data>
 
@@ -3073,7 +3065,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Adicione cores para percorrer, uma por batente.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Repor retenção da barra de luz</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Áudio</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Ponteiro</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Ponteiro IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Aponte este Comando Wii ao ecrã com a respetiva câmara IR. Precisa de uma barra de sensores, ou de dois LEDs de infravermelhos, por cima ou por baixo do ecrã. Calibre-o como pistola de luz na página Dispositivos para apontar ao ponto exato. Um comando calibrado ignora a Posição da barra de sensores e o Desvio vertical.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Afinação do ponteiro</value></data>
@@ -3431,7 +3422,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Dê um nome a esta etiqueta</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Registar</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Registadas</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Não foi detetado nenhum leitor NFC. Ligue um leitor PC/SC e volte a abrir.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Etiqueta capturada. Introduza um nome e clique em Registar. Encoste outra etiqueta para a substituir.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>"{0}" registada. Encoste outra etiqueta para adicionar mais.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Registar / gerir etiquetas NFC</value></data>
@@ -3458,7 +3448,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="VrCtl_Z" xml:space="preserve"><value>Comando Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Manípulo X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Manípulo Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Gatilho</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Pega</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Clique do manípulo</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Botão principal</value></data>
@@ -3536,7 +3525,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Ativar botões de PC portátil</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Adiciona um dispositivo Botões ocultos e um dispositivo Movimento do sistema à página Dispositivos. Desligado, nada é executado.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Consumidor {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Rato</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Gestos do rato</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Mantenha premido o botão de gesto, faça um movimento rápido e, ao soltar, dispara uma ação: esquerda, direita, cima, baixo ou um clique simples abaixo da distância do movimento. Mapeie os cinco gestos para qualquer saída ou use-os como acionadores de macros.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Ativar gestos do rato</value></data>
@@ -3725,8 +3713,9 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>O Steam está inacessível</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Não foi possível contactar o Steam. Verifique a sua ligação. Os perfis que já importou continuam a funcionar: estão guardados neste PC.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Tentar novamente</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Esta configuração, da era de 2016, é anterior à CDN de configurações do Steam. Subscreva-a no Steam e o PadForge lê-a a partir da sua pasta do Steam.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>O Steam não indica nenhum ficheiro para transferir desta configuração e não existe nenhuma cópia dela na sua pasta do Steam. Subscreva-a no Steam e o PadForge lê-a a partir daí.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Abrir na Oficina Steam</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Legado</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Escolha uma configuração para ver o que é importado.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>O que é importado</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Torna-se</value></data>
@@ -3952,7 +3941,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>o menu não tem células associadas</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>superfície anfitriã do menu não suportada ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ícone da célula do menu não reconhecido ({0}), pelo que a célula mantém a etiqueta de texto</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Saída</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Botões</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Teclas e rato</value></data>
@@ -4420,7 +4408,6 @@ Pretende que o PadForge os desinstale agora? Esta operação requer elevação e
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Dividir por direção</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zona morta central</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Repor para desligado</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Repor para Manípulo esquerdo X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Repor força (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Repor zona morta central (2%)</value></data>
@@ -4500,7 +4487,7 @@ Pretende que o PadForge os desinstale agora? Esta operação requer elevação e
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>A camada HID compilada no SDL3.dll incluído, de Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Origens dos ícones</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>O glifo da chama dos Material Design Icons (Pictogrammers, Apache-2.0), o ícone genérico de gamepad dos Ionicons (Ionic, MIT), o joystick do tipo Alargado dos Jam Icons (Michael Amprimo, MIT) e os ícones Xbox e PlayStation do SVG Repo, ao abrigo da licença indicada na página de cada ícone.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>O glifo da chama dos Material Design Icons (Pictogrammers, Apache-2.0), o joystick do tipo Alargado dos Jam Icons (Michael Amprimo, MIT) e os ícones Xbox e PlayStation do SVG Repo, ao abrigo da licença indicada na página de cada ícone.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>O protocolo de retransmissão por trás da via de recurso da Ligação Remota, usado com os relays públicos gratuitos da n0.computer tal como o FlexInput faz. iroh: MIT OR Apache-2.0. FlexInput: MIT. Apenas documentação, nenhum código é distribuído.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

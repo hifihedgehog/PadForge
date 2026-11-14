@@ -77,15 +77,14 @@ namespace PadForge.ViewModels
             // Source count changed → custom-expression warning state
             // may have flipped.
             OnPropertyChanged(nameof(IsCombineExpressionWarning));
-            OnPropertyChanged(nameof(IsTrivialDirect));
             RefreshVariableAliases();
             // Adding/removing a secondary can gate InvertOnHold in the primary
             // dropdown on or off (#111 audit C).
             EnforcePrimaryKindGate();
 
             // Clear() raises Reset with no OldItems, which would skip the
-            // per-item unsubscribes below. Mirrors the tracked-list idiom
-            // from PadViewModel.OnMappingsChangedForDirectCount.
+            // per-item unsubscribes below, so the hooked items are kept in
+            // a list of their own.
             if (e.Action == NotifyCollectionChangedAction.Reset)
             {
                 foreach (var hooked in _extraSourcesHooked)
@@ -296,8 +295,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>True when the primary is plain Direct (the default). A
-        /// Toggle primary reads the same descriptor but is not Direct, so
-        /// its row is no plain mapping (<see cref="IsTrivialDirect"/>).</summary>
+        /// Toggle primary reads the same descriptor but is not Direct.</summary>
         public bool IsPrimaryDirect =>
             string.Equals(PrimaryKindSource?.Kind ?? "Direct", "Direct", StringComparison.Ordinal);
 
@@ -414,11 +412,11 @@ namespace PadForge.ViewModels
             {
                 OnPropertyChanged(nameof(IsPrimaryDirect));
                 OnPropertyChanged(nameof(IsPrimaryDescriptor));
+                OnPropertyChanged(nameof(IsInvertApplicable));
                 // A trigger row shows its deadzone only in Rapid Trigger (#482).
                 OnPropertyChanged(nameof(IsDeadZoneApplicable));
                 OnPropertyChanged(nameof(IsMultiSource));
                 OnPropertyChanged(nameof(PrimaryKindLabel));
-                OnPropertyChanged(nameof(IsTrivialDirect));
                 OnPropertyChanged(nameof(HasAnySource));
                 RefreshVariableAliases();
                 // A primary set (or loaded) as InvertOnHold with no contributing
@@ -643,7 +641,6 @@ namespace PadForge.ViewModels
                     // effective source count, which can change whether
                     // a custom formula's `a` reference is in range.
                     OnPropertyChanged(nameof(IsCombineExpressionWarning));
-                    OnPropertyChanged(nameof(IsTrivialDirect));
                     RefreshVariableAliases();
                     // Re-resolve the picker selection against the descriptor
                     // that just arrived. PopulateAvailableInputs syncs once,
@@ -693,7 +690,6 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsMapped));
                     OnPropertyChanged(nameof(HasAnySource));
                     OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
-                    OnPropertyChanged(nameof(IsTrivialDirect));
                 }
             }
         }
@@ -1198,19 +1194,6 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _liveLevel, value);
         }
 
-        /// <summary>True when the row is a plain mapping (#175 telemetry
-        /// board): a single Direct primary source, no negative-direction
-        /// pair, no invert / half / bidirectional option, and no custom
-        /// combine formula. The list's DIRECT chip counts these rows.
-        /// Re-notified from every contributing setter.</summary>
-        public bool IsTrivialDirect =>
-            !string.IsNullOrEmpty(_sourceDescriptor)
-            && string.IsNullOrEmpty(_negSourceDescriptor)
-            && IsPrimaryDirect
-            && ExtraSources.Count == 0
-            && !_isInverted && !_isHalfAxis && !_isBidirectional
-            && !(IsCustomCombine && !string.IsNullOrWhiteSpace(_combineExpression));
-
         private bool _isRowSelected;
 
         /// <summary>Mirror of the row's DataGrid selection state (#175 phase
@@ -1403,7 +1386,6 @@ namespace PadForge.ViewModels
                 {
                     RebuildDescriptor();
                     OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
-                    OnPropertyChanged(nameof(IsTrivialDirect));
                 }
             }
         }
@@ -1419,7 +1401,6 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _isHalfAxis, value))
                 {
                     RebuildDescriptor();
-                    OnPropertyChanged(nameof(IsTrivialDirect));
                     OnPropertyChanged(nameof(IsInvertApplicable));
                     OnPropertyChanged(nameof(IsInvertOutputApplicable));
                 }
@@ -1431,8 +1412,12 @@ namespace PadForge.ViewModels
         /// both on, the engine reads absolute deflection and Invert is
         /// documented inert, yet the checkbox was offered ungated while
         /// both its neighbors carry applicability gates. Drives the
-        /// checkbox's IsEnabled so an inert option is visibly inert.</summary>
-        public bool IsInvertApplicable => !(_isHalfAxis && _isBidirectional);
+        /// checkbox's IsEnabled so an inert option is visibly inert. The same
+        /// goes for a primary of a key kind (Incremental, Ramp, Invert on
+        /// Hold): the save writes that kind's own holder and leaves the row's
+        /// flag out, so the switch would change nothing a reload keeps. The
+        /// kind's own Invert shows above it.</summary>
+        public bool IsInvertApplicable => IsPrimaryDescriptor && !(_isHalfAxis && _isBidirectional);
 
         private double _paramAccel;
 
@@ -1495,7 +1480,6 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _isBidirectional, value))
                 {
-                    OnPropertyChanged(nameof(IsTrivialDirect));
                     OnPropertyChanged(nameof(IsInvertApplicable));
                 }
             }
@@ -2072,7 +2056,6 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(ShouldShowCustomExpression));
                     OnPropertyChanged(nameof(IsStickTrimCombine));
                     OnPropertyChanged(nameof(ShouldShowTrimSettings));
-                    OnPropertyChanged(nameof(IsTrivialDirect));
                 }
             }
         }
@@ -2091,7 +2074,6 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(CombineExpressionStatus));
                     OnPropertyChanged(nameof(IsCombineExpressionValid));
                     OnPropertyChanged(nameof(IsCombineExpressionInvalid));
-                    OnPropertyChanged(nameof(IsTrivialDirect));
                 }
             }
         }

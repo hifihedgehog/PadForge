@@ -204,7 +204,6 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Mga mapping</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Mga stick</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Mga trigger</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Trigger sa wala</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Trigger sa tuo</value></data>
@@ -274,9 +273,7 @@
   <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>Nagdudugang nin saro pang pares nin button.</value></data>
   <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Hinahali an pares nin button na ini.</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>I-click tanganing i-test an wala na motor</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Wala na motor</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>I-click tanganing i-test an too na motor</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Too na motor</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>I-map an gabos</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>I-map: {0}</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopyahon an gabos na mapping asin settings sa clipboard</value></data>
@@ -334,7 +331,6 @@
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Pundohon an rumble</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Wala na motor</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Motor sa tuo</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Kaputan</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Nasa tahaw</value></data>
@@ -381,7 +377,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Numero kan touchpad</value></data>
   <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>Long press</value></data>
 
@@ -439,7 +434,6 @@
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
 
   <!-- ═══ Device Object Names (gamepad) ═══ -->
   <data name="DevObj_LeftStickX" xml:space="preserve"><value>Walang stick X</value></data>
@@ -869,7 +863,6 @@
   <data name="VrCtl_X" xml:space="preserve"><value>X kan controller</value></data>
   <data name="VrCtl_Y" xml:space="preserve"><value>Y kan controller</value></data>
   <data name="VrCtl_Z" xml:space="preserve"><value>Z kan controller</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Trigger</value></data>
   <data name="VrCtl_Menu" xml:space="preserve"><value>Button kan menu</value></data>
   <data name="Dashboard_HeadTrackingOpenXrRuntime" xml:space="preserve"><value>OpenXR runtime</value></data>
   <data name="Dashboard_HeadTrackingOpenXrSystemDefault" xml:space="preserve"><value>Default kan sistema</value></data>
@@ -889,7 +882,6 @@
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Mga key: {0}</value></data>
   <data name="Handheld_Export" xml:space="preserve"><value>I-export…</value></data>
   <data name="Handheld_Import" xml:space="preserve"><value>I-import…</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>I-reset an mga mouse gesture</value></data>
   <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>I-reset an mga gesture button</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Pawala</value></data>
@@ -913,6 +905,7 @@
   <data name="Workshop_TagAll" xml:space="preserve"><value>Gabos</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Probaran giraray</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Buksan sa Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Daan</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>I-save an profile</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>I-save asin i-apply</value></data>
   <data name="Macro_Toggle" xml:space="preserve"><value>Toggle</value></data>

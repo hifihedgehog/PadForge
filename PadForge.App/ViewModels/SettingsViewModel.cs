@@ -97,11 +97,9 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(MidiInstallTooltip));
             OnPropertyChanged(nameof(SteamVrStatusText));
             OnPropertyChanged(nameof(SteamVrSentence));
-            // Both build their text from Strings.Instance, so they are exactly
-            // as culture-dependent as the two above and were the pair this
-            // handler missed. The Remote Link protection picker and its hint
-            // kept the previous language until something else re-read them.
-            OnPropertyChanged(nameof(IdentityProtectionModes));
+            // The Remote Link protection hint builds its text from
+            // Strings.Instance, so it is as culture-dependent as the two
+            // above. The picker's entries reword themselves.
             OnPropertyChanged(nameof(IdentityProtectionHint));
             // A paired PC's state line and its fingerprint's gamepad-only
             // word are built from the string table on every read.
@@ -516,12 +514,15 @@ namespace PadForge.ViewModels
         // ── Remote Link identity protection mode (issue #138 — thumb-drive portability) ──
 
         /// <summary>Dropdown options, in index order: 0 Secure, 1 password-portable,
-        /// 2 open-portable. Plain language — no crypto jargon.</summary>
-        public System.Collections.Generic.IReadOnlyList<string> IdentityProtectionModes => new[]
+        /// 2 open-portable. Plain language, no crypto jargon. One list for
+        /// the life of the page, whose entries reword themselves on a
+        /// language change: a list replaced under the box left it with no
+        /// pick.</summary>
+        public System.Collections.Generic.IReadOnlyList<GyroLabeledOption> IdentityProtectionModes { get; } = new[]
         {
-            PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityModeSecure,
-            PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityModePortablePassword,
-            PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityModePortableOpen,
+            new GyroLabeledOption(() => PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityModeSecure, "0"),
+            new GyroLabeledOption(() => PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityModePortablePassword, "1"),
+            new GyroLabeledOption(() => PadForge.Resources.Strings.Strings.Instance.RemoteLink_IdentityModePortableOpen, "2"),
         };
 
         private bool _suppressIdentityModeChange;
@@ -535,13 +536,13 @@ namespace PadForge.ViewModels
             set
             {
                 // A negative index is never a user pick. It is what Selector
-                // writes back when its ItemsSource is replaced, and
-                // IdentityProtectionModes hands out a NEW array on every read,
-                // so raising it on a language change blanked the box and
-                // pushed -1 into the source. InputService then turned that
-                // into mode 0, which matches no current mode, so it did not
-                // early-return and called EnsureIdentityUnlocked: changing the
-                // app language popped the Remote Link password dialog.
+                // writes back when its list is replaced, which a language
+                // change once did here: it pushed -1 into the source,
+                // InputService turned that into mode 0, which matches no
+                // current mode, so it did not early-return and called
+                // EnsureIdentityUnlocked, and changing the app language
+                // popped the Remote Link password dialog. The list is fixed
+                // now, and the guard stays for any clearing write.
                 if (value < 0) return;
                 if (SetProperty(ref _identityProtectionModeIndex, value) && !_suppressIdentityModeChange)
                 {
@@ -1904,6 +1905,7 @@ namespace PadForge.ViewModels
                 if (!SetProperty(ref _enableAutoProfileSwitching, value)) return;
                 foreach (var item in ProfileItems)
                     item.SwitchesByGame = value;
+                OnPropertyChanged(nameof(ShowsInFront));
             }
         }
 
@@ -1927,8 +1929,14 @@ namespace PadForge.ViewModels
         public string ForegroundExeName
         {
             get => _foregroundExeName;
-            set => SetProperty(ref _foregroundExeName, value);
+            set { if (SetProperty(ref _foregroundExeName, value)) OnPropertyChanged(nameof(ShowsInFront)); }
         }
+
+        /// <summary>Whether the In front now line shows: switching by game
+        /// is on and a program in front has been read. Until one is, the
+        /// line would name "-" and say what profile it has.</summary>
+        public bool ShowsInFront => _enableAutoProfileSwitching
+            && !string.IsNullOrEmpty(_foregroundExeName) && _foregroundExeName != "-";
 
         private bool _isForegroundMatched;
 
@@ -2469,15 +2477,6 @@ namespace PadForge.ViewModels
             return order.Select(t => new ProfileTypeChip(t, counts[t])).ToArray();
         }
 
-        private static string NameOf(Engine.VirtualControllerType type) => type switch
-        {
-            Engine.VirtualControllerType.PlayStation => Strings.Instance.ControllerType_PlayStation,
-            Engine.VirtualControllerType.Extended => Strings.Instance.ControllerType_Extended,
-            Engine.VirtualControllerType.Midi => Strings.Instance.ControllerType_MIDI,
-            Engine.VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
-            Engine.VirtualControllerType.Nintendo => Strings.Instance.ControllerType_Nintendo,
-            Engine.VirtualControllerType.Vr => Strings.Instance.ControllerType_VR,
-            _ => Strings.Instance.ControllerType_Xbox,
-        };
+        private static string NameOf(Engine.VirtualControllerType type) => SlotTypeIconMap.NameFor(type);
     }
 }

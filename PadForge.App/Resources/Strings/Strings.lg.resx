@@ -213,9 +213,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>Tewali</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Nyiga okugezesa motor ya kkono</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Motor ya kkono</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Nyiga okugezesa motor ya ddyo</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Motor ya ddyo</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Ensibuko</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Omuwendo</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>

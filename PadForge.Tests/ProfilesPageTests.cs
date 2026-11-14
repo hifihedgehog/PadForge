@@ -374,7 +374,7 @@ namespace PadForge.Tests
             Assert.Equal("{StaticResource CardTitle}", (string)title.Attribute("Style"));
             Assert.Equal("15", (string)title.Attribute("FontSize"));
             var inFront = Named(parts[0], "InFrontLine");
-            Assert.Equal("{Binding EnableAutoProfileSwitching, Converter={StaticResource BoolToVisibilityConverter}}", (string)inFront.Attribute("Visibility"));
+            Assert.Equal("{Binding ShowsInFront, Converter={StaticResource BoolToVisibilityConverter}}", (string)inFront.Attribute("Visibility"));
             // A cold dot, lit in its own color.
             var dot = Named(inFront, "InFrontDot");
             Assert.Equal("{DynamicResource ColdBrush}", (string)dot.Attribute("Fill"));
@@ -484,12 +484,13 @@ namespace PadForge.Tests
             Assert.Equal("{Binding Profiles_ExternalControlTooltip" + S, (string)fold.Attribute("Description"));
             Assert.Equal("{StaticResource OnOffTextConverter}",
                 (string)Assert.Single(fold.Descendants(), e => e.Name.LocalName == "FoldCard.Summary").Elements().Single().Attribute("Converter"));
-            var action = ById(fold, "Profiles_ResetExternalControl");
-            Assert.Equal("FoldCard.HeaderAction", action.Parent.Name.LocalName);
-            Assert.Equal("EnableExternalControl", (string)action.Attribute("CommandParameter"));
+            // One setting, one reset: the row's. The head has no Reset All,
+            // as neither board draws one (2026-11-13).
+            Assert.DoesNotContain(fold.Descendants(), e => e.Name.LocalName == "FoldCard.HeaderAction");
             var check = ById(fold, "Profiles_ExternalControl");
             Assert.Equal("{Binding EnableExternalControl}", (string)check.Attribute("IsChecked"));
-            ById(fold, "Reset_SettingsViewModel_EnableExternalControl_133");
+            var reset = Assert.Single(fold.Descendants(), e => (string)e.Attribute("CommandParameter") == "EnableExternalControl");
+            Assert.Equal("Reset_SettingsViewModel_EnableExternalControl_133", (string)reset.Attribute(reset.Attributes().Single(a => a.Name.LocalName == "AutomationProperties.AutomationId").Name));
         }
 
         [Fact]

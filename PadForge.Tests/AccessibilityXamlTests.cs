@@ -447,6 +447,9 @@ namespace PadForge.Tests
                 "  <Button><TextBlock Text=\"{Binding RecordIcon}\" FontFamily=\"Segoe MDL2 Assets\"/></Button>\n" +
                 "  <Button><TextBlock Text=\"{Binding RecordIcon}\" FontFamily=\"Segoe MDL2 Assets\"/><Button.ToolTip><TextBlock Text=\"{Binding RecordText}\"/></Button.ToolTip></Button>\n" +
                 "  <Button Content=\"&#xE711;\"><Button.ToolTip><TextBlock Text=\"" + Key + "\"/></Button.ToolTip></Button>\n" +
+                "  <Button Content=\"&#xE711;\"><Button.ToolTip><MultiBinding Converter=\"{StaticResource FormatTextConverter}\"><Binding Path=\"A\"/><Binding Path=\"B\"/></MultiBinding></Button.ToolTip></Button>\n" +
+                "  <Button Content=\"&#xE711;\"><Button.ToolTip><Binding Path=\"StatusText\"/></Button.ToolTip></Button>\n" +
+                "  <Button Content=\"&#xE711;\"><Button.ToolTip><MultiBinding Converter=\"{StaticResource FormatTextConverter}\"><Binding ElementName=\"Other\" Path=\"Text\"/></MultiBinding></Button.ToolTip></Button>\n" +
                 "</StackPanel>");
             Assert.Equal(new[] { XamlA11yAudit.BtnNoTooltip, XamlA11yAudit.BtnTooltipElement, XamlA11yAudit.BtnNoTooltip }, f.Select(x => x.Class));
             Assert.Equal(new[] { 12, 16, 18 }, f.Select(x => x.Line));
@@ -948,6 +951,12 @@ namespace PadForge.Tests
                     && Attr(first, "Text") is { Length: > 0 } text
                     && !text.Contains("ElementName", StringComparison.Ordinal) && !text.Contains("RelativeSource", StringComparison.Ordinal))
                     return (text, "element-text");
+                // A binding written as an element is a tooltip bound to a
+                // string, the same as one written in the attribute: the
+                // button's ToolTip is that string, and the name reads it
+                // (AccessibleNames.NameButton, the first of its bindings).
+                if (tip.Elements().FirstOrDefault() is XElement bound && Local(bound) is "Binding" or "MultiBinding")
+                    return ("(binding)", "attr");
                 return ("(element)", "element");
             }
             if (st.ToolTip != null || st.ToolTipTrigger)

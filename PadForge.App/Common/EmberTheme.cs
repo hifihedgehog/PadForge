@@ -89,14 +89,16 @@ namespace PadForge.Common
             // black on a white page.
             SetBrush("SteelGroundBrush", dark ? Color.FromRgb(0x0A, 0x0E, 0x15) : Color.FromRgb(0xEC, 0xED, 0xF1));
             SetBrush("SteelLineBrush", dark ? Color.FromRgb(0x2A, 0x35, 0x46) : Color.FromRgb(0xC9, 0xCD, 0xD6));
-            SetBrush("SegTrackBrush", dark ? Color.FromRgb(0x0A, 0x0E, 0x15) : Color.FromRgb(0xEC, 0xED, 0xF1));
-            SetBrush("SegTrackStrokeBrush", dark ? Color.FromRgb(0x1E, 0x27, 0x34) : Color.FromRgb(0xD6, 0xD8, 0xDE));
             // Steel chrome tokens go theme-swapped (#175 control spec §3):
             // EmberIconButton references them, and the App.xaml constants are
             // dark values, so without a light re-pin the icon buttons would
             // show dark steel chrome on white.
             SetBrush("SteelRaisedBrush", dark ? Color.FromRgb(0x18, 0x20, 0x2E) : Color.FromRgb(0xE4, 0xE7, 0xEE));
             SetBrush("SteelLineSoftBrush", dark ? Color.FromRgb(0x1E, 0x27, 0x34) : Color.FromRgb(0xD6, 0xD8, 0xDE));
+            // An icon button's fill while it is pressed: a step under the
+            // raised fill in each theme. A fixed dark value drew a
+            // near-black square under every reset pressed on the light one.
+            SetBrush("SteelPressedBrush", dark ? Color.FromRgb(0x16, 0x1D, 0x2B) : Color.FromRgb(0xD6, 0xD8, 0xDE));
             // PadForge 6 surfaces (#574): the pane (the sidebar) with its
             // hairline, the field a value is typed in, a raised control
             // under the pointer, and the engine's block at the sidebar's

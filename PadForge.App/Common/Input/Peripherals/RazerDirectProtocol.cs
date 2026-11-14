@@ -414,14 +414,14 @@ namespace PadForge.Common.Input.Peripherals
         internal static byte[] ExtendedBrightnessRead(byte transactionId, byte led)
             => Report(transactionId, 0x0F, 0x84, stackalloc byte[] { 0x01, led, 0x00 });
 
-        /// <summary>0F/80 with no argument and size 50: the device's list
-        /// of lighting regions (OpenRGB RazerController.cpp:1221).</summary>
         /// <summary>0F/81 [LED] at size 50: the effects one lighting region
         /// takes, as OpenRGB asks it (RazerController.cpp:1244-1248 at
         /// c6fc8016). A read: the command ID has its top bit set.</summary>
         internal static byte[] RegionEffectsRead(byte transactionId, byte led)
             => Report(transactionId, 0x0F, 0x81, 0x50, stackalloc byte[] { led });
 
+        /// <summary>0F/80 with no argument and size 50: the device's list
+        /// of lighting regions (OpenRGB RazerController.cpp:1221).</summary>
         internal static byte[] RegionListRead(byte transactionId)
             => Report(transactionId, 0x0F, 0x80, 0x50, ReadOnlySpan<byte>.Empty);
 

@@ -103,7 +103,6 @@
   <!-- ═══ MainWindow ═══ -->
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Ke pani ʻia nei ʻo PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Ke hoʻomaka ʻia nei ʻo PadForge…</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> hāmeʻa</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Hōʻike iā PadForge</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Ua kū ka ʻenekini</value></data>
   <data name="Main_AwaitingDevices" xml:space="preserve"><value>Ke kali nei i nā hāmeʻa</value></data>
@@ -289,7 +288,6 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Nā mapping</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Nā stick</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Nā trigger</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Trigger hema</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Trigger ʻākau</value></data>
@@ -345,15 +343,13 @@
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Nā pihi</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Holoi</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Ua holoi ʻia "{0}".</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Ua hōʻole ʻo HIDMaestro i kēia profile ma {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Ua hōʻole ʻo HIDMaestro i kēia preset ma {1}: {0}</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>ʻAʻohe mea i lawe ʻia mai. {0}</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>ʻAʻohe</value></data>
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Pio</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Mīkini hema</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Mīkini ʻākau</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Hapalua</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. -->
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Hoʻokuʻu</value></data>
@@ -417,7 +413,6 @@
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Paʻa</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Mīkini hema</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Mīkini ʻākau</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Paʻa</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Ma waena</value></data>
@@ -755,7 +750,6 @@
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Inoa</value></data>
   <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Kapa i kēia pihi</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Nā pihi: {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>ʻIole</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Hema</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>ʻĀkau</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Luna</value></data>
@@ -1094,7 +1088,7 @@
   <data name="Search_WhereSeparator" xml:space="preserve"><value>, </value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Holoi iā {0}?</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Hoʻomaka me ka ʻole o nā controller. Hoʻouka ʻia ia iā ia iho ke aia kekahi o kāna mau pāʻani ma mua.</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>ʻAʻohe polokalamu ʻē aʻe me ka puka makani i wehe ʻia.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>ʻAʻole i loaʻa kekahi puka makani ʻē aʻe i wehe ʻia.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Wehe iā {0}</value></data>
   <data name="Voice_Subtitle" xml:space="preserve"><value>E ʻōlelo i kekahi māmalaʻōlelo a kaomi ia i kekahi pihi hiki iā ʻoe ke hoʻopili. Hoʻolohe nā microphone a pau i hiki iā PadForge ke loaʻa.</value></data>
   <data name="Voice_MoreHint" xml:space="preserve"><value>Hoʻolohe Ā a Pio paha, ʻano, hilinaʻi</value></data>

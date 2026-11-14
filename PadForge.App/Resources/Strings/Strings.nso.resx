@@ -273,8 +273,8 @@
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Oketša mmala</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Dikonope</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Phumola</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro e ganne profaele ye go {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Profaele ye ga e na HID descriptor, ka gona ga go khontroulara yeo e ka dirwago ka yona.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro e ganne peakanyo ye go {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Peakanyo ye ga e na HID descriptor, ka gona ga go khontroulara yeo e ka dirwago ka yona.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Ga go selo se se tsentšwego. {0}</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
@@ -379,7 +379,6 @@
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Mokgwa</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Swara</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Motoro wa lagoja</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Swara</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Bogare</value></data>
@@ -413,7 +412,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Ka bobedi</value></data>
   <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>Tobetša nako ye telele</value></data>
   <data name="Pad_Touchpad_CustomGesture_OneFinger" xml:space="preserve"><value>Monwana o tee</value></data>
@@ -857,7 +855,6 @@
   <data name="VrCtl_Yaw" xml:space="preserve"><value>Yaw ya khontroulara</value></data>
   <data name="VrCtl_Pitch" xml:space="preserve"><value>Pitch ya khontroulara</value></data>
   <data name="VrCtl_Roll" xml:space="preserve"><value>Roll ya khontroulara</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Trigger</value></data>
   <data name="HeadTracker_StatusOpenXr_Format" xml:space="preserve"><value>E bala {0}</value></data>
   <data name="Dashboard_HeadTrackingAxisYaw" xml:space="preserve"><value>Yaw</value></data>
   <data name="Dashboard_HeadTrackingAxisPitch" xml:space="preserve"><value>Pitch</value></data>
@@ -873,7 +870,6 @@
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Ngwadiša</value></data>
   <data name="Handheld_StartOver" xml:space="preserve"><value>Thoma gape</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Dikhii: {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Mause</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Nngele</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Lagoja</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Godimo</value></data>
@@ -1258,7 +1254,7 @@
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Profaele e a tlošwa. Se se ka se bušetšwe morago.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>E thoma e se na dikhontroulara. E tsena ka bo yona ge e nngwe ya dipapadi tša yona e le ka pele.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Oketša papadi ye e šomago</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ga go na lenaneo le lengwe leo le nago le lefasetere le le bulegilego.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ga go a hwetšwa lefasetere le lengwe le le bulegilego.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tloša {0}</value></data>
   <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>E ithutilwe go {0}</value></data>
   <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>

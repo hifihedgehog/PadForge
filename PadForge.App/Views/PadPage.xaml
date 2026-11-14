@@ -33,13 +33,6 @@
              at the edit boundary, class lives in PadPage.xaml.cs. -->
         <views:FractionToPercentConverter x:Key="FractionToPercentConverter"/>
 
-        <!-- A setting's row (#574), a SettingRow: its label in the column
-             DzLabel draws (App.xaml), its control, its value and unit, and
-             its reset at the row's far right (the reset styles dock right,
-             which the row reads). A slider is 280 wide with an ember fill up
-             to its thumb, and narrows when the row has less room: it asks
-             for the 280 as a MaxWidth, which is what a SettingRow lets give
-             way. -->
         <!-- A setting that belongs to the row above it: its label starts
              16 in and reads a step quieter, and its control still starts
              where every row's does. -->
@@ -48,6 +41,13 @@
             <Setter Property="Margin" Value="16,0,12,0"/>
             <Setter Property="Foreground" Value="{DynamicResource SubRowTextBrush}"/>
         </Style>
+        <!-- A setting's row (#574), a SettingRow: its label in the column
+             DzLabel draws (App.xaml), its control, its value and unit, and
+             its reset at the row's far right (the reset styles dock right,
+             which the row reads). A slider is 280 wide with an ember fill up
+             to its thumb, and narrows when the row has less room: it asks
+             for the 280 as a MaxWidth, which is what a SettingRow lets give
+             way. -->
         <Style x:Key="DzSlider" TargetType="Slider" BasedOn="{StaticResource EmberSlider}">
             <Setter Property="Minimum" Value="0"/>
             <Setter Property="Maximum" Value="100"/>
@@ -68,12 +68,6 @@
             <Setter Property="Padding" Value="2,1"/>
             <Setter Property="ToolTip" Value="{Binding Pad_RawAxisValue, Source={x:Static strings:Strings.Instance}}"/>
         </Style>
-        <!-- A motor's live bar (#574) is ActivityBar (App.xaml), with an
-             ember fill for what reaches the device. Where a row also shows
-             what the game commands, that is a bar with a cold fill and the
-             ember one lies over it with no track of its own
-             (ActivityBarOver), so the cold that shows past the ember is
-             what the settings take off. -->
         <!-- A mapping row's live value (#574): a track 4 tall, filled in
              ember to the value's share of the output's full scale. -->
         <Style x:Key="ValueMeter" TargetType="ProgressBar" BasedOn="{StaticResource ActivityBar}">
@@ -102,6 +96,17 @@
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
             <Setter Property="Margin" Value="12,0,0,0"/>
             <Setter Property="IsTabStop" Value="False"/>
+        </Style>
+        <!-- Record and Clear of a list row. On the open row they are Tab
+             stops: nothing inside an open row records or clears it, so
+             without them the list had no way to do either from the
+             keyboard. -->
+        <Style x:Key="RowActionButton" TargetType="ui:Button" BasedOn="{StaticResource RowIconButton}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsRowSelected}" Value="True">
+                    <Setter Property="IsTabStop" Value="True"/>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
         <!-- A list head's button, 28 square, as the Macros board draws New
              Macro and the list's More. -->
@@ -260,6 +265,12 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Background" Value="{DynamicResource SteelFieldBrush}"/>
         </Style>
+        <!-- A motor's live bar (#574) is ActivityBar (App.xaml), with an
+             ember fill for what reaches the device. Where a row also shows
+             what the game commands, that is a bar with a cold fill and the
+             ember one lies over it with no track of its own
+             (ActivityBarOver), so the cold that shows past the ember is
+             what the settings take off. -->
         <Style x:Key="ActivityBarOver" TargetType="ProgressBar" BasedOn="{StaticResource ActivityBar}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -405,58 +416,6 @@
             </Style.Triggers>
         </Style>
 
-        <!-- Part switch button (RadioButton styled as tab header). The
-             Buttons section switches between Preview, Mappings and Output
-             with it, and Macros & Menus between its two. Each strip names
-             its own radio group on its buttons, so WPF never unchecks one
-             strip's choice from the other. These were the page's slot-tier
-             tabs before the six sections (#574). -->
-        <Style x:Key="TabStripButton" TargetType="RadioButton">
-            <Setter Property="Margin" Value="2,4"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="RadioButton">
-                        <!-- Artifact .tier1 .tab.sel: ember-tint fill, warm
-                             600-weight text, inset 2px bottom underline.
-                             No outline. Hover carries the ember hover glow
-                             (#175 hover-glow). -->
-                        <Border x:Name="Bd" Background="Transparent" CornerRadius="7">
-                            <Grid>
-                                <ContentPresenter Margin="12,5,12,7" VerticalAlignment="Center"
-                                                  TextBlock.Foreground="{TemplateBinding Foreground}"/>
-                                <Rectangle x:Name="Underline" Height="2" RadiusX="1" RadiusY="1"
-                                           VerticalAlignment="Bottom" Margin="6,0,6,1"
-                                           Fill="{DynamicResource EmberBrush}" Opacity="0"/>
-                            </Grid>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#1AFF6B2C"/>
-                                <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
-                                <Setter Property="TextBlock.FontWeight" Value="SemiBold"/>
-                                <Setter TargetName="Underline" Property="Opacity" Value="1"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#14FF6B2C"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- ═══════════════ #175 hover-glow styles ═══════════════
-             Where a whole class shares one hover treatment, the glow rides
-             a BasedOn style (implicit for stock chrome) so WPF-UI theme
-             brushes survive. Stock-chrome hover fills raised steel via the
-             EmberTheme PointerOver keys, a brightness-only change, so those
-             classes get the faint neutral ember. The plain Button, ComboBox,
-             TextBox, and CheckBox classes plus the EmberIconButton family
-             already carry their glow triggers in the App.xaml styles, so no
-             page-level shadows for those here. -->
-
         <!-- A group that draws nothing of its own (#574). It gives a set of
              cards one name and one AutomationId for a screen reader and a UI
              script, which a panel cannot carry. -->
@@ -474,14 +433,6 @@
 
         <!-- Shift-layer tab chips: stock RadioButton chrome. -->
         <Style x:Key="ShiftLayerTabChip" TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}">
-        </Style>
-
-        <!-- Stock-chrome item containers, page-wide (no app-level glow for
-             these two): Macros list, macro Actions list, sound packages
-             list, and every mapping-picker dropdown item. -->
-        <Style TargetType="ComboBoxItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-        </Style>
-        <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
         </Style>
 
         <!-- Adaptive-trigger mode picker (#574, on #175 competitor item
@@ -810,7 +761,7 @@
                                   Style="{DynamicResource RowOptionModePicker}"
                                   ToolTip="{Binding Pad_Mapping_Kind_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                   PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
-                        <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="Kind" SettingLabel="{Binding ResetLabel_SourceType, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_Kind_4282"/>
+                        <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="Kind" SettingLabel="{Binding Pad_Mapping_PrimaryMode, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_Kind_4282"/>
                     </controls:FlexLinePanel>
                     <!-- A primary Incremental or Ramp source saved with Invert on: the
                          switch an extra source shows for one (IsKeyInvertShown), and the
@@ -1307,7 +1258,7 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="CombineMode" SettingLabel="{Binding Pad_Combine_Label, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" AutomationProperties.AutomationId="Reset_MappingItem_CombineMode_4340"/>
+                    <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="CombineMode" SettingLabel="{Binding Pad_Combine_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_CombineMode_4340"/>
                 </controls:FlexLinePanel>
 
 
@@ -1365,7 +1316,7 @@
                      to populate the formula on selection. -->
                 <StackPanel controls:TileGridPanel.FullRow="True" x:Name="FormulaEditor" Orientation="Vertical" Margin="0,0,0,4"
                             Visibility="{Binding ShouldShowCustomExpression, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="True" Visibility="{Binding Visibility, ElementName=CustomFormulaBox}" VerticalAlignment="Center">
+                    <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="True" VerticalAlignment="Center">
                         <reset:SettingResetButton TabIndex="1" DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="CombineExpression" Visibility="{Binding Visibility, ElementName=CustomFormulaBox}" SettingLabel="{Binding ResetLabel_Formula, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_CombineExpression_4415"/>
                         <TextBox x:Name="CustomFormulaBox" TabIndex="0"
                                  Text="{Binding CombineExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -1380,13 +1331,16 @@
                                TextWrapping="Wrap">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="#16C60C"/>
+                                <!-- The theme's own status colors: a fixed
+                                     green was about 2.3 to 1 on the light
+                                     theme's card. -->
+                                <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsCombineExpressionWarning}" Value="True">
-                                        <Setter Property="Foreground" Value="#F2A33C"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding IsCombineExpressionInvalid}" Value="True">
-                                        <Setter Property="Foreground" Value="#C42B1C"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -1517,15 +1471,15 @@
                                 Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_NotEqual, Source={x:Static strings:Strings.Instance}}"/>
                         <!-- Logic + if-then-else -->
                         <Border Width="6"/>
-                        <Button Content="and" Tag=" &amp;&amp; " Style="{StaticResource FormulaChipStyle}"
+                        <Button Content="{Binding Pad_Formula_Chip_And_Face, Source={x:Static strings:Strings.Instance}}" Tag=" &amp;&amp; " Style="{StaticResource FormulaChipStyle}"
                                 Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_BothConditions, Source={x:Static strings:Strings.Instance}}"/>
-                        <Button Content="or" Tag=" || " Style="{StaticResource FormulaChipStyle}"
+                        <Button Content="{Binding Pad_Formula_Chip_Or_Face, Source={x:Static strings:Strings.Instance}}" Tag=" || " Style="{StaticResource FormulaChipStyle}"
                                 Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_EitherCondition, Source={x:Static strings:Strings.Instance}}"/>
-                        <Button Content="not" Tag="!" Style="{StaticResource FormulaChipStyle}"
+                        <Button Content="{Binding Pad_Formula_Chip_Not_Face, Source={x:Static strings:Strings.Instance}}" Tag="!" Style="{StaticResource FormulaChipStyle}"
                                 Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_FlipBool, Source={x:Static strings:Strings.Instance}}"/>
-                        <Button Content="if?" Tag=" ? " Style="{StaticResource FormulaChipStyle}"
+                        <Button Content="{Binding Pad_Formula_Chip_If_Face, Source={x:Static strings:Strings.Instance}}" Tag=" ? " Style="{StaticResource FormulaChipStyle}"
                                 Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_If, Source={x:Static strings:Strings.Instance}}"/>
-                        <Button Content="else:" Tag=" : " Style="{StaticResource FormulaChipStyle}"
+                        <Button Content="{Binding Pad_Formula_Chip_Else_Face, Source={x:Static strings:Strings.Instance}}" Tag=" : " Style="{StaticResource FormulaChipStyle}"
                                 Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_Else, Source={x:Static strings:Strings.Instance}}"/>
                         <!-- Functions -->
                         <Border Width="6"/>
@@ -2952,14 +2906,6 @@
                                          as always. -->
                                     <RadioButton.ContextMenu>
                                         <ContextMenu>
-                                            <ContextMenu.Resources>
-                                                <!-- #175 hover-glow: item hover is the stock
-                                                     subtle-fill steel highlight. StaticResource
-                                                     resolves lexically, so the page-level glow
-                                                     effect is reachable from the popup. -->
-                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
-                                                </Style>
-                                            </ContextMenu.Resources>
                                             <MenuItem Header="{Binding Pad_Shift_Configure, Source={x:Static strings:Strings.Instance}}"
                                                       Click="ShiftLayer_Configure_Click"
                                                       Tag="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
@@ -3040,12 +2986,13 @@
                                       ToolTip="{Binding Mapping_FilterDevices_Tooltip, Source={x:Static strings:Strings.Instance}}">
                             <controls:DecorativeSymbolIcon Symbol="Filter24"/>
                         </ToggleButton>
-                        <Popup IsOpen="{Binding IsChecked, ElementName=MappingDeviceFilterToggle}"
+                        <Popup IsOpen="{Binding IsChecked, ElementName=MappingDeviceFilterToggle}" Opened="DeviceFilterPopup_Opened"
                                PlacementTarget="{Binding ElementName=MappingDeviceFilterToggle}"
                                Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
                             <Border Background="{DynamicResource SteelGroundBrush}"
                                     BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
-                                    CornerRadius="6" Padding="10" MinWidth="220">
+                                    CornerRadius="6" Padding="10" MinWidth="220"
+                                    KeyboardNavigation.TabNavigation="Cycle" PreviewKeyDown="DeviceFilterPopup_KeyDown">
                                 <StackPanel>
                                     <TextBlock Text="{Binding Mapping_FilterDevices_Header, Source={x:Static strings:Strings.Instance}}"
                                                FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
@@ -3138,7 +3085,7 @@
                     <!-- Pipeline heat chips (#175 item 10): one chip per
                          transform pipeline currently rewiring this slot's
                          input. CURVE / GYRO / SHIFT / INV / DZ are mono
-                         locale-neutral tokens (DZ / PEAK / DIRECT
+                         locale-neutral tokens (DZ / PEAK
                          precedent). A chip renders only while its pipeline
                          carries configuration. The flame inside fills ember
                          while an owning row's live value is active this
@@ -3393,33 +3340,6 @@
                             </StackPanel>
                         </controls:ClickBorder>
                     </WrapPanel>
-
-                    <!-- Direct-row compression readout (#175 telemetry board):
-                         mono tertiary count of rows currently rendered as
-                         compact one-liners. DIRECT is a locale-neutral
-                         telemetry token like the radar legend's DZ / PEAK.
-                         Hidden when no row is compact. -->
-                    <StackPanel Orientation="Horizontal"
-                                HorizontalAlignment="Right" VerticalAlignment="Center"
-                                Margin="8,10,16,0">
-                        <StackPanel.Style>
-                            <Style TargetType="StackPanel">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding DirectMappingCount}" Value="0">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </StackPanel.Style>
-                        <TextBlock Text="{Binding DirectMappingCount}"
-                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
-                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                   VerticalAlignment="Center" Margin="0,0,4,0"/>
-                        <TextBlock Text="DIRECT"
-                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
-                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                   VerticalAlignment="Center"/>
-                    </StackPanel>
                     </Grid>
 
                     <!-- The view's own content. The picture's view is a page that
@@ -4244,14 +4164,15 @@
                                                         </DockPanel>
                                                         <!-- The value meter, then the row's own buttons. Record and
                                                              Clear act on the row and leave it open or closed as it
-                                                             is. None is a Tab stop: the row is one, and Enter or
-                                                             Space on it opens and closes it. -->
+                                                             is. On a closed row none is a Tab stop: the row is one,
+                                                             and Enter or Space on it opens and closes it. On the open
+                                                             row Record and Clear are Tab stops (RowActionButton). -->
                                                         <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                                                             <ProgressBar Style="{StaticResource ValueMeter}" Width="96" Margin="12,0,0,0"
                                                                          Value="{Binding LiveLevel, Mode=OneWay}"
                                                                          AutomationProperties.Name="{Binding Pad_HeaderValue, Source={x:Static strings:Strings.Instance}}"/>
                                                             <ui:Button Command="{Binding ToggleRecordCommand}" IsEnabled="{Binding IsRecordable}"
-                                                                       Style="{StaticResource RowIconButton}"
+                                                                       Style="{StaticResource RowActionButton}"
                                                                        AutomationProperties.Name="{Binding RecordButtonText, TargetNullValue=''}">
                                                                 <controls:GlyphText Text="{Binding RecordButtonIcon}" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
                                                                 <ui:Button.ToolTip>
@@ -4259,7 +4180,7 @@
                                                                 </ui:Button.ToolTip>
                                                             </ui:Button>
                                                             <ui:Button Command="{Binding ClearCommand}"
-                                                                       Style="{StaticResource RowIconButton}"
+                                                                       Style="{StaticResource RowActionButton}"
                                                                        AutomationProperties.Name="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"
                                                                        ToolTip="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}">
                                                                 <Path FlowDirection="LeftToRight" Data="M 4,4 L 12,12 M 12,4 L 4,12" Width="16" Height="16"
@@ -5257,14 +5178,21 @@
                                                  2026-07-27). -->
                                             <controls:SettingRow Grow="True" MinHeight="44"
                                                         Visibility="{Binding IsPointerStick, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Text="{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzFirstLabel}"/>
+                                                <TextBlock Text="{Binding Pad_Stick_Speed, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzFirstLabel}"/>
                                                 <Slider Value="{Binding Sensitivity, Mode=TwoWay}"
                                                         Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
                                                         Style="{StaticResource DzSlider}"/>
                                                 <TextBox Text="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Text="&#215;" Style="{StaticResource DzPercent}"/>
-                                                <ui:Button Command="{Binding ResetStickSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetSensitivity, Source={x:Static strings:Strings.Instance}}"/>
+                                                <ui:Button Command="{Binding ResetStickSensitivityCommand}" Style="{StaticResource ResetButton}">
+                                                    <ui:Button.ToolTip>
+                                                        <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                                            <Binding Path="Pad_Stick_Speed" Source="{x:Static strings:Strings.Instance}"/>
+                                                            <Binding Path="Pad_ResetSection_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                                        </MultiBinding>
+                                                    </ui:Button.ToolTip>
+                                                </ui:Button>
                                             </controls:SettingRow>
                                             <controls:SettingRow Grow="True" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_Stick_Center, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzFirstLabel}"/>
@@ -5497,7 +5425,7 @@
                                             </Border>
                                             <!-- Radar legend + peak readout (#175 competitor item 3):
                                                  one quiet mono row aligned to the radar edges. Chips
-                                                 follow the ChipCold / ChipEmber / steel tint grammar at
+                                                 follow the ChipEmber / steel tint grammar at
                                                  legend scale (mono 9px). RAW/OUT reuse the instrument
                                                  caption strings. DZ and PEAK are locale-neutral
                                                  telemetry tokens like the axis-unit formats in
@@ -5553,14 +5481,17 @@
                                                  grid so changing values never resize the instrument. -->
                                             <Grid HorizontalAlignment="Center" Margin="0,10,0,0" Width="300">
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="38"/>
+                                                    <!-- As wide as the longer caption and 8 more, 38 at the
+                                                         least: the word is seven letters in some languages
+                                                         and stood past a column of a fixed 38. -->
+                                                    <ColumnDefinition Width="Auto" MinWidth="38"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <TextBlock Grid.Row="0" Grid.Column="0"
+                                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,8,0"
                                                            Text="{Binding Instr_Raw, Source={x:Static strings:Strings.Instance}}"
                                                            FontFamily="{StaticResource TelemetryFontFamily}"
                                                            FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
@@ -5568,7 +5499,7 @@
                                                            Text="{Binding InDisplay, Mode=OneWay}"
                                                            FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11.5"
                                                            Foreground="{DynamicResource ColdBrush}"/>
-                                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,3,0,0"
+                                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,3,8,0"
                                                            Text="{Binding Instr_Out, Source={x:Static strings:Strings.Instance}}"
                                                            FontFamily="{StaticResource TelemetryFontFamily}"
                                                            FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
@@ -6416,7 +6347,7 @@
                                                     </Grid.RowDefinitions>
                                                     <TextBlock Text="{Binding Instr_Raw, Source={x:Static strings:Strings.Instance}}"
                                                                FontFamily="{StaticResource TelemetryFontFamily}"
-                                                               FontSize="11" Width="36"
+                                                               FontSize="11" MinWidth="36"
                                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                                VerticalAlignment="Center" Margin="0,0,12,8"/>
                                                     <ProgressBar Grid.Column="1" Value="{Binding RawNorm, Mode=OneWay}"
@@ -6431,7 +6362,7 @@
                                                                VerticalAlignment="Center" Margin="12,0,0,8"/>
                                                     <TextBlock Grid.Row="1" Text="{Binding Instr_Out, Source={x:Static strings:Strings.Instance}}"
                                                                FontFamily="{StaticResource TelemetryFontFamily}"
-                                                               FontSize="11" Width="36"
+                                                               FontSize="11" MinWidth="36"
                                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                                VerticalAlignment="Center" Margin="0,0,12,0"/>
                                                     <ProgressBar Grid.Row="1" Grid.Column="1" Value="{Binding LiveValue, Mode=OneWay}"
@@ -6564,12 +6495,12 @@
                                     </controls:SettingRow>
                                     <!-- Custom activation input (discussion #216): cross-device
                                          picker + Record + Reset, the Aim Engage cluster's exact
-                                         arrangement (see the Gyro tab's engage-button row). The
+                                         arrangement (the Aim Engage row of the Gyro card in Motion and Touch). The
                                          recorded input arms the Custom gesture session while
                                          held. Axes engage past half travel. -->
                                     <controls:SettingRow Grow="True" MinHeight="44" IsEnabled="{Binding MouseGestureButtonCustom}">
-                                        <TextBlock Foreground="{DynamicResource TextFillColorPrimaryBrush}" Text="{Binding Pad_MouseGestures_CustomInput, Source={x:Static strings:Strings.Instance}}"
-                                                   Width="242" VerticalAlignment="Top" Margin="0,4,0,0"
+                                        <TextBlock Text="{Binding Pad_MouseGestures_CustomInput, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                   VerticalAlignment="Top" Margin="0,4,12,0"
                                                    ToolTip="{Binding Pad_MouseGestures_CustomInput_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <StackPanel Orientation="Vertical">
                                             <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
@@ -6623,8 +6554,7 @@
                                                 ToolTip="{Binding Pad_ResetMouseGestureCustomInput, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
                                     <controls:SettingRow Grow="True" MinHeight="44">
-                                        <TextBlock Foreground="{DynamicResource TextFillColorPrimaryBrush}" Text="{Binding Pad_MouseGestures_FlickThreshold, Source={x:Static strings:Strings.Instance}}"
-                                                   Width="242" VerticalAlignment="Center"
+                                        <TextBlock Text="{Binding Pad_MouseGestures_FlickThreshold, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                    ToolTip="{Binding Pad_MouseGestures_FlickThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <TextBox Width="80" VerticalAlignment="Center" TextAlignment="Center"
                                                  Text="{Binding MouseGestureFlickThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" IsEnabled="{Binding DataContext.MouseGesturesEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
@@ -6632,8 +6562,7 @@
                                                 ToolTip="{Binding Pad_ResetMouseGestureFlickThreshold, Source={x:Static strings:Strings.Instance}}"/>
                                     </controls:SettingRow>
                                     <controls:SettingRow Grow="True" MinHeight="44">
-                                        <TextBlock Foreground="{DynamicResource TextFillColorPrimaryBrush}" Text="{Binding Pad_MouseGestures_Cooldown, Source={x:Static strings:Strings.Instance}}"
-                                                   Width="242" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Pad_MouseGestures_Cooldown, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                         <TextBox Width="80" VerticalAlignment="Center" TextAlignment="Center"
                                                  Text="{Binding MouseGestureCooldownMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" IsEnabled="{Binding DataContext.MouseGesturesEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="ms" VerticalAlignment="Center" Margin="6,0,0,0"/>
@@ -7210,8 +7139,7 @@
                             </controls:FoldCard.HeaderAction>
                             <controls:FoldCard.Summary>
                                 <MultiBinding Converter="{StaticResource OnOffTextConverter}">
-                                    <Binding Path="LeftTriggerRouteSource"/>
-                                    <Binding Path="RightTriggerRouteSource"/>
+                                    <Binding Path="IsTriggerRoutingOn"/>
                                     <Binding Path="Common_On" Source="{x:Static strings:Strings.Instance}"/>
                                     <Binding Path="Common_Off" Source="{x:Static strings:Strings.Instance}"/>
                                 </MultiBinding>
@@ -8435,6 +8363,17 @@
                             <Setter Property="FontSize" Value="12"/>
                             <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
                         </Style>
+                        <!-- A reading named by a word of the language. The word takes
+                             the room it needs, and the number a width that holds its
+                             longest value, -2000.0 degrees a second, so a changing
+                             digit moves nothing whatever the word's length. -->
+                        <Style x:Key="LiveReadingName" TargetType="TextBlock" BasedOn="{StaticResource LiveReading}">
+                            <Setter Property="Width" Value="Auto"/>
+                            <Setter Property="Margin" Value="0,2,6,2"/>
+                        </Style>
+                        <Style x:Key="LiveReadingNumber" TargetType="TextBlock" BasedOn="{StaticResource LiveReading}">
+                            <Setter Property="Width" Value="78"/>
+                        </Style>
                         <!-- A slider's value where it is read and not typed: the
                              value box's face, size and inset. -->
                         <Style x:Key="DzValueText" TargetType="TextBlock">
@@ -8506,9 +8445,18 @@
                                         <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                             <TextBlock Text="{Binding Settings_GyroLiveRate_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                             <WrapPanel controls:SettingRow.Fills="True" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding GyroLiveRatePitch, StringFormat={}Pitch {0:+0.0;-0.0;0.0}°/s}" Style="{StaticResource LiveReading}"/>
-                                                <TextBlock Text="{Binding GyroLiveRateYaw, StringFormat={}Yaw {0:+0.0;-0.0;0.0}°/s}" Style="{StaticResource LiveReading}"/>
-                                                <TextBlock Text="{Binding GyroLiveRateRoll, StringFormat={}Roll {0:+0.0;-0.0;0.0}°/s}" Style="{StaticResource LiveReading}"/>
+                                                <StackPanel Orientation="Horizontal" MinWidth="120">
+                                                    <TextBlock Text="{Binding Dashboard_HeadTrackingAxisPitch, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource LiveReadingName}"/>
+                                                    <TextBlock Text="{Binding GyroLiveRatePitch, StringFormat={}{0:+0.0;-0.0;0.0}°/s}" Style="{StaticResource LiveReadingNumber}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" MinWidth="120">
+                                                    <TextBlock Text="{Binding Dashboard_HeadTrackingAxisYaw, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource LiveReadingName}"/>
+                                                    <TextBlock Text="{Binding GyroLiveRateYaw, StringFormat={}{0:+0.0;-0.0;0.0}°/s}" Style="{StaticResource LiveReadingNumber}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" MinWidth="120">
+                                                    <TextBlock Text="{Binding Dashboard_HeadTrackingAxisRoll, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource LiveReadingName}"/>
+                                                    <TextBlock Text="{Binding GyroLiveRateRoll, StringFormat={}{0:+0.0;-0.0;0.0}°/s}" Style="{StaticResource LiveReadingNumber}"/>
+                                                </StackPanel>
                                             </WrapPanel>
                                         </controls:SettingRow>
                                         <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
@@ -8766,7 +8714,8 @@
                                      ItemsSource is the slot's combined cross-device InputChoice
                                      list, populated by InputService.PopulateAvailableInputs.
                                      Subtitle under the picker shows the owning device, matching
-                                     the mapping row pattern at PadPage.xaml:2785-2800. -->
+                                     a mapping row, which shows its source's device under the source
+                                     (PrimarySourceDeviceLabel). -->
                                 <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                     <TextBlock Text="{Binding Settings_GyroAimEngageButton, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                VerticalAlignment="Top" Margin="0,4,12,0"
@@ -9781,6 +9730,7 @@
                                            Hint="{Binding Pad_InBoxGestures_FoldHint, Source={x:Static strings:Strings.Instance}}">
                             <controls:FoldCard.HeaderAction>
                                 <ui:Button Command="{Binding ResetTouchpadInBoxCardCommand}" Style="{StaticResource ResetAllButton}"
+                                        IsEnabled="{Binding TouchpadInBoxSectionEnabled}"
                                         Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}"
                                         ToolTip="{Binding Pad_ResetTouchpadInBox, Source={x:Static strings:Strings.Instance}}"/>
                             </controls:FoldCard.HeaderAction>
@@ -10945,19 +10895,43 @@
                                                     <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
                                                     <Slider Value="{Binding DeviceConfig.LightbarBatteryLowR, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                     <TextBox Text="{Binding DeviceConfig.LightbarBatteryLowR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                                                    <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryLowRCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryLowRCommand}" Style="{StaticResource ResetButtonTight}">
+                                                        <ui:Button.ToolTip>
+                                                            <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                                                <Binding Path="Pad_Lighting_BatteryLowColor" Source="{x:Static strings:Strings.Instance}"/>
+                                                                <Binding Path="Pad_ResetLightbarRed" Source="{x:Static strings:Strings.Instance}"/>
+                                                                <Binding Path="Pad_Lighting_KeyColors_LightColor_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                                            </MultiBinding>
+                                                        </ui:Button.ToolTip>
+                                                    </ui:Button>
                                                 </controls:SettingRow>
                                                 <controls:SettingRow MinHeight="44">
                                                     <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
                                                     <Slider Value="{Binding DeviceConfig.LightbarBatteryLowG, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                     <TextBox Text="{Binding DeviceConfig.LightbarBatteryLowG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                                                    <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryLowGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryLowGCommand}" Style="{StaticResource ResetButtonTight}">
+                                                        <ui:Button.ToolTip>
+                                                            <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                                                <Binding Path="Pad_Lighting_BatteryLowColor" Source="{x:Static strings:Strings.Instance}"/>
+                                                                <Binding Path="Pad_ResetLightbarGreen" Source="{x:Static strings:Strings.Instance}"/>
+                                                                <Binding Path="Pad_Lighting_KeyColors_LightColor_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                                            </MultiBinding>
+                                                        </ui:Button.ToolTip>
+                                                    </ui:Button>
                                                 </controls:SettingRow>
                                                 <controls:SettingRow MinHeight="44">
                                                     <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
                                                     <Slider Value="{Binding DeviceConfig.LightbarBatteryLowB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                     <TextBox Text="{Binding DeviceConfig.LightbarBatteryLowB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                                                    <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryLowBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryLowBCommand}" Style="{StaticResource ResetButtonTight}">
+                                                        <ui:Button.ToolTip>
+                                                            <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                                                <Binding Path="Pad_Lighting_BatteryLowColor" Source="{x:Static strings:Strings.Instance}"/>
+                                                                <Binding Path="Pad_ResetLightbarBlue" Source="{x:Static strings:Strings.Instance}"/>
+                                                                <Binding Path="Pad_Lighting_KeyColors_LightColor_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                                            </MultiBinding>
+                                                        </ui:Button.ToolTip>
+                                                    </ui:Button>
                                                 </controls:SettingRow>
                                             </StackPanel>
                                         </Border>
@@ -10996,19 +10970,43 @@
                                                     <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
                                                     <Slider Value="{Binding DeviceConfig.LightbarBatteryHighR, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                     <TextBox Text="{Binding DeviceConfig.LightbarBatteryHighR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                                                    <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryHighRCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryHighRCommand}" Style="{StaticResource ResetButtonTight}">
+                                                        <ui:Button.ToolTip>
+                                                            <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                                                <Binding Path="Pad_Lighting_BatteryHighColor" Source="{x:Static strings:Strings.Instance}"/>
+                                                                <Binding Path="Pad_ResetLightbarRed" Source="{x:Static strings:Strings.Instance}"/>
+                                                                <Binding Path="Pad_Lighting_KeyColors_LightColor_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                                            </MultiBinding>
+                                                        </ui:Button.ToolTip>
+                                                    </ui:Button>
                                                 </controls:SettingRow>
                                                 <controls:SettingRow MinHeight="44">
                                                     <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
                                                     <Slider Value="{Binding DeviceConfig.LightbarBatteryHighG, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                     <TextBox Text="{Binding DeviceConfig.LightbarBatteryHighG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                                                    <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryHighGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryHighGCommand}" Style="{StaticResource ResetButtonTight}">
+                                                        <ui:Button.ToolTip>
+                                                            <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                                                <Binding Path="Pad_Lighting_BatteryHighColor" Source="{x:Static strings:Strings.Instance}"/>
+                                                                <Binding Path="Pad_ResetLightbarGreen" Source="{x:Static strings:Strings.Instance}"/>
+                                                                <Binding Path="Pad_Lighting_KeyColors_LightColor_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                                            </MultiBinding>
+                                                        </ui:Button.ToolTip>
+                                                    </ui:Button>
                                                 </controls:SettingRow>
                                                 <controls:SettingRow MinHeight="44">
                                                     <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
                                                     <Slider Value="{Binding DeviceConfig.LightbarBatteryHighB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                     <TextBox Text="{Binding DeviceConfig.LightbarBatteryHighB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                                                    <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryHighBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ui:Button Command="{Binding DeviceConfig.ResetLightbarBatteryHighBCommand}" Style="{StaticResource ResetButtonTight}">
+                                                        <ui:Button.ToolTip>
+                                                            <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                                                <Binding Path="Pad_Lighting_BatteryHighColor" Source="{x:Static strings:Strings.Instance}"/>
+                                                                <Binding Path="Pad_ResetLightbarBlue" Source="{x:Static strings:Strings.Instance}"/>
+                                                                <Binding Path="Pad_Lighting_KeyColors_LightColor_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                                            </MultiBinding>
+                                                        </ui:Button.ToolTip>
+                                                    </ui:Button>
                                                 </controls:SettingRow>
                                             </StackPanel>
                                         </Border>
@@ -11375,19 +11373,43 @@
                                             <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
                                             <Slider Value="{Binding DeviceConfig.InputReactiveR, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                             <TextBox Text="{Binding DeviceConfig.InputReactiveR, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                                            <ui:Button Command="{Binding DeviceConfig.ResetInputReactiveRCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ui:Button Command="{Binding DeviceConfig.ResetInputReactiveRCommand}" Style="{StaticResource ResetButtonTight}">
+                                                <ui:Button.ToolTip>
+                                                    <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                                        <Binding Path="Pad_Lighting_InputReactive_FixedColor" Source="{x:Static strings:Strings.Instance}"/>
+                                                        <Binding Path="Pad_ResetLightbarRed" Source="{x:Static strings:Strings.Instance}"/>
+                                                        <Binding Path="Pad_Lighting_KeyColors_LightColor_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                                    </MultiBinding>
+                                                </ui:Button.ToolTip>
+                                            </ui:Button>
                                         </controls:SettingRow>
                                         <controls:SettingRow MinHeight="44">
                                             <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
                                             <Slider Value="{Binding DeviceConfig.InputReactiveG, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                             <TextBox Text="{Binding DeviceConfig.InputReactiveG, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                                            <ui:Button Command="{Binding DeviceConfig.ResetInputReactiveGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ui:Button Command="{Binding DeviceConfig.ResetInputReactiveGCommand}" Style="{StaticResource ResetButtonTight}">
+                                                <ui:Button.ToolTip>
+                                                    <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                                        <Binding Path="Pad_Lighting_InputReactive_FixedColor" Source="{x:Static strings:Strings.Instance}"/>
+                                                        <Binding Path="Pad_ResetLightbarGreen" Source="{x:Static strings:Strings.Instance}"/>
+                                                        <Binding Path="Pad_Lighting_KeyColors_LightColor_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                                    </MultiBinding>
+                                                </ui:Button.ToolTip>
+                                            </ui:Button>
                                         </controls:SettingRow>
                                         <controls:SettingRow MinHeight="44">
                                             <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
                                             <Slider Value="{Binding DeviceConfig.InputReactiveB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                             <TextBox Text="{Binding DeviceConfig.InputReactiveB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                                            <ui:Button Command="{Binding DeviceConfig.ResetInputReactiveBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ui:Button Command="{Binding DeviceConfig.ResetInputReactiveBCommand}" Style="{StaticResource ResetButtonTight}">
+                                                <ui:Button.ToolTip>
+                                                    <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                                        <Binding Path="Pad_Lighting_InputReactive_FixedColor" Source="{x:Static strings:Strings.Instance}"/>
+                                                        <Binding Path="Pad_ResetLightbarBlue" Source="{x:Static strings:Strings.Instance}"/>
+                                                        <Binding Path="Pad_Lighting_KeyColors_LightColor_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                                    </MultiBinding>
+                                                </ui:Button.ToolTip>
+                                            </ui:Button>
                                         </controls:SettingRow>
                                     </StackPanel>
                                 </Border>
@@ -11426,10 +11448,10 @@
                              for a device that drives strips of a length only its user knows
                              (LightMap.Strips: ASUS Aura headers, Cooler Master's ARGB
                              controllers, the Razer ARGB controller, GaiZhongGai's hubs). A
-                             row per strip, as the Lighting Hold row is laid out: the label
-                             column is 210, the box the app's proven NumberBox width of 200
-                             (Dashboard port boxes), and a reset for the row. Above Key
-                             Colors, since a count changes the lights that card shows. -->
+                             row per strip, laid out as the section's other rows: the label
+                             in its 170 column (DzLabel), a number box 120 to 200 wide, and
+                             a reset for the row. Above Key Colors, since a count changes
+                             the lights that card shows. -->
                         <Border x:Name="LedStripsCard" Style="{StaticResource CardBorder}" Visibility="Collapsed">
                             <StackPanel>
                                 <DockPanel LastChildFill="False" Margin="0,0,0,4">
@@ -12080,8 +12102,9 @@
                                      widest option is the Spanish last one at
                                      525.33px, so 534 leaves about 9px of slack, as
                                      the Base Color card's pickers have. The label
-                                     takes the page's label column, 230 wide, so the
-                                     picker starts where every row's control starts.
+                                     takes the section's label column (DzLabel, 170
+                                     wide), so the picker starts where every row's
+                                     control starts.
                                      The widest label is the Spanish one at 158px.
                                      Re-measure if these strings change.
                                      Typing a letter selects nothing here: it would
@@ -12178,9 +12201,22 @@
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <DockPanel LastChildFill="False" Margin="0,0,0,4">
-                                    <TextBlock Text="{Binding Pad_Audio_Output_Header, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource CardTitle}"
-                                               ToolTip="{Binding Pad_Audio_Output_Desc, Source={x:Static strings:Strings.Instance}}"/>
+                                    <!-- The paragraph says how a Sony pad's sound travels (its USB
+                                         endpoint, Sony's frames over Bluetooth), so it is the
+                                         title's tooltip for a Sony pad alone. A Wii Remote's
+                                         speaker and the haptic tones of a Joy-Con or a Steam
+                                         controller go another way. -->
+                                    <TextBlock Text="{Binding Pad_Audio_Output_Header, Source={x:Static strings:Strings.Instance}}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource CardTitle}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding SelectedDeviceHasDspChain}" Value="True">
+                                                        <Setter Property="ToolTip" Value="{Binding Pad_Audio_Output_Desc, Source={x:Static strings:Strings.Instance}}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                     <ui:Button Command="{Binding ResetSoundOutputAllCommand}" Style="{StaticResource ResetAllButton}"
                                             Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
                                             ToolTip="{Binding Pad_Audio_Reset_All, Source={x:Static strings:Strings.Instance}}"/>
@@ -12446,8 +12482,8 @@
 
                                 <!-- Headphone jack hardware volume (DualSense / Edge, and a
                                      DualShock 4 over Bluetooth, which writes the same level
-                                     into its split L/R bytes, #528). Sits directly under
-                                     Master Volume as its hardware sibling. The value is
+                                     into its split L/R bytes, #528). Sits in the Sound
+                                     Output card's More row. The value is
                                      written into the pad's firmware register, so it holds
                                      with no app in the loop. HeadphoneVolumeUp/Down macro
                                      actions step this same setting. -->
@@ -13156,7 +13192,10 @@
                                                     <ContextMenu>
                                                         <MenuItem Header="{Binding Common_Duplicate, Source={x:Static strings:Strings.Instance}}" Command="{Binding DuplicateMacroCommand}"/>
                                                         <MenuItem Header="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyMacroCommand}"/>
+                                                        <!-- Shown for a macro fired by a recorded trigger, as the Clear
+                                                             button was in the trigger's own panel before it came here. -->
                                                         <MenuItem Header="{Binding Macro_ClearTrigger, Source={x:Static strings:Strings.Instance}}" Command="{Binding SelectedMacro.ClearTriggerCommand}"
+                                                                  Visibility="{Binding SelectedMacro.ShowsTriggerComboEditor, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                   AutomationProperties.AutomationId="MacroClearTrigger"/>
                                                         <Separator/>
                                                         <MenuItem Header="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Command="{Binding RemoveMacroCommand}"
@@ -13439,10 +13478,10 @@
                                             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsCustomExpressionWarning}" Value="True">
-                                                    <Setter Property="Foreground" Value="#CA5010"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding IsCustomExpressionInvalid}" Value="True">
-                                                    <Setter Property="Foreground" Value="#E81123"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -13464,9 +13503,6 @@
                                             <Setter Property="FontSize" Value="11"/>
                                             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="FormulaChip_PreviewMouseLeftButtonDown"/>
                                             <EventSetter Event="PreviewMouseMove" Handler="FormulaChip_PreviewMouseMove"/>
-                                            <!-- #175 hover-glow: based on DefaultButtonStyle
-                                                 directly (not the page implicit), so the
-                                                 neutral glow trigger rides here. -->
                                         </Style>
                                     </WrapPanel.Resources>
                                     <!-- Variable chips: a..z. Visibility tracks VariableCount so
@@ -13518,11 +13554,11 @@
                                     <Button Content="=" Tag=" == " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_Equal, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content="≠" Tag=" != " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_NotEqual, Source={x:Static strings:Strings.Instance}}"/>
                                     <Border Width="6"/>
-                                    <Button Content="and" Tag=" &amp;&amp; " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_BothConditions, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Button Content="or" Tag=" || " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_EitherCondition, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Button Content="not" Tag="!" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_FlipBool, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Button Content="if?" Tag=" ? " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_If, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Button Content="else:" Tag=" : " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_Else, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Formula_Chip_And_Face, Source={x:Static strings:Strings.Instance}}" Tag=" &amp;&amp; " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_BothConditions, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Formula_Chip_Or_Face, Source={x:Static strings:Strings.Instance}}" Tag=" || " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_EitherCondition, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Formula_Chip_Not_Face, Source={x:Static strings:Strings.Instance}}" Tag="!" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_FlipBool, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Formula_Chip_If_Face, Source={x:Static strings:Strings.Instance}}" Tag=" ? " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_If, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Button Content="{Binding Pad_Formula_Chip_Else_Face, Source={x:Static strings:Strings.Instance}}" Tag=" : " Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_Else, Source={x:Static strings:Strings.Instance}}"/>
                                     <Border Width="6"/>
                                     <Button Content="abs" Tag="abs(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_Abs, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Content="min" Tag="min(" Style="{StaticResource MacroFormulaChipStyle}" Click="FormulaChip_Click" common:BidiText.ToolTip="{Binding Pad_Formula_Chip_Min, Source={x:Static strings:Strings.Instance}}"/>
@@ -13554,8 +13590,6 @@
                                             <Setter Property="Padding" Value="8,3"/>
                                             <Setter Property="Margin" Value="0,0,4,3"/>
                                             <Setter Property="FontSize" Value="11"/>
-                                            <!-- #175 hover-glow: DefaultButtonStyle bypasses
-                                                 the implicit Button glow, so it rides here. -->
                                         </Style>
                                     </WrapPanel.Resources>
                                     <Button Content="{Binding Macro_Expression_Recipe_Single, Source={x:Static strings:Strings.Instance}}" Tag="a"
@@ -13765,7 +13799,7 @@
                                             <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding MacroDisconnect_Target_Label, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBox SelectedValue="{Binding DisconnectTarget, Mode=TwoWay}"
                                                       SelectedValuePath="Tag"
-                                                      Width="220" VerticalAlignment="Center"
+                                                      MinWidth="220" common:ComboBoxWidthBehavior.SizeToItems="True" VerticalAlignment="Center"
                                                       ToolTip="{Binding MacroAction_DisconnectController_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                                 <ComboBoxItem Content="{Binding MacroDisconnect_TriggeringDevice, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroDisconnectTarget.TriggeringDevice}"/>
                                                 <ComboBoxItem Content="{Binding MacroDisconnect_SpecificDevice, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroDisconnectTarget.SpecificDevice}"/>
@@ -13787,9 +13821,10 @@
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
                                                         </DataTemplate>
-                                    <!-- Run Program editor. Same 80px label column as every other
-                                         editor so the fields line up with the type dropdown. The
-                                         Working directory label wraps to a second line rather than clip. -->
+                                    <!-- Run Program editor. Its labels take the section's 190 column
+                                         (RowOptionLabel), as every editor's do, so the fields line up
+                                         with the type picker. The Working directory label wraps to a
+                                         second line rather than clip. -->
                                                         <DataTemplate x:Key="StepFieldsRunProgram">
                                     <StackPanel Margin="0,0,0,6">
                                         <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
@@ -13822,7 +13857,8 @@
                                          press Tab. AcceptsTab stays off on purpose: the Tab key
                                          keeps moving focus between fields, so a tab character
                                          only enters the text via paste (the tooltip says so).
-                                         Same 80px label column as the other editors. -->
+                                         Its labels take the section's 190 column, as the other
+                                         editors' do. -->
                                                         <DataTemplate x:Key="StepFieldsTextBlock">
                                     <StackPanel Margin="0,0,0,6">
                                         <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
@@ -13853,7 +13889,7 @@
                                         <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_SetGyroEngaged_Mode_Label, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBox SelectedValue="{Binding SetGyroEngagedMode, Mode=TwoWay}"
                                                   SelectedValuePath="Tag"
-                                                  Width="160" VerticalAlignment="Center"
+                                                  MinWidth="160" common:ComboBoxWidthBehavior.SizeToItems="True" VerticalAlignment="Center"
                                                   ScrollViewer.VerticalScrollBarVisibility="Visible"
                                                   ToolTip="{Binding Macro_SetGyroEngaged_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                             <ComboBoxItem Content="{Binding Macro_SetGyroEngaged_Toggle, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroSetGyroEngagedMode.Toggle}"/>
@@ -13889,7 +13925,7 @@
                                         <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_CursorRecenterMode_Label, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBox SelectedValue="{Binding CursorRecenterMode, Mode=TwoWay}"
                                                   SelectedValuePath="Tag"
-                                                  Width="160" VerticalAlignment="Center"
+                                                  MinWidth="160" common:ComboBoxWidthBehavior.SizeToItems="True" VerticalAlignment="Center"
                                                   ToolTip="{Binding MacroAction_MouseRecenter_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                             <ComboBoxItem Content="X+Y" Tag="{x:Static vm:CursorRecenterMode.XAndY}"/>
                                             <ComboBoxItem Content="X" Tag="{x:Static vm:CursorRecenterMode.XOnly}"/>
@@ -13905,7 +13941,7 @@
                                             <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_CursorPinMode_Label, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBox SelectedValue="{Binding CursorPinMode, Mode=TwoWay}"
                                                       SelectedValuePath="Tag"
-                                                      Width="160" VerticalAlignment="Center"
+                                                      MinWidth="160" common:ComboBoxWidthBehavior.SizeToItems="True" VerticalAlignment="Center"
                                                       ToolTip="{Binding MacroAction_MouseFixPosition_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                                 <ComboBoxItem Content="X+Y" Tag="{x:Static vm:CursorPinMode.XAndY}"/>
                                                 <ComboBoxItem Content="X" Tag="{x:Static vm:CursorPinMode.XOnly}"/>
@@ -13937,7 +13973,7 @@
                                             <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_CursorClampMode_Label, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBox SelectedValue="{Binding CursorClampMode, Mode=TwoWay}"
                                                       SelectedValuePath="Tag"
-                                                      Width="160" VerticalAlignment="Center"
+                                                      MinWidth="160" common:ComboBoxWidthBehavior.SizeToItems="True" VerticalAlignment="Center"
                                                       ToolTip="{Binding MacroAction_MouseLimitRegion_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                                 <ComboBoxItem Content="X+Y" Tag="{x:Static vm:CursorClampMode.XAndY}"/>
                                                 <ComboBoxItem Content="X" Tag="{x:Static vm:CursorClampMode.XOnly}"/>
@@ -14333,7 +14369,7 @@
                                                 </ComboBox>
                                                 <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="KeyColorRest" SettingLabel="{Binding Pad_Lighting_KeyColors_Others, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_KeyColorRest_55705"/>
                                             </controls:FlexLinePanel>
-                                            <StackPanel Orientation="Horizontal" Margin="128,0,0,6"
+                                            <StackPanel Orientation="Horizontal" Margin="202,0,0,6"
                                                         Visibility="{Binding IsKeyRestColorShown, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <views:ColorPickerControl HorizontalAlignment="Left"
                                                                           Red="{Binding KeyRestR, Mode=TwoWay}"
@@ -14391,7 +14427,7 @@
                                                         IsEnabled="{Binding CanAddDreamcastFrame}"/>
                                                 <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="DreamcastFrames" SettingLabel="{Binding Macro_Dreamcast_Pictures, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_DreamcastFrames_3301"/>
                                             </controls:FlexLinePanel>
-                                            <ItemsControl ItemsSource="{Binding DreamcastFrameImages}" Margin="88,0,0,6">
+                                            <ItemsControl ItemsSource="{Binding DreamcastFrameImages}" Margin="202,0,0,6">
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>
                                                         <WrapPanel/>
@@ -14431,7 +14467,7 @@
                                                         <DataTemplate x:Key="StepFieldsKeyboardScreenKind">
                                     <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                         <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_KeyboardScreen_Kind, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBox SelectedIndex="{Binding ScreenKindIndex, Mode=TwoWay}" Width="180" VerticalAlignment="Center"
+                                        <ComboBox SelectedIndex="{Binding ScreenKindIndex, Mode=TwoWay}" MinWidth="180" common:ComboBoxWidthBehavior.SizeToItems="True" VerticalAlignment="Center"
                                                   AutomationProperties.Name="{Binding Macro_KeyboardScreen_Kind, Source={x:Static strings:Strings.Instance}}">
                                             <ComboBoxItem Content="{Binding KeyboardScreens_Kind_Monochrome, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding KeyboardScreens_Kind_Color, Source={x:Static strings:Strings.Instance}}"/>
@@ -14468,7 +14504,7 @@
                                                         <DataTemplate x:Key="StepFieldsScreenOverlayTarget">
                                     <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                         <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_KeyboardScreen_Overlay, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBox ItemsSource="{Binding ScreenOverlayChoices}" DisplayMemberPath="Display" SelectedValuePath="Value" SelectedValue="{Binding ScreenOverlayNumber, Mode=TwoWay}" Width="180" VerticalAlignment="Center"
+                                        <ComboBox ItemsSource="{Binding ScreenOverlayChoices}" DisplayMemberPath="Display" SelectedValuePath="Value" SelectedValue="{Binding ScreenOverlayNumber, Mode=TwoWay}" MinWidth="180" common:ComboBoxWidthBehavior.SizeToItems="True" VerticalAlignment="Center"
                                                   AutomationProperties.Name="{Binding Macro_KeyboardScreen_Overlay, Source={x:Static strings:Strings.Instance}}"/>
                                         <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="ScreenOverlayNumber" SettingLabel="{Binding Macro_KeyboardScreen_Overlay, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_ScreenOverlayNumber_55709"/>
                                     </controls:FlexLinePanel>
@@ -14485,7 +14521,7 @@
                                                         IsEnabled="{Binding CanAddScreenFrame}"/>
                                                 <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="ScreenFrames" SettingLabel="{Binding Macro_Dreamcast_Pictures, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_ScreenFrames_13102"/>
                                             </controls:FlexLinePanel>
-                                            <ItemsControl ItemsSource="{Binding ScreenFrameImages}" Margin="88,0,0,6">
+                                            <ItemsControl ItemsSource="{Binding ScreenFrameImages}" Margin="202,0,0,6">
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>
                                                         <WrapPanel/>
@@ -14525,7 +14561,7 @@
                                         <StackPanel>
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding DreamcastScreen_Mode_Label, Source={x:Static strings:Strings.Instance}}"/>
-                                                <ComboBox SelectedIndex="{Binding ScreenModeIndex, Mode=TwoWay}" Width="180" VerticalAlignment="Center"
+                                                <ComboBox SelectedIndex="{Binding ScreenModeIndex, Mode=TwoWay}" MinWidth="180" common:ComboBoxWidthBehavior.SizeToItems="True" VerticalAlignment="Center"
                                                           AutomationProperties.Name="{Binding DreamcastScreen_Mode_Label, Source={x:Static strings:Strings.Instance}}">
                                                     <ComboBoxItem Content="{Binding KeyboardScreens_Mode_Off, Source={x:Static strings:Strings.Instance}}"/>
                                                     <ComboBoxItem Content="{Binding DreamcastScreen_Mode_ProfileName, Source={x:Static strings:Strings.Instance}}"/>
@@ -14549,7 +14585,7 @@
                                         <StackPanel>
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_Stopwatch_Action, Source={x:Static strings:Strings.Instance}}"/>
-                                                <ComboBox SelectedIndex="{Binding StopwatchActionIndex, Mode=TwoWay}" Width="180" VerticalAlignment="Center"
+                                                <ComboBox SelectedIndex="{Binding StopwatchActionIndex, Mode=TwoWay}" MinWidth="180" common:ComboBoxWidthBehavior.SizeToItems="True" VerticalAlignment="Center"
                                                           AutomationProperties.Name="{Binding Macro_Stopwatch_Action, Source={x:Static strings:Strings.Instance}}">
                                                     <ComboBoxItem Content="{Binding MacroAction_Stopwatch_StartPause, Source={x:Static strings:Strings.Instance}}"/>
                                                     <ComboBoxItem Content="{Binding MacroAction_Stopwatch_Reset, Source={x:Static strings:Strings.Instance}}"/>
@@ -14566,7 +14602,7 @@
                                         <StackPanel>
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_Pan_Direction, Source={x:Static strings:Strings.Instance}}"/>
-                                                <ComboBox SelectedIndex="{Binding PanDirectionIndex, Mode=TwoWay}" Width="180" VerticalAlignment="Center"
+                                                <ComboBox SelectedIndex="{Binding PanDirectionIndex, Mode=TwoWay}" MinWidth="180" common:ComboBoxWidthBehavior.SizeToItems="True" VerticalAlignment="Center"
                                                           AutomationProperties.Name="{Binding Macro_Pan_Direction, Source={x:Static strings:Strings.Instance}}">
                                                     <ComboBoxItem Content="{Binding Pad_ScrollLeft, Source={x:Static strings:Strings.Instance}}"/>
                                                     <ComboBoxItem Content="{Binding Pad_ScrollRight, Source={x:Static strings:Strings.Instance}}"/>
@@ -14795,7 +14831,7 @@
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_PointerSetModeName, Source={x:Static strings:Strings.Instance}}"/>
-                                                <ComboBox VerticalAlignment="Center" Width="240" SelectedValuePath="Tag"
+                                                <ComboBox VerticalAlignment="Center" MinWidth="240" common:ComboBoxWidthBehavior.SizeToItems="True" SelectedValuePath="Tag"
                                                           SelectedValue="{Binding PointerSetMode, Mode=TwoWay}">
                                                     <ComboBoxItem Content="{Binding Pad_Pointer_Mode_Mouse, Source={x:Static strings:Strings.Instance}}" Tag="Mouse"/>
                                                     <ComboBoxItem Content="{Binding Pad_Pointer_Mode_FpsMouse, Source={x:Static strings:Strings.Instance}}" Tag="FpsMouse"/>
@@ -14809,7 +14845,10 @@
                                     <!-- Switch Layer card (#377): one-shot jump to a shift
                                          layer on this slot. Choices are the slot's own tab
                                          strip (Base + every authored layer), the same
-                                         name/mask pairs the layer-scope picker uses. -->
+                                         name/mask pairs the layer-scope picker uses.
+                                         They stand in a list of their own, kept in place
+                                         when the tabs are rebuilt, so the picker keeps
+                                         its pick. -->
                                                         <DataTemplate x:Key="StepFieldsSwitchLayer">
                                         <StackPanel>
                                             <TextBlock Text="{Binding Macro_SwitchLayer_Hint, Source={x:Static strings:Strings.Instance}}"
@@ -14818,7 +14857,7 @@
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                                 <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_SwitchLayerName, Source={x:Static strings:Strings.Instance}}"/>
                                                 <ComboBox VerticalAlignment="Center" Width="240"
-                                                          ItemsSource="{Binding DataContext.LayerTabs, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                          ItemsSource="{Binding DataContext.SwitchLayerChoices, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                           SelectedValue="{Binding SwitchLayerMask, Mode=TwoWay}"
                                                           SelectedValuePath="LayerMask"
                                                           DisplayMemberPath="LayerName"/>
@@ -14879,9 +14918,12 @@
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
                                                 <reset:SettingResetButton controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" Command="{Binding ResetSettingCommand}" CommandParameter="RumbleStrengthRight" SettingLabel="{Binding Macro_RumbleStrengthRight_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_RumbleStrengthRight_2770"/>
                                             </controls:FlexLinePanel>
-                                            <!-- Hold ms. Reactive only -->
+                                            <!-- Hold ms. Reactive only. Labeled with the DURATION key, as
+                                                 the Lightbar step's row is and as this row's reset is: the
+                                                 mode picker above is Hold, and two rows of one name stood
+                                                 in this card. -->
                                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}" Visibility="{Binding IsRumbleReactiveHold, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_RumbleHoldMs_Label, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding Macro_TriggerHoldMs_Label, Source={x:Static strings:Strings.Instance}}"/>
                                                 <Slider Value="{Binding RumbleHoldMs, Mode=TwoWay}"
                                                         Minimum="0" Maximum="5000" Width="220"
                                                         VerticalAlignment="Center"/>
@@ -15773,7 +15815,14 @@
                                 <TextBox Text="{Binding RepeatDelayMs, Mode=TwoWay}"
                                          Width="60" VerticalAlignment="Center"/>
                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
-                                <ui:Button Command="{Binding ResetRepeatDelayMsCommand}" Style="{StaticResource ResetButton}" controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}" ToolTip="{Binding Macro_Reset_Interval, Source={x:Static strings:Strings.Instance}}"/>
+                                <ui:Button Command="{Binding ResetRepeatDelayMsCommand}" Style="{StaticResource ResetButton}" controls:FlexLinePanel.AtEnd="True" Margin="{DynamicResource RowOptionResetMargin}">
+                                    <ui:Button.ToolTip>
+                                        <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                            <Binding Path="Macro_DelayMs" Source="{x:Static strings:Strings.Instance}"/>
+                                            <Binding Path="Pad_ResetSection_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                        </MultiBinding>
+                                    </ui:Button.ToolTip>
+                                </ui:Button>
                             </controls:FlexLinePanel>
                                             </StackPanel>
                                         </controls:MoreRow>
@@ -15801,10 +15850,6 @@
                                 </Setter.Value>
                             </Setter>
                         </Style>
-                        <!-- One keyboard control row (#566), the Click Input row's
-                             shape: the slot's inputs grouped by device, the device
-                             under the list, then record and reset. The label column
-                             is shared with the card's steering rows. -->
                         <!-- A keyboard row's press point (#566): where an analog input
                              presses, the Axis-to-Button Deadzone a Mappings row with a
                              button target has, shown only where it acts. -->
@@ -15827,6 +15872,10 @@
                                            AutomationProperties.Name="{Binding Pad_Reset_AxisToButtonDeadZone, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
                         </DataTemplate>
+                        <!-- One keyboard control row (#566), the Click Input row's
+                             shape: the slot's inputs grouped by device, the device
+                             under the list, then record and reset. The label column
+                             is shared with the card's steering rows. -->
                         <DataTemplate x:Key="KeyboardControlRowTemplate" DataType="{x:Type vm:KeyboardInputRow}">
                             <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}" Margin="0,4,0,4">
                                 <TextBlock VerticalAlignment="Top" Margin="0,8,12,0" Style="{DynamicResource RowOptionLabel}" Text="{Binding Label}"/>
@@ -16712,16 +16761,31 @@
                                             </StackPanel>
                                         </Border>
                                         <!-- More, a fold at the card's foot: the settings a menu seldom needs.
-                                             Its hint names them. -->
+                                             Its hint names the rows the fold shows for this menu: each name
+                                             follows the rule that shows its row, Layer either of its two, and
+                                             the overlay's rows always show (ShownNamesConverter). A fixed
+                                             list named Fire Mode, Center Cell and Engage Deadzone on a
+                                             keyboard menu, whose fold has none of them. -->
                                         <controls:MoreRow x:Name="MenuMore" StateKey="Pad.Menus.More" Margin="0"
                                                           AutomationProperties.AutomationId="Pad_More_Menu"
                                                           Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}">
                                             <controls:MoreRow.Hint>
-                                                <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}, {4}, {5}">
+                                                <MultiBinding Converter="{StaticResource ShownNamesConverter}">
+                                                    <Binding Path="DataContext.HasShiftLayers" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
                                                     <Binding Path="Menu_Layer" Source="{x:Static strings:Strings.Instance}"/>
+                                                    <Binding Path="ShowsLayerRow"/>
+                                                    <Binding Path="Menu_Layer" Source="{x:Static strings:Strings.Instance}"/>
+                                                    <Binding Path="ShowLayerHold"/>
+                                                    <Binding Path="Menu_LayerHoldsOpen" Source="{x:Static strings:Strings.Instance}"/>
+                                                    <Binding Path="ShowWebControllerRow"/>
+                                                    <Binding Path="Menu_ShowOnWebController" Source="{x:Static strings:Strings.Instance}"/>
+                                                    <Binding Path="ShowsClickRow"/>
                                                     <Binding Path="Menu_ClickInput" Source="{x:Static strings:Strings.Instance}"/>
+                                                    <Binding Path="IsCellMenu"/>
                                                     <Binding Path="Menu_FireMode" Source="{x:Static strings:Strings.Instance}"/>
+                                                    <Binding Path="IsRadial"/>
                                                     <Binding Path="Menu_HasCenter" Source="{x:Static strings:Strings.Instance}"/>
+                                                    <Binding Path="IsCellMenu"/>
                                                     <Binding Path="Menu_Deadzone" Source="{x:Static strings:Strings.Instance}"/>
                                                     <Binding Path="Dashboard_MenuOverlay" Source="{x:Static strings:Strings.Instance}"/>
                                                 </MultiBinding>

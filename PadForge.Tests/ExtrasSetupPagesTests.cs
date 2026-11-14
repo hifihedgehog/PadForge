@@ -147,7 +147,7 @@ namespace PadForge.Tests
             var rename = Regex.Match(body, "<ui:Button [^>]*Click=\"PeerRename_Click\"[^>]*>", RegexOptions.Singleline);
             Assert.True(rename.Success);
             Assert.Contains("Tag=\"{Binding ElementName=PeerNameBox}\"", rename.Value);
-            Assert.Contains("Content=\"{Binding RemoteLink_Rename, Source={x:Static strings:Strings.Instance}}\"", rename.Value);
+            Assert.Contains("Content=\"{Binding Common_Rename, Source={x:Static strings:Strings.Instance}}\"", rename.Value);
 
             int box = body.IndexOf("<TextBox x:Name=\"PeerNameBox\"", StringComparison.Ordinal);
             Assert.True(box > 0);

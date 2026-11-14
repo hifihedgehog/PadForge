@@ -196,14 +196,12 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Rarama</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Vakuria e dua na roka</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Bokoca</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>E cakitaka na HIDMaestro na profile qo ena {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>E sega ni tiko ena profile qo e dua na HID descriptor, sa sega kina ni rawa ni caka mai kina e dua na controller.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>E cakitaka na HIDMaestro na preset qo ena {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>E sega ni tiko ena preset qo e dua na HID descriptor, sa sega kina ni rawa ni caka mai kina e dua na controller.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>E sega ni dua na ka e vakacurumi. {0}</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>Sega</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Motor imawi</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Motor imatau</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Reset kece</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Veimama</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. -->
@@ -277,7 +275,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tara / Tara vakarua / Tara vakatolu</value></data>
 
   <!-- Stick / D-pad output card -->
@@ -543,7 +540,6 @@
   <data name="Dashboard_HeadTrackingAxisRoll" xml:space="preserve"><value>Roll</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Sereka na bulukau.</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Yaca</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Mawi</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Matau</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Cake</value></data>
@@ -561,6 +557,7 @@
   <data name="Workshop_TagAll" xml:space="preserve"><value>Kece</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Tovolea tale</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Dolava ena Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Makawa</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Maroroya na profile</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_Toggle" xml:space="preserve"><value>Toggle</value></data>

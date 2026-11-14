@@ -29,7 +29,11 @@ namespace PadForge.Views
         /// <summary>Chosen polling override in milliseconds, 0 = follow the
         /// global setting (the ProfileData sentinel).</summary>
         public int PollingOverrideMs
-            => PollingChoicesMs[System.Math.Clamp(PollingRateBox.SelectedIndex, 0, PollingChoicesMs.Length - 1)];
+            => _pollingMs[System.Math.Clamp(PollingRateBox.SelectedIndex, 0, _pollingMs.Count - 1)];
+
+        /// <summary>The intervals the box holds, entry for entry: the six
+        /// choices, and a profile's own interval when it is none of them.</summary>
+        private readonly System.Collections.Generic.List<int> _pollingMs = new(PollingChoicesMs);
 
         public ProfileDialog()
         {
@@ -68,8 +72,23 @@ namespace PadForge.Views
             ExecutablePaths.Clear();
             foreach (var p in exePaths)
                 ExecutablePaths.Add(p);
-            int idx = System.Array.IndexOf(PollingChoicesMs, pollingOverrideMs);
-            PollingRateBox.SelectedIndex = idx >= 0 ? idx : 0;
+            // The engine holds an override to 1..16 ms, so that is what a
+            // stored one means. An interval the six choices do not hold (a
+            // hand-edited file) gets an entry of its own: shown as "follow
+            // the global setting", a save of this dialog wrote 0 over it.
+            int ms = pollingOverrideMs <= 0 ? 0 : System.Math.Min(pollingOverrideMs, 16);
+            int idx = _pollingMs.IndexOf(ms);
+            if (idx < 0)
+            {
+                idx = _pollingMs.FindIndex(held => held > ms);
+                if (idx < 0) idx = _pollingMs.Count;
+                _pollingMs.Insert(idx, ms);
+                var entries = new System.Collections.Generic.List<string>((string[])PollingRateBox.ItemsSource);
+                entries.Insert(idx, string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                    "{0:0.#} Hz ({1} ms)", 1000.0 / ms, ms));
+                PollingRateBox.ItemsSource = entries.ToArray();
+            }
+            PollingRateBox.SelectedIndex = idx;
             Title = Strings.Instance.ProfileDialog_Edit;
             Subtitle = Strings.Instance.ProfileDialog_EditDescription;
             // A profile with a rate of its own shows it: More opens on it.

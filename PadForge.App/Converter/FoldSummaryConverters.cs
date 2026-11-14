@@ -138,4 +138,32 @@ namespace PadForge.Converters
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
             => throw new NotSupportedException();
     }
+
+    /// <summary>
+    /// A fold's hint that names the rows the fold shows (#574). The values
+    /// come in pairs, whether a row shows and then its name, in the rows'
+    /// order, and a last value with no rule before it is a name that always
+    /// shows. A row that does not show is left out, so the hint never names
+    /// a setting the open fold lacks. A row with two rules, either of which
+    /// shows it, is given once for each, and its name is taken once.
+    /// </summary>
+    public sealed class ShownNamesConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values == null) return string.Empty;
+            var names = new System.Collections.Generic.List<string>();
+            for (int i = 0; i < values.Length; i += 2)
+            {
+                bool last = i + 1 == values.Length;
+                if (!last && values[i] is not true) continue;
+                if (values[last ? i : i + 1] is string name && name.Length > 0 && !names.Contains(name))
+                    names.Add(name);
+            }
+            return string.Join(", ", names);
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+            => throw new NotSupportedException();
+    }
 }

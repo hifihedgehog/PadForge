@@ -337,9 +337,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Ba assignation</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Ba stick</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Ba gâchette</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Retour de force</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Ba gâchette Impulse</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Ba gâchette Impulse</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain ya gâchette moko moko, kobongola ba moteur, ba vibration ya gâchette adaptative, Constant Trigger Force</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gâchette ya loboko ya mwasi</value></data>
@@ -428,8 +426,8 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Ba POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Ba bouton</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Longola</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro eboyi profil oyo na {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Profil oyo ezali na descripteur HID te, yango wana manette moko te ekoki kosalema na yango.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro eboyi préréglage oyo na {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Préréglage oyo ezali na descripteur HID te, yango wana manette moko te ekoki kosalema na yango.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Eloko moko te ekotisami. {0}</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
@@ -455,9 +453,7 @@
   <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>Ebakisi paire mosusu ya ba bouton.</value></data>
   <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Elongoli paire oyo ya ba bouton.</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Fina mpo na komeka moteur ya loboko ya mwasi</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Moteur ya loboko ya mwasi</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Fina mpo na komeka moteur ya loboko ya mobali</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Moteur ya loboko ya mobali</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Kozongisa nyonso</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Kolongola nyonso</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Motuya</value></data>
@@ -578,7 +574,6 @@
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Kosimba</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Moteur ya loboko ya mwasi</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Moteur ya loboko ya mobali</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Kosimba</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Na katikati</value></data>
@@ -650,7 +645,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Pavé tactile</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Pavé tactile</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Pavé tactile</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Nimero ya pavé tactile</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Nyonso mibale</value></data>
   <data name="Pad_Touchpad_FourWaySwipes" xml:space="preserve"><value>Glissement ngambo 4 (likoló / na nse / loboko ya mwasi / loboko ya mobali)</value></data>
@@ -792,7 +786,6 @@
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Mouvement ya souris X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Mouvement ya souris Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensibilité</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Manette {0}</value></data>
 
   <!-- ═══ Device Object Names (gamepad) ═══ -->
@@ -1259,7 +1252,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>Z ya manette</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Stick X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Stick Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Gâchette</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Bouton ya liboso</value></data>
   <data name="VrCtl_Secondary" xml:space="preserve"><value>Bouton ya mibale</value></data>
   <data name="VrCtl_Menu" xml:space="preserve"><value>Bouton ya menu</value></data>
@@ -1278,7 +1270,6 @@
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Nkombo</value></data>
   <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Pesa bouton oyo nkombo</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Batouche: {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Souris</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Bageste ya souris</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Babouton ya geste</value></data>
   <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Kozongisa bageste ya souris</value></data>
@@ -1315,6 +1306,7 @@
   <data name="Workshop_TagAll" xml:space="preserve"><value>Nyɔnsɔ</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Meka lisusu</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Fungola na Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Ya kala</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Bomba profil</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>touche {0} eyebani te</value></data>
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>bouton ya souris {0} eyebani te</value></data>
@@ -1907,7 +1899,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="PickSound_Use" xml:space="preserve"><value>Kosalela makelele</value></data>
   <data name="PickSound_Play_Format" xml:space="preserve"><value>Kobeta {0}</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Ebandaka na manette moko te. Efungwamaka yango moko tango lisano moko na yango ezali liboso.</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Programme mosusu moko te ezali na fenêtre ya kofungwama.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Fenêtre mosusu ya kofungwama emonani te.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Kolongola {0}</value></data>
   <data name="Voice_MoreHint" xml:space="preserve"><value>Koyoka efungwami to ekangami, mode, elikya</value></data>
   <data name="Voice_ListeningOff" xml:space="preserve"><value>Koyoka ekangami. Fungola yango na Mingi.</value></data>
@@ -1923,4 +1915,5 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Ba profil oyo esili kobongisama mpo na lolenge mobimba ya masano. Pona moko, tia manette nyonso oyo olingi, mpe sakana.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} na {1} efungwami</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ba profil oyo ekotisami ezali na ba version ya sika na Steam Workshop. Kotisa yango lisusu uta na Kozwa ba profil mpo na kozwa ba mbongwana.</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Mbangu</value></data>
 </root>

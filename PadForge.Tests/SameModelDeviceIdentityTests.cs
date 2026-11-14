@@ -294,14 +294,6 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>A twin that flaps back INSIDE the disconnect debounce:
-        /// its own row is still marked online but its old SDL instance has
-        /// left the present set. That is the same physical unit
-        /// re-identifying, so it rebinds to its own row (round seven, R4).
-        /// The round-six design minted a fresh row here, which orphaned the
-        /// twin's assignment (no output) and left its stale wrapper to the
-        /// debounce path's unconditional dispose, re-opening the shared
-        /// HIDAPI-context churn the 2026-07-11 audit fixed.</summary>
         /// <summary>The INVERSE of the test below, and the reason the rebind
         /// scan is gated on a live-twin collision rather than on the serial.
         /// Two same-model SERIALLESS pads, each with its own row. Pad A's SDL
@@ -348,6 +340,14 @@ namespace PadForge.Tests
             Assert.Equal(guidB, got.InstanceGuid);
         }
 
+        /// <summary>A twin that flaps back INSIDE the disconnect debounce:
+        /// its own row is still marked online but its old SDL instance has
+        /// left the present set. That is the same physical unit
+        /// re-identifying, so it rebinds to its own row (round seven, R4).
+        /// The round-six design minted a fresh row here, which orphaned the
+        /// twin's assignment (no output) and left its stale wrapper to the
+        /// debounce path's unconditional dispose, re-opening the shared
+        /// HIDAPI-context churn the 2026-07-11 audit fixed.</summary>
         [Fact]
         public void FlappedTwin_InsideTheDebounce_RebindsToItsOwnRow()
         {

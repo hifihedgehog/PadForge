@@ -50,16 +50,8 @@ namespace PadForge.ViewModels
             _ => "AddXbox360Btn",
         };
 
-        internal static string NameOf(VirtualControllerType type) => type switch
-        {
-            VirtualControllerType.PlayStation => Strings.Instance.ControllerType_PlayStation,
-            VirtualControllerType.Nintendo => Strings.Instance.ControllerType_Nintendo,
-            VirtualControllerType.Extended => Strings.Instance.ControllerType_Extended,
-            VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
-            VirtualControllerType.Midi => Strings.Instance.ControllerType_MIDI,
-            VirtualControllerType.Vr => Strings.Instance.ControllerType_VR,
-            _ => Strings.Instance.ControllerType_Xbox,
-        };
+        /// <summary>A type's name, from the one table that holds the seven.</summary>
+        internal static string NameOf(VirtualControllerType type) => SlotTypeIconMap.NameFor(type);
 
         /// <summary>What the type is for, in one line on its tile.</summary>
         internal static string LineOf(VirtualControllerType type) => type switch
@@ -89,9 +81,13 @@ namespace PadForge.ViewModels
         /// <summary>A type for Add a Controller, by the popup's rules: none
         /// past 16 controllers in all or past the type's own cap, no MIDI
         /// without a MIDI API, no VR without SteamVR. The tooltip is the
-        /// popup's, and the line says why in plain words.</summary>
+        /// popup's. The line says in plain words why a type cannot be made,
+        /// and MIDI's is the reason the Settings card gives
+        /// (<paramref name="midiReason"/>) when it has one. Every type's cap
+        /// but VR's is 16, the most in all, and with 16 the dialog's notice
+        /// says why while each tile keeps what it is for.</summary>
         internal static ControllerTypeChoice For(VirtualControllerType type, int ofType, int total,
-            bool midiAvailable, bool steamVrAvailable)
+            bool midiAvailable, bool steamVrAvailable, string midiReason = null)
         {
             var (cap, maxFormat) = CapOf(type);
             bool full = total >= InputManager.MaxPads;
@@ -108,7 +104,7 @@ namespace PadForge.ViewModels
                     : vrMissing ? Strings.Instance.Main_VR_RequiresSteamVR
                     : atCap ? string.Format(maxFormat, cap)
                     : name,
-                Line = midiMissing ? Strings.Instance.AddController_MidiNotRunning
+                Line = midiMissing ? (string.IsNullOrEmpty(midiReason) ? Strings.Instance.AddController_MidiNotRunning : midiReason)
                     : vrMissing ? Strings.Instance.AddController_VrNeedsSteamVr
                     : atCap && type == VirtualControllerType.Vr ? Strings.Instance.AddController_VrOnlyOne
                     : LineOf(type),
@@ -186,7 +182,7 @@ namespace PadForge.ViewModels
                 LineBattery = level,
                 BatteryGlyph = level.Length > 0 ? batteryGlyph ?? string.Empty : string.Empty,
                 LineTail = tail,
-                AccessibleName = hasLine ? name + ", " + line : name,
+                AccessibleName = hasLine ? name + Strings.Instance.Search_WhereSeparator + line : name,
                 AutomationId = "AddController_Device_" + index.ToString(System.Globalization.CultureInfo.InvariantCulture),
                 IsChecked = index == 0,
             };
@@ -262,16 +258,18 @@ namespace PadForge.ViewModels
         /// <summary>The dialog for these devices (each already a choice, in
         /// order) and these controllers: <paramref name="countOf"/> gives how
         /// many of a type exist and <paramref name="total"/> how many in
-        /// all.</summary>
+        /// all. <paramref name="midiReason"/> is the Settings card's reason
+        /// why MIDI is not running, or empty.</summary>
         internal static AddControllerViewModel Build(IReadOnlyList<DrivenByChoice> devices,
-            Func<VirtualControllerType, int> countOf, int total, bool midiAvailable, bool steamVrAvailable)
+            Func<VirtualControllerType, int> countOf, int total, bool midiAvailable, bool steamVrAvailable,
+            string midiReason = null)
         {
             var choices = new List<DrivenByChoice>();
             if (devices != null) choices.AddRange(devices);
             Guid selected = choices.Count > 0 ? choices[0].Device : Guid.Empty;
             if (choices.Count > 0) choices.Add(DrivenByChoice.ChooseLater());
             ControllerTypeChoice Tile(VirtualControllerType type)
-                => ControllerTypeChoice.For(type, countOf?.Invoke(type) ?? 0, total, midiAvailable, steamVrAvailable);
+                => ControllerTypeChoice.For(type, countOf?.Invoke(type) ?? 0, total, midiAvailable, steamVrAvailable, midiReason);
             return new AddControllerViewModel
             {
                 Devices = choices,

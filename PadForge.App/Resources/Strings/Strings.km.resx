@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>កំពុងបិទ PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>កំពុងចាប់ផ្ដើម PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>កំពុងសម្អាតឧបករណ៍បញ្ជានិម្មិតដែលនៅសល់ពីវគ្គមុន។</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> ឧបករណ៍</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>បន្ថែមឧបករណ៍បញ្ជា</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>បន្ថែមឧបករណ៍បញ្ជា</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>ជ្រើសអ្វីដែលហ្គេមគួរឃើញ។ ឧបករណ៍បញ្ជាត្រូវបានបន្ថែមភ្លាមៗពេលអ្នកចុច។</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>ការថតសម្រាប់ «{0}» អស់ពេល។</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>ម៉ាស៊ីនបានចាប់ផ្ដើម។</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>ម៉ាស៊ីនបានឈប់។</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>គ្មានការម៉ាប</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>កំហុស៖ {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>មិនអាចបង្កើត {0} បានទេ។</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>បានប្ដូរប្រូហ្វាល់៖ {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>កំពុងថត...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>នៅពេល</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>នៅលើ</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>បានចាត់តាំង «{0}» ទៅឧបករណ៍បញ្ជានិម្មិត {1}។</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>បានដក «{0}» ចេញពីឧបករណ៍បញ្ជានិម្មិត {1}។</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>ឧបករណ៍ត្រូវបានដកចេញ។</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>ឧបករណ៍បញ្ជានិម្មិត {0} ត្រូវបានលុប។</value></data>
@@ -516,7 +513,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>កុំព្យូទ័រដែលអ្នកបានផ្គូផ្គងសម្រាប់តំណពីចម្ងាយ។ ដកសិទ្ធិកុំព្យូទ័រមួយ ដើម្បីឈប់ឲ្យវាភ្ជាប់។ វានឹងត្រូវផ្គូផ្គងម្ដងទៀត។</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>ដកសិទ្ធិ</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>ដកសិទ្ធិទាំងអស់</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>ប្ដូរឈ្មោះ</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>ផ្ទាំងត្រួតផ្ទាំងប៉ះ</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ផ្ទៃប៉ះលើអេក្រង់ សម្រាប់ហ្គេមដែលប្រើផ្ទាំងប៉ះ PlayStation សម្រាប់អេក្រង់ប៉ះ ឬកណ្ដុរ។</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>បើកផ្ទាំងត្រួតផ្ទាំងប៉ះ</value></data>
@@ -750,7 +746,6 @@
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>លក្ខខណ្ឌអាជ្ញាប័ណ្ណ Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>លក្ខខណ្ឌ Corsair SDK</value></data>
@@ -1031,9 +1026,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>ការម៉ាប</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>ដងបញ្ជា</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>ទ្រីហ្គឺ</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>កម្លាំងតប</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>ទ្រីហ្គឺ Impulse</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ទ្រីហ្គឺ Impulse</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>កម្លាំងទ្រីហ្គឺនីមួយៗ, ការប្ដូរម៉ូទ័រ, ការញ័រទ្រីហ្គឺបន្សាំ, កម្លាំងទ្រីហ្គឺថេរ</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>បញ្ជូនពាក្យបញ្ជាម៉ូទ័រតាមទ្រីហ្គឺនីមួយៗ (Xbox Impulse Triggers) ពីឧបករណ៍បញ្ជានិម្មិតទៅឧបករណ៍បញ្ជា Xbox One, Elite ឬ Series ពិតដែលបានកំណត់។ ការញ័រទ្រីហ្គឺដែលហ្គេមបញ្ជា ឆ្លងកាត់ដោយស្វ័យប្រវត្តិ។ ការគ្រប់គ្រងខាងក្រោមកំណត់មាត្រដ្ឋានកម្លាំងតាមទ្រីហ្គឺនីមួយៗ។</value></data>
@@ -1099,7 +1092,6 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>កំណត់ទ្រីហ្គឺឆ្វេងឡើងវិញ</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>កំណត់ទ្រីហ្គឺស្ដាំឡើងវិញ</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>ទ្រីហ្គឺបន្សាំ</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>ទ្រីហ្គឺបន្សាំ</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>កំណត់បែបផែនតបរបស់ទ្រីហ្គឺ លើ DualSense ពិតដែលបានកំណត់។ បែបផែនទ្រីហ្គឺពីហ្គេម ឬពីម៉ូដហ្គេម ត្រូវបានបញ្ជូនបន្តដោយស្វ័យប្រវត្តិ។ ការកំណត់នៅទីនេះបន្ថែមស្រទាប់មួយដែលអ្នកប្រើកំណត់ ដែលដំណើរការនៅពេលគ្មានមួយណាកំពុងសរសេរ។</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>ដងបញ្ជា</value></data>
@@ -1144,7 +1136,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>ពន្លឺ</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>ពន្លឺ</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>កំណត់ពណ៌មូលដ្ឋាននៃរបារភ្លើង និងឥរិយាបថសំឡេង លើឧបករណ៍បញ្ជាពិតដែលបានកំណត់។ ការសរសេររបស់ហ្គេមមានអាទិភាពជានិច្ច។ ការកំណត់របស់អ្នកប្រើអនុវត្ត នៅពេលគ្មានហ្គេមណាកំពុងបញ្ជារបារភ្លើង។</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>ពេលកំណត់ជា «លេខអ្នកលេង» ឧបករណ៍បញ្ជាបង្ហាញអត្តសញ្ញាណអ្នកលេងរបស់ឧបករណ៍បញ្ជានិម្មិតរបស់វា ពេលទំនេរ៖ ពណ៌អ្នកលេង Sony លើរបារភ្លើង (1 ខៀវ, 2 ក្រហម, 3 បៃតង, 4 ផ្កាឈូក) និងចំណុចភ្លើងអ្នកលេងដែលត្រូវគ្នាលើ DualSense។ ឧបករណ៍ទាំងអស់នៅលើឧបករណ៍បញ្ជានិម្មិតតែមួយ បង្ហាញលេខដូចគ្នា។ ហ្គេមគ្រប់គ្រងជំនួស គ្រប់ពេលដែលវាសរសេរពន្លឺ អ្វីដែលអ្នកកំណត់នៅទីនេះមានអាទិភាពជានិច្ច ហើយ «បិទ» ធ្វើឱ្យភ្លើងងងឹតទាំងស្រុង។</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>ពេលកំណត់ជា «លេខអ្នកលេង» ឧបករណ៍បញ្ជាបង្ហាញអត្តសញ្ញាណអ្នកលេងរបស់ឧបករណ៍បញ្ជានិម្មិតរបស់វា ពេលទំនេរ៖ ពណ៌អ្នកលេង Sony លើរបារភ្លើង (1 ខៀវ, 2 ក្រហម, 3 បៃតង, 4 ផ្កាឈូក) និងចំណុចភ្លើងអ្នកលេងដែលត្រូវគ្នាលើ DualSense។ ឧបករណ៍ទាំងអស់នៅលើឧបករណ៍បញ្ជានិម្មិតតែមួយ បង្ហាញលេខដូចគ្នា។ ហ្គេមគ្រប់គ្រងជំនួស គ្រប់ពេលដែលវាសរសេរពន្លឺ។ របៀបផ្សេងទៀតដែលកំណត់នៅទីនេះ ជំនួសពណ៌អ្នកលេង ហើយ «បិទ» ធ្វើឱ្យភ្លើងងងឹតទាំងស្រុង។</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>ឧបករណ៍បញ្ជានិម្មិតនេះបំភ្លឺឧបករណ៍ ដោយរបៀបដូចគ្នានឹងរបារភ្លើង DualSense ដែលកំណត់នៅទីនេះសម្រាប់តែឧបករណ៍បញ្ជានេះ។ នៅលើឧបករណ៍បញ្ជានិម្មិត PlayStation ហ្គេមដែលសរសេររបារភ្លើង គ្រប់គ្រងជំនួស ដូចដែលវាធ្វើលើ DualSense។</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>គ្រប់គ្រងពន្លឺរបស់ឧបករណ៍នេះ</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>«បិទ» ធ្វើឱ្យឧបករណ៍បញ្ជានិម្មិតនេះឈប់បំភ្លឺឧបករណ៍។ ជួររបស់ក្រុមហ៊ុនផលិត ឬឧបករណ៍ផ្សេងទៀតប្រភេទដូចគ្នាដែលបំភ្លឺតាមរយៈកម្មវិធីដដែល នៅតែអាចកំណត់ពណ៌របស់វាបាន។ ម៉ាក្រូ Set Chroma Color នៅលើឧបករណ៍បញ្ជានិម្មិតនេះ នៅតែលាបពណ៌ឧបករណ៍ Razer។</value></data>
@@ -1259,9 +1251,9 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ទ្រីហ្គឺ</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>ប៊ូតុង POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>ប៊ូតុង</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>ប្រូហ្វាល់ដែលបាននាំចូល…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>ការកំណត់ស្រាប់ឧបករណ៍បញ្ជា…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>ឧបករណ៍បញ្ជាពង្រីក</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>គ្រប់គ្រងប្រូហ្វាល់ HIDMaestro ដែលអ្នកប្រើបាននាំចូល៖ ចាប់យកប្រូហ្វាល់ថ្មីពីឧបករណ៍ដែលបានភ្ជាប់ នាំចេញប្រូហ្វាល់ដែលមានស្រាប់ទៅ JSON ឬលុបប្រូហ្វាល់ដែលអ្នកលែងត្រូវការ។</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>គ្រប់គ្រងការកំណត់ស្រាប់ឧបករណ៍បញ្ជាដែលអ្នកបានបន្ថែម៖ នាំចូលការកំណត់ស្រាប់ពីឯកសារ ឬពីឧបករណ៍ដែលបានភ្ជាប់ នាំចេញការកំណត់ស្រាប់ទៅ JSON ឬលុបការកំណត់ស្រាប់ដែលអ្នកលែងត្រូវការ។</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>ក្លូនឧបករណ៍ 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>ម៉ាបអ័ក្ស ប៊ូតុង និងប៊ូតុង POV ទាំងអស់នៅលើឧបករណ៍ដែលបានជ្រើស ដោយផ្ទាល់ទៅលទ្ធផលនិម្មិតដែលមានលេខដូចគ្នា។ កំណត់ទំហំប្លង់តាមឧបករណ៍ ហើយជំនួសជួររបស់ឧបករណ៍នេះនៅលើរន្ធ ដោយការបញ្ជូនផ្ទាល់ 1:1។</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>ក្លូនឧបករណ៍ 1:1</value></data>
@@ -1276,18 +1268,18 @@
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>នាំចូលពីឧបករណ៍ដែលបានភ្ជាប់</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>នាំចេញ…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>លុប</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>នាំចេញ JSON ប្រូហ្វាល់</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>នាំចេញ JSON ការកំណត់ស្រាប់</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>លុបការកំណត់ស្រាប់ឬ?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>ឧបករណ៍បញ្ជាណាដែលប្រើ {0} នឹងត្រឡប់ទៅធាតុ Custom វិញ។ សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>បាននាំចេញទៅ {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>ការនាំចេញបរាជ័យ៖ {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>បានលុប «{0}»។</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>នាំចូលពីឯកសារមួយ…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>នាំចូល JSON ប្រូហ្វាល់</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>នាំចូល JSON ការកំណត់ស្រាប់</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>បាននាំចូលពី {0}។</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>ការអានបរាជ័យ៖ {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro បានបដិសេធប្រូហ្វាល់នេះនៅ {1}៖ {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ប្រូហ្វាល់នេះគ្មាន HID descriptor ទេ ដូច្នេះមិនអាចបង្កើតឧបករណ៍បញ្ជាពីវាបានទេ។</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro បានបដិសេធការកំណត់ស្រាប់នេះនៅ {1}៖ {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ការកំណត់ស្រាប់នេះគ្មាន HID descriptor ទេ ដូច្នេះមិនអាចបង្កើតឧបករណ៍បញ្ជាពីវាបានទេ។</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>គ្មានអ្វីត្រូវបាននាំចូលទេ។ {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>នាំចូល</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(ឧបករណ៍ HID គ្មានឈ្មោះ)</value></data>
@@ -1398,9 +1390,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>ប្ដូរទៅទិដ្ឋភាព 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>ប្ដូរទៅទិដ្ឋភាព 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>ចុចដើម្បីសាកល្បងម៉ូទ័រឆ្វេង</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>ម៉ូទ័រឆ្វេង</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>ចុចដើម្បីសាកល្បងម៉ូទ័រស្ដាំ</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>ម៉ូទ័រស្ដាំ</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>ម៉ាបទាំងអស់</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>ម៉ាប៖ {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>កត់ត្រាការម៉ាបទាំងអស់ម្ដងមួយៗតាមលំដាប់</value></data>
@@ -1504,6 +1494,11 @@
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>ប្ដូរពិត/មិនពិត</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>ប្រសិនបើ តាមទម្រង់ (លក្ខខណ្ឌ) ? បន្ទាប់មក : បើមិនដូច្នោះ</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>ផ្នែក «បើមិនដូច្នោះ» នៃកន្សោមលក្ខខណ្ឌ</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>និង</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>ឬ</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>មិន</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>បើ?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>បើមិនដូច្នោះ:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>ទំហំ (ដកសញ្ញាចេញ)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>តម្លៃតូចជាងក្នុងចំណោមតម្លៃពីរ</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>តម្លៃធំជាងក្នុងចំណោមតម្លៃពីរ</value></data>
@@ -1571,6 +1566,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>ក្រិតកណ្ដាល</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>ចំណុចកណ្ដាល</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>កណ្ដាល</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>ល្បឿន</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>តំបន់ងាប់</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>ការរំកិលកណ្ដាល, រាងតំបន់ងាប់ និងតម្លៃតាមអ័ក្ស, ខ្សែកោងសម្រាប់អ័ក្សនីមួយៗ, ជួរ, ការបត់ចង្កូត</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>ជួរជាលេខ, តម្លៃដើម</value></data>
@@ -1794,7 +1790,6 @@
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>ជាប់ (រក្សា)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>ម៉ូទ័រឆ្វេង</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>ម៉ូទ័រស្ដាំ</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>រក្សា</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>ថយចុះ</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1903,7 +1898,6 @@
   <data name="Pad_Touchpad" xml:space="preserve"><value>ផ្ទាំងប៉ះ</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>ផ្ទាំងប៉ះ</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>ការបញ្ចូលតាមផ្ទាំងប៉ះនីមួយៗ។ កាយវិការ (ការអូស ការប៉ះ ការច្បិច រាង) និងរបៀបទិន្នផលជាប់លាប់ (ដងបញ្ជានិម្មិត / ប៊ូតុងទិសដៅ កណ្ដុរ) ក្លាយជាប្រភពការម៉ាប ដែលអ្នកអាចភ្ជាប់ទៅលទ្ធផលណាមួយ។</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>ផ្ទាំងប៉ះ</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>លេខផ្ទាំងប៉ះ</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>ផ្ទាំងប៉ះនៅលើឧបករណ៍បញ្ជានេះ ដែលការកំណត់ខាងក្រោមត្រូវអនុវត្ត។ ផ្ទាំងប៉ះនីមួយៗរក្សាកាយវិការ អារម្មណ៍កណ្ដុរ និងតំបន់ទ្រនិចរបស់ខ្លួន។</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>ការរកឃើញកាយវិការ</value></data>
@@ -2354,8 +2348,6 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>ចលនាកណ្ដុរ Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>ភាពរសើប</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>ភាពរសើបទ្រនិច IR តាមប្រភពនីមួយៗ។ 1.0 ឈានដល់កម្រិតរុញពេញរបស់ដងបញ្ជា នៅគែមនៃវាលមើលឃើញរបស់កាមេរ៉ា។ តម្លៃលើស 1.0 ឈានដល់កម្រិតរុញពេញដោយផ្លាស់ទីការតម្រង់តិចជាង។ តម្លៃក្រោម 1.0 ត្រូវការច្រើនជាង។</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>ភាពរសើប</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>ភាពរសើបតាមប្រភពនីមួយៗ សម្រាប់អ័ក្សធម្មតា របាររំកិល ឬដងបញ្ជា / ទ្រីហ្គឺរបស់ហ្គេមផេដ។ 1.0 ទុកការបញ្ចូលដដែល។ តម្លៃលើស 1.0 ឈានដល់កម្រិតរុញពេញដោយផ្លាស់ទីតិចជាង។ តម្លៃក្រោម 1.0 ត្រូវការច្រើនជាង។</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>ហ្គេមផេដ {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>ភាពរសើបនៃចលនាកណ្ដុរតាមប្រភពនីមួយៗ។ 1.0 ឈានដល់កម្រិតរុញពេញក្នុងល្បឿនដូចកណ្ដុរពិត តម្លៃលើស 1.0 ត្រូវការចលនាតិចជាង តម្លៃក្រោមនេះត្រូវការច្រើនជាង។</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>ទម្ងន់សរុបលើបន្ទះតុល្យភាព</value></data>
@@ -2488,7 +2480,7 @@
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>ប្រូហ្វាល់ផ្ទុកដោយខ្លួនឯង នៅពេលហ្គេមមួយរបស់វានៅខាងមុខ។</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>ចាប់ផ្ដើមដោយគ្មានឧបករណ៍បញ្ជា។ វាផ្ទុកដោយខ្លួនឯង នៅពេលហ្គេមមួយរបស់វានៅខាងមុខ។</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>បន្ថែមហ្គេមដែលកំពុងដំណើរការ</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>គ្មានកម្មវិធីផ្សេងបើកផ្ទាំងវីនដូទេ។</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>រកមិនឃើញផ្ទាំងវីនដូផ្សេងទៀតដែលកំពុងបើកទេ។</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>ដកចេញ {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>អត្រាស្ទង់ ខណៈប្រូហ្វាល់នេះត្រូវបានផ្ទុក</value></data>
 
@@ -3068,7 +3060,6 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>បន្ថែមពណ៌ដើម្បីប្ដូរតាមលំដាប់ មួយពណ៌សម្រាប់ការដល់កំណត់ម្ដងៗ។</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>កំណត់ការរក្សាពន្លឺរបារភ្លើងឡើងវិញ</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>សំឡេង</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>ទ្រនិច</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>ទ្រនិច IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>តម្រង់ Wii Remote នេះទៅអេក្រង់ដោយប្រើកាមេរ៉ា IR របស់វា។ ត្រូវការរបារសេនស័រ ឬ LED អ៊ីនហ្វ្រារ៉េដពីរ នៅខាងលើ ឬខាងក្រោមអេក្រង់។ ក្រិតវាជាកាំភ្លើងពន្លឺនៅទំព័រឧបករណ៍ ដើម្បីតម្រង់ចំចំណុចពិតប្រាកដ។ ឧបករណ៍បញ្ជាដែលបានក្រិត មិនប្រើ ទីតាំងរបារសេនស័រ និង គម្លាតបញ្ឈរ ទេ។</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>ការលៃតម្រូវទ្រនិច</value></data>
@@ -3426,7 +3417,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>ដាក់ឈ្មោះស្លាកនេះ</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>ចុះឈ្មោះ</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>បានចុះឈ្មោះ</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>រកមិនឃើញឧបករណ៍អាន NFC ទេ។ ភ្ជាប់ឧបករណ៍អាន PC/SC ហើយបើកឡើងវិញ។</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>បានចាប់យកស្លាក។ បញ្ចូលឈ្មោះ ហើយចុច ចុះឈ្មោះ។ ប៉ះស្លាកផ្សេងដើម្បីជំនួសវា។</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>បានចុះឈ្មោះ «{0}»។ ប៉ះស្លាកផ្សេងទៀតដើម្បីបន្ថែម។</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>ចុះឈ្មោះ / គ្រប់គ្រងស្លាក NFC</value></data>
@@ -3453,7 +3443,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>ឧបករណ៍បញ្ជា Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>ដងបញ្ជា X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>ដងបញ្ជា Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>ទ្រីហ្គឺ</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>ប៊ូតុងក្ដាប់</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>ចុចដងបញ្ជា</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>ប៊ូតុងចម្បង</value></data>
@@ -3530,7 +3519,6 @@
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>PC ហ្គេមកាន់ដៃ និងកុំព្យូទ័រយួរដៃ មានប៊ូតុងដែលប្រព័ន្ធប្រតិបត្តិការមិនដែលបង្ហាញជាឧបករណ៍បញ្ជា៖ ប៉ាដល់ខាងក្រោយ គ្រាប់ចុចម៉ឺនុយ កង់ គ្រាប់ចុចកាត់របស់ក្រុមហ៊ុនផលិត។ បើកមុខងារនេះដើម្បីរៀនពួកវាម្ដងដោយចុចពួកវា រួចម៉ាបពួកវាដូចប៊ូតុងផ្សេងទៀត។ វាក៏បន្ថែមហ្ស៊ីរ៉ូស្កុបរបស់ម៉ាស៊ីនផ្ទាល់ជាឧបករណ៍ចលនាផងដែរ។</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>បើកប៊ូតុង PC កាន់ដៃ</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>បន្ថែមឧបករណ៍ «ប៊ូតុងលាក់» និងឧបករណ៍ «ចលនាប្រព័ន្ធ» ទៅទំព័រឧបករណ៍។ ពេលបិទ គ្មានអ្វីដំណើរការទេ។</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>កណ្ដុរ</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>កាយវិការកណ្ដុរ</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>សង្កត់ប៊ូតុងកាយវិការ គ្រវាត់ ហើយសកម្មភាពមួយដំណើរការនៅពេលអ្នកលែង៖ ឆ្វេង ស្ដាំ ឡើង ចុះ ឬការចុចធម្មតាក្រោមចម្ងាយគ្រវាត់។ ម៉ាបកាយវិការទាំងប្រាំទៅលទ្ធផលណាមួយ ឬប្រើវាជាការបញ្ចូលបង្កម៉ាក្រូ។</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>បើកកាយវិការកណ្ដុរ</value></data>
@@ -3719,8 +3707,9 @@
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>មិនអាចភ្ជាប់ទៅ Steam បានទេ</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>មិនអាចភ្ជាប់ទៅ Steam បានទេ។ សូមពិនិត្យការតភ្ជាប់របស់អ្នក។ ប្រូហ្វាល់ដែលអ្នកបាននាំចូលរួចនៅតែដំណើរការ៖ ពួកវាស្ថិតនៅលើ PC នេះ។</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>ព្យាយាមម្ដងទៀត</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>ការកំណត់រចនាសម្ព័ន្ធពីសម័យឆ្នាំ 2016 នេះមានមុន CDN ការកំណត់រចនាសម្ព័ន្ធរបស់ Steam។ ជាវវានៅក្នុង Steam ហើយ PadForge នឹងអានវាពីថត Steam របស់អ្នក។</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam មិនមានឯកសារសម្រាប់ទាញយកការកំណត់រចនាសម្ព័ន្ធនេះទេ ហើយក៏គ្មានច្បាប់ចម្លងរបស់វានៅក្នុងថត Steam របស់អ្នកដែរ។ ជាវវានៅក្នុង Steam ហើយ PadForge នឹងអានវាពីទីនោះ។</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>បើកនៅក្នុង Steam វើកស៊ប</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>ចាស់</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>ជ្រើសការកំណត់រចនាសម្ព័ន្ធមួយ ដើម្បីមើលអ្វីដែលនាំចូលមក។</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>អ្វីដែលនាំចូលមក</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>ក្លាយជា</value></data>
@@ -3946,7 +3935,6 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>ម៉ឺនុយគ្មានក្រឡាដែលបានភ្ជាប់ទេ</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>ផ្ទៃបើកម៉ឺនុយមិនត្រូវបានគាំទ្រ ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>មិនស្គាល់រូបតំណាងក្រឡាម៉ឺនុយ ({0}) ដូច្នេះក្រឡារក្សាស្លាកអត្ថបទរបស់វា</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>ឧបករណ៍រំញ័របាស</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>លទ្ធផល</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>ប៊ូតុង</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>គ្រាប់ចុច និងកណ្ដុរ</value></data>
@@ -4415,7 +4403,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>ម៉ូទ័រ</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>បែងចែកតាមទិសដៅ</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>តំបន់ងាប់កណ្ដាល</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>កំណត់ឡើងវិញទៅបិទ</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>កំណត់ឡើងវិញទៅដងបញ្ជាឆ្វេង X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>កំណត់កម្លាំងឡើងវិញ (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>កំណត់តំបន់ងាប់កណ្ដាលឡើងវិញ (2%)</value></data>
@@ -4495,7 +4482,7 @@
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>ស្រទាប់ HID ដែលបានចងក្រងចូលក្នុង SDL3.dll ដែលភ្ជាប់មកជាមួយ ដោយ Alan Ott, Signal 11 Software។</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>ប្រភពរូបតំណាង</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>រូបអណ្ដាតភ្លើងពី Material Design Icons (Pictogrammers, Apache-2.0) រូបតំណាងហ្គេមផេតទូទៅពី Ionicons (Ionic, MIT) រូបយ៉យស្ទីក Extended ពី Jam Icons (Michael Amprimo, MIT) និងរូបតំណាង Xbox និង PlayStation ពី SVG Repo ក្រោមអាជ្ញាប័ណ្ណនៅលើទំព័ររបស់រូបតំណាងនីមួយៗ។</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>រូបអណ្ដាតភ្លើងពី Material Design Icons (Pictogrammers, Apache-2.0) រូបយ៉យស្ទីក Extended ពី Jam Icons (Michael Amprimo, MIT) និងរូបតំណាង Xbox និង PlayStation ពី SVG Repo ក្រោមអាជ្ញាប័ណ្ណនៅលើទំព័ររបស់រូបតំណាងនីមួយៗ។</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>ពិធីការបញ្ជូនបន្តនៅពីក្រោយផ្លូវបម្រុងរបស់តំណពីចម្ងាយ ដែលទាក់ទងទៅម៉ាស៊ីនបញ្ជូនបន្តសាធារណៈឥតគិតថ្លៃរបស់ n0.computer តាមរបៀបដែល FlexInput ធ្វើ។ iroh៖ MIT OR Apache-2.0។ FlexInput៖ MIT។ ប្រើជាឯកសារតែប៉ុណ្ណោះ មិនមានកូដណាមួយត្រូវបានដាក់បញ្ចូលទេ។</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

@@ -38,7 +38,8 @@ namespace PadForge.ViewModels
         /// sight.</summary>
         public string Title => string.Format(CultureInfo.CurrentCulture, Strings.Instance.Extras_ScreenOverlay_Number_Format, Number);
 
-        /// <summary>One overlay needs no title or Remove button of its own.</summary>
+        /// <summary>Whether there is more than one overlay: each card shows
+        /// its Remove button only then.</summary>
         public bool OneOfSeveral => _owner.ScreenOverlays.Count > 1;
 
         private bool _enabled;

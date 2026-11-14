@@ -1,11 +1,13 @@
 ﻿# Runtime self-diagnostics harvest (code-audit lens 1o). Elevated.
 # Deploys the freshly published build, launches it with PADFORGE_DIAG
-# armed (the SdlDiagLog ring mirrors to a file), walks the pages via
-# UIA so lazily realized templates evaluate their bindings, opens the
-# Workshop browse dialog (the 1o coverage rule: page navigation alone
-# never realizes dialogs) and realizes its search results when the
-# community config lookup is on, then relaunches clean with the mirror
-# off. Acceptance bar: the harvest at
+# armed (the SdlDiagLog ring mirrors to a file), and walks the PadForge 6
+# interface via UIA so lazily realized templates evaluate their bindings:
+# every sidebar page, a controller's six sections and their parts, each
+# extra's page with its More row, Search, Add a Controller, Get Profiles'
+# three tabs (realizing the Workshop search results when the community
+# config lookup is on) and Map Key Lights (the 1o coverage rule: page
+# navigation alone never realizes dialogs). Then it relaunches clean with
+# the mirror off. Acceptance bar: the harvest at
 # C:\tmp\pfdiag-verify.log contains no error-class lines (BINDERR,
 # FAILED, exception). Progress notes: C:\tmp\pf-sweep-out.txt
 param(
@@ -227,9 +229,8 @@ public static class W {
         [W]::mouse_event(2, 0, 0, 0, [UIntPtr]::Zero)  # LDOWN
         [W]::mouse_event(4, 0, 0, 0, [UIntPtr]::Zero)  # LUP
     }
-    # Bounding-rect center, NOT GetClickablePoint: the nav rail's DataItems
-    # report clickable points that miss the pill, and Invoke/Select patterns
-    # on them bypass the visual tree this harvest exists to realize.
+    # Bounding-rect center, NOT GetClickablePoint, for an element that offers
+    # no pattern for the step: a clickable point can miss the control.
     function Click-El($el, [double]$fx = 0.5, [double]$fy = 0.5) {
         if (-not $el) { return $false }
         if (-not (InFront)) {
@@ -247,16 +248,55 @@ public static class W {
         $c = New-Object System.Windows.Automation.PropertyCondition($ae::NameProperty, $name)
         return $win.FindFirst($TS::Descendants, $c)
     }
-    function Find-NavItem($name) {
-        $c = New-Object System.Windows.Automation.PropertyCondition($ae::NameProperty, $name)
-        foreach ($el in $win.FindAll($TS::Descendants, $c)) {
-            if ($el.Current.ControlType -eq $CT::DataItem) { return $el }
-        }
-        return $null
-    }
     function Find-ByAid($aid) {
         $c = New-Object System.Windows.Automation.PropertyCondition($ae::AutomationIdProperty, $aid)
         return $win.FindFirst($TS::Descendants, $c)
+    }
+    function Find-Under($parent, $aid) {
+        if (-not $parent) { return $null }
+        $c = New-Object System.Windows.Automation.PropertyCondition($ae::AutomationIdProperty, $aid)
+        try { return $parent.FindFirst($TS::Descendants, $c) } catch { return $null }
+    }
+    # An element by its AutomationId under $parent, waited for: a page lands
+    # its content a beat after the step that shows it.
+    function Wait-Aid($parent, $aid, [int]$ms = 3000) {
+        $sw = [System.Diagnostics.Stopwatch]::StartNew()
+        do {
+            $el = Find-Under $parent $aid
+            if ($el) { return $el }
+            Start-Sleep -Milliseconds 150
+        } while ($sw.ElapsedMilliseconds -lt $ms)
+        return $null
+    }
+    # A Select answers as a click does on a sidebar entry
+    # (NavItemAutomationPeer), a section or part button and a list row, with
+    # no pointer moved. A click on the center is the fallback, as
+    # capture_all.ps1's Select-El does.
+    function Select-El($el) {
+        if (-not $el) { return $false }
+        try { $el.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern).Select(); return $true }
+        catch { return (Click-El $el) }
+    }
+    function Invoke-El($el) {
+        if (-not $el) { return $false }
+        try { $el.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke(); return $true }
+        catch { return (Click-El $el) }
+    }
+    function Expand-El($el) {
+        if (-not $el) { return $false }
+        try { $el.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Expand(); return $true }
+        catch { return $false }
+    }
+    # A page by its sidebar entry, Nav_ and the page's tag
+    # (MainWindow.SetNavAutomationId). Home's tag is Dashboard.
+    function Go($tag, $label) {
+        ForceFG $hwnd | Out-Null
+        $el = Find-ByAid ('Nav_' + $tag)
+        $ok = Invoke-El $el
+        Note "page ${label}: found=$($null -ne $el) opened=$ok"
+        if (-not $ok) { $script:notReached += $label }
+        Start-Sleep 2
+        return $ok
     }
 
     Note "foreground: $(ForceFG $hwnd)"
@@ -264,43 +304,112 @@ public static class W {
     $walkSaw = $allDesc.Count
     Note "descendants=$walkSaw"
 
-    foreach ($page in @('Profiles','Devices','Settings','About','Dashboard')) {
-        ForceFG $hwnd | Out-Null
-        $el = Find-NavItem $page
-        if (-not $el) { $el = Find-ByName $page }
-        $ok = Click-El $el
-        Note "nav ${page}: found=$($null -ne $el) clicked=$ok"
-        if (-not $ok) { $notReached += $page }
-        Start-Sleep 2
+    # ---- Every page of the sidebar (#574). Devices opens its two folds, so
+    # the rows of the devices PadForge remembers and of the other inputs
+    # realize too. ----
+    foreach ($p in @('Dashboard:Home', 'Devices:Devices', 'Profiles:Profiles', 'Settings:Settings', 'About:About')) {
+        $tag, $label = $p.Split(':')
+        if ((Go $tag $label) -and $tag -eq 'Devices') {
+            foreach ($fold in @('Devices_Fold_NotConnected', 'Devices_Fold_OtherInputs')) {
+                Note "devices fold ${fold}: $(Expand-El (Find-ByAid $fold))"
+            }
+            Start-Sleep 1
+        }
     }
 
-    # Slot 1 pad page via the Dashboard slot card grid
-    $slots = Find-ByAid 'SlotsItemsControl'
-    if ($slots) {
-        $kids = $slots.FindAll($TS::Children, $TC)
-        if ($kids.Count -gt 0) { Note "slot card click: $(Click-El $kids[0])" } else { Note 'no slot cards' }
-    } else { Note 'SlotsItemsControl not found' }
-    Start-Sleep 3
-
-    # Mappings tab if reachable
-    $mt = Find-ByAid 'MappingsTab'
-    Note "mappings tab: $(Click-El $mt)"
-    Start-Sleep 2
-
-    # ---- Workshop browse, Get Profiles' Community tab (#574) (1o coverage
-    # rule: dialogs and their item templates never realize from page
-    # navigation alone) ----
+    # ---- A controller's page: the first controller entry (Nav_Pad and its
+    # number), then each of the six sections and the parts of Buttons and of
+    # Macros & Menus, by the ids capture_all.ps1's PadTabs table names. ----
+    $navList = $win.FindFirst($TS::Children,
+        (New-Object System.Windows.Automation.PropertyCondition($ae::AutomationIdProperty, 'NavigationItems')))
+    $pad = $null
+    if ($navList) {
+        foreach ($item in $navList.FindAll($TS::Children, $TC)) {
+            if ($item.Current.AutomationId -match '^Nav_Pad\d+$') { $pad = $item; break }
+        }
+    }
     ForceFG $hwnd | Out-Null
-    Click-El (Find-NavItem 'Profiles') | Out-Null
-    Start-Sleep 2
-    $browse = $null
-    $bc = New-Object System.Windows.Automation.PropertyCondition($ae::NameProperty, 'Get Profiles')
-    foreach ($el in $win.FindAll($TS::Descendants, $bc)) {
-        if ($el.Current.ControlType -eq $CT::Button) { $browse = $el; break }
+    if ($pad -and (Invoke-El $pad)) {
+        Start-Sleep 3
+        Note "controller page: $($pad.Current.Name)"
+        $padPage = Find-ByAid 'PadPageView'
+        foreach ($step in @('Section_Buttons', 'TabController', 'MappingsTab', 'Section_Sticks', 'Section_Rumble',
+                            'Section_Motion', 'Section_Lights', 'Section_Macros', 'MacrosTab', 'MenusTab')) {
+            $ok = Select-El (Wait-Aid $padPage $step 4000)
+            Note "controller ${step}: $ok"
+            if (-not $ok) { $notReached += "controller $step" }
+            Start-Sleep 2
+        }
+        Select-El (Find-Under $padPage 'Section_Buttons') | Out-Null
+        Start-Sleep 1
+    } else {
+        Note 'no controller entry in the sidebar'
+        $notReached += 'controller page'
     }
+
+    # ---- Extras: each extra's page from its tile, with its More row open,
+    # then back to the catalog. A tile opens through Extras_Open_ and the key
+    # (ExtraTile.OpenIdPrefix). Its switch, which turns the extra on, is never
+    # touched. ----
+    if (Go 'Extras' 'Extras') {
+        foreach ($key in @('WebController', 'HeadTracking', 'GameTelemetry', 'TwitchChat', 'RemoteLink',
+                           'MotionServer', 'GameMods', 'Overlays', 'TouchpadOverlay', 'ScreenOverlay')) {
+            $opened = Invoke-El (Find-ByAid ('Extras_Open_' + $key))
+            $back = if ($opened) { Wait-Aid $win ('Extras_Back_' + $key) 3000 } else { $null }
+            if (-not $back) {
+                Note "extra ${key}: did not open"
+                $notReached += "extra $key"
+                continue
+            }
+            $more = Find-ByAid ('Extras_More_' + $key)
+            $moreOpen = if ($more) { Expand-El $more } else { 'none' }
+            Start-Sleep 2
+            Note "extra ${key}: opened, more=$moreOpen, back=$(Invoke-El $back)"
+            Start-Sleep 1
+        }
+    }
+
+    # ---- Search over Home, with a query. No key is typed: the title bar's
+    # box opens Search through its Invoke pattern, and the query is set
+    # through the query box's Value pattern, as capture_all.ps1's
+    # Capture-Search does. ----
+    if (Go 'Dashboard' 'Home') {
+        $opened = Invoke-El (Find-ByAid 'TitleSearchBox')
+        $query = if ($opened) { Wait-Aid $win 'SearchQueryBox' 3000 } else { $null }
+        if ($query) {
+            try { $query.GetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern).SetValue('deadzone'); Note 'search query set: deadzone' }
+            catch { Note "search query failed: $($_.Exception.Message)" }
+            Start-Sleep 2
+            Note "search closed: $(Invoke-El (Find-ByAid 'SearchCloseChip'))"
+        } else {
+            Note 'search did not open'
+            $notReached += 'Search'
+        }
+        Start-Sleep 1
+    }
+
+    # ---- Add a Controller, drawn inside the window, from its sidebar entry,
+    # and closed by its own close button with no tile picked. ----
+    ForceFG $hwnd | Out-Null
+    $opened = Invoke-El (Find-ByAid 'Nav_AddController')
+    $addDlg = if ($opened) { Wait-Aid $win 'AddControllerDialog' 3000 } else { $null }
+    if ($addDlg) {
+        Start-Sleep 2
+        Note "add a controller closed: $(Invoke-El (Find-Under $addDlg 'AddController_Close'))"
+    } else {
+        Note 'add a controller did not open'
+        $notReached += 'Add a Controller'
+    }
+    Start-Sleep 1
+
+    # ---- Get Profiles, opened from the Profiles page's head button, its
+    # three tabs in turn (1o coverage rule: dialogs and their item templates
+    # never realize from page navigation alone) ----
+    $browse = $null
+    if (Go 'Profiles' 'Profiles') { $browse = Find-ByAid 'Profiles_GetProfiles' }
     if ($browse) {
-        Note "get profiles click: $(Click-El $browse)"
-        # The modal is UIA-shy from the root: discover its HWND via Win32
+        Note "get profiles: $(Invoke-El $browse)"
+        # The window is UIA-shy from the root: discover its HWND via Win32
         # EnumWindows (visible PadForge-PID window that is not the main
         # HWND, larger than 400x400), then attach with FromHandle.
         $dlgHwnd = [IntPtr]::Zero
@@ -314,71 +423,77 @@ public static class W {
                 }
             }
         }
-        if ($dlgHwnd -eq [IntPtr]::Zero) { Note 'workshop dialog HWND not found' }
-        else {
+        if ($dlgHwnd -eq [IntPtr]::Zero) {
+            Note 'get profiles window not found'
+            $notReached += 'Get Profiles'
+        } else {
             $sb = New-Object System.Text.StringBuilder 256
             [W]::GetWindowText($dlgHwnd, $sb, 256) | Out-Null
-            Note "workshop dialog hwnd=$dlgHwnd title='$($sb.ToString())'"
+            Note "get profiles hwnd=$dlgHwnd title='$($sb.ToString())'"
             $dlg = [System.Windows.Automation.AutomationElement]::FromHandle($dlgHwnd)
             [W]::TakeForeground($dlgHwnd)
             Start-Sleep 1
-            # The window opens on Starters: the Community tab is selected
-            # through its radio's SelectionItem pattern, which raises Checked.
-            $tab = $dlg.FindFirst($TS::Descendants,
-                (New-Object System.Windows.Automation.PropertyCondition($ae::AutomationIdProperty, 'GetProfiles_Community')))
-            if ($tab) {
-                try { $tab.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern).Select(); Note 'community tab selected' }
-                catch { Note "community tab select failed: $($_.Exception.Message)" }
+            # The window opens on Starters. Each tab is a radio selected
+            # through its SelectionItem pattern, which raises Checked.
+            foreach ($tabName in @('Starters', 'Community', 'File')) {
+                $tab = Find-Under $dlg ('GetProfiles_' + $tabName)
+                $ok = Select-El $tab
+                Note "get profiles tab ${tabName}: $ok"
+                if (-not $ok) { $notReached += "Get Profiles $tabName" }
                 Start-Sleep 2
-            } else { Note 'community tab not found' }
-            $edit = $dlg.FindFirst($TS::Descendants,
-                (New-Object System.Windows.Automation.PropertyCondition($ae::ControlTypeProperty, $CT::Edit)))
-            if ($edit) {
-                Click-El $edit | Out-Null
-                Start-Sleep -Milliseconds 400
-                try { ($edit.GetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern)).SetValue('skyrim'); Note 'search set: skyrim' }
-                catch { Note "search SetValue failed: $($_.Exception.Message)" }
-                Start-Sleep 15  # debounce + store search + card templates realizing
-                $li = New-Object System.Windows.Automation.PropertyCondition($ae::ControlTypeProperty, $CT::ListItem)
-                $tiles = $dlg.FindAll($TS::Descendants, $li)
-                Note "workshop tiles/cards=$($tiles.Count) first='$(if ($tiles.Count) { $tiles[0].Current.Name })'"
-            } else {
-                # Not a defect on its own. CommunityConfigsPanel shows the
-                # games only when EnableCommunityConfigLookup is on
-                # (ApplyGateState); with it off the panel shows the cold gate
-                # and Get Profiles keeps its search box collapsed, so no search
-                # box exists to find. The gate view IS realized either way. Turning the
-                # setting on here would reach the live Steam network from a
-                # routine gate run, so the search view stays out of scope and
-                # the note says which of the two states was covered.
-                Note 'workshop search box not found (cold gate: community config lookup is off, search view not covered)'
+                if ($tabName -ne 'Community' -or -not $ok) { continue }
+                $edit = $dlg.FindFirst($TS::Descendants,
+                    (New-Object System.Windows.Automation.PropertyCondition($ae::ControlTypeProperty, $CT::Edit)))
+                if ($edit) {
+                    try { ($edit.GetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern)).SetValue('skyrim'); Note 'search set: skyrim' }
+                    catch { Note "search SetValue failed: $($_.Exception.Message)" }
+                    Start-Sleep 15  # debounce + store search + card templates realizing
+                    $li = New-Object System.Windows.Automation.PropertyCondition($ae::ControlTypeProperty, $CT::ListItem)
+                    $tiles = $dlg.FindAll($TS::Descendants, $li)
+                    Note "workshop tiles/cards=$($tiles.Count) first='$(if ($tiles.Count) { $tiles[0].Current.Name })'"
+                } else {
+                    # Not a defect on its own. CommunityConfigsPanel shows the
+                    # games only when EnableCommunityConfigLookup is on
+                    # (ApplyGateState). With it off the panel shows the cold gate
+                    # and Get Profiles keeps its search box collapsed, so no search
+                    # box exists to find. The gate view IS realized either way. Turning the
+                    # setting on here would reach the live Steam network from a
+                    # routine gate run, so the search view stays out of scope and
+                    # the note says which of the two states was covered.
+                    Note 'workshop search box not found (cold gate: community config lookup is off, search view not covered)'
+                }
             }
             [W]::SendMessage($dlgHwnd, 0x0010, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null  # WM_CLOSE
             Start-Sleep 2
-            Note "workshop dialog closed=$(-not [W]::IsWindowVisible($dlgHwnd))"
+            Note "get profiles closed=$(-not [W]::IsWindowVisible($dlgHwnd))"
         }
     } else {
-        Note 'browse button not found'
-        $notReached += 'Workshop browse'
+        Note 'get profiles button not found'
+        $notReached += 'Get Profiles'
     }
 
-    # ---- Map Key Lights (1o coverage rule): opened from the first row that
-    # offers it and closed again. Nothing in it is pressed, so no light on the
-    # device changes. ----
-    ForceFG $hwnd | Out-Null
-    Click-El (Find-NavItem 'Devices') | Out-Null
-    Start-Sleep 2
+    # ---- Map Key Lights (1o coverage rule): opened from the first device row
+    # that offers it and closed again. Nothing in it is pressed, so no light on
+    # the device changes. A row is picked through its SelectionItem pattern, and
+    # the button sits among the panel's tools, where it may lie below the
+    # panel's view: it is opened through its Invoke pattern, which needs no
+    # place on screen. ----
     $mapButton = $null
-    $listItem = New-Object System.Windows.Automation.PropertyCondition($ae::ControlTypeProperty, $CT::ListItem)
-    $rows = $win.FindAll($TS::Descendants, $listItem)
-    for ($i = 0; $i -lt [Math]::Min($rows.Count, 40) -and -not $mapButton; $i++) {
-        Click-El $rows[$i] | Out-Null
-        Start-Sleep -Milliseconds 500
-        $found = Find-ByName 'Map Key Lights'
-        if ($found -and $found.Current.ControlType -eq $CT::Button -and -not $found.Current.IsOffscreen) { $mapButton = $found }
+    if (Go 'Devices' 'Devices') {
+        $listItem = New-Object System.Windows.Automation.PropertyCondition($ae::ControlTypeProperty, $CT::ListItem)
+        $rows = @()
+        $scroll = Find-ByAid 'Devices_ListScroll'
+        if ($scroll) { $rows = @($scroll.FindAll($TS::Descendants, $listItem)) }
+        for ($i = 0; $i -lt [Math]::Min($rows.Count, 40) -and -not $mapButton; $i++) {
+            Select-El $rows[$i] | Out-Null
+            Start-Sleep -Milliseconds 500
+            $found = Find-ByName 'Map Key Lights'
+            if ($found -and $found.Current.ControlType -eq $CT::Button) { $mapButton = $found }
+        }
+        Note "device rows read: $($rows.Count)"
     }
     if ($mapButton) {
-        Note "map key lights click: $(Click-El $mapButton)"
+        Note "map key lights: $(Invoke-El $mapButton)"
         $dlgHwnd = [IntPtr]::Zero
         for ($t = 0; $t -lt 4 -and $dlgHwnd -eq [IntPtr]::Zero; $t++) {
             Start-Sleep 1
@@ -405,11 +520,7 @@ public static class W {
         $notReached += 'Map Key Lights'
     }
 
-    foreach ($page in @('Devices','Dashboard')) {
-        ForceFG $hwnd | Out-Null
-        Click-El (Find-NavItem $page) | Out-Null
-        Start-Sleep 1
-    }
+    Go 'Dashboard' 'Home' | Out-Null
 }
 
 # Evaluate the acceptance bar this script's own header states. It used to

@@ -134,6 +134,10 @@ namespace PadForge.Controls
         /// <summary>Mirrors Windows' animation setting. A test sets it.</summary>
         internal static Func<bool> MotionEnabled = () => SystemParameters.ClientAreaAnimation;
 
+        /// <summary>Whether the app is in front, where an endless breath may
+        /// run: the ambient motion probe's answer. A test sets it.</summary>
+        internal static Func<bool> AppInFront = () => PadForge.Common.AmbientMotionProbe.Instance.IsAppActive;
+
         private readonly Light _light;
         private int _run;
 
@@ -141,11 +145,22 @@ namespace PadForge.Controls
         {
             _light = new Light(this) { IsHitTestVisible = false, Opacity = 0 };
             AddVisualChild(_light);
-            Loaded += (_, _) => Retarget();
+            // Loaded can come again with no Unloaded between, so the probe
+            // is let go before it is taken.
+            Loaded += (_, _) =>
+            {
+                PadForge.Common.AmbientMotionProbe.Instance.PropertyChanged -= OnAmbientMotionChanged;
+                PadForge.Common.AmbientMotionProbe.Instance.PropertyChanged += OnAmbientMotionChanged;
+                Retarget();
+            };
             // A breath runs only while the halo is in a window, so a page
             // that is put away keeps no clock alive. The light stays where
             // IsLit says, so the page comes back as it was left.
-            Unloaded += (_, _) => Hold(IsLit ? 1.0 : 0.0);
+            Unloaded += (_, _) =>
+            {
+                PadForge.Common.AmbientMotionProbe.Instance.PropertyChanged -= OnAmbientMotionChanged;
+                Hold(IsLit ? 1.0 : 0.0);
+            };
         }
 
         // The light is drawn first, so it lies under the child.
@@ -191,7 +206,7 @@ namespace PadForge.Controls
             if (!_light.HasAnimatedProperties && _light.Opacity == target)
             {
                 // Already there, as when a page comes back: no fade.
-                if (IsLit && Breathes) Breathe();
+                if (IsLit && Breathes && AppInFront()) Breathe();
                 return;
             }
             int run = ++_run;
@@ -204,7 +219,7 @@ namespace PadForge.Controls
             {
                 if (run != _run) return;
                 Hold(target);
-                if (IsLit && Breathes && IsLoaded && MotionEnabled()) Breathe();
+                if (IsLit && Breathes && IsLoaded && MotionEnabled() && AppInFront()) Breathe();
             };
             _light.BeginAnimation(OpacityProperty, fade);
         }
@@ -213,12 +228,39 @@ namespace PadForge.Controls
         {
             _run++;
             IsBreathing = true;
-            _light.BeginAnimation(OpacityProperty, new DoubleAnimation(1.0, BreathLow, BreathTime)
+            var breath = new DoubleAnimation(1.0, BreathLow, BreathTime)
             {
                 AutoReverse = true,
                 RepeatBehavior = RepeatBehavior.Forever,
                 EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
-            });
+            };
+            // A slow rise and fall of opacity needs no more than 30 frames a
+            // second. WPF reads the rate from the root of a clock tree, which
+            // an animation begun on a property is.
+            Timeline.SetDesiredFrameRate(breath, 30);
+            _light.BeginAnimation(OpacityProperty, breath);
+        }
+
+        private void OnAmbientMotionChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(PadForge.Common.AmbientMotionProbe.IsAppActive)) FollowApp();
+        }
+
+        /// <summary>The app came to the front or left it. A breath is
+        /// ambient motion: an endless animation costs its frames whether or
+        /// not anyone can see it (about 18% of a core at 60 frames a second,
+        /// measured 2026-07-16), and a controller is live exactly while a
+        /// game is in front. So the breath holds at full while the app is
+        /// behind another window, minimized or in the tray, and starts again
+        /// when the app is back. A fade is finite and is left to end.</summary>
+        internal void FollowApp()
+        {
+            if (!AppInFront())
+            {
+                if (IsBreathing) Hold(1.0);
+                return;
+            }
+            if (IsLit && Breathes && IsLoaded && MotionEnabled() && !_light.HasAnimatedProperties) Breathe();
         }
 
         /// <summary>How bright the light is at a point between the child's

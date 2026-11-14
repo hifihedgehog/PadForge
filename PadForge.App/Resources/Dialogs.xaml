@@ -67,13 +67,11 @@
     <!-- A quiet action that removes something (Delete under the custom
          formats, Forget All in Map Key Lights, a preset's Delete): the quiet
          button with its words in the danger ink, which it keeps under the
-         pointer and while pressed. The button's template takes its words'
-         color in those two states from the keys shadowed here. -->
+         pointer. While pressed its words take the theme's pressed color, as
+         every button's do: a fixed ink there was pale on the light theme. -->
     <Style x:Key="DialogQuietDangerButton" TargetType="Button" BasedOn="{StaticResource DialogQuietButton}">
         <Style.Resources>
-            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#FFB08A"/>
-            <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#FFB08A"/>
-            <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent"/>
+            <SolidColorBrush x:Key="ControlElevationBorderBrush" Color="Transparent"/>
             <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="Transparent"/>
             <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="Transparent"/>
             <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="Transparent"/>
@@ -125,8 +123,14 @@
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
     </Style>
+    <!-- A label of one short word: 60 wide, as the boards draw it, and as
+         wide as its word where the word is longer. Name is 76 wide in
+         Lithuanian and Source 73 in Filipino (measured 2026-11-13), and a
+         fixed 60 broke such a word in two. -->
     <Style x:Key="DialogLabelNarrow" TargetType="TextBlock" BasedOn="{StaticResource DialogLabel}">
-        <Setter Property="Width" Value="60"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="MinWidth" Value="60"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
     </Style>
     <Style x:Key="DialogHead3" TargetType="TextBlock">
         <Setter Property="FontSize" Value="13"/>

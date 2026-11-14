@@ -296,13 +296,12 @@ namespace PadForge.Tests
         {
             var item = new MappingItem("A", "ButtonA", MappingCategory.Buttons);
             item.LoadDescriptor("Button 0");
-            Assert.True(item.IsTrivialDirect);
+            Assert.True(item.IsPrimaryDirect);
 
             item.PrimaryKindSource.Kind = "Toggle";
             Assert.True(item.IsPrimaryDescriptor);
             Assert.False(item.IsPrimaryDirect);
             Assert.False(item.IsMultiSource);
-            Assert.False(item.IsTrivialDirect);
             Assert.True(item.HasAnySource);
 
             item.PrimaryKindSource.Kind = "Incremental";

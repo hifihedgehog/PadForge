@@ -81,15 +81,6 @@ namespace PadForge.Views
             return true;
         }
 
-        /// <summary>Opens an extra's page with its More row open, for a link
-        /// or a search result that points at a setting kept under More.</summary>
-        public bool ShowMore(string key)
-        {
-            if (!Show(key)) return false;
-            if (FindName(key + "More") is MoreRow more) more.IsExpanded = true;
-            return true;
-        }
-
         private void Tile_OpenRequested(object sender, RoutedEventArgs e)
         {
             if (e.OriginalSource is not ExtraTile tile || !Show(tile.Key)) return;

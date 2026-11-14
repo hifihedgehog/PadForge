@@ -279,11 +279,6 @@ namespace PadForge.Tests
         public void AShortPage_HasNoMoreRow(string key) =>
             Assert.DoesNotContain("<controls:MoreRow", PageOf(key));
 
-        /// <summary>A page opens on its title with the extra's own switch
-        /// beside it, drawn as a switch that says On or Off, with the
-        /// switch's reset button. The switch is the card's own check box,
-        /// with the binding and the id it always had. Screen Overlay has a
-        /// switch for each overlay and none of its own.</summary>
         /// <summary>A page's head: what stands before its first card, its
         /// status card, its row of cards or its More card.</summary>
         private static string HeaderOf(string body)
@@ -302,6 +297,11 @@ namespace PadForge.Tests
             return body.Substring(0, cut);
         }
 
+        /// <summary>A page opens on its title with the extra's own switch
+        /// beside it, drawn as a switch that says On or Off, with the
+        /// switch's reset button. The switch is the card's own check box,
+        /// with the binding and the id it always had. Screen Overlay has a
+        /// switch for each overlay and none of its own.</summary>
         [Theory]
         [InlineData("WebController", "EnableWebController", "CommandParameter=\"EnableWebController\"")]
         [InlineData("RemoteLink", "EnableRemoteLink", "CommandParameter=\"EnableRemoteLink\"")]
@@ -551,7 +551,8 @@ namespace PadForge.Tests
             Assert.True(off > 0 && stopped > off && status > stopped && on > status, "Head Tracking's flame is not set with its status");
 
             string telemetry = RepoText("PadForge.App", "Services", "InputService.GameTelemetry.cs").Replace("\r", "");
-            Assert.Contains("dash.IsGameTelemetryRunning = false;\n                dash.IsGameTelemetryReceiving = false;", telemetry);
+            Assert.Contains("            if (row == null)\n            {\n                dash.IsGameTelemetryReceiving = false;", telemetry);
+            Assert.DoesNotContain("IsGameTelemetryRunning", telemetry);
             int line = telemetry.IndexOf("dash.GameTelemetryStatus = BuildGameTelemetryStatus(status, row.Format);", StringComparison.Ordinal);
             int live = telemetry.IndexOf("dash.IsGameTelemetryReceiving = status.Source != TelemetrySource.None;", StringComparison.Ordinal);
             Assert.True(line > 0 && live > line, "Game Telemetry's flame is not set with its status");

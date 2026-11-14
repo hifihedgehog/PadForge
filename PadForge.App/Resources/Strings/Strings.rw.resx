@@ -367,7 +367,6 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Amahuza</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Uduti</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Trigger</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Trigger y'ibumoso</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Trigger y'iburyo</value></data>
@@ -450,8 +449,8 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Buto</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Siba</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro yanze uyu mwirondoro kuri {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Uyu mwirondoro nta HID descriptor ufite, bityo nta kontorola yakorwa uhereye kuri wo.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro yanze iyi preset kuri {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Iyi preset nta HID descriptor ifite, bityo nta kontorola yakorwa uhereye kuri yo.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Nta kintu cyinjijwe. {0}</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(igikoresho cya HID kitagira izina)</value></data>
   <data name="Pad_ExtendedCustomize" xml:space="preserve"><value>Hindura</value></data>
@@ -474,9 +473,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Jya ku ishusho ya 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Jya ku ishusho ya 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Kanda ugerageze moteri y'ibumoso</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Moteri y'ibumoso</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Kanda ugerageze moteri y'iburyo</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Moteri y'iburyo</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Huza byose</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Huza: {0}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Gusubiza byose uko byari biri</value></data>
@@ -634,7 +631,6 @@
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Gufata</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Moteri y'ibumoso</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Moteri y'iburyo</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Gufata</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Hagati</value></data>
@@ -718,7 +714,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Nimero ya touchpad</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Kumenya ibimenyetso</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ifungura ibimenyetso by'iyi touchpad</value></data>
@@ -1325,7 +1320,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>Z ya kontorola</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Agati X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Agati Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Trigger</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Buto y'ibanze</value></data>
   <data name="VrCtl_Secondary" xml:space="preserve"><value>Buto ya kabiri</value></data>
   <data name="VrCtl_Menu" xml:space="preserve"><value>Buto ya menu</value></data>
@@ -1343,7 +1337,6 @@
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Izina</value></data>
   <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Ita iyi buto izina</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Imfunguzo: {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Imbeba</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Ibimenyetso by'imbeba</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Koresha ibimenyetso by'imbeba</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Buto z'ibimenyetso</value></data>
@@ -1880,7 +1873,7 @@
   <data name="Import_Detail_Format" xml:space="preserve"><value>{0}. {1}</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Utangira nta kontorola. Ufunguka ubwawo iyo umwe mu mikino yawo uri imbere.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Ongeraho umukino urimo gukora</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nta yindi porogaramu ifite idirishya rifunguye.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nta rindi dirishya rifunguye ryabonetse.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Kuraho {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Izina, ikimenyetso n'ibara by'urwego rw'ibanze kuri Shift Layer Flyout no mu murongo w'inzego.</value></data>
   <data name="Voice_Subtitle" xml:space="preserve"><value>Vuga interuro maze ikande buto ushobora guhuza. Buri mikoro PadForge ishobora kugeraho irumva.</value></data>
@@ -1895,4 +1888,5 @@
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Bikora: {0} kuri {1}</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} kuri {1} bifunguye</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Iyi myirondoro yinjijwe ifite verisiyo nshya kuri Steam Workshop. Yongere winjize uhereye kuri Shaka imyirondoro kugira ngo ubone impinduka.</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Umuvuduko</value></data>
 </root>

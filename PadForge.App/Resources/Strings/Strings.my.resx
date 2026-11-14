@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge ကို ပိတ်နေသည်...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge ကို စတင်နေသည်…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>ယခင်ဆက်ရှင်မှ ကျန်နေသော ဗာချွယ်ကွန်ထရိုလာများကို ရှင်းလင်းနေသည်။</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> စက်ပစ္စည်း</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>ကွန်ထရိုလာ ထည့်ရန်</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>ကွန်ထရိုလာ ထည့်ရန်</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>ဂိမ်းများ မြင်ရမည့်အရာကို ရွေးပါ။ သင် နှိပ်လိုက်သည်နှင့် ကွန်ထရိုလာကို ထည့်သည်။</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>“{0}” အတွက် မှတ်တမ်းတင်ချိန် ကုန်သွားသည်။</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>အင်ဂျင် စတင်ပြီးပါပြီ။</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>အင်ဂျင် ရပ်ပြီးပါပြီ။</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>မက်ပင်း မရှိ</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>အမှား: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} ကို ဖန်တီး၍ မရပါ။</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>ပရိုဖိုင် ပြောင်းပြီး: {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>မှတ်တမ်းတင်နေသည်...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>သည့်အခါ</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>ပေါ်တွင်</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>“{0}” ကို ဗာချွယ်ကွန်ထရိုလာ {1} သို့ သတ်မှတ်ပြီးပါပြီ။</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>“{0}” ကို ဗာချွယ်ကွန်ထရိုလာ {1} မှ ဖယ်ထုတ်ပြီးပါပြီ။</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>စက်ပစ္စည်းကို ဖယ်ရှားပြီးပါပြီ။</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာ {0} ကို ဖျက်ပြီးပါပြီ။</value></data>
@@ -516,7 +513,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>အဝေးချိတ်ဆက်မှုအတွက် သင်တွဲချိတ်ထားသော PC များ။ တစ်ခုကို ချိတ်ဆက်ခြင်းမှ ရပ်တန့်ရန် ရုပ်သိမ်းပါ။ ၎င်းသည် ထပ်မံ တွဲချိတ်ရမည်။</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>ရုပ်သိမ်း</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>အားလုံး ရုပ်သိမ်း</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>အမည်ပြောင်း</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>တာ့ချ်ပက် အုပ်ထပ်ပြကွက်</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ထိတွေ့မျက်နှာပြင် သို့မဟုတ် မောက်စ်အတွက်၊ PlayStation တာ့ချ်ပက် ဂိမ်းများအတွက် မျက်နှာပြင်ပေါ်ရှိ ထိတွေ့မျက်နှာပြင်။</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>တာ့ချ်ပက် အုပ်ထပ်ပြကွက်ကို ဖွင့်ရန်</value></data>
@@ -750,7 +746,6 @@
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio လိုင်စင် စည်းကမ်းများ</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK စည်းကမ်းများ</value></data>
@@ -1031,9 +1026,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>မက်ပင်းများ</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>စတစ်များ</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>ထရီဂါများ</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>အားပြန်တုံ့ပြန်မှု</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse ထရီဂါများ</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse ထရီဂါများ</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ထရီဂါအလိုက် ပြင်းအား၊ မော်တာ လဲလှယ်ခြင်း၊ အလိုက်သင့်ထရီဂါ တုန်ခါမှုများ၊ အမြဲတမ်း ထရီဂါ အား</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ထရီဂါတစ်ခုချင်းစီ၏ မော်တာအမိန့်များ (Xbox Impulse Triggers) ကို ဗာချွယ်ကွန်ထရိုလာမှ သတ်မှတ်ထားသော ရုပ်ပိုင်း Xbox One၊ Elite သို့မဟုတ် Series ကွန်ထရိုလာသို့ ပို့ပေးသည်။ ဂိမ်းမှ မောင်းနှင်သော ထရီဂါ တုန်ခါမှုသည် အလိုအလျောက် ဖြတ်သန်းသည်။ အောက်ပါ ထိန်းချုပ်မှုများက ထရီဂါတစ်ခုချင်းစီ၏ ပြင်းအားကို ချိန်ညှိသည်။</value></data>
@@ -1099,7 +1092,6 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>ဘယ် ထရီဂါကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>ညာ ထရီဂါကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>အလိုက်သင့် ထရီဂါများ</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>အလိုက်သင့် ထရီဂါများ</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>သတ်မှတ်ထားသော ရုပ်ပိုင်း DualSense ပေါ်ရှိ ထရီဂါ တုံ့ပြန်မှု အာနိသင်များကို ပြင်ဆင်သည်။ ဂိမ်း သို့မဟုတ် ဂိမ်းမော့ဒ်မှ ထရီဂါ အာနိသင်များကို အလိုအလျောက် ပို့ပေးသည်။ ဤနေရာရှိ ဆက်တင်များသည် နှစ်ခုစလုံး မရေးနေချိန်တွင် အလုပ်လုပ်သော အသုံးပြုသူ ပြင်ဆင်ထားသည့် အလွှာတစ်ခု ထပ်ထည့်သည်။</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>စတစ်များ</value></data>
@@ -1144,7 +1136,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>မီးအလင်း</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>မီးအလင်း</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>သတ်မှတ်ထားသော ရုပ်ပိုင်းကွန်ထရိုလာပေါ်ရှိ အလင်းတန်း အခြေခံအရောင်နှင့် အသံ အပြုအမူကို သတ်မှတ်ပါ။ ဂိမ်းက ရေးသည့်အရာကို အမြဲ ဦးစားပေးသည်။ ဂိမ်းက အလင်းတန်းကို မမောင်းနှင်သည့်အခါ အသုံးပြုသူ ဆက်တင်များ သက်ရောက်သည်။</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>ကစားသူနံပါတ်သို့ သတ်မှတ်ထားစဉ် ပက်ဒ်သည် အားနေချိန်တွင် ၎င်း၏ ဗာချွယ်ကွန်ထရိုလာ၏ ကစားသူ အမှတ်အသားကို ပြသည်: အလင်းတန်းပေါ်တွင် Sony ကစားသူအရောင် (1 အပြာ၊ 2 အနီ၊ 3 အစိမ်း၊ 4 ပန်းရောင်) နှင့် DualSense ပေါ်ရှိ ကိုက်ညီသော ကစားသူ အစက်များ။ ဗာချွယ်ကွန်ထရိုလာတစ်ခုတည်းပေါ်ရှိ စက်ပစ္စည်းတိုင်းသည် နံပါတ်တူကို ပြသည်။ ဂိမ်းများက မီးအလင်း ရေးသည့်အခါတိုင်း ထိန်းချုပ်ယူသည်။ ဤနေရာတွင် သင်သတ်မှတ်သမျှကို အမြဲ ဦးစားပေးပြီး ပိတ် သည် မီးကို လုံးဝ မှောင်စေသည်။</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>ကစားသူနံပါတ်သို့ သတ်မှတ်ထားစဉ် ပက်ဒ်သည် အားနေချိန်တွင် ၎င်း၏ ဗာချွယ်ကွန်ထရိုလာ၏ ကစားသူ အမှတ်အသားကို ပြသည်: အလင်းတန်းပေါ်တွင် Sony ကစားသူအရောင် (1 အပြာ၊ 2 အနီ၊ 3 အစိမ်း၊ 4 ပန်းရောင်) နှင့် DualSense ပေါ်ရှိ ကိုက်ညီသော ကစားသူ အစက်များ။ ဗာချွယ်ကွန်ထရိုလာတစ်ခုတည်းပေါ်ရှိ စက်ပစ္စည်းတိုင်းသည် နံပါတ်တူကို ပြသည်။ ဂိမ်းတစ်ခုက မီးအလင်း ရေးသည့်အခါတိုင်း ထိန်းချုပ်ယူသည်။ ဤနေရာတွင် သတ်မှတ်သော အခြားမုဒ်တိုင်းသည် ကစားသူအရောင်ကို အစားထိုးပြီး ပိတ် သည် မီးကို လုံးဝ မှောင်စေသည်။</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>ဤဗာချွယ်ကွန်ထရိုလာသည် DualSense အလင်းတန်းတွင် ရှိသော မုဒ်များအတိုင်း စက်ပစ္စည်းကို မီးထွန်းပေးပြီး ဤကွန်ထရိုလာအတွက်သာ ဤနေရာတွင် သတ်မှတ်သည်။ PlayStation ဗာချွယ်ကွန်ထရိုလာတွင် အလင်းတန်းကို ရေးသော ဂိမ်းသည် DualSense တွင်ကဲ့သို့ ထိန်းချုပ်ယူသည်။</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>ဤစက်ပစ္စည်း၏ မီးအလင်းကို ထိန်းချုပ်ရန်</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>ပိတ်ထားလျှင် ဤဗာချွယ်ကွန်ထရိုလာသည် စက်ပစ္စည်းကို မီးမထွန်းတော့ပါ။ ထုတ်လုပ်သူ အတန်း သို့မဟုတ် တူညီသော ဆော့ဖ်ဝဲမှတစ်ဆင့် မီးထွန်းသော ထိုအမျိုးအစား အခြားစက်ပစ္စည်းက ၎င်း၏ အရောင်ကို ဆက်သတ်မှတ်နိုင်သည်။ ဤဗာချွယ်ကွန်ထရိုလာပေါ်ရှိ Chroma အရောင် သတ်မှတ်ရန် မက်ခရိုသည် Razer စက်ပစ္စည်းကို ဆက်၍ အရောင်ခြယ်သည်။</value></data>
@@ -1259,9 +1251,9 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ထရီဂါများ</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV များ</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>ခလုတ်များ</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>တင်သွင်းထားသော ပရိုဖိုင်များ…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>ကွန်ထရိုလာ ကြိုတင်သတ်မှတ်ချက်များ…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>တိုးချဲ့ ကွန်ထရိုလာ</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>အသုံးပြုသူ တင်သွင်းထားသော HIDMaestro ပရိုဖိုင်များကို စီမံရန်: ချိတ်ဆက်ထားသော စက်ပစ္စည်းမှ အသစ်တစ်ခု ဖမ်းယူခြင်း၊ ရှိပြီးသားတစ်ခုကို JSON သို့ ထုတ်ယူခြင်း သို့မဟုတ် မလိုတော့သည့်တစ်ခုကို ဖျက်ခြင်း။</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>သင်ထည့်ထားသော ကွန်ထရိုလာ ကြိုတင်သတ်မှတ်ချက်များကို စီမံရန်: ဖိုင် သို့မဟုတ် ချိတ်ဆက်ထားသော စက်ပစ္စည်းမှ တစ်ခုကို တင်သွင်းခြင်း၊ တစ်ခုကို JSON သို့ ထုတ်ယူခြင်း သို့မဟုတ် မလိုတော့သည့်တစ်ခုကို ဖျက်ခြင်း။</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>စက်ပစ္စည်းကို 1:1 ပုံတူကူးရန်</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>ရွေးထားသော စက်ပစ္စည်းရှိ ဝင်ရိုး၊ ခလုတ်နှင့် hat တိုင်းကို နံပါတ်တူ ဗာချွယ်အထွက်သို့ တိုက်ရိုက် မက်ပင်းလုပ်သည်။ အပြင်အဆင်ကို စက်ပစ္စည်းနှင့် အရွယ်ညှိပြီး ဆလော့ပေါ်ရှိ ဤစက်ပစ္စည်း၏ အတန်းများကို 1:1 တိုက်ရိုက်ဖြတ်သန်းခြင်းဖြင့် အစားထိုးသည်။</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>စက်ပစ္စည်းကို 1:1 ပုံတူကူးရန်</value></data>
@@ -1276,18 +1268,18 @@
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>ချိတ်ဆက်ထားသော စက်ပစ္စည်းမှ တင်သွင်းရန်</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>ထုတ်ယူရန်…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>ဖျက်ရန်</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>ပရိုဖိုင် JSON ထုတ်ယူရန်</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>ကြိုတင်သတ်မှတ်ချက် JSON ထုတ်ယူရန်</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>ကြိုတင်သတ်မှတ်ချက်ကို ဖျက်မလား။</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>{0} ကို အသုံးပြုသော ကွန်ထရိုလာမှန်သမျှသည် Custom ထည့်သွင်းချက်သို့ ပြန်သွားမည်။ ၎င်းကို ပြန်ပြင်၍ မရပါ။</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>{0} သို့ ထုတ်ယူပြီးပါပြီ</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>ထုတ်ယူ၍ မရပါ: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" ကို ဖျက်ပြီးပါပြီ။</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>ဖိုင်မှ တင်သွင်း…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>ပရိုဖိုင် JSON တင်သွင်းရန်</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>ကြိုတင်သတ်မှတ်ချက် JSON တင်သွင်းရန်</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>{0} မှ တင်သွင်းပြီးပါပြီ။</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>ဖတ်၍ မရပါ: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro သည် ဤပရိုဖိုင်ကို {1} တွင် ငြင်းပယ်ခဲ့သည်: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ဤပရိုဖိုင်တွင် HID ဖော်ပြချက် မပါဝင်သဖြင့် ၎င်းမှ ကွန်ထရိုလာ ပြုလုပ်၍ မရပါ။</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro သည် ဤကြိုတင်သတ်မှတ်ချက်ကို {1} တွင် ငြင်းပယ်ခဲ့သည်: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ဤကြိုတင်သတ်မှတ်ချက်တွင် HID ဖော်ပြချက် မပါဝင်သဖြင့် ၎င်းမှ ကွန်ထရိုလာ ပြုလုပ်၍ မရပါ။</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>ဘာမျှ မတင်သွင်းခဲ့ပါ။ {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>တင်သွင်းရန်</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(အမည်မဲ့ HID စက်ပစ္စည်း)</value></data>
@@ -1398,9 +1390,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>2D မြင်ကွင်းသို့ ပြောင်းရန်</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>3D မြင်ကွင်းသို့ ပြောင်းရန်</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>ဘယ်မော်တာကို စမ်းသပ်ရန် နှိပ်ပါ</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>ဘယ်မော်တာ</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>ညာမော်တာကို စမ်းသပ်ရန် နှိပ်ပါ</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>ညာမော်တာ</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>အားလုံး မက်ပင်းလုပ်ရန်</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>မက်ပင်း: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>မက်ပင်းအားလုံးကို တစ်ခုပြီးတစ်ခု အစဉ်လိုက် မှတ်တမ်းတင်ရန်</value></data>
@@ -1504,6 +1494,11 @@
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>မှန်/မှား ပြောင်းပြန်</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>အကယ်၍၊ ပုံစံ (အခြေအနေ) ? ဖြစ်လျှင် : မဟုတ်လျှင်</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>အကယ်၍-ဖြစ်လျှင်-မဟုတ်လျှင် ၏ မဟုတ်လျှင် အပိုင်း</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>နှင့်</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>သို့မဟုတ်</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>မဟုတ်</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>အကယ်၍?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>မဟုတ်လျှင်:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>ပမာဏ (လက္ခဏာကို ဖယ်သည်)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>တန်ဖိုးနှစ်ခုအနက် ငယ်သောတန်ဖိုး</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>တန်ဖိုးနှစ်ခုအနက် ကြီးသောတန်ဖိုး</value></data>
@@ -1571,6 +1566,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>ဗဟိုကို ချိန်ညှိရန်</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>ဗဟိုမှတ်</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>ဗဟို</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>အမြန်နှုန်း</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>ဒက်ဇုန်</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>ဗဟို ရွေ့ပြောင်းမှု၊ ဒက်ဇုန် ပုံသဏ္ဌာန်နှင့် ဝင်ရိုးအလိုက် တန်ဖိုးများ၊ ဝင်ရိုးတစ်ခုစီအတွက် မျဉ်းကွေး၊ အပိုင်းအခြား၊ စတီယာရင်ထိန်းခြင်း</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>ကိန်းဂဏန်းဖြင့် အပိုင်းအခြား၊ မူရင်းတန်ဖိုးများ</value></data>
@@ -1794,7 +1790,6 @@
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>ကပ်ထား (ထိန်း)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>ဘယ်မော်တာ</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>ညာမော်တာ</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>ထိန်းချိန်</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>မှိန်ချိန်</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1903,7 +1898,6 @@
   <data name="Pad_Touchpad" xml:space="preserve"><value>တာ့ချ်ပက်</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>တာ့ချ်ပက်</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>တာ့ချ်ပက်တစ်ခုချင်းအလိုက် အဝင်။ လက်ဟန်များ (ပွတ်ဆွဲခြင်း၊ တို့ခြင်း၊ ချုံ့ခြင်း၊ ပုံသဏ္ဌာန်များ) နှင့် အဆက်မပြတ် အထွက်မုဒ်များ (ဗာချွယ် စတစ် / D-pad၊ မောက်စ်) သည် မည်သည့် အထွက်သို့မဆို ချိတ်ဆက်နိုင်သော မက်ပင်း ရင်းမြစ်များ ဖြစ်လာသည်။</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>တာ့ချ်ပက်</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>တာ့ချ်ပက် နံပါတ်</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>အောက်ပါ ဆက်တင်များ သက်ရောက်မည့် ဤကွန်ထရိုလာပေါ်ရှိ တာ့ချ်ပက်။ တာ့ချ်ပက်တစ်ခုစီတွင် ကိုယ်ပိုင် လက်ဟန်များ၊ မောက်စ် ခံစားမှုနှင့် ညွှန်တံ ဧရိယာ ရှိသည်။</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>လက်ဟန် သိရှိခြင်း</value></data>
@@ -2354,8 +2348,6 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>မောက်စ် ရွေ့လျားမှု Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>အာရုံခံနိုင်စွမ်း</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>ရင်းမြစ်တစ်ခုချင်းစီအလိုက် IR ညွှန်တံ အာရုံခံနိုင်စွမ်း။ 1.0 သည် ကင်မရာ၏ မြင်ကွင်းအစွန်းတွင် စတစ်တွန်းရွှေ့မှုပမာဏ အပြည့်သို့ ရောက်သည်။ 1.0 ထက်မြင့်သော တန်ဖိုးများသည် ချိန်ရွယ်ရွေ့လျားမှု နည်းနည်းဖြင့် အပြည့်သို့ ရောက်သည်။ 1.0 ထက်နိမ့်သော တန်ဖိုးများသည် ပိုလိုအပ်သည်။</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>အာရုံခံနိုင်စွမ်း</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>ရိုးရိုးဝင်ရိုး၊ ဆလိုက်ဒါ သို့မဟုတ် ဂိမ်းပက် စတစ် / ထရီဂါအတွက် ရင်းမြစ်တစ်ခုချင်းစီအလိုက် အာရုံခံနိုင်စွမ်း။ 1.0 သည် အဝင်ကို မပြောင်းလဲဘဲ ထားသည်။ 1.0 ထက်မြင့်သော တန်ဖိုးများသည် ရွေ့လျားမှု နည်းနည်းဖြင့် တွန်းရွှေ့မှုပမာဏ အပြည့်သို့ ရောက်သည်။ 1.0 ထက်နိမ့်သော တန်ဖိုးများသည် ပိုလိုအပ်သည်။</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>ဂိမ်းပက် {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>ရင်းမြစ်တစ်ခုချင်းစီအလိုက် မောက်စ်ရွေ့လျားမှု၏ အာရုံခံနိုင်စွမ်း။ 1.0 သည် တကယ့်မောက်စ်တစ်ခုနှင့် အမြန်နှုန်းတူဖြင့် တွန်းရွှေ့မှုပမာဏ အပြည့်သို့ ရောက်သည်။ 1.0 ထက်မြင့်သော တန်ဖိုးများသည် ရွေ့လျားမှု နည်းနည်းသာ လိုအပ်ပြီး နိမ့်သော တန်ဖိုးများသည် ပိုလိုအပ်သည်။</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>ဟန်ချက် စုစုပေါင်းအလေးချိန်</value></data>
@@ -2488,7 +2480,7 @@
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>ပရိုဖိုင်သည် ၎င်း၏ ဂိမ်းတစ်ခု ရှေ့တွင်ရှိသည့်အခါ အလိုအလျောက် ဖွင့်သည်။</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>ကွန်ထရိုလာ မပါဘဲ စတင်သည်။ ၎င်း၏ ဂိမ်းတစ်ခု ရှေ့တွင်ရှိသည့်အခါ အလိုအလျောက် ဖွင့်သည်။</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>လည်ပတ်နေသော ဂိမ်း ထည့်ရန်</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>အခြားပရိုဂရမ်တွင် ဖွင့်ထားသော ဝင်းဒိုး မရှိပါ။</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>ဖွင့်ထားသော အခြားဝင်းဒိုး မတွေ့ပါ။</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} ကို ဖယ်ရှားရန်</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>ဤပရိုဖိုင် ဖွင့်ထားစဉ် ပိုလင်နှုန်း</value></data>
 
@@ -3066,7 +3058,6 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>အဆုံးထိရောက်တိုင်း တစ်ရောင်စီ ပြောင်းရန် အရောင်များ ထည့်ပါ။</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>အလင်းတန်း ထိန်းထားချိန် ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>အသံ</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>ပွိုင်တာ</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR ပွိုင်တာ</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>ဤ Wii Remote ကို ၎င်း၏ IR ကင်မရာဖြင့် မျက်နှာပြင်သို့ ချိန်ပါ။ မျက်နှာပြင်၏ အပေါ် သို့မဟုတ် အောက်တွင် ဆင်ဆာဘား သို့မဟုတ် အနီအောက်ရောင်ခြည် LED နှစ်လုံး လိုအပ်သည်။ တိကျသော နေရာကို ချိန်ရန် စက်ပစ္စည်းများ စာမျက်နှာတွင် ၎င်းကို အလင်းသေနတ်အဖြစ် ချိန်ညှိပါ။ ချိန်ညှိထားသော ရီမုတ်သည် ဆင်ဆာဘား နေရာ နှင့် ဒေါင်လိုက် အလွဲ ကို လျစ်လျူရှုသည်။</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>ပွိုင်တာ ညှိခြင်း</value></data>
@@ -3424,7 +3415,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>ဤတက်ဂ်ကို အမည်ပေးပါ</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>မှတ်ပုံတင်</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>မှတ်ပုံတင်ထားသည်</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>NFC ဖတ်စက် မတွေ့ပါ။ PC/SC ဖတ်စက်ကို ချိတ်ဆက်ပြီး ပြန်ဖွင့်ပါ။</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>တဂ်ကို ဖမ်းယူပြီးပါပြီ။ အမည်ထည့်ပြီး မှတ်ပုံတင် ကို နှိပ်ပါ။ ၎င်းကို အစားထိုးရန် အခြားတဂ်ကို တို့ပါ။</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>“{0}” ကို မှတ်ပုံတင်ပြီးပါပြီ။ ထပ်ထည့်ရန် အခြားတဂ်ကို တို့ပါ။</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC တဂ်များ မှတ်ပုံတင် / စီမံ</value></data>
@@ -3451,7 +3441,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>ကွန်ထရိုလာ Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>လက်မစတစ် X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>လက်မစတစ် Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>ထရီဂါ</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>ဆုပ်ကိုင်ခလုတ်</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>လက်မစတစ် နှိပ်ခြင်း</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>ပင်မ ခလုတ်</value></data>
@@ -3528,7 +3517,6 @@
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>လက်ကိုင်ဂိမ်း PC များနှင့် လက်ပ်တော့များတွင် လည်ပတ်မှုစနစ်က ကွန်ထရိုလာအဖြစ် ဘယ်တော့မှ မပြသော ခလုတ်များ ပါရှိသည်- နောက်ခလုတ်များ၊ မီနူးကီးများ၊ ဘီးများ၊ ထုတ်လုပ်သူ ဟော့ကီးများ။ ၎င်းတို့ကို တစ်ကြိမ် နှိပ်၍ လေ့လာရန် ဤအရာကို ဖွင့်ပြီး အခြားခလုတ်များကဲ့သို့ မက်ပင်းလုပ်ပါ။ စက်၏ ကိုယ်ပိုင် ဂိုင်ရိုစကုပ်ကိုလည်း လှုပ်ရှားမှု စက်ပစ္စည်းအဖြစ် ထည့်ပေးသည်။</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>လက်ကိုင် PC ခလုတ်များကို ဖွင့်ရန်</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>စက်ပစ္စည်းများ စာမျက်နှာသို့ “ဝှက်ထားသော ခလုတ်များ” စက်ပစ္စည်းနှင့် “စနစ် လှုပ်ရှားမှု” စက်ပစ္စည်းကို ထည့်ပေးသည်။ ပိတ်ထားလျှင် ဘာမှ အလုပ်မလုပ်ပါ။</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>မောက်စ်</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>မောက်စ် လက်ဟန်များ</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>လက်ဟန်ခလုတ်ကို ဖိထားပြီး ဆွဲလိုက်ပါ၊ လွှတ်လိုက်သည့်အခါ လုပ်ဆောင်ချက်တစ်ခု အလုပ်လုပ်သည်: ဘယ်၊ ညာ၊ အပေါ်၊ အောက် သို့မဟုတ် ဆွဲသည့် အကွာအဝေးထက် နည်းလျှင် ရိုးရိုးကလစ်။ လက်ဟန်ငါးမျိုးကို မည်သည့် အထွက်သို့မဆို မက်ပင်းလုပ်ပါ သို့မဟုတ် မက်ခရို အစပျိုးခလုတ်များအဖြစ် အသုံးပြုပါ။</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>မောက်စ် လက်ဟန်များကို ဖွင့်ရန်</value></data>
@@ -3717,8 +3705,9 @@
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam ကို ဆက်သွယ်၍ မရပါ</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Steam ကို ဆက်သွယ်၍ မရပါ။ သင့်ချိတ်ဆက်မှုကို စစ်ဆေးပါ။ တင်သွင်းပြီးသား ပရိုဖိုင်များသည် ဤ PC ပေါ်တွင် ရှိသောကြောင့် ဆက်အလုပ်လုပ်သည်။</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>ထပ်ကြိုးစားရန်</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>2016 ခေတ်က ဤဖွဲ့စည်းပုံသည် Steam ၏ ဖွဲ့စည်းပုံ CDN မပေါ်မီက ဖြစ်သည်။ Steam တွင် ၎င်းကို စာရင်းသွင်းပါ၊ PadForge က သင့် Steam ဖိုင်တွဲမှ ဖတ်မည်။</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam သည် ဤဖွဲ့စည်းပုံအတွက် ဒေါင်းလုဒ်လုပ်ရန် ဖိုင်ကို မဖော်ပြထားဘဲ သင့် Steam ဖိုင်တွဲတွင်လည်း ၎င်း၏ မိတ္တူ မရှိပါ။ Steam တွင် ၎င်းကို စာရင်းသွင်းပါ၊ PadForge က ထိုနေရာမှ ဖတ်မည်။</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam Workshop တွင် ဖွင့်ရန်</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>အဟောင်း</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>ပါလာမည့်အရာကို ကြည့်ရန် ဖွဲ့စည်းပုံတစ်ခုကို ရွေးပါ။</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>ပါလာမည့်အရာ</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>ဖြစ်လာမည်</value></data>
@@ -3944,7 +3933,6 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>မီနူးတွင် ဘိုင်းဒင်းပါ အကွက် မရှိ</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>မီနူးဖွင့်သည့် ထိန်းချုပ်မျက်နှာပြင်ကို မပံ့ပိုးပါ ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>မီနူးအကွက် အိုင်ကွန်ကို မသိရှိပါ ({0})၊ ထို့ကြောင့် အကွက်သည် ၎င်း၏ စာသားတံဆိပ်ကို ဆက်ထားသည်</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>ဘေ့စ် ရှိတ်ကာများ</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>အထွက်</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>ခလုတ်များ</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>ကီးများနှင့် မောက်စ်</value></data>
@@ -4410,7 +4398,6 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>မော်တာ</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>ဦးတည်ရာအလိုက် ခွဲခြား</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>ဗဟို ဒက်ဇုန်</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>ပိတ်ခြင်းသို့ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>ဘယ်စတစ် X သို့ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>ပြင်းအား ပြန်လည်သတ်မှတ် (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>ဗဟို ဒက်ဇုန် ပြန်လည်သတ်မှတ် (2%)</value></data>
@@ -4490,7 +4477,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>ထည့်သွင်းထားသော SDL3.dll အတွင်း compile လုပ်ထားသော HID အလွှာ၊ ရေးသားသူ Alan Ott၊ Signal 11 Software။</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>အိုင်ကွန် ရင်းမြစ်များ</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Material Design Icons (Pictogrammers, Apache-2.0) မှ မီးတောက်ပုံ၊ Ionicons (Ionic, MIT) မှ ယေဘုယျ ဂိမ်းပက် အိုင်ကွန်၊ Jam Icons (Michael Amprimo, MIT) မှ Extended ဂျွိုက်စတစ်နှင့် SVG Repo မှ Xbox နှင့် PlayStation အိုင်ကွန်များ၊ အိုင်ကွန်တစ်ခုစီ၏ စာမျက်နှာရှိ လိုင်စင်အောက်တွင်။</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Material Design Icons (Pictogrammers, Apache-2.0) မှ မီးတောက်ပုံ၊ Jam Icons (Michael Amprimo, MIT) မှ Extended ဂျွိုက်စတစ်နှင့် SVG Repo မှ Xbox နှင့် PlayStation အိုင်ကွန်များ၊ အိုင်ကွန်တစ်ခုစီ၏ စာမျက်နှာရှိ လိုင်စင်အောက်တွင်။</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>အဝေးချိတ်ဆက်မှု၏ အရန်လမ်းကြောင်း နောက်ကွယ်ရှိ relay ပရိုတိုကော၊ FlexInput လုပ်သည့်အတိုင်း n0.computer ၏ အခမဲ့ အများသုံး relay များနှင့် ဆက်သွယ်သည်။ iroh: MIT OR Apache-2.0။ FlexInput: MIT။ စာရွက်စာတမ်းအဖြစ်သာ၊ ကုဒ် မပါဝင်ပါ။</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

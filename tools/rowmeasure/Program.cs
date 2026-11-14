@@ -383,7 +383,7 @@ internal static class Program
     static readonly string[] StateKeys =
     {
         "Common_Disabled", "Main_Initializing", "Main_VcFailed",
-        "Status_NoMapping", "Main_Active", "Common_Idle",
+        "Main_Active", "Common_Idle",
     };
 
     static void BuildPadHeader()

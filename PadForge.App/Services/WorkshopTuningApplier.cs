@@ -56,6 +56,10 @@ namespace PadForge.Services
         /// cheap, so calling it too often is free and calling it too seldom
         /// is a silent regression.</para>
         /// <para>N/A by design, and each for its own reason:</para>
+        /// <para>PeripheralSwitchMigration.AssignLive (#494) assigns a PC
+        /// peripheral's output row, which has no stick or gyro for a stamp to
+        /// fold into. Calling this there would clear the stamps before a
+        /// gamepad is assigned.</para>
         /// <para>WorkshopGyroRatchetDescriptors has no ratchet field on
         /// PadSetting and no ratchet control in any view, so there is no
         /// user-facing setting to fold it into. It stays a runtime overlay

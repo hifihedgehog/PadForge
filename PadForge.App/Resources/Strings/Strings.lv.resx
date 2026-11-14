@@ -136,7 +136,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Notiek PadForge aizvēršana...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Notiek PadForge palaišana…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Notiek iepriekšējās sesijas atstāto virtuālo kontrolleru tīrīšana.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> ierīces</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Pievienot kontrolleri</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Pievienot kontrolleri</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Izvēlieties, ko spēlēm vajadzētu redzēt. Kontrolleris tiek pievienots uzreiz pēc klikšķa.</value></data>
@@ -280,7 +279,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Beidzās ierakstīšanas laiks vienumam „{0}”.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Dzinējs palaists.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Dzinējs apturēts.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Nav piesaistes</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Kļūda: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Neizdevās izveidot: {0}.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profils pārslēgts: {0}</value></data>
@@ -298,7 +296,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Ieraksta...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>kad</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>uz</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>„{0}” piešķirts virtuālajam kontrollerim {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>„{0}” vairs nav piešķirts virtuālajam kontrollerim {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Ierīce noņemta.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtuālais kontrolleris {0} izdzēsts.</value></data>
@@ -529,7 +526,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Datori, kas savienoti pārī Attālajam savienojumam. Atsauciet kādu no tiem, lai tas vairs nesavienotos. Tad tam būtu atkārtoti jāsavieno pārī.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Atsaukt</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Atsaukt visus</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Pārdēvēt</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Skārienpaliktņa pārklājums</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Ekrāna skārienvirsma PlayStation skārienpaliktņa spēlēm, skārienekrānam vai pelei.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Iespējot skārienpaliktņa pārklājumu</value></data>
@@ -763,7 +759,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio licences noteikumi</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK noteikumi</value></data>
@@ -1110,9 +1105,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Piesaistes</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Sviras</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Mēlītes</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Spēka atgriezeniskā saite</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulsa mēlītes</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulsa mēlītes</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Mēlīšu pastiprinājums, motoru maiņa, adaptīvo mēlīšu vibrācijas, pastāvīgs mēlīšu spēks</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Pārsūta katras mēlītes motora komandas (Xbox Impulse Triggers) no virtuālā kontrollera uz piešķirto fizisko Xbox One, Elite vai Series kontrolleri. Spēles radītā mēlīšu vibrācija tiek pārsūtīta automātiski. Tālāk esošās vadīklas mērogo stiprumu katrai mēlītei atsevišķi.</value></data>
@@ -1178,7 +1171,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Atiestatīt kreiso mēlīti</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Atiestatīt labo mēlīti</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptīvās mēlītes</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptīvās mēlītes</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfigurējiet mēlīšu atgriezeniskās saites efektus piešķirtajam fiziskajam DualSense. Spēles vai spēles modifikācijas radītie mēlīšu efekti tiek pārsūtīti automātiski. Šeit esošie iestatījumi pievieno lietotāja konfigurētu slāni, kas darbojas, kad neviens no tiem neraksta efektus.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Sviras</value></data>
@@ -1224,7 +1216,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>Apgaismojums</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Apgaismojums</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Iestatiet piešķirtā fiziskā kontrollera gaismas joslas pamatkrāsu un audio darbību. Spēles ieraksti vienmēr ir prioritāri. Lietotāja iestatījumi tiek piemēroti, kad neviena spēle nevada gaismas joslu.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Kad iestatīts „Spēlētāja numurs”, spēļu pults dīkstāvē rāda sava virtuālā kontrollera spēlētāja identitāti: Sony spēlētāja krāsu gaismas joslā (1 zila, 2 sarkana, 3 zaļa, 4 rozā) un atbilstošos spēlētāja punktus DualSense kontrollerī. Visas ierīces vienā virtuālajā kontrollerī rāda vienu un to pašu numuru. Spēles pārņem vadību ikreiz, kad tās raksta apgaismojumu, viss, ko iestatāt šeit, vienmēr ir prioritārs, un „Izslēgts” pilnībā izslēdz gaismu.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Kad iestatīts „Spēlētāja numurs”, spēļu pults dīkstāvē rāda sava virtuālā kontrollera spēlētāja identitāti: Sony spēlētāja krāsu gaismas joslā (1 zila, 2 sarkana, 3 zaļa, 4 rozā) un atbilstošos spēlētāja punktus DualSense kontrollerī. Visas ierīces vienā virtuālajā kontrollerī rāda vienu un to pašu numuru. Spēle pārņem vadību ikreiz, kad raksta apgaismojumu. Jebkurš cits šeit iestatīts režīms aizstāj spēlētāja krāsu, un „Izslēgts” pilnībā izslēdz gaismu.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Šis virtuālais kontrolleris izgaismo ierīci ar tiem pašiem režīmiem, kas ir DualSense gaismas joslai, un tie šeit tiek iestatīti tikai šim kontrollerim. PlayStation virtuālajā kontrollerī spēle, kas raksta gaismas joslā, pārņem vadību tāpat kā DualSense kontrollerī.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Vadīt šīs ierīces apgaismojumu</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Apgaismojuma vadība</value></data>
@@ -1446,9 +1438,9 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Mēlītes</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Pogas</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Importētie profili…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Kontrolleru sagataves…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Paplašinātais kontrolleris</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Pārvaldiet lietotāja importētos HIDMaestro profilus: uzņemiet jaunu no pievienotas ierīces, eksportējiet esošu uz JSON vai izdzēsiet nevajadzīgu.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Pārvaldiet pievienotās kontrolleru sagataves: importējiet sagatavi no faila vai pievienotas ierīces, eksportējiet uz JSON vai izdzēsiet nevajadzīgu.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Klonēt ierīci 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Piesaista katru atlasītās ierīces asi, pogu un POV slēdzi tieši tāda paša numura virtuālajai izvadei. Pielāgo izkārtojuma izmēru ierīcei un aizstāj šīs ierīces rindas slotā ar 1:1 tiešo pārsūtīšanu.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Klonēt ierīci 1:1</value></data>
@@ -1463,18 +1455,18 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Importēt no pievienotas ierīces</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Eksportēt…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Dzēst</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Eksportēt profila JSON</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Eksportēt sagataves JSON</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Dzēst sagatavi?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Katrs kontrolleris, kas izmanto {0}, atgriežas pie ieraksta Pielāgots. Šo darbību nevar atsaukt.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Eksportēts: {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Eksportēšana neizdevās: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Izdzēsts „{0}”.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Importēt failu…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importēt profila JSON</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importēt sagataves JSON</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Importēts no {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Nolasīšana neizdevās: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro noraidīja šo profilu pie {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Šim profilam nav HID deskriptora, tāpēc no tā nevar izveidot kontrolleri.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro noraidīja šo sagatavi pie {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Šai sagatavei nav HID deskriptora, tāpēc no tās nevar izveidot kontrolleri.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Nekas netika importēts. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importēt</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(nenosaukta HID ierīce)</value></data>
@@ -1585,9 +1577,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Pārslēgt uz 2D skatu</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Pārslēgt uz 3D skatu</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Noklikšķiniet, lai pārbaudītu kreiso motoru</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Kreisais motors</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Noklikšķiniet, lai pārbaudītu labo motoru</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Labais motors</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Piesaistīt visu</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Piesaistīt: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Secīgi ierakstīt visas piesaistes pa vienai</value></data>
@@ -1691,6 +1681,11 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Apgriezt patiess/nepatiess</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Ja, ar šablonu (nosacījums) ? tad : citādi</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>„Citādi” daļa konstrukcijā ja-tad-citādi</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>un</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>vai</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>ne</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>ja?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>citādi:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Absolūtā vērtība (atmet zīmi)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Mazākā no divām vērtībām</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Lielākā no divām vērtībām</value></data>
@@ -1759,6 +1754,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibrēt centru</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Centra punkts</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Centrs</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Ātrums</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Nejutības zona</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Centra nobīdes, nejutības zonas forma un vērtības katrai asij, līkne katrai asij, diapazons, stūrēšana</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Diapazons skaitļos, neapstrādātas vērtības</value></data>
@@ -1982,7 +1978,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Noturīgs (notur)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Kreisais motors</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Labais motors</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Noturēšana</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Izbalēšana</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -2091,7 +2086,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Skārienpaliktnis</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Skārienpaliktnis</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Katra skārienpaliktņa ievade. Žesti (pavilkšanas, pieskārieni, savilkšanas, formas) un nepārtrauktas izvades režīmi (virtuāla svira / D-pad, pele) kļūst par piesaistes avotiem, ko varat piesaistīt jebkurai izvadei.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Skārienpaliktnis</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Skārienpaliktņa numurs</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Uz kuru šī kontrollera skārienpaliktni attiecas tālāk esošie iestatījumi. Katram skārienpaliktnim ir savi žesti, peles sajūta un rādītāja apgabals.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Žestu noteikšana</value></data>
@@ -2542,8 +2536,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Peles kustība Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Jutība</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Katra avota IR rādītāja jutība. Ar 1.0 pilna sviras novirze tiek sasniegta kameras redzeslauka malā. Vērtības virs 1.0 sasniedz pilnu novirzi ar mazāku tēmēšanas kustību. Vērtībām zem 1.0 vajag vairāk.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Jutība</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Katra avota jutība vienkāršai asij, slīdnim vai spēļu pults svirai / mēlītei. 1.0 atstāj ievadi nemainītu. Vērtības virs 1.0 sasniedz pilnu novirzi ar mazāku gājienu. Vērtībām zem 1.0 vajag vairāk.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Spēļu pults {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Peles kustības jutība katram avotam. Ar 1.0 pilna novirze tiek sasniegta ar tādu pašu ātrumu kā īstai pelei, vērtībām virs 1.0 vajag mazāk kustības, vērtībām zem tā vairāk.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Līdzsvara kopējais svars</value></data>
@@ -2680,7 +2672,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profils ielādējas pats, kad priekšplānā ir kāda no tā spēlēm.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Sākas bez kontrolleriem. Tas ielādējas pats, kad priekšplānā ir kāda no tā spēlēm.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Pievienot darbojošos spēli</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nevienai citai programmai nav atvērta loga.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nav atrasts neviens cits atvērts logs.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Noņemt {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Aptaujas biežums, kamēr šis profils ir ielādēts</value></data>
 
@@ -3262,7 +3254,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Pievienojiet krāsas, kas mainīsies pēc kārtas, pa vienai katrā galējā stāvoklī.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Atiestatīt gaismas joslas noturēšanu</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Rādītājs</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR rādītājs</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Tēmējiet ar šo Wii Remote uz ekrānu, izmantojot tā IR kameru. Nepieciešama sensoru josla vai divas infrasarkanās LED virs vai zem displeja. Lai tēmētu precīzi, kalibrējiet to kā gaismas pistoli lapā „Ierīces”. Kalibrēta pults ignorē iestatījumus „Sensoru joslas pozīcija” un „Vertikālā nobīde”.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Rādītāja regulēšana</value></data>
@@ -3617,7 +3608,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Nav pieejams Bluetooth radio. Ieslēdziet Bluetooth un mēģiniet vēlreiz. Savienošana pārī nepieciešama tikai bezvadu spēlei. Ar kabeli pievienots kontrolleris darbojas bez tās.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Savienošana pārī netika pabeigta. Neizdevusies darbība ir parādīta iepriekš.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Aizvērt</value></data>
-  <data name="Common_ResizePanes" xml:space="preserve"><value>Mainīt paneļu izmēru</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC birkas</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>Pielieciet birku pie lasītāja un nosauciet to. Tā kļūst par pogu, ko varat piesaistīt.</value></data>
   <data name="Nfc_TapPrompt" xml:space="preserve"><value>Pielieciet birku pie lasītāja.</value></data>
@@ -3625,7 +3615,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Nosauciet šo birku</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Reģistrēt</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Reģistrētās</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Nav noteikts neviens NFC lasītājs. Pievienojiet PC/SC lasītāju un atveriet no jauna.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Birka nolasīta. Ievadiet nosaukumu un noklikšķiniet uz „Reģistrēt”. Pielieciet citu birku, lai to aizstātu.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>Reģistrēta „{0}”. Pielieciet citu birku, lai pievienotu vēl.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Reģistrēt / pārvaldīt NFC birkas</value></data>
@@ -3652,7 +3641,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="VrCtl_Z" xml:space="preserve"><value>Kontrolleris Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Svira X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Svira Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Mēlīte</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Rokturis</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Sviras klikšķis</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Primārā poga</value></data>
@@ -3755,7 +3743,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Iespējot plaukstdatora pogas</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Pievieno lapai „Ierīces” ierīces „Slēptās pogas” un „Sistēmas kustība”. Kad izslēgts, nekas nedarbojas.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Multivides poga {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Pele</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Peles žesti</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Turiet žesta pogu, veiciet rāvienu, un, atlaižot pogu, tiek izpildīta viena darbība: pa kreisi, pa labi, augšup, lejup vai vienkāršs klikšķis, ja rāviens ir īsāks par rāviena attālumu. Piesaistiet piecus žestus jebkurai izvadei vai izmantojiet tos kā makrosu trigerus.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Iespējot peles žestus</value></data>
@@ -3944,8 +3931,9 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam nav sasniedzams</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Nevarēja sasniegt Steam. Pārbaudiet savienojumu. Jau importētie profili turpina darboties, jo tie atrodas šajā datorā.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Mēģināt vēlreiz</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Šī 2016. gada laika konfigurācija ir vecāka par Steam konfigurāciju CDN. Abonējiet to Steam, un PadForge to nolasīs no jūsu Steam mapes.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam nesniedz failu, ko lejupielādēt šai konfigurācijai, un jūsu Steam mapē nav tās kopijas. Abonējiet to Steam, un PadForge to nolasīs no turienes.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Atvērt Steam darbnīcā</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Vecā</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Izvēlieties konfigurāciju, lai redzētu, kas tiek pārnests.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Kas tiek pārnests</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Kļūst par</value></data>
@@ -4171,7 +4159,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>izvēlnei nav piesaistītu šūnu</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>izvēlnes atvēršanas virsma netiek atbalstīta ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>izvēlnes šūnas ikona netika atpazīta ({0}), tāpēc šūnai paliek teksta nosaukums</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Basu vibratori</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Izvade</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Pogas</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Taustiņi un pele</value></data>
@@ -4650,7 +4637,6 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motors</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Sadalīt pēc virziena</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Centra nejutības zona</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Atiestatīt uz „Izslēgts”</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Atiestatīt uz „Kreisā svira X”</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Atiestatīt stiprumu (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Atiestatīt centra nejutības zonu (2%)</value></data>
@@ -4730,7 +4716,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>HID slānis, kas iekompilēts komplektā iekļautajā SDL3.dll, autors Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Ikonu avoti</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Liesmas glifs no Material Design Icons (Pictogrammers, Apache-2.0), vispārīgā spēļu pults ikona no Ionicons (Ionic, MIT), paplašinātā kursorsvira no Jam Icons (Michael Amprimo, MIT) un Xbox un PlayStation ikonas no SVG Repo saskaņā ar licenci, kas norādīta katras ikonas lapā.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Liesmas glifs no Material Design Icons (Pictogrammers, Apache-2.0), paplašinātā kursorsvira no Jam Icons (Michael Amprimo, MIT) un Xbox un PlayStation ikonas no SVG Repo saskaņā ar licenci, kas norādīta katras ikonas lapā.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Retranslācijas protokols, uz kura balstās Attālā savienojuma rezerves kanāls un kas tiek izmantots ar n0.computer bezmaksas publiskajiem retranslatoriem tāpat kā FlexInput. iroh: MIT OR Apache-2.0. FlexInput: MIT. Tikai dokumentācija, kods netiek izplatīts.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

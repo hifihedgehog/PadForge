@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Uždaroma „PadForge“...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Paleidžiama „PadForge“…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Išvalomi virtualūs valdikliai, likę po ankstesnio seanso.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> įrenginiai</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Pridėti valdiklį</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Pridėti valdiklį</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Pasirinkite, ką turi matyti žaidimai. Valdiklis pridedamas vos spustelėjus.</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Baigėsi „{0}“ įrašymo laikas.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Variklis paleistas.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Variklis sustabdytas.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Nėra priskyrimo</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Klaida: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Nepavyko sukurti: {0}.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profilis perjungtas: {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Įrašoma...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>kai</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>įrenginyje</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>„{0}“ priskirtas virtualiam valdikliui {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>„{0}“ nebepriskirtas virtualiam valdikliui {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Įrenginys pašalintas.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtualus valdiklis {0} ištrintas.</value></data>
@@ -514,7 +511,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Kompiuteriai, su kuriais susiejote šį kompiuterį nuotoliniam ryšiui. Panaikinkite kompiuterio prieigą, kad jis nebegalėtų prisijungti. Tada jį reikėtų susieti iš naujo.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Panaikinti</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Panaikinti visus</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Pervadinti</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Jutiklinio skydelio perdanga</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Ekrane rodomas jutiklinis paviršius „PlayStation“ jutiklinio skydelio žaidimams, skirtas jutikliniam ekranui arba pelei.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Įjungti jutiklinio skydelio perdangą</value></data>
@@ -748,7 +744,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>„Visual Studio“ licencijos sąlygos</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>„Corsair“ SDK sąlygos</value></data>
@@ -1029,9 +1024,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Priskyrimai</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Svirtelės</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Gaidukai</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Jėgos grįžtamasis ryšys</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulsiniai gaidukai</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulsiniai gaidukai</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gaidukų stiprinimas, variklių sukeitimas, adaptyviųjų gaidukų vibracijos, pastovi gaidukų jėga</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Perduoda kiekvieno gaiduko variklių komandas („Xbox Impulse Triggers“) iš virtualaus valdiklio priskirtam fiziniam „Xbox One“, „Elite“ ar „Series“ valdikliui. Žaidimo valdoma gaidukų vibracija perduodama automatiškai. Toliau esantys nustatymai keičia kiekvieno gaiduko vibracijos stiprumą.</value></data>
@@ -1097,7 +1090,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Nustatyti kairįjį gaiduką iš naujo</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Nustatyti dešinįjį gaiduką iš naujo</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptyvieji gaidukai</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptyvieji gaidukai</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfigūruokite priskirto fizinio „DualSense“ gaidukų grįžtamojo ryšio efektus. Gaidukų efektai iš žaidimo ar žaidimo modifikacijos perduodami automatiškai. Čia esantys nustatymai prideda naudotojo sukonfigūruotą sluoksnį, kuris veikia, kai nė vienas iš jų nesiunčia efektų.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Svirtelės</value></data>
@@ -1142,7 +1134,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>Apšvietimas</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Apšvietimas</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Nustatykite priskirto fizinio valdiklio šviesos juostos pagrindinę spalvą ir reakciją į garsą. Žaidimo nustatytos spalvos visada turi pirmenybę. Naudotojo nustatymai taikomi, kai joks žaidimas nevaldo šviesos juostos.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Kai nustatyta „Žaidėjo numeris“, ramybės būsenos pultas rodo savo virtualaus valdiklio žaidėją: „Sony“ žaidėjo spalvą šviesos juostoje (1 – mėlyna, 2 – raudona, 3 – žalia, 4 – rožinė) ir atitinkamus žaidėjo indikatorius „DualSense“ pulte. Visi to paties virtualaus valdiklio įrenginiai rodo tą patį numerį. Žaidimai perima valdymą, kai tik nustato apšvietimą, bet tai, ką nustatote čia, visada turi pirmenybę, o „Išjungta“ visiškai užgesina lemputę.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Kai nustatyta „Žaidėjo numeris“, ramybės būsenos pultas rodo savo virtualaus valdiklio žaidėją: „Sony“ žaidėjo spalvą šviesos juostoje (1 mėlyna, 2 raudona, 3 žalia, 4 rožinė) ir atitinkamus žaidėjo indikatorius „DualSense“ pulte. Visi to paties virtualaus valdiklio įrenginiai rodo tą patį numerį. Žaidimas perima valdymą, kai tik nustato apšvietimą. Bet kuris kitas čia nustatytas režimas pakeičia žaidėjo spalvą, o „Išjungta“ visiškai užgesina lemputę.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Šis virtualus valdiklis apšviečia įrenginį tais pačiais režimais, kuriuos turi „DualSense“ šviesos juosta, nustatytais čia tik šiam valdikliui. „PlayStation“ virtualiame valdiklyje žaidimas, nustatantis šviesos juostą, perima valdymą taip pat, kaip „DualSense“ pulte.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Valdyti šio įrenginio apšvietimą</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Išjungus, šis virtualus valdiklis nebeapšviečia įrenginio. Gamintojo eilutė arba kitas tokio paties tipo įrenginys, apšviečiamas per tą pačią programinę įrangą, vis tiek gali nustatyti jo spalvą. Šio virtualaus valdiklio makrokomanda „Nustatyti Chroma spalvą“ vis tiek nudažo „Razer“ įrenginį.</value></data>
@@ -1257,9 +1249,9 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gaidukai</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV jungikliai</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Mygtukai</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Importuoti profiliai…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Valdiklių šablonai…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Išplėstinis valdiklis</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Tvarkykite naudotojo importuotus „HIDMaestro“ profilius: užfiksuokite naują iš prijungto įrenginio, eksportuokite esamą į JSON arba ištrinkite nebereikalingą.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Tvarkykite pridėtus valdiklių šablonus: importuokite šabloną iš failo arba prijungto įrenginio, eksportuokite į JSON arba ištrinkite nebereikalingą.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Klonuoti įrenginį 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Priskiria kiekvieną pasirinkto įrenginio ašį, mygtuką ir POV jungiklį tiesiai to paties numerio virtualiai išvesčiai. Pritaiko išdėstymą prie įrenginio ir pakeičia šio įrenginio eilutes lizde tiesioginiu 1:1 perdavimu.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Klonuoti įrenginį 1:1</value></data>
@@ -1274,18 +1266,18 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Importuoti iš prijungto įrenginio</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Eksportuoti…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Ištrinti</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Eksportuoti profilio JSON</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Eksportuoti šablono JSON</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Ištrinti šabloną?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Bet kuris valdiklis, naudojantis {0}, grįžta prie įrašo „Pasirinktinis“. Šio veiksmo negalima atšaukti.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Eksportuota: {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Eksportuoti nepavyko: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Ištrinta: „{0}“.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Importuoti failą…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importuoti profilio JSON</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importuoti šablono JSON</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Importuota iš {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Nepavyko perskaityti: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>„HIDMaestro“ atmetė šį profilį ties {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Šis profilis neturi HID deskriptoriaus, todėl iš jo negalima sukurti valdiklio.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>„HIDMaestro“ atmetė šį šabloną ties {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Šis šablonas neturi HID deskriptoriaus, todėl iš jo negalima sukurti valdiklio.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Nieko neimportuota. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importuoti</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(bevardis HID įrenginys)</value></data>
@@ -1396,9 +1388,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Perjungti į 2D rodinį</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Perjungti į 3D rodinį</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Spustelėkite, kad išbandytumėte kairįjį variklį</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Kairysis variklis</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Spustelėkite, kad išbandytumėte dešinįjį variklį</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Dešinysis variklis</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Priskirti viską</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Priskirti: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Paeiliui įrašyti visus priskyrimus po vieną</value></data>
@@ -1502,6 +1492,11 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Apversti tiesa / netiesa</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Jei, pagal šabloną (sąlyga) ? tada : kitaip</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>„Kitaip“ dalis konstrukcijoje jei-tada-kitaip</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>ir</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>arba</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>ne</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>jei?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>kitaip:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Modulis (atmeta ženklą)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Mažesnė iš dviejų reikšmių</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Didesnė iš dviejų reikšmių</value></data>
@@ -1569,6 +1564,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibruoti centrą</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Centro taškas</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Centras</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Greitis</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Nejautros zona</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Centro poslinkiai, nejautros zonos forma ir reikšmės kiekvienai ašiai, kiekvienos ašies kreivė, diapazonas, vairavimas</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Diapazonas skaičiais, neapdorotos reikšmės</value></data>
@@ -1792,7 +1788,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Fiksuotas (išlaiko)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Kairysis variklis</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Dešinysis variklis</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Laikymas</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Blėsimas</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1901,7 +1896,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Jutiklinis skydelis</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Jutiklinis skydelis</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Kiekvieno jutiklinio skydelio įvestis. Gestai (perbraukimai, bakstelėjimai, suspaudimai, formos) ir nuolatinės išvesties režimai (virtuali svirtelė / kryptinis mygtukas, pelė) tampa priskyrimų šaltiniais, kuriuos galite susieti su bet kuria išvestimi.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Jutiklinis skydelis</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Jutiklinio skydelio numeris</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Kuriam šio valdiklio jutikliniam skydeliui taikomi toliau esantys nustatymai. Kiekvienas jutiklinis skydelis turi savo gestus, pelės pojūtį ir žymeklio sritį.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Gestų atpažinimas</value></data>
@@ -2352,8 +2346,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Pelės judesys Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Jautrumas</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Atskiro šaltinio IR žymeklio jautrumas. Su 1.0 visas svirtelės nuokrypis pasiekiamas kameros matymo lauko krašte. Didesnės nei 1.0 reikšmės visą nuokrypį pasiekia mažiau pajudinus taikiklį. Mažesnėms nei 1.0 reikia daugiau.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Jautrumas</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Atskiro šaltinio jautrumas paprastai ašiai, slankikliui arba žaidimų pulto svirtelei / gaidukui. 1.0 palieka įvestį nepakeistą. Didesnės nei 1.0 reikšmės visą nuokrypį pasiekia trumpesne eiga. Mažesnėms nei 1.0 reikia daugiau.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Žaidimų pultas {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Atskiro šaltinio pelės judesio jautrumas. Su 1.0 visas nuokrypis pasiekiamas tokiu pačiu greičiu kaip su tikra pele, didesnėms nei 1.0 reikšmėms reikia mažiau judesio, mažesnėms – daugiau.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Balanso lentos bendras svoris</value></data>
@@ -2489,7 +2481,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profilis įkeliamas pats, kai priekyje yra vienas iš jo žaidimų.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Prasideda be valdiklių. Jis įkeliamas pats, kai priekyje yra vienas iš jo žaidimų.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Pridėti veikiantį žaidimą</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Jokia kita programa neturi atidaryto lango.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nerasta kitų atidarytų langų.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Šalinti {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Apklausos dažnis, kol šis profilis įkeltas</value></data>
 
@@ -3066,7 +3058,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Pridėkite spalvas, kurios bus keičiamos po vieną kiekvieną kartą pasiekus kraštinę padėtį.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Nustatyti šviesos juostos laikymą iš naujo</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Garsas</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Žymeklis</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR žymeklis</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Taikykite šiuo „Wii Remote“ į ekraną naudodami jo IR kamerą. Reikia jutiklių juostos arba dviejų infraraudonųjų LED virš ar po ekranu. Kad taikytumėte į tikslią vietą, kalibruokite jį kaip šviesos pistoletą puslapyje „Įrenginiai“. Kalibruotas pultelis nepaiso nustatymų „Jutiklių juostos padėtis“ ir „Vertikalus poslinkis“.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Žymeklio derinimas</value></data>
@@ -3424,7 +3415,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Pavadinkite šią žymą</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Užregistruoti</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Užregistruota</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Neaptiktas NFC skaitytuvas. Prijunkite PC/SC skaitytuvą ir atidarykite iš naujo.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Žyma nuskaityta. Įveskite pavadinimą ir spustelėkite „Užregistruoti“. Priglauskite kitą žymą, kad ją pakeistumėte.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>Užregistruota: „{0}“. Priglauskite kitą žymą, kad pridėtumėte daugiau.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Registruoti / tvarkyti NFC žymas</value></data>
@@ -3451,7 +3441,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="VrCtl_Z" xml:space="preserve"><value>Valdiklis Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Svirtelė X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Svirtelė Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Gaidukas</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Rankena</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Svirtelės paspaudimas</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Pagrindinis mygtukas</value></data>
@@ -3529,7 +3518,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Įjungti rankinių kompiuterių mygtukus</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Prideda įrenginius „Paslėpti mygtukai“ ir „Sistemos judesys“ į puslapį „Įrenginiai“. Kai išjungta, niekas neveikia.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Vartotojo valdymas {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Pelė</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Pelės gestai</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Laikykite gesto mygtuką, mostelėkite pele, ir atleidus suveiks vienas veiksmas: kairėn, dešinėn, aukštyn, žemyn arba paprastas spustelėjimas, jei mostelėjimo atstumas nepasiektas. Priskirkite penkis gestus bet kuriai išvesčiai arba naudokite juos kaip makrokomandų paleidiklius.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Įjungti pelės gestus</value></data>
@@ -3718,8 +3706,9 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>„Steam“ nepasiekiamas</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Nepavyko pasiekti „Steam“. Patikrinkite ryšį. Jau importuoti profiliai veikia toliau: jie saugomi šiame kompiuteryje.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Bandyti dar kartą</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Ši 2016 m. laikų konfigūracija senesnė už „Steam“ konfigūracijų CDN. Užsiprenumeruokite ją „Steam“, ir „PadForge“ ją perskaitys iš jūsų „Steam“ aplanko.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>„Steam“ nepateikia šios konfigūracijos failo atsisiuntimui, o jos kopijos nėra jūsų „Steam“ aplanke. Užsiprenumeruokite ją „Steam“, ir „PadForge“ ją perskaitys iš ten.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Atidaryti „Steam“ dirbtuvėse</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Senas</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Pasirinkite konfigūraciją, kad pamatytumėte, kas perkeliama.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Kas perkeliama</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Tampa</value></data>
@@ -3945,7 +3934,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>meniu neturi priskirtų langelių</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>meniu pagrindinis paviršius nepalaikomas ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>meniu langelio piktograma neatpažinta ({0}), todėl langelyje lieka tekstinis užrašas</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Žemųjų dažnių vibratoriai</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Išvestis</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mygtukai</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Klavišai ir pelė</value></data>
@@ -4415,7 +4403,6 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Variklis</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Padalyti pagal kryptį</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Centro nejautros zona</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Atkurti išjungtą būseną</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Atkurti „Kairioji svirtelė X“</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Nustatyti stiprumą iš naujo (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Nustatyti centro nejautros zoną iš naujo (2%)</value></data>
@@ -4495,7 +4482,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>HID sluoksnis, sukompiliuotas į pateikiamą SDL3.dll, autorius Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Piktogramų šaltiniai</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Liepsnos simbolis iš Material Design Icons (Pictogrammers, Apache-2.0), bendroji žaidimų pulto piktograma iš Ionicons (Ionic, MIT), išplėstinio valdiklio vairalazdė iš Jam Icons (Michael Amprimo, MIT) bei „Xbox“ ir „PlayStation“ piktogramos iš SVG Repo pagal kiekvienos piktogramos puslapyje nurodytą licenciją.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Liepsnos simbolis iš Material Design Icons (Pictogrammers, Apache-2.0), išplėstinio valdiklio vairalazdė iš Jam Icons (Michael Amprimo, MIT) bei „Xbox“ ir „PlayStation“ piktogramos iš SVG Repo pagal kiekvienos piktogramos puslapyje nurodytą licenciją.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Perdavimo protokolas, kuriuo grindžiamas nuotolinio ryšio atsarginis kanalas, naudojamas bendraujant su nemokamais viešaisiais n0.computer perdavimo serveriais taip, kaip tai daro FlexInput. iroh: MIT OR Apache-2.0. FlexInput: MIT. Tik dokumentacija, joks kodas neplatinamas.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

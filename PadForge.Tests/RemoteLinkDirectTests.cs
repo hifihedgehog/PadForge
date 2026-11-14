@@ -555,59 +555,6 @@ namespace PadForge.Tests
             Assert.Null(await wb);
         }
 
-        // ── Rendezvous protocol ──
-
-        [Fact]
-        public void Rendezvous_SignedRecord_VerifiesAndDecodes()
-        {
-            var id = PeerIdentity.Generate();
-            var rec = new RendezvousProtocol.PresenceRecord
-            {
-                PublicKey = id.PublicKey,
-                PublicEndpoint = new IPEndPoint(IPAddress.Parse("203.0.113.10"), 50000),
-                PrivateEndpoint = new IPEndPoint(IPAddress.Parse("10.0.0.5"), 50000),
-                Expiry = DateTimeOffset.FromUnixTimeSeconds(1_800_000_000),
-            };
-            var blob = RendezvousProtocol.SignRecord(rec, id);
-            Assert.True(RendezvousProtocol.TryVerifyRecord(blob, out var got, id.Fingerprint));
-            Assert.Equal(rec.PublicEndpoint, got.PublicEndpoint);
-            Assert.Equal(rec.PrivateEndpoint, got.PrivateEndpoint);
-            Assert.Equal(id.Fingerprint, got.Fingerprint);
-        }
-
-        [Fact]
-        public void Rendezvous_TamperedEndpoint_FailsVerification()
-        {
-            var id = PeerIdentity.Generate();
-            var rec = new RendezvousProtocol.PresenceRecord
-            {
-                PublicKey = id.PublicKey,
-                PublicEndpoint = new IPEndPoint(IPAddress.Parse("203.0.113.10"), 50000),
-                Expiry = DateTimeOffset.FromUnixTimeSeconds(1_800_000_000),
-            };
-            var blob = RendezvousProtocol.SignRecord(rec, id);
-            // Flip a byte inside the public-endpoint region (after version+key).
-            blob[1 + 32] ^= 0xFF;
-            Assert.False(RendezvousProtocol.TryVerifyRecord(blob, out _, id.Fingerprint));
-        }
-
-        [Fact]
-        public void Rendezvous_WrongExpectedFingerprint_Rejected()
-        {
-            var id = PeerIdentity.Generate();
-            var other = PeerIdentity.Generate();
-            var rec = new RendezvousProtocol.PresenceRecord
-            {
-                PublicKey = id.PublicKey,
-                PublicEndpoint = new IPEndPoint(IPAddress.Loopback, 1),
-                Expiry = DateTimeOffset.FromUnixTimeSeconds(1_800_000_000),
-            };
-            var blob = RendezvousProtocol.SignRecord(rec, id);
-            // Internally valid, but not the peer we pinned.
-            Assert.False(RendezvousProtocol.TryVerifyRecord(blob, out _, other.Fingerprint));
-            Assert.True(RendezvousProtocol.TryVerifyRecord(blob, out _, id.Fingerprint));
-        }
-
         // ── helpers ──
 
         private static byte[] RandomBytes(int n, int seed)

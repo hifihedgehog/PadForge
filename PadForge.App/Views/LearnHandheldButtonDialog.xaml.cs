@@ -57,6 +57,22 @@ namespace PadForge.Views
         private int[] _chord;
         private List<HandheldLearnSession.Candidate> _candidates = new();
 
+        /// <summary>Gives two rows' labels one column: each is as wide as
+        /// the longer of the two words. Each label alone is as wide as its
+        /// own word, which set one row's field off from the other's in the
+        /// languages where the two words differ in length.</summary>
+        internal static void ShareLabelColumn(params System.Windows.Controls.TextBlock[] labels)
+        {
+            double wide = 0;
+            foreach (var label in labels)
+            {
+                label.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                wide = Math.Max(wide, label.DesiredSize.Width - label.Margin.Left - label.Margin.Right);
+            }
+            foreach (var label in labels)
+                label.MinWidth = Math.Max(label.MinWidth, wide);
+        }
+
         public LearnHandheldButtonDialog()
         {
             InitializeComponent();
@@ -88,6 +104,7 @@ namespace PadForge.Views
             RefreshList();
             _phaseTimer.Tick += PhaseTimer_Tick;
             Loaded += (_, _) => NameBox.Focus();
+            Loaded += (_, _) => ShareLabelColumn(SourceLabel, NameLabel);
             Closed += (s, e) => Teardown();
         }
 

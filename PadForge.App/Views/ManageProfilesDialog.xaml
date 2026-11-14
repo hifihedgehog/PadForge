@@ -114,7 +114,7 @@
                       ItemTemplateSelector="{StaticResource DeviceLook}"
                       SelectionChanged="DeviceList_SelectionChanged" DropDownOpened="DeviceList_DropDownOpened"
                       AutomationProperties.Name="{Binding ManageProfiles_ImportFromDevice, Source={x:Static strings:Strings.Instance}}"/>
-            <Button x:Name="ImportButton" Style="{StaticResource DialogButton}" Margin="10,0,0,0" IsEnabled="False"
+            <Button x:Name="ImportButton" Style="{StaticResource DialogButton}" Margin="10,0,0,0" IsEnabled="False" IsDefault="True"
                     Content="{Binding ImportFromDevice_Import, Source={x:Static strings:Strings.Instance}}"
                     Click="ImportButton_Click"/>
         </controls:SettingRow>

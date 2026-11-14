@@ -2529,7 +2529,6 @@ namespace PadForge.Services
             // Update main VM state.
             _mainVm.IsEngineRunning = true;
             _mainVm.StatusText = Strings.Instance.Status_EngineStarted;
-            _mainVm.RefreshCommands();
 
             // Enter idle immediately if no slots are created.
             UpdateIdleState();
@@ -2596,7 +2595,15 @@ namespace PadForge.Services
                         if (m == null) continue;
                         m.IsInputActive = false;
                         m.LiveLevel = 0;
+                        // The two readings beside the meter go with it: the
+                        // refresh that writes them stopped with the timer.
+                        m.CurrentValueText = string.Empty;
+                        m.CurrentPercentText = string.Empty;
                     }
+                    // The light beside a device's name on its Home card and
+                    // in the page's header says the device sends input, and
+                    // a stopped engine reads no device.
+                    foreach (var dev in padVm.MappedDevices) dev.IsSending = false;
                     padVm.ClearPipelineLiveness();
                 }
 
@@ -2650,8 +2657,9 @@ namespace PadForge.Services
             });
 
             // Background-safe: foreground monitor, servers, audio detector,
-            // device hiding teardown.  None of these touch WPF VMs or UI
-            // controls.
+            // device hiding teardown. None of these touches a UI control,
+            // and the one bound list among them (the web controller's
+            // phones) is cleared on the interface's thread.
             if (_foregroundMonitor != null)
             {
                 _foregroundMonitor.ProfileSwitchRequired -= OnAutoProfileSwitchRequired;
@@ -2705,14 +2713,20 @@ namespace PadForge.Services
                 {
                     pad.ActiveDeviceConfigPropertyChanged -= OnDeviceConfigChanged;
                     pad.AssignOfferDismissed -= OnAssignOfferDismissed;
-                    pad.ClearAssignOffer();
                 }
-                // Home's offer goes with the engine too: nothing reads which
-                // devices are connected while it is stopped. What each
-                // device still owes stays on the device.
                 _mainVm.Dashboard.HomeOfferDismissed -= OnHomeOfferDismissed;
-                _mainVm.Dashboard.ClearHomeOffer();
-                _mainVm.Dashboard.ClearFirstRunDevice();
+                // The offers go with the engine: nothing reads which devices
+                // are connected while it is stopped. What each device still
+                // owes stays on the device. They are cleared on the
+                // interface's thread, where the device walk sets them and a
+                // followed row's change is handled. A walk still queued
+                // finds _stopped set and makes no offer after this.
+                _dispatcher.Invoke(() =>
+                {
+                    foreach (var pad in _mainVm.Pads) pad.ClearAssignOffer();
+                    _mainVm.Dashboard.ClearHomeOffer();
+                    _mainVm.Dashboard.ClearFirstRunDevice();
+                });
                 _inputManager.Stop();
                 _inputManager.Dispose();
                 _inputManager = null;
@@ -2840,7 +2854,6 @@ namespace PadForge.Services
                 _mainVm.Dashboard.PollingFrequency = 0;
                 _mainVm.Dashboard.OnlineDevices = 0;
                 _mainVm.StatusText = Strings.Instance.Status_EngineStopped;
-                _mainVm.RefreshCommands();
 
                 // Clear "Initializing" indicators on dashboard cards and
                 // sidebar nav items.  Engine-side _slotInitializing[] is
@@ -3394,13 +3407,15 @@ namespace PadForge.Services
                 _lastForegroundUiRefreshTick = nowTick;
                 if (_foregroundMonitor != null && SettingsManager.EnableAutoProfileSwitching)
                 {
-                    string exe = System.IO.Path.GetFileName(_foregroundMonitor.LastForegroundExePath);
+                    // Read here and now: the monitor's own last values stand
+                    // still while an external pin holds or no profile exists.
+                    var (inFront, matchedId) = ForegroundMonitorService.ReadInFront();
+                    string exe = System.IO.Path.GetFileName(inFront);
                     _mainVm.Settings.ForegroundExeName = string.IsNullOrEmpty(exe) ? "-" : exe;
-                    _mainVm.Settings.IsForegroundMatched = _foregroundMonitor.LastMatchedProfileId != null;
+                    _mainVm.Settings.IsForegroundMatched = matchedId != null;
                     // The In front now line names the profile the program
                     // loads (#574).
-                    _mainVm.Settings.ForegroundProfileName =
-                        FindProfileById(_foregroundMonitor.LastMatchedProfileId)?.Name ?? string.Empty;
+                    _mainVm.Settings.ForegroundProfileName = FindProfileById(matchedId)?.Name ?? string.Empty;
                 }
             }
         }
@@ -3910,6 +3925,10 @@ namespace PadForge.Services
         /// light beside each one's name. Asked on the dashboard's lane.</summary>
         private readonly InputActivity _inputActivity = new();
 
+        /// <summary>The mapped devices the dashboard's walk read this pass,
+        /// kept between passes so the walk allocates nothing.</summary>
+        private readonly HashSet<Guid> _activityRead = new();
+
         /// <summary>Whether a controller's picture is a still of its 3D
         /// model: the controller page shows the 3D view. The picture is the
         /// 2D art while the page shows the 2D view. One rule for a Home
@@ -3981,13 +4000,21 @@ namespace PadForge.Services
         private void StillMade()
         {
             _stillPosted = false;
-            // Every card asks again at its next refresh, and the ones that
-            // waited for this model find it. The Devices page's panel asks
-            // now: no timer runs for it while the engine is stopped.
+            RefreshPictures();
+            PostNextStill();
+        }
+
+        /// <summary>Gives every Home card and the Devices page's panel
+        /// its picture again, now: a still that was waited for has been
+        /// made, or the controller page went from the 3D view to the 2D one
+        /// or back. Neither waits for a refresh, since no timer runs one
+        /// while the engine is stopped.</summary>
+        internal void RefreshPictures()
+        {
             foreach (var slot in _mainVm.Dashboard.SlotSummaries) slot.ForgetPicture();
+            RefreshSlotSummaryProperties();
             _mainVm.Devices.ForgetPicture();
             UpdateSelectedDevicePicture();
-            PostNextStill();
         }
 
         /// <summary>Gives the Devices page's panel the selected device's
@@ -4085,6 +4112,7 @@ namespace PadForge.Services
             var devArr = devices as UserDevice[] ?? devices?.ToArray();
             var settings = SettingsManager.UserSettings;
             var buf = RentSlotSettingsBuffer(settings);
+            _activityRead.Clear();
 
             foreach (var slot in dash.SlotSummaries)
             {
@@ -4093,8 +4121,6 @@ namespace PadForge.Services
 
                 var padVm = _mainVm.Pads[padIndex];
 
-                slot.IsActive = padVm.IsDeviceOnline;
-                slot.DeviceName = padVm.MappedDeviceName;
                 // Ember card device roster (#175): the card renders one entry
                 // per mapped device with its own dynamic battery glyph.
                 slot.MappedDevices = padVm.MappedDevices;
@@ -4117,6 +4143,7 @@ namespace PadForge.Services
                 {
                     var mapped = OnlineMatch(devArr, dev.InstanceGuid);
                     dev.IsOnline = mapped != null;
+                    if (mapped != null && engineReads) _activityRead.Add(dev.InstanceGuid);
                     dev.IsSending = mapped != null && engineReads
                         && _inputActivity.Look(dev.InstanceGuid, mapped.InputState,
                             mapped.CapType == InputDeviceType.Gamepad, nowMs);
@@ -4128,13 +4155,11 @@ namespace PadForge.Services
                 slot.IsInitializing = _inputManager?.IsVirtualControllerInitializing(padIndex) ?? false;
                 slot.IsCreateFailed = _inputManager?.IsVirtualControllerCreateFailed(padIndex) ?? false;
                 slot.IsEnabled = SettingsManager.SlotEnabled[padIndex];
-                slot.StatusText = !SettingsManager.SlotEnabled[padIndex] ? Strings.Instance.Common_Disabled
-                    : slot.IsInitializing ? Strings.Instance.Main_Initializing
-                    : slot.IsCreateFailed ? Strings.Instance.Main_VcFailed
-                    : mappedCount == 0 ? Strings.Instance.Status_NoMapping
-                    : padVm.IsDeviceOnline ? Strings.Instance.Main_Active
-                    : Strings.Instance.Common_Idle;
             }
+            // A device that went offline, left its slot or is no longer read
+            // is forgotten, as the Devices rows' record forgets one, so its
+            // return starts over and only notes where its axes rest.
+            _inputActivity.KeepOnly(_activityRead);
 
             int xboxCount = 0, playstationCount = 0, nintendoCount = 0, extendedCount = 0, midiCount = 0, kbmCount = 0, vrCount = 0, globalCount = 0;
             foreach (var slot in dash.SlotSummaries)
@@ -5187,9 +5212,8 @@ namespace PadForge.Services
                 }
             }
 
-            // Card device lines are composed in RefreshDashboardSlots (#175),
-            // which owns slot.DeviceName; per-device BatteryText above is the
-            // only battery state this tick maintains.
+            // SetBattery keeps each roster device's level, charging state,
+            // low flag and battery text for the controller pages' rosters.
         }
 
         // Per-device notifier state: last effective percent and whether the
@@ -5847,7 +5871,7 @@ namespace PadForge.Services
             var s = Strings.Instance;
             string status;
             // Empty rather than "Stopped": the line lives inside the
-            // Input Engine card and collapses when there is nothing to say.
+            // Hardware Support card and collapses when there is nothing to say.
             if (row == null) status = string.Empty;
             else
                 status = row.SourceState switch
@@ -11040,10 +11064,17 @@ namespace PadForge.Services
                 RefreshChatObjects();
                 UpdatePadDeviceInfo();
                 // After the rosters, so "slot has devices" and "already on
-                // the slot" read this walk's truth.
-                EvaluateAssignOffers();
-                EvaluateHomeOffer();
-                EvaluateFirstRunDevice();
+                // the slot" read this walk's truth. A walk queued before a
+                // stop can run during it, since the engine it came from is
+                // still _inputManager for the seconds its own stop takes.
+                // Stop has cleared the offers by then, and one made here
+                // would stand on a stopped engine.
+                if (System.Threading.Volatile.Read(ref _stopped) == 0)
+                {
+                    EvaluateAssignOffers();
+                    EvaluateHomeOffer();
+                    EvaluateFirstRunDevice();
+                }
                 // A Bliss-Box port read through SDL's gamepad mapping can be
                 // placed once it connects.
                 CompleteOwedBlissBoxMappings();
@@ -12108,7 +12139,6 @@ namespace PadForge.Services
             // The controller picture page (#555), for an OBS browser source.
             dash.TwitchChatDisplayUrl = server?.DisplayUrl;
             dash.WebControllerPlainStatus = server?.PlainStatus;
-            dash.IsWebControllerPlainRunning = server?.IsPlainServing == true;
             string plainUrl = server?.PlainUrl;
             if (dash.WebControllerPlainUrl != plainUrl)
             {
@@ -12189,8 +12219,16 @@ namespace PadForge.Services
             _mainVm.Dashboard.WebControllerStatus = Strings.Instance.Common_Stopped;
             _mainVm.Dashboard.WebControllerClientCount = 0;
             // The server raised each disconnect after its own clear, so the
-            // removals it dispatched find nothing left to take.
-            _mainVm.Dashboard.WebControllerPhones.Clear();
+            // removals it dispatched find nothing left to take. The list is
+            // bound, and a bound list changes on the interface's thread
+            // only: Stop runs this on a worker (the Home engine toggle),
+            // where a clear threw out of Stop and left the engine half
+            // stopped. A server started again before the clear runs keeps
+            // the phones it has taken since.
+            _dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (_webServer == null) _mainVm.Dashboard.WebControllerPhones.Clear();
+            }));
             // Events are detached before Dispose, so no "Stopped" status
             // flows through the handler; settle the flame here too (#175
             // phase 2 item 2).
@@ -14285,6 +14323,10 @@ namespace PadForge.Services
             // device name at population time, so they keep showing the old
             // language until UpdatePadDeviceInfo re-runs.
             UpdatePadDeviceInfo();
+            // A Falcon's reach line is written once for the row picked
+            // (UpdateFalconDeviceRow). Forgetting the row has the next tick
+            // write it again, in the new language.
+            _falconRowShown = Guid.Empty;
         });
 
         /// <summary>
@@ -16534,7 +16576,13 @@ namespace PadForge.Services
                 }
 
                 if (isVirtual || !found)
+                {
+                    // The lists show a selection and write none back, so a
+                    // row that goes takes the selection with it here. The
+                    // panel would keep showing a device that is gone.
+                    if (ReferenceEquals(devVm.SelectedDevice, row)) devVm.SelectedDevice = null;
                     devVm.Devices.RemoveAt(i);
+                }
             }
 
             // Sort: physical hardware first, merged aggregate:// sources
@@ -17143,10 +17191,6 @@ namespace PadForge.Services
             }
         }
 
-        public bool IsMagCalibrating(Guid deviceGuid)
-        {
-            lock (_gravityStateLock) return _magCalGuid == deviceGuid;
-        }
         private readonly Dictionary<Guid, float> _compassCorr = new();
         private readonly Dictionary<Guid, (float bx, float by, float bz, float norm, long readMs)> _compassCalCache = new();
 
@@ -18050,6 +18094,16 @@ namespace PadForge.Services
         //  UserDevice lookup helpers
         // ─────────────────────────────────────────────
 
+        /// <summary>Whether the Devices page shows the compact test (sticks,
+        /// triggers, pressed buttons): the device's state is in SDL's gamepad
+        /// layout. The rule of InputManager.SpeaksGamepadLayout without its
+        /// Bliss-Box placement: a placed port's state stays raw, so the fixed
+        /// slots would read the wrong axes.</summary>
+        private static bool ShowsGamepadTest(UserDevice ud)
+            => ud.Device is PadForge.Engine.RemoteLink.RemotePeerDevice { Info.GamepadLayout: bool layout }
+                ? layout && !ud.ForceRawJoystickMode
+                : InputManager.InSdlGamepadLayout(ud.ForceRawJoystickMode, ud.Device, ud.CapType);
+
         /// <summary>
         /// Returns the button positions to surface in the Devices preview for
         /// <paramref name="ud"/>. SDL3 gamepads occupy a fixed 22-slot space
@@ -18070,16 +18124,6 @@ namespace PadForge.Services
         /// native HID button is visible, and that is not a numbering
         /// inconsistency but a different question being asked.</para>
         /// </summary>
-        /// <summary>Whether the Devices page shows the compact test (sticks,
-        /// triggers, pressed buttons): the device's state is in SDL's gamepad
-        /// layout. The rule of InputManager.SpeaksGamepadLayout without its
-        /// Bliss-Box placement: a placed port's state stays raw, so the fixed
-        /// slots would read the wrong axes.</summary>
-        private static bool ShowsGamepadTest(UserDevice ud)
-            => ud.Device is PadForge.Engine.RemoteLink.RemotePeerDevice { Info.GamepadLayout: bool layout }
-                ? layout && !ud.ForceRawJoystickMode
-                : InputManager.InSdlGamepadLayout(ud.ForceRawJoystickMode, ud.Device, ud.CapType);
-
         internal static int[] ResolveButtonIndices(UserDevice ud)
         {
             int max = CustomInputState.MaxButtons;
@@ -20380,11 +20424,6 @@ namespace PadForge.Services
             _inputManager.SetShapeTemplates(templates);
         }
 
-        /// <summary>Snapshot of the active profile's custom-gesture list.
-        /// Returns a copy, so callers may not mutate the working set.</summary>
-        public PadForge.Engine.Touchpad.TouchpadCustomGesture[] GetActiveTouchpadGestures()
-            => _activeTouchpadGestures.ToArray();
-
         /// <summary>Maps a UserDevice to one of the canonical
         /// device-class labels custom gestures use for their
         /// <see cref="PadForge.Engine.Touchpad.TouchpadCustomGesture.DeviceClass"/>
@@ -21224,7 +21263,6 @@ namespace PadForge.Services
         /// churn.</summary>
         internal void ApplyEffectivePollingRate()
         {
-            if (_inputManager == null) return;
             int ms = 0;
             string activeName = null;
             string activeId = SettingsManager.ActiveProfileId;
@@ -21237,13 +21275,18 @@ namespace PadForge.Services
                     activeName = active.Name;
                 }
             }
-            _inputManager.PollingIntervalMs =
-                ResolvePollingMs(ms, _mainVm?.Settings?.PollingRateMs ?? 1);
+            // A stopped engine has no loop to pace. It takes the rate at
+            // its next start, which calls this.
+            if (_inputManager != null)
+                _inputManager.PollingIntervalMs =
+                    ResolvePollingMs(ms, _mainVm?.Settings?.PollingRateMs ?? 1);
 
             // The Settings page says WHO is in charge of the knob (#365
             // follow-up): a global setting that a profile silently outranks
             // reads as broken. Written here, beside the rate itself, so the
-            // note and the loop can never disagree.
+            // note and the loop can never disagree, and written while the
+            // engine is stopped too: a profile loaded or edited then still
+            // changes who is in charge.
             var settingsVm = _mainVm?.Settings;
             if (settingsVm != null)
                 settingsVm.PollingOverrideNote = ms > 0 && activeName != null

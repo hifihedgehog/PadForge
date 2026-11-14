@@ -136,7 +136,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Κλείσιμο του PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Εκκίνηση του PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Εκκαθάριση εικονικών χειριστηρίων που απέμειναν από προηγούμενη συνεδρία.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> συσκευές</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Προσθήκη χειριστηρίου</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Προσθήκη χειριστηρίου</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Επιλέξτε τι θα βλέπουν τα παιχνίδια. Το χειριστήριο προστίθεται μόλις κάνετε κλικ.</value></data>
@@ -280,7 +279,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Το χρονικό όριο καταγραφής για «{0}» έληξε.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Η μηχανή ξεκίνησε.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Η μηχανή σταμάτησε.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Καμία αντιστοίχιση</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Σφάλμα: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0}: δεν ήταν δυνατή η δημιουργία.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Αλλαγή προφίλ: {0}</value></data>
@@ -298,7 +296,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Καταγραφή...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>όταν</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>σε</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>Η συσκευή «{0}» ανατέθηκε στο εικονικό χειριστήριο {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>Καταργήθηκε η ανάθεση της συσκευής «{0}» στο εικονικό χειριστήριο {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Η συσκευή αφαιρέθηκε.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Το εικονικό χειριστήριο {0} διαγράφηκε.</value></data>
@@ -529,7 +526,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Υπολογιστές με τους οποίους έχετε κάνει σύζευξη για την Απομακρυσμένη σύνδεση. Ανακαλέστε έναν για να μην μπορεί πια να συνδέεται. Θα χρειαστεί νέα σύζευξη.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Ανάκληση</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Ανάκληση όλων</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Μετονομασία</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Επικάλυψη επιφάνειας αφής</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Επιφάνεια αφής στην οθόνη για παιχνίδια με επιφάνεια αφής PlayStation, για οθόνη αφής ή ποντίκι.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Ενεργοποίηση επικάλυψης επιφάνειας αφής</value></data>
@@ -763,7 +759,6 @@
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Όροι άδειας του Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Όροι του SDK της Corsair</value></data>
@@ -1110,9 +1105,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Αντιστοιχίσεις</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Μοχλοί</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Σκανδάλες</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Ανάδραση δύναμης</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Σκανδάλες ώθησης</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Σκανδάλες ώθησης</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ενίσχυση ανά σκανδάλη, αντιμετάθεση κινητήρων, δονήσεις προσαρμοζόμενων σκανδαλών, Σταθερή δύναμη σκανδάλης</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Προωθεί τις εντολές κινητήρα ανά σκανδάλη (σκανδάλες ώθησης Xbox) από το εικονικό χειριστήριο στο φυσικό χειριστήριο Xbox One, Elite ή Series που έχει ανατεθεί. Η δόνηση σκανδάλης που προκαλεί το παιχνίδι περνά αυτόματα. Τα παρακάτω στοιχεία ελέγχου κλιμακώνουν την ένταση ανά σκανδάλη.</value></data>
@@ -1178,7 +1171,6 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Επαναφορά αριστερής σκανδάλης</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Επαναφορά δεξιάς σκανδάλης</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Προσαρμοζόμενες σκανδάλες</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Προσαρμοζόμενες σκανδάλες</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Ρυθμίστε τα εφέ ανάδρασης σκανδαλών στο φυσικό DualSense που έχει ανατεθεί. Τα εφέ σκανδαλών από ένα παιχνίδι ή ένα mod παιχνιδιού προωθούνται αυτόματα. Οι ρυθμίσεις εδώ προσθέτουν ένα επίπεδο ρυθμισμένο από τον χρήστη, που ισχύει όταν δεν γράφει κανένα από τα δύο.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Μοχλοί</value></data>
@@ -1224,7 +1216,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Φωτισμός</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Φωτισμός</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Ορίστε το βασικό χρώμα της φωτεινής μπάρας και τη συμπεριφορά ως προς τον ήχο στο φυσικό χειριστήριο που έχει ανατεθεί. Οι εγγραφές του παιχνιδιού υπερισχύουν πάντα. Οι ρυθμίσεις του χρήστη ισχύουν όταν κανένα παιχνίδι δεν οδηγεί τη φωτεινή μπάρα.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Όταν είναι ρυθμισμένο σε «Αριθμός παίκτη», το χειριστήριο σε αδράνεια δείχνει την ταυτότητα παίκτη του εικονικού του χειριστηρίου: το χρώμα παίκτη της Sony στη φωτεινή μπάρα (1 μπλε, 2 κόκκινο, 3 πράσινο, 4 ροζ) και τις αντίστοιχες κουκκίδες παίκτη σε ένα DualSense. Κάθε συσκευή στο ίδιο εικονικό χειριστήριο δείχνει τον ίδιο αριθμό. Τα παιχνίδια αναλαμβάνουν κάθε φορά που γράφουν φωτισμό, ό,τι ορίζετε εδώ υπερισχύει πάντα και το «Σβηστό» σβήνει εντελώς ένα φως.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Όταν είναι ρυθμισμένο σε «Αριθμός παίκτη», το χειριστήριο σε αδράνεια δείχνει την ταυτότητα παίκτη του εικονικού του χειριστηρίου: το χρώμα παίκτη της Sony στη φωτεινή μπάρα (1 μπλε, 2 κόκκινο, 3 πράσινο, 4 ροζ) και τις αντίστοιχες κουκκίδες παίκτη σε ένα DualSense. Κάθε συσκευή στο ίδιο εικονικό χειριστήριο δείχνει τον ίδιο αριθμό. Ένα παιχνίδι αναλαμβάνει κάθε φορά που γράφει φωτισμό. Οποιαδήποτε άλλη λειτουργία οριστεί εδώ αντικαθιστά το χρώμα παίκτη και το «Σβηστό» σβήνει εντελώς ένα φως.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Αυτό το εικονικό χειριστήριο φωτίζει τη συσκευή με τις ίδιες λειτουργίες που έχει η φωτεινή μπάρα ενός DualSense, οι οποίες ορίζονται εδώ μόνο για αυτό το χειριστήριο. Σε ένα εικονικό χειριστήριο PlayStation, ένα παιχνίδι που γράφει στη φωτεινή μπάρα αναλαμβάνει τον έλεγχο, όπως και σε ένα DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Έλεγχος του φωτισμού αυτής της συσκευής</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Έλεγχος φωτισμού</value></data>
@@ -1446,9 +1438,9 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Σκανδάλες</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Κουμπιά</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Εισηγμένα προφίλ…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Προεπιλογές χειριστηρίου…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Εκτεταμένο χειριστήριο</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Διαχείριση των προφίλ HIDMaestro που έχει εισαγάγει ο χρήστης: καταγράψτε ένα νέο από μια συνδεδεμένη συσκευή, εξαγάγετε ένα υπάρχον σε JSON ή διαγράψτε ένα που δεν χρειάζεστε πια.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Διαχείριση των προεπιλογών χειριστηρίου που προσθέσατε: εισαγάγετε μία από αρχείο ή από συνδεδεμένη συσκευή, εξαγάγετε μία σε JSON ή διαγράψτε μία που δεν χρειάζεστε πια.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Κλωνοποίηση συσκευής 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Αντιστοιχίζει κάθε άξονα, κουμπί και POV της επιλεγμένης συσκευής απευθείας στην εικονική έξοδο με τον ίδιο αριθμό. Προσαρμόζει τη διάταξη στο μέγεθος της συσκευής και αντικαθιστά τις γραμμές αυτής της συσκευής στην υποδοχή με διέλευση 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Κλωνοποίηση συσκευής 1:1</value></data>
@@ -1463,18 +1455,18 @@
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Εισαγωγή από συνδεδεμένη συσκευή</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Εξαγωγή…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Διαγραφή</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Εξαγωγή JSON προφίλ</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Εξαγωγή JSON προεπιλογής</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Διαγραφή προεπιλογής;</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Κάθε χειριστήριο που χρησιμοποιεί το {0} επιστρέφει στην καταχώριση «Προσαρμοσμένο». Αυτό δεν μπορεί να αναιρεθεί.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Εξήχθη στο {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Η εξαγωγή απέτυχε: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Το «{0}» διαγράφηκε.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Εισαγωγή από ένα αρχείο…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Εισαγωγή JSON προφίλ</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Εισαγωγή JSON προεπιλογής</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Εισήχθη από το {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Η ανάγνωση απέτυχε: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Το HIDMaestro απέρριψε αυτό το προφίλ στο {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Αυτό το προφίλ δεν έχει περιγραφέα HID, επομένως δεν μπορεί να δημιουργηθεί χειριστήριο από αυτό.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Το HIDMaestro απέρριψε αυτή την προεπιλογή στο {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Αυτή η προεπιλογή δεν έχει περιγραφέα HID, επομένως δεν μπορεί να δημιουργηθεί χειριστήριο από αυτήν.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Δεν εισήχθη τίποτα. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Εισαγωγή</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(συσκευή HID χωρίς όνομα)</value></data>
@@ -1585,9 +1577,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Μετάβαση σε προβολή 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Μετάβαση σε προβολή 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Κάντε κλικ για δοκιμή του αριστερού κινητήρα</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Αριστερός κινητήρας</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Κάντε κλικ για δοκιμή του δεξιού κινητήρα</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Δεξιός κινητήρας</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Αντιστοίχιση όλων</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Αντιστοίχιση: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Διαδοχική καταγραφή όλων των αντιστοιχίσεων, μία προς μία</value></data>
@@ -1691,6 +1681,11 @@
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Αντιστροφή αληθούς/ψευδούς</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Αν, με το σχήμα (συνθήκη) ? τότε : αλλιώς</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Το σκέλος «αλλιώς» ενός αν-τότε-αλλιώς</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>και</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>ή</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>όχι</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>αν?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>αλλιώς:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Απόλυτη τιμή (χωρίς το πρόσημο)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Η μικρότερη από δύο τιμές</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Η μεγαλύτερη από δύο τιμές</value></data>
@@ -1759,6 +1754,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Βαθμονόμηση κέντρου</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Κεντρικό σημείο</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Κέντρο</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Ταχύτητα</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Νεκρή ζώνη</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Μετατοπίσεις κέντρου, σχήμα νεκρής ζώνης και τιμές ανά άξονα, καμπύλη για κάθε άξονα, εύρος, τιμόνι</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Το εύρος σε αριθμούς, ακατέργαστες τιμές</value></data>
@@ -1982,7 +1978,6 @@
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Μόνιμη (κράτημα)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Αριστερός κινητήρας</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Δεξιός κινητήρας</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Κράτημα</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Σβήσιμο</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -2091,7 +2086,6 @@
   <data name="Pad_Touchpad" xml:space="preserve"><value>Επιφάνεια αφής</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Επιφάνεια αφής</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Είσοδος ανά επιφάνεια αφής. Οι χειρονομίες (σαρώσεις, αγγίγματα, τσιμπήματα, σχήματα) και οι λειτουργίες συνεχούς εξόδου (εικονικός μοχλός / D-pad, ποντίκι) γίνονται πηγές αντιστοίχισης που μπορείτε να συνδέσετε σε οποιαδήποτε έξοδο.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Επιφάνεια αφής</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Αριθμός επιφάνειας αφής</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Σε ποια επιφάνεια αφής αυτού του χειριστηρίου ισχύουν οι παρακάτω ρυθμίσεις. Κάθε επιφάνεια αφής διατηρεί τις δικές της χειρονομίες, την αίσθηση ποντικιού και την περιοχή δείκτη.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Ανίχνευση χειρονομιών</value></data>
@@ -2542,8 +2536,6 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Κίνηση ποντικιού Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Ευαισθησία</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Ευαισθησία δείκτη IR ανά πηγή. Με 1.0, η πλήρης απόκλιση μοχλού επιτυγχάνεται στο άκρο του οπτικού πεδίου της κάμερας. Οι τιμές πάνω από 1.0 φτάνουν στην πλήρη απόκλιση με μικρότερη διαδρομή στόχευσης. Οι τιμές κάτω από 1.0 χρειάζονται μεγαλύτερη.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Ευαισθησία</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Ευαισθησία ανά πηγή για έναν απλό άξονα, ολισθητή ή μοχλό / σκανδάλη χειριστηρίου. Το 1.0 αφήνει την είσοδο αμετάβλητη. Οι τιμές πάνω από 1.0 φτάνουν στην πλήρη απόκλιση με μικρότερη διαδρομή. Οι τιμές κάτω από 1.0 χρειάζονται μεγαλύτερη.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad: {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Ευαισθησία της κίνησης ποντικιού ανά πηγή. Το 1.0 φτάνει στην πλήρη απόκλιση με την ίδια ταχύτητα που θα χρειαζόταν ένα πραγματικό ποντίκι, οι τιμές πάνω από 1.0 χρειάζονται λιγότερη κίνηση και οι τιμές κάτω από 1.0 περισσότερη.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Σανίδα ισορροπίας: συνολικό βάρος</value></data>
@@ -2680,7 +2672,7 @@
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Ένα προφίλ φορτώνεται από μόνο του όταν ένα από τα παιχνίδια του είναι σε πρώτο πλάνο.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Ξεκινά χωρίς χειριστήρια. Φορτώνεται από μόνο του όταν ένα από τα παιχνίδια του είναι σε πρώτο πλάνο.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Προσθήκη παιχνιδιού που εκτελείται</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Κανένα άλλο πρόγραμμα δεν έχει ανοιχτό παράθυρο.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Δεν βρέθηκε κανένα άλλο ανοιχτό παράθυρο.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Αφαίρεση του {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Ρυθμός δειγματοληψίας όσο φορτώνεται αυτό το προφίλ</value></data>
 
@@ -3262,7 +3254,6 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Προσθέστε χρώματα που θα εναλλάσσονται, ένα σε κάθε τέρμα.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Επαναφορά κρατήματος φωτεινής μπάρας</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Ήχος</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Δείκτης</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Δείκτης IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Στοχεύστε με αυτό το Wii Remote την οθόνη μέσω της κάμερας IR του. Χρειάζεται μπάρα αισθητήρων ή δύο υπέρυθρα LED πάνω ή κάτω από την οθόνη. Βαθμονομήστε το ως light gun στη σελίδα «Συσκευές» για να στοχεύετε στο ακριβές σημείο. Ένα βαθμονομημένο τηλεχειριστήριο αγνοεί τη «Θέση μπάρας αισθητήρων» και την «Κατακόρυφη μετατόπιση».</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Ρύθμιση δείκτη</value></data>
@@ -3617,7 +3608,6 @@
   <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Δεν υπάρχει διαθέσιμος πομποδέκτης Bluetooth. Ενεργοποιήστε το Bluetooth και δοκιμάστε ξανά. Η σύζευξη χρειάζεται μόνο για ασύρματο παιχνίδι. Ένα χειριστήριο συνδεδεμένο με καλώδιο λειτουργεί και χωρίς αυτήν.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Η σύζευξη δεν ολοκληρώθηκε. Το βήμα που απέτυχε εμφανίζεται παραπάνω.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Κλείσιμο</value></data>
-  <data name="Common_ResizePanes" xml:space="preserve"><value>Αλλαγή μεγέθους πάνελ</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>Ετικέτες NFC</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>Ακουμπήστε μια ετικέτα στον αναγνώστη και δώστε της όνομα. Γίνεται ένα κουμπί που μπορείτε να αντιστοιχίσετε.</value></data>
   <data name="Nfc_TapPrompt" xml:space="preserve"><value>Ακουμπήστε μια ετικέτα στον αναγνώστη.</value></data>
@@ -3625,7 +3615,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Όνομα ετικέτας</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Καταχώριση</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Καταχωρισμένες</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Δεν εντοπίστηκε αναγνώστης NFC. Συνδέστε έναν αναγνώστη PC/SC και ανοίξτε ξανά.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Η ετικέτα καταγράφηκε. Εισαγάγετε ένα όνομα και κάντε κλικ στην «Καταχώριση». Ακουμπήστε άλλη ετικέτα για να την αντικαταστήσετε.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>Καταχωρίστηκε η «{0}». Ακουμπήστε άλλη ετικέτα για να προσθέσετε περισσότερες.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Καταχώριση / διαχείριση ετικετών NFC</value></data>
@@ -3652,7 +3641,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>Χειριστήριο Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Μοχλός X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Μοχλός Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Σκανδάλη</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Λαβή</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Κλικ μοχλού</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Κύριο κουμπί</value></data>
@@ -3755,7 +3743,6 @@
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Ενεργοποίηση κουμπιών υπολογιστή χειρός</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Προσθέτει μια συσκευή «Κρυφά κουμπιά» και μια συσκευή «Κίνηση συστήματος» στη σελίδα «Συσκευές». Όταν είναι ανενεργό, δεν εκτελείται τίποτα.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Έλεγχος καταναλωτή {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Ποντίκι</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Χειρονομίες ποντικιού</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Κρατήστε πατημένο το κουμπί χειρονομίας, τινάξτε το ποντίκι και, όταν το αφήσετε, εκτελείται μία ενέργεια: αριστερά, δεξιά, πάνω, κάτω ή απλό κλικ κάτω από την απόσταση τινάγματος. Αντιστοιχίστε τις πέντε χειρονομίες σε οποιαδήποτε έξοδο ή χρησιμοποιήστε τες ως εναύσματα μακροεντολών.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Ενεργοποίηση χειρονομιών ποντικιού</value></data>
@@ -3944,8 +3931,9 @@
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Δεν είναι δυνατή η πρόσβαση στο Steam</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Δεν ήταν δυνατή η επικοινωνία με το Steam. Ελέγξτε τη σύνδεσή σας. Τα προφίλ που έχετε ήδη εισαγάγει συνεχίζουν να λειτουργούν: βρίσκονται σε αυτόν τον υπολογιστή.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Επανάληψη</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Αυτή η διαμόρφωση της εποχής του 2016 είναι παλαιότερη από το CDN διαμορφώσεων του Steam. Εγγραφείτε σε αυτήν στο Steam και το PadForge θα τη διαβάσει από τον φάκελο του Steam σας.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Το Steam δεν παρέχει αρχείο για λήψη για αυτή τη διαμόρφωση και δεν υπάρχει αντίγραφό της στον φάκελο του Steam σας. Εγγραφείτε σε αυτήν στο Steam και το PadForge θα τη διαβάσει από εκεί.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Άνοιγμα στο Εργαστήριο του Steam</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Παλαιό</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Επιλέξτε μια διαμόρφωση για να δείτε τι μεταφέρεται.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Τι μεταφέρεται</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Γίνεται</value></data>
@@ -4171,7 +4159,6 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>το μενού δεν έχει κελιά με αντιστοίχιση</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>η επιφάνεια που φιλοξενεί το μενού δεν υποστηρίζεται ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>το εικονίδιο του κελιού μενού δεν αναγνωρίστηκε ({0}), επομένως το κελί διατηρεί την ετικέτα κειμένου του</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Δονητές μπάσων</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Έξοδος</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Κουμπιά</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Πλήκτρα και ποντίκι</value></data>
@@ -4650,7 +4637,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Κινητήρας</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Διαχωρισμός ανά κατεύθυνση</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Κεντρική νεκρή ζώνη</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Επαναφορά σε ανενεργό</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Επαναφορά σε «Αριστερός μοχλός X»</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Επαναφορά ισχύος (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Επαναφορά κεντρικής νεκρής ζώνης (2%)</value></data>
@@ -4730,7 +4716,7 @@
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>Το επίπεδο HID που έχει μεταγλωττιστεί μέσα στο συνοδευτικό SDL3.dll, του Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Πηγές εικονιδίων</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Το σύμβολο της φλόγας από τα Material Design Icons (Pictogrammers, Apache-2.0), το γενικό εικονίδιο χειριστηρίου από τα Ionicons (Ionic, MIT), το joystick του Εκτεταμένου από τα Jam Icons (Michael Amprimo, MIT) και τα εικονίδια Xbox και PlayStation από το SVG Repo, με την άδεια που αναφέρεται στη σελίδα κάθε εικονιδίου.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Το σύμβολο της φλόγας από τα Material Design Icons (Pictogrammers, Apache-2.0), το joystick του Εκτεταμένου από τα Jam Icons (Michael Amprimo, MIT) και τα εικονίδια Xbox και PlayStation από το SVG Repo, με την άδεια που αναφέρεται στη σελίδα κάθε εικονιδίου.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Το πρωτόκολλο αναμετάδοσης πίσω από τη δευτερεύουσα διαδρομή της Απομακρυσμένης σύνδεσης, με τους δωρεάν δημόσιους αναμεταδότες του n0.computer, όπως το κάνει το FlexInput. iroh: MIT OR Apache-2.0. FlexInput: MIT. Μόνο ως τεκμηρίωση, δεν διανέμεται κώδικας.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

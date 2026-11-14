@@ -845,9 +845,20 @@ namespace PadForge.Common
             {
                 if (char.IsWhiteSpace(text[i]))
                     continue;
-                int point = char.ConvertToUtf32(text, i);
-                if (char.IsHighSurrogate(text[i]))
+                // Half a surrogate pair is no glyph, and ConvertToUtf32
+                // throws on one. A name cut short in a device's own string
+                // can end on a half, and this runs on every text under a
+                // button.
+                int point;
+                if (char.IsHighSurrogate(text[i]) && i + 1 < text.Length && char.IsLowSurrogate(text[i + 1]))
+                {
+                    point = char.ConvertToUtf32(text[i], text[i + 1]);
                     i++;
+                }
+                else if (char.IsSurrogate(text[i]))
+                    return false;
+                else
+                    point = text[i];
                 if (!((point >= 0xE000 && point <= 0xF8FF) || point >= 0xF0000))
                     return false;
                 any = true;

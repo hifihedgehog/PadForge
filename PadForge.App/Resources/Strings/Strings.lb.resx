@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge gëtt zougemaach...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge gëtt gestart…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Virtuell Controller, déi vun enger viregter Sessioun iwwreg sinn, ginn opgeraumt.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> Apparater</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Controller derbäisetzen</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>E Controller derbäisetzen</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Wielt, wat d'Spiller gesi sollen. De Controller gëtt derbäigesat, soubal Dir klickt.</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>D'Zäit fir d'Opnam vu „{0}“ ass ofgelaf.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Engine gestart.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Engine gestoppt.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Keng Zouuerdnung</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Feeler: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} konnt net ugeluecht ginn.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil gewiesselt: {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Gëtt opgeholl...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>wann</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>op</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>„{0}“ dem Virtuelle Controller {1} zougewisen.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>„{0}“ vum Virtuelle Controller {1} ewechgeholl.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Apparat ewechgeholl.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtuelle Controller {0} geläscht.</value></data>
@@ -514,7 +511,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>PCen, mat deenen Dir fir Remote Link gekoppelt hutt. Widderruft een, fir datt e sech net méi verbënnt. E misst sech dann nees koppelen.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Widderruffen</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>All widderruffen</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Ëmbenennen</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Eng Touch-Fläch um Bildschierm fir PlayStation-Touchpad-Spiller, fir en Touchscreen oder d'Maus.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay aktivéieren</value></data>
@@ -742,7 +738,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Lizenzbedingunge vu Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair-SDK-Bedingungen</value></data>
@@ -1022,9 +1017,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Zouuerdnungen</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Trigger</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse Triggers</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse Triggers</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Verstäerkung pro Trigger, Motoren tauschen, Vibratioune vun adaptiven Trigger, Konstant Trigger-Kraaft</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Leet d'Motorbefeeler pro Trigger (Xbox Impulse Triggers) vum virtuelle Controller un den zougewisene physesche Xbox-One-, Elite- oder Series-Controller weider. Vibratioun vun den Trigger, déi d'Spill steiert, geet automatesch duerch. D'Regler hei ënnendrënner skaléieren d'Stäerkt pro Trigger.</value></data>
@@ -1090,7 +1083,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Lénken Trigger zrécksetzen</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Rietsen Trigger zrécksetzen</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptiv Trigger</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptiv Trigger</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfiguréiert d'Trigger-Effekter um zougewisene physeschen DualSense. Trigger-Effekter vun engem Spill oder engem Spill-Mod ginn automatesch weidergeleet. D'Astellungen hei bilden eng Schicht, déi Dir selwer konfiguréiert an déi leeft, wa weder d'Spill nach de Mod schreift.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Sticks</value></data>
@@ -1135,7 +1127,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>Beliichtung</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Beliichtung</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Setzt d'Basisfaarf vum Liichtbalken an d'Audioverhalen um zougewisene physesche Controller. Wat e Spill schreift, huet ëmmer Virrang. Är Astellunge gëllen, wa kee Spill de Liichtbalken steiert.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Soulaang Spillernummer gewielt ass, weist de Pad am Rouzoustand d'Spilleridentitéit vu sengem virtuelle Controller: d'Sony-Spillerfaarf um Liichtbalken (1 blo, 2 rout, 3 gréng, 4 rosa) an op engem DualSense déi passend Spiller-LEDen. All Apparat um selwechte virtuelle Controller weist déiselwecht Nummer. Spiller iwwerhuelen, soubal se Beliichtung schreiwen, alles, wat Dir hei setzt, huet ëmmer Virrang, an Aus mécht e Liicht ganz donkel.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Soulaang Spillernummer gewielt ass, weist de Pad am Rouzoustand d'Spilleridentitéit vu sengem virtuelle Controller: d'Sony-Spillerfaarf um Liichtbalken (1 blo, 2 rout, 3 gréng, 4 rosa) an op engem DualSense déi passend Spiller-LEDen. All Apparat um selwechte virtuelle Controller weist déiselwecht Nummer. E Spill iwwerhëlt, soubal et Beliichtung schreift. All anere Modus, deen Dir hei setzt, ersetzt d'Spillerfaarf, an Aus mécht e Liicht ganz donkel.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Dëse virtuelle Controller beliicht den Apparat mat deene selwechte Modi wéi de Liichtbalken vun engem DualSense, hei nëmme fir dëse Controller agestallt. Op engem virtuelle PlayStation-Controller iwwerhëlt e Spill, dat de Liichtbalken schreift, esou wéi op engem DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Beliichtung vun dësem Apparat steieren</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Aus hält dëse virtuelle Controller dovun of, den Apparat ze beliichten. Eng Hiersteller-Zeil oder en aneren Apparat vun dëser Aart, deen iwwer déiselwecht Software beliicht gëtt, kann seng Faarf ëmmer nach setzen. E Chroma-Faarf-Makro op dësem virtuelle Controller fierft e Razer-Apparat trotzdem.</value></data>
@@ -1250,9 +1242,9 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Knäppercher</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Importéiert Profiler…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Controller-Virastellungen…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Erweiderte Controller</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Vum Benotzer importéiert HIDMaestro-Profiler verwalten: en neit vun engem verbonnenen Apparat erfaassen, e bestoend als JSON exportéieren oder eent läschen, dat Dir net méi braucht.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>D'Controller-Virastellungen verwalten, déi Dir derbäigesat hutt: eng aus engem Fichier oder vun engem verbonnenen Apparat importéieren, eng als JSON exportéieren oder eng läschen, déi Dir net méi braucht.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Apparat 1:1 klonen</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Ordent all Achs, all Knäppchen an all POV vum gewielten Apparat direkt dem virtuellen Ausgang mat der selwechter Nummer zou. Passt de Layout un den Apparat un an ersetzt d'Zeile vun dësem Apparat am Slot duerch e 1:1-Passthrough.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Apparat 1:1 klonen</value></data>
@@ -1267,18 +1259,18 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Vun engem verbonnenen Apparat importéieren</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Exportéieren…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Läschen</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Profil-JSON exportéieren</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Virastellungs-JSON exportéieren</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Virastellung läschen?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>All Controller, deen {0} benotzt, fält op d'Custom-Entrée zréck. Dat kann net réckgängeg gemaach ginn.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Exportéiert op {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Export feelgeschloen: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>„{0}“ geläscht.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Vun engem Fichier importéieren…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Profil-JSON importéieren</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Virastellungs-JSON importéieren</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Aus {0} importéiert.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Liese feelgeschloen: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro huet dëse Profil bei {1} ofgeleent: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Dëse Profil huet keen HID-Descriptor, dofir kann kee Controller domat erstallt ginn.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro huet dës Virastellung bei {1} ofgeleent: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Dës Virastellung huet keen HID-Descriptor, dofir kann kee Controller domat erstallt ginn.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Et gouf näischt importéiert. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importéieren</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(HID-Apparat ouni Numm)</value></data>
@@ -1389,9 +1381,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Op d'2D-Usiicht wiesselen</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Op d'3D-Usiicht wiesselen</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Klicken, fir de lénke Motor ze testen</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Lénke Motor</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Klicken, fir de rietse Motor ze testen</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Rietse Motor</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>All zouuerdnen</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Zouuerdnen: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>All Zouuerdnungen eng no där anerer ophuelen</value></data>
@@ -1495,6 +1485,11 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Wouer/falsch ëmdréinen</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Wann, mam Muster (Bedingung) ? dann : soss</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Soss-Deel vun engem Wann-dann-soss</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>an</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>oder</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>net</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>wann?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>soss:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Betrag (läscht d'Virzeechen)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Dee méi klenge vun zwee Wäerter</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Dee méi grousse vun zwee Wäerter</value></data>
@@ -1562,6 +1557,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Mëtt kalibréieren</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Mëttelpunkt</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Mëtt</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Geschwindegkeet</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Doudzon</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Mëttelpunkt-Offsets, Doudzonform a Wäerter pro Achs, eng Kurv fir all Achs, Beräich, Steierung</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>De Beräich an Zuelen, réi Wäerter</value></data>
@@ -1785,7 +1781,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Permanent (Halen)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Lénke Motor</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Rietse Motor</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Halen</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Ausblenden</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1894,7 +1889,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Agab pro Touchpad. Gesten (Swipen, Tippen, Zesummenzéien, Formen) a kontinuéierlech Ausgabmodi (virtuelle Stick / D-Pad, Maus) ginn zu Zouuerdnungsquellen, déi Dir enger beléiweger Ausgab zouweise kënnt.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Touchpad-Nummer</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Op wéi en Touchpad vun dësem Controller sech d'Astellungen hei drënner bezéien. All Touchpad huet seng eege Gesten, säin eegent Mausgefill a säin eegene Zeigerberäich.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Gestenerkennung</value></data>
@@ -2345,8 +2339,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Mausbeweegung Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Empfindlechkeet</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Empfindlechkeet vum IR-Zeiger pro Quell. 1.0 erreecht de vollen Ausschlag vum Stick um Rand vum Siichtfeld vun der Kamera. Wäerter iwwer 1.0 erreechen de vollen Ausschlag mat manner Zilbeweegung. Wäerter ënner 1.0 brauche méi.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Empfindlechkeet</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Empfindlechkeet pro Quell fir eng einfach Achs, e Slider oder e Gamepad-Stick / -Trigger. 1.0 léisst d'Agab onverännert. Wäerter iwwer 1.0 erreechen de vollen Ausschlag mat manner Wee. Wäerter ënner 1.0 brauche méi.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Empfindlechkeet vun der Mausbeweegung pro Quell. 1.0 erreecht de vollen Ausschlag bei der selwechter Geschwindegkeet wéi eng richteg Maus, Wäerter iwwer 1.0 brauche manner Beweegung, Wäerter drënner brauche méi.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Balance-Gesamtgewiicht</value></data>
@@ -2477,7 +2469,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>E Profil lued sech vum selwen, wann ee vu senge Spiller am Virdergrond ass.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Fänkt ouni Controller un. Et lued sech vum selwen, wann ee vu senge Spiller am Virdergrond ass.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>E lafend Spill derbäisetzen</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Keen anere Programm huet eng Fënster op.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Et gouf keng aner oppe Fënster fonnt.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} ewechhuelen</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
@@ -3048,7 +3040,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Setzt Faarwen derbäi: pro Uschlag kënnt déi nächst drun.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Haltzäit vum Liichtbalken zrécksetzen</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Zeiger</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-Zeiger</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Riicht dës Wii Remote mat hirer IR-Kamera op de Bildschierm. Dir braucht eng Sensorleescht oder zwou Infrarout-LEDs iwwer oder ënner dem Bildschierm. Kalibréiert se op der Säit Apparater als Liichtpistoul, fir genee op déi Plaz ze zielen. Eng kalibréiert Remote ignoréiert Positioun vun der Sensorleescht a Vertikal Verschiebung.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Feinastellung vum Zeiger</value></data>
@@ -3406,7 +3397,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Dësem Tag en Numm ginn</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Registréieren</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Registréiert</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Keen NFC-Lieser fonnt. Schléisst e PC/SC-Lieser un a maacht d'Fënster nei op.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Tag erfaasst. Gitt en Numm an a klickt op Registréieren. Haalt en aneren Tag drun, fir en z'ersetzen.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>„{0}“ registréiert. Haalt en aneren Tag drun, fir der méi derbäizesetzen.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC-Tags registréieren / verwalten</value></data>
@@ -3433,7 +3423,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="VrCtl_Z" xml:space="preserve"><value>Controller Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Stick X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Stick Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Trigger</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Grëff</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Stick-Klick</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Haaptknäppchen</value></data>
@@ -3511,7 +3500,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Handheld-PC-Knäppercher aktivéieren</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Setzt en Apparat „Verstoppt Knäppercher“ an en Apparat „Systembeweegung“ op der Säit Apparater derbäi. Ausgeschalt leeft näischt.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Multimedia {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Maus</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Mausgesten</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Haalt de Gestenknäppchen, maacht eng séier Beweegung, a beim Lassloossen gëtt eng Aktioun ausgeléist: lénks, riets, erop, erof oder en einfache Klick ënner der Flick-Distanz. Ordnet déi fënnef Gesten enger beléiweger Ausgab zou oder benotzt se als Makro-Ausléiser.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Mausgesten aktivéieren</value></data>
@@ -3699,8 +3687,9 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam ass net erreechbar</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Steam konnt net erreecht ginn. Iwwerpréift Är Verbindung. Profiler, déi Dir schonn importéiert hutt, funktionéiere weider: si sinn op dësem PC gespäichert.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Nach eng Kéier probéieren</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Dës Konfiguratioun aus der Zäit ëm 2016 ass méi al wéi de Konfiguratiouns-CDN vu Steam. Abonnéiert se a Steam, a PadForge liest se aus Ärem Steam-Dossier.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam weist fir dës Konfiguratioun kee Fichier zum Eroflueden, an an Ärem Steam-Dossier ass keng Kopie dovun. Abonnéiert se a Steam, a PadForge liest se vun do.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Am Steam Workshop opmaachen</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Veraalt</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Wielt eng Konfiguratioun, fir ze gesinn, wat iwwerholl gëtt.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Wat iwwerholl gëtt</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Gëtt</value></data>
@@ -3925,7 +3914,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>Menü huet keng belegt Zellen</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>Host-Fläch vum Menü net ënnerstëtzt ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>Symbol vun der Menü-Zell net erkannt ({0}), dofir behält d'Zell hir Textbeschrëftung</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass-Shaker</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Ausgab</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Knäppercher</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tasten a Maus</value></data>
@@ -4395,7 +4383,6 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>No Richtung opgedeelt</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Doudzon an der Mëtt</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Op Aus zrécksetzen</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Op lénke Stick X zrécksetzen</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Stäerkt zrécksetzen (50 %)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Doudzon an der Mëtt zrécksetzen (2 %)</value></data>
@@ -4475,7 +4462,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>D'HID-Schicht, déi an déi matgeliwwert SDL3.dll kompiléiert ass, vum Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Ikonequellen</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>D'Flammesymbol aus Material Design Icons (Pictogrammers, Apache-2.0), d'generesch Gamepad-Ikon aus Ionicons (Ionic, MIT), den Extended-Joystick aus Jam Icons (Michael Amprimo, MIT), an d'Xbox- a PlayStation-Ikonen vu SVG Repo, ënner der Lizenz op der Säit vun all Ikon.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>D'Flammesymbol aus Material Design Icons (Pictogrammers, Apache-2.0), den Extended-Joystick aus Jam Icons (Michael Amprimo, MIT), an d'Xbox- a PlayStation-Ikonen vu SVG Repo, ënner der Lizenz op der Säit vun all Ikon.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>D'Relay-Protokoll hannert der Ersatzspur vu Remote Link, mat de gratis ëffentleche Relaye vun n0.computer geschwat, sou wéi FlexInput et mécht. iroh: MIT OR Apache-2.0. FlexInput: MIT. Nëmmen Dokumentatioun, et gëtt kee Code matgeliwwert.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

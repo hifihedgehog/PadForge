@@ -18,11 +18,9 @@ namespace PadForge.Common
     /// they cannot. Transitional animations (hover, ignite, flash) are not
     /// gated; they are finite and event-driven.</para>
     ///
-    /// <para>XAML binds via
-    /// <c>{Binding IsAppActive, Source={x:Static common:AmbientMotionProbe.Instance}}</c>
-    /// inside MultiDataTrigger conditions, so EnterActions start an
-    /// animation when the app comes to the foreground and ExitActions stop
-    /// it when it leaves.</para>
+    /// <para>Its readers are code: a marquee and a halo's breath each
+    /// listen for the change, stop when the app leaves the foreground and
+    /// start again when it comes back.</para>
     /// </summary>
     public sealed class AmbientMotionProbe : INotifyPropertyChanged
     {

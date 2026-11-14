@@ -15,7 +15,10 @@ namespace PadForge.Common.Input.Peripherals
     /// report ID 0, as long as the device's packet size, 65 bytes or 1025
     /// (<see cref="CorsairV2Device.PacketSize"/>), whose byte 1 is the write
     /// command: 08 for a wired device, 09 for one behind a receiver, 80 for
-    /// the K57 (CorsairPeripheralV2Controller.h:24-30).
+    /// the K57 (CorsairPeripheralV2Controller.h:24-30). A device only
+    /// SignalRGB's plugin lists has no packet size in OpenRGB's table: it
+    /// writes at its collection's own write length where that is longer
+    /// than 65, as the plugin does (<see cref="Begin"/>).
     ///
     /// <para>The open, as OpenRGB's controller makes it at b9d903b5
     /// (CorsairPeripheralV2Controller.cpp:20-137). The device's product ID is
@@ -61,7 +64,7 @@ namespace PadForge.Common.Input.Peripherals
     /// bragi_proto.h:70), and OpenRGB did until 4f2d8920, which took the
     /// K65 Mini's own controller's handle 1 for every device of its list. A
     /// device only SignalRGB's plugin lists keeps handle 0, which the plugin
-    /// opens (Corsair_Bragi_Device.js:318), and the path OpenRGB had for it,
+    /// opens (Corsair_Bragi_Device.js:1705-1706 and 2458), and the path OpenRGB had for it,
     /// the waiting input read away first (<see cref="CorsairV2Device.PictureHandle"/>).</para>
     ///
     /// <para>The model of the device. Software render mode shows each
@@ -77,7 +80,7 @@ namespace PadForge.Common.Input.Peripherals
     /// controller's Direct path bears out. OpenRGB reverts the render mode with
     /// hardware render mode, 01 03 00 01, when it closes a device, because
     /// a K70 Core RGB stops sending its knob's input while left in software
-    /// mode (lines 140-153). That is the hand-back and the crash path. A
+    /// mode (lines 139-152). That is the hand-back and the crash path. A
     /// device falls back to its own lighting after a minute without a
     /// picture, so OpenRGB sends the last one again once 30 seconds have
     /// passed without one, looking every 12.5 seconds
@@ -113,14 +116,14 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>CORSAIR_V2_UPDATE_PERIOD (CorsairPeripheralV2Controller.h:34): the last picture
         /// goes out again once this long passes without one, the resend
-        /// included (RGBController_CorsairV2Software.cpp:205 and 225-238,
+        /// included (RGBController_CorsairV2Software.cpp:205 and 225-239,
         /// RGBController_CorsairV2Hardware.cpp:218 and 238-252). OpenRGB looks
         /// every CORSAIR_V2_SLEEP_PERIOD, 12.5 s (line 35 of the header). The worker sends it
         /// at the 30 s itself.</summary>
         internal const int KeepAliveMs = 30000;
 
         /// <summary>The write commands (lines 27-28, and the K57's in
-        /// CorsairPeripheralV2Controller.cpp:45-49).</summary>
+        /// CorsairPeripheralV2Controller.cpp:49-53).</summary>
         internal const byte WriteWired = 0x08;
         internal const byte WriteWireless = 0x09;
         internal const byte WriteK57 = 0x80;
@@ -131,17 +134,17 @@ namespace PadForge.Common.Input.Peripherals
         internal const byte LightCtrl2 = 0x22;
 
         /// <summary>The 32-bit value OpenRGB's GetAddress returns for a
-        /// protocol error, -1 (CorsairPeripheralV2Controller.cpp:311-317).</summary>
+        /// protocol error, -1 (CorsairPeripheralV2Controller.cpp:310-316).</summary>
         internal const uint NoValue = uint.MaxValue;
 
         /// <summary>How many waiting input reports one picture reads away
         /// at most. OpenRGB reads until none comes in 3 ms
-        /// (ClearPacketBuffer, lines 361-376) and a read error never ends its
+        /// (ClearPacketBuffer, lines 360-375) and a read error never ends its
         /// loop, so the bound is PadForge's.</summary>
         internal const int MaxClearReads = 64;
 
-        /// <summary>The receivers (CorsairPeripheralV2Controller.cpp:36-43,
-        /// CorsairPeripheralV2Devices.h:98, 107 and 109-111).</summary>
+        /// <summary>The receivers (CorsairPeripheralV2Controller.cpp:38-47,
+        /// CorsairPeripheralV2Devices.h:101, 110 and 112-114).</summary>
         internal static bool IsReceiver(uint productId)
             => productId is 0x1BA6 or 0x1B66 or 0x1B65 or 0x1BDC or 0x2B00 or LaptopReceiver;
 
@@ -152,7 +155,7 @@ namespace PadForge.Common.Input.Peripherals
         /// <summary>BRAGI_RES_LIGHTING_MONOCHROME (ckb-next bragi_proto.h:61).</summary>
         internal const byte LightCtrlMonochrome = 0x10;
 
-        /// <summary>CORSAIR_K57_RGB_WIRED_PID (CorsairPeripheralV2Devices.h:72).</summary>
+        /// <summary>CORSAIR_K57_RGB_WIRED_PID (CorsairPeripheralV2Devices.h:74).</summary>
         internal const ushort K57Wired = 0x1B6E;
 
         /// <summary>The K100s and the K65 Mini, whose lighting stays on resource
@@ -165,7 +168,8 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>Other product IDs of a device OpenRGB lists, which SignalRGB's plugin
         /// lists with it and drives with the same frames: the K65 Mini's
-        /// (Corsair_K65_Mini_Keyboard.js:3, its open and picture at lines 66-127).</summary>
+        /// (Corsair_K65_Mini_Keyboard.js:3, its open at lines 65-81 and its picture at
+        /// lines 95-146).</summary>
         internal static readonly Dictionary<ushort, ushort> OtherIds = new()
         {
             [0x1BCF] = 0x1BAF,
@@ -220,7 +224,7 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>The device of OpenRGB's list with this product ID, or
-        /// null (lines 79-92).</summary>
+        /// null (lines 68-97).</summary>
         internal static CorsairV2Device DeviceOf(uint productId)
         {
             foreach (var device in CorsairLights.V2Devices)
@@ -239,10 +243,14 @@ namespace PadForge.Common.Input.Peripherals
         /// keyboard takes triplets at the plugin's LED numbers, which on the
         /// K70 Pro Mini run four below this family's (its Esc is 37 where
         /// OpenRGB's is 41). The K70 Pro's third ID takes OpenRGB's K70 Pro, as
-        /// the plugin lists them together.
+        /// the plugin lists them together. An ID that <see cref="OtherIds"/>
+        /// gives to a device of OpenRGB's list is left out: that device's
+        /// table lights it, and a second table here for the same keyboard
+        /// was one nothing chose while the first matched.
         /// </summary>
         internal static readonly Lazy<CorsairV2Device[]> PluginDevices = new(() => PluginCorsairTables.Devices
-            .Where(d => !IsReceiver(d.Product) && CorsairLights.V2Devices.All(v => v.ProductId != d.Product))
+            .Where(d => !IsReceiver(d.Product) && !OtherIds.ContainsKey((ushort)d.Product)
+                && CorsairLights.V2Devices.All(v => v.ProductId != d.Product))
             .Select(PluginDevice)
             .Append(CorsairLights.K60RgbProDevice with { Name = "Corsair K60 PRO", ProductId = 0x1B83, Monochrome = true, PictureHandle = 0 })
             .ToArray());
@@ -409,7 +417,7 @@ namespace PadForge.Common.Input.Peripherals
         }
 
         /// <summary>The block-write reports of <paramref name="data"/>
-        /// (SetLEDs, lines 393-456): 06, the handle, the length low and high,
+        /// (SetLEDs, lines 392-457): 06, the handle, the length low and high,
         /// two zeros, then the packet size less 8 bytes, and 07, the handle
         /// still in byte 3, then the packet size less 4 bytes per report, the
         /// last one's tail zero.</summary>
@@ -478,7 +486,7 @@ namespace PadForge.Common.Input.Peripherals
                 return true;
             }
 
-            /// <summary>GetAddress (lines 292-319): the property's 32-bit value,
+            /// <summary>GetAddress (lines 291-318): the property's 32-bit value,
             /// little-endian from hidapi's byte 3, <see cref="NoValue"/> when
             /// byte 2 names an error, 0 when nothing answered. Null when the
             /// write failed.</summary>
@@ -491,7 +499,7 @@ namespace PadForge.Common.Input.Peripherals
                 return (uint)(answer[4] | answer[5] << 8 | answer[6] << 16 | answer[7] << 24);
             }
 
-            /// <summary>GetAddressRetry (lines 270-290).</summary>
+            /// <summary>GetAddressRetry (lines 269-289).</summary>
             public uint? GetRetry(byte property)
             {
                 uint value = NoValue;
@@ -505,7 +513,7 @@ namespace PadForge.Common.Input.Peripherals
                 return value;
             }
 
-            /// <summary>StartTransaction (lines 321-340): the answer's error
+            /// <summary>StartTransaction (lines 320-339): the answer's error
             /// byte, or the command byte 0D still in the buffer when no
             /// answer came or none is read. -1 when the write failed.</summary>
             public int Start(byte option)
@@ -517,10 +525,10 @@ namespace PadForge.Common.Input.Peripherals
                 return Read(answer, AnswerMs) > 0 ? answer[3] : 0x0D;
             }
 
-            /// <summary>StopTransaction (lines 342-359).</summary>
+            /// <summary>StopTransaction (lines 341-358).</summary>
             public bool Stop(byte option) => Exchange(Frame(WriteCmd, 0x05, 0x01, option));
 
-            /// <summary>SetRenderMode (lines 213-233): 01 hardware, 02
+            /// <summary>SetRenderMode (lines 212-232): 01 hardware, 02
             /// software.</summary>
             public byte[] RenderMode(byte mode) => Frame(WriteCmd, 0x01, 0x03, 0x00, mode);
 
@@ -578,6 +586,17 @@ namespace PadForge.Common.Input.Peripherals
             if (device == null) return null;
             link.PacketSize = device.PacketSize;
             link.Handle = device.PictureHandle;
+            // A device only the plugin lists (handle 0) has no packet size in
+            // OpenRGB's table. The plugin writes every report at the
+            // collection's own write length and cuts a picture to fit it
+            // (Corsair_Bragi_Device.js at 95031635: FindBufferLengths, lines
+            // 1862-1864, GetWriteLength, lines 1830-1835, and SendRGBData,
+            // lines 2446-2474), so a collection that takes longer reports
+            // than the table's 65 has its picture cut to its own length. Cut
+            // at 65 and padded, such a device read zeros for most of each
+            // report. A collection of 65 is cut as it was.
+            if (device.PictureHandle == 0 && io.OutputReportLength > device.PacketSize)
+                link.PacketSize = io.OutputReportLength;
             if (device.Monochrome) link.LightCtrl = LightCtrlMonochrome;
             else if (link.LightCtrl == LightCtrl2 && !KeepsResource22(pid))
             {
@@ -635,7 +654,7 @@ namespace PadForge.Common.Input.Peripherals
                     : PictureData(Triplets, BufferLength, lights, colors));
 
             /// <summary>Hardware render mode and its answer (the
-            /// destructor's SetRenderMode, lines 140-153).</summary>
+            /// destructor's SetRenderMode, lines 139-152).</summary>
             protected override bool SendHandBack(IHidReportChannel io, Action<int> wait)
                 => _link.Exchange(_link.RenderMode(0x01));
         }

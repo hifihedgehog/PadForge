@@ -304,8 +304,6 @@
   <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>Busetsa deflection</value></data>
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Busetsa sensitivity</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Busetsa deadzone</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Motoro wa molema</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Motoro wa moja</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Busetsa tsotlhe</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Phimola tsotlhe</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Motswedi</value></data>
@@ -370,7 +368,6 @@
 
   <!-- ═══ Macro action: Rumble ═══ -->
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Tshwara</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Tshwara</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Mo bogareng</value></data>
@@ -775,7 +772,6 @@
   <data name="Handheld_RegisterButton" xml:space="preserve"><value>Kwadisa</value></data>
   <data name="Handheld_StartOver" xml:space="preserve"><value>Simolola sešwa</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Dikonopo: {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Molema</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Moja</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Godimo</value></data>
@@ -1127,7 +1123,7 @@
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Phimola {0}?</value></data>
   <data name="ProfileDialog_NewTitle" xml:space="preserve"><value>Porofaele e ntšhwa</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>E simolola e se na di-controller. E itsenya ka boyone fa nngwe ya metshameko ya yone e le fa pele.</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ga go lenaneo lepe le lengwe le le nang le window e e buletsweng.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ga go window epe e nngwe e e buletsweng e e bonweng.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tlosa {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Leina, setshwantsho le mmala wa layer ya motheo mo Shift Layer Flyout le mo moleng wa di-layer.</value></data>
   <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>E ithutilwe mo go {0}</value></data>

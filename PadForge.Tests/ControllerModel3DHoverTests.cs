@@ -296,10 +296,8 @@ namespace PadForge.Tests
                 if (ring == null || !m.ButtonMap.TryGetValue(button, out var groups)) return;
                 double capUnderside = ring.Bounds.Y + ring.Bounds.SizeY;
                 double top = groups.Min(g => g.Bounds.Y);
-                if (m.StickRiders.TryGetValue(ring, out var riders) && riders.Count > 0)
-                    top = Math.Min(top, riders.Min(g => g.Bounds.Y));
                 Assert.True(top <= capUnderside + 0.5,
-                    $"{family}: {button} and its riders stop {top - capUnderside:F2} mm short of "
+                    $"{family}: {button} stops {top - capUnderside:F2} mm short of "
                     + "the cap, so the stick has a gap in it");
             }
             Check("LeftThumbButton", m.LeftThumbRing);
@@ -551,8 +549,6 @@ namespace PadForge.Tests
                 // list, because a base the cap hides tilts without lighting.
                 var moving = new HashSet<Model3DGroup>(groups) { ring };
                 if (thumb != null) moving.Add(thumb);
-                if (m.StickRiders.TryGetValue(ring, out var riders))
-                    foreach (var r in riders) moving.Add(r);
                 var rb = ring.Bounds;
                 double cx = rb.X + rb.SizeX / 2, cz = rb.Z + rb.SizeZ / 2;
 

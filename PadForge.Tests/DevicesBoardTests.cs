@@ -394,7 +394,9 @@ namespace PadForge.Tests
                 < onPick.IndexOf("if (_inputManager != null && _inputManager.IsRunning)", StringComparison.Ordinal),
                 "the picture is asked for before the engine's state ends the handler");
             int made = service.IndexOf("private void StillMade()", StringComparison.Ordinal);
-            string onMade = service.Substring(made, 700);
+            Assert.Contains("RefreshPictures();", service.Substring(made, 200));
+            int pictures = service.IndexOf("internal void RefreshPictures()", StringComparison.Ordinal);
+            string onMade = service.Substring(pictures, 400);
             Assert.Contains("_mainVm.Devices.ForgetPicture();", onMade);
             Assert.Contains("UpdateSelectedDevicePicture();", onMade);
 

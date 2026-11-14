@@ -101,7 +101,6 @@
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>ESOR SDL3.dll</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Ewe engine a poputá.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Ewe engine a úkútiw.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Esor mapping</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Osukosuk: {0}</value></data>
 
   <!-- ═══ Dashboard ═══ -->
@@ -200,8 +199,6 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>Esor</value></data>
   <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>Apachaatá mwékútúkút</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Motor peliefefin</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Motor peliemwán</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kapiini seni...</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Esópw</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. -->
@@ -489,6 +486,7 @@
   <data name="Workshop_TagAll" xml:space="preserve"><value>Meinisin</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Sótuni sefál</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Suuki lón Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Chinnap</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Isoni ewe profile</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Isoni me áeá</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Iten ewe menu</value></data>
@@ -699,7 +697,7 @@
   <data name="Search_Docs_Format" xml:space="preserve"><value>Kútta lón ewe documentation fán iten “{0}”</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Amóeló {0}?</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>A poputá nge esor controller. Epwe load pwisin lupwen eú me lein an kewe urumwot a nóm mwmwan.</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Esor pwal eú program a wor an window mi suuk.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ese kúnaló pwal eú window mi suuk.</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Iten, icon me color an ewe Base layer won ewe Shift Layer Flyout me lón ewe órun layer.</value></data>
   <data name="WiiPair_Step1" xml:space="preserve"><value>Suuki ewe kuffun battery me tiki ewe SYNC button mi par.</value></data>
   <data name="WiiPair_Step2" xml:space="preserve"><value>Ánómu ewe remote arap ngeni ei PC lupwen an kewe saram ra mwékút.</value></data>

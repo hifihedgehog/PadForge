@@ -578,46 +578,5 @@ namespace PadForge.ViewModels
         /// </summary>
         public void RefreshEngineStatus() => OnPropertyChanged(nameof(EngineStatusText));
 
-        // ─────────────────────────────────────────────
-        //  Commands
-        // ─────────────────────────────────────────────
-
-        private RelayCommand _startEngineCommand;
-
-        /// <summary>
-        /// Command to start the input engine. Bound to a toolbar button.
-        /// The actual start logic is in InputService; this command is
-        /// wired up by MainWindow code-behind.
-        /// </summary>
-        public RelayCommand StartEngineCommand =>
-            _startEngineCommand ??= new RelayCommand(
-                () => StartEngineRequested?.Invoke(this, EventArgs.Empty),
-                () => !IsEngineRunning);
-
-        private RelayCommand _stopEngineCommand;
-
-        /// <summary>
-        /// Command to stop the input engine.
-        /// </summary>
-        public RelayCommand StopEngineCommand =>
-            _stopEngineCommand ??= new RelayCommand(
-                () => StopEngineRequested?.Invoke(this, EventArgs.Empty),
-                () => IsEngineRunning);
-
-        /// <summary>Raised when the user requests to start the engine.</summary>
-        public event EventHandler StartEngineRequested;
-
-        /// <summary>Raised when the user requests to stop the engine.</summary>
-        public event EventHandler StopEngineRequested;
-
-        /// <summary>
-        /// Refreshes the CanExecute state of start/stop commands.
-        /// Call after IsEngineRunning changes.
-        /// </summary>
-        public void RefreshCommands()
-        {
-            _startEngineCommand?.NotifyCanExecuteChanged();
-            _stopEngineCommand?.NotifyCanExecuteChanged();
-        }
     }
 }

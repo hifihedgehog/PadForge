@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>جارٍ إغلاق PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>جارٍ بدء تشغيل PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>جارٍ تنظيف وحدات التحكم الظاهرية المتبقية من جلسة سابقة.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> أجهزة</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>إضافة وحدة تحكم</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>إضافة وحدة تحكم</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>اختر ما يجب أن تراه الألعاب. تُضاف وحدة التحكم بمجرد النقر.</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>انتهت مهلة تسجيل «{0}».</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>بدأ تشغيل المحرك.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>توقف المحرك.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>لا يوجد تعيين</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>خطأ: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>تعذر إنشاء {0}.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>تم تبديل ملف التعريف: {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>جارٍ التسجيل...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>عند</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>على</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>تم تعيين «{0}» لوحدة التحكم الظاهرية {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>تم إلغاء تعيين «{0}» من وحدة التحكم الظاهرية {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>تمت إزالة الجهاز.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>تم حذف وحدة التحكم الظاهرية {0}.</value></data>
@@ -516,7 +513,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>أجهزة الكمبيوتر التي أقرنتها لأجل الربط عن بعد. أبطل إقران أحدها لمنعه من الاتصال، وسيلزمه الإقران من جديد.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>إبطال</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>إبطال الكل</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>إعادة تسمية</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>تراكب لوحة اللمس</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>سطح لمس على الشاشة لألعاب لوحة اللمس في PlayStation، لشاشة لمس أو للماوس.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>تفعيل تراكب لوحة اللمس</value></data>
@@ -750,7 +746,6 @@
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>شروط ترخيص Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>شروط Corsair SDK</value></data>
@@ -1031,9 +1026,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>التعيينات</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>العصي</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>الأزندة</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>ردود فعل القوة</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>الأزندة النبضية</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>الأزندة النبضية</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>كسب كل زناد، تبديل المحركين، اهتزازات الأزندة التكيفية، القوة الثابتة على الزناد</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>يمرر أوامر محرك كل زناد (Xbox Impulse Triggers) من وحدة التحكم الظاهرية إلى وحدة التحكم الفعلية المعينة من نوع Xbox One أو Elite أو Series. اهتزاز الأزندة الذي تشغّله اللعبة يمر تلقائيا. عناصر التحكم أدناه تضبط الشدة لكل زناد.</value></data>
@@ -1099,7 +1092,6 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>إعادة ضبط الزناد الأيسر</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>إعادة ضبط الزناد الأيمن</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>الأزندة التكيفية</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>الأزندة التكيفية</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>إعداد تأثيرات ردود فعل الأزندة على وحدة DualSense الفعلية المعينة. تأثيرات الأزندة الواردة من لعبة أو من تعديل لعبة يتم تمريرها تلقائيا. الإعدادات هنا تضيف طبقة يحددها المستخدم تعمل عندما لا يكتب أي منهما.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>العصي</value></data>
@@ -1144,7 +1136,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>الإضاءة</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>الإضاءة</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>ضبط اللون الأساسي لشريط الإضاءة وسلوكه مع الصوت في وحدة التحكم الفعلية المعينة. ما تكتبه اللعبة له الأولوية دائما. إعدادات المستخدم تسري عندما لا تتحكم أي لعبة في شريط الإضاءة.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>عند الضبط على «رقم اللاعب»، يعرض ذراع التحكم في وضع الخمول هوية اللاعب لوحدة التحكم الظاهرية: لون اللاعب من Sony على شريط الإضاءة (1 أزرق، 2 أحمر، 3 أخضر، 4 وردي) ونقاط اللاعب المطابقة على DualSense. كل جهاز على وحدة التحكم الظاهرية نفسها يعرض الرقم نفسه. تتولى الألعاب التحكم كلما كتبت إضاءة، وكل ما تضبطه هنا له الأولوية دائما، و«إيقاف» يطفئ الضوء تماما.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>عند الضبط على «رقم اللاعب»، يعرض ذراع التحكم في وضع الخمول هوية اللاعب لوحدة التحكم الظاهرية: لون اللاعب من Sony على شريط الإضاءة (1 أزرق، 2 أحمر، 3 أخضر، 4 وردي) ونقاط اللاعب المطابقة على DualSense. كل جهاز على وحدة التحكم الظاهرية نفسها يعرض الرقم نفسه. تتولى اللعبة التحكم كلما كتبت إضاءة. أي وضع آخر تضبطه هنا يحل محل لون اللاعب، و«إيقاف» يطفئ الضوء تماما.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>وحدة التحكم الظاهرية هذه تضيء الجهاز بالأوضاع نفسها المتاحة لشريط إضاءة DualSense، ويتم ضبطها هنا لوحدة التحكم هذه وحدها. في وحدة تحكم PlayStation ظاهرية، اللعبة التي تكتب إلى شريط الإضاءة تتولى التحكم كما تفعل في DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>التحكم في إضاءة هذا الجهاز</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>الإيقاف يمنع وحدة التحكم الظاهرية هذه من إضاءة الجهاز. يظل بإمكان صف الشركة المصنعة، أو جهاز آخر من نوعه يضاء عبر البرنامج نفسه، تحديد لونه. ماكرو «ضبط لون Chroma» على وحدة التحكم الظاهرية هذه يظل يلون جهاز Razer.</value></data>
@@ -1259,9 +1251,9 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>الأزندة</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>مفاتيح POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>الأزرار</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>ملفات التعريف المستوردة…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>الإعدادات المسبقة لوحدة التحكم…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>وحدة التحكم الموسعة</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>إدارة ملفات تعريف HIDMaestro التي استوردها المستخدم: التقاط ملف جديد من جهاز متصل، أو تصدير ملف موجود إلى JSON، أو حذف ملف لم تعد تحتاجه.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>إدارة الإعدادات المسبقة التي أضفتها: استيراد إعداد مسبق من ملف أو من جهاز متصل، أو تصدير إعداد مسبق إلى JSON، أو حذف ما لم تعد بحاجة إليه.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>استنساخ الجهاز 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>تعيين كل محور وزر وقبعة في الجهاز المحدد مباشرة إلى المخرج الظاهري الذي يحمل الرقم نفسه. يضبط حجم التخطيط على مقاس الجهاز ويستبدل صفوف هذا الجهاز في الخانة بتمرير مباشر 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>استنساخ الجهاز 1:1</value></data>
@@ -1276,18 +1268,18 @@
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>استيراد من جهاز متصل</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>تصدير…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>حذف</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>تصدير JSON لملف التعريف</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>تصدير JSON للإعداد المسبق</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>حذف الإعداد المسبق؟</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>تعود أي وحدة تحكم تستخدم {0} إلى الخيار «مخصص». لا يمكن التراجع عن ذلك.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>تم التصدير إلى {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>فشل التصدير: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>تم حذف «{0}».</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>استيراد من الملف…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>استيراد JSON لملف التعريف</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>استيراد JSON للإعداد المسبق</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>تم الاستيراد من {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>فشلت القراءة: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>رفض HIDMaestro ملف التعريف هذا عند {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ليس في ملف التعريف هذا واصف HID، لذا لا يمكن إنشاء وحدة تحكم منه.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>رفض HIDMaestro هذا الإعداد المسبق عند {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ليس في هذا الإعداد المسبق واصف HID، لذا لا يمكن إنشاء وحدة تحكم منه.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>لم يتم استيراد شيء. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>استيراد</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(جهاز HID بلا اسم)</value></data>
@@ -1398,9 +1390,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>التبديل إلى عرض 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>التبديل إلى عرض 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>انقر لاختبار المحرك الأيسر</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>المحرك الأيسر</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>انقر لاختبار المحرك الأيمن</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>المحرك الأيمن</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>تعيين الكل</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>تعيين: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>تسجيل كل التعيينات بالتتابع واحدا تلو الآخر</value></data>
@@ -1504,6 +1494,11 @@
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>قلب صح/خطأ</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>إذا، بالنمط (الشرط) ? عندئذ : وإلا</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>جزء «وإلا» من صيغة إذا-عندئذ-وإلا</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>و</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>أو</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>ليس</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>إذا?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>وإلا:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>المقدار (يحذف الإشارة)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>الأصغر بين قيمتين</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>الأكبر بين قيمتين</value></data>
@@ -1571,6 +1566,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>معايرة المركز</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>نقطة المركز</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>المركز</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>السرعة</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>المنطقة الميتة</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>إزاحات المركز، شكل المنطقة الميتة وقيمها لكل محور، منحنى لكل محور، النطاق، التوجيه</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>النطاق بالأرقام، القيم الخام</value></data>
@@ -1794,7 +1790,6 @@
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>مستمر (إبقاء)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>المحرك الأيسر</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>المحرك الأيمن</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>الإبقاء</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>التلاشي</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1903,7 +1898,6 @@
   <data name="Pad_Touchpad" xml:space="preserve"><value>لوحة اللمس</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>لوحة اللمس</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>إدخال لكل لوحة لمس. الإيماءات (السحب والنقر والضم والأشكال) وأوضاع الإخراج المستمر (عصا ظاهرية / لوحة اتجاهات، ماوس) تصبح مصادر تعيين يمكنك ربطها بأي مخرج.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>لوحة اللمس</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>رقم لوحة اللمس</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>لوحة اللمس في وحدة التحكم هذه التي تسري عليها الإعدادات أدناه. تحتفظ كل لوحة لمس بإيماءاتها وإحساس الماوس ومنطقة المؤشر الخاصة بها.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>اكتشاف الإيماءات</value></data>
@@ -2354,8 +2348,6 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>حركة الماوس Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>الحساسية</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>حساسية مؤشر IR لكل مصدر. 1.0 تبلغ الانحراف الكامل للعصا عند حافة مجال رؤية الكاميرا. القيم فوق 1.0 تبلغ الانحراف الكامل بحركة تصويب أقل. القيم دون 1.0 تحتاج إلى أكثر.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>الحساسية</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>حساسية لكل مصدر لمحور عادي أو منزلق أو عصا / زناد ذراع تحكم. 1.0 تترك الإدخال دون تغيير. القيم فوق 1.0 تبلغ الانحراف الكامل بحركة أقل. القيم دون 1.0 تحتاج إلى أكثر.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>ذراع التحكم {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>حساسية حركة الماوس لكل مصدر. 1.0 تبلغ الانحراف الكامل بالسرعة نفسها التي يبلغها ماوس حقيقي، والقيم فوق 1.0 تحتاج إلى حركة أقل، والقيم دونها تحتاج إلى أكثر.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>الوزن الكلي للوح التوازن</value></data>
@@ -2490,7 +2482,7 @@
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>يُحمَّل ملف التعريف تلقائيا عندما تكون إحدى ألعابه في المقدمة.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>يبدأ بلا وحدات تحكم. يُحمَّل تلقائيا عندما تكون إحدى ألعابه في المقدمة.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>إضافة لعبة قيد التشغيل</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>لا يوجد برنامج آخر لديه نافذة مفتوحة.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>لم يتم العثور على نافذة مفتوحة أخرى.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>إزالة {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>معدل الاستطلاع أثناء تحميل ملف التعريف هذا</value></data>
 
@@ -3072,7 +3064,6 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>أضف ألوانا للتنقل بينها، لون لكل بلوغ لأقصى انعطاف.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>إعادة ضبط إبقاء شريط الإضاءة</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>الصوت</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>المؤشر</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>مؤشر IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>صوّب Wii Remote هذا نحو الشاشة بكاميرا IR الخاصة به. يتطلب شريط استشعار، أو مصباحي LED بالأشعة تحت الحمراء، أعلى الشاشة أو أسفلها. عايره كمسدس ضوئي من صفحة الأجهزة للتصويب على النقطة بدقة. جهاز Wii Remote الذي تمت معايرته يتجاهل «موضع شريط الاستشعار» و«الإزاحة العمودية».</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>توليف المؤشر</value></data>
@@ -3430,7 +3421,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>سمِّ هذه العلامة</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>تسجيل</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>المسجلة</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>لم يتم اكتشاف قارئ NFC. وصّل قارئ PC/SC وأعد الفتح.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>تم التقاط العلامة. أدخل اسما وانقر «تسجيل». قرّب علامة أخرى لاستبدالها.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>تم تسجيل «{0}». قرّب علامة أخرى لإضافة المزيد.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>تسجيل / إدارة علامات NFC</value></data>
@@ -3457,7 +3447,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>وحدة التحكم Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>العصا X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>العصا Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>الزناد</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>المقبض</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>ضغطة العصا</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>الزر الأساسي</value></data>
@@ -3535,7 +3524,6 @@
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>تفعيل أزرار الكمبيوتر المحمول باليد</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>يضيف جهاز «الأزرار المخفية» وجهاز «حركة النظام» إلى صفحة الأجهزة. عند الإيقاف لا يعمل شيء.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>تحكم المستهلك {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>الماوس</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>إيماءات الماوس</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>اضغط زر الإيماءة باستمرار وحرّك الماوس حركة خاطفة، فينطلق إجراء واحد عند التحرير: يسار أو يمين أو أعلى أو أسفل، أو نقرة عادية إذا كانت الحركة دون مسافة الحركة الخاطفة. عيّن الإيماءات الخمس إلى أي مخرج أو استخدمها كمدخلات تشغيل للماكرو.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>تفعيل إيماءات الماوس</value></data>
@@ -3724,8 +3712,9 @@
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>تعذر الوصول إلى Steam</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>تعذر الوصول إلى Steam. تحقق من اتصالك. ملفات التعريف التي استوردتها من قبل تظل تعمل: فهي محفوظة على هذا الكمبيوتر.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>إعادة المحاولة</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>هذا التكوين من حقبة 2016 يسبق شبكة CDN للتكوينات في Steam. اشترك فيه في Steam وسيقرؤه PadForge من مجلد Steam لديك.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>لا يعرض Steam أي ملف لتنزيل هذا التكوين، ولا توجد نسخة منه في مجلد Steam لديك. اشترك فيه في Steam وسيقرؤه PadForge من هناك.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>فتح في ورشة عمل Steam</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>قديم</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>اختر تكوينا لترى ما ينتقل.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>ما الذي ينتقل</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>يصبح</value></data>
@@ -3951,7 +3940,6 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>القائمة بلا خلايا مرتبطة</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>سطح فتح القائمة غير مدعوم ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>لم يتم التعرف على أيقونة خلية القائمة ({0})، لذا تحتفظ الخلية بتسميتها النصية</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>هزازات الجهير</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>الإخراج</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>الأزرار</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>المفاتيح والماوس</value></data>
@@ -4421,7 +4409,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>المحرك</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>تقسيم حسب الاتجاه</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>المنطقة الميتة المركزية</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>إعادة الضبط إلى «إيقاف»</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>إعادة الضبط إلى «العصا اليسرى X»</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>إعادة ضبط الشدة (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>إعادة ضبط المنطقة الميتة المركزية (2%)</value></data>
@@ -4501,7 +4488,7 @@
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>طبقة HID المضمنة في SDL3.dll المرفق، من إعداد Alan Ott، Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>مصادر الأيقونات</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>رمز اللهب من Material Design Icons (Pictogrammers، Apache-2.0)، وأيقونة ذراع التحكم العامة من Ionicons (Ionic، MIT)، وعصا التحكم للنوع الموسع من Jam Icons (Michael Amprimo، MIT)، وأيقونتا Xbox وPlayStation من SVG Repo، بموجب الترخيص المذكور في صفحة كل أيقونة.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>رمز اللهب من Material Design Icons (Pictogrammers، Apache-2.0)، وعصا التحكم للنوع الموسع من Jam Icons (Michael Amprimo، MIT)، وأيقونتا Xbox وPlayStation من SVG Repo، بموجب الترخيص المذكور في صفحة كل أيقونة.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>بروتوكول الترحيل الذي يقف وراء المسار الاحتياطي في الربط عن بعد، ويتم التخاطب به مع المرحّلات العامة المجانية من n0.computer كما يفعل FlexInput. iroh: MIT OR Apache-2.0. FlexInput: MIT. للتوثيق فقط، ولا يتضمن البرنامج أي شيفرة.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

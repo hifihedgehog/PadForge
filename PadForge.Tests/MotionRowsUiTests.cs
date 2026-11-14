@@ -520,7 +520,7 @@ namespace PadForge.Tests
             Assert.Equal(Percent(50), Item("LeftTrigger").CurrentPercentText);
             Assert.Equal(Percent(-50), Item("LeftThumbAxisX").CurrentPercentText);
             Assert.Equal("-16384", Item("LeftThumbAxisX").CurrentValueText);
-            Assert.Equal("{0} %", PadForge.Resources.Strings.Strings.Instance.Pad_Value_Percent_Format);
+            Assert.Equal("{0}%", PadForge.Resources.Strings.Strings.Instance.Pad_Value_Percent_Format);
         }
 
         /// <summary>The bar's value as the boards read it (#574): a whole

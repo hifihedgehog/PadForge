@@ -177,6 +177,33 @@ $map = @{
     "map-key-lights"                = "map-key-lights"
     # v6.0.0 additions
     "settings-search"               = "settings-search"
+    "extras-catalog"                = "extras-catalog"
+    "home-first-run"                = "home-first-run"
+    "search"                        = "search"
+    "profiles-get-file"             = "profiles-get-file"
+    # Captured before 6.0.0 and encoded one file at a time at a release prep,
+    # each under its PNG's own name. Mapped so a full conversion refreshes
+    # them with the rest.
+    "colorway-dualsense-sterling"   = "colorway-dualsense-sterling"
+    "colorway-xbox-bobafett"        = "colorway-xbox-bobafett"
+    "colorway-xbox-captainamerica"  = "colorway-xbox-captainamerica"
+    "colorway-xbox-darthvader"      = "colorway-xbox-darthvader"
+    "colorway-xbox-daystrike"       = "colorway-xbox-daystrike"
+    "colorway-xbox-mandalorian"     = "colorway-xbox-mandalorian"
+    "colorway-xbox-razer"           = "colorway-xbox-razer"
+    "colorway-xbox-sonic"           = "colorway-xbox-sonic"
+    "colorway-xbox-squadrons"       = "colorway-xbox-squadrons"
+    "colorway-xbox-stormtrooper"    = "colorway-xbox-stormtrooper"
+    "devices-move"                  = "devices-move"
+    "devices-voice"                 = "devices-voice"
+    "macro-turbo"                   = "macro-turbo"
+    "pad-gyro-tilt"                 = "pad-gyro-tilt"
+    "pad-sticks-momentum"           = "pad-sticks-momentum"
+    "pad-touchpad-momentum"         = "pad-touchpad-momentum"
+    "pad-vr-configbar"              = "pad-vr-configbar"
+    "pad-vr-mappings"               = "pad-vr-mappings"
+    "settings-battery-alerts"       = "settings-battery-alerts"
+    "voice-phrases"                 = "voice-phrases"
 }
 
 $jpgEncoder = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object { $_.MimeType -eq "image/jpeg" }

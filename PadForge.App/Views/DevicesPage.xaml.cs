@@ -599,7 +599,11 @@ namespace PadForge.Views
             bool cloaksKeyboardClass = dev.ShowConsumeToggle || dev.DeviceTypeKey == "ConsumerControl";
             if (cb?.IsChecked == true && cloaksKeyboardClass)
             {
-                bool isHidHide = cb.Content?.ToString()?.Contains("HidHide") == true;
+                // Which box it is, by the setting it writes. Its label was
+                // read for the word HidHide, which holds only while every
+                // language keeps that word in it.
+                bool isHidHide = cb.GetBindingExpression(System.Windows.Controls.Primitives.ToggleButton.IsCheckedProperty)
+                    ?.ParentBinding?.Path?.Path?.EndsWith(nameof(ViewModels.DeviceRowViewModel.HidHideEnabled), StringComparison.Ordinal) == true;
                 bool isMerged = dev.DevicePath?.StartsWith("aggregate://") == true;
 
                 // Immediately revert. Only re-check if the user confirms.
@@ -707,9 +711,9 @@ namespace PadForge.Views
                 Text = "\uE7BA",
                 FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
                 FontSize = 20,
-                Foreground = System.Windows.Media.Brushes.Orange,
                 Margin = new Thickness(0, 0, 0, 8)
             };
+            warningIcon.SetResourceReference(TextBlock.ForegroundProperty, "SystemFillColorCautionBrush");
 
             var messageText = new TextBlock
             {
@@ -984,6 +988,18 @@ namespace PadForge.Views
             if (IsInsideButton(e.OriginalSource as DependencyObject, card)) return;
             _deviceDragStart = e.GetPosition(this);
             _deviceDragStarted = true;
+            // A release off the card raises no MouseUp here, and the drag
+            // stayed armed for the next press anywhere. Leaving the card
+            // before the drag has begun ends it: a move is only ever seen
+            // while the pointer is on the card.
+            card.MouseLeave -= DeviceCard_MouseLeave;
+            card.MouseLeave += DeviceCard_MouseLeave;
+        }
+
+        private void DeviceCard_MouseLeave(object sender, MouseEventArgs e)
+        {
+            _deviceDragStarted = false;
+            if (sender is Border card) card.MouseLeave -= DeviceCard_MouseLeave;
         }
 
         private void DeviceCard_MouseMove(object sender, MouseEventArgs e)

@@ -55,6 +55,7 @@
                     <SolidColorBrush x:Key="ColdMutedBrush" Color="#9E7CC7EA"/>
                     <SolidColorBrush x:Key="SteelGroundBrush" Color="#0A0E15"/>
                     <SolidColorBrush x:Key="SteelRaisedBrush" Color="#18202E"/>
+                    <SolidColorBrush x:Key="SteelPressedBrush" Color="#161D2B"/>
                     <SolidColorBrush x:Key="SteelLineBrush" Color="#2A3546"/>
                     <!-- PadForge 6 surfaces (#574). The pane is the sidebar,
                          one step under the page ground, with its own
@@ -144,8 +145,6 @@
                     <SolidColorBrush x:Key="WaitMutedBrush" Color="#CDB98D"/>
                     <SolidColorBrush x:Key="DashLineBrush" Color="#344154"/>
                     <SolidColorBrush x:Key="SteelLineSoftBrush" Color="#1E2734"/>
-                    <SolidColorBrush x:Key="SegTrackBrush" Color="#0A0E15"/>
-                    <SolidColorBrush x:Key="SegTrackStrokeBrush" Color="#1E2734"/>
                     <!-- The type chip of a controller's pill and card, and
                          the type bar's lit choice, code-built: a rounded
                          tile whose fill the code sets and no state swaps
@@ -171,12 +170,6 @@
                     <!-- Wait gold: the only sanctioned gold. Cooling flames,
                          awaiting-devices states, anything holding heat. -->
                     <SolidColorBrush x:Key="WaitBrush" Color="#F2B84B"/>
-                    <!-- Active seg-control tile fill: 140deg ember gradient
-                         (spec 432). Shared by every seg control. -->
-                    <LinearGradientBrush x:Key="EmberSegGradient" StartPoint="0,0" EndPoint="0.64,0.77">
-                        <GradientStop Color="#FF6B2C" Offset="0"/>
-                        <GradientStop Color="#C43D0C" Offset="1"/>
-                    </LinearGradientBrush>
 
                     <!-- Flame glyph geometry (24x24 space). Material Design
                          Icons "fire" (Apache-2.0): licked outer silhouette
@@ -589,7 +582,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
                 <Setter Property="MouseOverBackground" Value="{DynamicResource SteelRaisedBrush}"/>
                 <Setter Property="MouseOverBorderBrush" Value="{DynamicResource ColdBrush}"/>
-                <Setter Property="PressedBackground" Value="#161D2B"/>
+                <Setter Property="PressedBackground" Value="{DynamicResource SteelPressedBrush}"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
                 <Setter Property="Margin" Value="4,0,0,0"/>
                 <!-- #175 iteration 53 motion: hover ring stays on the
@@ -604,10 +597,6 @@
                     </Setter.Value>
                 </Setter>
                 <Style.Triggers>
-                    <!-- Hover glow (#175): the ring lights ColdBrush, so the
-                         glow is cold. Static frozen Effect, never animated
-                         (see motion note above). EmberIconButtonHot overrides
-                         this trigger with the ember glow via BasedOn. -->
                     <Trigger Property="IsPressed" Value="True">
                         <Setter Property="RenderTransform">
                             <Setter.Value>
@@ -747,7 +736,10 @@
                 set Appearance=Primary, whose style trigger would beat these
                 setters. A plain Button's template reads its fills under the
                 pointer and while pressed from fixed resource keys, so the
-                plain style shadows those keys in its own resources.
+                plain style shadows those keys in its own resources. Its
+                edge under the pointer comes from ControlElevationBorderBrush,
+                the key its edge at rest has by default, so each plain style
+                shadows that one with the edge it keeps there.
 
                 An action that removes something is clear with a dark ember
                 edge and pale ember text (EmberDestructiveButton).
@@ -771,9 +763,8 @@
                 <Style.Resources>
                     <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FF8450"/>
                     <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#E85F25"/>
-                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#160A03"/>
                     <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#160A03"/>
-                    <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="#FF8450"/>
+                    <SolidColorBrush x:Key="ControlElevationBorderBrush" Color="#FF8450"/>
                     <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="#E85F25"/>
                 </Style.Resources>
                 <Setter Property="MinHeight" Value="36"/>
@@ -815,6 +806,7 @@
                 <Style.Resources>
                     <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#33FF6B2C"/>
                     <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#22FF6B2C"/>
+                    <SolidColorBrush x:Key="ControlElevationBorderBrush" Color="#7A3A1A"/>
                 </Style.Resources>
                 <Setter Property="MinHeight" Value="36"/>
                 <Setter Property="Background" Value="Transparent"/>
@@ -845,7 +837,7 @@
             </Style>
             <Style x:Key="QuietPlainButton" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
                 <Style.Resources>
-                    <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent"/>
+                    <SolidColorBrush x:Key="ControlElevationBorderBrush" Color="Transparent"/>
                     <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="Transparent"/>
                     <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="Transparent"/>
                     <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="Transparent"/>
@@ -1031,21 +1023,12 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <!-- A chip, as the boards draw one (#574): 22 tall with round ends, the
-                 raised fill inside the chip line, 9 at each side, its words 12 in the
-                 secondary color. A profile card's Built-in and type counts, a
-                 starter's output, a community config's controller. -->
-            <Style x:Key="PillChip" TargetType="Border">
-                <Setter Property="MinHeight" Value="22"/>
-                <Setter Property="CornerRadius" Value="11"/>
-                <Setter Property="Padding" Value="9,0"/>
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource SteelPillLineBrush}"/>
-                <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
-                <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
-                <Setter Property="TextElement.FontSize" Value="12"/>
-                <Setter Property="VerticalAlignment" Value="Center"/>
-            </Style>
+            <!-- A chip, as the boards draw one (#574): a profile card's Built-in
+                 and type counts, a starter's output, a community config's
+                 controller. It is the controller page's quiet tag under the
+                 name these pages know it by, so the two cannot drift apart
+                 (ChipSteel, Resources/ControllerIcons.xaml). -->
+            <Style x:Key="PillChip" TargetType="Border" BasedOn="{StaticResource ChipSteel}"/>
 
             <!--
                 Ember-select list rows (user report 2026-07-05): the stock
@@ -1085,7 +1068,7 @@
                 </Setter>
             </Style>
 
-            <!-- Form checkboxes ride the implicit style (neutral hover glow).
+            <!-- Form check boxes ride the implicit style.
                  A check box keeps the corners of 4 it has always had. At the
                  6 the other controls take (ControlCornerRadius) its 20 box
                  reads as a rounded pill, and the boards draw the browser's
@@ -1257,9 +1240,6 @@
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter TargetName="ThumbDot" Property="Fill"
                                                                     Value="{DynamicResource SliderThumbBackgroundPointerOver}"/>
-                                                            <!-- Hover glow (#175): thumb heats to
-                                                                 EmberHot, so ember glow. 14px dot
-                                                                 takes the small-glyph radius. -->
                                                         </Trigger>
                                                     </ControlTemplate.Triggers>
                                                 </ControlTemplate>
@@ -1360,9 +1340,9 @@
                 WPF UI's shipped template starts PART_Border, PART_Track, and the line
                 buttons at Opacity=0 and fades them in on IsMouseOver / IsInteracted
                 (Fluent "passive scrollbar"). We want the track + thumb always visible,
-                so copy the template with those opacities set to 1 and the opacity
-                storyboards stripped. Width hover-expand (6→8) kept since it's cheap
-                and matches Fluent feel.
+                so copy the template with those opacities set to 1, the opacity
+                storyboards stripped and no line buttons. The track is 6 wide and
+                does not change under the pointer.
             -->
             <ControlTemplate x:Key="AlwaysVisibleDynamicVerticalScrollBar" TargetType="{x:Type uictrl:DynamicScrollBar}">
                 <Grid>
@@ -1433,9 +1413,6 @@
                         <Setter Property="Height" Value="Auto"/>
                         <Setter Property="Template" Value="{StaticResource AlwaysVisibleDynamicVerticalScrollBar}"/>
                     </Trigger>
-                    <!-- Hover glow (#175): hover fades in the line buttons
-                         and widens the thumb (neutral chrome), so faint
-                         ember on the whole bar. -->
                 </Style.Triggers>
             </Style>
 
@@ -1554,6 +1531,7 @@
             <conv:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
             <conv:OnOffTextConverter x:Key="OnOffTextConverter" />
             <conv:FormatTextConverter x:Key="FormatTextConverter" />
+            <conv:ShownNamesConverter x:Key="ShownNamesConverter" />
             <conv:BracketPartConverter x:Key="BracketPartConverter" />
             <conv:OptionTextConverter x:Key="OptionTextConverter" />
             <conv:IndexTextConverter x:Key="IndexTextConverter" />

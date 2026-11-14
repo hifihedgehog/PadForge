@@ -21,14 +21,25 @@ namespace PadForge.ViewModels
     /// units selector). Display is a lazy lookup against
     /// <c>Strings.Instance</c> so the visible text follows the current
     /// UI culture without rebuilding the list.</summary>
-    public sealed class GyroLabeledOption
+    public sealed class GyroLabeledOption : System.ComponentModel.INotifyPropertyChanged
     {
         private readonly Func<string> _displayLookup;
         public GyroLabeledOption(Func<string> displayLookup, string value)
         {
             _displayLookup = displayLookup;
             Value = value;
+            // A box shows an entry's text as it read it once. The entry
+            // says when the language changed, so the box reads it again and
+            // the list never has to be replaced under a selection. Held
+            // weakly by Strings, so no unsubscribe is owed.
+            Strings.CultureChanged += OnCultureChanged;
         }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+        private void OnCultureChanged()
+            => PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(nameof(Display)));
+
         public string Display => _displayLookup?.Invoke() ?? Value;
         public string Value { get; }
         public override string ToString() => Display;
@@ -78,10 +89,11 @@ namespace PadForge.ViewModels
             // sixteen live as long as the main view model holds them, and a
             // VM nothing holds is collected and stops being rebuilt.
             MacroItem.Renamed += OnMacroRenamed;
-            // #175 telemetry board: keep the "{n} DIRECT" readout in sync
-            // with row edits and rebuilds. Hooked before the first
-            // RebuildMappings so the initial rows are counted too.
-            Mappings.CollectionChanged += OnMappingsChangedForDirectCount;
+            // The pipeline chips cache which rows own them. Hooked before
+            // the first RebuildMappings so the first rows flag them too.
+            Mappings.CollectionChanged += OnMappingsChangedForPipelineChips;
+            // The Sound Macros fold reads the macros and their steps.
+            Macros.CollectionChanged += OnMacrosChangedForSoundList;
             // Bass Shakers rows (#236): the four fixed voice items exist
             // for the slot's lifetime. Built before RebuildMappings because
             // its ReloadRumbleAudio leg re-seeds them from the slot set.
@@ -141,7 +153,6 @@ namespace PadForge.ViewModels
             // Strings.Instance the same way (#574).
             OnPropertyChanged(nameof(FirstSectionName));
             OnPropertyChanged(nameof(PictureHintText));
-            OnPropertyChanged(nameof(PictureLineText));
             OnPropertyChanged(nameof(MapAllButtonTooltip));
             // The line under the picture and the two folded output cards'
             // values are worded from the string table the same way (#574).
@@ -151,6 +162,16 @@ namespace PadForge.ViewModels
             _kbmConfig?.RaiseLocalizedChanged();
             OnPropertyChanged(nameof(OutputTypeDisplayName));
             OnPropertyChanged(nameof(PresetDisplayName));
+            // Words read from the string table that nothing else raises:
+            // the roster's spoken battery and the Bass Shakers tones. An
+            // option of the motion lists raises its own text, and a fold's
+            // summary reads its list again when the list's name is raised.
+            foreach (var dev in MappedDevices) dev.RaiseWords();
+            foreach (var voice in RumbleAudioVoices) voice.RaiseWords();
+            OnPropertyChanged(nameof(GyroOutputCurveOptions));
+            OnPropertyChanged(nameof(GyroSensitivityUnitsOptions));
+            OnPropertyChanged(nameof(GyroSpaceOptions));
+            OnPropertyChanged(nameof(MotionGripOptions));
 
             // Pipeline chip summaries carry localized preset names, so
             // the memo and the cached config both re-localize.
@@ -643,17 +664,6 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>Int binding for ComboBox SelectedIndex (0=Xbox, 1=PlayStation).</summary>
-        public int OutputTypeIndex
-        {
-            get => (int)_outputType;
-            set
-            {
-                if (Enum.IsDefined(typeof(VirtualControllerType), value))
-                    OutputType = (VirtualControllerType)value;
-            }
-        }
-
         // ═══════════════════════════════════════════════
         //  Extended per-slot configuration
         // ═══════════════════════════════════════════════
@@ -880,12 +890,6 @@ namespace PadForge.ViewModels
             => deviceGuid != Guid.Empty
                && _perDeviceSlotConfigs.TryGetValue(deviceGuid, out var cfg)
                 ? cfg : null;
-
-        /// <summary>Snapshot of every per-device config on the slot. Used
-        /// by macro fan-out so a slot-level lightbar action writes to
-        /// each device's config in turn.</summary>
-        public IEnumerable<DeviceSlotConfig> EnumerateDeviceSlotConfigs()
-            => _perDeviceSlotConfigs.Values;
 
         /// <summary>Ensures the per-device dictionary has an entry for
         /// every currently-mapped device. Newly-mapped devices get a
@@ -1150,24 +1154,9 @@ namespace PadForge.ViewModels
             private Guid _instanceGuid;
             private bool _isOnline;
 
-            private string _batteryGlyph = string.Empty;
-
-            /// <summary>Segoe MDL2 battery glyph for the crucible card roster
-            /// (#175).</summary>
-            public string BatteryGlyph
-            {
-                get => _batteryGlyph;
-                set
-                {
-                    if (SetProperty(ref _batteryGlyph, value ?? string.Empty))
-                    {
-                        OnPropertyChanged(nameof(HasBattery));
-                        OnPropertyChanged(nameof(HasLinkOrBattery));
-                    }
-                }
-            }
-
-            public bool HasBattery => !string.IsNullOrEmpty(_batteryGlyph);
+            /// <summary>Whether the device reports a battery: a charge from
+            /// 0 up (<see cref="SetBattery"/>).</summary>
+            public bool HasBattery => _batteryPercent >= 0;
 
             /// <summary>Whether anything stands after the device's name on
             /// its pill: the mark of a Bluetooth link or a battery.</summary>
@@ -1229,6 +1218,10 @@ namespace PadForge.ViewModels
                     : _batteryCharging ? Strings.Instance.Home_Battery_Charging_Format
                     : Strings.Instance.Home_FirstRun_Battery_Format, BatteryText);
 
+            /// <summary>Has the spoken battery read again: the language
+            /// changed.</summary>
+            internal void RaiseWords() => OnPropertyChanged(nameof(BatterySpoken));
+
             /// <summary>Sets every battery fact from one reading:
             /// <paramref name="lowAt"/> is the level Settings names.</summary>
             public void SetBattery(int percent, bool charging, int lowAt)
@@ -1240,11 +1233,16 @@ namespace PadForge.ViewModels
                 }
                 bool low = percent >= 0 && !charging && percent <= lowAt;
                 bool moved = false;
+                bool had = HasBattery;
                 if (_batteryPercent != percent) { _batteryPercent = percent; OnPropertyChanged(nameof(BatteryPercent)); moved = true; }
                 if (_batteryCharging != charging) { _batteryCharging = charging; OnPropertyChanged(nameof(BatteryCharging)); moved = true; }
                 if (_batteryLow != low) { _batteryLow = low; OnPropertyChanged(nameof(BatteryLow)); moved = true; }
                 BatteryText = percent >= 0 ? $"{percent}%" : string.Empty;
-                BatteryGlyph = Common.BatteryGlyphs.For(percent, charging);
+                if (had != HasBattery)
+                {
+                    OnPropertyChanged(nameof(HasBattery));
+                    OnPropertyChanged(nameof(HasLinkOrBattery));
+                }
                 if (moved) OnPropertyChanged(nameof(BatterySpoken));
             }
 
@@ -2105,82 +2103,13 @@ namespace PadForge.ViewModels
         public ObservableCollection<MappingItem> Mappings { get; } =
             new ObservableCollection<MappingItem>();
 
-        /// <summary>Count of mapping rows currently eligible for the
-        /// compact trivial rendering (#175 telemetry board). Drives the
-        /// mono "{n} DIRECT" readout above the Mappings grid so the row
-        /// compression is legible. Zero hides the readout.</summary>
-        private int _directMappingCount;
-        public int DirectMappingCount
-        {
-            get => _directMappingCount;
-            private set => SetProperty(ref _directMappingCount, value);
-        }
-
-        // Rows currently subscribed for IsTrivialDirect changes. Tracked
-        // explicitly because ObservableCollection.Clear() raises Reset
-        // with no OldItems, which would otherwise leak the handlers.
-        private readonly System.Collections.Generic.List<MappingItem> _directCountHooked
-            = new System.Collections.Generic.List<MappingItem>();
-
-        private void OnMappingsChangedForDirectCount(object sender,
+        private void OnMappingsChangedForPipelineChips(object sender,
             System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
-            {
-                foreach (var m in _directCountHooked)
-                    m.PropertyChanged -= OnMappingItemTrivialChanged;
-                _directCountHooked.Clear();
-                foreach (var m in Mappings)
-                {
-                    if (m == null) continue;
-                    m.PropertyChanged += OnMappingItemTrivialChanged;
-                    _directCountHooked.Add(m);
-                }
-            }
-            else
-            {
-                if (e.OldItems != null)
-                {
-                    foreach (var o in e.OldItems)
-                    {
-                        if (o is MappingItem m)
-                        {
-                            m.PropertyChanged -= OnMappingItemTrivialChanged;
-                            _directCountHooked.Remove(m);
-                        }
-                    }
-                }
-                if (e.NewItems != null)
-                {
-                    foreach (var n in e.NewItems)
-                    {
-                        if (n is MappingItem m)
-                        {
-                            m.PropertyChanged += OnMappingItemTrivialChanged;
-                            _directCountHooked.Add(m);
-                        }
-                    }
-                }
-            }
-            RefreshDirectMappingCount();
             // Row set changed, so the pipeline chips' cached owning rows
             // are stale. Flag the config recompute. The 1 s throttle in
             // RefreshPipelineChips covers in-place row edits.
             _pipelineChipsConfigDirty = true;
-        }
-
-        private void OnMappingItemTrivialChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(MappingItem.IsTrivialDirect))
-                RefreshDirectMappingCount();
-        }
-
-        private void RefreshDirectMappingCount()
-        {
-            int n = 0;
-            foreach (var m in Mappings)
-                if (m != null && m.IsTrivialDirect) n++;
-            DirectMappingCount = n;
         }
 
         // ─────────────────────────────────────────────
@@ -2668,7 +2597,6 @@ namespace PadForge.ViewModels
                     foreach (var t in LayerTabs)
                         t.IsActive = string.Equals(t.LayerMask, v, StringComparison.Ordinal);
                     OnPropertyChanged(nameof(IsActiveLayerInheriting));
-                    OnPropertyChanged(nameof(ActiveLayerColor));
                     LayerActivated?.Invoke(this, EventArgs.Empty);
                 }
             }
@@ -2693,22 +2621,6 @@ namespace PadForge.ViewModels
         /// <summary>Raised before the active layer changes, while the grid still belongs to the old layer.</summary>
         public event EventHandler LayerChanging;
 
-        /// <summary>Authored color hint of the layer currently being
-        /// authored ("#AARRGGBB" or empty when unset). The Mappings
-        /// subpanel rail tints to it so expanded details read as belonging
-        /// to the picked layer (#175). Recomputed on
-        /// <see cref="ActiveLayerMask"/> change and
-        /// <see cref="RebuildLayerTabs"/>.</summary>
-        public string ActiveLayerColor
-        {
-            get
-            {
-                foreach (var t in LayerTabs)
-                    if (t.IsActive) return t.Color ?? "";
-                return "";
-            }
-        }
-
         /// <summary>The Lighting tab's Key Colors or Zone Colors card for
         /// the selected device (#557). The page attaches it to
         /// <see cref="DeviceConfig"/> and the device's lights.</summary>
@@ -2732,6 +2644,13 @@ namespace PadForge.ViewModels
         /// it) and none of them may see the synthetic entry. Rebuilt
         /// alongside LayerTabs.</summary>
         public ObservableCollection<ShiftLayerInfo> MacroLayerChoices { get; } = new();
+
+        /// <summary>A Switch Layer step's targets: Base and every shift
+        /// layer, the tabs' own set. A collection of its own, reconciled in
+        /// place beside <see cref="MacroLayerChoices"/> and for the same
+        /// reason: the step's picker keeps its selected entry through a
+        /// rebuild of the tabs.</summary>
+        public ObservableCollection<ShiftLayerInfo> SwitchLayerChoices { get; } = new();
 
         /// <summary>True when the slot has at least one shift activator
         /// authored, i.e. at least one tab beyond Base. Drives the nested
@@ -2861,7 +2780,6 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(HasShiftLayers));
             OnPropertyChanged(nameof(IsActiveLayerInheriting));
             KeyColors.UpdateLayers(LayerTabs);
-            OnPropertyChanged(nameof(ActiveLayerColor));
 
             // #254 A-1: mirror the tabs into the macro-scope picker, with
             // the "Any layer" sentinel first. Empty display name falls
@@ -2897,6 +2815,12 @@ namespace PadForge.ViewModels
                     { dup = true; break; }
                 if (!dup) desired.Add((t.LayerMask, t.LayerName, t.Color));
             }
+            // A Switch Layer step goes to a tab: never to "Any layer", which
+            // is no layer, and to no cycle stop that has no tab. Its picker
+            // has a list of its own, kept in place like the macro scope's.
+            // Bound to LayerTabs, it lost its pick at the Clear() above and
+            // wrote Base over the step's saved target.
+            var switchTargets = desired.GetRange(1, desired.Count - 1);
 
             // A Cycle activator ENGAGES every stop in its ring while only
             // the first is its own LayerMask, so later stops are real,
@@ -2922,16 +2846,31 @@ namespace PadForge.ViewModels
                 }
             }
 
-            // Apply `desired` onto the live collection by INDEX, reusing the
-            // existing instance at each position so the item the picker has
-            // selected is never removed. Only genuine adds and removals touch
-            // the collection.
+            ReconcileLayerChoices(MacroLayerChoices, desired);
+            ReconcileLayerChoices(SwitchLayerChoices, switchTargets);
+
+            // #413: the menu pickers project this list, so they reconcile
+            // right after it. This also covers a layer RENAME, which retags
+            // Entry.LayerMask in place before landing here: the refresh
+            // re-raises the menu VM's mask so its picker re-reads it.
+            foreach (var mvm in Menus)
+                mvm?.RefreshLayerChoices();
+        }
+
+        /// <summary>Makes a picker's list hold these entries in this order,
+        /// by INDEX and in place: the instance at a position is reused, an
+        /// entry that moved is moved, and only a genuine add or removal
+        /// touches the collection, so the item a picker has selected is
+        /// never removed.</summary>
+        private static void ReconcileLayerChoices(ObservableCollection<ShiftLayerInfo> list,
+            System.Collections.Generic.List<(string Mask, string Name, string Color)> desired)
+        {
             for (int i = 0; i < desired.Count; i++)
             {
                 var (mask, name, color) = desired[i];
-                if (i < MacroLayerChoices.Count)
+                if (i < list.Count)
                 {
-                    var slot = MacroLayerChoices[i];
+                    var slot = list[i];
                     if (string.Equals(slot.LayerMask, mask, StringComparison.Ordinal))
                     {
                         // Same entry: refresh its label and color in place.
@@ -2943,33 +2882,26 @@ namespace PadForge.ViewModels
                     // instance carrying it and move that one, so a reorder does
                     // not destroy the selected item either.
                     int found = -1;
-                    for (int k = i + 1; k < MacroLayerChoices.Count; k++)
-                        if (string.Equals(MacroLayerChoices[k].LayerMask, mask, StringComparison.Ordinal))
+                    for (int k = i + 1; k < list.Count; k++)
+                        if (string.Equals(list[k].LayerMask, mask, StringComparison.Ordinal))
                         { found = k; break; }
                     if (found >= 0)
                     {
-                        MacroLayerChoices.Move(found, i);
-                        MacroLayerChoices[i].LayerName = name;
-                        MacroLayerChoices[i].Color = color;
+                        list.Move(found, i);
+                        list[i].LayerName = name;
+                        list[i].Color = color;
                         continue;
                     }
-                    MacroLayerChoices.Insert(i, new ShiftLayerInfo
+                    list.Insert(i, new ShiftLayerInfo
                     { LayerMask = mask, LayerName = name, Color = color });
                     continue;
                 }
-                MacroLayerChoices.Add(new ShiftLayerInfo
+                list.Add(new ShiftLayerInfo
                 { LayerMask = mask, LayerName = name, Color = color });
             }
             // Drop any tail the new set no longer wants.
-            while (MacroLayerChoices.Count > desired.Count)
-                MacroLayerChoices.RemoveAt(MacroLayerChoices.Count - 1);
-
-            // #413: the menu pickers project this list, so they reconcile
-            // right after it. This also covers a layer RENAME, which retags
-            // Entry.LayerMask in place before landing here: the refresh
-            // re-raises the menu VM's mask so its picker re-reads it.
-            foreach (var mvm in Menus)
-                mvm?.RefreshLayerChoices();
+            while (list.Count > desired.Count)
+                list.RemoveAt(list.Count - 1);
         }
 
         /// <summary>
@@ -4395,8 +4327,18 @@ namespace PadForge.ViewModels
         public string LeftTriggerRouteSource
         {
             get => _leftTriggerRouteSource;
-            set => SetProperty(ref _leftTriggerRouteSource, string.IsNullOrEmpty(value) ? "None" : value);
+            set
+            {
+                if (SetProperty(ref _leftTriggerRouteSource, string.IsNullOrEmpty(value) ? "None" : value))
+                    OnPropertyChanged(nameof(IsTriggerRoutingOn));
+            }
         }
+
+        /// <summary>Whether either trigger's rumble is routed from a source,
+        /// for the fold's summary. The two sources are names ("None",
+        /// "MainLeft" and so on), which a summary cannot read as on or
+        /// off.</summary>
+        public bool IsTriggerRoutingOn => _leftTriggerRouteSource != "None" || _rightTriggerRouteSource != "None";
 
         private string _leftTriggerRouteMode = "Duplicate";
         public string LeftTriggerRouteMode
@@ -4492,7 +4434,11 @@ namespace PadForge.ViewModels
         public string RightTriggerRouteSource
         {
             get => _rightTriggerRouteSource;
-            set => SetProperty(ref _rightTriggerRouteSource, string.IsNullOrEmpty(value) ? "None" : value);
+            set
+            {
+                if (SetProperty(ref _rightTriggerRouteSource, string.IsNullOrEmpty(value) ? "None" : value))
+                    OnPropertyChanged(nameof(IsTriggerRoutingOn));
+            }
         }
 
         private string _rightTriggerRouteMode = "Duplicate";
@@ -5000,17 +4946,6 @@ namespace PadForge.ViewModels
         public ICommand ResetLeftMotorCommand => _resetLeftMotorCommand ??= new RelayCommand(() => LeftMotorStrength = 100);
         private ICommand _resetRightMotorCommand;
         public ICommand ResetRightMotorCommand => _resetRightMotorCommand ??= new RelayCommand(() => RightMotorStrength = 100);
-
-        private double _leftMotorDisplay;
-        /// <summary>Slot-wide motor activity (max across every device
-        /// mapped to the slot, each scaled by its own PadSetting). Drives
-        /// the Controller-preview-tab motor bar — that meter is
-        /// device-filter-independent so a force coming through any device
-        /// shows up regardless of the FFB tab's dropdown selection.</summary>
-        public double LeftMotorDisplay { get => _leftMotorDisplay; set => SetProperty(ref _leftMotorDisplay, value); }
-
-        private double _rightMotorDisplay;
-        public double RightMotorDisplay { get => _rightMotorDisplay; set => SetProperty(ref _rightMotorDisplay, value); }
 
         private double _rawLeftMotorDisplay;
         /// <summary>The motor command the GAME put on the virtual pad, before
@@ -7004,12 +6939,61 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>This pad's macros that play a sound — the Audio tab's
-        /// quick list. Re-derived on Audio-tab entry.</summary>
+        /// <summary>This pad's macros that play a sound, the Sound Macros
+        /// fold's list. Raised when the Audio group comes on the page, when a
+        /// macro comes or goes, and when a macro's steps or a step's type
+        /// change: a profile switch replaces the macros while the section
+        /// can be showing.</summary>
         public System.Collections.Generic.List<MacroItem> SoundMacros =>
             Macros.Where(m => m.Actions.Any(a => a.Type == MacroActionType.PlaySound)).ToList();
 
         public bool HasNoSoundMacros => SoundMacros.Count == 0;
+
+        private void OnMacrosChangedForSoundList(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+                foreach (MacroItem macro in e.OldItems) WatchSoundSteps(macro, false);
+            if (e.NewItems != null)
+                foreach (MacroItem macro in e.NewItems) WatchSoundSteps(macro, true);
+            RaiseSoundMacros();
+        }
+
+        /// <summary>Follows a macro's steps, or stops following them. A
+        /// reset of the list names no old items, and a macro it took away
+        /// changes no more, so what it still holds raises nothing.</summary>
+        private void WatchSoundSteps(MacroItem macro, bool on)
+        {
+            if (macro == null) return;
+            macro.Actions.CollectionChanged -= OnMacroStepsChangedForSoundList;
+            foreach (var step in macro.Actions) step.PropertyChanged -= OnMacroStepChangedForSoundList;
+            if (!on) return;
+            macro.Actions.CollectionChanged += OnMacroStepsChangedForSoundList;
+            foreach (var step in macro.Actions) step.PropertyChanged += OnMacroStepChangedForSoundList;
+        }
+
+        private void OnMacroStepsChangedForSoundList(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+                foreach (MacroAction step in e.OldItems) step.PropertyChanged -= OnMacroStepChangedForSoundList;
+            if (e.NewItems != null)
+                foreach (MacroAction step in e.NewItems)
+                {
+                    step.PropertyChanged -= OnMacroStepChangedForSoundList;
+                    step.PropertyChanged += OnMacroStepChangedForSoundList;
+                }
+            RaiseSoundMacros();
+        }
+
+        private void OnMacroStepChangedForSoundList(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(MacroAction.Type)) RaiseSoundMacros();
+        }
+
+        private void RaiseSoundMacros()
+        {
+            OnPropertyChanged(nameof(SoundMacros));
+            OnPropertyChanged(nameof(HasNoSoundMacros));
+        }
 
         private RelayCommand _soundTestCommand;
         public RelayCommand SoundTestCommand =>
@@ -8225,6 +8209,14 @@ namespace PadForge.ViewModels
                 _ => Strings.Instance.Pad_RumbleAudio_ResetVoiceTriggerRight,
             };
 
+            /// <summary>Has the row's label and its reset's tooltip read
+            /// again: the language changed.</summary>
+            internal void RaiseWords()
+            {
+                OnPropertyChanged(nameof(Label));
+                OnPropertyChanged(nameof(ResetTooltip));
+            }
+
             /// <summary>Per-voice enable. Gain and frequency stay authored
             /// while muted.</summary>
             public bool Enabled
@@ -8416,11 +8408,9 @@ namespace PadForge.ViewModels
 
         /// <summary>Raised to test only the left impulse trigger motor.</summary>
         public event EventHandler TestLeftImpulseTriggerRequested;
-        public void FireTestLeftImpulseTrigger() => TestLeftImpulseTriggerRequested?.Invoke(this, EventArgs.Empty);
 
         /// <summary>Raised to test only the right impulse trigger motor.</summary>
         public event EventHandler TestRightImpulseTriggerRequested;
-        public void FireTestRightImpulseTrigger() => TestRightImpulseTriggerRequested?.Invoke(this, EventArgs.Empty);
 
         private RelayCommand _testLeftImpulseTriggerCommand;
         public RelayCommand TestLeftImpulseTriggerCommand =>
@@ -8587,7 +8577,6 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(MapAllButtonText));
                     OnPropertyChanged(nameof(MapAllButtonTooltip));
                     _mapAllCommand?.NotifyCanExecuteChanged();
-                    _stopMapAllCommand?.NotifyCanExecuteChanged();
                 }
             }
         }
@@ -8597,12 +8586,6 @@ namespace PadForge.ViewModels
 
         public string MapAllButtonTooltip =>
             IsMapAllActive ? Strings.Instance.Common_Stop : Strings.Instance.Pad_MapAllOneByOne;
-
-        private RelayCommand _stopMapAllCommand;
-        public RelayCommand StopMapAllCommand =>
-            _stopMapAllCommand ??= new RelayCommand(
-                () => MapAllCancelRequested?.Invoke(this, EventArgs.Empty),
-                () => IsMapAllActive);
 
         /// <summary>When true, the current Map All step is recording the negative direction of an axis.</summary>
         internal bool MapAllRecordingNeg { get; set; }
@@ -8861,15 +8844,6 @@ namespace PadForge.ViewModels
             ThumbLY = 1.0 - ((gp.ThumbLY - (double)short.MinValue) / 65535.0);
             ThumbRX = (gp.ThumbRX - (double)short.MinValue) / 65535.0;
             ThumbRY = 1.0 - ((gp.ThumbRY - (double)short.MinValue) / 65535.0);
-            }
-
-            if (vibration != null)
-            {
-                // FinalVibrationStates — slot-wide max-across-all-devices,
-                // each scaled by its own PadSetting. Feeds the Controller-
-                // preview-tab motor bar.
-                LeftMotorDisplay = vibration.LeftMotorSpeed / 65535.0;
-                RightMotorDisplay = vibration.RightMotorSpeed / 65535.0;
             }
 
             if (selectedDeviceVibration != null)

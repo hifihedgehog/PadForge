@@ -679,10 +679,11 @@ namespace PadForge.Tests
                 .Where(e => e.Name.LocalName == "Button" && e.Descendants().Any(i => (string)i.Attribute("Click") == "ClearAllMappings_Click"))
                 .Select(Name));
 
-            // The list's second row: the pipeline chips and the count of
-            // one-line rows.
+            // The list's second row: the pipeline chips. The count of
+            // one-line rows left with the row form it counted (2026-11-13).
             Assert.Equal(listOnly, (string)Named(page, "ListChipsRow").Attribute("Visibility"));
-            Assert.Contains("Binding=\"{Binding DirectMappingCount}\" Value=\"0\"", PageText());
+            Assert.DoesNotContain("DirectMappingCount", PageText());
+            Assert.DoesNotContain("Text=\"DIRECT\"", PageText());
 
             // What the row replaced is gone: the hint over the list, the Map
             // All pill and its prompt under the picture.
@@ -1316,7 +1317,7 @@ namespace PadForge.Tests
             string resets = ExtrasPageTests.RepoText("PadForge.App", "Views", "PadPage.SettingResets.cs");
             // Reset All leaves the port while its row does not show.
             Assert.Matches(@"private void ResetMidiAll_Click\(object sender, RoutedEventArgs e\)\s*\{\s*bool port = DataContext is PadViewModel \{ IsLegacyMidi: true \};\s*ResetMidiFields\(port \? MidiFields : Array\.FindAll\(MidiFields, f => f != nameof\(MidiSlotConfig\.OutputPort\)\)\);\s*\}", resets);
-            Assert.Matches(@"foreach \(string field in fields\) any \|= ResetMidiField\(config, field\);\s*if \(!any\) return;\s*if \(before != \(config\.CcCount, config\.StartCc, config\.NoteCount, config\.StartNote\)\) vm\.RebuildMappings\(\);\s*SyncMidiConfigBar\(\);", resets);
+            Assert.Matches(@"if \(!ResetMidiFields\(config, fields\)\) return;\s*if \(before != \(config\.CcCount, config\.StartCc, config\.NoteCount, config\.StartNote\)\) vm\.RebuildMappings\(\);\s*SyncMidiConfigBar\(\);", resets);
         }
 
         /// <summary>An Extended slot's card. No board draws it, so it is a

@@ -261,7 +261,16 @@ namespace PadForge.Views
         /// panel took the key.</summary>
         internal bool SearchKeyDown(Key key)
         {
-            if (_state != WsState.Search || Games.Count == 0) return false;
+            if (_state != WsState.Search) return false;
+            if (key == Key.Enter && _searchDebounce.IsEnabled)
+            {
+                // The box holds newer words than the games on show. Enter
+                // runs that search now and opens no game of the one before.
+                _searchDebounce.Stop();
+                _ = RunSearchAsync(_searchText);
+                return true;
+            }
+            if (Games.Count == 0) return false;
             if (key == Key.Enter)
             {
                 _ = OpenGameAsync(ShelfList.SelectedItem as WorkshopGameItem ?? Games[0]);
@@ -441,6 +450,9 @@ namespace PadForge.Views
         private void ShowGames()
         {
             _gameCts?.Cancel();
+            // A search of the game's configs that was still waiting would
+            // open the game again a moment after Back.
+            _configSearchDebounce?.Stop();
             ClearManifest();
             SetState(WsState.Search);
         }
@@ -1364,6 +1376,10 @@ namespace PadForge.Views
             }
             catch (Exception ex)
             {
+                // The run before this one is no answer to the chips and the
+                // choice on show now, so there is nothing to save under an
+                // error.
+                _outcome = null;
                 ShowManifestError(ex.Message);
             }
         }
@@ -1586,6 +1602,7 @@ namespace PadForge.Views
             string named = PhysicalSlotResolver.SlotDisplayName(token);
             if (!string.Equals(named, token, StringComparison.Ordinal)) return named;
             var body = token.Replace('_', ' ').Trim();
+            if (body.Length == 0) return Strings.Instance.Workshop_GroupOther;
             return char.ToUpperInvariant(body[0]) + body.Substring(1);
         }
 

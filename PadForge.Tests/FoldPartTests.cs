@@ -507,7 +507,10 @@ namespace PadForge.Tests
         /// cannot be used, as a quiet button has none. Left to the theme, a
         /// Bass Shakers tone's Test and the Stop beside the sweep drew a
         /// box while the shakers were off (2026-11-12). Under the pointer
-        /// and pressed it still has no edge.</summary>
+        /// and pressed it still has no edge: the plain button's template
+        /// takes its edge under the pointer from ControlElevationBorderBrush
+        /// (wpf-ui 4.3.0, Controls/Button/Button.xaml), so that is the key
+        /// shadowed for it.</summary>
         [Fact]
         public void AQuietPlainButton_HasNoFillAndNoEdge_AlsoWhileItCannotBeUsed()
         {
@@ -519,7 +522,7 @@ namespace PadForge.Tests
             Assert.Equal("Transparent", Setter("Background"));
             Assert.Equal("Transparent", Setter("BorderBrush"));
             var shadowed = quiet.Elements().Single(e => e.Name.LocalName == "Style.Resources").Elements().ToList();
-            Assert.Equal(new[] { "ButtonBorderBrushPointerOver", "ButtonBorderBrushPressed", "ButtonBackgroundDisabled", "ButtonBorderBrushDisabled" },
+            Assert.Equal(new[] { "ControlElevationBorderBrush", "ButtonBorderBrushPressed", "ButtonBackgroundDisabled", "ButtonBorderBrushDisabled" },
                 shadowed.Select(e => (string)e.Attribute(Xaml + "Key")));
             Assert.All(shadowed, e => Assert.Equal("Transparent", (string)e.Attribute("Color")));
         }

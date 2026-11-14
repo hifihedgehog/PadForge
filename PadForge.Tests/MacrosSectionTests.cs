@@ -308,12 +308,14 @@ namespace PadForge.Tests
                 Assert.Equal("{DynamicResource DangerInkBrush}", (string)items.Last().Attribute("Foreground"));
             }
 
-            // Clear Trigger takes every input out of the macro's trigger. Remove
-            // Last Cell shows while the menu has cells.
+            // Clear Trigger takes every input out of the macro's trigger, and
+            // shows for a macro that a recorded trigger fires, as the Clear
+            // button did in the trigger's own panel. Remove Last Cell shows
+            // while the menu has cells.
             var clearTrigger = ById(page, "MacroClearTrigger");
             Assert.Equal("MenuItem", clearTrigger.Name.LocalName);
             Assert.Equal("{Binding Macro_ClearTrigger" + S, (string)clearTrigger.Attribute("Header"));
-            Assert.Null(clearTrigger.Attribute("Visibility"));
+            Assert.Equal("{Binding SelectedMacro.ShowsTriggerComboEditor, Converter={StaticResource BoolToVisibilityConverter}}", (string)clearTrigger.Attribute("Visibility"));
             var removeCell = ById(page, "MenuRemoveCell");
             Assert.Equal("MenuItem", removeCell.Name.LocalName);
             Assert.Equal("{Binding Menu_RemoveLastCell" + S, (string)removeCell.Attribute("Header"));

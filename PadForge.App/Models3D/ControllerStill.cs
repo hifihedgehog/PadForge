@@ -27,7 +27,7 @@ namespace PadForge.Models3D
 
         /// <summary>The finish a family's model takes for a choice: the
         /// choice when the family has it, the family's first when it does
-        /// not, and null for a family of one finish.</summary>
+        /// not, and null for a family that lists no finish.</summary>
         internal static string FinishFor(string family, string chosen)
         {
             var (ids, _) = ControllerModelBase.Appearances(family);
@@ -36,7 +36,8 @@ namespace PadForge.Models3D
         }
 
         /// <summary>Draws a family's model in a finish. The bitmap is
-        /// frozen. Call it on the interface's thread.</summary>
+        /// frozen. Call it on a thread with a dispatcher: StagePictures
+        /// draws it on a thread of its own (MakeStillOnAWorker).</summary>
         internal static BitmapSource Render(string family, string finish)
         {
             using var model = ControllerModelBase.Create(family, finish, extraControls: false);

@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>S'està tancant PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>S'està iniciant PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>S'estan netejant els comandaments virtuals que han quedat d'una sessió anterior.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> dispositius</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Afegeix un comandament</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Afegeix un comandament</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Tria què han de veure els jocs. El comandament s'afegeix tan bon punt fas clic.</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>S'ha esgotat el temps d'enregistrament per a «{0}».</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Motor iniciat.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motor aturat.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Sense assignació</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Error: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>No s'ha pogut crear {0}.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Perfil canviat: {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>S'està enregistrant...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>quan</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>a</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>S'ha assignat «{0}» al comandament virtual {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>S'ha desassignat «{0}» del comandament virtual {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Dispositiu eliminat.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>S'ha suprimit el comandament virtual {0}.</value></data>
@@ -514,7 +511,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>PC amb què t'has aparellat per a l'Enllaç remot. Revoca'n un perquè deixi de connectar-se. Hauria de tornar a aparellar-se.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Revoca</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Revoca-ho tot</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Canvia el nom</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Superposició del panell tàctil</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Una superfície tàctil en pantalla per als jocs amb panell tàctil de PlayStation, per a una pantalla tàctil o el ratolí.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Activa la superposició del panell tàctil</value></data>
@@ -748,7 +744,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Condicions de llicència de Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Condicions de l'SDK de Corsair</value></data>
@@ -1029,9 +1024,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Assignacions</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Palanques</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Gallets</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Retroacció de força</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Gallets d'impuls</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Gallets d'impuls</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Guany per gallet, intercanvi de motors, vibracions dels gallets adaptatius, força constant</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Reenvia les ordres dels motors de cada gallet (gallets d'impuls de Xbox) del comandament virtual al comandament físic Xbox One, Elite o Series assignat. La vibració dels gallets que genera el joc passa automàticament. Els controls de sota escalen la intensitat de cada gallet.</value></data>
@@ -1097,7 +1090,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Restableix el gallet esquerre</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Restableix el gallet dret</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Gallets adaptatius</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Gallets adaptatius</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configura els efectes de resposta dels gallets al DualSense físic assignat. Els efectes de gallet d'un joc o d'un mod de joc es reenvien automàticament. Aquesta configuració hi afegeix una capa definida per l'usuari que funciona quan cap dels dos hi escriu.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Palanques</value></data>
@@ -1142,7 +1134,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>Il·luminació</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Il·luminació</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Defineix el color base de la barra de llum i el comportament amb l'àudio al comandament físic assignat. El que escriu el joc sempre té prioritat. La configuració de l'usuari s'aplica quan cap joc controla la barra de llum.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Amb Número de jugador, el comandament mostra en repòs la identitat de jugador del seu comandament virtual: el color de jugador de Sony a la barra de llum (1 blau, 2 vermell, 3 verd, 4 rosa) i els indicadors de jugador corresponents en un DualSense. Tots els dispositius del mateix comandament virtual mostren el mateix número. Els jocs prenen el control quan escriuen la il·luminació, el que defineixis aquí sempre té prioritat, i Desactivat apaga del tot la llum.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Amb Número de jugador, el comandament mostra en repòs la identitat de jugador del seu comandament virtual: el color de jugador de Sony a la barra de llum (1 blau, 2 vermell, 3 verd, 4 rosa) i els indicadors de jugador corresponents en un DualSense. Tots els dispositius del mateix comandament virtual mostren el mateix número. Un joc pren el control quan escriu la il·luminació. Qualsevol altre mode definit aquí substitueix el color de jugador, i Desactivat apaga del tot la llum.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Aquest comandament virtual il·lumina el dispositiu amb els mateixos modes que té la barra de llum d'un DualSense, definits aquí només per a aquest comandament. En un comandament virtual de PlayStation, un joc que escriu a la barra de llum en pren el control igual que en un DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Controla la il·luminació d'aquest dispositiu</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Desactivat impedeix que aquest comandament virtual il·lumini el dispositiu. Una fila de fabricant, o un altre dispositiu del mateix tipus il·luminat amb el mateix programari, encara en pot definir el color. Una macro «Defineix el color de Chroma» d'aquest comandament virtual continua pintant un dispositiu Razer.</value></data>
@@ -1257,9 +1249,9 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gallets</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Botons</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Perfils importats…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Predefinits de comandament…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Comandament ampliat</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Gestiona els perfils de HIDMaestro importats per l'usuari: captura'n un de nou des d'un dispositiu connectat, exporta'n un d'existent a JSON o suprimeix-ne un que ja no necessitis.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Gestiona els predefinits de comandament que has afegit: importa'n un d'un fitxer o d'un dispositiu connectat, exporta'n un a JSON o suprimeix-ne un que ja no necessitis.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Clona el dispositiu 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Assigna directament cada eix, botó i POV del dispositiu seleccionat a la sortida virtual amb el mateix número. Ajusta la disposició a la mida del dispositiu i substitueix les files d'aquest dispositiu a la ranura per una transmissió directa 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Clona el dispositiu 1:1</value></data>
@@ -1274,18 +1266,18 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Importa des d'un dispositiu connectat</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Exporta…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Suprimeix</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Exporta el JSON del perfil</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Exporta el JSON del predefinit</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Vols suprimir el predefinit?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Qualsevol comandament que faci servir {0} torna a l'entrada Custom. Això no es pot desfer.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>S'ha exportat a {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Ha fallat l'exportació: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>S'ha suprimit «{0}».</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Importa d'un fitxer…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importa el JSON del perfil</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importa el JSON del predefinit</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>S'ha importat des de {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Ha fallat la lectura: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ha rebutjat aquest perfil a {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Aquest perfil no té descriptor HID, de manera que no se'n pot crear cap comandament.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ha rebutjat aquest predefinit a {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Aquest predefinit no té descriptor HID, de manera que no se'n pot crear cap comandament.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>No s'ha importat res. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importa</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(dispositiu HID sense nom)</value></data>
@@ -1396,9 +1388,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Canvia a la vista 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Canvia a la vista 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Fes clic per provar el motor esquerre</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Motor esquerre</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Fes clic per provar el motor dret</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Motor dret</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Assigna-ho tot</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Assigna: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Enregistra totes les assignacions una per una</value></data>
@@ -1502,6 +1492,11 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Inverteix cert/fals</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Si, amb el patró (condició) ? llavors : si no</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Part «si no» d'una expressió si-llavors-si no</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>i</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>o</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>no</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>si?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>si no:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Magnitud (sense el signe)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>El menor de dos valors</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>El major de dos valors</value></data>
@@ -1569,6 +1564,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Calibra el centre</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Punt central</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Centre</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Velocitat</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona morta</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Desplaçaments del centre, forma i valors de la zona morta per eix, una corba per a cada eix, rang, direcció</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>El rang en nombres, valors en brut</value></data>
@@ -1792,7 +1788,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Persistent (es manté)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Motor esquerre</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Motor dret</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Retenció</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Fosa</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1901,7 +1896,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Panell tàctil</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Panell tàctil</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Entrada de cada panell tàctil. Els gestos (lliscaments, tocs, pinçaments, formes) i els modes de sortida continus (palanca / creueta virtual, ratolí) es converteixen en fonts d'assignació que pots vincular a qualsevol sortida.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Panell tàctil</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Número del panell tàctil</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>El panell tàctil d'aquest comandament al qual s'aplica la configuració de sota. Cada panell tàctil conserva els seus gestos, el comportament del ratolí i la regió del punter.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detecció de gestos</value></data>
@@ -2352,8 +2346,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Moviment del ratolí Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensibilitat</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Sensibilitat del punter IR per a cada font. Amb 1.0, s'arriba a la desviació completa de la palanca a la vora del camp de visió de la càmera. Els valors per sobre d'1.0 hi arriben amb menys recorregut de punteria. Els valors per sota d'1.0 en necessiten més.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensibilitat</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Sensibilitat per a cada font d'un eix simple, un control lliscant o una palanca / un gallet de comandament. 1.0 deixa l'entrada sense canvis. Els valors per sobre d'1.0 arriben a la desviació completa amb menys recorregut. Els valors per sota d'1.0 en necessiten més.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Comandament {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Sensibilitat del moviment del ratolí per a cada font. Amb 1.0, s'arriba a la desviació completa a la mateixa velocitat que amb un ratolí real. Els valors per sobre d'1.0 necessiten menys moviment, i els de sota, més.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Pes total (Balance)</value></data>
@@ -2489,7 +2481,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Un perfil es carrega automàticament quan un dels seus jocs és al davant.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Comença sense comandaments. Es carrega automàticament quan un dels seus jocs és al davant.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Afegeix un joc en execució</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Cap altre programa té una finestra oberta.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>No s'ha trobat cap altra finestra oberta.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Elimina {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Freqüència de sondeig mentre aquest perfil és carregat</value></data>
 
@@ -3071,7 +3063,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Afegeix colors per anar-los recorrent, un per cada tope.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Restableix la retenció de la barra de llum</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Àudio</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Punter</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Punter IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Apunta aquest comandament de Wii a la pantalla amb la seva càmera IR. Necessita una barra de sensors, o dos LED infrarojos, a sobre o a sota de la pantalla. Calibra'l com a pistola de llum a la pàgina Dispositius per apuntar al punt exacte. Un comandament calibrat ignora Posició de la barra de sensors i Desplaçament vertical.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Ajust del punter</value></data>
@@ -3429,7 +3420,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Posa nom a aquesta etiqueta</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Registra</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Registrades</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>No s'ha detectat cap lector NFC. Connecta un lector PC/SC i torna a obrir aquesta finestra.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>S'ha capturat l'etiqueta. Introdueix un nom i fes clic a Registra. Apropa una altra etiqueta per substituir-la.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>S'ha registrat «{0}». Apropa una altra etiqueta per afegir-ne més.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Registra / gestiona les etiquetes NFC</value></data>
@@ -3456,7 +3446,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="VrCtl_Z" xml:space="preserve"><value>Comandament Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Palanca X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Palanca Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Gallet</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Empunyadura</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Clic de la palanca</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Botó principal</value></data>
@@ -3534,7 +3523,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Activa els botons del PC de mà</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Afegeix un dispositiu Botons ocults i un dispositiu Moviment del sistema a la pàgina Dispositius. Si està desactivat, no s'executa res.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Multimèdia {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Ratolí</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Gestos del ratolí</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Mantén premut el botó de gestos, fes un moviment ràpid i, en deixar-lo anar, s'activa una acció: esquerra, dreta, amunt, avall o un clic simple si no s'arriba a la distància del moviment. Assigna els cinc gestos a qualsevol sortida o fes-los servir com a activadors de macros.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Activa els gestos del ratolí</value></data>
@@ -3723,8 +3711,9 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>No es pot accedir a Steam</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>No s'ha pogut accedir a Steam. Comprova la connexió. Els perfils que ja has importat continuen funcionant: són en aquest PC.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Torna-ho a provar</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Aquesta configuració de l'època del 2016 és anterior a la CDN de configuracions de Steam. Subscriu-t'hi a Steam i PadForge la llegirà de la teva carpeta de Steam.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam no ofereix cap fitxer per baixar d'aquesta configuració, i no n'hi ha cap còpia a la teva carpeta de Steam. Subscriu-t'hi a Steam i PadForge la llegirà d'allà.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Obre al Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Antiga</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Tria una configuració per veure què s'incorpora.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>El que s'incorpora</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Es converteix en</value></data>
@@ -3950,7 +3939,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>el menú no té cap cel·la vinculada</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>no s'admet la superfície d'entrada del menú ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>no s'ha reconegut la icona de la cel·la del menú ({0}), així que la cel·la conserva l'etiqueta de text</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Sortida</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Botons</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tecles i ratolí</value></data>
@@ -4420,7 +4408,6 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Dividit per direcció</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zona morta central</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Restableix a desactivat</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Restableix a Palanca esquerra X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Restableix la força (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Restableix la zona morta central (2%)</value></data>
@@ -4500,7 +4487,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>La capa HID compilada a l'SDL3.dll inclosa, d'Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Fonts de les icones</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>El glif de la flama de Material Design Icons (Pictogrammers, Apache-2.0), la icona genèrica de comandament d'Ionicons (Ionic, MIT), el joystick d'Ampliat de Jam Icons (Michael Amprimo, MIT) i les icones de Xbox i PlayStation de SVG Repo, amb la llicència que indica la pàgina de cada icona.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>El glif de la flama de Material Design Icons (Pictogrammers, Apache-2.0), el joystick d'Ampliat de Jam Icons (Michael Amprimo, MIT) i les icones de Xbox i PlayStation de SVG Repo, amb la llicència que indica la pàgina de cada icona.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>El protocol de retransmissió de la via alternativa de l'Enllaç remot, que es comunica amb els servidors de retransmissió públics i gratuïts de n0.computer tal com ho fa FlexInput. iroh: MIT OR Apache-2.0. FlexInput: MIT. Només documentació, no s'hi inclou cap codi.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

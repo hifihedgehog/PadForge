@@ -145,7 +145,10 @@ namespace PadForge.Search
             var scope = ScopeOf(entry);
             if (scope != null)
             {
-                foreach (var d in LogicalDescendants(scope))
+                // The scope's own element comes first. An entry made from a
+                // named fold card, button, tile or reset has that element as
+                // its scope, and a walk of what lies under it never met it.
+                foreach (var d in new[] { scope }.Concat(LogicalDescendants(scope)))
                 {
                     foreach (SearchLabelSource source in Enum.GetValues(typeof(SearchLabelSource)))
                     {
@@ -179,11 +182,18 @@ namespace PadForge.Search
                 // Orders count within a page, so another page's are no guide.
                 if (other.Page != entry.Page || other.Order >= entry.Order) continue;
                 if (other.ScopeName == entry.ScopeName && other.ItemsPath == null && !other.RowOptions
-                    && other.LabelSource == entry.LabelSource && LabelText(other.Label, page.DataContext) == text)
+                    && ListOf(other.LabelSource) == ListOf(entry.LabelSource) && LabelText(other.Label, page.DataContext) == text)
                     n++;
             }
             return Find(entry, n, text);
         }
+
+        /// <summary>The list an entry's element is looked up in. A card's
+        /// title is a text block, so it stands among the texts, and a title
+        /// and a label that read the same words in one scope are counted
+        /// together.</summary>
+        private static SearchLabelSource ListOf(SearchLabelSource source)
+            => source == SearchLabelSource.CardTitle ? SearchLabelSource.Text : source;
 
         /// <summary>The Nth element of its scope that shows an entry's words,
         /// <paramref name="text"/> in the current language.</summary>
@@ -191,13 +201,24 @@ namespace PadForge.Search
         {
             if (entry.ItemsPath != null || entry.RowOptions || string.IsNullOrEmpty(text)) return null;
             var walk = Walk(entry);
-            var source = entry.LabelSource == SearchLabelSource.CardTitle ? SearchLabelSource.Text : entry.LabelSource;
-            if (walk.TryGetValue((source, text), out var list) && n < list.Count) return list[n];
+            var source = ListOf(entry.LabelSource);
+            walk.TryGetValue((source, text), out var list);
+            if (list != null && n < list.Count) return list[n];
             // A card's title can run on past its words (a subtitle in a Run).
+            // Those texts come after the ones that are the words exactly, in
+            // the same count.
             if (entry.LabelSource == SearchLabelSource.CardTitle)
+            {
+                int at = n - (list?.Count ?? 0);
                 foreach (var (k, all) in walk)
-                    if (k.Item1 == SearchLabelSource.Text && k.Item2.StartsWith(text, StringComparison.Ordinal))
-                        return all[0];
+                {
+                    if (k.Item1 != SearchLabelSource.Text || k.Item2.Length == text.Length
+                        || !k.Item2.StartsWith(text, StringComparison.Ordinal))
+                        continue;
+                    if (at < all.Count) return all[at];
+                    at -= all.Count;
+                }
+            }
             return null;
         }
 

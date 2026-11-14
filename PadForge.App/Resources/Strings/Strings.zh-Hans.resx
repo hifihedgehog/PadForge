@@ -132,7 +132,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>正在关闭 PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>正在启动 PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>正在清理上一次会话遗留的虚拟控制器。</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> 台设备</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>添加控制器</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>添加控制器</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>选择游戏应看到的类型。点击后即添加该控制器。</value></data>
@@ -269,7 +268,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>"{0}"的录制已超时。</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>引擎已启动。</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>引擎已停止。</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>无映射</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>错误：{0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>无法创建 {0}。</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>配置文件已切换：{0}</value></data>
@@ -287,7 +285,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>录制中...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>当</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>在</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>已将"{0}"分配到虚拟控制器 {1}。</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>已将"{0}"从虚拟控制器 {1} 移除。</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>设备已移除。</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>虚拟控制器 {0} 已删除。</value></data>
@@ -601,7 +598,6 @@
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio 许可条款</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK 条款</value></data>
@@ -766,33 +762,32 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>映射</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>摇杆</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>扳机</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>力反馈</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>预设</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>摇杆</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>扳机</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>按钮</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>已导入的配置文件…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>控制器预设…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>扩展控制器</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>管理用户导入的 HIDMaestro 配置文件：从已连接的设备捕获新配置文件、将现有配置文件导出为 JSON，或删除不再需要的配置文件。</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>管理您添加的控制器预设：从文件或已连接的设备导入预设、将预设导出为 JSON，或删除不再需要的预设。</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>控制器预设</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>为 PadForge 未内置的控制器添加预设，来源可以是文件或控制器本身。</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>已导入</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>从已连接的设备导入</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>导出…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>删除</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>导出配置文件 JSON</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>导出预设 JSON</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>删除预设？</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>任何使用 {0} 的控制器都会回到“自定义”条目。此操作无法撤销。</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>已导出到 {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>导出失败：{0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>已删除"{0}"。</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>导入文件…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>导入配置文件 JSON</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>导入预设 JSON</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>已从 {0} 导入。</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>读取失败：{0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro 在 {1} 处拒绝了此配置文件：{0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>此配置文件没有 HID 描述符，因此无法据此创建控制器。</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro 在 {1} 处拒绝了此预设：{0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>此预设没有 HID 描述符，因此无法据此创建控制器。</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>未导入任何内容。{0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>导入</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>（未命名 HID 设备）</value></data>
@@ -834,9 +829,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>切换到 2D 视图</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>切换到 3D 视图</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>点击测试左马达</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>左马达</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>点击测试右马达</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>右马达</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>全部映射</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>映射: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>逐一录制所有映射</value></data>
@@ -941,6 +934,11 @@
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>翻转真/假</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>If 模式：(condition) ? then : else</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>if-then-else 的 else 部分</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>且</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>或</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>非</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>若?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>否则:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>绝对值（去除符号）</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>两值中较小的</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>两值中较大的</value></data>
@@ -1009,6 +1007,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>校准中心</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>中心点</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>中心</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>速度</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>死区</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>中心偏移、死区形状及各轴数值、各轴曲线、范围、转向</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>以数字设定的范围、原始值</value></data>
@@ -1220,7 +1219,6 @@
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>持续（保持）</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>左马达</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>右马达</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>保持</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>淡出</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1293,7 +1291,7 @@
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>其中任一游戏位于前台时，配置文件会自动加载。</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>起始时没有控制器。其中任一游戏位于前台时会自动加载。</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>添加正在运行的游戏</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>没有其他程序打开了窗口。</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>未找到其他已打开的窗口。</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>移除 {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>配置文件加载期间的轮询率</value></data>
 
@@ -1957,7 +1955,6 @@
   <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalol 的蓝牙扬声器方案：Opus 帧格式与数据包布局。也感谢 TechAntohere 分享研究成果并协助测试。</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>USB 手柄音频直通的参考实现。作者 WujekFoliarz。</value></data>
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>自适应扳机</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>自适应扳机</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>配置已分配的物理 DualSense 上的扳机效果。来自游戏或游戏模组的扳机效果会自动转发。此处的设置在两者都没有写入时叠加用户自定义层。</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>摇杆</value></data>
@@ -2001,7 +1998,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>灯光</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>灯光</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>设置已分配的物理手柄的灯条基础颜色和音频行为。游戏写入始终优先。当无游戏驱动灯条时,用户设置生效。</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>选择玩家编号时，手柄空闲状态会显示其虚拟控制器的玩家身份：灯条显示索尼玩家颜色（1 蓝、2 红、3 绿、4 粉），DualSense 还会点亮对应的玩家指示灯。同一虚拟控制器下的所有设备显示相同编号。游戏写入灯光时由游戏接管，此处的设置始终优先，选择关闭则该灯完全熄灭。</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>选择玩家编号时，手柄空闲状态会显示其虚拟控制器的玩家身份：灯条显示索尼玩家颜色（1 蓝、2 红、3 绿、4 粉），DualSense 还会点亮对应的玩家指示灯。同一虚拟控制器下的所有设备显示相同编号。游戏写入灯光时由游戏接管。此处选择其他任何模式都会取代玩家颜色，选择关闭则该灯完全熄灭。</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>此虚拟控制器以与 DualSense 灯条相同的模式点亮该设备，此处的设置仅作用于这个控制器。在 PlayStation 虚拟控制器上，游戏写入灯条时会像在 DualSense 上一样接管灯光。</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>控制此设备的灯光</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>灯光控制</value></data>
@@ -2376,7 +2373,6 @@
   <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>重置低音截止</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>重置左扳机</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>重置右扳机</value></data>
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>冲击扳机</value></data>
   <data name="Mapping_TouchpadGesture_SwipeUp" xml:space="preserve"><value>向上滑动</value></data>
   <data name="Mapping_TouchpadGesture_SwipeDown" xml:space="preserve"><value>向下滑动</value></data>
   <data name="Mapping_TouchpadGesture_SwipeLeft" xml:space="preserve"><value>向左滑动</value></data>
@@ -2434,7 +2430,6 @@
   <data name="Pad_Touchpad" xml:space="preserve"><value>触控板</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>触控板</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>按触控板的输入。手势（滑动、点按、捏合、形状）和连续输出模式（虚拟摇杆 / 方向键、鼠标）成为可绑定到任意输出的映射来源。</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>触控板</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>触控板编号</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>下方设置适用于此手柄上的哪块触控板。每块触控板各自保留手势、鼠标手感和指针区域。</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>手势检测</value></data>
@@ -2669,7 +2664,6 @@
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>音量</value></data>
   <data name="Mapping_MotionLean" xml:space="preserve"><value>体感倾斜</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>音频</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>指针</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>红外指针</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>用此 Wii 遥控器的红外摄像头指向屏幕。需要在显示屏上方或下方放置感应条（或两个红外 LED）。在设备页面将其校准为光枪即可精确瞄准。校准后的遥控器不再使用感应条位置和垂直偏移。</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>指针调节</value></data>
@@ -2946,7 +2940,6 @@
   <data name="RemoteLink_RevokeAll" xml:space="preserve">
     <value>全部撤销</value>
   </data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>重命名</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>正在监听 {0}</value>
   </data>
@@ -3013,7 +3006,6 @@
   <data name="WiiPair_Failed" xml:space="preserve"><value>无法完成 Wii 配对。请重试。</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>完成</value></data>
   <data name="Common_Close" xml:space="preserve"><value>关闭</value></data>
-  <data name="Common_ResizePanes" xml:space="preserve"><value>调整窗格大小</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC 标签</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>把标签靠近读卡器并为其命名。它会成为一个可以映射的按键。</value></data>
   <data name="Nfc_TapPrompt" xml:space="preserve"><value>将标签靠近读卡器。</value></data>
@@ -3021,7 +3013,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>为此标签命名</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>注册</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>已注册</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>未检测到 NFC 读卡器。请连接 PC/SC 读卡器并重新打开。</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>已捕获标签。输入名称并单击“注册”。靠近另一个标签即可替换。</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>已注册“{0}”。靠近另一个标签可添加更多。</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>注册/管理 NFC 标签</value></data>
@@ -3048,7 +3039,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>手柄 Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>摇杆 X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>摇杆 Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>扳机</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>握柄</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>摇杆按下</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>主按钮</value></data>
@@ -3512,7 +3502,6 @@
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>双节棍控制器加速度计</value></data>
   <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>左 Joy-Con 加速度计</value></data>
   <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>辅助体感加速度计</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>鼠标</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>鼠标手势</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>按住手势键并移动鼠标，松开时恰好触发一个动作：左、右、上、下，低于移动阈值则为普通点击。五种手势可映射到任意输出，也可用作宏触发器。</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>启用鼠标手势</value></data>
@@ -3701,8 +3690,6 @@
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>点击后将光标移到目标上。短暂倒计时后即会捕获其位置。</value></data>
   <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} 压力</value></data>
   <data name="Mapping_TouchpadFingerRing_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} 环</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>灵敏度</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>针对普通轴、滑块或手柄摇杆/扳机的按源灵敏度。1.0 表示输入保持不变。大于 1.0 时用更小的行程即可达到满偏。小于 1.0 时需要更大的行程。</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>游戏手柄 {0}</value></data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>社区配置</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>浏览社区制作的 Steam Input 控制器配置，并将其转换为 PadForge 配置文件。PadForge 仅在您搜索、打开配置或检查已导入配置的更新时才直接连接 Steam 服务器。发送的内容包括搜索文本、相关游戏、配置和作者的 ID，以及 PadForge 的版本。匿名 Steam 登录还会发送您的 Windows 版本，以及由 Windows 安装 ID、网络适配器地址和启动磁盘序列号的哈希生成的机器 ID。无遥测、无第三方服务、无需 Steam 账户。</value></data>
@@ -3759,8 +3746,9 @@
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>无法连接 Steam</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>无法连接 Steam。请检查网络连接。已导入的配置文件保存在本机，仍可继续使用。</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>重试</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>这是 2016 年前后的配置，早于 Steam 的配置 CDN。请在 Steam 中订阅它，PadForge 会从您的 Steam 文件夹读取。</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam 未提供此配置可下载的文件，您的 Steam 文件夹中也没有它的副本。请在 Steam 中订阅它，PadForge 会从那里读取。</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>在 Steam 创意工坊中打开</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>旧版</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>选择一个配置以查看转换内容。</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>转换内容</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>转换为</value></data>
@@ -4109,7 +4097,6 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>菜单没有已绑定的单元格</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>不支持菜单宿主表面（{0}）</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>无法识别菜单单元格图标（{0}），该单元格保留其文本标签</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>低音振动器</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>输出</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>按键</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>键盘与鼠标</value></data>
@@ -4599,7 +4586,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>马达</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>按方向分配</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>中心死区</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>重置为关闭</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>重置为左摇杆X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>重置强度（50%）</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>重置中心死区（2%）</value></data>
@@ -4679,7 +4665,7 @@
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>编译进随附 SDL3.dll 的 HID 层，由 Alan Ott（Signal 11 Software）提供。</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>图标来源</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>火焰图标来自 Material Design Icons（Pictogrammers，Apache-2.0），通用手柄图标来自 Ionicons（Ionic，MIT），扩展类型的摇杆图标来自 Jam Icons（Michael Amprimo，MIT），Xbox 和 PlayStation 图标来自 SVG Repo，按各图标页面标注的许可证使用。</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>火焰图标来自 Material Design Icons（Pictogrammers，Apache-2.0），扩展类型的摇杆图标来自 Jam Icons（Michael Amprimo，MIT），Xbox 和 PlayStation 图标来自 SVG Repo，按各图标页面标注的许可证使用。</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Remote Link 备用通道背后的中继协议，与 FlexInput 一样连接 n0.computer 的免费公共中继。iroh：MIT OR Apache-2.0。FlexInput：MIT。仅作文档参考，不随附任何代码。</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

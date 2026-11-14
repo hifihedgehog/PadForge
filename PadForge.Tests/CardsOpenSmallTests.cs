@@ -139,9 +139,15 @@ namespace PadForge.Tests
                 new[] { "MidiOutputPortBox", "MidiChannelBox", "ResetMidiAll_Click" },
                 new[] { "MidiCcCountBox", "MidiStartCcBox", "MidiNoteCountBox", "MidiStartNoteBox", "MidiVelocityBox" }),
             // A menu opens on its style, what opens it, and its cells or its
-            // keyboard, as its board draws it. Its hint is put together too.
-            // Icon Packages is a line of its own under the editor's card.
-            ("Pad_More_Menu", "Pad.Menus.More", "Menu_Layer+Menu_ClickInput+Menu_FireMode+Menu_HasCenter+Menu_Deadzone+Dashboard_MenuOverlay",
+            // keyboard, as its board draws it. Its hint is put together too:
+            // each row's name after the rule that shows the row, and the
+            // overlay's name with none, since its rows always show. For the
+            // board's menu, a ring on a slot with layers, that is the
+            // board's own line. Icon Packages is a line of its own under
+            // the editor's card.
+            ("Pad_More_Menu", "Pad.Menus.More",
+                "DataContext.HasShiftLayers+Menu_Layer+ShowsLayerRow+Menu_Layer+ShowLayerHold+Menu_LayerHoldsOpen+ShowWebControllerRow+Menu_ShowOnWebController"
+                + "+ShowsClickRow+Menu_ClickInput+IsCellMenu+Menu_FireMode+IsRadial+Menu_HasCenter+IsCellMenu+Menu_Deadzone+Dashboard_MenuOverlay",
                 new[] { "{Binding KindIndex, Mode=TwoWay}", "KeyboardLayoutIndex", "{Binding Cells}", "Menu_Hotbar_Show", "Menu_HostHalf", "Menu_Keyboard_Controls" },
                 new[] { "Menu_Layer", "Menu_ShowOnWebController", "Menu_ClickInput", "Menu_FireMode", "Menu_HasCenter", "Menu_Deadzone_Tip", "Dashboard_MenuOverlay" }),
         };

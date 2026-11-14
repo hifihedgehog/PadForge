@@ -1017,7 +1017,10 @@ namespace PadForge.Tests
                 {
                     string rel = Path.GetRelativePath(root, file).Replace('\\', '/');
                     if (rel.Contains("/obj/") || rel.Contains("/bin/")) continue;
-                    int n = Count(File.ReadAllText(file), "HomeOfferPending = true");
+                    // A twin is owed the offer when it has a product identity
+                    // to be remembered by.
+                    string text = File.ReadAllText(file);
+                    int n = Count(text, "HomeOfferPending = true") + Count(text, "HomeOfferPending = productGuid != Guid.Empty");
                     for (int i = 0; i < n; i++) setters.Add(rel);
                 }
             Assert.Equal(new[]

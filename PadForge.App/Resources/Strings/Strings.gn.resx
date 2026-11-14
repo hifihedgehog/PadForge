@@ -269,7 +269,6 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Asignación kuéra</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Palanca kuéra</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Gatillo kuéra</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gatillo asu</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gatillo akatúa</value></data>
@@ -317,8 +316,6 @@
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>Mba'eve</value></data>
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Mbogue</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Motor asu</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Motor akatúa</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Jeporavorã</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. -->
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -396,7 +393,6 @@
   <data name="Macro_SetGyroEngaged_Off" xml:space="preserve"><value>Mbogue</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Motor asu</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Motor akatúa</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Mantener</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Mbytépe</value></data>
@@ -464,7 +460,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Touchpad papapy</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Mokõive</value></data>
   <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>Jopy puku</value></data>
@@ -551,7 +546,6 @@
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
 
   <!-- ═══ Device Object Names (gamepad) ═══ -->
   <data name="DevObj_LeftStickX" xml:space="preserve"><value>Palanca asu X</value></data>
@@ -880,7 +874,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>Control Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Palanca X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Palanca Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Gatillo</value></data>
   <data name="VrCtl_Menu" xml:space="preserve"><value>Menú votõ</value></data>
   <data name="Dashboard_HeadTrackingAxisYaw" xml:space="preserve"><value>Yaw</value></data>
   <data name="Dashboard_HeadTrackingAxisPitch" xml:space="preserve"><value>Pitch</value></data>
@@ -891,7 +884,6 @@
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Téra</value></data>
   <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Ehenói ko votõ</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Teclakuéra: {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Asu</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Akatúa</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Yvate</value></data>

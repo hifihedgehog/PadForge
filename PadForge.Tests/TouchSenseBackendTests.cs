@@ -872,10 +872,6 @@ namespace PadForge.Tests
 
         // ── Stop ──
 
-        /// <summary>The worker's last frames to a mouse it wrote to are the
-        /// stop and then F3, the vendor driver's own last frame. A mouse
-        /// it never wrote to gets nothing, and no handle is closed: the
-        /// mouse's row closes it afterward.</summary>
         /// <summary>A worker a stop gave up on sends no last frames when it comes back with a
         /// later worker running. Its own last frame asked for 300 ms of pulses, over by then,
         /// and a stop would land between the later worker's frames.</summary>
@@ -925,6 +921,10 @@ namespace PadForge.Tests
             Assert.DoesNotContain("F3 00 00 00 00 00 00", channel.Frames);
         }
 
+        /// <summary>The worker's last frames to a mouse it wrote to are the
+        /// stop and then F3, the vendor driver's own last frame. A mouse
+        /// it never wrote to gets nothing, and no handle is closed: the
+        /// mouse's row closes it afterward.</summary>
         [Fact]
         public void Stopping_SendsTheStopThenTheVendorsLastFrame_ToEveryMouseItWroteTo()
         {

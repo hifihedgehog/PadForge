@@ -173,8 +173,6 @@ namespace PadForge.Tests
         internal static string[] Lines(IEnumerable<(string Kind, byte[] Frame)> traffic)
             => traffic.Select(t => t.Kind + " " + Text(t.Frame)).ToArray();
 
-        /// <summary>An answer report: the long header with PadForge's
-        /// software ID, then the payload.</summary>
         /// <summary>A very long answer, as a G810 gives its key list (#557).</summary>
         internal static HidppReply AnsVeryLong(byte device, byte feature, byte function, params byte[] payload)
         {
@@ -187,6 +185,8 @@ namespace PadForge.Tests
             return new HidppReply(HidppReplyKind.Answer, 0, report);
         }
 
+        /// <summary>An answer report: the long header with PadForge's
+        /// software ID, then the payload.</summary>
         internal static HidppReply Ans(byte device, byte feature, byte function, params byte[] payload)
         {
             var report = new byte[20];

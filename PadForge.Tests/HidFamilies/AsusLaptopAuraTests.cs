@@ -24,7 +24,7 @@ namespace PadForge.Tests
         private static AsusLaptopMachine Machine(string product = "ROG Zephyrus G14", string board = "GA402RJ") => new(product, board);
 
         /// <summary>An answer of the firmware: the echo, then the kind at byte 9, the
-        /// layout at 12 and the features at 13 and 14 (Aura.cs:332-336).</summary>
+        /// layout at 12 and the features at 13 and 14 (Aura.cs:331-336).</summary>
         private static byte[] Answered(byte kind, byte layout = 1, byte features1 = 0, byte features2 = 0)
         {
             var answer = new byte[64];
@@ -112,7 +112,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>The Z13's rear light has one light and the stored-write bounds,
-        /// and on any other laptop that product is a keyboard (HasRearLight, AppConfig.cs:599-602).</summary>
+        /// and on any other laptop that product is a keyboard (HasRearLight, AppConfig.cs:600-603).</summary>
         [Fact]
         public void TheRearLight_OfTheZ13_IsOneStoredLight()
         {
@@ -215,7 +215,7 @@ namespace PadForge.Tests
         private static readonly AsusLaptopBoard ZonesRow = new("X", "", "g513i", false, true);
         private static readonly AsusLaptopBoard PlainRow = new("X", "", "ga401q", false, false);
 
-        /// <summary>The firmware's word first (Aura.cs:362-369), then asusctl's list,
+        /// <summary>The firmware's word first (Aura.cs:365-372), then asusctl's list,
         /// then G-Helper's lists of keyboards that take B3.</summary>
         [Fact]
         public void TheKind_GoesByTheFirmware_ThenAsusctl_ThenGHelper()
@@ -281,15 +281,15 @@ namespace PadForge.Tests
             Assert.Equal(2, message.Count);
             Starts("5D B3 00 00 11 22 33 EB 00 00 11 22 33", message[0], 64);
             Starts("5D B5", message[1], 64);
-            // Black takes FF at byte 9 (Aura.cs:311).
+            // Black takes FF at byte 9 (Aura.cs:310).
             Starts("5D B3 00 00 00 00 00 EB 00 FF", AsusLaptopAura.StaticFrames(0, false, false)[0], 64);
             // A white keyboard's level is the brightest channel, in the red byte.
             Starts("5D B3 00 00 44 00 00 EB 00 00 44 00 00", AsusLaptopAura.StaticFrames(0x114422, true, false)[0], 64);
             Starts("5D B4", AsusLaptopAura.StaticFrames(0x112233, false, true)[2], 64);
         }
 
-        /// <summary>SetLedsDirect's frames (Aura.cs:714-742) and the rear strip's
-        /// (lines 752-766).</summary>
+        /// <summary>SetLedsDirect's frames (Aura.cs:716-755) and the rear strip's
+        /// (lines 757-782).</summary>
         [Fact]
         public void APerKeyPicture_IsTheKeys_ThePast_AndTheRearStrip()
         {
@@ -614,7 +614,7 @@ namespace PadForge.Tests
 
         /// <summary>asusctl's g513i, g634j and g635l files list MediaNext in the Caps row and
         /// MediaPrev in the Shift row, and its g533q file the other way round. LED 100 is
-        /// Previous and LED 121 Next on G-Helper (PRV15 and NXT15, app/USB/Aura.cs:572-575), on
+        /// Previous and LED 121 Next on G-Helper (PRV15 and NXT15, app/USB/Aura.cs:570-573), on
         /// OpenRGB (AsusAuraCoreLaptopDevices.cpp:95 and 97, :121-122) and on RGB.NET
         /// (AsusKeyboardLedMapping.cs:225-226).</summary>
         [Theory]

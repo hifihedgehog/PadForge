@@ -11,11 +11,10 @@ using PadForge.ViewModels;
 
 namespace PadForge.Tests
 {
-    /// <summary>
-    /// Contracts locked by the 2026-08-25 delta audit (f2682b73..HEAD).
-    /// Each test fails if its fix is removed, which is the only thing that
-    /// makes the suite evidence rather than ceremony.
-    /// </summary>
+    // Contracts locked by the 2026-08-25 delta audit (f2682b73..HEAD).
+    // Each test fails if its fix is removed, which is the only thing that
+    // makes the suite evidence rather than ceremony.
+
     /// <summary>The firewall rule is written, not read back. Parsing netsh's
     /// own dump to decide whether the rule exists cannot be done portably: the
     /// labels come from the firewall's MUI resources and are translated on a

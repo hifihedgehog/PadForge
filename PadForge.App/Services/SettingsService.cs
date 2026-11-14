@@ -6438,10 +6438,16 @@ namespace PadForge.Services
                 && Environment.CurrentManagedThreadId == System.Threading.Volatile.Read(ref _mirrorThread))
                 return;
             // Quiet only while nothing but interface state waits: this mark
-            // is one, and so was whatever was already waiting.
-            _onlyViewStateIsDirty = viewState && (!IsDirty || _onlyViewStateIsDirty);
+            // is one, and so was whatever was already waiting. The pair is
+            // read and written as one step: a worker's mark of a real change
+            // between the two would be called interface state and saved
+            // with no message.
+            lock (_dirtyGate)
+            {
+                _onlyViewStateIsDirty = viewState && (!IsDirty || _onlyViewStateIsDirty);
+                IsDirty = true;
+            }
             InvalidateAssignmentSnapshot();
-            IsDirty = true;
 
             var dispatcher = System.Windows.Application.Current?.Dispatcher;
             if (dispatcher == null) return; // shutdown: OnClosing's dirty-gated save covers it
@@ -6461,9 +6467,14 @@ namespace PadForge.Services
         /// serialize-and-write runs. See MarkDirtyOnUiThread.</summary>
         private const int PersistQuietMs = 2000;
 
+        private readonly object _dirtyGate = new();
+
         private void MarkDirtyOnUiThread()
         {
-            _mainVm.Settings.HasUnsavedChanges = true;
+            // A card that opened or folded is saved quietly and is no
+            // change to a setting, so the Settings page's Unsaved Changes
+            // line does not show for it.
+            if (!_onlyViewStateIsDirty) _mainVm.Settings.HasUnsavedChanges = true;
             _lastDirtyTickMs = Environment.TickCount64;
 
             // Two-tier autosave (#331). The engine reads PadSetting, and the

@@ -106,6 +106,12 @@ namespace PadForge.Common.Input.Peripherals
         /// lights given back.</summary>
         internal sealed class Session : HidLightingSession
         {
+            // Made once: the backend tells an unchanged record by reference
+            // (HidLightingBackend.Track), and a new array at every read had
+            // it take the headset off the record and put it back after
+            // every picture.
+            private static readonly byte[][] s_handBack = { Control(Firmware) };
+
             private readonly Func<long> _now;
             private bool _taken;
             private long _takenAt;
@@ -114,7 +120,7 @@ namespace PadForge.Common.Input.Peripherals
 
             public override bool Feature => false;
 
-            public override byte[][] CrashFrames => _taken ? new[] { Control(Firmware) } : Array.Empty<byte[]>();
+            public override byte[][] CrashFrames => _taken ? s_handBack : Array.Empty<byte[]>();
 
             public override HidLightingPaint Paint(IHidReportChannel io, Action<int> wait,
                 IReadOnlyList<LightInfo> lights, IReadOnlyList<int> colors)

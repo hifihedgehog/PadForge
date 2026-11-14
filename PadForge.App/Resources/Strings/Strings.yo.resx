@@ -312,7 +312,6 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Àwọn ìsopọ̀</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Àwọn ọ̀pá</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Àwọn tírígà</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Tírígà òsì</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Tírígà ọ̀tún</value></data>
@@ -400,8 +399,8 @@
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Gbé wọlé láti inú fáìlì…</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>A ti gbé e wọlé láti {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Kíkà kùnà: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro kọ profaili yìí ní {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Profaili yìí kò ní HID descriptor, nítorí náà a kò lè ṣe ẹ̀rọ ìdarí kankan láti inú rẹ̀.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro kọ preset yìí ní {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Preset yìí kò ní HID descriptor, nítorí náà a kò lè ṣe ẹ̀rọ ìdarí kankan láti inú rẹ̀.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>A kò gbé nǹkan kan wọlé. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Gbé wọlé</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
@@ -421,9 +420,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Yí padà sí ìwò 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Yí padà sí ìwò 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Tẹ̀ láti dán mọ́tò òsì wò</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Mọ́tò òsì</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Tẹ̀ láti dán mọ́tò ọ̀tún wò</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Mọ́tò ọ̀tún</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Ṣẹ̀dà láti...</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Tún gbogbo rẹ̀ tò</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Orísun</value></data>
@@ -476,6 +473,7 @@
   <data name="Curve_Custom" xml:space="preserve"><value>Àdáni</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Àmì àárín</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Àárín</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Ìyára</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Ìyàsípò àárín, ìrísí deadzone àti iye ákísì kọ̀ọ̀kan, ìtẹ̀ fún ákísì kọ̀ọ̀kan, ìwọ̀n, ìdarí</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Ìwọ̀n ní nọ́ńbà, iye aláìṣàtúnṣe</value></data>
@@ -586,7 +584,6 @@
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Dì mú</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Mọ́tò òsì</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Mọ́tò ọ̀tún</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Dì mú</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Ní àárín</value></data>
@@ -672,7 +669,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Mú ìfarajúwe ṣiṣẹ́ lórí touchpad yìí</value></data>
   <data name="Pad_Touchpad_Mode_Label" xml:space="preserve"><value>Dá mọ̀</value></data>
   <data name="Pad_Touchpad_Mode_CustomOnly" xml:space="preserve"><value>Ti àdáni nìkan</value></data>
@@ -830,7 +826,6 @@
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Ìṣípòpadà máòsì X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Ìṣípòpadà máòsì Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Ìfọkànsí</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Ìfọkànsí</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Ẹ̀rọ ìdarí {0}</value></data>
 
   <!-- ═══ Device Object Names (gamepad) ═══ -->
@@ -1198,7 +1193,6 @@
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Tún kẹ̀kẹ́ ìdarí tò</value></data>
   <data name="Pad_ResetRotationRange" xml:space="preserve"><value>Tún ìwọ̀n yíyípo tò</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Ohùn</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Atọ́ka</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Atọ́ka IR</value></data>
   <data name="Pad_Pointer_ModeTitle" xml:space="preserve"><value>Ọ̀nà atọ́ka</value></data>
   <data name="Pad_Pointer_Mode_Mouse" xml:space="preserve"><value>Máòsì</value></data>
@@ -1351,7 +1345,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>Z ẹ̀rọ ìdarí</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>X ọ̀pá</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Y ọ̀pá</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Tírígà</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Títẹ̀ ọ̀pá</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Bọ́tìnnì àkọ́kọ́</value></data>
   <data name="VrCtl_Secondary" xml:space="preserve"><value>Bọ́tìnnì kejì</value></data>
@@ -1390,7 +1383,6 @@
   <data name="Handheld_Import" xml:space="preserve"><value>Gbé wọlé…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>A ti gbé bọ́tìnnì {0} jáde.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>A ti gbé bọ́tìnnì {0} wọlé.</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Máòsì</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Ìfarajúwe máòsì</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Mú ìfarajúwe máòsì ṣiṣẹ́</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Àwọn bọ́tìnnì ìfarajúwe</value></data>
@@ -1453,6 +1445,7 @@
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>A kò lè dé Steam. Ṣàyẹ̀wò àsopọ̀ íntánẹ́ẹ̀tì rẹ. Àwọn profaili tí o ti gbé wọlé ṣì ń ṣiṣẹ́: wọ́n wà lórí PC yìí.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Gbìyànjú lẹ́ẹ̀kan sí i</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Ṣí nínú Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Àtijọ́</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Fi profaili pamọ́</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Fi pamọ́ kí o sì lò ó</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>a ti túmọ̀ rẹ̀</value></data>
@@ -2031,7 +2024,7 @@
   <data name="Search_NoResults_Format" xml:space="preserve"><value>Kò sí ohunkóhun nínú PadForge tí ó bá “{0}” mu.</value></data>
   <data name="Search_Docs_Format" xml:space="preserve"><value>Wá “{0}” nínú ìwé àlàyé</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Ó bẹ̀rẹ̀ láìsí ẹ̀rọ ìdarí kankan. Ó máa ń ṣí fúnra rẹ̀ nígbà tí ọ̀kan nínú àwọn eré rẹ̀ bá wà níwájú.</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Kò sí ètò mìíràn tí ó ní fèrèsé ṣíṣí.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>A kò rí fèrèsé ṣíṣí mìíràn.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Yọ {0} kúrò</value></data>
   <data name="Voice_MoreHint" xml:space="preserve"><value>Gbígbọ́ tàn tàbí pa, ipò, ìdánilójú</value></data>
   <data name="Voice_ListeningOff" xml:space="preserve"><value>Gbígbọ́ ti pa. Tan án lábẹ́ Síi.</value></data>

@@ -23,6 +23,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(StatusText));
             OnPropertyChanged(nameof(CapabilitiesSummary));
             OnPropertyChanged(nameof(FlydigiServiceWarning));
+            OnPropertyChanged(nameof(HandheldDaemonWarning));
             OnPropertyChanged(nameof(TabletInputStatus));
             OnPropertyChanged(nameof(TouchpadInputStatus));
             OnPropertyChanged(nameof(GunCalibrationStatus));
@@ -308,7 +309,8 @@ namespace PadForge.ViewModels
         private DeviceListGroup _listGroup = DeviceListGroup.NotConnected;
 
         /// <summary>Which of the page's three lists the row stands in. Raised
-        /// only when it changes: the lists regroup live on this name.</summary>
+        /// only when it changes. The lists move a row at the next
+        /// RefreshCounts and do not filter live (DevicesViewModel.MakeView).</summary>
         public DeviceListGroup ListGroup => _listGroup;
 
         private void UpdateListGroup()
@@ -1582,18 +1584,6 @@ namespace PadForge.ViewModels
 
                 return sb.Length > 0 ? sb.ToString() : Strings.Instance.Btn_Touchpad;
             }
-        }
-
-        /// <summary>
-        /// Refreshes computed display properties.
-        /// </summary>
-        public void NotifyDisplayChanged()
-        {
-            OnPropertyChanged(nameof(StatusText));
-            OnPropertyChanged(nameof(CapabilitiesSummary));
-            OnPropertyChanged(nameof(VendorIdHex));
-            OnPropertyChanged(nameof(ProductIdHex));
-            OnPropertyChanged(nameof(HasVidPid));
         }
 
         public override string ToString()

@@ -807,7 +807,11 @@ namespace PadForge.Tests
                     Shoot(ground, dispatcher, dir, scale, file, PageWidth, height, show, step);
                 void ShotMore(string key, string file, double height)
                 {
-                    Shot(file, height, () => page.ShowMore(key));
+                    Shot(file, height, () =>
+                    {
+                        page.Show(key);
+                        ((System.Windows.Controls.Expander)page.FindName(key + "More")).IsExpanded = true;
+                    });
                     ((System.Windows.Controls.Expander)page.FindName(key + "More")).IsExpanded = false;
                 }
 

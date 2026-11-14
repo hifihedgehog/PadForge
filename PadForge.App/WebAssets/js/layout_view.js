@@ -81,18 +81,24 @@
         return w / layout.baseWidth;
     }
 
-    // GET /api/layout for a layout key and an optional finish.
-    function fetchLayout(type, finish, done) {
+    // GET /api/layout for a layout key and an optional finish. A request
+    // that gives no layout calls failed, where the caller gives one: the
+    // server refused, the answer was no JSON, or it never came.
+    function fetchLayout(type, finish, done, failed) {
         var xhr = new XMLHttpRequest();
         var url = "/api/layout?type=" + encodeURIComponent(type);
         if (finish) url += "&finish=" + encodeURIComponent(finish);
+        function fail() { if (failed) failed(); }
         xhr.open("GET", url, true);
         xhr.onload = function () {
-            if (xhr.status !== 200) return;
+            if (xhr.status !== 200) { fail(); return; }
             var layout;
-            try { layout = JSON.parse(xhr.responseText); } catch (e) { return; }
+            try { layout = JSON.parse(xhr.responseText); } catch (e) { fail(); return; }
             done(layout);
         };
+        xhr.onerror = fail;
+        xhr.ontimeout = fail;
+        xhr.onabort = fail;
         xhr.send();
     }
 

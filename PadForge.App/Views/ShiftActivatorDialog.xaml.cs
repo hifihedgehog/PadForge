@@ -825,6 +825,10 @@ namespace PadForge.Views
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            // A typed value reaches its slider when its box loses focus, and
+            // Enter presses Save while the box still has it.
+            if (System.Windows.Input.Keyboard.FocusedElement is System.Windows.Controls.TextBox typed)
+                typed.GetBindingExpression(System.Windows.Controls.TextBox.TextProperty)?.UpdateSource();
             if (_baseMode)
             {
                 // Base-appearance mode: only name/color/icon matter. Name may

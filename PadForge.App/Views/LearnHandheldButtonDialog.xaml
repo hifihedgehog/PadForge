@@ -70,7 +70,7 @@
         <!-- When the press changed a report in more than one place, the
              place to keep. -->
         <controls:SettingRow x:Name="SourceRow" MinHeight="44" Margin="0,8,0,0" Visibility="Collapsed">
-            <TextBlock Style="{StaticResource DialogLabelNarrow}"
+            <TextBlock x:Name="SourceLabel" Style="{StaticResource DialogLabelNarrow}"
                        Text="{Binding Handheld_SourceLabel, Source={x:Static strings:Strings.Instance}}"/>
             <ComboBox x:Name="CandidateBox" Style="{StaticResource DialogSelect}" controls:SettingRow.Fills="True"
                       DisplayMemberPath="Description"
@@ -78,7 +78,7 @@
         </controls:SettingRow>
 
         <controls:SettingRow MinHeight="44" Margin="0,8,0,0">
-            <TextBlock Style="{StaticResource DialogLabelNarrow}"
+            <TextBlock x:Name="NameLabel" Style="{StaticResource DialogLabelNarrow}"
                        Text="{Binding Handheld_NameLabel, Source={x:Static strings:Strings.Instance}}"/>
             <ui:TextBox x:Name="NameBox" Style="{StaticResource DialogTextBox}" controls:SettingRow.Fills="True"
                         PlaceholderText="{Binding Handheld_NamePlaceholder, Source={x:Static strings:Strings.Instance}}"

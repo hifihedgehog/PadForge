@@ -68,29 +68,41 @@ namespace PadForge.Common
             object item = owner.ItemContainerGenerator.ItemFromContainer(container);
             if (item == null || item == DependencyProperty.UnsetValue)
                 return true;
-            List<AutomationPeer> items;
             try
             {
-                // The list reads its items first, and tells its listeners
-                // of any it gained or lost, as it would after this layout.
+                // The items the list already holds are searched first. Read
+                // again for every container, a list of N items cost N
+                // readings of N.
+                if (RefreshIn(list.GetChildren(), item))
+                    return true;
+                // An item the list does not hold yet: the list reads its
+                // items, and tells its listeners of any it gained or lost,
+                // as it would after this layout.
                 list.ResetChildrenCache();
-                items = list.GetChildren();
+                RefreshIn(list.GetChildren(), item);
             }
             catch (InvalidOperationException)
             {
                 return false;
             }
+            return true;
+        }
+
+        /// <summary>Has the peer of this item, if it is among these, read its
+        /// children again. False when it is not among them.</summary>
+        private static bool RefreshIn(List<AutomationPeer> items, object item)
+        {
             if (items == null)
-                return true;
+                return false;
             foreach (AutomationPeer peer in items)
             {
                 if (peer is ItemAutomationPeer itemPeer && Equals(itemPeer.Item, item))
                 {
                     itemPeer.ResetChildrenCache();
-                    break;
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
 
         /// <summary>Numbers a list's entries for a screen reader: each one

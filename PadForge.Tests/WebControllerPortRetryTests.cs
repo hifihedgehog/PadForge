@@ -145,7 +145,7 @@ namespace PadForge.Tests
                     Assert.True(server.IsPlainServing);
                     Assert.False(server.PlainPortInUse);
                     Assert.Contains(firewall, p => p != null && p.Port == 18091);
-                    PumpUntil(dispatcher, () => vm.Dashboard.IsWebControllerPlainRunning);
+                    PumpUntil(dispatcher, () => vm.Dashboard.WebControllerPlainStatus == server.PlainStatus);
                 }
                 finally
                 {

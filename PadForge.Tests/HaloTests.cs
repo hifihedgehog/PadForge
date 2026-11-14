@@ -297,6 +297,75 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>A breath is ambient motion, so it rests while the app is
+        /// not in front: it holds at full when the app leaves, a halo lit
+        /// meanwhile fades in and starts no breath, and the breath starts
+        /// again when the app is back.</summary>
+        [Fact]
+        public void TheBreathRests_WhileTheAppIsNotInFront() => RunSta(() =>
+        {
+            var motion = Halo.MotionEnabled;
+            var front = Halo.AppInFront;
+            bool inFront = true;
+            Halo.MotionEnabled = () => true;
+            Halo.AppInFront = () => inFront;
+            var ring = new Halo { Width = 40, Height = 20, Breathes = true };
+            var window = Host(ring);
+            try
+            {
+                window.Show();
+                var dispatcher = window.Dispatcher;
+                Pump(dispatcher, () => ring.IsLoaded, "the load");
+                ring.IsLit = true;
+                Pump(dispatcher, () => ring.IsBreathing, "the breath");
+
+                inFront = false;
+                ring.FollowApp();
+                Assert.False(ring.IsBreathing);
+                Assert.False(ring.IsMoving);
+                Assert.Equal(1.0, ring.Level);
+
+                // Lit while the app is away: the fade ends and no breath starts.
+                ring.IsLit = false;
+                Pump(dispatcher, () => !ring.IsMoving, "the fade out");
+                ring.IsLit = true;
+                Pump(dispatcher, () => !ring.IsMoving, "the fade in");
+                Assert.False(ring.IsBreathing);
+                Assert.Equal(1.0, ring.Level);
+
+                inFront = true;
+                ring.FollowApp();
+                Assert.True(ring.IsBreathing);
+                Assert.True(ring.IsMoving);
+            }
+            finally
+            {
+                Halo.MotionEnabled = motion;
+                Halo.AppInFront = front;
+                window.Close();
+            }
+        });
+
+        /// <summary>The breath asks for 30 frames a second, and a halo hears
+        /// the app's coming and going from its load to its unload.</summary>
+        [Fact]
+        public void TheBreathAsksFor30Frames_AndListensWhileLoaded()
+        {
+            string halo = System.IO.File.ReadAllText(HaloSource()).Replace("\r", "");
+            Assert.Contains("Timeline.SetDesiredFrameRate(breath, 30);", halo);
+            Assert.Matches(@"Loaded \+= \(_, _\) =>\s+\{\s+PadForge\.Common\.AmbientMotionProbe\.Instance\.PropertyChanged -= OnAmbientMotionChanged;\s+PadForge\.Common\.AmbientMotionProbe\.Instance\.PropertyChanged \+= OnAmbientMotionChanged;\s+Retarget\(\);",
+                halo);
+            Assert.Matches(@"Unloaded \+= \(_, _\) =>\s+\{\s+PadForge\.Common\.AmbientMotionProbe\.Instance\.PropertyChanged -= OnAmbientMotionChanged;", halo);
+        }
+
+        private static string HaloSource()
+        {
+            var dir = new System.IO.DirectoryInfo(AppContext.BaseDirectory);
+            while (dir != null && !System.IO.File.Exists(System.IO.Path.Combine(dir.FullName, "PadForge.sln"))) dir = dir.Parent;
+            Assert.NotNull(dir);
+            return System.IO.Path.Combine(dir.FullName, "PadForge.App", "Controls", "Halo.cs");
+        }
+
         private static Window Host(UIElement content) => new Window
         {
             Width = 300, Height = 200, ShowActivated = false, ShowInTaskbar = false,

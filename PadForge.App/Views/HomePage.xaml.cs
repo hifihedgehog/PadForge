@@ -6,10 +6,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using NavigationView = Wpf.Ui.Controls.NavigationView;
-using NavigationViewItem = Wpf.Ui.Controls.NavigationViewItem;
 using PadForge.Engine;
-using PadForge.Resources.Strings;
 
 namespace PadForge.Views
 {
@@ -243,6 +240,7 @@ namespace PadForge.Views
             // zone and something else takes capture first, so no mouse-up
             // ever reaches OnDragEnd. It also explains why no navigation
             // ever accompanied it, since OnDragEnd never ran at all.
+            SlotsItemsControl.LostMouseCapture -= OnDragCaptureLost;
             SlotsItemsControl.LostMouseCapture += OnDragCaptureLost;
         }
 

@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Menutup PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Memulakan PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Membersihkan pengawal maya yang tertinggal daripada sesi sebelumnya.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> peranti</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Tambah Pengawal</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Tambah Pengawal</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Pilih apa yang patut dilihat permainan. Pengawal ditambah sebaik sahaja anda klik.</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Rakaman tamat masa untuk "{0}."</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Enjin dimulakan.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Enjin dihentikan.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Tiada pemetaan</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Ralat: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} tidak dapat dicipta.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil ditukar: {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Merakam...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>apabila</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>pada</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}" ditetapkan kepada Pengawal Maya {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}" dinyahtetapkan daripada Pengawal Maya {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Peranti dialih keluar.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Pengawal Maya {0} dipadam.</value></data>
@@ -516,7 +513,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>PC yang telah anda gandingkan untuk Pautan Jauh. Tarik balik satu untuk menghentikannya daripada bersambung. Ia perlu digandingkan semula.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Tarik Balik</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Tarik Balik Semua</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Namakan Semula</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Tindihan Pad Sentuh</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Permukaan sentuh pada skrin untuk permainan pad sentuh PlayStation, untuk skrin sentuh atau tetikus.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Dayakan Tindihan Pad Sentuh</value></data>
@@ -750,7 +746,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Terma lesen Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Terma SDK Corsair</value></data>
@@ -1031,9 +1026,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Pemetaan</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Kayu Bedik</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Pencetus</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Maklum Balas Daya</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Pencetus Impuls</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Pencetus Impuls</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gandaan setiap pencetus, tukar motor, getaran pencetus adaptif, Daya Pencetus Malar</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Memajukan arahan motor bagi setiap pencetus (Xbox Impulse Triggers) daripada pengawal maya ke pengawal Xbox One, Elite atau Series fizikal yang ditetapkan. Getaran pencetus yang dipacu permainan lalu secara automatik. Kawalan di bawah menskala magnitud bagi setiap pencetus.</value></data>
@@ -1099,7 +1092,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Tetap Semula Pencetus Kiri</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Tetap Semula Pencetus Kanan</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Pencetus Adaptif</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Pencetus Adaptif</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfigurasikan kesan maklum balas pencetus pada DualSense fizikal yang ditetapkan. Kesan pencetus daripada permainan atau mod permainan dimajukan secara automatik. Tetapan di sini menambah lapisan konfigurasi pengguna yang berjalan apabila tiada satu pun daripadanya menulis.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Kayu Bedik</value></data>
@@ -1144,7 +1136,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>Pencahayaan</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Pencahayaan</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Tetapkan warna asas bar cahaya dan gelagat audio pada pengawal fizikal yang ditetapkan. Tulisan permainan sentiasa diutamakan. Tetapan pengguna terpakai apabila tiada permainan memacu bar cahaya.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Semasa ditetapkan kepada Nombor Pemain, pad menunjukkan identiti pemain pengawal mayanya ketika melahu: warna pemain Sony pada bar cahaya (1 biru, 2 merah, 3 hijau, 4 merah jambu) dan penunjuk pemain yang sepadan pada DualSense. Setiap peranti pada pengawal maya yang sama menunjukkan nombor yang sama. Permainan mengambil alih apabila ia menulis pencahayaan, apa-apa yang anda tetapkan di sini sentiasa diutamakan, dan Mati memadamkan lampu sepenuhnya.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Semasa ditetapkan kepada Nombor Pemain, pad menunjukkan identiti pemain pengawal mayanya ketika melahu: warna pemain Sony pada bar cahaya (1 biru, 2 merah, 3 hijau, 4 merah jambu) dan penunjuk pemain yang sepadan pada DualSense. Setiap peranti pada pengawal maya yang sama menunjukkan nombor yang sama. Permainan mengambil alih apabila ia menulis pencahayaan. Mod lain yang ditetapkan di sini menggantikan warna pemain, dan Mati memadamkan lampu sepenuhnya.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Pengawal maya ini menyalakan peranti dengan mod yang sama seperti bar cahaya DualSense, ditetapkan di sini untuk pengawal ini sahaja. Pada pengawal maya PlayStation, permainan yang menulis bar cahaya mengambil alih seperti pada DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Kawal Pencahayaan Peranti Ini</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Mati menghalang pengawal maya ini daripada menyalakan peranti. Baris vendor, atau peranti lain sejenis yang dinyalakan melalui perisian yang sama, masih boleh menetapkan warnanya. Makro Set Chroma Color pada pengawal maya ini masih mewarnai peranti Razer.</value></data>
@@ -1259,9 +1251,9 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Pencetus</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Butang</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Profil Diimport…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Pratetap Pengawal…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Pengawal Lanjutan</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Urus profil HIDMaestro yang diimport pengguna: tangkap yang baharu daripada peranti yang disambungkan, eksport yang sedia ada ke JSON, atau padam yang tidak lagi anda perlukan.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Urus pratetap pengawal yang anda tambah: import satu daripada fail atau peranti bersambung, eksport satu ke JSON, atau padam yang tidak lagi anda perlukan.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Klon Peranti 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Petakan setiap paksi, butang dan POV pada peranti terpilih terus ke output maya bernombor sama. Menyaizkan susun atur mengikut peranti dan menggantikan baris peranti ini pada slot dengan laluan terus 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Klon Peranti 1:1</value></data>
@@ -1276,18 +1268,18 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Import daripada Peranti Bersambung</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Eksport…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Padam</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Eksport JSON Profil</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Eksport JSON Pratetap</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Padam Pratetap?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Mana-mana pengawal yang menggunakan {0} kembali kepada entri Custom. Ini tidak boleh dibuat asal.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Dieksport ke {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Eksport gagal: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" dipadam.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Import dari Fail…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Import JSON Profil</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Import JSON Pratetap</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Diimport daripada {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Bacaan gagal: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro menolak profil ini pada {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Profil ini tiada deskriptor HID, jadi tiada pengawal yang boleh dibuat daripadanya.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro menolak pratetap ini pada {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Pratetap ini tiada deskriptor HID, jadi tiada pengawal yang boleh dibuat daripadanya.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Tiada apa-apa diimport. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Import</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(peranti HID tanpa nama)</value></data>
@@ -1398,9 +1390,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Tukar ke paparan 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Tukar ke paparan 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Klik untuk menguji motor kiri</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Motor Kiri</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Klik untuk menguji motor kanan</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Motor Kanan</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Peta Semua</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Peta: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Rakam semua pemetaan satu demi satu secara berurutan</value></data>
@@ -1504,6 +1494,11 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Balikkan benar/palsu</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Jika, dengan corak (syarat) ? maka : lain</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Bahagian lain bagi jika-maka-lain</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>dan</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>atau</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>bukan</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>jika?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>lain:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Magnitud (membuang tanda)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Lebih kecil daripada dua nilai</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Lebih besar daripada dua nilai</value></data>
@@ -1571,6 +1566,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Tentukur Tengah</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Titik Tengah</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Tengah</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Kelajuan</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zon Mati</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Ofset tengah, bentuk zon mati dan nilai setiap paksi, lengkung untuk setiap paksi, julat, stereng</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Julat dalam nombor, nilai mentah</value></data>
@@ -1794,7 +1790,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Melekat (Tahan)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Motor Kiri</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Motor Kanan</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Tahan</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Pudar</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1903,7 +1898,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Pad sentuh</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Pad sentuh</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Input bagi setiap pad sentuh. Gerak isyarat (leret, ketik, cubit, bentuk) dan mod output berterusan (kayu bedik maya / D-pad, tetikus) menjadi sumber pemetaan yang boleh diikat pada mana-mana output.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Pad sentuh</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Nombor pad sentuh</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Pad sentuh pada pengawal ini yang dikenakan tetapan di bawah. Setiap pad sentuh menyimpan gerak isyarat, rasa tetikus dan rantau penuding sendiri.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Pengesanan gerak isyarat</value></data>
@@ -2354,8 +2348,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Gerakan Tetikus Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Kepekaan</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Kepekaan penuding IR bagi setiap sumber. 1.0 mencapai pesongan kayu bedik penuh di tepi medan pandangan kamera. Nilai di atas 1.0 mencapai pesongan penuh dengan pergerakan bidikan yang lebih sedikit. Nilai di bawah 1.0 memerlukan lebih banyak.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Kepekaan</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Kepekaan bagi setiap sumber untuk paksi biasa, peluncur atau kayu bedik / pencetus pengawal. 1.0 membiarkan input tidak berubah. Nilai di atas 1.0 mencapai pesongan penuh dengan pergerakan yang lebih sedikit. Nilai di bawah 1.0 memerlukan lebih banyak.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Pengawal {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Kepekaan gerakan tetikus bagi setiap sumber. 1.0 mencapai pesongan penuh pada kelajuan yang sama seperti tetikus sebenar, nilai di atas 1.0 memerlukan gerakan yang lebih sedikit, nilai di bawah memerlukan lebih banyak.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Jumlah Berat Imbangan</value></data>
@@ -2490,7 +2482,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profil dimuatkan sendiri apabila salah satu permainannya berada di hadapan.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Bermula tanpa pengawal. Ia dimuatkan sendiri apabila salah satu permainannya berada di hadapan.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Tambah Permainan yang Sedang Berjalan</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Tiada program lain mempunyai tetingkap terbuka.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Tiada tetingkap terbuka lain ditemui.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Alih keluar {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Kadar tinjauan semasa profil ini dimuatkan</value></data>
 
@@ -3067,7 +3059,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Tambah warna untuk dilalui, satu bagi setiap kunci.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Tetap Semula Tahanan Bar Cahaya</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Penuding</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Penuding IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Halakan Wii Remote ini ke skrin dengan kamera IRnya. Memerlukan bar penderia, atau dua LED inframerah, di atas atau di bawah paparan. Tentukur sebagai pistol cahaya pada halaman Peranti untuk menuding ke tempat yang tepat. Alat kawalan jauh yang telah ditentukur mengabaikan Kedudukan Bar Penderia dan Ofset Menegak.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Penalaan Penuding</value></data>
@@ -3425,7 +3416,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Namakan tag ini</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Daftar</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Didaftarkan</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Tiada pembaca NFC dikesan. Sambungkan pembaca PC/SC dan buka semula.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Tag ditangkap. Masukkan nama dan klik Daftar. Ketik tag lain untuk menggantikannya.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>"{0}" didaftarkan. Ketik tag lain untuk menambah lagi.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Daftar / Urus Tag NFC</value></data>
@@ -3452,7 +3442,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="VrCtl_Z" xml:space="preserve"><value>Pengawal Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Kayu Bedik X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Kayu Bedik Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Pencetus</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Grip</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Klik Kayu Bedik</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Butang Utama</value></data>
@@ -3530,7 +3519,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Dayakan Butang PC Pegang Tangan</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Menambah peranti Butang Tersembunyi dan peranti Gerakan Sistem pada halaman Peranti. Apabila dimatikan, tiada apa yang berjalan.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Consumer {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Tetikus</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Gerak Isyarat Tetikus</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Tahan butang gerak isyarat, flick, dan satu tindakan dicetuskan apabila anda melepaskannya: kiri, kanan, atas, bawah, atau klik biasa di bawah jarak flick. Petakan lima gerak isyarat kepada mana-mana output atau gunakannya sebagai pencetus makro.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Dayakan Gerak Isyarat Tetikus</value></data>
@@ -3719,8 +3707,9 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam Tidak Dapat Dicapai</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Tidak dapat mencapai Steam. Semak sambungan anda. Profil yang sudah anda import terus berfungsi: ia disimpan pada PC ini.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Cuba Lagi</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Konfigurasi era 2016 ini mendahului CDN konfigurasi Steam. Langgan di Steam dan PadForge membacanya daripada folder Steam anda.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam tidak menyenaraikan fail untuk dimuat turun bagi konfigurasi ini, dan tiada salinannya dalam folder Steam anda. Langgan di Steam dan PadForge membacanya dari situ.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Buka di Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Warisan</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Pilih konfigurasi untuk melihat apa yang dibawa.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Apa yang Dibawa</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Menjadi</value></data>
@@ -3946,7 +3935,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menu tiada sel terikat</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>permukaan hos menu tidak disokong ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikon sel menu tidak dikenali ({0}), jadi sel mengekalkan label teksnya</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass Shaker</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Output</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Butang</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Kekunci &amp; Tetikus</value></data>
@@ -4416,7 +4404,6 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Pisah Mengikut Arah</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zon Mati Tengah</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Tetap Semula kepada Mati</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Tetap Semula kepada Kayu Bedik Kiri X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Tetap Semula Kekuatan (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Tetap Semula Zon Mati Tengah (2%)</value></data>
@@ -4496,7 +4483,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>Lapisan HID yang dikompil ke dalam SDL3.dll yang disertakan, oleh Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Sumber ikon</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Glif api daripada Material Design Icons (Pictogrammers, Apache-2.0), ikon gamepad generik daripada Ionicons (Ionic, MIT), joystick Extended daripada Jam Icons (Michael Amprimo, MIT), dan ikon Xbox serta PlayStation daripada SVG Repo, di bawah lesen pada halaman setiap ikon.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Glif api daripada Material Design Icons (Pictogrammers, Apache-2.0), joystick Extended daripada Jam Icons (Michael Amprimo, MIT), dan ikon Xbox serta PlayStation daripada SVG Repo, di bawah lesen pada halaman setiap ikon.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Protokol geganti di sebalik lorong sandaran Pautan Jauh, dituturkan kepada geganti awam percuma n0.computer seperti yang dilakukan FlexInput. iroh: MIT OR Apache-2.0. FlexInput: MIT. Dokumentasi sahaja, tiada kod disertakan.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

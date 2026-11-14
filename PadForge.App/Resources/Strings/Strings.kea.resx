@@ -115,7 +115,6 @@
   <!-- ═══ MainWindow ═══ -->
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Ta fitxa PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Ta inisia PadForge…</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> dispozitivu</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Djunta komandu</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Djunta un komandu</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Skodji kuzé ki jogus ta odja. Komandu ta djuntadu mésmu ora ki bu klika.</value></data>
@@ -213,7 +212,6 @@
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Gravason kanseladu.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Motor inisiadu.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motor paradu.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Sen mapiamentu</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Eru: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Ka konsigi kria {0}.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Perfil trokadu: {0}</value></data>
@@ -229,7 +227,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Ta grava...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>kantu</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>na</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}" atribuidu pa komandu virtual {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Dispozitivu tiradu.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Komandu virtual {0} apagadu.</value></data>
 
@@ -343,7 +340,6 @@
   <data name="RemoteLink_PairedPeers" xml:space="preserve"><value>PCs emparelhadu</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Revoga</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Revoga tudu</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Muda nómi</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Overlay di touchpad</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Ativa overlay di touchpad</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Opasidadi</value></data>
@@ -598,9 +594,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Mapiamentus</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Gatilhus</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Gatilhus Impulse</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Gatilhus Impulse</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ganhu pa gatilhu, troka motor, vibrason di gatilhu adaptativu, forsa konstanti na gatilhus</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gatilhu skerdu</value></data>
@@ -706,8 +700,8 @@
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Apaga predefinison?</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" apagadu.</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Importadu di {0}.</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro rijeita es perfil na {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Es perfil ka ten deskritor HID, pur isu ka ta da pa faze nenhun komandu ku el.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro rijeita es preset na {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Es preset ka ten deskritor HID, pur isu ka ta da pa faze nenhun komandu ku el.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Nada ka importadu. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importa</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(dispozitivu HID sen nómi)</value></data>
@@ -802,9 +796,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Muda pa vista 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Muda pa vista 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Klika pa testa motor skerdu</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Motor skerdu</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Klika pa testa motor dretu</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Motor dretu</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Mapia tudu</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mapia: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Grava tudu mapiamentu un pa un, na sekuénsia</value></data>
@@ -968,6 +960,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibra sentru</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Puntu sentral</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Sentru</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Velosidadi</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona morta</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Disvius di sentru, forma di zona morta i valor pa eixu, un kurva pa kada eixu, intervalu, volanti</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Intervalu na númeru, valoris brutu</value></data>
@@ -1167,7 +1160,6 @@
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Manti</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Motor skerdu</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Motor di direita</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Sigura</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Sentradu</value></data>
@@ -1269,7 +1261,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Númeru di touchpad</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Deteson di jestu</value></data>
   <data name="Pad_GestureDetection_FoldHint" xml:space="preserve"><value>Ta liga jestus di es touchpad</value></data>
@@ -1581,7 +1572,6 @@
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Muvimentu di mouse X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Muvimentu di mouse Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensibilidadi</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensibilidadi</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
 
   <!-- ═══ Device Object Names (gamepad) ═══ -->
@@ -2235,7 +2225,6 @@
   <data name="Nfc_NameLabel" xml:space="preserve"><value>Nómi</value></data>
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Nómi pa es tag</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Rejista</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Ka detekta nenhun leitor NFC. Konekta un leitor PC/SC i abri otu bes.</value></data>
   <data name="DeviceType_SystemMotion" xml:space="preserve"><value>Muvimentu di sistema</value></data>
   <data name="DeviceType_HeadTracker" xml:space="preserve"><value>Rastreador di kabesa</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>Komandu VR</value></data>
@@ -2257,7 +2246,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>Z di komandu</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Stick X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Stick Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Gatilhu</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Klik di stick</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Botãu primáriu</value></data>
   <data name="VrCtl_Secondary" xml:space="preserve"><value>Botãu sekundáriu</value></data>
@@ -2319,7 +2307,6 @@
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} sta ta roda. E inda ta reaji a es botãu ti bu para-l.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Botãu di PC portátil</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Ativa botãu di PC portátil</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Jestu di mouse</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Ativa jestu di mouse</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Botãu di jestu</value></data>
@@ -2388,6 +2375,7 @@
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Ka konsigi kontata Steam. Verifika bu konekson. Perfil ki bu dja inporta ta kontinua ta funsiona: es sta na es PC.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Torna tenta</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Abri na Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Antigu</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Guarda perfil</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Guarda i aplika</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>traduzidu</value></data>
@@ -2672,7 +2660,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Un motor pa kada direson</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zona morta sentral</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Ripoi pa dizligadu</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Ripoi pa stick skerdu X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Ripoi forsa (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Ripoi zona morta sentral (2%)</value></data>
@@ -3083,7 +3070,7 @@
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Perfil i si régra di trokason otomátiku ta tiradu. Ka ta da pa disfaze kel-li.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Perfil ta tiradu. Ka ta da pa disfaze kel-li.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Ta kumesa sen komandu. E ta karega sozinhu kantu un di si jogus sta na frenti.</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nenhun otu programa ka ten janela abertu.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ka atxa nenhun otu janela abertu.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tira {0}</value></data>
   <data name="Voice_MoreHint" xml:space="preserve"><value>Skuta ligadu o disligadu, modu, konfiansa</value></data>
   <data name="Voice_ListeningOff" xml:space="preserve"><value>Skuta sta disligadu. Liga-l na Más.</value></data>
@@ -3100,4 +3087,7 @@
   <data name="Profiles_Starters" xml:space="preserve"><value>Perfis inisial</value></data>
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Perfil prontu pa un jéneru interu. Skodji un, atribui kualker komandu i joga.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} di {1} ligadu</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>i</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>o</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>ka</value></data>
 </root>

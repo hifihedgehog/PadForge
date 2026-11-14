@@ -136,7 +136,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Закрыццё PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Запуск PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Ачыстка віртуальных кантролераў, што засталіся ад папярэдняга сеанса.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> прылад</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Дадаць кантролер</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Дадаць кантролер</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Абярыце, што павінны бачыць гульні. Кантролер дадаецца адразу пасля пстрычкі.</value></data>
@@ -280,7 +279,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Час запісу для «{0}» скончыўся.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Рухавік запушчаны.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Рухавік спынены.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Няма прызначэння</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Памылка: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Не ўдалося стварыць {0}.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Профіль зменены: {0}</value></data>
@@ -298,7 +296,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Запіс...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>калі</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>на</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>Прызначана «{0}» віртуальнаму кантролеру {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>Скасавана прызначэнне «{0}» для віртуальнага кантролера {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Прылада выдалена.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Віртуальны кантролер {0} выдалены.</value></data>
@@ -529,7 +526,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>ПК, з якімі вы спалучыліся для Аддаленай сувязі. Адклічце доступ, каб ПК больш не падключаўся. Тады яму давядзецца спалучыцца зноў.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Адклікаць</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Адклікаць усе</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Перайменаваць</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Накладка сэнсарнай панэлі</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Экранная сэнсарная паверхня для гульняў з сэнсарнай панэллю PlayStation, для сэнсарнага экрана або мышы.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Уключыць накладку сэнсарнай панэлі</value></data>
@@ -763,7 +759,6 @@
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Умовы ліцэнзіі Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Умовы SDK Corsair</value></data>
@@ -1110,9 +1105,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Прызначэнні</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Стыкі</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Куркі</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Сілавая зваротная сувязь</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Імпульсныя куркі</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Імпульсныя куркі</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Узмацненне куркоў, абмен матораў, вібрацыі адаптыўных куркоў, Пастаянная сіла куркоў</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Перадае каманды матораў асобных куркоў (Xbox Impulse Triggers) з віртуальнага кантролера на прызначаны фізічны кантролер Xbox One, Elite або Series. Вібрацыя куркоў, якой кіруе гульня, праходзіць аўтаматычна. Элементы кіравання ніжэй змяняюць сілу для кожнага курка асобна.</value></data>
@@ -1178,7 +1171,6 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Скінуць левы курок</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Скінуць правы курок</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Адаптыўныя куркі</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Адаптыўныя куркі</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Наладжвайце эфекты зваротнай сувязі куркоў на прызначаным фізічным DualSense. Эфекты куркоў ад гульні або мода гульні перадаюцца аўтаматычна. Налады тут дадаюць карыстальніцкі слой, які працуе, калі ні адзін з іх нічога не запісвае.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Стыкі</value></data>
@@ -1224,7 +1216,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Падсветка</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Падсветка</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Задайце асноўны колер светлавой панэлі і яе рэакцыю на гук на прызначаным фізічным кантролеры. Запісы гульні заўсёды маюць перавагу. Налады карыстальніка дзейнічаюць, калі гульня не кіруе светлавой панэллю.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>У рэжыме «Нумар гульца» геймпад у спакоі паказвае нумар гульца свайго віртуальнага кантролера: колер гульца Sony на светлавой панэлі (1 сіні, 2 чырвоны, 3 зялёны, 4 ружовы) і адпаведныя індыкатары гульца на DualSense. Усе прылады на адным віртуальным кантролеры паказваюць адзін і той жа нумар. Гульні пераймаюць кіраванне, калі запісваюць падсветку, усё, што вы задасце тут, заўсёды мае перавагу, а «Выключана» цалкам гасіць святло.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>У рэжыме «Нумар гульца» геймпад у спакоі паказвае нумар гульца свайго віртуальнага кантролера: колер гульца Sony на светлавой панэлі (1 сіні, 2 чырвоны, 3 зялёны, 4 ружовы) і адпаведныя індыкатары гульца на DualSense. Усе прылады на адным віртуальным кантролеры паказваюць адзін і той жа нумар. Гульня пераймае кіраванне, калі запісвае падсветку. Любы іншы рэжым, абраны тут, замяняе колер гульца, а «Выключана» цалкам гасіць святло.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Гэты віртуальны кантролер падсвечвае прыладу ў тых жа рэжымах, што і светлавая панэль DualSense, з наладамі толькі для гэтага кантролера. На віртуальным кантролеры PlayStation гульня, якая запісвае светлавую панэль, пераймае кіраванне так жа, як на DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Кіраваць падсветкай гэтай прылады</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Кіраванне падсветкай</value></data>
@@ -1446,9 +1438,9 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Куркі</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Кнопкі</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Імпартаваныя профілі…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Прэсэты кантролераў…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Пашыраны кантролер</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Кіраванне імпартаванымі карыстальнікам профілямі HIDMaestro: захапіце новы з падключанай прылады, экспартуйце існуючы ў JSON або выдаліце непатрэбны.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Кіраванне дададзенымі вамі прэсэтамі кантролераў: імпартуйце прэсэт з файла або з падключанай прылады, экспартуйце яго ў JSON або выдаліце непатрэбны.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Кланаваць прыладу 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Прызначае кожную вось, кнопку і POV выбранай прылады напрамую на віртуальны выхад з тым жа нумарам. Падганяе раскладку пад прыладу і замяняе радкі гэтай прылады ў слоце скразной перадачай 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Кланаваць прыладу 1:1</value></data>
@@ -1463,18 +1455,18 @@
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Імпарт з падключанай прылады</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Экспартаваць…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Выдаліць</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Экспарт профілю ў JSON</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Экспарт прэсэта ў JSON</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Выдаліць прэсэт?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Любы кантролер, які выкарыстоўвае {0}, вяртаецца да пункта «Карыстальніцкі». Гэта нельга адмяніць.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Экспартавана ў {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Памылка экспарту: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Выдалена «{0}».</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Імпарт з файла…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Імпарт профілю з JSON</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Імпарт прэсэта з JSON</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Імпартавана з {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Памылка чытання: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro адхіліў гэты профіль у {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>У гэтага профілю няма HID-дэскрыптара, таму кантролер на яго аснове стварыць нельга.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro адхіліў гэты прэсэт у {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>У гэтага прэсэта няма дэскрыптара HID, таму кантролер на яго аснове стварыць нельга.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Нічога не імпартавана. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Імпартаваць</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(HID-прылада без назвы)</value></data>
@@ -1585,9 +1577,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Пераключыцца на 2D-выгляд</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Пераключыцца на 3D-выгляд</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Націсніце, каб праверыць левы матор</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Левы матор</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Націсніце, каб праверыць правы матор</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Правы матор</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Прызначыць усё</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Прызначце: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Паслядоўна запісаць усе прызначэнні адно за адным</value></data>
@@ -1691,6 +1681,11 @@
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Памяняць праўду і няпраўду</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Калі, па ўзоры (умова) ? тады : інакш</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Частка «інакш» у канструкцыі калі-тады-інакш</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>і</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>ці</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>не</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>калі?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>інакш:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Модуль (адкідвае знак)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Меншае з двух значэнняў</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Большае з двух значэнняў</value></data>
@@ -1759,6 +1754,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Адкалібраваць цэнтр</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Цэнтральная кропка</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Цэнтр</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Хуткасць</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Мёртвая зона</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Зрушэнні цэнтра, форма мёртвай зоны і значэнні па восях, крывая для кожнай восі, дыяпазон, рулявое кіраванне</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Дыяпазон у лічбах, сырыя значэнні</value></data>
@@ -1982,7 +1978,6 @@
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Фіксаваны (утрыманне)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Левы матор</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Правы матор</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Утрыманне</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Затуханне</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -2091,7 +2086,6 @@
   <data name="Pad_Touchpad" xml:space="preserve"><value>Сэнсарная панэль</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Сэнсарная панэль</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Увод для кожнай сэнсарнай панэлі. Жэсты (свайпы, дотыкі, звядзенні, фігуры) і бесперапынныя рэжымы выхаду (віртуальны стык / крыжавіна, мыш) становяцца крыніцамі, якія можна прызначыць на любы выхад.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Сэнсарная панэль</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Нумар сэнсарнай панэлі</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Да якой сэнсарнай панэлі гэтага кантролера адносяцца налады ніжэй. Кожная сэнсарная панэль мае свае жэсты, паводзіны мышы і вобласць паказальніка.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Распазнаванне жэстаў</value></data>
@@ -2542,8 +2536,6 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Рух мышы Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Адчувальнасць</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Адчувальнасць ІЧ-паказальніка для крыніцы. Пры 1.0 поўнае адхіленне стыка дасягаецца на мяжы поля зроку камеры. Значэнні вышэй за 1.0 даюць поўнае адхіленне пры меншым руху прыцэла. Значэнням ніжэй за 1.0 патрэбна больш.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Адчувальнасць</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Адчувальнасць для звычайнай восі, паўзунка або стыка / курка геймпада. 1.0 пакідае ўвод без змен. Значэнні вышэй за 1.0 даюць поўнае адхіленне пры меншым ходзе. Значэнням ніжэй за 1.0 патрэбна больш.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Геймпад {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Адчувальнасць руху мышы для крыніцы. 1.0 дае поўнае адхіленне пры той жа хуткасці, што і сапраўдная мыш, значэнням вышэй за 1.0 патрэбна менш руху, а значэнням ніжэй патрэбна больш.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Баланс: агульная вага</value></data>
@@ -2680,7 +2672,7 @@
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Профіль загружаецца сам, калі наперадзе адна з яго гульняў.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Пачынаецца без кантролераў. Загружаецца сам, калі наперадзе адна з яго гульняў.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Дадаць запушчаную гульню</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ніводная іншая праграма не мае адкрытага акна.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Іншых адкрытых акон не знойдзена.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Прыбраць {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Частата апытання, пакуль гэты профіль загружаны</value></data>
 
@@ -3262,7 +3254,6 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Дадайце колеры для перабору, па адным на кожны ўпор.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Скінуць утрыманне светлавой панэлі</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Гук</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Паказальнік</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>ІЧ-паказальнік</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Цэльцеся гэтым Wii Remote у экран з дапамогай яго ІЧ-камеры. Патрэбна планка датчыкаў або два інфрачырвоныя LED над дысплэем ці пад ім. Адкалібруйце яго як светлавы пісталет на старонцы «Прылады», каб цэліцца ў дакладную кропку. Адкалібраваны пульт ігнаруе «Пазіцыю планкі датчыкаў» і «Вертыкальны зрух».</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Налада паказальніка</value></data>
@@ -3617,7 +3608,6 @@
   <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Радыёмодуль Bluetooth недаступны. Уключыце Bluetooth і паспрабуйце зноў. Спалучэнне патрэбна толькі для бесправадной гульні. Кантролер, падключаны кабелем, працуе і без яго.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Спалучэнне не завершана. Крок, на якім адбыўся збой, паказаны вышэй.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Закрыць</value></data>
-  <data name="Common_ResizePanes" xml:space="preserve"><value>Змяніць памер панэляў</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC-тэгі</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>Прыкладзіце тэг да счытвальніка і назавіце яго. Ён становіцца кнопкай, якую можна прызначыць.</value></data>
   <data name="Nfc_TapPrompt" xml:space="preserve"><value>Прыкладзіце тэг да счытвальніка.</value></data>
@@ -3625,7 +3615,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Назавіце гэты тэг</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Зарэгістраваць</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Зарэгістраваныя</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Счытвальнік NFC не выяўлены. Падключыце счытвальнік PC/SC і адкрыйце акно зноў.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Тэг счытаны. Увядзіце назву і націсніце «Зарэгістраваць». Прыкладзіце іншы тэг, каб замяніць яго.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>Зарэгістравана «{0}». Прыкладзіце іншы тэг, каб дадаць яшчэ.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Рэгістрацыя / кіраванне NFC-тэгамі</value></data>
@@ -3652,7 +3641,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>Кантролер Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Стык X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Стык Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Курок</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Ручка</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Націск стыка</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Асноўная кнопка</value></data>
@@ -3755,7 +3743,6 @@
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Уключыць кнопкі партатыўнага ПК</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Дадае прылады «Схаваныя кнопкі» і «Сістэмны рух» на старонку «Прылады». Калі выключана, нічога не працуе.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Мультымедыя {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Мыш</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Жэсты мышы</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Утрымлівайце кнопку жэстаў, зрабіце рэзкі рух, і пры адпусканні спрацуе адно дзеянне: налева, направа, уверх, уніз або звычайны клік, калі рух не дасягнуў зададзенай адлегласці. Прызначце пяць жэстаў на любыя выхады або выкарыстоўвайце іх як запускі макрасаў.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Уключыць жэсты мышы</value></data>
@@ -3944,8 +3931,9 @@
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam недаступны</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Не ўдалося злучыцца са Steam. Праверце злучэнне. Профілі, якія вы ўжо імпартавалі, працягваюць працаваць: яны захоўваюцца на гэтым ПК.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Паўтарыць</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Гэтая канфігурацыя часоў 2016 года старэйшая за CDN канфігурацый Steam. Падпішыцеся на яе ў Steam, і PadForge прачытае яе з вашай папкі Steam.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam не прапануе файла для спампоўкі гэтай канфігурацыі, і яе копіі няма ў вашай папцы Steam. Падпішыцеся на яе ў Steam, і PadForge прачытае яе адтуль.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Адкрыць у Майстэрні Steam</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Састарэлая</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Абярыце канфігурацыю, каб убачыць, што пераносіцца.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Што пераносіцца</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Становіцца</value></data>
@@ -4171,7 +4159,6 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>у меню няма прывязаных ячэек</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>паверхня-носьбіт меню не падтрымліваецца ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>значок ячэйкі меню не распазнаны ({0}), таму ячэйка пакідае тэкставы подпіс</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Басавыя шэйкеры</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Выхад</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Кнопкі</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Клавішы і мыш</value></data>
@@ -4650,7 +4637,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Матор</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Па напрамку</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Мёртвая зона цэнтра</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Скінуць на «Выкл.»</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Скінуць на «Левы стык X»</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Скінуць моц (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Скінуць мёртвую зону цэнтра (2%)</value></data>
@@ -4730,7 +4716,7 @@
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>Узровень HID, скампіляваны ў пастаўляемы SDL3.dll, аўтары Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Крыніцы значкоў</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Сімвал полымя з Material Design Icons (Pictogrammers, Apache-2.0), агульны значок геймпада з Ionicons (Ionic, MIT), джойсцік Extended з Jam Icons (Michael Amprimo, MIT) і значкі Xbox і PlayStation з SVG Repo пад ліцэнзіяй, указанай на старонцы кожнага значка.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Сімвал полымя з Material Design Icons (Pictogrammers, Apache-2.0), джойсцік Extended з Jam Icons (Michael Amprimo, MIT) і значкі Xbox і PlayStation з SVG Repo пад ліцэнзіяй, указанай на старонцы кожнага значка.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Рэтрансляцыйны пратакол рэзервовага канала «Аддаленай сувязі», на якім размаўляюць з вольнымі публічнымі рэтрансляцыямі n0.computer так, як гэта робіць FlexInput. iroh: MIT OR Apache-2.0. FlexInput: MIT. Толькі дакументацыя, код не пастаўляецца.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

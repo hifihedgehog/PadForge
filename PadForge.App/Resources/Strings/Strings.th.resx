@@ -136,7 +136,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>กำลังปิด PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>กำลังเริ่ม PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>กำลังล้างคอนโทรลเลอร์เสมือนที่ค้างจากเซสชันก่อนหน้า</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> อุปกรณ์</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>เพิ่มคอนโทรลเลอร์</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>เพิ่มคอนโทรลเลอร์</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>เลือกสิ่งที่เกมควรเห็น คอนโทรลเลอร์จะถูกเพิ่มทันทีที่คุณคลิก</value></data>
@@ -280,7 +279,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>การบันทึกสำหรับ "{0}" หมดเวลา</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>เอนจินเริ่มทำงานแล้ว</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>เอนจินหยุดแล้ว</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>ไม่มีการแมป</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>ข้อผิดพลาด: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>สร้าง {0} ไม่ได้</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>สลับโปรไฟล์แล้ว: {0}</value></data>
@@ -298,7 +296,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>กำลังบันทึก...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>เมื่อ</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>บน</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>กำหนด "{0}" ให้คอนโทรลเลอร์เสมือน {1} แล้ว</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>ยกเลิกการกำหนด "{0}" จากคอนโทรลเลอร์เสมือน {1} แล้ว</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>นำอุปกรณ์ออกแล้ว</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>ลบคอนโทรลเลอร์เสมือน {0} แล้ว</value></data>
@@ -529,7 +526,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>พีซีที่คุณจับคู่ไว้สำหรับลิงก์ระยะไกล เพิกถอนเครื่องใดเครื่องหนึ่งเพื่อไม่ให้เชื่อมต่อได้อีก เครื่องนั้นจะต้องจับคู่ใหม่</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>เพิกถอน</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>เพิกถอนทั้งหมด</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>เปลี่ยนชื่อ</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>โอเวอร์เลย์ทัชแพด</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>พื้นผิวสัมผัสบนหน้าจอสำหรับเกมทัชแพดของ PlayStation ใช้กับหน้าจอสัมผัสหรือเมาส์ได้</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>เปิดใช้งานโอเวอร์เลย์ทัชแพด</value></data>
@@ -763,7 +759,6 @@
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>ข้อกำหนดสัญญาอนุญาตของ Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>ข้อกำหนด SDK ของ Corsair</value></data>
@@ -1110,9 +1105,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>การแมป</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>สติ๊ก</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>ทริกเกอร์</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>ฟอร์ซฟีดแบ็ก</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>อิมพัลส์ทริกเกอร์</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>อิมพัลส์ทริกเกอร์</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>เกนรายทริกเกอร์ การสลับมอเตอร์ การสั่นของอะแดปทีฟทริกเกอร์ แรงทริกเกอร์คงที่</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ส่งต่อคำสั่งมอเตอร์ของแต่ละทริกเกอร์ (Xbox Impulse Triggers) จากคอนโทรลเลอร์เสมือนไปยังคอนโทรลเลอร์จริง Xbox One, Elite หรือ Series ที่กำหนดไว้ การสั่นของทริกเกอร์ที่เกมสั่งจะส่งผ่านโดยอัตโนมัติ ตัวควบคุมด้านล่างใช้ปรับขนาดความแรงของแต่ละทริกเกอร์</value></data>
@@ -1178,7 +1171,6 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>รีเซ็ตทริกเกอร์ซ้าย</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>รีเซ็ตทริกเกอร์ขวา</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>อะแดปทีฟทริกเกอร์</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>อะแดปทีฟทริกเกอร์</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>กำหนดค่าเอฟเฟกต์ตอบสนองของทริกเกอร์บน DualSense จริงที่กำหนดไว้ เอฟเฟกต์ทริกเกอร์จากเกมหรือม็อดเกมจะถูกส่งต่อโดยอัตโนมัติ การตั้งค่าที่นี่จะเพิ่มชั้นที่ผู้ใช้กำหนดเอง ซึ่งทำงานเมื่อไม่มีทั้งสองอย่างเขียนค่า</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>สติ๊ก</value></data>
@@ -1224,7 +1216,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>แสงไฟ</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>แสงไฟ</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>ตั้งสีพื้นฐานของแถบไฟและลักษณะการตอบสนองต่อเสียงบนคอนโทรลเลอร์จริงที่กำหนดไว้ ค่าที่เกมเขียนจะมีผลเหนือกว่าเสมอ การตั้งค่าของผู้ใช้จะมีผลเมื่อไม่มีเกมใดควบคุมแถบไฟ</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>เมื่อตั้งเป็น “หมายเลขผู้เล่น” เกมแพดจะแสดงตัวตนผู้เล่นของคอนโทรลเลอร์เสมือนขณะไม่ได้ใช้งาน: สีผู้เล่นของ Sony บนแถบไฟ (1 น้ำเงิน, 2 แดง, 3 เขียว, 4 ชมพู) และจุดไฟผู้เล่นที่ตรงกันบน DualSense ทุกอุปกรณ์บนคอนโทรลเลอร์เสมือนเดียวกันจะแสดงหมายเลขเดียวกัน เกมจะเข้าควบคุมทุกครั้งที่เขียนค่าแสงไฟ สิ่งที่คุณตั้งไว้ที่นี่จะมีผลเหนือกว่าเสมอ และ “ปิด” จะดับไฟสนิท</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>เมื่อตั้งเป็น “หมายเลขผู้เล่น” เกมแพดจะแสดงตัวตนผู้เล่นของคอนโทรลเลอร์เสมือนขณะไม่ได้ใช้งาน: สีผู้เล่นของ Sony บนแถบไฟ (1 น้ำเงิน, 2 แดง, 3 เขียว, 4 ชมพู) และจุดไฟผู้เล่นที่ตรงกันบน DualSense ทุกอุปกรณ์บนคอนโทรลเลอร์เสมือนเดียวกันจะแสดงหมายเลขเดียวกัน เกมจะเข้าควบคุมทุกครั้งที่เขียนค่าแสงไฟ โหมดอื่นที่ตั้งไว้ที่นี่จะแทนที่สีผู้เล่น และ “ปิด” จะดับไฟสนิท</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>คอนโทรลเลอร์เสมือนนี้ให้แสงไฟแก่อุปกรณ์ด้วยโหมดเดียวกับที่แถบไฟของ DualSense มี โดยตั้งค่าที่นี่สำหรับคอนโทรลเลอร์นี้เท่านั้น บนคอนโทรลเลอร์เสมือนแบบ PlayStation เกมที่เขียนค่าแถบไฟจะเข้าควบคุมแบบเดียวกับที่ทำบน DualSense</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>ควบคุมแสงไฟของอุปกรณ์นี้</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>การควบคุมแสงไฟ</value></data>
@@ -1446,9 +1438,9 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ทริกเกอร์</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>ปุ่ม</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>โปรไฟล์ที่นำเข้า…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>พรีเซ็ตคอนโทรลเลอร์…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>คอนโทรลเลอร์แบบขยาย</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>จัดการโปรไฟล์ HIDMaestro ที่ผู้ใช้นำเข้า: จับโปรไฟล์ใหม่จากอุปกรณ์ที่เชื่อมต่ออยู่ ส่งออกโปรไฟล์ที่มีอยู่เป็น JSON หรือลบโปรไฟล์ที่ไม่ต้องการแล้ว</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>จัดการพรีเซ็ตคอนโทรลเลอร์ที่คุณเพิ่มไว้: นำเข้าพรีเซ็ตจากไฟล์หรืออุปกรณ์ที่เชื่อมต่ออยู่ ส่งออกพรีเซ็ตเป็น JSON หรือลบพรีเซ็ตที่ไม่ต้องการแล้ว</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>โคลนอุปกรณ์แบบ 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>แมปทุกแกน ปุ่ม และแฮตบนอุปกรณ์ที่เลือกตรงไปยังเอาต์พุตเสมือนหมายเลขเดียวกัน ปรับขนาดเลย์เอาต์ให้พอดีกับอุปกรณ์ และแทนที่แถวของอุปกรณ์นี้ในช่องด้วยการส่งผ่านแบบ 1:1</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>โคลนอุปกรณ์แบบ 1:1</value></data>
@@ -1463,18 +1455,18 @@
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>นำเข้าจากอุปกรณ์ที่เชื่อมต่ออยู่</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>ส่งออก…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>ลบ</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>ส่งออก JSON ของโปรไฟล์</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>ส่งออก JSON ของพรีเซ็ต</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>ลบพรีเซ็ตหรือไม่</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>คอนโทรลเลอร์ที่ใช้ {0} จะกลับไปใช้รายการ “กำหนดเอง” ไม่สามารถยกเลิกได้</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>ส่งออกไปยัง {0} แล้ว</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>ส่งออกไม่สำเร็จ: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>ลบ "{0}" แล้ว</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>นำเข้าไฟล์…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>นำเข้า JSON ของโปรไฟล์</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>นำเข้า JSON ของพรีเซ็ต</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>นำเข้าจาก {0} แล้ว</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>อ่านไม่สำเร็จ: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ปฏิเสธโปรไฟล์นี้ที่ {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>โปรไฟล์นี้ไม่มีดิสคริปเตอร์ HID จึงสร้างคอนโทรลเลอร์จากโปรไฟล์นี้ไม่ได้</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ปฏิเสธพรีเซ็ตนี้ที่ {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>พรีเซ็ตนี้ไม่มีดิสคริปเตอร์ HID จึงสร้างคอนโทรลเลอร์จากพรีเซ็ตนี้ไม่ได้</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>ไม่ได้นำเข้าอะไรเลย {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>นำเข้า</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(อุปกรณ์ HID ไม่มีชื่อ)</value></data>
@@ -1585,9 +1577,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>สลับเป็นมุมมอง 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>สลับเป็นมุมมอง 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>คลิกเพื่อทดสอบมอเตอร์ซ้าย</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>มอเตอร์ซ้าย</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>คลิกเพื่อทดสอบมอเตอร์ขวา</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>มอเตอร์ขวา</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>แมปทั้งหมด</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>แมป: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>บันทึกการแมปทั้งหมดตามลำดับทีละรายการ</value></data>
@@ -1691,6 +1681,11 @@
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>สลับจริง/เท็จ</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>ถ้า โดยใช้รูปแบบ (เงื่อนไข) ? ค่าเมื่อจริง : ค่าเมื่อเท็จ</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>ส่วน “มิฉะนั้น” ของ ถ้า-แล้ว-มิฉะนั้น</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>และ</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>หรือ</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>ไม่</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>ถ้า?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>มิฉะนั้น:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>ขนาด (ตัดเครื่องหมายทิ้ง)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>ค่าที่น้อยกว่าของสองค่า</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>ค่าที่มากกว่าของสองค่า</value></data>
@@ -1759,6 +1754,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>ปรับเทียบจุดกึ่งกลาง</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>จุดกึ่งกลาง</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>กึ่งกลาง</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>ความเร็ว</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>เดดโซน</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>ค่าชดเชยจุดกึ่งกลาง รูปทรงและค่าเดดโซนรายแกน เส้นโค้งของแต่ละแกน ช่วง การบังคับเลี้ยว</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>ช่วงเป็นตัวเลข, ค่าดิบ</value></data>
@@ -1982,7 +1978,6 @@
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>ค้าง (คงไว้)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>มอเตอร์ซ้าย</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>มอเตอร์ขวา</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>เวลาคงค่า</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>เฟด</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -2091,7 +2086,6 @@
   <data name="Pad_Touchpad" xml:space="preserve"><value>ทัชแพด</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>ทัชแพด</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>อินพุตของแต่ละทัชแพด ท่าทางสัมผัส (ปัด แตะ บีบ รูปร่าง) และโหมดเอาต์พุตต่อเนื่อง (สติ๊กเสมือน / ปุ่มทิศทาง, เมาส์) จะกลายเป็นแหล่งที่มาของการแมปที่คุณผูกกับเอาต์พุตใดก็ได้</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>ทัชแพด</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>หมายเลขทัชแพด</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>ทัชแพดบนคอนโทรลเลอร์นี้ที่การตั้งค่าด้านล่างมีผล แต่ละทัชแพดมีท่าทางสัมผัส ความรู้สึกของเมาส์ และพื้นที่ตัวชี้ของตัวเอง</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>การตรวจจับท่าทางสัมผัส</value></data>
@@ -2542,8 +2536,6 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>การเคลื่อนที่ของเมาส์ Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>ความไว</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>ความไวตัวชี้ IR รายแหล่งที่มา 1.0 จะถึงระยะโยกเต็มของสติ๊กที่ขอบมุมมองของกล้อง ค่าที่สูงกว่า 1.0 จะถึงระยะโยกเต็มด้วยระยะเล็งที่น้อยลง ค่าที่ต่ำกว่า 1.0 ต้องใช้ระยะมากขึ้น</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>ความไว</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>ความไวรายแหล่งที่มาสำหรับแกนธรรมดา สไลเดอร์ หรือสติ๊ก / ทริกเกอร์ของเกมแพด 1.0 จะคงอินพุตไว้ตามเดิม ค่าที่สูงกว่า 1.0 จะถึงระยะโยกเต็มด้วยระยะที่น้อยลง ค่าที่ต่ำกว่า 1.0 ต้องใช้ระยะมากขึ้น</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>เกมแพด {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>ความไวของการเคลื่อนที่ของเมาส์รายแหล่งที่มา 1.0 จะถึงระยะโยกเต็มที่ความเร็วเดียวกับเมาส์จริง ค่าที่สูงกว่า 1.0 ใช้การเคลื่อนที่น้อยลง ค่าที่ต่ำกว่าใช้มากขึ้น</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>น้ำหนักรวมบนบาลานซ์บอร์ด</value></data>
@@ -2680,7 +2672,7 @@
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>โปรไฟล์จะโหลดเองเมื่อเกมของโปรไฟล์อยู่ด้านหน้า</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>เริ่มโดยไม่มีคอนโทรลเลอร์ โปรไฟล์จะโหลดเองเมื่อเกมของโปรไฟล์อยู่ด้านหน้า</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>เพิ่มเกมที่กำลังทำงาน</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>ไม่มีโปรแกรมอื่นที่เปิดหน้าต่างอยู่</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>ไม่พบหน้าต่างอื่นที่เปิดอยู่</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>นำ {0} ออก</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>อัตราการโพลขณะโหลดโปรไฟล์นี้</value></data>
 
@@ -3262,7 +3254,6 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>เพิ่มสีที่จะไล่ไปทีละสี หนึ่งสีต่อการเลี้ยวสุดหนึ่งครั้ง</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>รีเซ็ตการคงค่าแถบไฟ</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>เสียง</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>ตัวชี้</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>ตัวชี้ IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>เล็ง Wii Remote นี้ไปที่หน้าจอด้วยกล้อง IR ของรีโมต ต้องมีเซนเซอร์บาร์หรือ LED อินฟราเรดสองดวงอยู่เหนือหรือใต้จอแสดงผล ปรับเทียบเป็นปืนแสงในหน้าอุปกรณ์เพื่อเล็งให้ตรงจุด รีโมตที่ปรับเทียบแล้วจะไม่ใช้ค่าตำแหน่งเซนเซอร์บาร์และค่าชดเชยแนวตั้ง</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>การปรับแต่งตัวชี้</value></data>
@@ -3617,7 +3608,6 @@
   <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>ไม่มีวิทยุ Bluetooth ที่ใช้ได้ เปิด Bluetooth แล้วลองอีกครั้ง การจับคู่จำเป็นสำหรับการเล่นแบบไร้สายเท่านั้น คอนโทรลเลอร์ที่ต่อสายใช้งานได้โดยไม่ต้องจับคู่</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>การจับคู่ไม่เสร็จสมบูรณ์ ขั้นตอนที่ล้มเหลวแสดงอยู่ด้านบน</value></data>
   <data name="Common_Close" xml:space="preserve"><value>ปิด</value></data>
-  <data name="Common_ResizePanes" xml:space="preserve"><value>ปรับขนาดบานหน้าต่าง</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>แท็ก NFC</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>แตะแท็กที่เครื่องอ่านแล้วตั้งชื่อ แท็กจะกลายเป็นปุ่มที่คุณแมปได้</value></data>
   <data name="Nfc_TapPrompt" xml:space="preserve"><value>แตะแท็กที่เครื่องอ่าน</value></data>
@@ -3625,7 +3615,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>ตั้งชื่อแท็กนี้</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>ลงทะเบียน</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>ลงทะเบียนแล้ว</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>ไม่พบเครื่องอ่าน NFC เชื่อมต่อเครื่องอ่าน PC/SC แล้วเปิดใหม่</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>บันทึกแท็กแล้ว ป้อนชื่อแล้วคลิก “ลงทะเบียน” แตะแท็กอื่นเพื่อแทนที่</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>ลงทะเบียน "{0}" แล้ว แตะแท็กอื่นเพื่อเพิ่มอีก</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>ลงทะเบียน / จัดการแท็ก NFC</value></data>
@@ -3652,7 +3641,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>คอนโทรลเลอร์ Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>สติ๊ก X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>สติ๊ก Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>ทริกเกอร์</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>ด้ามจับ</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>คลิกสติ๊ก</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>ปุ่มหลัก</value></data>
@@ -3755,7 +3743,6 @@
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>เปิดใช้ปุ่มของพีซีพกพา</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>เพิ่มอุปกรณ์ “ปุ่มที่ซ่อนอยู่” และอุปกรณ์ “การเคลื่อนไหวของระบบ” ลงในหน้าอุปกรณ์ เมื่อปิด จะไม่มีอะไรทำงาน</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>ตัวควบคุมสื่อ {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>เมาส์</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>ท่าทางเมาส์</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>กดปุ่มท่าทางค้างไว้ สะบัดเมาส์ แล้วแอ็กชันหนึ่งรายการจะทำงานเมื่อคุณปล่อย: ซ้าย ขวา ขึ้น ลง หรือคลิกธรรมดาเมื่อระยะไม่ถึงระยะสะบัด แมปท่าทางทั้งห้าไปยังเอาต์พุตใดก็ได้ หรือใช้เป็นตัวเรียกใช้แมโคร</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>เปิดใช้ท่าทางเมาส์</value></data>
@@ -3944,8 +3931,9 @@
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>ติดต่อ Steam ไม่ได้</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>ติดต่อ Steam ไม่ได้ ตรวจสอบการเชื่อมต่อของคุณ โปรไฟล์ที่คุณนำเข้าไว้แล้วยังใช้งานได้ เพราะเก็บอยู่บนพีซีเครื่องนี้</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>ลองใหม่</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>คอนฟิกยุคปี 2016 นี้มีมาก่อน CDN คอนฟิกของ Steam สมัครรับคอนฟิกนี้ใน Steam แล้ว PadForge จะอ่านจากโฟลเดอร์ Steam ของคุณ</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam ไม่มีไฟล์ให้ดาวน์โหลดสำหรับคอนฟิกนี้ และไม่มีสำเนาของคอนฟิกนี้ในโฟลเดอร์ Steam ของคุณ สมัครรับคอนฟิกนี้ใน Steam แล้ว PadForge จะอ่านจากที่นั่น</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>เปิดในเวิร์กชอปของ Steam</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>รุ่นเก่า</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>เลือกคอนฟิกเพื่อดูสิ่งที่แปลงมา</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>สิ่งที่แปลงมา</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>กลายเป็น</value></data>
@@ -4171,7 +4159,6 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>เมนูไม่มีเซลล์ที่ผูกไว้</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>ไม่รองรับพื้นผิวที่ใช้เปิดเมนู ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ไม่รู้จักไอคอนของเซลล์เมนู ({0}) เซลล์จึงใช้ป้ายข้อความตามเดิม</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>เบสเชกเกอร์</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>เอาต์พุต</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>ปุ่ม</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>คีย์และเมาส์</value></data>
@@ -4650,7 +4637,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>มอเตอร์</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>แยกตามทิศทาง</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>เดดโซนกึ่งกลาง</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>รีเซ็ตเป็นปิด</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>รีเซ็ตเป็นสติ๊กซ้าย X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>รีเซ็ตความแรง (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>รีเซ็ตเดดโซนกึ่งกลาง (2%)</value></data>
@@ -4730,7 +4716,7 @@
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>เลเยอร์ HID ที่คอมไพล์อยู่ใน SDL3.dll ที่รวมมาให้ โดย Alan Ott, Signal 11 Software</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>แหล่งที่มาของไอคอน</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>สัญลักษณ์เปลวไฟจาก Material Design Icons (Pictogrammers, Apache-2.0) ไอคอนเกมแพดทั่วไปจาก Ionicons (Ionic, MIT) จอยสติ๊กของประเภท “แบบขยาย” จาก Jam Icons (Michael Amprimo, MIT) และไอคอน Xbox กับ PlayStation จาก SVG Repo ภายใต้สัญญาอนุญาตที่ระบุในหน้าของแต่ละไอคอน</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>สัญลักษณ์เปลวไฟจาก Material Design Icons (Pictogrammers, Apache-2.0) จอยสติ๊กของประเภท “แบบขยาย” จาก Jam Icons (Michael Amprimo, MIT) และไอคอน Xbox กับ PlayStation จาก SVG Repo ภายใต้สัญญาอนุญาตที่ระบุในหน้าของแต่ละไอคอน</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>โปรโตคอลรีเลย์ที่อยู่เบื้องหลังเส้นทางสำรองของลิงก์ระยะไกล ซึ่งสื่อสารกับรีเลย์สาธารณะฟรีของ n0.computer แบบเดียวกับที่ FlexInput ทำ iroh: MIT OR Apache-2.0 FlexInput: MIT ใช้เป็นเอกสารอ้างอิงเท่านั้น ไม่มีโค้ดรวมอยู่ในโปรแกรม</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

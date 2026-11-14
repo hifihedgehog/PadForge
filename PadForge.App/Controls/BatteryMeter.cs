@@ -12,8 +12,9 @@ namespace PadForge.Controls
     ///
     /// <para>It draws itself, so it has the same crisp edge at every size
     /// and needs no icon font: a run of text in an icon font drew two boxes
-    /// while it was empty (seen 2026-11-13). It is 26 by 12 unless a size
-    /// is set, and it keeps those proportions. With no battery to show
+    /// while it was empty (seen 2026-11-13). It is 26 by 12 unless a Height
+    /// is set, and its width follows the height in those proportions: a
+    /// Width alone does not size it. With no battery to show
     /// (<see cref="Percent"/> under zero) it draws nothing and takes no
     /// room.</para>
     ///

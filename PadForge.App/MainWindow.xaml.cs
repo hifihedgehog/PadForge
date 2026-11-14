@@ -485,10 +485,6 @@ namespace PadForge
                 return false;
             };
 
-            // Wire engine start/stop commands.
-            _viewModel.StartEngineRequested += (s, e) => _inputService.Start();
-            _viewModel.StopEngineRequested += (s, e) => _inputService.Stop();
-
             // Wire settings commands.
             _viewModel.Settings.SaveRequested += (s, e) =>
             {
@@ -630,6 +626,11 @@ namespace PadForge
                      or nameof(SettingsViewModel.ShowLegacyWorkshopConfigs)
                      or nameof(SettingsViewModel.EnableExternalControl))
                     _settingsService.MarkDirty();
+                // The Home cards and the Devices page's panel show a
+                // controller as its page does, so a switch between the 3D
+                // view and the 2D one gives them the other picture now.
+                if (e.PropertyName == nameof(SettingsViewModel.Use2DControllerView))
+                    _inputService?.RefreshPictures();
             };
 
             // Persist DSU / head tracking / Remote Link / web controller /
@@ -911,13 +912,6 @@ namespace PadForge
                     _inputService.OnSlotInactivityTimedOut(padIndex);
                 }));
             };
-
-            // After a profile apply, replicate the user's manual fix
-            // (click the controller card on the sidebar) by running the
-            // same codified gesture they perform: SelectNavItemByTag
-            // flips IsActive on every NavigationViewItem before calling
-            // NavigateToTag. Deferred to Background so the sidebar
-            // rebuild settles first.
 
             // Wire devices page refresh.
             _viewModel.Devices.RefreshRequested += (s, e) =>
@@ -3275,8 +3269,7 @@ namespace PadForge
             // fixed per-frame pipeline cost (about 18% of a core at 60fps,
             // measured in isolation 2026-07-16) even when the app is
             // buried behind a game. Foreground state flips the probe, and
-            // the marquees and the XAML animations that wait on it follow
-            // through their own bindings.
+            // the marquees and the halos' breath, which listen to it, follow.
             Activated += (_, _) => SetAmbientMotion(true);
             Deactivated += (_, _) => SetAmbientMotion(false);
             // Both signals, because either one alone is a lie. StateChanged
@@ -3562,8 +3555,7 @@ namespace PadForge
 
         /// <summary>The word Controllers over the sidebar's slot entries
         /// (#574). A text, not an entry: it takes no click and no selection,
-        /// and it is a heading to a screen reader. It hides while the pane
-        /// is closed, where there is no room for a word.</summary>
+        /// and it is a heading to a screen reader.</summary>
         private System.Windows.Controls.TextBlock _navControllersLabel;
 
         /// <summary>Index in NavView.MenuItems where the first controller entry goes (after Home, Devices, Profiles, Extras and the Controllers label).</summary>
@@ -3727,16 +3719,16 @@ namespace PadForge
         }
 
         /// <summary>
-        /// Rebuilds only the controller section of the sidebar (between the two separators).
-        /// Preserves Home, Devices, Profiles, Extras, the Controllers label and the footer items.
+        /// Rebuilds only the controller section of the sidebar: the entries
+        /// after the Controllers label (ControllerInsertIndex). Home, Devices,
+        /// Profiles, Extras, the label and the footer items stay.
         ///
         /// Uses a re-entrancy guard because <see cref="RefreshNavControllerItems"/> fires
         /// CollectionChanged once for Clear() and once per Add(), each of which would
         /// re-trigger this method. The guard ensures only one rebuild occurs.
         ///
-        /// Saves and restores the NavView selection tag so that removing/re-adding
-        /// Devices or Profiles (which are rebuilt each time) doesn't break the
-        /// current navigation state.
+        /// Saves and restores the NavView selection tag, so the controller
+        /// entries taken out and added again leave the open page selected.
         /// </summary>
         private void RebuildControllerSection()
         {
@@ -4131,23 +4123,34 @@ namespace PadForge
             // type's own logo or MDL2 glyph at 13px. While the controller
             // runs the chip is ember with dark ink. Otherwise it is steel
             // with the text's color (#574).
-            var chipInk = (System.Windows.Media.Brush)FindResource(lit ? "EmberInkBrush" : "TextFillColorPrimaryBrush");
-            UIElement TypeLogo(string data) => new System.Windows.Shapes.Path
+            // A reference, never the brush of the moment: a theme switch
+            // puts new brushes under these names and rebuilds no pill, so an
+            // icon that held the old brush kept the old theme's color.
+            string chipInk = lit ? "EmberInkBrush" : "TextFillColorPrimaryBrush";
+            UIElement TypeLogo(string data)
             {
-                FlowDirection = FlowDirection.LeftToRight,
-                Data = System.Windows.Media.Geometry.Parse(data),
-                Width = 13,
-                Height = 13,
-                Stretch = System.Windows.Media.Stretch.Uniform,
-                Fill = chipInk
-            };
-            UIElement TypeGlyph(string glyph) => new PadForge.Controls.GlyphText
+                var logo = new System.Windows.Shapes.Path
+                {
+                    FlowDirection = FlowDirection.LeftToRight,
+                    Data = System.Windows.Media.Geometry.Parse(data),
+                    Width = 13,
+                    Height = 13,
+                    Stretch = System.Windows.Media.Stretch.Uniform,
+                };
+                logo.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, chipInk);
+                return logo;
+            }
+            UIElement TypeGlyph(string glyph)
             {
-                Text = glyph,
-                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
-                FontSize = 13,
-                Foreground = chipInk
-            };
+                var text = new PadForge.Controls.GlyphText
+                {
+                    Text = glyph,
+                    FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                    FontSize = 13,
+                };
+                text.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, chipInk);
+                return text;
+            }
             UIElement typeIcon = isPlayStation ? TypeLogo(DS4SvgPath)
                 : isNintendo ? TypeLogo(SwitchSvgPath)
                 : isExtended ? TypeLogo(ExtendedSvgPath)
@@ -4171,9 +4174,8 @@ namespace PadForge
                 Padding = new Thickness(3),
                 MinWidth = 0,
                 MinHeight = 0,
-                // 5px after the number's box, as the power button's 3px
-                // padding and the number's 2px margin come before it, so the
-                // number sits evenly between the flame and the chip.
+                // 5px after the number's box, which stands 2px after the
+                // power button's 28 by 28 box.
                 Margin = new Thickness(5, 0, 0, 0),
                 VerticalAlignment = VerticalAlignment.Center,
                 ToolTip = typeName,
@@ -4275,19 +4277,26 @@ namespace PadForge
             // The X over the row's end. Its host paints the pill's own
             // ground behind it, so the name's last letters do not show
             // through, and it follows the card's hover state (stable across
-            // the card's child panels) and the button's keyboard focus.
+            // the card's child panels) and the button's keyboard focus. The
+            // ground is two deep: the pane's color, and over it the wash a
+            // forging pill wears at rest. Hidden, the X takes no press.
             var surface = new System.Windows.Controls.Grid();
             surface.Children.Add(row);
             if (_pendingSidebarDeleteBtn is Wpf.Ui.Controls.Button cardDeleteBtn)
             {
                 _pendingSidebarDeleteBtn = null;
+                var deleteWash = new System.Windows.Controls.Border
+                {
+                    Padding = new Thickness(6, 0, 0, 0),
+                    Child = cardDeleteBtn,
+                };
                 var deleteHost = new System.Windows.Controls.Border
                 {
                     HorizontalAlignment = HorizontalAlignment.Right,
                     VerticalAlignment = VerticalAlignment.Stretch,
-                    Padding = new Thickness(6, 0, 0, 0),
-                    Child = cardDeleteBtn,
+                    Child = deleteWash,
                     Opacity = 0,
+                    IsHitTestVisible = false,
                 };
                 void Show(bool shown)
                 {
@@ -4295,9 +4304,19 @@ namespace PadForge
                         picked ? "EmberPickBrush"
                         : card.IsMouseOver ? "SteelPaneHoverBrush"
                         : "SteelPaneBrush");
+                    if (lit && !picked && !card.IsMouseOver)
+                        deleteWash.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "EmberWashBrush");
+                    else
+                        deleteWash.Background = null;
                     deleteHost.Opacity = shown ? 1.0 : 0;
+                    deleteHost.IsHitTestVisible = shown;
                 }
-                card.MouseEnter += (s, e) => Show(true);
+                // A pointer shows the X by coming over the pill. A finger's
+                // tap enters and presses in one gesture, so an X it revealed
+                // would take that same tap and delete the controller, which
+                // asks nothing first. A touch shows the X when its tap ends.
+                card.MouseEnter += (s, e) => { if (e.StylusDevice == null) Show(true); };
+                card.PreviewMouseLeftButtonUp += (s, e) => { if (e.StylusDevice != null) Show(true); };
                 card.MouseLeave += (s, e) => Show(cardDeleteBtn.IsKeyboardFocused);
                 cardDeleteBtn.GotKeyboardFocus += (s, e) => Show(true);
                 cardDeleteBtn.LostKeyboardFocus += (s, e) => Show(card.IsMouseOver);
@@ -5100,9 +5119,11 @@ namespace PadForge
             _cardDragSource = null;
 
             // Replay a rebuild that was requested while the drag was in
-            // progress. Deliberately last: the reorder work above calls
-            // RebuildControllerSection itself, and replaying earlier would
-            // rebuild against a half-applied reorder.
+            // progress. The reorder above is queued (BeginInvoke), so this
+            // rebuild runs first, on the order as it was, and the reorder's
+            // own refresh (RefreshAfterSlotReorder, through
+            // RefreshNavControllerItems) rebuilds the sidebar again once it
+            // has run.
             if (_rebuildPendingAfterDrag)
             {
                 _rebuildPendingAfterDrag = false;
@@ -5579,7 +5600,7 @@ namespace PadForge
 
             var shadowBorder = new System.Windows.Controls.Border
             {
-                CornerRadius = new CornerRadius(6),
+                CornerRadius = new CornerRadius(10),
                 Effect = new System.Windows.Media.Effects.DropShadowEffect
                 {
                     BlurRadius = 8,
@@ -5591,12 +5612,17 @@ namespace PadForge
 
             var border = new System.Windows.Controls.Border
             {
-                CornerRadius = new CornerRadius(6),
+                CornerRadius = new CornerRadius(10),
                 Padding = new Thickness(6),
                 // 1px stroke (#175): flyouts carry the same edge as cards.
                 BorderThickness = new Thickness(1)
             };
-            border.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "ControlStrokeColorDefaultBrush");
+            // The type bar's own surface, edge and corner, each by reference,
+            // so the two flyouts of the shell match and both follow a theme
+            // switch while open.
+            shadowBorder.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "SteelRaisedBrush");
+            border.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "SteelRaisedBrush");
+            border.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "SteelPillLineBrush");
             container.Children.Add(border);
 
             // Dismiss on any click outside the popup content.
@@ -5620,28 +5646,6 @@ namespace PadForge
             PreviewMouseDown += dismissHandler;
             popup.Closed += (s, e) => PreviewMouseDown -= dismissHandler;
 
-            // Theme-aware popup background.
-            void ApplyPopupTheme()
-            {
-                bool dark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme()
-                    == Wpf.Ui.Appearance.ApplicationTheme.Dark;
-                // Raised steel (#175): the flyout sits one step above the card fill.
-                var color = dark ? System.Windows.Media.Color.FromRgb(0x1B, 0x23, 0x33)
-                                 : System.Windows.Media.Color.FromRgb(0xF3, 0xF3, 0xF3);
-                var brush = new System.Windows.Media.SolidColorBrush(color);
-                shadowBorder.Background = brush;
-                border.Background = brush;
-            }
-            ApplyPopupTheme();
-
-            // Live-update if theme changes while popup is open.
-            void OnThemeChangedWhileOpen(Wpf.Ui.Appearance.ApplicationTheme currentTheme, System.Windows.Media.Color _)
-                => Dispatcher.BeginInvoke(ApplyPopupTheme);
-            Wpf.Ui.Appearance.ApplicationThemeManager.Changed += OnThemeChangedWhileOpen;
-            popup.Closed += (s, e) =>
-            {
-                Wpf.Ui.Appearance.ApplicationThemeManager.Changed -= OnThemeChangedWhileOpen;
-            };
 
             var stack = new System.Windows.Controls.StackPanel();
 
@@ -6007,8 +6011,11 @@ namespace PadForge
                 var type = _viewModel.Pads[i].OutputType;
                 counts[type] = counts.TryGetValue(type, out int n) ? n + 1 : 1;
             }
+            // MIDI's tile gives the Settings card's reason (S1-5): the
+            // service, a driver, or the runtime's uninstaller.
             return AddControllerViewModel.Build(choices, t => counts.TryGetValue(t, out int c) ? c : 0, total,
-                _viewModel.Settings.IsMidiAvailable, PadForge.Common.Input.HMaestroVRController.IsAvailable());
+                _viewModel.Settings.IsMidiAvailable, PadForge.Common.Input.HMaestroVRController.IsAvailable(),
+                _viewModel.Settings.IsMidiAvailable ? null : _viewModel.Settings.MidiServicesDetailText);
         }
 
         /// <summary>Takes the pages out of the Tab order while a dialog stands
@@ -6140,13 +6147,13 @@ namespace PadForge
         private void NavView_ItemInvoked(NavigationView sender,
             RoutedEventArgs args)
         {
-            // The AddController check that used to sit here is gone. It cast
-            // args.OriginalSource straight to NavigationViewItem, and for
-            // ItemInvoked that source is the inner content element, never the
-            // item itself, so the branch could not fire. The click is handled
-            // by the PreviewMouseLeftButtonDown handler in the constructor,
-            // which walks UP the visual tree to find the item and is why the
-            // feature works at all.
+            // Add a Controller and every page open through ActivateNavItem,
+            // which a click (the constructor's PreviewMouseLeftButtonUp
+            // handler walks up the tree to the item), a key press and UI
+            // Automation's Invoke all reach. A check here once cast
+            // args.OriginalSource to NavigationViewItem, and for ItemInvoked
+            // that source is the inner content element, never the item, so it
+            // could not fire.
 
             // Fallback navigation: if SelectionChanged didn't fire, handle it here.
             if (sender.SelectedItem is NavigationViewItem selected)
@@ -6167,7 +6174,7 @@ namespace PadForge
         }
 
         /// <summary>Announces the message line's text, a polite live region.
-        /// The bar shows messages, which can repeat, so each one is announced
+        /// The line shows messages, which can repeat, so each one is announced
         /// as it is set, on the conditions every live line shares
         /// (LiveText.Announce).</summary>
         private void AnnounceStatus() => PadForge.Common.LiveText.Announce(StatusMessageText);
@@ -7157,7 +7164,7 @@ namespace PadForge
 
             // A user pressing Load is a manual switch, so it records the
             // override and releases any external hold, the same as the
-            // status-bar switcher and a controller shortcut. Called BEFORE
+            // title bar's switcher and a controller shortcut. Called BEFORE
             // the switch: the override id is the pre-switch active id.
             _inputService.NoteManualProfileSwitch();
             _inputService.LoadProfile(selected.Id);
@@ -8798,7 +8805,6 @@ namespace PadForge
             _viewModel.Dashboard.EngineStateKey = "Stopping";
             _viewModel.Dashboard.EngineStatus = Strings.Instance.Common_Stopping;
             _viewModel.SetStatus(Strings.Instance.Status_StoppingEngine, persist: true);
-            _viewModel.RefreshCommands();
         }
 
         /// <summary>

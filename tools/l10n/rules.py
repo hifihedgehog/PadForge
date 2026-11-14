@@ -40,7 +40,7 @@ LEGAL_CHIPS = ("About_License_Mit", "About_License_Apache2", "About_License_Bsd3
                "About_License_Zlib", "About_License_Gpl2", "About_License_Gpl2OrLater", "About_License_Gpl3",
                "About_License_Gpl3OrLater", "About_License_Agpl3", "About_License_Lgpl21OrLater", "About_License_Lgpl3",
                "About_License_Lgpl3OrLater", "About_License_CcByNcSa4", "About_License_CcBy3", "About_License_CgTrader",
-               "About_License_BouncyCastle", "About_License_WyvrnEula")
+               "About_License_WyvrnEula")
 PURE_LICENSE = re.compile(r"^(?:[A-Z0-9][\w.+/-]*|and)(?: (?:[A-Z0-9][\w.+/-]*|and))*$")
 
 
@@ -198,6 +198,10 @@ def check(english, translated, script):
         agree("Devices_DriverConfirm_TouchSenseMouse", "must end with the closing sentence of Devices_DriverConfirm_Prodikeys")
     if shown("ControllerType_KeyboardMouse") not in confirm:
         agree("Devices_DriverConfirm_TouchSenseMouse", "must name the type with the exact text of ControllerType_KeyboardMouse")
+    # The button that opens Controller Presets reads the dialog's title, as the English does.
+    if "Pad_ExtendedImportFromDevice" in translated and \
+            shown("Pad_ExtendedImportFromDevice") != shown("ManageProfiles_Title") + "\u2026":
+        agree("Pad_ExtendedImportFromDevice", "must be the exact text of ManageProfiles_Title followed by \u2026")
     if shown("Pad_Kbm_Surfaces_Both_Name") != shown("ControllerType_KeyboardMouse"):
         agree("Pad_Kbm_Surfaces_Both_Name", "must be the exact text of ControllerType_KeyboardMouse")
     for key in ("Settings_GKeysStatus_NoKeysYet", "Settings_GKeysTooltip"):

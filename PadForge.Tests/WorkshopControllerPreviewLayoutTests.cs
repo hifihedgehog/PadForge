@@ -148,8 +148,6 @@ namespace PadForge.Tests
             Assert.Equal(OverlayElementType.StickClick, by["RightThumbButton"].ElementType);
         }
 
-        /// <summary>Valve tags must reach Valve bodies. Before this, every
-        /// one of them fell through to the Xbox One S shape.</summary>
         /// <summary>The Deck's four rear paddles have no front-facing
         /// position, so they are drawn on the Compact overlay's dedicated
         /// labeled tiles. The plain VSCView overlay parks them OFF canvas
@@ -213,6 +211,8 @@ namespace PadForge.Tests
             Assert.Equal("D-Pad Up", w["LeftTouchpadClick"]);
         }
 
+        /// <summary>Valve tags must reach Valve bodies. Before this, every
+        /// one of them fell through to the Xbox One S shape.</summary>
         [Theory]
         [InlineData("controller_neptune", "STEAMDECK")]
         [InlineData("controller_steamcontroller_gordon", "STEAMCONTROLLER")]

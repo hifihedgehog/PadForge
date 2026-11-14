@@ -304,8 +304,8 @@
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Mabhatani</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Dzima</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" yadzimwa.</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro yaramba purofaira iyi panzvimbo {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Purofaira iyi haina HID descriptor, saka hapana kontiroura inogona kugadzirwa kubva mairi.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro yaramba gadziriro iyi panzvimbo {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Gadziriro iyi haina HID descriptor, saka hapana kontiroura inogona kugadzirwa kubva mairi.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Hapana chakapinzwa. {0}</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(mudziyo we-HID usina zita)</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
@@ -315,9 +315,7 @@
   <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Dzorera sensitivity</value></data>
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Dzorera deadzone</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Dzvanya kuti uedze mota yekuruboshwe</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Mota yekuruboshwe</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Dzvanya kuti uedze mota yekurudyi</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Mota yekurudyi</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Dzorera zvese</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Dzima zvese</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Sarudzo</value></data>
@@ -394,7 +392,6 @@
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Bata</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Mota yekuruboshwe</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Mota yekurudyi</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Bata</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Pakati</value></data>
@@ -470,7 +467,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Nhamba yetouchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Batidza gesture patouchpad iyi</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Zvese zviri zviviri</value></data>
@@ -578,7 +574,6 @@
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Kufamba kwembeva X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Kufamba kwembeva Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
 
   <!-- ═══ Device Object Names (gamepad) ═══ -->
   <data name="DevObj_LeftStickX" xml:space="preserve"><value>Stick yekuruboshwe X</value></data>
@@ -964,7 +959,6 @@
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>Hapana mabhatani akadzidzwa parizvino.</value></data>
   <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Zvakadzidzwa pa{0}</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Makiyi: {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Mbeva</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Kuruboshwe</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Kurudyi</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Kumusoro</value></data>
@@ -1427,7 +1421,7 @@
   <data name="Search_NoResults_Format" xml:space="preserve"><value>Hapana chiri mu-PadForge chinoenderana na“{0}”.</value></data>
   <data name="Search_Docs_Format" xml:space="preserve"><value>Tsvaga mumagwaro e“{0}”</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Inotanga isina kontiroura. Inozvivhura yega kana mumwe wemitambo yayo uri pamberi.</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Hapana imwe purogiramu ine hwindo rakavhurika.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Hapana rimwe hwindo rakavhurika rawanikwa.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Bvisa {0}</value></data>
   <data name="Voice_Subtitle" xml:space="preserve"><value>Taura mutsara uye unodzvanya bhatani raunogona kuisa. Maikorofoni ese anosvikwa ne-PadForge anoteerera.</value></data>
   <data name="Voice_MoreHint" xml:space="preserve"><value>Kuteerera kwakabatidzwa kana kwakadzimwa, modhi, chivimbo</value></data>

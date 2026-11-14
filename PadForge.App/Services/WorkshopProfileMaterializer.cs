@@ -95,7 +95,7 @@ namespace PadForge.Services
             }
             // The gyro engage stamp (v18, Steam gyro_button) rides EVERY
             // claimed slot: split configs host gyro mouse rows on the KbM
-            // slot and gyro stick rows on the Xbox slot, and the engage
+            // slot and gyro stick rows on the gamepad slot, and the engage
             // gate is per slot.
             if (!string.IsNullOrEmpty(translated.GyroEngageDescriptor))
             {
@@ -166,9 +166,9 @@ namespace PadForge.Services
 
             // Steam's Show Keyboard (#566) becomes a keyboard menu, opened by
             // the binding's input on the binding's layer. It goes on one slot,
-            // the Xbox slot when there is one: a menu on each slot of a split
-            // config would answer one press twice, each taking the keyboard
-            // from the other.
+            // the gamepad slot (Xbox or PlayStation) when there is one: a menu
+            // on each slot of a split config would answer one press twice,
+            // each taking the keyboard from the other.
             int keyboardSlot = gamepadSlot >= 0 ? gamepadSlot : kbmSlot;
             var macroSource = translated.Macros;
             if (macroSource != null && keyboardSlot >= 0)

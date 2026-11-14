@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge അടയ്ക്കുന്നു...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge ആരംഭിക്കുന്നു…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>മുൻ സെഷനിൽ ബാക്കിയായ വെർച്വൽ കൺട്രോളറുകൾ വൃത്തിയാക്കുന്നു.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> ഉപകരണങ്ങൾ</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>കൺട്രോളർ ചേർക്കുക</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>ഒരു കൺട്രോളർ ചേർക്കുക</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>ഗെയിമുകൾ എന്ത് കാണണമെന്ന് തിരഞ്ഞെടുക്കുക. നിങ്ങൾ ക്ലിക്ക് ചെയ്യുന്ന ഉടൻ കൺട്രോളർ ചേർക്കപ്പെടും.</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>“{0}”-നുള്ള റെക്കോർഡിംഗിന്റെ സമയം കഴിഞ്ഞു.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>എഞ്ചിൻ ആരംഭിച്ചു.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>എഞ്ചിൻ നിർത്തി.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>മാപ്പിംഗ് ഇല്ല</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>പിശക്: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} സൃഷ്ടിക്കാനായില്ല.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>പ്രൊഫൈൽ മാറ്റി: {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>റെക്കോർഡ് ചെയ്യുന്നു...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>എപ്പോൾ</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>ഇതിൽ</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>“{0}” വെർച്വൽ കൺട്രോളർ {1}-ലേക്ക് നിയോഗിച്ചു.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>“{0}” വെർച്വൽ കൺട്രോളർ {1}-ൽ നിന്ന് നീക്കി.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>ഉപകരണം നീക്കം ചെയ്തു.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>വെർച്വൽ കൺട്രോളർ {0} ഇല്ലാതാക്കി.</value></data>
@@ -516,7 +513,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>റിമോട്ട് ലിങ്കിനായി നിങ്ങൾ ജോടിയാക്കിയ PC-കൾ. കണക്റ്റ് ചെയ്യുന്നത് തടയാൻ ഒന്ന് പിൻവലിക്കുക. അതിന് വീണ്ടും ജോടിയാക്കേണ്ടി വരും.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>പിൻവലിക്കുക</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>എല്ലാം പിൻവലിക്കുക</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>പേര് മാറ്റുക</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>ടച്ച്പാഡ് ഓവർലേ</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>സ്ക്രീനിലെ ഒരു ടച്ച് പ്രതലം, PlayStation ടച്ച്പാഡ് ഗെയിമുകൾക്ക്, ടച്ച് സ്ക്രീനിനോ മൗസിനോ വേണ്ടി.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>ടച്ച്പാഡ് ഓവർലേ പ്രവർത്തനക്ഷമമാക്കുക</value></data>
@@ -750,7 +746,6 @@
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio ലൈസൻസ് നിബന്ധനകൾ</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK നിബന്ധനകൾ</value></data>
@@ -1029,9 +1024,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>മാപ്പിംഗുകൾ</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>സ്റ്റിക്കുകൾ</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>ട്രിഗറുകൾ</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>ഫോഴ്സ് ഫീഡ്ബാക്ക്</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>ഇംപൾസ് ട്രിഗറുകൾ</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ഇംപൾസ് ട്രിഗറുകൾ</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ഓരോ ട്രിഗറിന്റെയും ഗെയിൻ, മോട്ടോർ മാറ്റം, അഡാപ്റ്റീവ് ട്രിഗർ വൈബ്രേഷനുകൾ, സ്ഥിരമായ ട്രിഗർ ഫോഴ്സ്</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ഓരോ ട്രിഗറിനുമുള്ള മോട്ടോർ കമാൻഡുകൾ (Xbox ഇംപൾസ് ട്രിഗറുകൾ) വെർച്വൽ കൺട്രോളറിൽ നിന്ന് നൽകിയിട്ടുള്ള ഫിസിക്കൽ Xbox One, Elite, അല്ലെങ്കിൽ Series കൺട്രോളറിലേക്ക് കൈമാറുന്നു. ഗെയിം നിയന്ത്രിക്കുന്ന ട്രിഗർ റംബിൾ സ്വയമേവ കടന്നുപോകുന്നു. താഴെയുള്ള നിയന്ത്രണങ്ങൾ ഓരോ ട്രിഗറിന്റെയും തീവ്രത ക്രമീകരിക്കുന്നു.</value></data>
@@ -1097,7 +1090,6 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>ഇടത് ട്രിഗർ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>വലത് ട്രിഗർ പുനഃസജ്ജമാക്കുക</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>അഡാപ്റ്റീവ് ട്രിഗറുകൾ</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>അഡാപ്റ്റീവ് ട്രിഗറുകൾ</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>നൽകിയിട്ടുള്ള ഫിസിക്കൽ DualSense-ൽ ട്രിഗർ ഫീഡ്ബാക്ക് ഇഫക്റ്റുകൾ ക്രമീകരിക്കുക. ഒരു ഗെയിമിൽ നിന്നോ ഗെയിം മോഡിൽ നിന്നോ ഉള്ള ട്രിഗർ ഇഫക്റ്റുകൾ സ്വയമേവ കൈമാറും. രണ്ടും എഴുതാത്തപ്പോൾ പ്രവർത്തിക്കുന്ന, ഉപയോക്താവ് ക്രമീകരിച്ച ഒരു ലെയർ ഇവിടത്തെ ക്രമീകരണങ്ങൾ ചേർക്കുന്നു.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>സ്റ്റിക്കുകൾ</value></data>
@@ -1142,7 +1134,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>ലൈറ്റിംഗ്</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>ലൈറ്റിംഗ്</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>നൽകിയിട്ടുള്ള ഫിസിക്കൽ കൺട്രോളറിൽ ലൈറ്റ്ബാറിന്റെ അടിസ്ഥാന നിറവും ഓഡിയോ പെരുമാറ്റവും സജ്ജമാക്കുക. ഗെയിം എഴുതുന്നത് എപ്പോഴും മുൻഗണന നേടും. ഒരു ഗെയിമും ലൈറ്റ്ബാർ നിയന്ത്രിക്കാത്തപ്പോൾ ഉപയോക്തൃ ക്രമീകരണങ്ങൾ ബാധകമാകും.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>"പ്ലെയർ നമ്പർ" എന്ന് സജ്ജമാക്കിയിരിക്കുമ്പോൾ, പാഡ് നിഷ്ക്രിയമായിരിക്കെ അതിന്റെ വെർച്വൽ കൺട്രോളറിന്റെ പ്ലെയർ ഐഡന്റിറ്റി കാണിക്കുന്നു: ലൈറ്റ്ബാറിൽ Sony പ്ലെയർ നിറവും (1 നീല, 2 ചുവപ്പ്, 3 പച്ച, 4 പിങ്ക്) DualSense-ൽ അതിനനുസരിച്ചുള്ള പ്ലെയർ പിപ്പുകളും. ഒരേ വെർച്വൽ കൺട്രോളറിലെ എല്ലാ ഉപകരണങ്ങളും ഒരേ നമ്പർ കാണിക്കുന്നു. ഗെയിമുകൾ ലൈറ്റിംഗ് എഴുതുമ്പോഴെല്ലാം ഏറ്റെടുക്കും, ഇവിടെ സജ്ജമാക്കുന്നതെല്ലാം എപ്പോഴും മുൻഗണന നേടും, ഓഫ് ലൈറ്റിനെ പൂർണ്ണമായി ഇരുട്ടാക്കുന്നു.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>"പ്ലെയർ നമ്പർ" എന്ന് സജ്ജമാക്കിയിരിക്കുമ്പോൾ, പാഡ് നിഷ്ക്രിയമായിരിക്കെ അതിന്റെ വെർച്വൽ കൺട്രോളറിന്റെ പ്ലെയർ ഐഡന്റിറ്റി കാണിക്കുന്നു: ലൈറ്റ്ബാറിൽ Sony പ്ലെയർ നിറവും (1 നീല, 2 ചുവപ്പ്, 3 പച്ച, 4 പിങ്ക്) DualSense-ൽ അതിനനുസരിച്ചുള്ള പ്ലെയർ പിപ്പുകളും. ഒരേ വെർച്വൽ കൺട്രോളറിലെ എല്ലാ ഉപകരണങ്ങളും ഒരേ നമ്പർ കാണിക്കുന്നു. ഒരു ഗെയിം ലൈറ്റിംഗ് എഴുതുമ്പോഴെല്ലാം അത് ഏറ്റെടുക്കും. ഇവിടെ സജ്ജമാക്കുന്ന മറ്റേതൊരു മോഡും പ്ലെയർ നിറത്തിന് പകരമാകും, ഓഫ് ലൈറ്റിനെ പൂർണ്ണമായി ഇരുട്ടാക്കുന്നു.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>ഈ വെർച്വൽ കൺട്രോളർ DualSense ലൈറ്റ്ബാറിനുള്ള അതേ മോഡുകൾ ഉപയോഗിച്ച് ഉപകരണം പ്രകാശിപ്പിക്കുന്നു, ഈ കൺട്രോളറിന് മാത്രമായി ഇവിടെ സജ്ജമാക്കുന്നു. PlayStation വെർച്വൽ കൺട്രോളറിൽ, ലൈറ്റ്ബാർ എഴുതുന്ന ഗെയിം DualSense-ലെ പോലെ നിയന്ത്രണം ഏറ്റെടുക്കും.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>ഈ ഉപകരണത്തിന്റെ ലൈറ്റിംഗ് നിയന്ത്രിക്കുക</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>ഓഫ് ആക്കിയാൽ ഈ വെർച്വൽ കൺട്രോളർ ഉപകരണത്തെ പ്രകാശിപ്പിക്കില്ല. ഒരു വെണ്ടർ വരിക്കോ, അതേ സോഫ്റ്റ്വെയർ വഴി പ്രകാശിപ്പിക്കുന്ന ഇതേ തരത്തിലുള്ള മറ്റൊരു ഉപകരണത്തിനോ ഇപ്പോഴും അതിന്റെ നിറം സജ്ജമാക്കാം. ഈ വെർച്വൽ കൺട്രോളറിലെ Set Chroma Color മാക്രോ ഇപ്പോഴും Razer ഉപകരണത്തിന് നിറം നൽകും.</value></data>
@@ -1257,9 +1249,9 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ട്രിഗറുകൾ</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-കൾ</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>ബട്ടണുകൾ</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>ഇറക്കുമതി ചെയ്ത പ്രൊഫൈലുകൾ…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>കൺട്രോളർ പ്രീസെറ്റുകൾ…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>വിപുലീകൃത കൺട്രോളർ</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>ഉപയോക്താവ് ഇറക്കുമതി ചെയ്ത HIDMaestro പ്രൊഫൈലുകൾ നിയന്ത്രിക്കുക: കണക്റ്റ് ചെയ്ത ഉപകരണത്തിൽ നിന്ന് പുതിയത് ക്യാപ്ചർ ചെയ്യുക, നിലവിലുള്ളത് JSON-ലേക്ക് എക്സ്പോർട്ട് ചെയ്യുക, അല്ലെങ്കിൽ ആവശ്യമില്ലാത്തത് ഇല്ലാതാക്കുക.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>നിങ്ങൾ ചേർത്ത കൺട്രോളർ പ്രീസെറ്റുകൾ നിയന്ത്രിക്കുക: ഒരു ഫയലിൽ നിന്നോ കണക്റ്റ് ചെയ്ത ഉപകരണത്തിൽ നിന്നോ ഒന്ന് ഇമ്പോർട്ട് ചെയ്യുക, ഒന്ന് JSON-ലേക്ക് എക്സ്പോർട്ട് ചെയ്യുക, അല്ലെങ്കിൽ ആവശ്യമില്ലാത്തത് ഇല്ലാതാക്കുക.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>ഉപകരണം 1:1 ക്ലോൺ ചെയ്യുക</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>തിരഞ്ഞെടുത്ത ഉപകരണത്തിലെ എല്ലാ ആക്സിസും ബട്ടണും ഹാറ്റും അതേ നമ്പറുള്ള വെർച്വൽ ഔട്ട്പുട്ടിലേക്ക് നേരിട്ട് മാപ്പ് ചെയ്യുന്നു. ലേഔട്ട് ഉപകരണത്തിനൊത്ത് വലുപ്പിക്കുകയും സ്ലോട്ടിലെ ഈ ഉപകരണത്തിന്റെ വരികളെ 1:1 പാസ്ത്രൂ ഉപയോഗിച്ച് മാറ്റിസ്ഥാപിക്കുകയും ചെയ്യുന്നു.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>ഉപകരണം 1:1 ക്ലോൺ ചെയ്യുക</value></data>
@@ -1274,18 +1266,18 @@
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>കണക്റ്റ് ചെയ്ത ഉപകരണത്തിൽ നിന്ന് ഇമ്പോർട്ട് ചെയ്യുക</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>എക്സ്പോർട്ട്…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>ഇല്ലാതാക്കുക</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>പ്രൊഫൈൽ JSON എക്സ്പോർട്ട് ചെയ്യുക</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>പ്രീസെറ്റ് JSON എക്സ്പോർട്ട് ചെയ്യുക</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>പ്രീസെറ്റ് ഇല്ലാതാക്കണോ?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>{0} ഉപയോഗിക്കുന്ന ഏത് കൺട്രോളറും Custom എൻട്രിയിലേക്ക് മടങ്ങും. ഇത് പഴയപടിയാക്കാൻ കഴിയില്ല.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>{0}-ലേക്ക് എക്സ്പോർട്ട് ചെയ്തു</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>എക്സ്പോർട്ട് പരാജയപ്പെട്ടു: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" ഇല്ലാതാക്കി.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>ഫയലിൽ നിന്ന് ഇമ്പോർട്ട് ചെയ്യുക…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>പ്രൊഫൈൽ JSON ഇറക്കുമതി ചെയ്യുക</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>പ്രീസെറ്റ് JSON ഇമ്പോർട്ട് ചെയ്യുക</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>{0}-ൽ നിന്ന് ഇറക്കുമതി ചെയ്തു.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>വായിക്കാനായില്ല: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ഈ പ്രൊഫൈൽ നിരസിച്ചു, സ്ഥാനം {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ഈ പ്രൊഫൈലിൽ HID ഡിസ്ക്രിപ്റ്റർ ഇല്ല, അതിനാൽ ഇതിൽ നിന്ന് കൺട്രോളർ ഉണ്ടാക്കാനാകില്ല.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ഈ പ്രീസെറ്റ് നിരസിച്ചു, സ്ഥാനം {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ഈ പ്രീസെറ്റിൽ HID ഡിസ്ക്രിപ്റ്റർ ഇല്ല, അതിനാൽ ഇതിൽ നിന്ന് കൺട്രോളർ ഉണ്ടാക്കാനാകില്ല.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>ഒന്നും ഇറക്കുമതി ചെയ്തില്ല. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>ഇറക്കുമതി ചെയ്യുക</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(പേരില്ലാത്ത HID ഉപകരണം)</value></data>
@@ -1396,9 +1388,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>2D കാഴ്ചയിലേക്ക് മാറുക</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>3D കാഴ്ചയിലേക്ക് മാറുക</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>ഇടത് മോട്ടോർ പരീക്ഷിക്കാൻ ക്ലിക്ക് ചെയ്യുക</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>ഇടത് മോട്ടോർ</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>വലത് മോട്ടോർ പരീക്ഷിക്കാൻ ക്ലിക്ക് ചെയ്യുക</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>വലത് മോട്ടോർ</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>എല്ലാം മാപ്പ് ചെയ്യുക</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>മാപ്പ്: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>എല്ലാ മാപ്പിംഗുകളും ഓരോന്നായി ക്രമത്തിൽ റെക്കോർഡ് ചെയ്യുക</value></data>
@@ -1502,6 +1492,11 @@
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>ശരി/തെറ്റ് മറിക്കുക</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>If, രൂപം (വ്യവസ്ഥ) ? എങ്കിൽ : അല്ലെങ്കിൽ</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>if-then-else-ന്റെ else ഭാഗം</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>ഒപ്പം</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>അഥവാ</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>അല്ല</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>എങ്കിൽ?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>അല്ലെങ്കിൽ:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>അളവ് (ചിഹ്നം ഒഴിവാക്കുന്നു)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>രണ്ട് മൂല്യങ്ങളിൽ ചെറുത്</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>രണ്ട് മൂല്യങ്ങളിൽ വലുത്</value></data>
@@ -1569,6 +1564,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>മധ്യം കാലിബ്രേറ്റ് ചെയ്യുക</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>മധ്യബിന്ദു</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>മധ്യം</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>വേഗത</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>ഡെഡ് സോൺ</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>മധ്യ ഓഫ്സെറ്റുകൾ, ഡെഡ് സോൺ ആകൃതിയും ഓരോ ആക്സിസിന്റെ മൂല്യങ്ങളും, ഓരോ ആക്സിസിനും ഒരു കർവ്, പരിധി, സ്റ്റിയറിംഗ്</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>അക്കങ്ങളിൽ പരിധി, റോ മൂല്യങ്ങൾ</value></data>
@@ -1792,7 +1788,6 @@
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>സ്റ്റിക്കി (നിലനിർത്തൽ)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>ഇടത് മോട്ടോർ</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>വലത് മോട്ടോർ</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>അമർത്തിപ്പിടിക്കുക</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>മങ്ങൽ</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1901,7 +1896,6 @@
   <data name="Pad_Touchpad" xml:space="preserve"><value>ടച്ച്പാഡ്</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>ടച്ച്പാഡ്</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>ഓരോ ടച്ച്പാഡിനുമുള്ള ഇൻപുട്ട്. ജെസ്ചറുകളും (സ്വൈപ്പ്, ടാപ്പ്, പിഞ്ച്, ആകൃതികൾ) തുടർച്ചയായ ഔട്ട്പുട്ട് മോഡുകളും (വെർച്വൽ സ്റ്റിക്ക് / ഡി-പാഡ്, മൗസ്) ഏത് ഔട്ട്പുട്ടിലേക്കും ബന്ധിപ്പിക്കാവുന്ന മാപ്പിംഗ് ഉറവിടങ്ങളാകുന്നു.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>ടച്ച്പാഡ്</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>ടച്ച്പാഡ് നമ്പർ</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>ഈ കൺട്രോളറിലെ ഏത് ടച്ച്പാഡിനാണ് താഴെയുള്ള ക്രമീകരണങ്ങൾ ബാധകമാകുന്നത് എന്ന് തിരഞ്ഞെടുക്കുന്നു. ഓരോ ടച്ച്പാഡിനും സ്വന്തം ജെസ്ചറുകളും മൗസ് അനുഭവവും പോയിന്റർ മേഖലയും ഉണ്ട്.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>ജെസ്ചർ തിരിച്ചറിയൽ</value></data>
@@ -2352,8 +2346,6 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>മൗസ് ചലനം Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>സെൻസിറ്റിവിറ്റി</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>ഓരോ ഉറവിടത്തിനുമുള്ള IR പോയിന്റർ സെൻസിറ്റിവിറ്റി. 1.0 ആയാൽ, ക്യാമറയുടെ കാഴ്ചാമണ്ഡലത്തിന്റെ അരികിൽ സ്റ്റിക്ക് പൂർണ്ണ വ്യതിയാനത്തിലെത്തും. 1.0-ൽ കൂടുതൽ മൂല്യങ്ങളിൽ ലക്ഷ്യം കുറച്ച് നീങ്ങിയാൽ മതി. 1.0-ൽ കുറഞ്ഞ മൂല്യങ്ങളിൽ കൂടുതൽ നീങ്ങണം.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>സെൻസിറ്റിവിറ്റി</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>സാധാരണ ആക്സിസ്, സ്ലൈഡർ, അല്ലെങ്കിൽ ഗെയിംപാഡ് സ്റ്റിക്ക് / ട്രിഗർ എന്നിവയ്ക്ക് ഓരോ ഉറവിടത്തിനുമുള്ള സെൻസിറ്റിവിറ്റി. 1.0 ഇൻപുട്ടിനെ മാറ്റമില്ലാതെ വിടുന്നു. 1.0-ൽ കൂടുതൽ മൂല്യങ്ങളിൽ കുറച്ച് നീങ്ങിയാൽ പൂർണ്ണ വ്യതിയാനത്തിലെത്തും. 1.0-ൽ കുറഞ്ഞ മൂല്യങ്ങളിൽ കൂടുതൽ നീങ്ങണം.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>ഗെയിംപാഡ് {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>ഓരോ ഉറവിടത്തിനുമുള്ള മൗസ് ചലനത്തിന്റെ സെൻസിറ്റിവിറ്റി. 1.0 ആയാൽ ഒരു യഥാർത്ഥ മൗസിന്റെ അതേ വേഗതയിൽ പൂർണ്ണ വ്യതിയാനത്തിലെത്തും. 1.0-ൽ കൂടിയ മൂല്യങ്ങൾക്ക് കുറഞ്ഞ ചലനം മതി, കുറഞ്ഞ മൂല്യങ്ങൾക്ക് കൂടുതൽ വേണം.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>ബാലൻസ് ആകെ ഭാരം</value></data>
@@ -2484,7 +2476,7 @@
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>ഒരു പ്രൊഫൈലിന്റെ ഒരു ഗെയിം മുന്നിലെത്തുമ്പോൾ അത് സ്വയം ലോഡ് ആകും.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>കൺട്രോളറുകളില്ലാതെ തുടങ്ങുന്നു. അതിന്റെ ഒരു ഗെയിം മുന്നിലെത്തുമ്പോൾ സ്വയം ലോഡ് ആകും.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>പ്രവർത്തിക്കുന്ന ഗെയിം ചേർക്കുക</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>മറ്റൊരു പ്രോഗ്രാമിനും വിൻഡോ തുറന്നിട്ടില്ല.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>മറ്റൊരു തുറന്ന വിൻഡോയും കണ്ടെത്തിയില്ല.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} നീക്കം ചെയ്യുക</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>ഈ പ്രൊഫൈൽ ലോഡ് ആയിരിക്കുമ്പോഴുള്ള പോളിംഗ് റേറ്റ്</value></data>
 
@@ -3036,7 +3028,6 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>ഓരോ ലോക്കിനും ഒന്ന് എന്ന കണക്കിൽ മാറിമാറി വരാൻ നിറങ്ങൾ ചേർക്കുക.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>ലൈറ്റ്ബാർ ഹോൾഡ് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>ഓഡിയോ</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>പോയിന്റർ</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR പോയിന്റർ</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>ഈ Wii Remote-നെ അതിന്റെ IR ക്യാമറ ഉപയോഗിച്ച് സ്ക്രീനിലേക്ക് ലക്ഷ്യമാക്കുക. ഡിസ്പ്ലേയ്ക്ക് മുകളിലോ താഴെയോ ഒരു സെൻസർ ബാറോ രണ്ട് ഇൻഫ്രാറെഡ് LED-കളോ വേണം. കൃത്യമായ സ്ഥാനത്തേക്ക് ലക്ഷ്യമിടാൻ ഡിവൈസസ് പേജിൽ ഇതിനെ ലൈറ്റ് ഗൺ ആയി കാലിബ്രേറ്റ് ചെയ്യുക. കാലിബ്രേറ്റ് ചെയ്ത റിമോട്ട് സെൻസർ ബാർ സ്ഥാനവും ലംബ ഓഫ്സെറ്റും അവഗണിക്കും.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>പോയിന്റർ ട്യൂണിംഗ്</value></data>
@@ -3394,7 +3385,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>ഈ ടാഗിന് പേര് നൽകുക</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>രജിസ്റ്റർ ചെയ്യുക</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>രജിസ്റ്റർ ചെയ്തവ</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>NFC റീഡർ കണ്ടെത്തിയില്ല. ഒരു PC/SC റീഡർ ബന്ധിപ്പിച്ച് വീണ്ടും തുറക്കുക.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>ടാഗ് ലഭിച്ചു. ഒരു പേര് നൽകി രജിസ്റ്റർ ക്ലിക്ക് ചെയ്യുക. മാറ്റാൻ മറ്റൊരു ടാഗ് ടാപ്പ് ചെയ്യുക.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>"{0}" രജിസ്റ്റർ ചെയ്തു. കൂടുതൽ ചേർക്കാൻ മറ്റൊരു ടാഗ് ടാപ്പ് ചെയ്യുക.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC ടാഗുകൾ രജിസ്റ്റർ ചെയ്യുക / നിയന്ത്രിക്കുക</value></data>
@@ -3421,7 +3411,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>കൺട്രോളർ Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>തംബ്സ്റ്റിക്ക് X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>തംബ്സ്റ്റിക്ക് Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>ട്രിഗർ</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>ഗ്രിപ്പ്</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>തംബ്സ്റ്റിക്ക് ക്ലിക്ക്</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>പ്രാഥമിക ബട്ടൺ</value></data>
@@ -3499,7 +3488,6 @@
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>ഹാൻഡ്ഹെൽഡ് PC ബട്ടണുകൾ പ്രവർത്തനക്ഷമമാക്കുക</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>ഉപകരണങ്ങൾ പേജിലേക്ക് ഒരു മറഞ്ഞിരിക്കുന്ന ബട്ടണുകൾ ഉപകരണവും ഒരു സിസ്റ്റം മോഷൻ ഉപകരണവും ചേർക്കുന്നു. ഓഫാണെങ്കിൽ ഒന്നും പ്രവർത്തിക്കില്ല.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>കൺസ്യൂമർ {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>മൗസ്</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>മൗസ് ജെസ്ചറുകൾ</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>ജെസ്ചർ ബട്ടൺ അമർത്തിപ്പിടിച്ച് ഫ്ലിക്ക് ചെയ്യുക, വിടുമ്പോൾ ഒരു പ്രവർത്തനം നടക്കും: ഇടത്, വലത്, മുകളിൽ, താഴെ, അല്ലെങ്കിൽ ഫ്ലിക്ക് ദൂരത്തിൽ താഴെയാണെങ്കിൽ ഒരു സാധാരണ ക്ലിക്ക്. അഞ്ച് ജെസ്ചറുകളും ഏത് ഔട്ട്പുട്ടിലേക്കും മാപ്പ് ചെയ്യുക അല്ലെങ്കിൽ മാക്രോ ട്രിഗറുകളായി ഉപയോഗിക്കുക.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>മൗസ് ജെസ്ചറുകൾ പ്രവർത്തനക്ഷമമാക്കുക</value></data>
@@ -3688,8 +3676,9 @@
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam ലഭ്യമല്ല</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Steam-നെ ബന്ധപ്പെടാൻ കഴിഞ്ഞില്ല. നിങ്ങളുടെ കണക്ഷൻ പരിശോധിക്കുക. നിങ്ങൾ ഇതിനകം ഇമ്പോർട്ട് ചെയ്ത പ്രൊഫൈലുകൾ പ്രവർത്തിക്കുന്നത് തുടരും: അവ ഈ PC-യിലാണ്.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>വീണ്ടും ശ്രമിക്കുക</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>2016 കാലത്തെ ഈ കോൺഫിഗ് Steam-ന്റെ കോൺഫിഗ് CDN-ന് മുമ്പുള്ളതാണ്. Steam-ൽ ഇത് സബ്സ്ക്രൈബ് ചെയ്യുക, PadForge അത് നിങ്ങളുടെ Steam ഫോൾഡറിൽ നിന്ന് വായിക്കും.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>ഈ കോൺഫിഗിന് ഡൗൺലോഡ് ചെയ്യാൻ Steam ഫയലൊന്നും നൽകുന്നില്ല, നിങ്ങളുടെ Steam ഫോൾഡറിലും അതിന്റെ പകർപ്പില്ല. Steam-ൽ ഇത് സബ്സ്ക്രൈബ് ചെയ്യുക, PadForge അത് അവിടെ നിന്ന് വായിക്കും.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam Workshop-ൽ തുറക്കുക</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>പഴയത്</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>എന്തെല്ലാം വരുന്നു എന്ന് കാണാൻ ഒരു കോൺഫിഗ് തിരഞ്ഞെടുക്കുക.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>എന്തെല്ലാം വരുന്നു</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>ആകുന്നത്</value></data>
@@ -3915,7 +3904,6 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>മെനുവിൽ ബൈൻഡ് ചെയ്ത സെല്ലുകളില്ല</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>മെനു ഹോസ്റ്റ് പ്രതലം പിന്തുണയ്ക്കുന്നില്ല ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>മെനു സെൽ ഐക്കൺ തിരിച്ചറിഞ്ഞില്ല ({0}), അതിനാൽ സെൽ അതിന്റെ വാചക ലേബൽ നിലനിർത്തുന്നു</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>ബാസ് ഷേക്കറുകൾ</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>ഔട്ട്പുട്ട്</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>ബട്ടണുകൾ</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>കീകൾ &amp; മൗസ്</value></data>
@@ -4385,7 +4373,6 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>മോട്ടോർ</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>ദിശ അനുസരിച്ച് വിഭജിക്കുക</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>മധ്യ ഡെഡ് സോൺ</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>ഓഫ് എന്നതിലേക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>ഇടത് സ്റ്റിക്ക് X എന്നതിലേക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>ശക്തി പുനഃസജ്ജമാക്കുക (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>മധ്യ ഡെഡ് സോൺ പുനഃസജ്ജമാക്കുക (2%)</value></data>
@@ -4465,7 +4452,7 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>Alan Ott, Signal 11 Software എന്നിവരുടെ, ഉൾപ്പെടുത്തിയ SDL3.dll-ൽ കംപൈൽ ചെയ്തിരിക്കുന്ന HID ലെയർ.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>ഐക്കൺ ഉറവിടങ്ങൾ</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Material Design Icons-ൽ നിന്നുള്ള ജ്വാല ഗ്ലിഫ് (Pictogrammers, Apache-2.0), Ionicons-ൽ നിന്നുള്ള സാധാരണ ഗെയിംപാഡ് ഐക്കൺ (Ionic, MIT), Jam Icons-ൽ നിന്നുള്ള Extended ജോയ്സ്റ്റിക്ക് (Michael Amprimo, MIT), SVG Repo-യിൽ നിന്നുള്ള Xbox, PlayStation ഐക്കണുകൾ, ഓരോ ഐക്കണിന്റെയും പേജിലെ ലൈസൻസ് പ്രകാരം.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Material Design Icons-ൽ നിന്നുള്ള ജ്വാല ഗ്ലിഫ് (Pictogrammers, Apache-2.0), Jam Icons-ൽ നിന്നുള്ള Extended ജോയ്സ്റ്റിക്ക് (Michael Amprimo, MIT), SVG Repo-യിൽ നിന്നുള്ള Xbox, PlayStation ഐക്കണുകൾ, ഓരോ ഐക്കണിന്റെയും പേജിലെ ലൈസൻസ് പ്രകാരം.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>റിമോട്ട് ലിങ്കിന്റെ ഫാൾബാക്ക് ലെയ്നിന് പിന്നിലെ റിലേ പ്രോട്ടോക്കോൾ, FlexInput ചെയ്യുന്ന രീതിയിൽ n0.computer-ന്റെ സൗജന്യ പൊതു റിലേകളോട് സംസാരിക്കുന്നു. iroh: MIT OR Apache-2.0. FlexInput: MIT. ഡോക്യുമെന്റേഷൻ മാത്രം, കോഡ് ഉൾപ്പെടുന്നില്ല.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

@@ -105,10 +105,6 @@ namespace PadForge.Views
             _ = PairWii();
         }
 
-        /// <summary>
-        /// DualShock 3: run the USB pairing ceremony (sixpair + registry identity +
-        /// radio cycle) on a background thread, streaming each step to the status line.
-        /// </summary>
         /// <summary>While a search or a ceremony runs, the foot shows Cancel
         /// alone, as the board draws it, and Cancel takes the focus Pair
         /// held. Pair is back, with the focus, when the work ends with
@@ -121,6 +117,10 @@ namespace PadForge.Views
             else PairButton.Focus();
         }
 
+        /// <summary>
+        /// DualShock 3: run the USB pairing ceremony (sixpair + registry identity +
+        /// radio cycle) on a background thread, streaming each step to the status line.
+        /// </summary>
         private async Task PairDs3(bool moveFamily = false)
         {
             _scanning = true;

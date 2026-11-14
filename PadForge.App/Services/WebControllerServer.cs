@@ -854,7 +854,8 @@ namespace PadForge.Services
                     return;
                 }
 
-                // Serve 2D model PNGs from image cache (/img/2DModels/...).
+                // Serve the 2D model PNGs (/img/2DModels/...) and the app's
+                // mark (HomeMarkPath) from the image cache.
                 if (path.StartsWith("/img/") && _imageCache != null)
                 {
                     var imgPath = path.Substring(5); // strip "/img/"

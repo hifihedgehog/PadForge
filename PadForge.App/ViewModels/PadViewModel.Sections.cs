@@ -171,6 +171,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(ShowOutputGroup));
             OnPropertyChanged(nameof(ShowMidiCard));
             OnPropertyChanged(nameof(ShowExtendedCard));
+            OnPropertyChanged(nameof(ShowVrFoot));
             OnPropertyChanged(nameof(ShowPictureLine));
             RaisePickedChanged();
         }
@@ -442,8 +443,10 @@ namespace PadForge.ViewModels
         public bool ShowKbmFoot => OutputType == VirtualControllerType.KeyboardMouse;
 
         /// <summary>The note under a VR slot's card, as its board draws it:
-        /// Map All skips the A and B touch outputs, and how to bind one.</summary>
-        public bool ShowVrFoot => OutputType == VirtualControllerType.Vr;
+        /// Map All skips the A and B touch outputs, and how to bind one. It
+        /// says to click the ring around A or B, so it shows under the
+        /// picture, where the rings are, and not under the list.</summary>
+        public bool ShowVrFoot => IsButtonsPictureView && OutputType == VirtualControllerType.Vr;
 
         /// <summary>The first section's name, by what the slot's picture
         /// holds, as each slot's board names it: Buttons on a controller,

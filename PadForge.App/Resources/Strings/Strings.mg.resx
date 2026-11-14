@@ -98,7 +98,6 @@
   <!-- ═══ MainWindow ═══ -->
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Manidy ny PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Manomboka ny PadForge…</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> fitaovana</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Efijery feno</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Asehoy ny PadForge</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Najanona ny motera</value></data>
@@ -371,7 +370,6 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Mapping</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Stick</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Gâchette</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gâchette havia</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gâchette havanana</value></data>
@@ -459,8 +457,8 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Bokotra</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Fafao</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Nolavin'ny HIDMaestro ity profil ity tao amin'ny {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Tsy manana descripteur HID ity profil ity, ka tsy afaka hanaovana contrôleur avy aminy.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Nolavin'ny HIDMaestro ity preset ity tao amin'ny {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Tsy manana descripteur HID ity preset ity, ka tsy afaka hanaovana contrôleur avy aminy.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Tsy nisy nampidirina. {0}</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(fitaovana HID tsy misy anarana)</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
@@ -536,9 +534,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Hiova ho fijery 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Hiova ho fijery 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Tsindrio hitsapana ny motera havia</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Motera havia</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Tsindrio hitsapana ny motera havanana</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Motera havanana</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mapping: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Raketo tsirairay misesy ny mapping rehetra</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Adikao avy amin'ny...</value></data>
@@ -654,6 +650,7 @@
   <data name="Curve_Custom" xml:space="preserve"><value>Manokana</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Teboka afovoany</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Afovoany</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Hafainganana</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Elanelana</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Maka santionany...</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Endriky ny deadzone</value></data>
@@ -804,7 +801,6 @@
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Tazomina</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Motera havia</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Motera havanana</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Tazomina</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Afovoany</value></data>
@@ -894,7 +890,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Laharan'ny touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Ampandehano ny geste amin'ity touchpad ity</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Izy roa</value></data>
@@ -982,7 +977,6 @@
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Fihetsehan'ny totozy X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Fihetsehan'ny totozy Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensibilité</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Contrôleur {0}</value></data>
 
   <!-- ═══ Device Object Names (gamepad) ═══ -->
@@ -1326,7 +1320,6 @@
   <data name="Pad_Wheel" xml:space="preserve"><value>Familiana</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Avereno ny familiana</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Feo</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Tondro</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Tondro IR</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Eo afovoany</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Ambonin'ny efijery</value></data>
@@ -1529,7 +1522,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>Contrôleur Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Stick X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Stick Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Gâchette</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Bokotra voalohany</value></data>
   <data name="VrCtl_Secondary" xml:space="preserve"><value>Bokotra faharoa</value></data>
   <data name="VrCtl_Menu" xml:space="preserve"><value>Bokotra menu</value></data>
@@ -1554,7 +1546,6 @@
   <data name="Handheld_NamePlaceholder" xml:space="preserve"><value>Omeo anarana ity bokotra ity</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Bokotra fitendry: {0}</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>Mandeha ny {0}. Mbola mamaly ireo bokotra ireo izy raha tsy ajanonao.</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Totozy</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Geste amin'ny totozy</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Ampandehano ny geste amin'ny totozy</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Bokotra geste</value></data>
@@ -1610,6 +1601,7 @@
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Tsy tratra ny Steam. Hamarino ny fifandraisanao. Mbola mandeha ny profil efa nampidirinao: eo amin'ity PC ity izy ireo.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Andramo indray</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Sokafy ao amin'ny Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Taloha</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Tehirizo ny profil</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Tehirizo ary ampiharo</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>voadika</value></data>
@@ -2179,7 +2171,7 @@
   <data name="Search_Docs_Format" xml:space="preserve"><value>Tadiavo ao amin'ny torolalana ny "{0}"</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Hofafana ve ny {0}?</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Manomboka tsy misy contrôleur. Miditra ho azy izy rehefa eo anoloana ny iray amin'ireo lalaony.</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Tsy misy programa hafa manokatra varavarankely.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Tsy nisy varavarankely hafa misokatra hita.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Esory ny {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Ny anarana, ny kisary ary ny lokon'ny layer fototra ao amin'ny Shift Layer Flyout sy ao amin'ny andalan'ny layer.</value></data>
   <data name="Handheld_StartOver" xml:space="preserve"><value>Atombohy indray</value></data>
@@ -2196,4 +2188,8 @@
   <data name="Profiles_Starters" xml:space="preserve"><value>Profil fanombohana</value></data>
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Profil efa vonona ho an'ny karazana lalao iray manontolo. Fidio ny iray, tendreo amin'ny contrôleur rehetra, ary milalaova.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} amin'ny {1} no mandeha</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>sy</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>na</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>tsy</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>raha?</value></data>
 </root>

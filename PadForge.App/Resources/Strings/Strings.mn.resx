@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge-ийг хааж байна...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge-ийг эхлүүлж байна…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Өмнөх сессээс үлдсэн виртуал контроллерүүдийг цэвэрлэж байна.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> төхөөрөмж</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Контроллер нэмэх</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Контроллер нэмэх</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Тоглоомд юу харагдахыг сонгоно уу. Дармагц контроллер нэмэгдэнэ.</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>“{0}” бичих хугацаа дууслаа.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Хөдөлгүүр ажиллаж эхэллээ.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Хөдөлгүүр зогслоо.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Оноолтгүй</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Алдаа: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0}: үүсгэж чадсангүй.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Профайл солигдлоо: {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Бичиж байна...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>хэрэв</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>төхөөрөмж</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>Виртуал контроллер {1}: “{0}” оноогдлоо.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>Виртуал контроллер {1}: “{0}” оноолтоос хасагдлаа.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Төхөөрөмжийг хаслаа.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Виртуал контроллер {0} устгагдлаа.</value></data>
@@ -516,7 +513,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Алсын холболтод зориулж хослуулсан компьютерүүд. Аль нэгийг нь холбогдохыг зогсоохын тулд хүчингүй болгоно уу. Тэр компьютер дахин хослуулах шаардлагатай болно.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Хүчингүй болгох</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Бүгдийг хүчингүй болгох</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Нэр өөрчлөх</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Мэдрэгч самбарын оверлей</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>PlayStation мэдрэгч самбартай тоглоомуудад зориулсан, мэдрэгч дэлгэц эсвэл хулганаар ашиглах дэлгэц дээрх мэдрэгч гадаргуу.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Мэдрэгч самбарын оверлейг идэвхжүүлэх</value></data>
@@ -750,7 +746,6 @@
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio лицензийн нөхцөл</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK нөхцөл</value></data>
@@ -1031,9 +1026,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Оноолт</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Стикүүд</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Гохууд</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Хүчний эргэх холбоо</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Импульсийн гох</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Импульсийн гох</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Гох бүрийн өсгөлт, моторыг солих, дасан зохицох гохны чичиргээ, Гохны тогтмол хүч</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Гох тус бүрийн моторын командыг (Xbox Impulse Triggers) виртуал контроллероос оноосон физик Xbox One, Elite эсвэл Series контроллер руу дамжуулна. Тоглоомын үүсгэсэн гохны чичиргээ автоматаар дамжина. Доорх тохиргоонууд гох тус бүрийн хүчийг тохируулна.</value></data>
@@ -1099,7 +1092,6 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Зүүн гохыг дахин тохируулах</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Баруун гохыг дахин тохируулах</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Дасан зохицох гох</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Дасан зохицох гох</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Оноосон физик DualSense дээрх гохны эргэх холбооны эффектүүдийг тохируулна. Тоглоом эсвэл тоглоомын модоос ирсэн гохны эффектүүд автоматаар дамжуулагдана. Энд хийсэн тохиргоо нь аль аль нь бичээгүй үед ажиллах, хэрэглэгчийн тохируулсан давхаргыг нэмнэ.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Стикүүд</value></data>
@@ -1144,7 +1136,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Гэрэлтүүлэг</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Гэрэлтүүлэг</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Оноосон физик контроллерийн гэрлийн зурвасын суурь өнгө болон аудионд хариу үзүүлэх байдлыг тохируулна. Тоглоомын бичсэн утга үргэлж давамгайлна. Тоглоом гэрлийн зурвасыг удирдаагүй үед хэрэглэгчийн тохиргоо үйлчилнэ.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Тоглогчийн дугаар гэж тохируулсан үед геймпад сул үедээ виртуал контроллерийнхоо тоглогчийн дугаарыг харуулна: гэрлийн зурвас дээр Sony-ийн тоглогчийн өнгө (1 цэнхэр, 2 улаан, 3 ногоон, 4 ягаан), DualSense дээр харгалзах тоглогчийн цэгүүд. Ижил виртуал контроллер дээрх бүх төхөөрөмж ижил дугаар харуулна. Тоглоомууд гэрэлтүүлэг бичих бүрдээ удирдлагыг авдаг, энд таны тохируулсан зүйл үргэлж давамгайлна, Унтраалттай нь гэрлийг бүрэн унтраана.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Тоглогчийн дугаар гэж тохируулсан үед геймпад сул үедээ виртуал контроллерийнхоо тоглогчийн дугаарыг харуулна: гэрлийн зурвас дээр Sony-ийн тоглогчийн өнгө (1 цэнхэр, 2 улаан, 3 ногоон, 4 ягаан), DualSense дээр харгалзах тоглогчийн цэгүүд. Ижил виртуал контроллер дээрх бүх төхөөрөмж ижил дугаар харуулна. Тоглоом гэрэлтүүлэг бичих бүрдээ удирдлагыг авна. Энд сонгосон өөр ямар ч горим тоглогчийн өнгийг орлох бөгөөд Унтраалттай нь гэрлийг бүрэн унтраана.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Энэ виртуал контроллер төхөөрөмжийг DualSense-ийн гэрлийн зурвастай ижил горимуудаар гэрэлтүүлэх бөгөөд үүнийг зөвхөн энэ контроллерт зориулж энд тохируулна. PlayStation виртуал контроллер дээр гэрлийн зурвас руу бичдэг тоглоом DualSense дээрхтэй адил удирдлагыг авна.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Энэ төхөөрөмжийн гэрэлтүүлгийг удирдах</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Унтраалттай үед энэ виртуал контроллер төхөөрөмжийг гэрэлтүүлэхээ болино. Үйлдвэрлэгчийн мөр, эсвэл ижил програмаар гэрэлтдэг ижил төрлийн өөр төхөөрөмж түүний өнгийг тохируулсаар байж болно. Энэ виртуал контроллер дээрх “Chroma өнгө тохируулах” макро Razer төхөөрөмжийг будсаар байна.</value></data>
@@ -1259,9 +1251,9 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Гохууд</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Товчнууд</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Импортолсон профайлууд…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Контроллерын бэлэн тохиргоо…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Өргөтгөсөн контроллер</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Хэрэглэгчийн импортолсон HIDMaestro профайлуудыг удирдах: холбогдсон төхөөрөмжөөс шинээр авах, байгааг JSON руу экспортлох, эсвэл хэрэггүй болсныг устгах.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Өөрийн нэмсэн контроллерын бэлэн тохиргоог удирдах: файлаас эсвэл холбогдсон төхөөрөмжөөс импортлох, JSON руу экспортлох, эсвэл хэрэггүй болсныг устгах.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Төхөөрөмжийг 1:1 хувилах</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Сонгосон төхөөрөмжийн бүх тэнхлэг, товч, POV-г ижил дугаартай виртуал гаралт руу шууд онооно. Бүтцийг төхөөрөмжид тааруулж, слот дээрх энэ төхөөрөмжийн мөрүүдийг 1:1 шууд дамжуулалтаар солино.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Төхөөрөмжийг 1:1 хувилах</value></data>
@@ -1276,18 +1268,18 @@
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Холбогдсон төхөөрөмжөөс импортлох</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Экспортлох…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Устгах</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Профайлын JSON экспортлох</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Бэлэн тохиргооны JSON экспортлох</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Бэлэн тохиргоог устгах уу?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>{0} ашиглаж буй контроллер бүр “Өөрийн” бичлэг рүү буцна. Үүнийг буцаах боломжгүй.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Экспортолсон: {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Экспортлож чадсангүй: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>“{0}” устгагдлаа.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Файлаас импорт хийх…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Профайлын JSON импортлох</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Бэлэн тохиргооны JSON импортлох</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Импортолсон: {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Уншиж чадсангүй: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro энэ профайлыг {1} байршилд татгалзсан: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Энэ профайлд HID тодорхойлогч байхгүй тул үүнээс контроллер үүсгэх боломжгүй.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro энэ бэлэн тохиргоог {1} байршилд татгалзсан: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Энэ бэлэн тохиргоонд HID тодорхойлогч байхгүй тул үүнээс контроллер үүсгэх боломжгүй.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Юу ч импортлогдсонгүй. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Импортлох</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(нэргүй HID төхөөрөмж)</value></data>
@@ -1398,9 +1390,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>2D харагдац руу шилжих</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>3D харагдац руу шилжих</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Зүүн моторыг турших бол дарна уу</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Зүүн мотор</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Баруун моторыг турших бол дарна уу</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Баруун мотор</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Бүгдийг оноох</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Оноох: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Бүх оноолтыг нэг нэгээр нь дарааллаар бичих</value></data>
@@ -1504,6 +1494,11 @@
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Үнэн/худлыг эсрэгээр солих</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Хэрэв: (нөхцөл) ? тийм бол : үгүй бол</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>if-then-else бүтцийн “үгүй бол” хэсэг</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>ба</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>эсвэл</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>биш</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>хэрэв?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>үгүй бол:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Абсолют утга (тэмдгийг хасна)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Хоёр утгын бага нь</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Хоёр утгын их нь</value></data>
@@ -1571,6 +1566,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Төвийг калибровк хийх</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Төв цэг</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Төв</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Хурд</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Үхсэн бүс</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Төвийн шилжилт, үхсэн бүсийн хэлбэр ба тэнхлэг тус бүрийн утга, тэнхлэг бүрийн муруй, муж, жолоодлого</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Муж тоогоор, түүхий утгууд</value></data>
@@ -1794,7 +1790,6 @@
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Тогтоох (барих)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Зүүн мотор</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Баруун мотор</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Барих хугацаа</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Бүдгэрэлт</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1903,7 +1898,6 @@
   <data name="Pad_Touchpad" xml:space="preserve"><value>Мэдрэгч самбар</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Мэдрэгч самбар</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Мэдрэгч самбар тус бүрийн оролт. Дохионууд (шудрах, товших, чимхэх, дүрс) болон тасралтгүй гаралтын горимууд (виртуал стик / D-pad, хулгана) дурын гаралтад холбож болох оноолтын эх үүсвэр болно.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Мэдрэгч самбар</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Мэдрэгч самбарын дугаар</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Доорх тохиргоо энэ контроллерийн аль мэдрэгч самбарт хамаарахыг заана. Мэдрэгч самбар бүр өөрийн дохио, хулганы мэдрэмж, заагчийн мужтай.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Дохио илрүүлэлт</value></data>
@@ -2354,8 +2348,6 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Хулганы хөдөлгөөн Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Мэдрэмж</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Эх үүсвэр тус бүрийн IR заагчийн мэдрэмж. 1.0 бол камерын харах талбайн ирмэг дээр стикийн бүтэн хазайлтад хүрнэ. 1.0-ээс их утга онилгын бага шилжилтээр бүтэн хазайлтад хүрнэ. 1.0-ээс бага утгад илүү их шилжилт хэрэгтэй.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Мэдрэмж</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Энгийн тэнхлэг, гулсуур эсвэл геймпадын стик / гохны эх үүсвэр тус бүрийн мэдрэмж. 1.0 бол оролтыг өөрчлөхгүй. 1.0-ээс их утга бага явалтаар бүтэн хазайлтад хүрнэ. 1.0-ээс бага утгад илүү их явалт хэрэгтэй.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Геймпад {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Эх үүсвэр тус бүрийн хулганы хөдөлгөөний мэдрэмж. 1.0 бол жинхэнэ хулганатай ижил хурдаар бүтэн хазайлтад хүрнэ, 1.0-ээс их утгад бага хөдөлгөөн, бага утгад илүү их хөдөлгөөн хэрэгтэй.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Тэнцвэрийн нийт жин</value></data>
@@ -2491,7 +2483,7 @@
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Профайл нь түүний тоглоомуудын аль нэг нь урд гарахад автоматаар ачаалагдана.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Контроллергүйгээр эхэлнэ. Түүний тоглоомуудын аль нэг нь урд гарахад автоматаар ачаалагдана.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Ажиллаж буй тоглоом нэмэх</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Өөр ямар ч програмын цонх нээлттэй алга.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Өөр нээлттэй цонх олдсонгүй.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} хасах</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Энэ профайл ачаалагдсан үеийн уншилтын давтамж</value></data>
 
@@ -3073,7 +3065,6 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Хязгаарт хүрэх бүрд нэгээр ээлжлэх өнгөнүүдийг нэмнэ үү.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Гэрлийн зурвасын барилтыг дахин тохируулах</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Аудио</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Заагч</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR заагч</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Энэ Wii Remote-ыг IR камераар нь дэлгэц рүү онилно. Дэлгэцийн дээр эсвэл доор мэдрэгч зурвас, эсвэл хоёр хэт улаан туяаны LED шаардлагатай. Яг цэг рүү онилохын тулд Төхөөрөмжүүд хуудсанд гэрлийн буу болгон калибровк хийнэ үү. Калибровк хийсэн удирдлага Мэдрэгч зурвасын байрлал болон Босоо шилжилтийг үл тооно.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Заагчийн тохиргоо</value></data>
@@ -3431,7 +3422,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Энэ шошгыг нэрлэх</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Бүртгэх</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Бүртгэсэн</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>NFC уншигч илэрсэнгүй. PC/SC уншигч холбоод дахин нээнэ үү.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Шошго уншигдлаа. Нэр оруулаад «Бүртгэх» дээр дарна уу. Солихын тулд өөр шошго хүргэнэ үү.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>«{0}» бүртгэгдлээ. Дахин нэмэхийн тулд өөр шошго хүргэнэ үү.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC шошго бүртгэх / удирдах</value></data>
@@ -3458,7 +3448,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>Контроллер Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Стик X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Стик Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Гох</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Атгах товч</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Стик дарах</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Нэгдүгээр товч</value></data>
@@ -3536,7 +3525,6 @@
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Гар компьютерын товчнуудыг идэвхжүүлэх</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Төхөөрөмжүүд хуудсанд «Далд товчнууд» төхөөрөмж ба «Системийн хөдөлгөөн» төхөөрөмж нэмнэ. Унтраалттай үед юу ч ажиллахгүй.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Хэрэглэгчийн {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Хулгана</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Хулганы дохио</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Дохионы товчийг дарж барин хулганаа огцом хөдөлгөөд суллахад нэг үйлдэл ажиллана: зүүн, баруун, дээш, доош, эсвэл хөдөлгөлтийн зайнаас бага бол энгийн товшилт. Таван дохиог дурын гаралтад оноох эсвэл макроны идэвхжүүлэгч болгон ашиглана уу.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Хулганы дохиог идэвхжүүлэх</value></data>
@@ -3725,8 +3713,9 @@
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam-д холбогдох боломжгүй</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Steam-д холбогдож чадсангүй. Холболтоо шалгана уу. Аль хэдийн импортолсон профайлууд ажилласаар байна: тэдгээр нь энэ компьютер дээр хадгалагдсан.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Дахин оролдох</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Энэ 2016 оны үеийн тохиргоо нь Steam-ийн тохиргооны CDN-ээс өмнө үүссэн. Steam дээр үүнийг захиалбал PadForge таны Steam хавтаснаас уншина.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam энэ тохиргоонд татаж авах файл жагсаагаагүй бөгөөд таны Steam хавтсанд үүний хуулбар байхгүй. Steam дээр үүнийг захиалбал PadForge тэндээс уншина.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam Workshop-д нээх</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Хуучин</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Юу шилжихийг харахын тулд тохиргоо сонгоно уу.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Шилжих зүйлс</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Болох</value></data>
@@ -4402,7 +4391,6 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Мотор</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Чиглэлээр хуваах</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Төвийн үхсэн бүс</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Дахин тохируулах (идэвхгүй)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Дахин тохируулах (зүүн стик X)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Хүчийг дахин тохируулах (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Төвийн үхсэн бүсийг дахин тохируулах (2%)</value></data>
@@ -4481,7 +4469,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>Хавсаргасан SDL3.dll-д хөрвүүлэгдсэн HID давхарга, Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Дүрсний эх сурвалжууд</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Галын дүрс Material Design Icons (Pictogrammers, Apache-2.0)-оос, ерөнхий геймпадын дүрс Ionicons (Ionic, MIT)-оос, Өргөтгөсөн жойстик Jam Icons (Michael Amprimo, MIT)-оос, Xbox ба PlayStation дүрсүүд SVG Repo-оос, дүрс тус бүрийн хуудсан дээрх лицензийн дагуу.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Галын дүрс Material Design Icons (Pictogrammers, Apache-2.0)-оос, Өргөтгөсөн жойстик Jam Icons (Michael Amprimo, MIT)-оос, Xbox ба PlayStation дүрсүүд SVG Repo-оос, дүрс тус бүрийн хуудсан дээрх лицензийн дагуу.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Алсын холболтын нөөц замын ард байгаа релей протокол, FlexInput-ийн адилаар n0.computer-ийн үнэгүй нийтийн релейтэй харилцана. iroh: MIT OR Apache-2.0. FlexInput: MIT. Зөвхөн баримт бичиг, код багтаагүй.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

@@ -83,7 +83,7 @@ namespace PadForge.Common
         }
 
         /// <summary>The first finish of a family's 3D model, or null for a
-        /// family of one finish.</summary>
+        /// family that lists no finish.</summary>
         internal static string FirstFinish(string family) => ControllerStill.FinishFor(family, null);
 
         /// <summary>Whether a controller of this preset and type has a body

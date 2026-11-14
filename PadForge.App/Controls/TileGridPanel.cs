@@ -16,8 +16,8 @@ namespace PadForge.Controls
     /// <see cref="FullRowProperty"/> has a row to itself at the panel's
     /// whole width. A row's last tile marked <see cref="TakesRestProperty"/>
     /// runs on through the columns the row has left. With
-    /// <see cref="Balance"/> a set that needs more than one row is shared
-    /// out evenly between its rows.
+    /// <see cref="Balance"/> a set takes as few columns as still need no
+    /// more rows, each column then wider.
     /// </summary>
     public sealed class TileGridPanel : Panel
     {
@@ -151,10 +151,12 @@ namespace PadForge.Controls
             nameof(Balance), typeof(bool), typeof(TileGridPanel),
             new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-        /// <summary>Whether a set of tiles that needs more than one row is
-        /// shared out evenly: four tiles where three columns fit stand two
-        /// and two, and not three and one. For a short, fixed set. Unset,
-        /// every row but the last is full.</summary>
+        /// <summary>Whether a set takes as few columns as still need no more
+        /// rows than the columns that fit, each column then wider: four tiles
+        /// where three columns fit stand two and two, and not three and one,
+        /// and two tiles where three fit take two columns of half the width.
+        /// For a short, fixed set, with <see cref="FillRows"/>. Unset, every
+        /// row but the last is full.</summary>
         public bool Balance
         {
             get => (bool)GetValue(BalanceProperty);

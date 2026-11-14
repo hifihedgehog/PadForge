@@ -96,7 +96,21 @@ namespace PadForge.Search
             public SearchLabel ItemQualifier { get; init; }
             public IReadOnlyList<SearchGate> Gates { get; init; } = Array.Empty<SearchGate>();
             public CardState Card { get; init; }
+            /// <summary>The path from the item, or from the page's data, to
+            /// the data an element on the way down set for itself
+            /// (DataContext): a rule, a value or a title under it is read
+            /// through it, as WPF reads them.</summary>
+            public string DataPath { get; init; }
+            /// <summary>An element on the way down set data the index cannot
+            /// follow (x:Null, a resource, a binding to an element): nothing
+            /// under it is read on the data.</summary>
+            public bool DataUnread { get; init; }
         }
+
+        /// <summary>A path on the data under <paramref name="ctx"/>: through the
+        /// data an element on the way down set for itself.</summary>
+        private static string OnData(Ctx ctx, string path)
+            => string.IsNullOrEmpty(ctx.DataPath) || string.IsNullOrEmpty(path) ? path : ctx.DataPath + "." + path;
 
         private sealed class PageWalk
         {
@@ -185,12 +199,22 @@ namespace PadForge.Search
 
             private Ctx Enter(XElement e, Ctx ctx)
             {
+                // Data the element sets for itself is what its own bindings,
+                // and every binding under it, read. The attribute in no
+                // namespace: the designer's d:DataContext is not data.
+                string data = (string)e.Attribute("DataContext");
+                if (data != null && !ctx.DataUnread)
+                {
+                    var d = Binding.Parse(data);
+                    if (d == null || d.Elsewhere) ctx = ctx with { DataUnread = true };
+                    else if (!string.IsNullOrEmpty(d.Path) && d.Path != ".") ctx = ctx with { DataPath = OnData(ctx, d.Path) };
+                }
                 // A gate on the way down to an item's row.
-                if (ctx.ItemsPath != null || ctx.RowOptions)
+                if ((ctx.ItemsPath != null || ctx.RowOptions) && !ctx.DataUnread)
                 {
                     var b = Binding.Parse(Attr(e, "Visibility"));
                     if (b != null && b.IsPlainPath)
-                        ctx = ctx with { Gates = ctx.Gates.Append(new SearchGate(b.Path, b.ConverterKey, b.ConverterParameter)).ToList() };
+                        ctx = ctx with { Gates = ctx.Gates.Append(new SearchGate(OnData(ctx, b.Path), b.ConverterKey, b.ConverterParameter)).ToList() };
                 }
                 string name = NameOf(e);
                 if (!string.IsNullOrEmpty(name) && !ctx.InTemplate)
@@ -271,6 +295,7 @@ namespace PadForge.Search
                     var title = local == "FoldCard"
                         ? (KeyIn(Attr(e, "Header")) is { } header ? new SearchLabel(header, null) : null)
                         : CardTitleOf(e);
+                    if (title?.Path != null) title = ctx.DataUnread ? null : title with { Path = OnData(ctx, title.Path) };
                     ctx = ctx with { Card = new CardState { Title = title } };
                     if (title != null && !ctx.RowOptions)
                     {
@@ -452,7 +477,9 @@ namespace PadForge.Search
                 }
                 if (qualifier == null && ctx.Card?.LastSubsection is { } subsection)
                     qualifier = new SearchLabel(subsection, null);
-                Add(ctx, SearchKind.Setting, label, qualifier, source, ValueOf(row), TargetOf(row));
+                var value = ctx.DataUnread ? null : ValueOf(row);
+                if (value?.Path != null) value = value with { Path = OnData(ctx, value.Path) };
+                Add(ctx, SearchKind.Setting, label, qualifier, source, value, TargetOf(row));
             }
 
             private static SearchLabel ActionQualifier(XElement button, Ctx ctx)
@@ -517,6 +544,9 @@ namespace PadForge.Search
             public string ConverterKey;
             public string ConverterParameter;
             public bool IsPlainPath;
+            /// <summary>The binding names its source: Source, ElementName or
+            /// RelativeSource.</summary>
+            public bool Elsewhere;
 
             internal static Binding Parse(string text)
             {
@@ -547,6 +577,7 @@ namespace PadForge.Search
                         case "ElementName":
                         case "RelativeSource":
                             b.IsPlainPath = false;
+                            b.Elsewhere = true;
                             break;
                     }
                 }

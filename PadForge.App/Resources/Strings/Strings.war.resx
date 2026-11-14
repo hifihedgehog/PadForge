@@ -160,7 +160,6 @@
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Ginkansela an pag-record.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Nagsugod an engine.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Naundang an engine.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Waray mapping</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Sayop: {0}</value></data>
   <data name="Profiles_AddShortcut" xml:space="preserve"><value>Dugangi hin shortcut</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Sunod nga profile</value></data>
@@ -168,7 +167,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Nagre-record...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>kun</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>ha</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>Gin-assign an "{0}" ha virtual nga controller {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Ginkuha an device.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Napara an virtual nga controller {0}.</value></data>
 
@@ -327,7 +325,6 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Mga mapping</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Mga stick</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Mga trigger</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Wala nga trigger</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Tuo nga trigger</value></data>
@@ -377,8 +374,8 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Mga trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Mga POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Mga button</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Ginbalibaran han HIDMaestro ini nga profile ha {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Waray HID descriptor ini nga profile, salit waray controller nga mahihimo tikang hini.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Ginbalibaran han HIDMaestro ini nga preset ha {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Waray HID descriptor ini nga preset, salit waray controller nga mahihimo tikang hini.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Waray na-import. {0}</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
@@ -389,9 +386,7 @@
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>I-reset an deadzone</value></data>
   <data name="Pad_Socd_Pairs_Label" xml:space="preserve"><value>Mga pares han button</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>I-click para sulayan an wala nga motor</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Wala nga motor</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>I-click para sulayan an tuo nga motor</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Tuo nga motor</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>I-map an ngatanan</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>I-map: {0}</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopyaha an ngatanan nga mapping ngan mga setting ngadto ha clipboard</value></data>
@@ -490,7 +485,6 @@
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Hold</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Wala nga motor</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Tuo nga motor</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Hold</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Ha butnga</value></data>
@@ -541,7 +535,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Numero han touchpad</value></data>
   <data name="Pad_Touchpad_LongPress" xml:space="preserve"><value>Long press</value></data>
   <data name="Pad_Touchpad_TwoFingerSwipes" xml:space="preserve"><value>Mga swipe hin duha nga tudlo</value></data>
@@ -642,7 +635,6 @@
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Motion han mouse X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Motion han mouse Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
 
   <!-- ═══ Device Object Names (gamepad) ═══ -->
@@ -1033,7 +1025,6 @@
   <data name="VrCtl_X" xml:space="preserve"><value>X han controller</value></data>
   <data name="VrCtl_Y" xml:space="preserve"><value>Y han controller</value></data>
   <data name="VrCtl_Z" xml:space="preserve"><value>Z han controller</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Trigger</value></data>
   <data name="Dashboard_HeadTrackingOpenXrSystemDefault" xml:space="preserve"><value>Default han sistema</value></data>
   <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>UDP port</value></data>
   <data name="Dashboard_HeadTrackingAxisYaw" xml:space="preserve"><value>Yaw</value></data>
@@ -1052,7 +1043,6 @@
   <data name="Handheld_Import" xml:space="preserve"><value>I-import…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Gin-export an {0} nga mga button.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Gin-import an {0} nga mga button.</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Mga gesture han mouse</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Wala</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Tuo</value></data>
@@ -1474,7 +1464,7 @@
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Paraon an {0}?</value></data>
   <data name="PickSound_Use" xml:space="preserve"><value>Gamita an Tunog</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Nagtitikang nga waray controller. Nag-load ini hin kalugaringon kun an usa han iya mga dula aada ha atubangan.</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Waray iba nga programa nga may bukas nga window.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Waray iba nga bukas nga window nga nakita.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Kuhaa an {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>An ngaran, icon ngan kolor han Base nga layer ha Shift Layer Flyout ngan ha row han mga layer.</value></data>
   <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Nahibaroan ha {0}</value></data>
@@ -1501,4 +1491,5 @@
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Andam na nga mga profile para ha bug-os nga genre. Pili hin usa, i-assign bisan ano nga controller, ngan magdula.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} ha {1} an bukas</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ini nga mga gin-import nga profile may-ada mas bag-o nga bersyon ha Steam Workshop. I-import hira utro tikang ha Pagkuha hin mga Profile para makuha an mga pagbag-o.</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Kalaksihon</value></data>
 </root>

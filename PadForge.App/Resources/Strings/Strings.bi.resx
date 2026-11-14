@@ -109,7 +109,6 @@
   <!-- ═══ MainWindow ═══ -->
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge i stap klos...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge i stap stat…</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> divaes</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Putum wan kontrola</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Putum wan Kontrola</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Jusum wanem ol gem oli mas luk. Kontrola i kam stret taem yu klik.</value></data>
@@ -393,7 +392,6 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Ol mapping</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Ol stik</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Ol triga</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Lef triga</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Raet triga</value></data>
@@ -471,8 +469,8 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Ol triga</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Ol POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Ol baton</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro i no akseptem profael ia long {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Profael ia i no gat HID descriptor, taswe i no save mekem wan kontrola long hem.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro i no akseptem preset ia long {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Preset ia i no gat HID descriptor, taswe i no save mekem wan kontrola long hem.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Program i no impotem wan samting. {0}</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
@@ -499,9 +497,7 @@
   <data name="Pad_Socd_ButtonA_Tooltip" xml:space="preserve"><value>Fas baton long tufala.</value></data>
   <data name="Pad_Socd_ButtonB_Tooltip" xml:space="preserve"><value>Namba tu baton long tufala.</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Klik blong testem lef mota</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Lef mota</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Klik blong testem raet mota</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Raet mota</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Putum bak olgeta</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Invert</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Haf</value></data>
@@ -588,7 +584,6 @@
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Holem</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Lef mota</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Raet mota</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Holem</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Long medel</value></data>
@@ -666,7 +661,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Tajpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Tajpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Tajpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Namba blong tajpad</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Tufala</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tajem / Tajem tu taem / Tajem tri taem</value></data>
@@ -760,7 +754,6 @@
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Spid blong maos Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensitiviti</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensitiviti</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensitiviti</value></data>
 
   <!-- ═══ Device Object Names (gamepad) ═══ -->
   <data name="DevObj_LeftStickX" xml:space="preserve"><value>Lef stik X</value></data>
@@ -1238,7 +1231,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>Z blong kontrola</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>X blong stik</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Y blong stik</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Triga</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Klik blong stik</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Baton namba wan</value></data>
   <data name="VrCtl_Secondary" xml:space="preserve"><value>Baton namba tu</value></data>
@@ -1261,7 +1253,6 @@
   <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Lanem long {0}</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Ol ki: {0}</value></data>
   <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} i stap ron. Hem i stap wok yet long ol baton ia kasem we yu stopem.</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Maos</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Ol gesture blong maos</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Mekem ol gesture blong maos i wok</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Ol baton blong gesture</value></data>
@@ -1423,7 +1414,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Mota</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Seraotem folem daereksen</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Dedzon long medel</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Putum bak long of</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Putum bak long lef stik X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Putum bak dedzon long medel (2%)</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profael</value></data>
@@ -1754,7 +1744,7 @@
   <data name="Search_Docs_Format" xml:space="preserve"><value>Lukaotem “{0}” long dokumentesen</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>I stat wetem no kontrola. Hem i lod hem wan taem wan long ol gem blong hem i stap long fored.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Putum wan Gem we i Stap Ron</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>I no gat narafala program we i gat windo i open.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>I no faenem narafala windo we i open.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tekemaot {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Nem, aekon mo kala blong Base layer long Shift Layer Flyout mo long lain blong ol layer.</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>Tajem wan tag long rida mo givim nem long hem. Hem i kam wan baton we yu save mapem.</value></data>
@@ -1768,4 +1758,5 @@
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Ol profael we oli redi finis blong wan kaen gem. Jusum wan, givim eni kontrola, mo plei.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} long {1} i on</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ol profael ia we yu bin impotem oli gat niu vesen long Steam Workshop. Impotem olgeta bakegen long Kasem ol Profael blong kasem ol jenis.</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Spid</value></data>
 </root>

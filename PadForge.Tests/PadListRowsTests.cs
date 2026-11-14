@@ -362,7 +362,10 @@ namespace PadForge.Tests
 
             var buttons = end.Elements().Where(e => e.Name.LocalName == "Button").ToList();
             Assert.Equal(3, buttons.Count);
-            Assert.All(buttons, b => Assert.Equal("{StaticResource RowIconButton}", (string)b.Attribute("Style")));
+            // Record and Clear take a Tab stop on the open row, and the
+            // chevron never does (RowActionButton, 2026-11-13).
+            Assert.Equal(new[] { "{StaticResource RowActionButton}", "{StaticResource RowActionButton}", "{StaticResource RowIconButton}" },
+                buttons.Select(b => (string)b.Attribute("Style")));
             Assert.Equal("{Binding ToggleRecordCommand}", (string)buttons[0].Attribute("Command"));
             Assert.Equal("{Binding IsRecordable}", (string)buttons[0].Attribute("IsEnabled"));
             Assert.Equal("{Binding RecordButtonText, TargetNullValue=''}", (string)buttons[0].Attribute("AutomationProperties.Name"));
@@ -382,7 +385,8 @@ namespace PadForge.Tests
             Assert.Equal("180", (string)Assert.Single(turn.Descendants(), e => e.Name.LocalName == "RotateTransform").Attribute("Angle"));
 
             // The buttons: the quiet reset's size with the glyph in the
-            // text color, 12 apart, and no Tab stops, since the row is one.
+            // text color, 12 apart, and no Tab stops on a closed row, since
+            // the row is one.
             var icon = Keyed(page, "RowIconButton");
             Assert.Equal("{StaticResource QuietResetButton}", (string)icon.Attribute("BasedOn"));
             Assert.Equal("{DynamicResource TextFillColorPrimaryBrush}", SetterOf(icon, "Foreground"));

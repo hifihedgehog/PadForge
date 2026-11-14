@@ -188,8 +188,6 @@
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>ʻIkai ha meʻa</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Motor toʻohema</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Motor toʻomataʻu</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Maʻuʻanga</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Vaeua</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. -->
@@ -253,7 +251,6 @@
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Taʻofi rumble</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Taʻofi rumble</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Puke</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Puke</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Up" xml:space="preserve"><value>ʻOlunga</value></data>

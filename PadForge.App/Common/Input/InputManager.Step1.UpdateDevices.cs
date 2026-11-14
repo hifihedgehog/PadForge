@@ -1112,9 +1112,15 @@ namespace PadForge.Common.Input
                     // product-less and therefore invisible to every
                     // adoption scan forever.
                     // A unit PadForge has not met before, like the one made
-                    // at step 3 below: Home owes it its offer (#574).
+                    // at step 3 below: Home owes it its offer (#574). A twin
+                    // with no product identity is minted again at every
+                    // launch (the note above), so it owes none: an offer
+                    // that is asked once cannot be remembered for it.
                     var twin = new UserDevice
-                    { InstanceGuid = Guid.NewGuid(), ProductGuid = productGuid, HomeOfferPending = true };
+                    {
+                        InstanceGuid = Guid.NewGuid(), ProductGuid = productGuid,
+                        HomeOfferPending = productGuid != Guid.Empty,
+                    };
                     devices.Items.Add(twin);
                     return twin;
                 }

@@ -257,8 +257,6 @@ namespace PadForge.Tests
             Assert.Equal(-20, pose[HeadPose.Pitch], 4);
         }
 
-        /// <summary>The SteamVR path and this one are the same convention.
-        /// Both are fed the same rotation and must agree.</summary>
         /// <summary>Turning a pose into axes allocates nothing.
         ///
         /// <para>This runs about 125 times a second on a background thread
@@ -291,6 +289,8 @@ namespace PadForge.Tests
                 Assert.Equal(0, bytes);
         }
 
+        /// <summary>The SteamVR path and this one are the same convention.
+        /// Both are fed the same rotation and must agree.</summary>
         [Theory]
         [InlineData(0, 1, 0, -35)]
         [InlineData(1, 0, 0, 22)]

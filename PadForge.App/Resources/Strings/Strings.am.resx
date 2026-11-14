@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge በመዝጋት ላይ...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge በማስጀመር ላይ…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>ከቀድሞው ክፍለ ጊዜ የቀሩ ምናባዊ መቆጣጠሪያዎችን በማጽዳት ላይ።</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> መሣሪያዎች</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>መቆጣጠሪያ አክል</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>መቆጣጠሪያ አክል</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>ጨዋታዎች ምን ማየት እንዳለባቸው ይምረጡ። ጠቅ እንዳደረጉ መቆጣጠሪያው ይታከላል።</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>ለ«{0}» መቅረጽ ጊዜው አልፏል።</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>ሞተሩ ተጀምሯል።</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>ሞተሩ ቆሟል።</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>ማዛመጃ የለም</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>ስህተት፦ {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} ሊፈጠር አልቻለም።</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>መገለጫ ተቀይሯል፦ {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>በመቅረጽ ላይ...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>መቼ</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>በመሣሪያ</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>«{0}» ለምናባዊ መቆጣጠሪያ {1} ተመድቧል።</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>«{0}» ከምናባዊ መቆጣጠሪያ {1} ተነስቷል።</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>መሣሪያው ተወግዷል።</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያ {0} ተሰርዟል።</value></data>
@@ -516,7 +513,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>ለርቀት ትስስር ያጣመሯቸው ፒሲዎች። መገናኘቱን ለማስቆም አንዱን ይሻሩ። እንደገና ማጣመር ይኖርበታል።</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>ሻር</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>ሁሉንም ሻር</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>ዳግም ሰይም</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>የመዳሰሻ ሰሌዳ ተደራቢ</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>ለPlayStation መዳሰሻ ሰሌዳ ጨዋታዎች በማያ ገጽ ላይ የሚታይ የንክኪ ገጽ፣ ለንክኪ ማያ ገጽ ወይም ለመዳፊት።</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>የመዳሰሻ ሰሌዳ ተደራቢን አንቃ</value></data>
@@ -749,7 +745,6 @@
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>የVisual Studio ፈቃድ ውሎች</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>የCorsair SDK ውሎች</value></data>
@@ -1030,9 +1025,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>ማዛመጃዎች</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>ስቲኮች</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>ትሪገሮች</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>የኃይል ግብረመልስ</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>ኢምፐልስ ትሪገሮች</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ኢምፐልስ ትሪገሮች</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>የእያንዳንዱ ትሪገር ማጉላት፣ ሞተሮችን ማለዋወጥ፣ የአዳፕቲቭ ትሪገር ንዝረቶች፣ ቋሚ የትሪገር ኃይል</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ለእያንዳንዱ ትሪገር የሞተር ትዕዛዞችን (Xbox Impulse Triggers) ከምናባዊ መቆጣጠሪያው ወደ ተመደበው አካላዊ Xbox One፣ Elite ወይም Series መቆጣጠሪያ ያስተላልፋል። በጨዋታ የሚነዳ የትሪገር ንዝረት በራስ-ሰር ያልፋል። ከታች ያሉት መቆጣጠሪያዎች ለእያንዳንዱ ትሪገር መጠኑን ያስተካክላሉ።</value></data>
@@ -1098,7 +1091,6 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>ግራ ትሪገርን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>ቀኝ ትሪገርን ዳግም አስጀምር</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>አዳፕቲቭ ትሪገሮች</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>አዳፕቲቭ ትሪገሮች</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>በተመደበው አካላዊ DualSense ላይ የትሪገር ግብረመልስ ውጤቶችን አዋቅር። ከጨዋታ ወይም ከጨዋታ ሞድ የሚመጡ የትሪገር ውጤቶች በራስ-ሰር ይተላለፋሉ። እዚህ ያሉት ቅንብሮች አንዳቸውም በማይጽፉበት ጊዜ የሚሠራ፣ በተጠቃሚ የተዋቀረ ንብርብር ያክላሉ።</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>ስቲኮች</value></data>
@@ -1143,7 +1135,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>መብራት</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>መብራት</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>በተመደበው አካላዊ መቆጣጠሪያ ላይ የብርሃን አሞሌውን መሠረታዊ ቀለም እና የድምጽ ባህሪ አዘጋጅ። ጨዋታ የሚጽፈው ሁልጊዜ ቅድሚያ ያገኛል። የተጠቃሚ ቅንብሮች የሚተገበሩት ምንም ጨዋታ የብርሃን አሞሌውን በማይቆጣጠርበት ጊዜ ነው።</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>«የተጫዋች ቁጥር» ሲመረጥ፣ ፓዱ ሥራ ፈት ሆኖ ሳለ የምናባዊ መቆጣጠሪያውን የተጫዋች ማንነት ያሳያል: በብርሃን አሞሌው ላይ የSony ተጫዋች ቀለም (1 ሰማያዊ፣ 2 ቀይ፣ 3 አረንጓዴ፣ 4 ሮዝ) እና በDualSense ላይ ተዛማጅ የተጫዋች ነጥቦችን። በአንድ ምናባዊ መቆጣጠሪያ ላይ ያለ እያንዳንዱ መሣሪያ አንድ አይነት ቁጥር ያሳያል። ጨዋታዎች መብራት በጻፉ ቁጥር ይቆጣጠራሉ፣ እዚህ የምታዘጋጀው ማንኛውም ነገር ሁልጊዜ ቅድሚያ ያገኛል፣ «ጠፍቷል» ደግሞ መብራቱን ሙሉ በሙሉ ያጨልማል።</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>«የተጫዋች ቁጥር» ሲመረጥ፣ ፓዱ ሥራ ፈት ሆኖ ሳለ የምናባዊ መቆጣጠሪያውን የተጫዋች ማንነት ያሳያል: በብርሃን አሞሌው ላይ የSony ተጫዋች ቀለም (1 ሰማያዊ፣ 2 ቀይ፣ 3 አረንጓዴ፣ 4 ሮዝ) እና በDualSense ላይ ተዛማጅ የተጫዋች ነጥቦችን። በአንድ ምናባዊ መቆጣጠሪያ ላይ ያለ እያንዳንዱ መሣሪያ አንድ አይነት ቁጥር ያሳያል። ጨዋታ መብራት በጻፈ ቁጥር ይቆጣጠራል። እዚህ የምታዘጋጀው ማንኛውም ሌላ ሁነታ የተጫዋች ቀለሙን ይተካል፣ «ጠፍቷል» ደግሞ መብራቱን ሙሉ በሙሉ ያጨልማል።</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>ይህ ምናባዊ መቆጣጠሪያ መሣሪያውን የDualSense የብርሃን አሞሌ ባሉት ተመሳሳይ ሁነታዎች ያበራዋል፣ ለዚህ መቆጣጠሪያ ብቻ እዚህ ይዘጋጃሉ። በPlayStation ምናባዊ መቆጣጠሪያ ላይ፣ የብርሃን አሞሌውን የሚጽፍ ጨዋታ በDualSense ላይ እንደሚያደርገው ይቆጣጠራል።</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>የዚህን መሣሪያ መብራት ተቆጣጠር</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>«ጠፍቷል» ይህ ምናባዊ መቆጣጠሪያ መሣሪያውን እንዳያበራ ያቆመዋል። የአቅራቢ ረድፍ፣ ወይም በተመሳሳይ ሶፍትዌር የሚበራ ሌላ ተመሳሳይ ዓይነት መሣሪያ፣ አሁንም ቀለሙን ሊያዘጋጅ ይችላል። በዚህ ምናባዊ መቆጣጠሪያ ላይ ያለ «የChroma ቀለም አዘጋጅ» ማክሮ አሁንም የRazer መሣሪያን ቀለም ይቀባል።</value></data>
@@ -1258,9 +1250,9 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>ትሪገሮች</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>አዝራሮች</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>የገቡ መገለጫዎች…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>የመቆጣጠሪያ ቅድመ-ቅንብሮች…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>የተራዘመ መቆጣጠሪያ</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>በተጠቃሚ የገቡ HIDMaestro መገለጫዎችን አስተዳድር: ከተገናኘ መሣሪያ አዲስ ቅዳ፣ ያለውን ወደ JSON ላክ፣ ወይም ከእንግዲህ የማያስፈልግህን ሰርዝ።</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>ያከልካቸውን የመቆጣጠሪያ ቅድመ-ቅንብሮች አስተዳድር: ከፋይል ወይም ከተገናኘ መሣሪያ አንዱን አስመጣ፣ አንዱን ወደ JSON ላክ፣ ወይም ከእንግዲህ የማያስፈልግህን ሰርዝ።</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>መሣሪያን 1:1 ቅዳ</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>በተመረጠው መሣሪያ ላይ ያለውን እያንዳንዱን ዘንግ፣ አዝራር እና ሃት ተመሳሳይ ቁጥር ወዳለው ምናባዊ ውፅዓት በቀጥታ አዛምድ። አቀማመጡን በመሣሪያው መጠን ያዘጋጃል፣ በቦታው ላይ ያሉትን የዚህን መሣሪያ ረድፎች በ1:1 ማሳለፍ ይተካል።</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>መሣሪያን 1:1 ቅዳ</value></data>
@@ -1275,18 +1267,18 @@
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>ከተገናኘ መሣሪያ አስመጣ</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>ላክ…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>ሰርዝ</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>የመገለጫ JSON ላክ</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>የቅድመ-ቅንብር JSON ላክ</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>ቅድመ-ቅንብሩ ይሰረዝ?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>{0} የሚጠቀም ማንኛውም መቆጣጠሪያ ወደ «ብጁ» ግቤት ይመለሳል። ይህ ሊቀለበስ አይችልም።</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>ወደ {0} ተልኳል</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>መላክ አልተሳካም: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>«{0}» ተሰርዟል።</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>ከፋይል አስመጣ…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>የመገለጫ JSON አስገባ</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>የቅድመ-ቅንብር JSON አስገባ</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>ከ{0} ገብቷል።</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>ማንበብ አልተሳካም: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ይህን መገለጫ በ{1} ላይ አልተቀበለውም፦ {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ይህ መገለጫ HID ገላጭ የለውም፣ ስለዚህ ከእሱ ምንም መቆጣጠሪያ ሊሠራ አይችልም።</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro ይህን ቅድመ-ቅንብር በ{1} ላይ አልተቀበለውም፦ {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>ይህ ቅድመ-ቅንብር HID ገላጭ የለውም፣ ስለዚህ ከእሱ ምንም መቆጣጠሪያ ሊሠራ አይችልም።</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>ምንም አልገባም። {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>አስገባ</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(ስም የሌለው HID መሣሪያ)</value></data>
@@ -1397,9 +1389,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>ወደ 2D እይታ ቀይር</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>ወደ 3D እይታ ቀይር</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>የግራ ሞተርን ለመሞከር ጠቅ አድርግ</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>የግራ ሞተር</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>የቀኝ ሞተርን ለመሞከር ጠቅ አድርግ</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>የቀኝ ሞተር</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>ሁሉንም አዛምድ</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>አዛምድ፦ {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>ሁሉንም ማዛመጃዎች አንድ በአንድ በቅደም ተከተል ቅረጽ</value></data>
@@ -1503,6 +1493,11 @@
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>እውነት/ሐሰት ገልብጥ</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>ከሆነ፣ በቅርጸት (ሁኔታ) ? ከዚያ : ያለበለዚያ</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>የከሆነ-ከዚያ-ያለበለዚያ የ«ያለበለዚያ» ክፍል</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>እና</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>ወይም</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>አይደለም</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>ከሆነ?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>ያለበለዚያ:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>መጠን (ምልክቱን ያስወግዳል)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>ከሁለት እሴቶች ትንሹ</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>ከሁለት እሴቶች ትልቁ</value></data>
@@ -1570,6 +1565,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>መሃልን አስተካክል</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>የመሃል ነጥብ</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>መሃል</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>ፍጥነት</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>የሞተ ቀጠና</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>የመሃል ማካካሻዎች፣ የሞተ ቀጠና ቅርጽ እና የእያንዳንዱ ዘንግ እሴቶች፣ ለእያንዳንዱ ዘንግ ኩርባ፣ ክልል፣ መሪ ማዞር</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>ክልል በቁጥሮች፣ ጥሬ እሴቶች</value></data>
@@ -1793,7 +1789,6 @@
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>ተጣባቂ (መያዝ)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>የግራ ሞተር</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>የቀኝ ሞተር</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>መያዝ</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>መደብዘዝ</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1902,7 +1897,6 @@
   <data name="Pad_Touchpad" xml:space="preserve"><value>የመዳሰሻ ሰሌዳ</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>የመዳሰሻ ሰሌዳ</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>የእያንዳንዱ የመዳሰሻ ሰሌዳ ግብዓት። የእጅ ምልክቶች (ማንሸራተት፣ መታ ማድረግ፣ መቆንጠጥ፣ ቅርጾች) እና ቀጣይ የውጤት ሁነታዎች (ምናባዊ ስቲክ / የአቅጣጫ ቁልፍ፣ መዳፊት) ከማንኛውም ውጤት ጋር ልታያይዛቸው የምትችላቸው የማዛመጃ ምንጮች ይሆናሉ።</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>የመዳሰሻ ሰሌዳ</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>የመዳሰሻ ሰሌዳ ቁጥር</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>ከታች ያሉት ቅንብሮች በዚህ መቆጣጠሪያ ላይ የትኛውን የመዳሰሻ ሰሌዳ እንደሚመለከቱ። እያንዳንዱ የመዳሰሻ ሰሌዳ የራሱን የእጅ ምልክቶች፣ የመዳፊት ስሜት እና የጠቋሚ አካባቢ ይይዛል።</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>የእጅ ምልክት ማወቂያ</value></data>
@@ -2353,8 +2347,6 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>የመዳፊት እንቅስቃሴ Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>ትብነት</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>ለእያንዳንዱ ምንጭ የIR ጠቋሚ ትብነት። 1.0 በካሜራው የእይታ መስክ ጠርዝ ላይ ሙሉ የስቲክ ማፈንገጥ ይደርሳል። ከ1.0 በላይ የሆኑ እሴቶች በአነሰ የማነጣጠሪያ ጉዞ ሙሉ ማፈንገጥ ይደርሳሉ። ከ1.0 በታች የሆኑት የበለጠ ጉዞ ያስፈልጋቸዋል።</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>ትብነት</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>ለቀላል ዘንግ፣ ተንሸራታች ወይም የጌምፓድ ስቲክ / ትሪገር የሚሆን የእያንዳንዱ ምንጭ ትብነት። 1.0 ግብዓቱን ሳይለወጥ ይተዋል። ከ1.0 በላይ የሆኑ እሴቶች በአነሰ ጉዞ ሙሉ ማፈንገጥ ይደርሳሉ። ከ1.0 በታች የሆኑት የበለጠ ጉዞ ያስፈልጋቸዋል።</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>ጌምፓድ {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>ለእያንዳንዱ ምንጭ የመዳፊት እንቅስቃሴ ትብነት። 1.0 እውነተኛ መዳፊት በሚደርስበት ፍጥነት ሙሉ ማፈንገጥ ይደርሳል፣ ከ1.0 በላይ የሆኑ እሴቶች ያነሰ እንቅስቃሴ ይፈልጋሉ፣ ከዚያ በታች የሆኑት የበለጠ ይፈልጋሉ።</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>የሚዛን ጠቅላላ ክብደት</value></data>
@@ -2484,7 +2476,7 @@
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>መገለጫ ከጨዋታዎቹ አንዱ ፊት ለፊት ሲሆን በራሱ ይጫናል።</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>ያለ መቆጣጠሪያዎች ይጀምራል። ከጨዋታዎቹ አንዱ ፊት ለፊት ሲሆን በራሱ ይጫናል።</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>እየሄደ ያለ ጨዋታ አክል</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>ሌላ ፕሮግራም ክፍት መስኮት የለውም።</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>ሌላ ክፍት መስኮት አልተገኘም።</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} አስወግድ</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>ይህ መገለጫ ሲጫን የንባብ ድግግሞሽ</value></data>
 
@@ -3034,7 +3026,6 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>የሚቀያየሩ ቀለሞችን ያክሉ፣ ለእያንዳንዱ መቆለፊያ አንድ።</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>የብርሃን አሞሌ ማቆያን ዳግም አስጀምር</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>ድምጽ</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>ጠቋሚ</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR ጠቋሚ</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>ይህን Wii Remote በIR ካሜራው ወደ ማያ ገጹ ያነጣጥሩ። የሴንሰር አሞሌ ወይም ከማሳያው በላይ ወይም በታች ሁለት የኢንፍራሬድ LED መብራቶች ያስፈልጋሉ። ትክክለኛውን ቦታ ለማነጣጠር በመሣሪያዎች ገጽ ላይ እንደ የብርሃን ሽጉጥ ያስተካክሉት። የተስተካከለ ሪሞት የሴንሰር አሞሌ ቦታን እና ቁመታዊ ማካካሻን ችላ ይላል።</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>የጠቋሚ ማስተካከያ</value></data>
@@ -3392,7 +3383,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>ይህን መለያ ሰይም</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>መዝግብ</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>የተመዘገቡ</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>ምንም NFC አንባቢ አልተገኘም። PC/SC አንባቢ ያገናኙና እንደገና ይክፈቱ።</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>መለያው ተይዟል። ስም ያስገቡና «መዝግብ»ን ጠቅ ያድርጉ። ለመተካት ሌላ መለያ መታ ያድርጉ።</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>«{0}» ተመዝግቧል። ተጨማሪ ለማከል ሌላ መለያ መታ ያድርጉ።</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC መለያዎችን መዝግብ / አስተዳድር</value></data>
@@ -3419,7 +3409,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>የመቆጣጠሪያ Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>ስቲክ X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>ስቲክ Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>ትሪገር</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>መያዣ</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>የስቲክ ጠቅታ</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>ዋና አዝራር</value></data>
@@ -3497,7 +3486,6 @@
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>የእጅ ኮምፒውተር አዝራሮችን አንቃ</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>በመሣሪያዎች ገጽ ላይ የተደበቁ አዝራሮች መሣሪያ እና የስርዓት እንቅስቃሴ መሣሪያ ያክላል። ሲጠፋ ምንም አይሠራም።</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>ሸማች {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>መዳፊት</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>የመዳፊት የእጅ ምልክቶች</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>የምልክት አዝራሩን ይያዙ፣ ፍሊክ ያድርጉ፣ ሲለቁም አንድ ተግባር ይፈጸማል፦ ግራ፣ ቀኝ፣ ላይ፣ ታች፣ ወይም ከፍሊክ ርቀቱ በታች ከሆነ ቀላል ጠቅታ። አምስቱን ምልክቶች ከማንኛውም ውጤት ጋር ያዛምዱ ወይም እንደ ማክሮ ማስጀመሪያዎች ይጠቀሙባቸው።</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>የመዳፊት የእጅ ምልክቶችን አንቃ</value></data>
@@ -3686,8 +3674,9 @@
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam ሊደረስበት አልቻለም</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>ከSteam ጋር መገናኘት አልተቻለም። ግንኙነትዎን ይፈትሹ። ቀድመው ያስገቧቸው መገለጫዎች መሥራታቸውን ይቀጥላሉ፦ በዚህ ኮምፒውተር ላይ ይገኛሉ።</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>እንደገና ሞክር</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>ይህ የ2016 ዘመን ውቅር ከSteam የውቅር CDN በፊት የተሠራ ነው። በSteam ውስጥ ደንበኝነት ይመዝገቡበት፣ PadForge ከSteam አቃፊዎ ያነበዋል።</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam ለዚህ ውቅር የሚወርድ ፋይል አይዘረዝርም፣ በSteam አቃፊዎም ውስጥ ቅጂው የለም። በSteam ውስጥ ደንበኝነት ይመዝገቡበት፣ PadForge ከዚያ ያነበዋል።</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>በSteam ወርክሾፕ ክፈት</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>የቆየ</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>የሚተላለፈውን ለማየት ውቅር ይምረጡ።</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>የሚተላለፈው</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>የሚሆነው</value></data>
@@ -3913,7 +3902,6 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>ምናሌው የተያያዙ ሕዋሶች የሉትም</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>የምናሌ አስተናጋጅ ወለል አይደገፍም ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>የምናሌ ሕዋስ አዶ አልታወቀም ({0})፣ ስለዚህ ሕዋሱ የጽሑፍ መለያውን ይይዛል</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>ባስ ሼከሮች</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>ውፅዓት</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>አዝራሮች</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>ቁልፎች እና መዳፊት</value></data>
@@ -4383,7 +4371,6 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>ሞተር</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>በአቅጣጫ የተከፈለ</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>የመሃል የሞተ ቀጠና</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>ወደ «ጠፍቷል» ዳግም አስጀምር</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>ወደ «የግራ ስቲክ X» ዳግም አስጀምር</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>ጥንካሬን ዳግም አስጀምር (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>የመሃል የሞተ ቀጠናን ዳግም አስጀምር (2%)</value></data>
@@ -4463,7 +4450,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>በተካተተው SDL3.dll ውስጥ የተጠናቀረው የHID ንብርብር፣ በAlan Ott፣ Signal 11 Software።</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>የአዶ ምንጮች</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>የነበልባል ምልክቱ ከMaterial Design Icons (Pictogrammers፣ Apache-2.0)፣ አጠቃላዩ የጌምፓድ አዶ ከIonicons (Ionic፣ MIT)፣ የExtended ጆይስቲክ ከJam Icons (Michael Amprimo፣ MIT)፣ እና የXbox እና PlayStation አዶዎች ከSVG Repo፣ በእያንዳንዱ አዶ ገጽ ላይ ባለው ፈቃድ።</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>የነበልባል ምልክቱ ከMaterial Design Icons (Pictogrammers፣ Apache-2.0)፣ የExtended ጆይስቲክ ከJam Icons (Michael Amprimo፣ MIT)፣ እና የXbox እና PlayStation አዶዎች ከSVG Repo፣ በእያንዳንዱ አዶ ገጽ ላይ ባለው ፈቃድ።</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>ከ«የርቀት ትስስር» ተጠባባቂ መስመር በስተጀርባ ያለው የሪሌይ ፕሮቶኮል፣ FlexInput እንደሚያደርገው ከn0.computer ነፃ ይፋዊ ሪሌዮች ጋር የሚገናኝ። iroh: MIT OR Apache-2.0። FlexInput: MIT። ሰነድ ብቻ፣ ምንም ኮድ አይካተትም።</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

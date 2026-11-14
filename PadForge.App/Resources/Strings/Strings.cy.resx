@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Yn cau PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Yn cychwyn PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Yn glanhau'r rheolyddion rhithwir a adawyd o sesiwn flaenorol.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> dyfais</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Ychwanegu Rheolydd</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Ychwanegu Rheolydd</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Dewiswch yr hyn y dylai gemau ei weld. Ychwanegir y rheolydd cyn gynted ag y byddwch yn clicio.</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Goramser recordio ar gyfer "{0}."</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Cychwynnwyd yr injan.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Stopiwyd yr injan.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Dim mapio</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Gwall: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Nid oedd modd creu {0}.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Newidiwyd y proffil: {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Yn recordio...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>pan</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>ar</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>Neilltuwyd "{0}" i Reolydd Rhithwir {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>Dad-neilltuwyd "{0}" o Reolydd Rhithwir {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Tynnwyd y ddyfais.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Dilëwyd Rheolydd Rhithwir {0}.</value></data>
@@ -516,7 +513,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>PCs rydych wedi paru â nhw ar gyfer Dolen Bell. Dirymwch un i'w atal rhag cysylltu. Byddai'n rhaid iddo baru eto.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Dirymu</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Dirymu Pob Un</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Ailenwi</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Troshaen Pad Cyffwrdd</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Arwyneb cyffwrdd ar y sgrin ar gyfer gemau pad cyffwrdd PlayStation, ar gyfer sgrin gyffwrdd neu'r llygoden.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Galluogi Troshaen Pad Cyffwrdd</value></data>
@@ -750,7 +746,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Telerau trwydded Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Telerau SDK Corsair</value></data>
@@ -1029,9 +1024,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Mapiadau</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Ffyn</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Sbardunau</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Adborth Grym</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Sbardunau Impwls</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Sbardunau Impwls</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ennill pob sbardun, cyfnewid moduron, dirgryniadau sbardun addasol, Grym Sbardun Cyson</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Yn anfon gorchmynion modur fesul sbardun (Sbardunau Impwls Xbox) ymlaen o'r rheolydd rhithwir i'r rheolydd Xbox One, Elite neu Series ffisegol a neilltuwyd. Mae dirgryniad sbardun a yrrir gan gêm yn mynd drwodd yn awtomatig. Mae'r rheolyddion isod yn graddio'r maint fesul sbardun.</value></data>
@@ -1097,7 +1090,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Ailosod y Sbardun Chwith</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Ailosod y Sbardun De</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Sbardunau Addasol</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Sbardunau Addasol</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Ffurfweddu effeithiau adborth sbardun ar y DualSense ffisegol a neilltuwyd. Anfonir effeithiau sbardun o gêm neu o fod gêm ymlaen yn awtomatig. Mae'r gosodiadau yma yn ychwanegu haen a ffurfweddwyd gan y defnyddiwr sy'n rhedeg pan nad oes yr un o'r ddau yn ysgrifennu.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Ffyn</value></data>
@@ -1142,7 +1134,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>Goleuo</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Goleuo</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Gosodwch liw sylfaen y bar golau ac ymddygiad sain ar y rheolydd ffisegol a neilltuwyd. Mae ysgrifennu gan gêm bob amser yn drech. Mae gosodiadau'r defnyddiwr yn berthnasol pan nad oes gêm yn gyrru'r bar golau.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Tra bo wedi'i osod i Rif Chwaraewr, mae'r pad yn segura gan ddangos hunaniaeth chwaraewr ei reolydd rhithwir: lliw chwaraewr Sony ar y bar golau (1 glas, 2 coch, 3 gwyrdd, 4 pinc) a'r goleuadau chwaraewr cyfatebol ar DualSense. Mae pob dyfais ar yr un rheolydd rhithwir yn dangos yr un rhif. Mae gemau'n cymryd drosodd pryd bynnag yr ysgrifennant oleuo, mae unrhyw beth a osodwch yma bob amser yn drech, ac mae I ffwrdd yn troi golau'n dywyll llwyr.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Tra bo wedi'i osod i Rif Chwaraewr, mae'r pad yn segura gan ddangos hunaniaeth chwaraewr ei reolydd rhithwir: lliw chwaraewr Sony ar y bar golau (1 glas, 2 coch, 3 gwyrdd, 4 pinc) a'r goleuadau chwaraewr cyfatebol ar DualSense. Mae pob dyfais ar yr un rheolydd rhithwir yn dangos yr un rhif. Mae gêm yn cymryd drosodd pryd bynnag yr ysgrifenna oleuo. Mae unrhyw fodd arall a osodir yma yn disodli lliw'r chwaraewr, ac mae I ffwrdd yn troi golau'n dywyll llwyr.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Mae'r rheolydd rhithwir hwn yn goleuo'r ddyfais gyda'r un moddau ag sydd gan far golau DualSense, wedi'u gosod yma ar gyfer y rheolydd hwn yn unig. Ar reolydd rhithwir PlayStation, mae gêm sy'n ysgrifennu'r bar golau yn cymryd drosodd fel y mae ar DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Rheoli Goleuo'r Ddyfais Hon</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Mae I ffwrdd yn atal y rheolydd rhithwir hwn rhag goleuo'r ddyfais. Gall rhes gwerthwr, neu ddyfais arall o'i math wedi'i goleuo drwy'r un meddalwedd, osod ei lliw o hyd. Mae macro Set Chroma Color ar y rheolydd rhithwir hwn yn dal i baentio dyfais Razer.</value></data>
@@ -1257,9 +1249,9 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Sbardunau</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Botymau</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Proffiliau a Fewnforiwyd…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Rhagosodiadau Rheolydd…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Rheolydd Estynedig</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Rheoli proffiliau HIDMaestro a fewnforiwyd gan y defnyddiwr: dal un newydd o ddyfais gysylltiedig, allforio un presennol i JSON, neu ddileu un nad oes ei angen arnoch mwyach.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Rheoli'r rhagosodiadau rheolydd a ychwanegoch: mewnforio un o ffeil neu o ddyfais gysylltiedig, allforio un i JSON, neu ddileu un nad oes ei angen arnoch mwyach.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Clonio Dyfais 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Mapio pob echelin, botwm a POV ar y ddyfais a ddewiswyd yn syth drwodd i'r allbwn rhithwir â'r un rhif. Yn addasu maint y cynllun i'r ddyfais ac yn disodli rhesi'r ddyfais hon ar y slot â thramwy 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Clonio Dyfais 1:1</value></data>
@@ -1274,18 +1266,18 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Mewnforio o Ddyfais Gysylltiedig</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Allforio…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Dileu</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Allforio JSON y Proffil</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Allforio JSON y Rhagosodiad</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Dileu'r Rhagosodiad?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Mae unrhyw reolydd sy'n defnyddio {0} yn mynd yn ôl i'r cofnod Custom. Ni ellir dadwneud hyn.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Allforiwyd i {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Methodd yr allforio: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Dilëwyd "{0}."</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Mewnforio O Ffeil…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Mewnforio JSON y Proffil</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Mewnforio JSON y Rhagosodiad</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Mewnforiwyd o {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Methodd y darllen: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Gwrthododd HIDMaestro y proffil hwn yn {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Nid oes gan y proffil hwn ddisgrifydd HID, felly ni ellir gwneud rheolydd ohono.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>Gwrthododd HIDMaestro y rhagosodiad hwn yn {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Nid oes gan y rhagosodiad hwn ddisgrifydd HID, felly ni ellir gwneud rheolydd ohono.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Ni fewnforiwyd dim. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Mewnforio</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(dyfais HID dienw)</value></data>
@@ -1396,9 +1388,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Newid i'r olwg 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Newid i'r olwg 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Cliciwch i brofi'r modur chwith</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Modur Chwith</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Cliciwch i brofi'r modur dde</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Modur Dde</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Mapio Pob Un</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mapio: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Recordio pob mapio un ar ôl y llall yn eu trefn</value></data>
@@ -1502,6 +1492,11 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Troi gwir/gau</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Os, gyda'r patrwm (amod) ? yna : arall</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Hanner arall o os-yna-arall</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>a</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>neu</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>nid</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>os?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>fel arall:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Maint (yn gollwng yr arwydd)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Y lleiaf o ddau werth</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Y mwyaf o ddau werth</value></data>
@@ -1569,6 +1564,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Graddnodi'r Canol</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Pwynt Canol</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Canol</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Cyflymder</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Parth Marw</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Gwrthbwyntiau canol, siâp y parth marw a'i werthoedd i bob echelin, cromlin i bob echelin, amrediad, llywio</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Yr amrediad mewn rhifau, gwerthoedd crai</value></data>
@@ -1792,7 +1788,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Gludiog (Dal)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Modur Chwith</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Modur Dde</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Dal</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Pylu</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1901,7 +1896,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Pad cyffwrdd</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Pad cyffwrdd</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Mewnbwn fesul pad cyffwrdd. Mae ystumiau (llusgo, tapio, pinsio, siapiau) a dulliau allbwn parhaus (ffon / D-pad rhithwir, llygoden) yn dod yn ffynonellau mapio y gallwch eu rhwymo i unrhyw allbwn.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Pad cyffwrdd</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Rhif y pad cyffwrdd</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Pa bad cyffwrdd ar y rheolydd hwn y mae'r gosodiadau isod yn berthnasol iddo. Mae gan bob pad cyffwrdd ei ystumiau, ei deimlad llygoden a'i ranbarth pwyntydd ei hun.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Canfod ystumiau</value></data>
@@ -2352,8 +2346,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Symudiad y Llygoden Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensitifrwydd</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Sensitifrwydd y pwyntydd IR fesul ffynhonnell. Mae 1.0 yn cyrraedd gwyriad llawn y ffon ar ymyl maes golwg y camera. Mae gwerthoedd uwchlaw 1.0 yn cyrraedd gwyriad llawn gyda llai o symud anelu. Mae gwerthoedd islaw 1.0 angen mwy.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensitifrwydd</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Sensitifrwydd fesul ffynhonnell ar gyfer echelin blaen, llithrydd, neu ffon / sbardun rheolydd gêm. Mae 1.0 yn gadael y mewnbwn heb ei newid. Mae gwerthoedd uwchlaw 1.0 yn cyrraedd gwyriad llawn gyda llai o symud. Mae gwerthoedd islaw 1.0 angen mwy.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Rheolydd gêm {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Sensitifrwydd symudiad y llygoden fesul ffynhonnell. Mae 1.0 yn cyrraedd gwyriad llawn ar yr un cyflymder â llygoden go iawn, mae gwerthoedd uwchlaw 1.0 angen llai o symud, ac mae gwerthoedd islaw angen mwy.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Cyfanswm Pwysau Cydbwysedd</value></data>
@@ -2489,7 +2481,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Mae proffil yn llwytho ei hun pan fydd un o'i gemau o'ch blaen.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Yn dechrau heb reolyddion. Mae'n llwytho ei hun pan fydd un o'i gemau o'ch blaen.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Ychwanegu Gêm sy'n Rhedeg</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nid oes gan unrhyw raglen arall ffenestr ar agor.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ni chanfuwyd unrhyw ffenestr agored arall.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tynnu {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Cyfradd pleidleisio tra bydd y proffil hwn wedi'i lwytho</value></data>
 
@@ -3067,7 +3059,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Ychwanegwch liwiau i gamu drwyddynt, un ar gyfer pob clo.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Ailosod dal y bar golau</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Sain</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Pwyntydd</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Pwyntydd IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Anelwch y Wii Remote hwn at y sgrin gyda'i gamera IR. Mae angen bar synhwyrydd, neu ddau LED isgoch, uwchben neu islaw'r arddangosfa. Graddnodwch ef fel gwn golau ar y dudalen Dyfeisiau i anelu at y man union. Mae teclyn pell wedi'i raddnodi yn anwybyddu Safle'r bar synhwyrydd a Gwrthbwyso fertigol.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Tiwnio'r pwyntydd</value></data>
@@ -3425,7 +3416,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Enwch y tag hwn</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Cofrestru</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Wedi'u Cofrestru</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Heb ganfod darllenydd NFC. Cysylltwch ddarllenydd PC/SC ac ailagor.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Daliwyd y tag. Rhowch enw a chliciwch Cofrestru. Tapiwch dag arall i'w ddisodli.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>Cofrestrwyd "{0}." Tapiwch dag arall i ychwanegu mwy.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Cofrestru / rheoli tagiau NFC</value></data>
@@ -3452,7 +3442,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="VrCtl_Z" xml:space="preserve"><value>Rheolydd Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Ffon bawd X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Ffon bawd Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Sbardun</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Gafael</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Clic ffon bawd</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Botwm cynradd</value></data>
@@ -3530,7 +3519,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Galluogi botymau PC llaw</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Yn ychwanegu dyfais Botymau Cudd a dyfais Symudiad System at dudalen Dyfeisiau. Pan fydd wedi'i ddiffodd, nid oes dim yn rhedeg.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Consumer {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Llygoden</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Ystumiau llygoden</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Daliwch fotwm yr ystum, fflicio, a bydd un weithred yn tanio pan fyddwch yn rhyddhau: chwith, de, i fyny, i lawr, neu glic plaen islaw pellter y fflic. Mapiwch y pum ystum i unrhyw allbwn neu defnyddiwch nhw fel sbardunau macro.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Galluogi ystumiau llygoden</value></data>
@@ -3719,8 +3707,9 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Methu cyrraedd Steam</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Methu cyrraedd Steam. Gwiriwch eich cysylltiad. Mae proffiliau rydych eisoes wedi'u mewnforio yn dal i weithio: maen nhw'n byw ar y PC hwn.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Ailgynnig</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Mae'r ffurfweddiad hwn o gyfnod 2016 yn rhagflaenu CDN ffurfweddiadau Steam. Tanysgrifiwch iddo yn Steam, a bydd PadForge yn ei ddarllen o'ch ffolder Steam.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Nid yw Steam yn rhestru unrhyw ffeil i'w lawrlwytho ar gyfer y ffurfweddiad hwn, ac nid oes copi ohono yn eich ffolder Steam. Tanysgrifiwch iddo yn Steam, a bydd PadForge yn ei ddarllen oddi yno.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Agor yn y Gweithdy Steam</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Etifeddol</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Dewiswch ffurfweddiad i weld yr hyn sy'n dod drosodd.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Yr Hyn sy'n Dod Drosodd</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Yn Dod yn</value></data>
@@ -3946,7 +3935,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>nid oes gan y ddewislen unrhyw gelloedd rhwymedig</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>ni chefnogir arwyneb gwesteiwr y ddewislen ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ni chydnabuwyd eicon cell y ddewislen ({0}), felly mae'r gell yn cadw ei label testun</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Siglwyr bas</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Allbwn</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Botymau</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Bysellau a Llygoden</value></data>
@@ -4405,7 +4393,6 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Modur</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Hollti yn ôl Cyfeiriad</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Parth Marw y Canol</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Ailosod i Ffwrdd</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Ailosod i Ffon Chwith X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Ailosod y Cryfder (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Ailosod Parth Marw y Canol (2%)</value></data>

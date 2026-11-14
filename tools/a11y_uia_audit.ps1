@@ -386,15 +386,6 @@ function Find-Child($parent, [string]$aid) {
     return $null
 }
 
-# The first child of a host, as a runtime id and a class name, read live.
-function First-Child($el) {
-    try {
-        $ch = $Walker.GetFirstChild($el)
-        if ($ch) { return @(($ch.GetRuntimeId() -join '.'), $ch.Current.ClassName) }
-    } catch { }
-    return @('', '')
-}
-
 # Polls every 30 ms until the condition holds, then allows 150 ms for the
 # new content's bindings to fill. Returns the milliseconds waited, or -1 on
 # timeout, after which the pass carries on with whatever is shown.
@@ -522,19 +513,25 @@ function Audit-Deep($root, [string]$where, [bool]$scan = $true) {
     if ($NoFolds) { $plain = Audit-View $root $where $scan; Write-Outline $plain $where; return $plain }
     $v = Audit-View $root $where $false
     $openedFolds = New-Object System.Collections.Generic.List[object]
-    for ($level = 1; $level -le 4 -and $v.Folds.Count -gt 0; $level++) {
-        $n = 0
-        foreach ($fold in $v.Folds) {
-            try { $fold.GetCurrentPattern($ECP).Expand(); $openedFolds.Add($fold); $n++ } catch { }
+    # The folds close again, last first, on every way out: an error that goes
+    # to the trap and Ctrl+C both run the finally before the script ends, and
+    # PadForge stores the fold state it is left with.
+    try {
+        for ($level = 1; $level -le 4 -and $v.Folds.Count -gt 0; $level++) {
+            $n = 0
+            foreach ($fold in $v.Folds) {
+                try { $fold.GetCurrentPattern($ECP).Expand(); $openedFolds.Add($fold); $n++ } catch { }
+            }
+            if ($n -eq 0) { break }
+            Start-Sleep -Milliseconds 300
+            $v = Audit-View $root "$where, folds opened ($level)" $false
         }
-        if ($n -eq 0) { break }
-        Start-Sleep -Milliseconds 300
-        $v = Audit-View $root "$where, folds opened ($level)" $false
-    }
-    if ($scan) { Scan-Axe $where }
-    Write-Outline $v $where
-    for ($i = $openedFolds.Count - 1; $i -ge 0; $i--) {
-        try { $openedFolds[$i].GetCurrentPattern($ECP).Collapse() } catch { }
+        if ($scan) { Scan-Axe $where }
+        Write-Outline $v $where
+    } finally {
+        for ($i = $openedFolds.Count - 1; $i -ge 0; $i--) {
+            try { $openedFolds[$i].GetCurrentPattern($ECP).Collapse() } catch { }
+        }
     }
     return $v
 }

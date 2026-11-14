@@ -136,7 +136,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Stänger PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Startar PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Rensar bort virtuella handkontroller som blivit kvar från en tidigare session.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> enheter</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Lägg till handkontroll</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Lägg till en handkontroll</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Välj vad spelen ska se. Handkontrollen läggs till så fort du klickar.</value></data>
@@ -280,7 +279,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Tidsgränsen gick ut för inspelningen av ”{0}”.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Motorn har startats.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motorn har stoppats.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Ingen mappning</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Fel: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} kunde inte skapas.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Bytte till profil: {0}</value></data>
@@ -298,7 +296,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Spelar in...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>när</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>på</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>”{0}” har tilldelats virtuell handkontroll {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>”{0}” har tagits bort från virtuell handkontroll {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Enheten har tagits bort.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtuell handkontroll {0} har raderats.</value></data>
@@ -529,7 +526,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Datorer som du har parkopplat med för Fjärrlänk. Återkalla en för att hindra den från att ansluta. Den måste då parkopplas igen.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Återkalla</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Återkalla alla</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Byt namn</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Styrplatteöverlägg</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>En pekyta på skärmen för PlayStation-spel med styrplatta, för en pekskärm eller musen.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Aktivera styrplatteöverlägg</value></data>
@@ -763,7 +759,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Licensvillkor för Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Villkor för Corsair SDK</value></data>
@@ -1110,9 +1105,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Mappings" xml:space="preserve"><value>Mappningar</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Spakar</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Avtryckare</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Kraftåterkoppling</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulsavtryckare</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulsavtryckare</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Avtryckarförstärkning, motorbyte, vibrationer från adaptiva avtryckare, Konstant avtryckarkraft</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Vidarebefordrar motorkommandon per avtryckare (Xbox Impulse Triggers) från den virtuella handkontrollen till den tilldelade fysiska Xbox One-, Elite- eller Series-handkontrollen. Avtryckarvibration som styrs av spelet släpps igenom automatiskt. Reglagen nedan skalar styrkan per avtryckare.</value></data>
@@ -1178,7 +1171,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Återställ vänster avtryckare</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Återställ höger avtryckare</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptiva avtryckare</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptiva avtryckare</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfigurera återkopplingseffekter för avtryckarna på den tilldelade fysiska DualSense-handkontrollen. Avtryckareffekter från ett spel eller en spelmodd vidarebefordras automatiskt. Inställningarna här lägger till ett användarkonfigurerat lager som körs när ingen av dem skriver.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Spakar</value></data>
@@ -1224,7 +1216,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Lighting" xml:space="preserve"><value>Belysning</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Belysning</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Ange ljusfältets grundfärg och ljudbeteende på den tilldelade fysiska handkontrollen. Det spelet skriver går alltid före. Användarinställningarna gäller när inget spel styr ljusfältet.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>När läget är Spelarnummer visar handkontrollen i vila spelaridentiteten för sin virtuella handkontroll: Sonys spelarfärg på ljusfältet (1 blå, 2 röd, 3 grön, 4 rosa) och motsvarande spelarlampor på en DualSense. Alla enheter på samma virtuella handkontroll visar samma nummer. Spel tar över så fort de skriver belysning, det du ställer in här går alltid före, och Av släcker en lampa helt.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>När läget är Spelarnummer visar handkontrollen i vila spelaridentiteten för sin virtuella handkontroll: Sonys spelarfärg på ljusfältet (1 blå, 2 röd, 3 grön, 4 rosa) och motsvarande spelarlampor på en DualSense. Alla enheter på samma virtuella handkontroll visar samma nummer. Ett spel tar över så fort det skriver belysning. Alla andra lägen som ställs in här ersätter spelarfärgen, och Av släcker en lampa helt.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Den här virtuella handkontrollen lyser upp enheten med samma lägen som ljusfältet på en DualSense har, inställda här för enbart den här handkontrollen. På en virtuell PlayStation-handkontroll tar ett spel som skriver till ljusfältet över, på samma sätt som på en DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Styr den här enhetens belysning</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Belysningskontroll</value></data>
@@ -1446,9 +1438,9 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Avtryckare</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-hattar</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Knappar</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Importerade profiler…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Handkontrollsförval…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Utökad handkontroll</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Hantera HIDMaestro-profiler som användaren har importerat: fånga en ny från en ansluten enhet, exportera en befintlig till JSON eller radera en som du inte längre behöver.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Hantera de handkontrollsförval du har lagt till: importera ett från en fil eller en ansluten enhet, exportera ett till JSON eller radera ett som du inte längre behöver.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Klona enhet 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Mappa varje axel, knapp och hatt på den valda enheten rakt igenom till den virtuella utmatningen med samma nummer. Anpassar layoutens storlek efter enheten och ersätter den här enhetens rader på platsen med en genomkoppling 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Klona enhet 1:1</value></data>
@@ -1463,18 +1455,18 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Importera från en ansluten enhet</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Exportera…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Radera</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Exportera profil-JSON</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Exportera förvals-JSON</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Radera förval?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Varje handkontroll som använder {0} går tillbaka till posten Anpassad. Det går inte att ångra.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Exporterad till {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Exporten misslyckades: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>”{0}” har raderats.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Importera från en fil…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importera profil-JSON</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importera förvals-JSON</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Importerad från {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Läsningen misslyckades: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro avvisade den här profilen vid {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Den här profilen har ingen HID-deskriptor, så ingen handkontroll kan skapas från den.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro avvisade det här förvalet vid {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Det här förvalet har ingen HID-deskriptor, så ingen handkontroll kan skapas från det.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Ingenting importerades. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importera</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(namnlös HID-enhet)</value></data>
@@ -1585,9 +1577,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Byt till 2D-vy</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Byt till 3D-vy</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Klicka för att testa vänster motor</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Vänster motor</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Klicka för att testa höger motor</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Höger motor</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Mappa alla</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mappa: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Spela in alla mappningar i tur och ordning, en i taget</value></data>
@@ -1691,6 +1681,11 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Vänd sant/falskt</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Om, med mönstret (villkor) ? då : annars</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Annars-delen av en om-då-annars</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>och</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>eller</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>inte</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>om?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>annars:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Absolutbelopp (tar bort tecknet)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Det mindre av två värden</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Det större av två värden</value></data>
@@ -1759,6 +1754,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibrera centrum</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Centrumpunkt</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Centrum</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Hastighet</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Dödzon</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Centrumförskjutning, dödzonens form och värden per axel, en kurva för varje axel, omfång, styrning</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Omfånget i tal, råvärden</value></data>
@@ -1982,7 +1978,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Kvarstående (håll)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Vänster motor</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Höger motor</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Hålltid</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Uttoning</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -2091,7 +2086,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Touchpad" xml:space="preserve"><value>Styrplatta</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Styrplatta</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Inmatning per styrplatta. Gester (svep, knackningar, nyp, former) och kontinuerliga utdatalägen (virtuell spak / styrkors, mus) blir mappningskällor som du kan binda till valfri utmatning.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Styrplatta</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Styrplattans nummer</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Vilken styrplatta på den här handkontrollen som inställningarna nedan gäller. Varje styrplatta har sina egna gester, sin egen muskänsla och sitt eget pekarområde.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Gestigenkänning</value></data>
@@ -2542,8 +2536,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Musrörelse Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Känslighet</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Känslighet för IR-pekaren per källa. 1.0 når fullt spakutslag vid kanten av kamerans synfält. Värden över 1.0 når fullt utslag med mindre siktrörelse. Värden under 1.0 kräver mer.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Känslighet</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Känslighet per källa för en vanlig axel, ett reglage eller en spak / avtryckare på en handkontroll. 1.0 lämnar inmatningen oförändrad. Värden över 1.0 når fullt utslag med mindre rörelse. Värden under 1.0 kräver mer.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Handkontroll {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Känslighet för musrörelsen per källa. 1.0 når fullt utslag vid samma hastighet som en riktig mus skulle göra, värden över 1.0 kräver mindre rörelse och värden under kräver mer.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Balans totalvikt</value></data>
@@ -2680,7 +2672,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>En profil läses in av sig själv när ett av dess spel ligger överst.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Börjar utan handkontroller. Den läses in av sig själv när ett av dess spel ligger överst.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Lägg till ett spel som körs</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Inget annat program har ett fönster öppet.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Inget annat öppet fönster hittades.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Ta bort {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Avläsningsfrekvens medan den här profilen är inläst</value></data>
 
@@ -3262,7 +3254,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Lägg till färger att stega igenom, en per fullt utslag.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Återställ ljusfältets hålltid</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Ljud</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Pekare</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-pekare</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Rikta den här Wii-fjärrkontrollen mot skärmen med dess IR-kamera. Kräver en sensorlist, eller två infraröda lysdioder, ovanför eller nedanför skärmen. Kalibrera den som en ljuspistol på sidan Enheter för att sikta på exakt rätt punkt. En kalibrerad fjärrkontroll ignorerar Sensorlistens position och Vertikal förskjutning.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Pekarjustering</value></data>
@@ -3617,7 +3608,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Ingen Bluetooth-radio är tillgänglig. Slå på Bluetooth och försök igen. Parkoppling behövs bara för trådlöst spelande; en kabelansluten handkontroll fungerar utan den.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Parkopplingen slutfördes inte. Steget som misslyckades visas ovan.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Stäng</value></data>
-  <data name="Common_ResizePanes" xml:space="preserve"><value>Ändra storlek på fönsterpaneler</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC-taggar</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>Håll en tagg mot läsaren och ge den ett namn. Den blir en knapp som du kan mappa.</value></data>
   <data name="Nfc_TapPrompt" xml:space="preserve"><value>Håll en tagg mot läsaren.</value></data>
@@ -3625,7 +3615,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Namnge den här taggen</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Registrera</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Registrerade</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Ingen NFC-läsare hittades. Anslut en PC/SC-läsare och öppna igen.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Taggen är fångad. Ange ett namn och klicka på Registrera. Håll en annan tagg mot läsaren för att ersätta den.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>”{0}” har registrerats. Håll en annan tagg mot läsaren för att lägga till fler.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Registrera / hantera NFC-taggar</value></data>
@@ -3652,7 +3641,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="VrCtl_Z" xml:space="preserve"><value>Handkontroll Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Spak X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Spak Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Avtryckare</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Grepp</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Spakklick</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Primär knapp</value></data>
@@ -3755,7 +3743,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Aktivera knappar på handhållen dator</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Lägger till enheten Dolda knappar och enheten Systemrörelse på sidan Enheter. När det är av körs ingenting.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Konsument {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Mus</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Musgester</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Håll ned gestknappen och snärta till, så utlöses en åtgärd när du släpper: vänster, höger, upp, ned eller ett vanligt klick under snärtavståndet. Mappa de fem gesterna till valfri utmatning eller använd dem som makroutlösare.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Aktivera musgester</value></data>
@@ -3944,8 +3931,9 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam går inte att nå</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Kunde inte nå Steam. Kontrollera din anslutning. Profiler som du redan har importerat fortsätter att fungera: de finns på den här datorn.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Försök igen</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Den här konfigurationen från tiden kring 2016 är äldre än Steams CDN för konfigurationer. Prenumerera på den i Steam, så läser PadForge den från din Steam-mapp.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam anger ingen fil att hämta för den här konfigurationen, och ingen kopia av den finns i din Steam-mapp. Prenumerera på den i Steam, så läser PadForge den därifrån.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Öppna i Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Äldre</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Välj en konfiguration för att se vad som följer med.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Vad som följer med</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Blir</value></data>
@@ -4171,7 +4159,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menyn har inga bundna celler</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menyns värdyta stöds inte ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menycellens ikon kändes inte igen ({0}), så cellen behåller sin textetikett</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Basskakare</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Utdata</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Knappar</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tangenter och mus</value></data>
@@ -4650,7 +4637,6 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Dela efter riktning</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Dödzon i mitten</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Återställ till av</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Återställ till Vänster spak X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Återställ styrka (50 %)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Återställ dödzon i mitten (2 %)</value></data>
@@ -4730,7 +4716,7 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>Det HID-lager som är kompilerat in i den medföljande SDL3.dll, av Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Ikonkällor</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Flamglyfen från Material Design Icons (Pictogrammers, Apache-2.0), den generiska handkontrollsikonen från Ionicons (Ionic, MIT), joysticken för Utökad från Jam Icons (Michael Amprimo, MIT) samt Xbox- och PlayStation-ikonerna från SVG Repo, under den licens som anges på varje ikons sida.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Flamglyfen från Material Design Icons (Pictogrammers, Apache-2.0), joysticken för Utökad från Jam Icons (Michael Amprimo, MIT) samt Xbox- och PlayStation-ikonerna från SVG Repo, under den licens som anges på varje ikons sida.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Reläprotokollet bakom reservvägen i Fjärrlänk, som talas med de kostnadsfria offentliga reläerna från n0.computer på samma sätt som FlexInput gör. iroh: MIT OR Apache-2.0. FlexInput: MIT. Endast dokumentation, ingen kod följer med.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

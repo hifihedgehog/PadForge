@@ -944,7 +944,11 @@
                                               VerticalAlignment="Top" Margin="0,1,14,0"/>
                         <StackPanel Grid.Column="1" VerticalAlignment="Top">
                             <TextBlock common:LiveText.Polite="True" Text="{Binding GameTelemetryStatus}" Style="{StaticResource ExtraStatusText}"/>
-                            <TextBlock Text="{Binding Extras_StatusHint_GameTelemetry, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraStatusHint}"/>
+                            <!-- What to do in the game, for a game that sends to a port.
+                                 Assetto Corsa is read from shared memory and has no port
+                                 to point at, so the line rests while it is picked. -->
+                            <TextBlock Text="{Binding Extras_StatusHint_GameTelemetry, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraStatusHint}"
+                                       Visibility="{Binding GameTelemetryReadsUdp, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -1345,7 +1349,7 @@
                                                         Visibility="{Binding IsOnline, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                                 <ui:Button Style="{StaticResource QuietButton}" Padding="14,0" VerticalAlignment="Center"
                                                            Tag="{Binding ElementName=PeerNameBox}" Click="PeerRename_Click"
-                                                           Content="{Binding RemoteLink_Rename, Source={x:Static strings:Strings.Instance}}"/>
+                                                           Content="{Binding Common_Rename, Source={x:Static strings:Strings.Instance}}"/>
                                                 <ui:Button Style="{StaticResource QuietButton}" Padding="14,0" VerticalAlignment="Center"
                                                            Command="{Binding RevokeCommand}"
                                                            Content="{Binding RemoteLink_Revoke, Source={x:Static strings:Strings.Instance}}"/>
@@ -1437,7 +1441,7 @@
                                 <TextBlock Text="{Binding RemoteLink_IdentityTitle, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                            ToolTip="{Binding RemoteLink_IdentityDescription, Source={x:Static strings:Strings.Instance}}"/>
                                 <ComboBox MinWidth="260" MinHeight="34" VerticalAlignment="Center"
-                                          ItemsSource="{Binding RemoteLink.IdentityProtectionModes}"
+                                          ItemsSource="{Binding RemoteLink.IdentityProtectionModes}" DisplayMemberPath="Display"
                                           SelectedIndex="{Binding RemoteLink.IdentityProtectionModeIndex, Mode=TwoWay}"
                                           AutomationProperties.Name="{Binding RemoteLink_IdentityTitle, Source={x:Static strings:Strings.Instance}}"
                                           ToolTip="{Binding RemoteLink_IdentityDescription, Source={x:Static strings:Strings.Instance}}"/>
@@ -1840,12 +1844,15 @@
                                 <StackPanel>
                                     <!-- The overlay's number and status, and its card's
                                          actions: Reset All outermost, Remove beside it
-                                         while there are several. -->
-                                    <DockPanel LastChildFill="False" Margin="0,0,0,4">
+                                         while there are several. The head docks from its
+                                         end, so Reset All is written first, and the two
+                                         take their place in the Tab order by number: Remove,
+                                         which stands first, then Reset All. -->
+                                    <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="False" Margin="0,0,0,4">
                                         <TextBlock Text="{Binding Title}" Style="{StaticResource ExtraCardTitle}"/>
                                         <TextBlock common:LiveText.Polite="True" Text="{Binding Status}" FontSize="13" Margin="10,0,0,0"
                                                    VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                        <ui:Button Style="{StaticResource ResetAllButton}" Margin="12,0,0,0"
+                                        <ui:Button TabIndex="1" Style="{StaticResource ResetAllButton}" Margin="12,0,0,0"
                                                    AutomationProperties.AutomationId="{Binding ResetAllId}" Command="{Binding ResetAllCommand}"
                                                    Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}">
                                             <ui:Button.ToolTip>
@@ -1855,7 +1862,7 @@
                                                 </MultiBinding>
                                             </ui:Button.ToolTip>
                                         </ui:Button>
-                                        <ui:Button Style="{StaticResource ResetAllButton}" Margin="12,0,0,0"
+                                        <ui:Button TabIndex="0" Style="{StaticResource ResetAllButton}" Margin="12,0,0,0"
                                                    AutomationProperties.AutomationId="{Binding RemoveId}" Command="{Binding RemoveCommand}"
                                                    Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"
                                                    Visibility="{Binding OneOfSeveral, Converter={StaticResource BoolToVisibilityConverter}}"/>

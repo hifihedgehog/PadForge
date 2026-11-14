@@ -43,10 +43,6 @@ namespace PadForge.Views
         /// canceled.</summary>
         public string SelectedSound => (SoundList.SelectedItem as Item)?.Value;
 
-        /// <summary>The chosen sound's name inside its package, for the
-        /// caller that listed one package's entries.</summary>
-        public string SelectedName => (SoundList.SelectedItem as Item)?.Name;
-
         /// <summary>True when the user clicked Browse Files instead of a row.</summary>
         public bool BrowseRequested { get; private set; }
 

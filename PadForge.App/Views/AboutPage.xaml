@@ -261,7 +261,7 @@
                         <Border Style="{StaticResource CreditRow}">
                             <DockPanel>
                                 <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
-                                    <TextBlock common:BidiText.Text="{Binding About_License_BouncyCastle, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBlock common:BidiText.Text="{Binding About_License_Mit, Source={x:Static strings:Strings.Instance}}"/>
                                 </Border>
                                 <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_BouncyCastle, Source={x:Static strings:Strings.Instance}}"/>
                                 <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_BouncyCastleDesc, Source={x:Static strings:Strings.Instance}}"/>

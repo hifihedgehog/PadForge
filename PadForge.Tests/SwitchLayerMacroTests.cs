@@ -158,8 +158,9 @@ namespace PadForge.Tests
 
         /// <summary>Source contracts: the executor case resolves the slot
         /// through macro.PadIndex and calls the runtime helper, and the
-        /// editor card binds the slot's LayerTabs with the mask as the
-        /// selected value.</summary>
+        /// editor card binds the slot's switch targets, a list kept in place
+        /// through a rebuild of the tabs, with the mask as the selected
+        /// value.</summary>
         [Fact]
         public void ExecutorAndEditorContracts()
         {
@@ -199,7 +200,8 @@ namespace PadForge.Tests
             int card = page.IndexOf("Switch Layer card (#377)", StringComparison.Ordinal);
             Assert.True(card > 0);
             string cardBody = page.Substring(card, 2400);
-            Assert.Contains("DataContext.LayerTabs", cardBody);
+            Assert.Contains("DataContext.SwitchLayerChoices", cardBody);
+            Assert.DoesNotContain("DataContext.LayerTabs", cardBody);
             Assert.Contains("SelectedValue=\"{Binding SwitchLayerMask, Mode=TwoWay}\"", cardBody);
             Assert.Contains("SelectedValuePath=\"LayerMask\"", cardBody);
         }

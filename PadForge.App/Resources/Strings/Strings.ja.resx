@@ -132,7 +132,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge を終了しています...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge を起動しています…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>前回のセッションから残った仮想コントローラーをクリーンアップしています。</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> 台のデバイス</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>コントローラーを追加</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>コントローラーを追加</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>ゲームに見せる種類を選んでください。クリックするとすぐにコントローラーが追加されます。</value></data>
@@ -269,7 +268,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>「{0}」の記録がタイムアウトしました。</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>エンジンが開始されました。</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>エンジンが停止されました。</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>マッピングなし</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>エラー: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} を作成できませんでした。</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>プロファイル切替: {0}</value></data>
@@ -287,7 +285,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>記録中...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>で、ボタン</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>を押す、デバイス</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>「{0}」を仮想コントローラー {1} に割り当てました。</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>「{0}」を仮想コントローラー {1} から解除しました。</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>デバイスを削除しました。</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>仮想コントローラー {0} を削除しました。</value></data>
@@ -601,7 +598,6 @@
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio ライセンス条項</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK 条件</value></data>
@@ -766,33 +762,32 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>マッピング</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>スティック</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>トリガー</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>フォースフィードバック</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>プリセット</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>スティック</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>トリガー</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>ボタン</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>インポート済みプロファイル…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>コントローラープリセット…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Extended コントローラー</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>ユーザーがインポートした HIDMaestro プロファイルを管理します。接続されたデバイスから新しく取り込む、既存のものを JSON にエクスポート、または不要になったものを削除します。</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>追加したコントローラープリセットを管理します。ファイルまたは接続中のデバイスから取り込む、JSON にエクスポートする、不要になったものを削除する、のいずれかを行えます。</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>コントローラープリセット</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>PadForge に含まれないコントローラーのプリセットを、ファイルまたはコントローラー本体から追加します。</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>インポート済み</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>接続中のデバイスからインポート</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>エクスポート…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>削除</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>プロファイル JSON をエクスポート</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>プリセット JSON をエクスポート</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>プリセットを削除しますか？</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>{0} を使用しているコントローラーは、カスタムの項目に戻ります。この操作は元に戻せません。</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>{0} にエクスポートしました</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>エクスポートに失敗しました: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>「{0}」を削除しました。</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>ファイルから取り込む…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>プロファイル JSON をインポート</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>プリセット JSON をインポート</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>{0} からインポートしました。</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>読み込みに失敗しました: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro はこのプロファイルを {1} で拒否しました: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>このプロファイルには HID ディスクリプタがないため、コントローラーを作成できません。</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro はこのプリセットを {1} で拒否しました: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>このプリセットには HID ディスクリプタがないため、コントローラーを作成できません。</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>何もインポートされませんでした。{0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>インポート</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(名前なしの HID デバイス)</value></data>
@@ -834,9 +829,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>2D ビューに切り替え</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>3D ビューに切り替え</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>クリックして左モーターをテスト</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>左モーター</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>クリックして右モーターをテスト</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>右モーター</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>すべてマッピング</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>マッピング: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>すべてのマッピングを一つずつ順番に記録します</value></data>
@@ -941,6 +934,11 @@
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>真/偽を反転</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>If, パターン (condition) ? then : else</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>if-then-elseのelse部分</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>かつ</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>または</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>否定</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>もし?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>それ以外:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>大きさ（符号を除く）</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>2つの値の小さい方</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>2つの値の大きい方</value></data>
@@ -1009,6 +1007,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>中心をキャリブレーション</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>中心点</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>中心</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>速度</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>デッドゾーン</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>中心点のオフセット、デッドゾーン形状と軸ごとの値、軸ごとのカーブ、範囲、ステアリング</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>範囲の数値入力、生の値</value></data>
@@ -1220,7 +1219,6 @@
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>スティッキー（保持）</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>左モーター</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>右モーター</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>保持</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>フェード</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1293,7 +1291,7 @@
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>プロファイルは、ゲームのどれかが前面に来ると自動的に読み込まれます。</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>コントローラーなしで始まります。ゲームのどれかが前面に来ると、自動的に読み込まれます。</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>実行中のゲームを追加</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>ウィンドウを開いているほかのプログラムはありません。</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>ほかに開いているウィンドウは見つかりませんでした。</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} を削除</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>このプロファイルの読み込み中のポーリングレート</value></data>
 
@@ -1958,7 +1956,6 @@
   <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>awalolによるBluetoothスピーカーのレシピ。Opusフレーミングとパケットレイアウト。知見の共有とテストを提供したTechAntohereにも感謝。</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>USBコントローラー音声パススルーの参照実装。WujekFoliarz作。</value></data>
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>アダプティブトリガー</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>アダプティブトリガー</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>割り当てられた物理 DualSense のトリガーエフェクトを設定します。ゲームまたはゲーム MOD からのトリガーエフェクトは自動的に転送されます。ここでの設定は、どちらも書き込んでいないときに動作するユーザー設定レイヤーを追加します。</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>スティック</value></data>
@@ -2002,7 +1999,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>ライティング</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>ライティング</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>割り当てられた物理コントローラーのライトバーのベースカラーと、オーディオ動作を設定します。ゲームによる書き込みは常に優先されます。ユーザー設定は、ゲームがライトバーを駆動していないときに適用されます。</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>プレイヤー番号が選択されている間、パッドは待機時に仮想コントローラーのプレイヤー識別を表示します。ライトバーにはソニーのプレイヤーカラー（1 青、2 赤、3 緑、4 ピンク）、DualSense では対応するプレイヤーランプも点灯します。同じ仮想コントローラー上のすべてのデバイスが同じ番号を表示します。ゲームがライティングを書き込むとゲームが優先され、ここで設定した内容は常に最優先されます。オフを選ぶとそのライトは完全に消灯します。</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>プレイヤー番号が選択されている間、パッドは待機時に仮想コントローラーのプレイヤー識別を表示します。ライトバーにはソニーのプレイヤーカラー（1 青、2 赤、3 緑、4 ピンク）、DualSense では対応するプレイヤーランプも点灯します。同じ仮想コントローラー上のすべてのデバイスが同じ番号を表示します。ゲームがライティングを書き込むと、ゲームが優先されます。ここで設定したほかのモードはプレイヤーカラーに置き換わり、オフを選ぶとそのライトは完全に消灯します。</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>この仮想コントローラーは、DualSense のライトバーと同じモードでデバイスを点灯させます。ここでの設定はこのコントローラー専用です。PlayStation の仮想コントローラーでは、ゲームがライトバーを書き込むと DualSense と同じようにゲームが優先されます。</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>このデバイスのライティングを制御</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>ライティング制御</value></data>
@@ -2377,7 +2374,6 @@
   <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>バスカットオフをリセット</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>左トリガーをリセット</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>右トリガーをリセット</value></data>
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>インパルストリガー</value></data>
   <data name="Mapping_TouchpadGesture_SwipeUp" xml:space="preserve"><value>上スワイプ</value></data>
   <data name="Mapping_TouchpadGesture_SwipeDown" xml:space="preserve"><value>下スワイプ</value></data>
   <data name="Mapping_TouchpadGesture_SwipeLeft" xml:space="preserve"><value>左スワイプ</value></data>
@@ -2435,7 +2431,6 @@
   <data name="Pad_Touchpad" xml:space="preserve"><value>タッチパッド</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>タッチパッド</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>タッチパッドごとの入力。ジェスチャー（スワイプ、タップ、ピンチ、シェイプ）と連続出力モード（仮想スティック / 方向キー、マウス）がマッピングソースになり、任意の出力に割り当てられます。</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>タッチパッド</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>タッチパッド番号</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>以下の設定を適用するこのコントローラーのタッチパッド。タッチパッドごとにジェスチャー、マウスの挙動、ポインター領域を個別に保持します。</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>ジェスチャー検出</value></data>
@@ -2651,7 +2646,6 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>ロックごとに1色ずつ切り替える色を追加します。</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>ライトバーの保持をリセット</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>オーディオ</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>ポインター</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IRポインター</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>このWiiリモコンのIRカメラで画面に向けます。ディスプレイの上または下にセンサーバー（または赤外線LED2個）が必要です。正確な位置を狙うには、デバイスページでライトガンとしてキャリブレーションしてください。キャリブレーション済みのリモコンはセンサーバーの位置と垂直オフセットを使いません。</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>ポインター調整</value></data>
@@ -2946,7 +2940,6 @@
   <data name="RemoteLink_RevokeAll" xml:space="preserve">
     <value>すべて解除</value>
   </data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>名前を変更</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>{0} で待機中</value>
   </data>
@@ -3013,7 +3006,6 @@
   <data name="WiiPair_Failed" xml:space="preserve"><value>Wiiのペアリングを完了できませんでした。再試行してください。</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>完了</value></data>
   <data name="Common_Close" xml:space="preserve"><value>閉じる</value></data>
-  <data name="Common_ResizePanes" xml:space="preserve"><value>ペインのサイズ変更</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFCタグ</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>タグをリーダーにかざして名前を付けます。割り当てられるボタンになります。</value></data>
   <data name="Nfc_TapPrompt" xml:space="preserve"><value>タグをリーダーにかざしてください。</value></data>
@@ -3021,7 +3013,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>このタグの名前</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>登録</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>登録済み</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>NFCリーダーが検出されませんでした。PC/SCリーダーを接続して開き直してください。</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>タグを取得しました。名前を入力して「登録」をクリックしてください。別のタグをかざすと置き換えられます。</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>「{0}」を登録しました。別のタグをかざすと追加できます。</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFCタグの登録・管理</value></data>
@@ -3048,7 +3039,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>コントローラー Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>スティック X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>スティック Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>トリガー</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>グリップ</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>スティック押し込み</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>プライマリボタン</value></data>
@@ -3512,7 +3502,6 @@
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>ヌンチャク加速度センサー</value></data>
   <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>左Joy-Con加速度センサー</value></data>
   <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>補助モーション加速度センサー</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>マウス</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>マウスジェスチャー</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>ジェスチャーボタンを押したままマウスを動かし、離した瞬間にちょうど1つのアクションが発動します。左・右・上・下、またはしきい値未満なら通常のクリックです。5つのジェスチャーは任意の出力に割り当てるか、マクロのトリガーとして使えます。</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>マウスジェスチャーを有効化</value></data>
@@ -3701,8 +3690,6 @@
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>クリックしてから、カーソルを目標の位置へ移動してください。短いカウントダウンの後に位置が取得されます。</value></data>
   <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} 圧力</value></data>
   <data name="Mapping_TouchpadFingerRing_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} リング</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>感度</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>通常の軸、スライダー、ゲームパッドのスティック / トリガーに対するソースごとの感度です。1.0 は入力をそのまま通します。1.0 より大きい値では少ない操作量で最大に到達します。1.0 より小さい値ではより多くの操作量が必要です。</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>ゲームパッド {0}</value></data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>コミュニティコンフィグ</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>コミュニティ製の Steam Input コントローラーコンフィグを閲覧し、PadForge プロファイルへ変換します。PadForge が Steam のサーバーに直接接続するのは、検索したとき、コンフィグを開いたとき、インポートしたコンフィグの更新を確認したときだけです。送信されるのは検索テキスト、関係するゲーム・コンフィグ・作成者の ID、PadForge のバージョンです。匿名の Steam ログオンでは、Windows のバージョンと、Windows のインストール ID、ネットワークアダプターのアドレス、起動ディスクのシリアル番号のハッシュから作られるマシン ID も送信されます。テレメトリーなし、サードパーティサービスなし、Steam アカウント不要です。</value></data>
@@ -3759,8 +3746,9 @@
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam に接続できません</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Steam に到達できませんでした。接続を確認してください。インポート済みのプロファイルはこの PC に保存されているため、引き続き使用できます。</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>再試行</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>この 2016 年前後のコンフィグは Steam のコンフィグ CDN より前のものです。Steam でサブスクライブすると、PadForge が Steam フォルダーから読み込みます。</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>このコンフィグには Steam からダウンロードできるファイルがなく、Steam フォルダーにもコピーがありません。Steam でサブスクライブすると、PadForge がそこから読み込みます。</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam ワークショップで開く</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>レガシー</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>コンフィグを選ぶと、反映される内容を確認できます。</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>反映される内容</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>変換先</value></data>
@@ -4109,7 +4097,6 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>メニューに割り当て済みセルがありません</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>メニューのホストサーフェスは未対応 ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>メニューセルのアイコンを認識できません ({0})。このセルはテキストラベルを表示します</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>バスシェイカー</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>出力</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>ボタン</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>キーとマウス</value></data>
@@ -4599,7 +4586,6 @@
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>モーター</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>方向ごとに分割</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>中央のデッドゾーン</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>オフに戻す</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>左スティックXに戻す</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>強度を戻す（50%）</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>中央のデッドゾーンを戻す（2%）</value></data>
@@ -4679,7 +4665,7 @@
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>同梱の SDL3.dll に組み込まれた HID レイヤー。Alan Ott（Signal 11 Software）製。</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>アイコンの出典</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>炎のグリフは Material Design Icons（Pictogrammers、Apache-2.0）、汎用ゲームパッドのアイコンは Ionicons（Ionic、MIT）、Extended のジョイスティックは Jam Icons（Michael Amprimo、MIT）、Xbox と PlayStation のアイコンは SVG Repo から。SVG Repo のアイコンは各ページに記載のライセンスに従います。</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>炎のグリフは Material Design Icons（Pictogrammers、Apache-2.0）、Extended のジョイスティックは Jam Icons（Michael Amprimo、MIT）、Xbox と PlayStation のアイコンは SVG Repo から。SVG Repo のアイコンは各ページに記載のライセンスに従います。</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Remote Link のフォールバック経路を支えるリレープロトコル。FlexInput と同じく n0.computer の無料公開リレーと通信します。iroh: MIT OR Apache-2.0。FlexInput: MIT。ドキュメントのみ参照、コードは同梱しません。</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

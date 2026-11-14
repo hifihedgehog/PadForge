@@ -240,7 +240,7 @@
                 </Border.Background>
                 <!-- The unlit flame: LivenessFlameBase idiom at cold-state size. -->
                 <Path FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}" Width="18" Height="21" Stretch="Uniform"
-                      Fill="Transparent" Stroke="{DynamicResource TextFillColorTertiaryBrush}"
+                      Fill="Transparent" Stroke="#8BFFFFFF"
                       StrokeThickness="1.1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Border>
             <TextBlock Text="{Binding Workshop_ColdTitle, Source={x:Static strings:Strings.Instance}}"
@@ -301,7 +301,7 @@
                                             </LinearGradientBrush>
                                         </Border.Background>
                                         <TextBlock Text="{Binding Initial}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
-                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                   Foreground="#8BFFFFFF"
                                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
                                     <controls:DecorativeImage FlowDirection="LeftToRight" Source="{Binding Portrait}"
@@ -485,7 +485,7 @@
                                             Background="{DynamicResource WaitWellBrush}" BorderBrush="{DynamicResource WaitEdgeBrush}"
                                             TextElement.Foreground="{DynamicResource WaitBrush}"
                                             Visibility="{Binding IsLegacy, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text="LEGACY" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Workshop_LegacyTag, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" VerticalAlignment="Center"/>
                                     </Border>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
@@ -669,7 +669,7 @@
                     <Border Style="{StaticResource PillChip}" HorizontalAlignment="Center"
                             Background="{DynamicResource WaitWellBrush}" BorderBrush="{DynamicResource WaitEdgeBrush}"
                             TextElement.Foreground="{DynamicResource WaitBrush}">
-                        <TextBlock Text="LEGACY" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Workshop_LegacyTag, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" VerticalAlignment="Center"/>
                     </Border>
                     <TextBlock Text="{Binding Workshop_LegacyBody, Source={x:Static strings:Strings.Instance}}"
                                FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"

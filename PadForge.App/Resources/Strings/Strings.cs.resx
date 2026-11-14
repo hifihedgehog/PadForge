@@ -136,7 +136,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Ukončování programu PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Spouštění programu PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Odstraňují se virtuální ovladače, které zůstaly z předchozí relace.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> zařízení</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Přidat ovladač</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Přidat ovladač</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Vyberte, co mají hry vidět. Ovladač se přidá hned po kliknutí.</value></data>
@@ -280,7 +279,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Čas na zaznamenání „{0}“ vypršel.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Jádro spuštěno.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Jádro zastaveno.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Žádné mapování</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Chyba: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} se nepodařilo vytvořit.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil přepnut: {0}</value></data>
@@ -298,7 +296,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Zaznamenávání...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>když</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>na</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>Zařízení „{0}“ přiřazeno k virtuálnímu ovladači {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>Přiřazení zařízení „{0}“ k virtuálnímu ovladači {1} zrušeno.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Zařízení odebráno.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtuální ovladač {0} odstraněn.</value></data>
@@ -529,7 +526,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Počítače, se kterými jste se spárovali pro Vzdálené propojení. Odvoláním počítače zabráníte jeho připojování. Musel by se spárovat znovu.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Odvolat</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Odvolat vše</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Přejmenovat</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Překryvný touchpad</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Dotyková plocha na obrazovce pro hry s touchpadem PlayStation, pro dotykovou obrazovku nebo myš.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Povolit překryvný touchpad</value></data>
@@ -763,7 +759,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Licenční podmínky Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Podmínky SDK Corsair</value></data>
@@ -1110,9 +1105,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Mapování</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Páčky</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Spouště</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Silová zpětná vazba</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulzní spouště</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulzní spouště</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Zesílení spouští, prohození motorů, vibrace adaptivních spouští, Stálá síla spouští</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Přeposílá příkazy pro motory jednotlivých spouští (Xbox Impulse Triggers) z virtuálního ovladače do přiřazeného fyzického ovladače Xbox One, Elite nebo Series. Vibrace spouští řízené hrou se předávají automaticky. Ovládací prvky níže upravují sílu pro každou spoušť zvlášť.</value></data>
@@ -1178,7 +1171,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Resetovat levou spoušť</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Resetovat pravou spoušť</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptivní spouště</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptivní spouště</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Nastavte efekty zpětné vazby spouští na přiřazeném fyzickém ovladači DualSense. Efekty spouští ze hry nebo z herního modu se přeposílají automaticky. Zdejší nastavení přidává uživatelskou vrstvu, která běží, když nezapisuje ani jedno z nich.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Páčky</value></data>
@@ -1224,7 +1216,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>Osvětlení</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Osvětlení</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Nastavte základní barvu světelného panelu a jeho chování podle zvuku na přiřazeném fyzickém ovladači. Zápisy ze hry mají vždy přednost. Uživatelské nastavení platí, když světelný panel neřídí žádná hra.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Při nastavení Číslo hráče ukazuje gamepad v klidu identitu hráče svého virtuálního ovladače: barvu hráče Sony na světelném panelu (1 modrá, 2 červená, 3 zelená, 4 růžová) a odpovídající hráčské diody na ovladači DualSense. Všechna zařízení na stejném virtuálním ovladači ukazují stejné číslo. Hry osvětlení přebírají, kdykoli do něj zapíší, cokoli nastavíte tady, má vždy přednost, a volba Vypnuto světlo úplně zhasne.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Při nastavení Číslo hráče ukazuje gamepad v klidu identitu hráče svého virtuálního ovladače: barvu hráče Sony na světelném panelu (1 modrá, 2 červená, 3 zelená, 4 růžová) a odpovídající hráčské diody na ovladači DualSense. Všechna zařízení na stejném virtuálním ovladači ukazují stejné číslo. Hra osvětlení přebírá, kdykoli do něj zapíše. Jakýkoli jiný zde nastavený režim barvu hráče nahradí a volba Vypnuto světlo úplně zhasne.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Tento virtuální ovladač rozsvěcuje zařízení ve stejných režimech, jaké má světelný panel ovladače DualSense, a nastavují se tady jen pro tento ovladač. Na virtuálním ovladači PlayStation převezme osvětlení hra, která do světelného panelu zapisuje, stejně jako na ovladači DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Řídit osvětlení tohoto zařízení</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Řízení osvětlení</value></data>
@@ -1446,9 +1438,9 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Spouště</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Tlačítka</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Importované profily…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Předvolby ovladače…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Rozšířený ovladač</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Správa uživatelsky importovaných profilů HIDMaestro: zachyťte nový z připojeného zařízení, exportujte stávající do JSON nebo odstraňte ten, který už nepotřebujete.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Správa přidaných předvoleb ovladače: importujte předvolbu ze souboru nebo z připojeného zařízení, exportujte ji do JSON nebo odstraňte tu, kterou už nepotřebujete.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Klonovat zařízení 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Namapuje každou osu, tlačítko a POV vybraného zařízení přímo na virtuální výstup se stejným číslem. Přizpůsobí rozložení zařízení a nahradí řádky tohoto zařízení ve slotu předáváním 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Klonovat zařízení 1:1</value></data>
@@ -1463,18 +1455,18 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Importovat z připojeného zařízení</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Exportovat…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Odstranit</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Exportovat profil do JSON</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Exportovat předvolbu do JSON</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Odstranit předvolbu?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Každý ovladač, který používá {0}, se vrátí k položce Vlastní. Tuto akci nelze vrátit zpět.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Exportováno do {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Export se nezdařil: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Profil „{0}“ odstraněn.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Importovat soubor…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importovat profil z JSON</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importovat předvolbu z JSON</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Importováno z {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Čtení se nezdařilo: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro odmítl tento profil v místě {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Tento profil nemá deskriptor HID, takže z něj nelze vytvořit žádný ovladač.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro odmítl tuto předvolbu v místě {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Tato předvolba nemá deskriptor HID, takže z ní nelze vytvořit žádný ovladač.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Nic nebylo importováno. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importovat</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(nepojmenované zařízení HID)</value></data>
@@ -1585,9 +1577,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Přepnout na 2D zobrazení</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Přepnout na 3D zobrazení</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Kliknutím otestujete levý motor</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Levý motor</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Kliknutím otestujete pravý motor</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Pravý motor</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Namapovat vše</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Namapujte: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Postupně zaznamenat všechna mapování jedno po druhém</value></data>
@@ -1691,6 +1681,11 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Obrátit pravda/nepravda</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Pokud, ve tvaru (podmínka) ? pak : jinak</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Větev „jinak“ konstrukce pokud-pak-jinak</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>a</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>nebo</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>ne</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>pokud?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>jinak:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Absolutní hodnota (zahodí znaménko)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Menší ze dvou hodnot</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Větší ze dvou hodnot</value></data>
@@ -1759,6 +1754,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibrovat střed</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Středový bod</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Střed</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Rychlost</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Mrtvá zóna</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Posuny středu, tvar mrtvé zóny a hodnoty pro každou osu, křivka pro každou osu, rozsah, řízení</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Rozsah v číslech, nezpracované hodnoty</value></data>
@@ -1982,7 +1978,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Trvalý (držení)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Levý motor</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Pravý motor</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Držení</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Zeslabení</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -2091,7 +2086,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Vstup jednotlivých touchpadů. Gesta (přejetí, klepnutí, stažení, tvary) a režimy plynulého výstupu (virtuální páčka / směrový kříž, myš) se stanou zdroji mapování, které můžete navázat na libovolný výstup.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Číslo touchpadu</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Na který touchpad tohoto ovladače se vztahuje nastavení níže. Každý touchpad má vlastní gesta, chování myši a oblast ukazatele.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detekce gest</value></data>
@@ -2542,8 +2536,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Pohyb myši Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Citlivost</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Citlivost IR ukazatele pro jednotlivý zdroj. 1.0 dosáhne plné výchylky páčky na okraji zorného pole kamery. Hodnoty nad 1.0 dosáhnou plné výchylky při kratší dráze míření. Hodnoty pod 1.0 potřebují delší.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Citlivost</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Citlivost jednotlivého zdroje pro běžnou osu, posuvník nebo páčku / spoušť gamepadu. 1.0 ponechá vstup beze změny. Hodnoty nad 1.0 dosáhnou plné výchylky při kratší dráze. Hodnoty pod 1.0 potřebují delší.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Citlivost pohybu myši pro jednotlivý zdroj. 1.0 dosáhne plné výchylky při stejné rychlosti jako skutečná myš, hodnoty nad 1.0 potřebují menší pohyb, hodnoty pod 1.0 větší.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Balance Board: celková hmotnost</value></data>
@@ -2680,7 +2672,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profil se načte sám, když je vpředu jedna z jeho her.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Začíná bez ovladačů. Načte se sám, když je vpředu jedna z jeho her.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Přidat spuštěnou hru</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Žádný jiný program nemá otevřené okno.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nebylo nalezeno žádné jiné otevřené okno.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Odebrat {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Frekvence dotazování, dokud je tento profil načten</value></data>
 
@@ -3262,7 +3254,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Přidejte barvy, které se budou střídat, jedna na každý doraz.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Resetovat držení světelného panelu</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Zvuk</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Ukazatel</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR ukazatel</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Miřte tímto ovladačem Wii Remote na obrazovku pomocí jeho IR kamery. Vyžaduje senzorovou lištu nebo dvě infračervené diody LED nad displejem nebo pod ním. Chcete-li mířit přesně na dané místo, zkalibrujte ho na stránce Zařízení jako světelnou pistoli. Zkalibrovaný ovladač ignoruje Polohu senzorové lišty a Svislý posun.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Ladění ukazatele</value></data>
@@ -3617,7 +3608,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Není k dispozici žádné rádio Bluetooth. Zapněte Bluetooth a zkuste to znovu. Párování je potřeba jen pro bezdrátové hraní; ovladač připojený kabelem funguje i bez něj.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Párování se nedokončilo. Krok, který selhal, je uveden výše.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Zavřít</value></data>
-  <data name="Common_ResizePanes" xml:space="preserve"><value>Změnit velikost panelů</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>Štítky NFC</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>Přiložte štítek ke čtečce a pojmenujte ho. Stane se z něj tlačítko, které můžete namapovat.</value></data>
   <data name="Nfc_TapPrompt" xml:space="preserve"><value>Přiložte štítek ke čtečce.</value></data>
@@ -3625,7 +3615,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Pojmenujte tento štítek</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Zaregistrovat</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Zaregistrované</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Nebyla zjištěna žádná čtečka NFC. Připojte čtečku PC/SC a otevřete okno znovu.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Štítek zachycen. Zadejte název a klikněte na Zaregistrovat. Přiložením jiného štítku ho nahradíte.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>Štítek „{0}“ zaregistrován. Přiložením dalšího štítku přidáte další.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Zaregistrovat / spravovat štítky NFC</value></data>
@@ -3652,7 +3641,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="VrCtl_Z" xml:space="preserve"><value>Ovladač Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Páčka X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Páčka Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Spoušť</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Úchop</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Kliknutí páčky</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Primární tlačítko</value></data>
@@ -3755,7 +3743,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Povolit tlačítka handheldů</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Přidá na stránku Zařízení zařízení Skrytá tlačítka a zařízení Systémový pohyb. Když je vypnuto, nic neběží.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Multimédia {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Myš</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Gesta myši</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Podržte tlačítko gest, švihněte a při uvolnění se spustí jedna akce: doleva, doprava, nahoru, dolů, nebo prosté kliknutí pod vzdáleností švihu. Těchto pět gest namapujte na libovolný výstup nebo je použijte jako spouštěče maker.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Povolit gesta myši</value></data>
@@ -3944,8 +3931,9 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam je nedostupný</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Ke Steamu se nepodařilo připojit. Zkontrolujte připojení. Už importované profily fungují dál: jsou uložené v tomto počítači.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Zkusit znovu</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Tato konfigurace z doby kolem roku 2016 je starší než CDN Steamu pro konfigurace. Přihlaste se k jejímu odběru ve Steamu a PadForge ji přečte z vaší složky Steamu.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam pro tuto konfiguraci nenabízí žádný soubor ke stažení a její kopie není ani ve vaší složce Steamu. Přihlaste se k jejímu odběru ve Steamu a PadForge ji přečte odtud.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Otevřít ve Steam Workshopu</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Zastaralé</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Vyberte konfiguraci a uvidíte, co se přenese.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Co se přenese</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Stane se</value></data>
@@ -4171,7 +4159,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>nabídka nemá žádné buňky s vazbou</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>hostitelská plocha nabídky není podporována ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikona buňky nabídky nebyla rozpoznána ({0}), takže buňce zůstává textový popisek</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakery</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Výstup</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Tlačítka</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Klávesy a myš</value></data>
@@ -4650,7 +4637,6 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Rozdělit podle směru</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Středová mrtvá zóna</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Resetovat na vypnuto</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Resetovat na Levá páčka X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Resetovat sílu (50 %)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Resetovat středovou mrtvou zónu (2 %)</value></data>
@@ -4730,7 +4716,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>Vrstva HID zkompilovaná do přibalené knihovny SDL3.dll, autor Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Zdroje ikon</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Glyf plamene z Material Design Icons (Pictogrammers, Apache-2.0), obecná ikona gamepadu z Ionicons (Ionic, MIT), joystick pro typ Rozšířený z Jam Icons (Michael Amprimo, MIT) a ikony Xbox a PlayStation ze SVG Repo, pod licencí uvedenou na stránce každé ikony.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Glyf plamene z Material Design Icons (Pictogrammers, Apache-2.0), joystick pro typ Rozšířený z Jam Icons (Michael Amprimo, MIT) a ikony Xbox a PlayStation ze SVG Repo, pod licencí uvedenou na stránce každé ikony.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Protokol relé, který stojí za záložní cestou Vzdáleného propojení a kterým se komunikuje s bezplatnými veřejnými relé n0.computer stejně jako ve FlexInput. iroh: MIT OR Apache-2.0. FlexInput: MIT. Jen dokumentace, žádný kód se nedodává.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

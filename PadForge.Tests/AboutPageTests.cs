@@ -44,7 +44,7 @@ namespace PadForge.Tests
             "About_License_Isc", "About_License_Mpl2", "About_License_Unlicense", "About_License_Zlib", "About_License_Gpl2",
             "About_License_Gpl2OrLater", "About_License_Gpl3", "About_License_Gpl3OrLater", "About_License_Agpl3",
             "About_License_Lgpl21OrLater", "About_License_Lgpl3", "About_License_Lgpl3OrLater", "About_License_CcByNcSa4",
-            "About_License_CcBy3", "About_License_CgTrader", "About_License_BouncyCastle", "About_License_WyvrnEula",
+            "About_License_CcBy3", "About_License_CgTrader", "About_License_WyvrnEula",
         };
 
         /// <summary>Title, PadForge, An Invitation, Overview, Built With,
@@ -146,13 +146,13 @@ namespace PadForge.Tests
         }
 
         /// <summary>Every chip names a license key the string table holds,
-        /// and the page uses each of the thirty.</summary>
+        /// and the page uses each of the twenty-nine.</summary>
         [Fact]
         public void EveryChipNamesALicenseTheStringTableHolds()
         {
             string resx = ExtrasPageTests.RepoText("PadForge.App", "Resources", "Strings", "Strings.resx");
             var inTable = Regex.Matches(resx, "<data name=\"(About_License_[A-Za-z0-9]+)\"").Select(m => m.Groups[1].Value).ToHashSet();
-            Assert.Equal(30, inTable.Count);
+            Assert.Equal(29, inTable.Count);
             Assert.All(IdentifierChips, key => Assert.Contains(key, inTable));
 
             var chips = Page().Descendants()

@@ -607,6 +607,292 @@ namespace PadForge.Tests
             Assert.True(box.Height < whole.Height * 0.75, $"the box is {box.Height:F1} tall of the mesh's {whole.Height:F1}");
         }
 
+        /// <summary>The box of a control as it was taken before 2026-11-13:
+        /// all three corners of every triangle put on the screen, and every
+        /// point held against every triangle that reaches into the
+        /// control's box. The faster way is held to this one.</summary>
+        private static bool PlainBox(ControllerModelPickBox.Shape shape, Matrix3D toScreen, out Rect box)
+        {
+            box = Rect.Empty;
+            Point3D[] points = shape.Points;
+            if (points.Length == 0) return false;
+
+            var at = new double[points.Length * 3];
+            Rect whole = Rect.Empty;
+            for (int i = 0; i < points.Length; i++)
+            {
+                Point4D p = toScreen.Transform(new Point4D(points[i].X, points[i].Y, points[i].Z, 1));
+                if (!(p.W > 0)) return false;
+                double x = p.X / p.W, y = p.Y / p.W;
+                at[i * 3] = x;
+                at[i * 3 + 1] = y;
+                at[i * 3 + 2] = p.W;
+                if (whole.IsEmpty) whole = new Rect(x, y, 0, 0);
+                else whole.Union(new Point(x, y));
+            }
+
+            Point3D[] cover = shape.Cover;
+            var coverAt = new double[cover.Length * 3];
+            int kept = 0;
+            for (int i = 0; i + 2 < cover.Length; i += 3)
+            {
+                Point4D a = toScreen.Transform(new Point4D(cover[i].X, cover[i].Y, cover[i].Z, 1));
+                Point4D b = toScreen.Transform(new Point4D(cover[i + 1].X, cover[i + 1].Y, cover[i + 1].Z, 1));
+                Point4D c = toScreen.Transform(new Point4D(cover[i + 2].X, cover[i + 2].Y, cover[i + 2].Z, 1));
+                if (!(a.W > 0) || !(b.W > 0) || !(c.W > 0)) continue;
+                double ax = a.X / a.W, ay = a.Y / a.W, bx = b.X / b.W, by = b.Y / b.W, cx = c.X / c.W, cy = c.Y / c.W;
+                if (Math.Max(ax, Math.Max(bx, cx)) < whole.Left || Math.Min(ax, Math.Min(bx, cx)) > whole.Right
+                    || Math.Max(ay, Math.Max(by, cy)) < whole.Top || Math.Min(ay, Math.Min(by, cy)) > whole.Bottom)
+                    continue;
+                coverAt[kept] = ax; coverAt[kept + 1] = ay; coverAt[kept + 2] = a.W;
+                coverAt[kept + 3] = bx; coverAt[kept + 4] = by; coverAt[kept + 5] = b.W;
+                coverAt[kept + 6] = cx; coverAt[kept + 7] = cy; coverAt[kept + 8] = c.W;
+                kept += 9;
+            }
+
+            Rect seen = Rect.Empty;
+            int inView = 0;
+            for (int i = 0; i < points.Length; i++)
+            {
+                double x = at[i * 3], y = at[i * 3 + 1], far = at[i * 3 + 2];
+                if (PlainIsHidden(coverAt, kept, x, y, far * (1 - ControllerModelPickBox.DepthSlack))) continue;
+                inView++;
+                if (seen.IsEmpty) seen = new Rect(x, y, 0, 0);
+                else seen.Union(new Point(x, y));
+            }
+
+            box = inView >= 3 && seen.Width > 0 && seen.Height > 0 ? seen : whole;
+            return box.Width > 0 && box.Height > 0;
+        }
+
+        /// <summary>The triangles near a control as they were gathered
+        /// before 2026-11-13: three points for each, read from the meshes'
+        /// own lists.</summary>
+        private static Point3D[] PlainCover(Model3D model, IReadOnlyList<Model3DGroup> parts,
+            IReadOnlyDictionary<Model3DGroup, Material> atRest)
+        {
+            var own = new List<Point3D>();
+            void Own(Model3D part)
+            {
+                if (part is Model3DGroup group)
+                    foreach (Model3D child in group.Children) Own(child);
+                else if (part is GeometryModel3D { Geometry: MeshGeometry3D mesh })
+                    own.AddRange(mesh.Positions);
+            }
+            foreach (var part in parts) Own(part);
+            var cover = new List<Point3D>();
+            if (own.Count == 0) return cover.ToArray();
+            Rect3D near = new Rect3D(own[0], new Size3D(0, 0, 0));
+            foreach (Point3D point in own) near.Union(point);
+            double reach = ControllerModelPickBox.Reach(near);
+            near = new Rect3D(near.X - reach, near.Y - reach, near.Z - reach,
+                near.SizeX + 2 * reach, near.SizeY + 2 * reach, near.SizeZ + 2 * reach);
+
+            void Gather(Model3D part, Material worn)
+            {
+                if (part is Model3DGroup group)
+                {
+                    for (int i = 0; i < parts.Count; i++)
+                        if (ReferenceEquals(parts[i], group)) return;
+                    if (atRest != null && atRest.TryGetValue(group, out Material rest) && rest != null) worn = rest;
+                    foreach (Model3D child in group.Children) Gather(child, worn);
+                    return;
+                }
+                if (part is not GeometryModel3D { Geometry: MeshGeometry3D mesh } drawn) return;
+                Material wears = worn ?? drawn.Material;
+                if (wears == null || ControllerModelPickBox.IsSeeThrough(wears)) return;
+                Point3DCollection positions = mesh.Positions;
+                Int32Collection corners = mesh.TriangleIndices;
+                int count = corners.Count > 0 ? corners.Count : positions.Count;
+                for (int i = 0; i + 2 < count; i += 3)
+                {
+                    int ia = i, ib = i + 1, ic = i + 2;
+                    if (corners.Count > 0)
+                    {
+                        ia = corners[i]; ib = corners[i + 1]; ic = corners[i + 2];
+                        if ((uint)ia >= (uint)positions.Count || (uint)ib >= (uint)positions.Count
+                            || (uint)ic >= (uint)positions.Count)
+                            continue;
+                    }
+                    Point3D a = positions[ia], b = positions[ib], c = positions[ic];
+                    if (Math.Max(a.X, Math.Max(b.X, c.X)) < near.X || Math.Min(a.X, Math.Min(b.X, c.X)) > near.X + near.SizeX
+                        || Math.Max(a.Y, Math.Max(b.Y, c.Y)) < near.Y || Math.Min(a.Y, Math.Min(b.Y, c.Y)) > near.Y + near.SizeY
+                        || Math.Max(a.Z, Math.Max(b.Z, c.Z)) < near.Z || Math.Min(a.Z, Math.Min(b.Z, c.Z)) > near.Z + near.SizeZ)
+                        continue;
+                    cover.Add(a);
+                    cover.Add(b);
+                    cover.Add(c);
+                }
+            }
+            Gather(model, null);
+            return cover.ToArray();
+        }
+
+        private static bool PlainIsHidden(double[] cover, int length, double x, double y, double nearest)
+        {
+            for (int i = 0; i < length; i += 9)
+            {
+                double ax = cover[i], ay = cover[i + 1], bx = cover[i + 3], by = cover[i + 4], cx = cover[i + 6], cy = cover[i + 7];
+                if ((x < ax && x < bx && x < cx) || (x > ax && x > bx && x > cx)
+                    || (y < ay && y < by && y < cy) || (y > ay && y > by && y > cy))
+                    continue;
+                double span = (by - cy) * (ax - cx) + (cx - bx) * (ay - cy);
+                if (Math.Abs(span) < 1e-9) continue;
+                double wa = ((by - cy) * (x - cx) + (cx - bx) * (y - cy)) / span;
+                double wb = ((cy - ay) * (x - cx) + (ax - cx) * (y - cy)) / span;
+                double wc = 1 - wa - wb;
+                if (wa < 0 || wb < 0 || wc < 0) continue;
+                double inverse = wa / cover[i + 2] + wb / cover[i + 5] + wc / cover[i + 8];
+                if (inverse > 0 && 1 / inverse < nearest) return true;
+            }
+            return false;
+        }
+
+        /// <summary>A point that several triangles of its mesh name is kept
+        /// once, a mesh whose triangles are not numbered keeps each of its
+        /// points, and the control's box is cut into cells only for enough
+        /// triangles, in a box that has a width and a height.</summary>
+        [Fact]
+        public void TheCoverKeepsAMeshsPointOnce_AndCellsAreForManyTriangles()
+        {
+            var button = Group(Mesh(new(0, 0, 0), new(4, 0, 0), new(4, 4, 0), new(0, 4, 0)));
+            // Two triangles of one plate that name two of its points twice,
+            // one that names a point the mesh lacks, and a point that is
+            // far from the button and named by none that is kept.
+            var plate = new GeometryModel3D
+            {
+                Geometry = new MeshGeometry3D
+                {
+                    Positions = new Point3DCollection(new Point3D[] { new(500, 500, 0), new(-3, -3, -1), new(8, -3, -1), new(8, 8, -1), new(-3, 8, -1) }),
+                    TriangleIndices = new Int32Collection(new[] { 1, 2, 3, 1, 2, 9, 1, 3, 4 }),
+                },
+                Material = new DiffuseMaterial(Brushes.Gray),
+            };
+            var shape = ControllerModelPickBox.Read(Group(plate, button), new[] { button });
+            Assert.Equal(new Point3D[] { new(-3, -3, -1), new(8, -3, -1), new(8, 8, -1), new(-3, 8, -1) }, shape.CoverPoints);
+            Assert.Equal(new[] { 0, 1, 2, 0, 2, 3 }, shape.CoverCorners);
+            Assert.Equal(6, shape.Cover.Length);
+            Assert.Equal(new Point3D(-3, 8, -1), shape.Cover[5]);
+            Assert.Equal(shape.CoverPoints.Length * 3, shape.CoverAt.Length);
+            Assert.Equal(2, shape.Kept.Length);
+
+            // The same plate as six points with no numbers: each is kept.
+            var loose = Mesh(new(-3, -3, -1), new(8, -3, -1), new(8, 8, -1), new(-3, -3, -1), new(8, 8, -1), new(-3, 8, -1));
+            var unnumbered = ControllerModelPickBox.Read(Group(loose, button), new[] { button });
+            Assert.Equal(6, unnumbered.CoverPoints.Length);
+            Assert.Equal(new[] { 0, 1, 2, 3, 4, 5 }, unnumbered.CoverCorners);
+            Assert.Equal(shape.Cover, unnumbered.Cover);
+
+            var box = new Rect(0, 0, 100, 50);
+            Assert.Equal(0, ControllerModelPickBox.CellsFor(63, box));
+            Assert.Equal(4, ControllerModelPickBox.CellsFor(64, box));
+            Assert.Equal(16, ControllerModelPickBox.CellsFor(1024, box));
+            Assert.Equal(32, ControllerModelPickBox.CellsFor(4096, box));
+            Assert.Equal(32, ControllerModelPickBox.CellsFor(500000, box));
+            Assert.Equal(0, ControllerModelPickBox.CellsFor(5000, new Rect(0, 0, 0, 50)));
+            Assert.Equal(0, ControllerModelPickBox.CellsFor(5000, new Rect(0, 0, 100, 0)));
+            Assert.Equal(0, ControllerModelPickBox.CellsFor(5000, Rect.Empty));
+        }
+
+        /// <summary>The faster box is the plain one, to the last bit, over
+        /// soups of triangles around a control: few and many, small and
+        /// large, flat ones, ones behind the eye, and ones with a corner so
+        /// near the eye's plane that it lands far off the screen. Many of
+        /// the boxes are a part of the control and many come from cells,
+        /// so the runs are not all one easy case.</summary>
+        [Fact]
+        public void TheFasterBox_IsThePlainBox_OverSoupsOfTriangles()
+        {
+            int partly = 0, gridded = 0, runs = 0;
+            foreach (int triangles in new[] { 0, 40, 90, 400, 3000, 20000 })
+            foreach (int seed in new[] { 1, 2, 3 })
+            {
+                var random = new Random(seed * 100000 + triangles);
+                double Spread(double size) => (random.NextDouble() - 0.5) * size;
+                // The control: a slab of points about the middle.
+                var own = new Point3D[300];
+                for (int i = 0; i < own.Length; i++) own[i] = new Point3D(Spread(10), Spread(10), Spread(2));
+                var control = Group(Mesh(own));
+                // The more triangles, the smaller, as a finer mesh's are,
+                // so that about half the control is covered at every count.
+                double unit = triangles == 0 ? 0 : Math.Sqrt(3000.0 / triangles);
+                var soup = new Point3D[triangles * 3];
+                for (int t = 0; t < triangles; t++)
+                {
+                    double size = unit * ((t % 3) switch { 0 => 0.5, 1 => 1, _ => 2.5 });
+                    var middle = new Point3D(Spread(28), Spread(28), Spread(20));
+                    for (int c = 0; c < 3; c++)
+                        soup[t * 3 + c] = t % 50 == 49 && c == 2
+                            ? soup[t * 3]
+                            : new Point3D(middle.X + Spread(size), middle.Y + Spread(size), middle.Z + Spread(size));
+                }
+                var shape = ControllerModelPickBox.Read(Group(Mesh(soup), control), new[] { control });
+                foreach (double distance in new[] { 9.0, 14, 60, 200 })
+                foreach (double turn in new[] { 0.0, 37, 90 })
+                {
+                    Matrix3D placement = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), turn)).Value;
+                    Matrix3D toScreen = ToScreen(placement, distance, 0, 800, 600);
+                    bool plain = PlainBox(shape, toScreen, out Rect expected);
+                    bool fast = ControllerModelPickBox.TryGetBox(shape, toScreen, out Rect box);
+                    Assert.True(plain == fast && expected == box,
+                        $"{triangles} triangles, seed {seed}, from {distance} at {turn}: {box} for {expected}");
+                    Assert.True(fast, $"{triangles} triangles, seed {seed}, from {distance} at {turn}: no box");
+                    runs++;
+                    if (box != BoxOf(shape.Points, toScreen)) partly++;
+                }
+                if (shape.CellItems.Length > 0) gridded++;
+            }
+            Assert.Equal(216, runs);
+            Assert.True(partly >= 100, $"only {partly} of {runs} boxes were a part of the control");
+            Assert.True(gridded >= 9, $"only {gridded} of 18 shapes had their box cut into cells");
+        }
+
+        /// <summary>On every model, for every control a recording or a click
+        /// names and from several sides, the faster box is the plain one to
+        /// the last bit, and the larger controls have their box cut into
+        /// cells.</summary>
+        [Theory]
+        [MemberData(nameof(Families))]
+        public void TheFasterBox_IsThePlainBox_ForEveryControlOfAModel(string family)
+        {
+            const double width = 1393, height = 581;
+            using var model = ControllerModelBase.Create(family, null, false);
+            Matrix3D placement = ControllerModelFraming.Placement(model.model3DGroup.Bounds, model.ModelScale);
+            var (distance, lift) = ControllerModelFraming.Fit(
+                ControllerModelFraming.Measure(model.model3DGroup, placement), width, height);
+
+            var controls = new List<(string Name, IReadOnlyList<Model3DGroup> Parts)>();
+            foreach (var entry in model.ButtonMap) controls.Add((entry.Key, entry.Value));
+            foreach (var entry in model.ClickMap) controls.Add((entry.Value + ", one part", new[] { entry.Key }));
+            Assert.True(controls.Count >= 20, $"{family} names only {controls.Count} controls");
+
+            (double Yaw, double Pitch)[] turns = { (0, 0), (30, 0), (-55, 15), (90, 0), (180, -20) };
+            int gridded = 0, partly = 0;
+            foreach (var (name, parts) in controls)
+            {
+                var shape = ControllerModelPickBox.Read(model.model3DGroup, parts, model.DefaultMaterials);
+                // The triangles are the ones the plain read gathers, in its
+                // order, and fewer corners are kept than triangles name.
+                Point3D[] cover = shape.Cover, plainCover = PlainCover(model.model3DGroup, parts, model.DefaultMaterials);
+                Assert.True(cover.AsSpan().SequenceEqual(plainCover), $"{family} {name}: the cover is not the plain read's");
+                Assert.True(cover.Length == 0 || shape.CoverPoints.Length < cover.Length, $"{family} {name}: no corner is shared");
+                foreach (var (yaw, pitch) in turns)
+                {
+                    var turn = new Transform3DGroup();
+                    turn.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), yaw)));
+                    turn.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), pitch)));
+                    Matrix3D toScreen = ToScreen(placement * turn.Value, distance, lift, width, height);
+                    bool plain = PlainBox(shape, toScreen, out Rect expected);
+                    bool fast = ControllerModelPickBox.TryGetBox(shape, toScreen, out Rect box);
+                    Assert.True(plain == fast && expected == box, $"{family} {name} at {yaw}, {pitch}: {box} for {expected}");
+                    if (fast && box != BoxOf(shape.Points, toScreen)) partly++;
+                }
+                if (shape.CellItems.Length > 0) gridded++;
+            }
+            Assert.True(gridded >= controls.Count / 2, $"{family}: only {gridded} of {controls.Count} controls had cells");
+            Assert.True(partly >= controls.Count, $"{family}: only {partly} boxes were a part of their control");
+        }
+
         /// <summary>What light passes through hides nothing of a control:
         /// a brush drawn at less than full strength, a color that is not
         /// solid, a texture that carries transparency, and any of those

@@ -782,8 +782,14 @@ namespace PadForge.Tests
             int done = At(svc, "private void StillMade()");
             string after = svc.Substring(done, svc.IndexOf("\n        }", done, StringComparison.Ordinal) - done);
             At(after, "_stillPosted = false;");
-            At(after, "foreach (var slot in _mainVm.Dashboard.SlotSummaries) slot.ForgetPicture();");
+            At(after, "RefreshPictures();");
             At(after, "PostNextStill();");
+            // The cards take the still at once: no timer refreshes them
+            // while the engine is stopped.
+            int again = At(svc, "internal void RefreshPictures()");
+            string pictures = svc.Substring(again, svc.IndexOf("\n        }", again, StringComparison.Ordinal) - again);
+            Assert.True(At(pictures, "foreach (var slot in _mainVm.Dashboard.SlotSummaries) slot.ForgetPicture();")
+                < At(pictures, "RefreshSlotSummaryProperties();"));
             At(svc, "if (_stillPosted || _stillsWanted.Count == 0) return;");
             At(svc, "if (!_stillsWanted.Contains((family, finish))) _stillsWanted.Add((family, finish));");
         }

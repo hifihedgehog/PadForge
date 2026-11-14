@@ -71,6 +71,10 @@ namespace PadForge
                     var choice = DreamcastScreenDialog.Show(this, service, port, service.Get(port.InstanceGuid),
                         DreamcastScreenService.ActiveProfileName(), profilePicture);
                     if (choice == null) return;
+                    // The dialog above runs a nested loop, in which a player
+                    // change may have ended and dropped this device's
+                    // choices. Saving now would bring them back.
+                    if (port.Replaced || port.Session.Busy) return;
                     if (profile != null) profile.DreamcastPicture = choice.ProfilePicture;
                     else _viewModel.Settings.DefaultProfileDreamcastPicture = choice.ProfilePicture;
                     service.Update(port.InstanceGuid, d =>

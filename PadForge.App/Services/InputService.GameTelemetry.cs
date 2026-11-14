@@ -33,7 +33,6 @@ namespace PadForge.Services
             var row = im != null && im.IsRunning && dash.EnableGameTelemetry ? im.GameTelemetry : null;
             if (row == null)
             {
-                dash.IsGameTelemetryRunning = false;
                 dash.IsGameTelemetryReceiving = false;
                 if (_gameTelemetryStatusVersion == GameTelemetryStatusStopped)
                     return;
@@ -52,7 +51,6 @@ namespace PadForge.Services
             _gameTelemetryStatusForward = forward;
             var status = row.Status;
             dash.GameTelemetryStatus = BuildGameTelemetryStatus(status, row.Format);
-            dash.IsGameTelemetryRunning = status.State != TelemetryListenState.PortInUse;
             // The Extras page's flame (#574): ember while a game's data
             // arrives, gold while the row waits for one.
             dash.IsGameTelemetryReceiving = status.Source != TelemetrySource.None;

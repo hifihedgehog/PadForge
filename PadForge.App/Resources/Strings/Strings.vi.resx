@@ -136,7 +136,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Đang đóng PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Đang khởi động PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Đang dọn dẹp các tay cầm ảo còn sót lại từ phiên trước.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> thiết bị</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Thêm tay cầm</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Thêm một tay cầm</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Chọn thứ mà trò chơi sẽ thấy. Tay cầm được thêm ngay khi bạn nhấp.</value></data>
@@ -280,7 +279,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Hết thời gian ghi cho "{0}".</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Bộ máy đã khởi động.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Bộ máy đã dừng.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Không có ánh xạ</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Lỗi: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Không tạo được {0}.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Đã chuyển hồ sơ: {0}</value></data>
@@ -298,7 +296,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Đang ghi...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>khi</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>trên</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>Đã gán "{0}" cho Tay cầm ảo {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>Đã bỏ gán "{0}" khỏi Tay cầm ảo {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Đã gỡ bỏ thiết bị.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Đã xóa Tay cầm ảo {0}.</value></data>
@@ -529,7 +526,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Các PC bạn đã ghép đôi cho Liên kết từ xa. Thu hồi một PC để ngăn nó kết nối. Khi đó nó sẽ phải ghép đôi lại.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Thu hồi</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Thu hồi tất cả</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Đổi tên</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Lớp phủ bàn cảm ứng</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Bề mặt cảm ứng trên màn hình cho trò chơi bàn cảm ứng PlayStation, dùng với màn hình cảm ứng hoặc chuột.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Bật lớp phủ bàn cảm ứng</value></data>
@@ -763,7 +759,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Điều khoản cấp phép Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Điều khoản SDK của Corsair</value></data>
@@ -1110,9 +1105,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Mappings" xml:space="preserve"><value>Ánh xạ</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Cần analog</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Cò</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Phản hồi lực</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Cò xung lực</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Cò xung lực</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Độ lợi từng cò, hoán đổi mô-tơ, chuyển đổi rung của cò thích ứng, Lực cò không đổi</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Chuyển tiếp lệnh mô-tơ của từng cò (Xbox Impulse Triggers) từ tay cầm ảo đến tay cầm vật lý Xbox One, Elite hoặc Series đã gán. Rung cò do trò chơi điều khiển được tự động truyền qua. Các điều khiển bên dưới chỉnh tỷ lệ cường độ cho từng cò.</value></data>
@@ -1178,7 +1171,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Đặt lại cò trái</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Đặt lại cò phải</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Cò thích ứng</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Cò thích ứng</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Cấu hình các hiệu ứng phản hồi cò trên DualSense vật lý đã gán. Hiệu ứng cò từ trò chơi hoặc mod trò chơi được tự động chuyển tiếp. Thiết lập ở đây thêm một lớp do người dùng cấu hình, chạy khi cả hai đều không ghi.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Cần analog</value></data>
@@ -1224,7 +1216,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Lighting" xml:space="preserve"><value>Đèn</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Đèn</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Đặt màu nền của thanh đèn và cách phản ứng theo âm thanh trên tay cầm vật lý đã gán. Lệnh ghi từ trò chơi luôn được ưu tiên. Thiết lập của người dùng áp dụng khi không có trò chơi nào điều khiển thanh đèn.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Khi đặt là Số thứ tự người chơi, lúc nhàn rỗi tay cầm hiển thị danh tính người chơi của tay cầm ảo: màu người chơi của Sony trên thanh đèn (1 xanh dương, 2 đỏ, 3 xanh lá, 4 hồng) và các chấm người chơi tương ứng trên DualSense. Mọi thiết bị trên cùng một tay cầm ảo hiển thị cùng một số. Trò chơi giành quyền điều khiển mỗi khi chúng ghi đèn, bất cứ thứ gì bạn đặt ở đây luôn được ưu tiên, và Tắt sẽ làm đèn tắt hẳn.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Khi đặt là Số thứ tự người chơi, lúc nhàn rỗi tay cầm hiển thị danh tính người chơi của tay cầm ảo: màu người chơi của Sony trên thanh đèn (1 xanh dương, 2 đỏ, 3 xanh lá, 4 hồng) và các chấm người chơi tương ứng trên DualSense. Mọi thiết bị trên cùng một tay cầm ảo hiển thị cùng một số. Trò chơi giành quyền điều khiển mỗi khi nó ghi đèn. Mọi chế độ khác bạn đặt ở đây sẽ thay thế màu người chơi, và Tắt sẽ làm đèn tắt hẳn.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Tay cầm ảo này chiếu sáng thiết bị bằng chính các chế độ mà thanh đèn DualSense có, được đặt ở đây chỉ riêng cho tay cầm này. Trên tay cầm ảo PlayStation, trò chơi ghi vào thanh đèn sẽ giành quyền điều khiển giống như trên DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Điều khiển đèn của thiết bị này</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Điều khiển đèn</value></data>
@@ -1446,9 +1438,9 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Cò</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Nút</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Hồ sơ đã nhập…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Cấu hình sẵn cho tay cầm…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Tay cầm Mở rộng</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Quản lý các hồ sơ HIDMaestro do người dùng nhập: thu một hồ sơ mới từ thiết bị đang kết nối, xuất một hồ sơ hiện có ra JSON, hoặc xóa hồ sơ bạn không còn cần.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Quản lý các cấu hình sẵn bạn đã thêm: nhập một cấu hình từ tệp hoặc từ thiết bị đang kết nối, xuất một cấu hình ra JSON, hoặc xóa cấu hình bạn không còn cần.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Nhân bản thiết bị 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Ánh xạ thẳng mọi trục, nút và POV trên thiết bị đã chọn sang đầu ra ảo cùng số. Chỉnh kích thước bố cục theo thiết bị và thay các hàng của thiết bị này trên khe bằng một ánh xạ truyền thẳng 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Nhân bản thiết bị 1:1</value></data>
@@ -1463,18 +1455,18 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Nhập từ thiết bị đang kết nối</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Xuất…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Xóa</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Xuất JSON hồ sơ</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Xuất JSON cấu hình sẵn</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Xóa cấu hình sẵn?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Mọi tay cầm dùng {0} sẽ quay về mục Tùy chỉnh. Không thể hoàn tác.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Đã xuất ra {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Xuất thất bại: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Đã xóa "{0}".</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Nhập từ một tệp…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Nhập JSON hồ sơ</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Nhập JSON cấu hình sẵn</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Đã nhập từ {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Đọc thất bại: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro đã từ chối hồ sơ này tại {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Hồ sơ này không có bộ mô tả HID, nên không thể tạo tay cầm từ nó.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro đã từ chối cấu hình sẵn này tại {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Cấu hình sẵn này không có bộ mô tả HID, nên không thể tạo tay cầm từ nó.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Không có gì được nhập. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Nhập</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(thiết bị HID không tên)</value></data>
@@ -1585,9 +1577,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Chuyển sang chế độ xem 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Chuyển sang chế độ xem 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Nhấp để thử mô-tơ trái</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Mô-tơ trái</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Nhấp để thử mô-tơ phải</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Mô-tơ phải</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Ánh xạ tất cả</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Ánh xạ: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Lần lượt ghi từng ánh xạ một</value></data>
@@ -1691,6 +1681,11 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Đảo đúng/sai</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Nếu, theo mẫu (điều kiện) ? thì : ngược lại</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Phần ngược lại của một biểu thức nếu-thì-ngược lại</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>và</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>hoặc</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>không</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>nếu?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>nếu không:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Độ lớn (bỏ dấu)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Giá trị nhỏ hơn trong hai giá trị</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Giá trị lớn hơn trong hai giá trị</value></data>
@@ -1759,6 +1754,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Hiệu chỉnh tâm</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Điểm tâm</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Tâm</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Tốc độ</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Vùng chết</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Điểm tâm, hình dạng vùng chết và giá trị từng trục, đường cong từng trục, phạm vi, đánh lái</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Phạm vi bằng số, giá trị thô</value></data>
@@ -1982,7 +1978,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Duy trì (giữ)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Mô-tơ trái</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Mô-tơ phải</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Giữ</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Mờ dần</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -2091,7 +2086,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Touchpad" xml:space="preserve"><value>Bàn cảm ứng</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Bàn cảm ứng</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Đầu vào theo từng bàn cảm ứng. Các cử chỉ (vuốt, chạm, chụm, hình vẽ) và các chế độ đầu ra liên tục (cần analog ảo / D-pad, chuột) trở thành nguồn ánh xạ mà bạn có thể gán cho bất kỳ đầu ra nào.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Bàn cảm ứng</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Số bàn cảm ứng</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Các thiết lập bên dưới áp dụng cho bàn cảm ứng nào trên tay cầm này. Mỗi bàn cảm ứng giữ cử chỉ, cảm giác chuột và vùng con trỏ riêng.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Phát hiện cử chỉ</value></data>
@@ -2542,8 +2536,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Chuyển động chuột Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Độ nhạy</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Độ nhạy con trỏ IR theo từng nguồn. 1.0 đạt độ lệch tối đa của cần analog ở mép trường nhìn của camera. Giá trị trên 1.0 đạt độ lệch tối đa với quãng ngắm ngắn hơn. Giá trị dưới 1.0 cần nhiều hơn.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Độ nhạy</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Độ nhạy theo từng nguồn cho một trục thường, thanh trượt, hoặc cần analog / cò của tay cầm. 1.0 giữ nguyên đầu vào. Giá trị trên 1.0 đạt độ lệch tối đa với hành trình ngắn hơn. Giá trị dưới 1.0 cần nhiều hơn.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Tay cầm {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Độ nhạy của chuyển động chuột theo từng nguồn. 1.0 đạt độ lệch tối đa ở cùng tốc độ như một con chuột thật, giá trị trên 1.0 cần ít chuyển động hơn, giá trị dưới 1.0 cần nhiều hơn.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Tổng trọng lượng bàn cân bằng</value></data>
@@ -2680,7 +2672,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Hồ sơ tự tải khi một trong các trò chơi của nó ở phía trước.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Bắt đầu không có tay cầm nào. Hồ sơ tự tải khi một trong các trò chơi của nó ở phía trước.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Thêm trò chơi đang chạy</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Không có chương trình nào khác đang mở cửa sổ.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Không tìm thấy cửa sổ nào khác đang mở.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Gỡ {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Tốc độ thăm dò khi hồ sơ này được tải</value></data>
 
@@ -3262,7 +3254,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Thêm các màu để lần lượt chuyển qua, mỗi lần hết lái một màu.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Đặt lại giữ thanh đèn</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Âm thanh</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Con trỏ</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Con trỏ IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Chĩa Wii Remote này vào màn hình bằng camera IR của nó. Cần một thanh cảm biến, hoặc hai đèn LED hồng ngoại, đặt phía trên hoặc phía dưới màn hình. Hãy hiệu chỉnh nó như một súng ánh sáng trên trang Thiết bị để ngắm đúng điểm. Remote đã hiệu chỉnh sẽ bỏ qua Vị trí thanh cảm biến và Độ lệch dọc.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Tinh chỉnh con trỏ</value></data>
@@ -3617,7 +3608,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Không có bộ thu phát Bluetooth nào khả dụng. Hãy bật Bluetooth rồi thử lại. Chỉ cần ghép đôi khi chơi không dây; tay cầm kết nối bằng cáp vẫn hoạt động mà không cần ghép đôi.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Ghép đôi chưa hoàn tất. Bước bị lỗi được hiển thị ở trên.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Đóng</value></data>
-  <data name="Common_ResizePanes" xml:space="preserve"><value>Đổi kích thước ngăn</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>Thẻ NFC</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>Chạm một thẻ vào đầu đọc và đặt tên cho nó. Thẻ trở thành một nút mà bạn có thể ánh xạ.</value></data>
   <data name="Nfc_TapPrompt" xml:space="preserve"><value>Chạm một thẻ vào đầu đọc.</value></data>
@@ -3625,7 +3615,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Đặt tên cho thẻ này</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Đăng ký</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Đã đăng ký</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Không phát hiện đầu đọc NFC nào. Hãy kết nối một đầu đọc PC/SC rồi mở lại.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Đã lấy được thẻ. Hãy nhập tên rồi nhấp Đăng ký. Chạm một thẻ khác để thay thế.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>Đã đăng ký "{0}". Chạm một thẻ khác để thêm nữa.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Đăng ký / Quản lý thẻ NFC</value></data>
@@ -3652,7 +3641,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="VrCtl_Z" xml:space="preserve"><value>Tay cầm Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Cần analog X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Cần analog Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Cò</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Tay nắm</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Nhấp cần analog</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Nút chính</value></data>
@@ -3755,7 +3743,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Bật Nút PC cầm tay</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Thêm một thiết bị Nút ẩn và một thiết bị Chuyển động hệ thống vào trang Thiết bị. Khi tắt, không có gì chạy.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Đa phương tiện {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Chuột</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Cử chỉ chuột</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Giữ nút cử chỉ, gạt chuột, và một hành động sẽ kích hoạt khi bạn thả: trái, phải, lên, xuống, hoặc một lần nhấp thường nếu chưa đạt khoảng cách gạt. Hãy ánh xạ năm cử chỉ sang bất kỳ đầu ra nào hoặc dùng chúng làm bộ kích hoạt macro.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Bật cử chỉ chuột</value></data>
@@ -3944,8 +3931,9 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Không kết nối được Steam</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Không kết nối được đến Steam. Hãy kiểm tra kết nối của bạn. Các hồ sơ bạn đã nhập vẫn hoạt động: chúng nằm trên PC này.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Thử lại</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Cấu hình thời 2016 này có trước CDN cấu hình của Steam. Hãy đăng ký nó trong Steam, và PadForge sẽ đọc nó từ thư mục Steam của bạn.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam không liệt kê tệp nào để tải xuống cho cấu hình này, và thư mục Steam của bạn cũng không có bản sao nào của nó. Hãy đăng ký nó trong Steam, và PadForge sẽ đọc nó từ đó.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Mở trong Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Cũ</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Chọn một cấu hình để xem những gì được chuyển sang.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Những gì được chuyển sang</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Thành</value></data>
@@ -4171,7 +4159,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menu không có ô nào được gán</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>không hỗ trợ bề mặt mở menu ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>không nhận ra biểu tượng của ô menu ({0}), nên ô giữ nhãn văn bản</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bộ rung bass</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Đầu ra</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Nút bấm</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Phím và chuột</value></data>
@@ -4650,7 +4637,6 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Mô-tơ</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Chia theo hướng</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Vùng chết ở tâm</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Đặt lại về Tắt</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Đặt lại về Cần trái X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Đặt lại cường độ (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Đặt lại vùng chết ở tâm (2%)</value></data>
@@ -4730,7 +4716,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>Lớp HID được biên dịch vào SDL3.dll đi kèm, của Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Nguồn biểu tượng</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Hình ngọn lửa từ Material Design Icons (Pictogrammers, Apache-2.0), biểu tượng tay cầm chung từ Ionicons (Ionic, MIT), joystick Mở rộng từ Jam Icons (Michael Amprimo, MIT), cùng các biểu tượng Xbox và PlayStation từ SVG Repo, theo giấy phép trên trang của từng biểu tượng.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Hình ngọn lửa từ Material Design Icons (Pictogrammers, Apache-2.0), joystick Mở rộng từ Jam Icons (Michael Amprimo, MIT), cùng các biểu tượng Xbox và PlayStation từ SVG Repo, theo giấy phép trên trang của từng biểu tượng.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Giao thức chuyển tiếp đứng sau đường dự phòng của Liên kết từ xa, dùng để giao tiếp với các relay công cộng miễn phí của n0.computer theo cách FlexInput làm. iroh: MIT OR Apache-2.0. FlexInput: MIT. Chỉ dùng làm tài liệu, không có mã nào được phát hành kèm.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

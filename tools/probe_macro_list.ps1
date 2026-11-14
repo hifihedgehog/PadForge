@@ -54,29 +54,46 @@ function Get-Rect($el) {
     return $r
 }
 
+# Clicks an element's center, after bringing PadForge to the front. A click
+# while another program's window is in front goes to that window, so none is
+# made then.
+function Click-Element($el, [string]$what) {
+    $r = Get-Rect $el
+    if ($null -eq $r) { return $false }
+    [PW]::SetForegroundWindow($hwnd) | Out-Null
+    Start-Sleep -Milliseconds 120
+    if ([PW]::GetForegroundWindow() -ne $hwnd) {
+        Write-Host "  !! another window is in front, no click on $what"
+        return $false
+    }
+    [PW]::ClickAt([int]($r.X + $r.Width / 2), [int]($r.Y + $r.Height / 2))
+    Start-Sleep -Milliseconds 900
+    Write-Host "  clicked $what"
+    return $true
+}
+
 function Click-Named([string]$name) {
     $cond = New-Object System.Windows.Automation.PropertyCondition(
         [System.Windows.Automation.AutomationElement]::NameProperty, $name)
     foreach ($el in $win.FindAll($TD, $cond)) {
-        $r = Get-Rect $el
-        if ($null -eq $r) { continue }
-        [PW]::SetForegroundWindow($hwnd) | Out-Null
-        Start-Sleep -Milliseconds 120
-        # A click while another program's window is in front goes to that window.
-        if ([PW]::GetForegroundWindow() -ne $hwnd) {
-            Write-Host "  !! another window is in front, no click on '$name'"
-            return $false
-        }
-        [PW]::ClickAt([int]($r.X + $r.Width / 2), [int]($r.Y + $r.Height / 2))
-        Start-Sleep -Milliseconds 900
-        Write-Host "  clicked '$name'"
-        return $true
+        if ($null -eq (Get-Rect $el)) { continue }
+        return (Click-Element $el "'$name'")
     }
     Write-Host "  !! '$name' not found"
     return $false
 }
 
-# Home, first slot card, Macros tab.
+function Click-Id([string]$aid) {
+    $el = $win.FindFirst($TD, (New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::AutomationIdProperty, $aid)))
+    if ($null -ne $el -and (Click-Element $el $aid)) { return $true }
+    Write-Host "  !! $aid not found"
+    return $false
+}
+
+# Home, the first slot card, then the controller page's Macros & Menus
+# section and its Macros part. The page opens on Buttons, and the Macros part
+# button is in the tree only while its section shows.
 Click-Named "Home" | Out-Null
 Start-Sleep -Milliseconds 900
 $slots = $win.FindFirst($TD, (New-Object System.Windows.Automation.PropertyCondition(
@@ -84,14 +101,10 @@ $slots = $win.FindFirst($TD, (New-Object System.Windows.Automation.PropertyCondi
 if ($slots) {
     $card = $slots.FindFirst([System.Windows.Automation.TreeScope]::Children,
         [System.Windows.Automation.Condition]::TrueCondition)
-    $r = Get-Rect $card
-    if ($null -ne $r) {
-        [PW]::ClickAt([int]($r.X + $r.Width / 2), [int]($r.Y + $r.Height / 2))
-        Start-Sleep -Milliseconds 1500
-        Write-Host "  clicked slot 1 card"
-    }
+    if (Click-Element $card "the slot 1 card") { Start-Sleep -Milliseconds 600 }
 }
-Click-Named "Macros" | Out-Null
+Click-Id "Section_Macros" | Out-Null
+Click-Id "MacrosTab" | Out-Null
 Start-Sleep -Milliseconds 1500
 
 $names = @("Quick Combo", "Volume Control", "Sleep Controller", "Center Cursor", "Rapid Fire")

@@ -104,6 +104,7 @@ namespace PadForge.Views
             Unloaded += PadPage_Unloaded;
             // Held weakly by Strings, so no unsubscribe is owed.
             Strings.CultureChanged += SizeFirstRows;
+            Strings.CultureChanged += RewordComposedLines;
             DataContextChanged += OnDataContextChanged;
             // Each picture says when a control it draws has moved, and the
             // ring on the picked control moves with it (#574). It says which
@@ -518,6 +519,12 @@ namespace PadForge.Views
             SyncSectionSelection();
             SyncButtonsLayout();
             SyncPickedRowSelection();
+            // The table's rows move to this slot only once this handler has
+            // returned: an inherited DataContext reaches the grid's binding
+            // after its owner's own change handlers. The picked row is
+            // selected again then, or a slot that comes back with a pick
+            // shows its bar and its ring with no row open.
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.DataBind, new Action(SyncPickedRowSelection));
             SyncExtendedConfigBar();
             SyncMidiConfigBar();
             SyncLightbarHexBox();
@@ -1874,9 +1881,9 @@ namespace PadForge.Views
             _pipelineChipCycle[kind] = (rows, next);
             var row = rows[next];
 
-            // Same select + layout + scroll sequence the annotation chips
-            // use (OnAnnotationChipNavigate). The chip row lives on the
-            // Mappings tab, so no tab switch is needed first.
+            // Select the row, lay the list out, and bring the row into view.
+            // The chip row (ListChipsRow) shows with the list view only, so
+            // the list is on screen when a chip is clicked.
             MappingDataGrid.SelectedItem = row;
             MappingDataGrid.UpdateLayout();
             MappingDataGrid.ScrollIntoView(row);
@@ -1941,10 +1948,42 @@ namespace PadForge.Views
                 GoToTab(vm, tab, keepScroll: false);
         }
 
-        /// <summary>A section's name as its header button shows it, for
-        /// Search's where line.</summary>
+        /// <summary>The device filter opened. A popup stands outside its
+        /// owner's Tab order, so a keyboard that opened it could reach no
+        /// box in it. A keyboard is taken to the first box, and Tab stays
+        /// among the boxes. A pointer that opened it keeps the focus where
+        /// it was.</summary>
+        private void DeviceFilterPopup_Opened(object sender, EventArgs e)
+        {
+            if (sender is not System.Windows.Controls.Primitives.Popup { Child: FrameworkElement body }) return;
+            if (System.Windows.Input.InputManager.Current.MostRecentInputDevice is not KeyboardDevice) return;
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Input,
+                new Action(() => body.MoveFocus(new TraversalRequest(FocusNavigationDirection.First))));
+        }
+
+        /// <summary>Escape closes the device filter and gives the focus back
+        /// to the button that opened it.</summary>
+        private void DeviceFilterPopup_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Escape) return;
+            MappingDeviceFilterToggle.IsChecked = false;
+            MappingDeviceFilterToggle.Focus();
+            e.Handled = true;
+        }
+
+        /// <summary>The lines this page composes from the string table and
+        /// writes into a text itself (the peripheral haptics route) are
+        /// composed again: the language changed, and nothing else that
+        /// rewrites them has.</summary>
+        private void RewordComposedLines() => SyncTabVisibility();
+
+        /// <summary>A section's name as its header button says it, for
+        /// Search's where line. The button's content is an icon beside a
+        /// text, and its accessible name is that text's own words.</summary>
         internal string SectionName(int section)
-            => (ButtonOfSection(section)?.Content as TextBlock)?.Text ?? string.Empty;
+            => ButtonOfSection(section) is { } button
+                ? System.Windows.Automation.AutomationProperties.GetName(button) ?? string.Empty
+                : string.Empty;
 
         /// <summary>Whether a section's header button shows for this
         /// controller: the section has something to show.</summary>
@@ -1975,8 +2014,13 @@ namespace PadForge.Views
         {
             bool was = _keepScroll;
             _keepScroll = keepScroll;
+            bool same = vm.SelectedConfigTab == tab;
             try { vm.SelectedConfigTab = tab; }
             finally { _keepScroll = was; }
+            // A jump to the tab already selected changes no value, so the
+            // change handler that brings a group's heading to the top never
+            // runs. The jump still goes there.
+            if (same && !keepScroll) ScrollGroupToTop(tab);
             // A click on the part or section already selected changes no
             // value, and WPF has still moved the check to what was clicked
             // or left it there. Either way the strip is put right.
@@ -3392,14 +3436,6 @@ namespace PadForge.Views
                 }
             }
         }
-
-        // Full memberwise copy. The previous hand-listed clone silently dropped
-        // every Param* added after it was written (Gyro / Mouse-cursor sensitivity,
-        // the steering params, and the #111 ramp params), so a layer copy lost them.
-        // MappingSource.Clone() copies every field, which is what the type's own doc
-        // says to use at clone sites.
-        private static Engine.Data.MappingSource CloneSource(Engine.Data.MappingSource s)
-            => s?.Clone();
 
         /// <summary>True when a slot RELATED to <paramref name="ownSet"/>
         /// still declares <paramref name="mask"/> after a delete, so the

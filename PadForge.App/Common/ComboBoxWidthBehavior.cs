@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
+using PadForge.Resources.Strings;
 
 namespace PadForge.Common
 {
@@ -21,7 +23,10 @@ namespace PadForge.Common
     ///
     /// <para>Remeasures when ItemsSource changes identity, which is exactly
     /// what a live language switch does (the option lists rebuild and the
-    /// bindings hand the combo a new list instance). The hook subscribes on
+    /// bindings hand the combo a new list instance). A combo whose options
+    /// are written in the markup has no list to rebuild: its items keep
+    /// their identity and take new words, so every loaded combo is measured
+    /// again when the language changes. The hook subscribes on
     /// Loaded and detaches when unloaded or disabled, because
     /// DependencyPropertyDescriptor.AddValueChanged roots the element:
     /// without the symmetric remove, regenerated item-template combos (menu
@@ -91,6 +96,42 @@ namespace PadForge.Common
         private static readonly Dictionary<string, List<WeakReference<ComboBox>>> _groups = new();
         private static readonly Dictionary<(Type, string), PropertyInfo> _displayProps = new();
 
+        // Every loaded combo the behavior sizes, held weakly, for the
+        // measuring a language change asks for.
+        private static readonly List<WeakReference<ComboBox>> _live = new();
+
+        static ComboBoxWidthBehavior()
+        {
+            Strings.CultureChanged += RemeasureAll;
+        }
+
+        /// <summary>Measures every loaded combo again. Each is measured on
+        /// its own dispatcher, after the bindings have given its options
+        /// their new words.</summary>
+        internal static void RemeasureAll()
+        {
+            var combos = new List<ComboBox>();
+            lock (_live)
+            {
+                for (int i = _live.Count - 1; i >= 0; i--)
+                {
+                    if (_live[i].TryGetTarget(out var cb)) combos.Add(cb);
+                    else _live.RemoveAt(i);
+                }
+            }
+            foreach (var cb in combos)
+                cb.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => Resize(cb)));
+        }
+
+        private static void Track(ComboBox cb, bool live)
+        {
+            lock (_live)
+            {
+                _live.RemoveAll(wr => !wr.TryGetTarget(out var member) || ReferenceEquals(member, cb));
+                if (live) _live.Add(new WeakReference<ComboBox>(cb));
+            }
+        }
+
         private static void OnSizeToItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is not ComboBox cb) return;
@@ -116,6 +157,7 @@ namespace PadForge.Common
                 .FromProperty(ItemsControl.ItemsSourceProperty, typeof(ComboBox));
             descriptor.RemoveValueChanged(cb, OnItemsSourceChanged);
             descriptor.AddValueChanged(cb, OnItemsSourceChanged);
+            Track(cb, true);
             Register(cb);
             Resize(cb);
         }
@@ -126,6 +168,7 @@ namespace PadForge.Common
             DependencyPropertyDescriptor
                 .FromProperty(ItemsControl.ItemsSourceProperty, typeof(ComboBox))
                 .RemoveValueChanged(cb, OnItemsSourceChanged);
+            Track(cb, false);
             // A regenerated template's dead combo can linger alive (weak
             // ref, not yet collected) and would otherwise pin the group
             // maximum at its last measurement.
@@ -199,8 +242,9 @@ namespace PadForge.Common
 
         private static double MeasureWidestItem(ComboBox cb)
         {
-            var items = cb.ItemsSource;
-            if (items == null) return 0;
+            // The options of a combo with no list are the items written
+            // in its markup.
+            System.Collections.IEnumerable items = cb.ItemsSource ?? cb.Items;
 
             var typeface = new Typeface(cb.FontFamily, cb.FontStyle, cb.FontWeight, cb.FontStretch);
             double ppd = VisualTreeHelper.GetDpi(cb).PixelsPerDip;
@@ -232,6 +276,8 @@ namespace PadForge.Common
         private static string ResolveDisplayText(object item, string displayMemberPath)
         {
             if (item is string s) return s;
+            // An item written in the markup: its words are its content.
+            if (item is ContentControl written) return written.Content as string;
             if (string.IsNullOrEmpty(displayMemberPath)) return item.ToString();
             var key = (item.GetType(), displayMemberPath);
             if (!_displayProps.TryGetValue(key, out var prop))

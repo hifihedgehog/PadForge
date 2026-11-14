@@ -126,7 +126,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Zatvaranje programa PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Pokretanje programa PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Čišćenje virtualnih kontrolera zaostalih iz prethodne sesije.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> uređaja</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Dodaj kontroler</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Dodaj kontroler</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Odaberite što će igre vidjeti. Kontroler se dodaje čim kliknete.</value></data>
@@ -267,7 +266,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Isteklo je vrijeme snimanja za „{0}“.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Mehanizam je pokrenut.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Mehanizam je zaustavljen.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Nema mapiranja</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Pogreška: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Nije moguće stvoriti {0}.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil je promijenjen: {0}</value></data>
@@ -285,7 +283,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Snimanje...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>kada</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>na uređaju</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>Uređaj „{0}“ dodijeljen je virtualnom kontroleru {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>Uređaj „{0}“ uklonjen je s virtualnog kontrolera {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Uređaj je uklonjen.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtualni kontroler {0} je izbrisan.</value></data>
@@ -516,7 +513,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Računala s kojima ste se uparili za Udaljenu vezu. Opozovite računalo da se više ne bi povezivalo. Tada bi se moralo ponovno upariti.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Opozovi</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Opozovi sve</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Preimenuj</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Prekrivni prikaz dodirne pločice</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Dodirna površina na zaslonu za igre s dodirnom pločicom kontrolera PlayStation, za dodirni zaslon ili miš.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Omogući prekrivni prikaz dodirne pločice</value></data>
@@ -750,7 +746,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Licencni uvjeti za Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Uvjeti za Corsair SDK</value></data>
@@ -1031,9 +1026,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Mapiranja</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Palice</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Okidači</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Povratna sila</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulsni okidači</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulsni okidači</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Pojačanje po okidaču, zamjena motora, vibracije adaptivnih okidača, Stalna sila okidača</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Prosljeđuje naredbe motora za svaki okidač (Xbox Impulse Triggers) s virtualnog kontrolera na dodijeljeni fizički kontroler Xbox One, Elite ili Series. Vibracija okidača koju pokreće igra automatski se propušta. Kontrole u nastavku skaliraju jačinu za svaki okidač.</value></data>
@@ -1099,7 +1092,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Vrati lijevi okidač na zadano</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Vrati desni okidač na zadano</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptivni okidači</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptivni okidači</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfigurirajte efekte povratne reakcije okidača na dodijeljenom fizičkom kontroleru DualSense. Efekti okidača iz igre ili modifikacije igre prosljeđuju se automatski. Ove postavke dodaju korisničke efekte koji se izvode kada nijedno od toga ne šalje svoje.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Palice</value></data>
@@ -1144,7 +1136,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>Osvjetljenje</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Osvjetljenje</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Postavite osnovnu boju svjetlosne trake i ponašanje prema zvuku na dodijeljenom fizičkom kontroleru. Ono što zapiše igra uvijek ima prednost. Korisničke postavke primjenjuju se kada nijedna igra ne upravlja svjetlosnom trakom.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Dok je postavljeno na Broj igrača, kontroler u mirovanju prikazuje identitet igrača svog virtualnog kontrolera: Sonyjevu boju igrača na svjetlosnoj traci (1 plava, 2 crvena, 3 zelena, 4 ružičasta) i odgovarajuće točkice igrača na kontroleru DualSense. Svaki uređaj na istom virtualnom kontroleru prikazuje isti broj. Igre preuzimaju upravljanje kad god zapisuju osvjetljenje, sve što ovdje postavite uvijek ima prednost, a Isključeno potpuno gasi svjetlo.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Dok je postavljeno na Broj igrača, kontroler u mirovanju prikazuje identitet igrača svog virtualnog kontrolera: Sonyjevu boju igrača na svjetlosnoj traci (1 plava, 2 crvena, 3 zelena, 4 ružičasta) i odgovarajuće točkice igrača na kontroleru DualSense. Svaki uređaj na istom virtualnom kontroleru prikazuje isti broj. Igra preuzima upravljanje kad god zapisuje osvjetljenje. Svaki drugi način postavljen ovdje zamjenjuje boju igrača, a Isključeno potpuno gasi svjetlo.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Ovaj virtualni kontroler osvjetljava uređaj istim načinima koje ima svjetlosna traka kontrolera DualSense, a postavljaju se ovdje samo za ovaj kontroler. Na virtualnom kontroleru PlayStation igra koja zapisuje svjetlosnu traku preuzima upravljanje kao na kontroleru DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Upravljaj osvjetljenjem ovog uređaja</value></data>
   <data name="Pad_Lighting_ControlDevice_Tooltip" xml:space="preserve"><value>Isključeno sprječava da ovaj virtualni kontroler osvjetljava uređaj. Redak proizvođača ili drugi uređaj iste vrste osvijetljen putem istog softvera i dalje mu može postaviti boju. Makro Postavi Chroma boju na ovom virtualnom kontroleru i dalje boji Razer uređaj.</value></data>
@@ -1259,9 +1251,9 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Okidači</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-ovi</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Gumbi</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Uvezeni profili…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Predlošci kontrolera…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Prošireni kontroler</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Upravljajte HIDMaestro profilima koje su uvezli korisnici: snimite novi s povezanog uređaja, izvezite postojeći u JSON ili izbrišite onaj koji vam više nije potreban.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Upravljajte predlošcima kontrolera koje ste dodali: uvezite predložak iz datoteke ili s povezanog uređaja, izvezite ga u JSON ili izbrišite onaj koji vam više nije potreban.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Kloniraj uređaj 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Mapira svaku os, gumb i POV prekidač odabranog uređaja izravno na virtualni izlaz s istim brojem. Prilagođava raspored uređaju i zamjenjuje retke ovog uređaja u utoru izravnim propuštanjem 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Kloniraj uređaj 1:1</value></data>
@@ -1276,18 +1268,18 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Uvezi s povezanog uređaja</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Izvezi…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Izbriši</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Izvoz profila u JSON</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Izvoz predloška u JSON</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Izbrisati predložak?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Svaki kontroler koji koristi {0} vraća se na unos Prilagođeno. Ovo se ne može poništiti.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Izvezeno u {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Izvoz nije uspio: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Izbrisano: „{0}“.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Uvezi datoteku…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Uvoz profila iz JSON-a</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Uvoz predloška iz JSON-a</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Uvezeno iz {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Čitanje nije uspjelo: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro je odbio ovaj profil na mjestu {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Ovaj profil nema HID deskriptor, pa se iz njega ne može napraviti nijedan kontroler.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro je odbio ovaj predložak na mjestu {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Ovaj predložak nema HID deskriptor, pa se iz njega ne može napraviti nijedan kontroler.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Ništa nije uvezeno. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Uvezi</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(neimenovani HID uređaj)</value></data>
@@ -1398,9 +1390,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Prebaci na 2D prikaz</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Prebaci na 3D prikaz</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Kliknite za testiranje lijevog motora</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Lijevi motor</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Kliknite za testiranje desnog motora</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Desni motor</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Mapiraj sve</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mapirajte: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Redom snimi sva mapiranja, jedno po jedno</value></data>
@@ -1504,6 +1494,11 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Obrni istinito/lažno</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Ako, prema uzorku (uvjet) ? onda : inače</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Dio inače u izrazu ako-onda-inače</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>i</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>ili</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>ne</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>ako?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>inače:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Apsolutna vrijednost (uklanja predznak)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Manja od dviju vrijednosti</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Veća od dviju vrijednosti</value></data>
@@ -1571,6 +1566,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibriraj središte</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Središnja točka</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Središte</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Brzina</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Mrtva zona</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Pomaci središta, oblik mrtve zone i vrijednosti po osi, krivulja za svaku os, raspon, upravljanje</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Raspon u brojevima, sirove vrijednosti</value></data>
@@ -1794,7 +1790,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Trajno (zadržavanje)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Lijevi motor</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Desni motor</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Zadržavanje</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Blijeđenje</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1903,7 +1898,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Dodirna pločica</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Dodirna pločica</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Ulaz za svaku dodirnu pločicu zasebno. Geste (prelasci prstom, dodiri, stiskanja, oblici) i načini neprekidnog izlaza (virtualna palica / D-pad, miš) postaju izvori mapiranja koje možete povezati s bilo kojim izlazom.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Dodirna pločica</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Broj dodirne pločice</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Dodirna pločica ovog kontrolera na koju se odnose postavke u nastavku. Svaka dodirna pločica ima vlastite geste, osjećaj miša i područje pokazivača.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Prepoznavanje gesta</value></data>
@@ -2354,8 +2348,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Pokret miša Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Osjetljivost</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Osjetljivost IR pokazivača za pojedini izvor. Uz 1.0 puni otklon palice postiže se na rubu vidnog polja kamere. Vrijednosti iznad 1.0 dosežu puni otklon s manjim pomakom ciljanja. Vrijednosti ispod 1.0 trebaju veći pomak.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Osjetljivost</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Osjetljivost za pojedini izvor za običnu os, klizač ili palicu / okidač gamepada. 1.0 ostavlja ulaz nepromijenjen. Vrijednosti iznad 1.0 dosežu puni otklon s manjim hodom. Vrijednosti ispod 1.0 trebaju veći hod.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Osjetljivost pokreta miša za pojedini izvor. Uz 1.0 puni otklon postiže se pri istoj brzini kao kod pravog miša, vrijednosti iznad 1.0 trebaju manje pokreta, a vrijednosti ispod više.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Ravnoteža: ukupna težina</value></data>
@@ -2491,7 +2483,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profil se sam učitava kad je jedna od njegovih igara ispred.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Počinje bez kontrolera. Učitava se sam kad je jedna od njegovih igara ispred.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Dodaj pokrenutu igru</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nijedan drugi program nema otvoren prozor.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nije pronađen nijedan drugi otvoreni prozor.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Ukloni {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Brzina ispitivanja dok je ovaj profil učitan</value></data>
 
@@ -3072,7 +3064,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Dodajte boje koje se izmjenjuju, jednu za svaki kraj zakreta.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Vrati zadržavanje svjetlosne trake na zadano</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Zvuk</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Pokazivač</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR pokazivač</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Ciljajte upravljačem Wii Remote prema zaslonu pomoću njegove IR kamere. Potrebna je senzorska traka ili dvije infracrvene LED diode iznad ili ispod zaslona. Kalibrirajte ga kao svjetlosni pištolj na stranici Uređaji da biste ciljali točno mjesto. Kalibrirani Wii Remote zanemaruje Položaj senzorske trake i Okomiti pomak.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Podešavanje pokazivača</value></data>
@@ -3430,7 +3421,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Imenujte ovu oznaku</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Registriraj</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Registrirano</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Nije otkriven nijedan NFC čitač. Povežite PC/SC čitač i ponovno otvorite.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Oznaka je zabilježena. Unesite naziv i kliknite Registriraj. Prislonite drugu oznaku da biste je zamijenili.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>Registrirano: „{0}“. Prislonite drugu oznaku da biste dodali još.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Registriraj / upravljaj NFC oznakama</value></data>
@@ -3457,7 +3447,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="VrCtl_Z" xml:space="preserve"><value>Kontroler Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Palica X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Palica Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Okidač</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Ručka</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Klik palice</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Primarni gumb</value></data>
@@ -3535,7 +3524,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Omogući gumbe ručnog računala</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Dodaje uređaj Skriveni gumbi i uređaj Pokret sustava na stranicu Uređaji. Kada je isključeno, ništa se ne izvodi.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Multimedija {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Miš</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Geste mišem</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Držite tipku za geste, brzo pomaknite miš i pri otpuštanju aktivira se jedna radnja: lijevo, desno, gore, dolje ili obični klik ispod udaljenosti pomaka. Mapirajte pet gesta na bilo koji izlaz ili ih koristite kao pokretače makroa.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Omogući geste mišem</value></data>
@@ -3724,8 +3712,9 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam nije dostupan</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Nije moguće pristupiti Steamu. Provjerite vezu. Profili koje ste već uvezli i dalje rade jer se nalaze na ovom računalu.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Pokušaj ponovno</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Ova konfiguracija iz 2016. starija je od Steamova CDN-a za konfiguracije. Pretplatite se na nju u Steamu i PadForge će je pročitati iz vaše mape Steam.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam ne navodi datoteku za preuzimanje ove konfiguracije, a njezina kopija nije ni u vašoj mapi Steam. Pretplatite se na nju u Steamu i PadForge će je pročitati odande.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Otvori u servisu Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Zastarjelo</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Odaberite konfiguraciju da biste vidjeli što se prenosi.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Što se prenosi</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Postaje</value></data>
@@ -3951,7 +3940,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>izbornik nema povezanih ćelija</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>površina izvora izbornika nije podržana ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikona ćelije izbornika nije prepoznata ({0}) pa ćelija zadržava tekstnu oznaku</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Taktilni pretvarači</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Izlaz</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Tipke</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tipke i miš</value></data>
@@ -4419,7 +4407,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Podijeljeno po smjeru</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Središnja mrtva zona</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Vrati na isključeno</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Vrati na Lijeva palica X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Vrati jačinu na zadano (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Vrati središnju mrtvu zonu na zadano (2%)</value></data>
@@ -4499,7 +4486,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>HID sloj preveden u priloženu datoteku SDL3.dll, autor Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Izvori ikona</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Simbol plamena iz Material Design Icons (Pictogrammers, Apache-2.0), općenita ikona gamepada iz Ionicons (Ionic, MIT), džojstik za Prošireni kontroler iz Jam Icons (Michael Amprimo, MIT) te ikone Xbox i PlayStation iz SVG Repo, pod licencom navedenom na stranici svake ikone.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Simbol plamena iz Material Design Icons (Pictogrammers, Apache-2.0), džojstik za Prošireni kontroler iz Jam Icons (Michael Amprimo, MIT) te ikone Xbox i PlayStation iz SVG Repo, pod licencom navedenom na stranici svake ikone.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Protokol releja za pričuvni kanal Udaljene veze, koji komunicira s besplatnim javnim relejima servisa n0.computer na isti način kao FlexInput. iroh: MIT OR Apache-2.0. FlexInput: MIT. Samo kao dokumentacija, ne isporučuje se nikakav kôd.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

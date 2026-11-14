@@ -291,7 +291,7 @@ namespace PadForge.Tests
             int host = At(window, "<controls:ShellDialog x:Name=\"AddControllerHost\" Panel.ZIndex=\"5\" FrameMaxWidth=\"760\"");
             Assert.True(host > about, "the dialog does not stand after the pages");
             At(window, "AutomationProperties.AutomationId=\"AddControllerDialog\"");
-            At(window, "<views:AddControllerView x:Name=\"AddControllerView\"/>");
+            At(window, "<views:AddControllerView x:Name=\"AddControllerView\" DataContext=\"{x:Null}\"/>");
 
             string view = ExtrasPageTests.RepoText("PadForge.App", "Views", "AddControllerView.xaml");
             int title = At(view, "<TextBlock x:Name=\"AddControllerTitle\" AutomationProperties.HeadingLevel=\"Level1\"");

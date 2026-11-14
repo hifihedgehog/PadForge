@@ -329,9 +329,10 @@ namespace PadForge.Common.Input.Peripherals
 
         /// <summary>The Everest 60's lights at their LED values, the edges
         /// ("Edge 1" to "Edge 44" and "Numpad Edge 1" to "Numpad Edge 22")
-        /// as edge lights.</summary>
-        /// <summary>OpenRGB's table has B on LED 88 and V on LED 89 (RGBController_Mountain60Keyboard.cpp:65-66).
-        /// The row runs C, V, B, N, as SignalRGB's plugin has it (Mountain Everest 60.js).</summary>
+        /// as edge lights.
+        ///
+        /// <para>OpenRGB's table has B on LED 88 and V on LED 89 (RGBController_Mountain60Keyboard.cpp:65-66).
+        /// The row runs C, V, B, N, as SignalRGB's plugin has it (Mountain Everest 60.js).</para></summary>
         internal static List<LightInfo> Everest60Lights()
         {
             const ushort V = 0x19, B = 0x05;

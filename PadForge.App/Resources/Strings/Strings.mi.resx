@@ -455,7 +455,7 @@
 
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Tāpiri tae</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Ngā pātene</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Ngā kōtaha kua kawemaitia…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Ngā tautuhinga controller…</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Ngā tautuhinga controller</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Kaweake…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Muku</value></data>
@@ -466,8 +466,8 @@
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Kawemai i te kōnae…</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Kua kawemai mai i {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>I rahua te pānui: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>I whakakāhoretia e HIDMaestro tēnei kōtaha i {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Kāore he HID descriptor o tēnei kōtaha, nō reira kāore e taea te hanga controller i a ia.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>I whakakāhoretia e HIDMaestro tēnei tautuhinga i {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Kāore he HID descriptor o tēnei tautuhinga, nō reira kāore e taea te hanga controller i a ia.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Kāore he mea i kawemaitia. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Kawemai</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(pūrere HID kāore he ingoa)</value></data>
@@ -515,9 +515,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Huri ki te tirohanga 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Huri ki te tirohanga 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Pāwhiri hei whakamātau i te mōta mauī</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Mōta mauī</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Pāwhiri hei whakamātau i te mōta matau</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Mōta matau</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Tāruatia ngā mapping me ngā tautuhinga katoa ki te papatopenga</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Whakapiria ngā mapping me ngā tautuhinga mai i te papatopenga</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Tārua mai i...</value></data>
@@ -706,7 +704,6 @@
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Pupuri</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Mōta mauī</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Mōta matau</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Pupuri</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Memeha</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -792,7 +789,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Nama touchpad</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Ngā mea e rua</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Pātō / Pātō rua / Pātō toru</value></data>
@@ -919,7 +915,6 @@
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Tūnga kiore Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Tairongo</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Tairongo</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Tairongo</value></data>
 
   <!-- ═══ Device Object Names (gamepad) ═══ -->
   <data name="DevObj_LeftStickX" xml:space="preserve"><value>Stick mauī X</value></data>
@@ -1380,7 +1375,6 @@
   <data name="Handheld_Import" xml:space="preserve"><value>Kawemai…</value></data>
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Kua kaweakehia ngā pātene e {0}.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Kua kawemaihia ngā pātene e {0}.</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Kiore</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Mauī</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Matau</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Runga</value></data>
@@ -1407,6 +1401,7 @@
   <data name="Workshop_TagAll" xml:space="preserve"><value>Katoa</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Whakamātau anō</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Huakina i Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Tawhito</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Tiaki kōtaha</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>paparanga: {0}</value></data>
   <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>kāore i te mōhiotia te pātuhi {0}</value></data>
@@ -1576,7 +1571,6 @@
   <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>Stick matau Y</value></data>
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Mōta</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Wehe mā te ahunga</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Tautuhi anō ki Weto</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Tautuhi anō ki Stick mauī X</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Kōtaha</value></data>
   <data name="About_Nefcon" xml:space="preserve"><value>nefcon</value></data>
@@ -1970,7 +1964,7 @@
   <data name="PickSound_Play_Format" xml:space="preserve"><value>Whakatangihia {0}</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Ka tīmata me te kore controller. Ka uta noa ina kei mua tētahi o ōna kēmu.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Tāpiri kēmu e rere ana</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Kāore he hōtaka kē he matapihi tuwhera.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Kāore i kitea he matapihi tuwhera kē.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tango {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Te ingoa, te tohu me te tae o te paparanga Taketake i te Shift Layer Flyout me te rārangi paparanga.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Kua kawemaitia</value></data>
@@ -1984,4 +1978,5 @@
   <data name="Profiles_StartersHint" xml:space="preserve"><value>He kōtaha kua oti kē mō tētahi momo kēmu katoa. Kōwhiria tētahi, tautapa he controller, ka tākaro.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} o {1} kua kā</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>He putanga hou ake o ēnei kōtaha kua kawemaitia kei te Steam Workshop. Kawemai anō i a rātou mai i Tiki kōtaha kia riro mai ngā panoni.</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Tere</value></data>
 </root>

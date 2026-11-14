@@ -26,9 +26,10 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- The ground (#574): one flat fill under everything, the page's
-             color. Dark theme only. UpdateSteelLayer collapses it in Light,
-             where the window's own backdrop shows. -->
+        <!-- The ground (#574): one flat fill under everything
+             (SteelGroundBrush), which the sidebar and the page area cover
+             with fills of their own. Dark theme only. UpdateSteelLayer
+             collapses it in Light, where the window's own backdrop shows. -->
         <Grid x:Name="SteelLayer" Grid.RowSpan="2" IsHitTestVisible="False">
             <Border Background="{DynamicResource SteelGroundBrush}"/>
         </Grid>
@@ -421,7 +422,7 @@
                     <controls:ShellDialog x:Name="AddControllerHost" Panel.ZIndex="5" FrameMaxWidth="760"
                                           AutomationProperties.AutomationId="AddControllerDialog"
                                           AutomationProperties.Name="{Binding AddController_Title, Source={x:Static strings:Strings.Instance}}">
-                        <views:AddControllerView x:Name="AddControllerView"/>
+                        <views:AddControllerView x:Name="AddControllerView" DataContext="{x:Null}"/>
                     </controls:ShellDialog>
                     <!-- Search (#574): the same dialog frame, at Search's width.
                          A press on the dark ground closes it, as the board's
@@ -484,9 +485,6 @@
                                FontSize="16" FontWeight="SemiBold"
                                HorizontalAlignment="Center"
                                Text="{Binding Main_ShuttingDown, Source={x:Static strings:Strings.Instance}}"/>
-                    <TextBlock x:Name="ShutdownOverlayText"
-                               FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                               Margin="0,0,0,4" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
         </Grid>

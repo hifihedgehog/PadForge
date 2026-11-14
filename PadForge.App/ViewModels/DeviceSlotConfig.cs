@@ -1388,7 +1388,7 @@ namespace PadForge.ViewModels
 
         // Subscribed entries tracked explicitly because Clear() raises
         // Reset with no OldItems, which would otherwise skip the per-entry
-        // unsubscribes (same idiom as PadViewModel's _directCountHooked).
+        // unsubscribes (same idiom as MappingItem's _extraSourcesHooked).
         private readonly List<LightbarPaletteEntry> _paletteEntriesHooked = new();
 
         private void HookInputReactivePalette(ObservableCollection<LightbarPaletteEntry> coll)
@@ -1721,16 +1721,6 @@ namespace PadForge.ViewModels
                 RightStrength      = 0xFF;
             });
         private RelayCommand _applyRightGameCubePreset;
-
-        /// <summary>Reset lightbar to the Sony player-1 default (solid blue).</summary>
-        public RelayCommand ResetLightbarColorCommand =>
-            _resetLightbar ??= new RelayCommand(() =>
-            {
-                LightbarRed = 0;
-                LightbarGreen = 0;
-                LightbarBlue = 0xFF;
-            });
-        private RelayCommand _resetLightbar;
 
         /// <summary>Section-level reset for the lightbar card on the
         /// Lighting tab. Restores every lightbar field to its initial
@@ -2104,6 +2094,15 @@ namespace PadForge.ViewModels
         public string Id { get; }
         public string Display { get; }
         public MicLedDeviceItem(string id, string display) { Id = id; Display = display; }
+
+        // Two entries for one endpoint are the same entry: the picker's list
+        // is made again each time it opens, and an entry it could not find
+        // in the new list was written back as no device, a change to a saved
+        // setting from opening a drop-down.
+        public override bool Equals(object obj) => obj is MicLedDeviceItem other
+            && string.Equals(Id, other.Id, StringComparison.Ordinal);
+
+        public override int GetHashCode() => Id == null ? 0 : StringComparer.Ordinal.GetHashCode(Id);
     }
 
     /// <summary>Player indicator LED selection. The ComboBox binds it by

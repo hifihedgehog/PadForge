@@ -136,7 +136,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Lokar PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Ræsir PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Hreinsar upp sýndarstýringar sem urðu eftir frá fyrri lotu.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> tæki</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Bæta við leikjastýringu</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Bæta við leikjastýringu</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Veldu hvað leikir eiga að sjá. Stýringin bætist við um leið og þú smellir.</value></data>
@@ -280,7 +279,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Tími upptöku fyrir „{0}“ rann út.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Vélin ræst.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Vélin stöðvuð.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Engin vörpun</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Villa: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Ekki tókst að búa til {0}.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Skipt um snið: {0}</value></data>
@@ -298,7 +296,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Tekur upp...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>þegar</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>á</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>„{0}“ úthlutað á sýndarstýringu {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>Úthlutun „{0}“ fjarlægð af sýndarstýringu {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Tæki fjarlægt.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Sýndarstýringu {0} eytt.</value></data>
@@ -529,7 +526,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Tölvur sem þú hefur parað við fyrir Fjartengingu. Afturkallaðu tölvu til að hún hætti að tengjast. Þá þyrfti hún að para aftur.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Afturkalla</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Afturkalla allar</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Endurnefna</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Yfirlag snertiflatar</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Snertiflötur á skjánum fyrir PlayStation-snertiflatarleiki, fyrir snertiskjá eða músina.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Virkja yfirlag snertiflatar</value></data>
@@ -763,7 +759,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Leyfisskilmálar Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>SDK-skilmálar Corsair</value></data>
@@ -1110,9 +1105,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Varpanir</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Pinnar</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Gikkir</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Kraftsvörun</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse Triggers</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse Triggers</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Styrkur hvers gikks, víxlun mótora, titringur aðlögunarhæfra gikkja, Stöðugur kraftur á gikki</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Framsendir mótorskipanir hvers gikks (Xbox Impulse Triggers) frá sýndarstýringunni til úthlutaðrar Xbox One-, Elite- eða Series-leikjastýringar. Gikkjatitringur frá leikjum fer sjálfkrafa í gegn. Stillingarnar hér fyrir neðan kvarða styrkinn fyrir hvern gikk.</value></data>
@@ -1178,7 +1171,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Endurstilla vinstri gikk</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Endurstilla hægri gikk</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Aðlögunarhæfir gikkir</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Aðlögunarhæfir gikkir</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Stilla svörunaráhrif gikkja á úthlutaðri DualSense-leikjastýringu. Gikkjaáhrif frá leik eða leikjabreytingu eru framsend sjálfkrafa. Stillingarnar hér bæta við lagi sem notandinn stillir og keyrir þegar hvorugt skrifar.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Pinnar</value></data>
@@ -1224,7 +1216,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>Lýsing</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Lýsing</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Stilla grunnlit ljósrandarinnar og hegðun hennar gagnvart hljóði á úthlutaðri raunverulegri leikjastýringu. Það sem leikir skrifa gengur alltaf fyrir. Stillingar notanda gilda þegar enginn leikur stýrir ljósröndinni.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Þegar stillt er á „Númer spilara“ sýnir leikjastýringin í hvíld auðkenni spilara á sýndarstýringunni sinni: spilaralit Sony á ljósröndinni (1 blár, 2 rauður, 3 grænn, 4 bleikur) og samsvarandi spilaraljós á DualSense. Öll tæki á sömu sýndarstýringu sýna sama númer. Leikir taka yfir þegar þeir skrifa lýsingu, allt sem þú stillir hér gengur alltaf fyrir og „Slökkt“ slekkur ljós alveg.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Þegar stillt er á „Númer spilara“ sýnir leikjastýringin í hvíld auðkenni spilara á sýndarstýringunni sinni: spilaralit Sony á ljósröndinni (1 blár, 2 rauður, 3 grænn, 4 bleikur) og samsvarandi spilaraljós á DualSense. Öll tæki á sömu sýndarstýringu sýna sama númer. Leikur tekur yfir þegar hann skrifar lýsingu. Hver önnur stilling sem þú velur hér kemur í stað spilaralitarins og „Slökkt“ slekkur ljós alveg.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Þessi sýndarstýring lýsir tækið með sömu hömum og ljósrönd DualSense hefur, stillt hér fyrir þessa leikjastýringu eingöngu. Á PlayStation-sýndarstýringu tekur leikur sem skrifar á ljósröndina yfir á sama hátt og á DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Stjórna lýsingu þessa tækis</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Stjórnun lýsingar</value></data>
@@ -1446,9 +1438,9 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gikkir</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV-rofar</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Hnappar</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Innflutt snið…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Forstillingar leikjastýringa…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Útvíkkuð sýndarstýring</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Sýsla með HIDMaestro-snið sem notandi hefur flutt inn: taka nýtt upp af tengdu tæki, flytja fyrirliggjandi snið út í JSON eða eyða sniði sem þú þarft ekki lengur.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Sýsla með forstillingarnar sem þú bættir við: flytja inn forstillingu úr skrá eða tengdu tæki, flytja eina út í JSON eða eyða forstillingu sem þú þarft ekki lengur.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Klóna tæki 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Varpa hverjum ás, hnappi og hattrofa á völdu tæki beint á sýndarúttak með sama númeri. Lagar uppsetninguna að tækinu og skiptir línum þessa tækis í raufinni út fyrir 1:1-gegnumstreymi.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Klóna tæki 1:1</value></data>
@@ -1463,18 +1455,18 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Flytja inn úr tengdu tæki</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Flytja út…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Eyða</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Flytja snið út sem JSON</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Flytja forstillingu út sem JSON</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Eyða forstillingu?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Allar leikjastýringar sem nota {0} fara aftur á færsluna „Sérsniðið“. Ekki er hægt að afturkalla þetta.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Flutt út í {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Útflutningur mistókst: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>„{0}“ eytt.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Flytja inn skrá…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Flytja inn snið úr JSON</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Flytja inn forstillingu úr JSON</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Flutt inn úr {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Lestur mistókst: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro hafnaði þessu sniði við {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Í þessu sniði vantar HID-lýsi, svo ekki er hægt að búa til leikjastýringu úr því.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro hafnaði þessari forstillingu við {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Í þessari forstillingu vantar HID-lýsi, svo ekki er hægt að búa til leikjastýringu úr henni.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Engu var flutt inn. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Flytja inn</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(ónefnt HID-tæki)</value></data>
@@ -1585,9 +1577,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Skipta yfir í 2D-sýn</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Skipta yfir í 3D-sýn</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Smelltu til að prófa vinstri mótor</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Vinstri mótor</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Smelltu til að prófa hægri mótor</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Hægri mótor</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Varpa öllu</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Varpa: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Taka upp allar varpanir, eina í einu</value></data>
@@ -1691,6 +1681,11 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Víxla sönnu/ósönnu</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Ef, með mynstrinu (skilyrði) ? þá : annars</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Annars-hluti ef-þá-annars</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>og</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>eða</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>ekki</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>ef?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>annars:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Tölugildi (sleppir formerkinu)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Minna af tveimur gildum</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Stærra af tveimur gildum</value></data>
@@ -1759,6 +1754,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kvarða miðju</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Miðpunktur</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Miðja</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Hraði</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Dautt svæði</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Frávik miðpunkts, lögun dauðs svæðis og gildi fyrir hvern ás, ferill fyrir hvern ás, svið, stýring</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Sviðið í tölum, hrá gildi</value></data>
@@ -1982,7 +1978,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Fast (hald)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Vinstri mótor</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Hægri mótor</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Hald</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Dofnun</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -2091,7 +2086,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Snertiflötur</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Snertiflötur</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Inntak fyrir hvern snertiflöt. Bendingar (strok, snertingar, klíp, form) og samfelldir úttakshamir (sýndarpinni / stefnuhnappar, mús) verða að vörpunaruppsprettum sem þú getur tengt við hvaða úttak sem er.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Snertiflötur</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Númer snertiflatar</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Á hvaða snertiflöt þessarar leikjastýringar stillingarnar hér fyrir neðan eiga við. Hver snertiflötur heldur sínum eigin bendingum, músartilfinningu og bendilssvæði.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Greining bendinga</value></data>
@@ -2542,8 +2536,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Músarhreyfing Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Næmi</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Næmi IR-bendils fyrir hverja uppsprettu. 1.0 nær fullu útslagi pinna við jaðar sjónsviðs myndavélarinnar. Gildi yfir 1.0 ná fullu útslagi með minni miðunarhreyfingu. Gildi undir 1.0 þurfa meiri.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Næmi</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Næmi fyrir hverja uppsprettu á venjulegum ás, sleða eða pinna / gikk leikjastýringar. 1.0 lætur inntakið óbreytt. Gildi yfir 1.0 ná fullu útslagi með minni hreyfingu. Gildi undir 1.0 þurfa meiri.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Leikjastýring {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Næmi músarhreyfingar fyrir hverja uppsprettu. 1.0 nær fullu útslagi á sama hraða og raunveruleg mús myndi, gildi yfir 1.0 þurfa minni hreyfingu, gildi undir þurfa meiri.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Jafnvægi: heildarþyngd</value></data>
@@ -2680,7 +2672,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Snið hleðst sjálfkrafa þegar einn af leikjum þess er fremst.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Byrjar án leikjastýringa. Það hleðst sjálfkrafa þegar einn af leikjum þess er fremst.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Bæta við leik í gangi</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ekkert annað forrit er með glugga opinn.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Enginn annar opinn gluggi fannst.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Fjarlægja {0}</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Könnunartíðni á meðan þetta snið er hlaðið</value></data>
 
@@ -3262,7 +3254,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Bættu við litum til að fara í gegnum, einum við hvert endastopp.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Endurstilla hald ljósrandar</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Hljóð</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Bendill</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-bendill</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Miðaðu þessari Wii Remote á skjáinn með IR-myndavélinni hennar. Þarf skynjarastöng, eða tvö innrauð LED-ljós, fyrir ofan eða neðan skjáinn. Kvarðaðu hana sem ljósbyssu á síðunni „Tæki“ til að miða á nákvæman stað. Kvörðuð fjarstýring hunsar „Staðsetning skynjarastangar“ og „Lóðrétt hliðrun“.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Stillingar bendils</value></data>
@@ -3617,7 +3608,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Enginn Bluetooth-sendir er tiltækur. Kveiktu á Bluetooth og reyndu aftur. Pörun þarf aðeins fyrir þráðlausa spilun; leikjastýring tengd með snúru virkar án hennar.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Pörun lauk ekki. Skrefið sem mistókst er sýnt hér fyrir ofan.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Loka</value></data>
-  <data name="Common_ResizePanes" xml:space="preserve"><value>Breyta stærð rúða</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC-merki</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>Berðu merki að lesaranum og nefndu það. Það verður að hnappi sem þú getur varpað.</value></data>
   <data name="Nfc_TapPrompt" xml:space="preserve"><value>Berðu merki að lesaranum.</value></data>
@@ -3625,7 +3615,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Nefndu þetta merki</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Skrá</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Skráð</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Enginn NFC-lesari fannst. Tengdu PC/SC-lesara og opnaðu aftur.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Merki lesið. Sláðu inn heiti og smelltu á „Skrá“. Berðu annað merki að lesaranum til að skipta því út.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>„{0}“ skráð. Berðu annað merki að lesaranum til að bæta fleirum við.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Skrá / sýsla með NFC-merki</value></data>
@@ -3652,7 +3641,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="VrCtl_Z" xml:space="preserve"><value>Leikjastýring Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Pinni X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Pinni Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Gikkur</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Handfang</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Smellur á pinna</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Aðalhnappur</value></data>
@@ -3755,7 +3743,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Virkja hnappa handtölvu</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Bætir tækjunum „Faldir hnappar“ og „Hreyfiskynjun kerfis“ við síðuna „Tæki“. Þegar slökkt er keyrir ekkert.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Margmiðlun {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Mús</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Músarbendingar</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Haltu bendingahnappinum inni, sveiflaðu músinni og ein aðgerð keyrir þegar þú sleppir: vinstri, hægri, upp, niður, eða venjulegur smellur ef sveiflan nær ekki vegalengdinni. Varpaðu bendingunum fimm á hvaða úttak sem er eða notaðu þær sem ræsa fyrir fjölva.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Virkja músarbendingar</value></data>
@@ -3944,8 +3931,9 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Ekki næst í Steam</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Ekki náðist í Steam. Athugaðu tenginguna. Snið sem þú hefur þegar flutt inn virka áfram: þau eru geymd á þessari tölvu.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Reyna aftur</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Þessi stilling frá um 2016 er eldri en CDN Steam fyrir stillingar. Gerstu áskrifandi að henni í Steam og PadForge les hana úr Steam-möppunni þinni.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam býður enga skrá til niðurhals fyrir þessa stillingu og ekkert afrit af henni er í Steam-möppunni þinni. Gerstu áskrifandi að henni í Steam og PadForge les hana þaðan.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Opna í Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Eldri</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Veldu stillingu til að sjá hvað skilar sér.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Það sem skilar sér</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Verður</value></data>
@@ -4171,7 +4159,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>valmyndin hefur enga bundna reiti</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>hýsilflötur valmyndar ekki studdur ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>tákn valmyndarreits ekki þekkt ({0}), svo reiturinn heldur textamerkingu sinni</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bassahristarar</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Úttak</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Hnappar</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Lyklar og mús</value></data>
@@ -4650,7 +4637,6 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Mótor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Skipt eftir stefnu</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Dautt svæði í miðju</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Endurstilla á slökkt</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Endurstilla á vinstri pinna X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Endurstilla styrk (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Endurstilla dautt svæði í miðju (2%)</value></data>
@@ -4730,7 +4716,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>HID-lagið sem er þýtt inn í meðfylgjandi SDL3.dll, eftir Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Uppruni tákna</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Logatáknið úr Material Design Icons (Pictogrammers, Apache-2.0), almenna leikjastýringartáknið úr Ionicons (Ionic, MIT), stýripinni útvíkkuðu gerðarinnar úr Jam Icons (Michael Amprimo, MIT) og Xbox- og PlayStation-táknin úr SVG Repo, með leyfinu á síðu hvers tákns.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Logatáknið úr Material Design Icons (Pictogrammers, Apache-2.0), stýripinni útvíkkuðu gerðarinnar úr Jam Icons (Michael Amprimo, MIT) og Xbox- og PlayStation-táknin úr SVG Repo, með leyfinu á síðu hvers tákns.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Endurvarpssamskiptareglurnar á bak við varaleið Fjartengingar, notaðar við ókeypis opinberar endurvarpsstöðvar n0.computer á sama hátt og FlexInput gerir. iroh: MIT OR Apache-2.0. FlexInput: MIT. Aðeins skjölun, enginn kóði fylgir.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

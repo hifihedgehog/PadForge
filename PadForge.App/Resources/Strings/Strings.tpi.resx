@@ -401,7 +401,6 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Ol mapin</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Ol stik</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Ol triga</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force feedback</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Triga long lephan</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Triga long raithan</value></data>
@@ -464,8 +463,8 @@
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>Ol POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Ol baten</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Rausim</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro i tok nogat long dispela profail long {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Dispela profail i no gat HID descriptor, olsem na i no inap wokim kontrola long en.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro i tok nogat long dispela preset long {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Dispela preset i no gat HID descriptor, olsem na i no inap wokim kontrola long en.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Nogat wanpela samting i kam insait. {0}</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
@@ -486,9 +485,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Senisim i go long 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Senisim i go long 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Klik long traim lephan mota</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Lephan mota</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Klik long traim raithan mota</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Raithan mota</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mapin: {0}</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopim olgeta mapin na ol seting i go long clipboard</value></data>
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopim long...</value></data>
@@ -587,7 +584,6 @@
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Holim</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Lephan mota</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Raithan mota</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Holim</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Long namel</value></data>
@@ -663,7 +659,6 @@
   <!-- ═══ Pad Touchpad Tab ═══ -->
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Namba bilong touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Tanim on gesture long dispela touchpad</value></data>
   <data name="Pad_Touchpad_Mode_Both" xml:space="preserve"><value>Tupela</value></data>
@@ -776,7 +771,6 @@
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitiviti</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensitiviti</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensitiviti</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensitiviti</value></data>
 
   <!-- ═══ Device Object Names (gamepad) ═══ -->
   <data name="DevObj_LeftStickX" xml:space="preserve"><value>Lephan stik X</value></data>
@@ -1334,7 +1328,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Givim nem long dispela tag</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Rejistaim</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>I rejista pinis</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>I no painim NFC rida. Konektim wanpela PC/SC rida na opim gen.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Kisim tag pinis. Raitim nem na klikim Rejistaim. Tap narapela tag long senisim em.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>Rejistaim "{0}." Tap narapela tag long putim moa.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Rejistaim / lukautim ol NFC tag</value></data>
@@ -1358,7 +1351,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>Kontrola Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Stik X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Stik Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Triga</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Namba wan baten</value></data>
   <data name="VrCtl_Secondary" xml:space="preserve"><value>Namba tu baten</value></data>
   <data name="VrCtl_Menu" xml:space="preserve"><value>Baten bilong menu</value></data>
@@ -1378,7 +1370,6 @@
   <data name="Handheld_NoneLearned" xml:space="preserve"><value>I no gat baten yu lainim yet.</value></data>
   <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Lainim long {0}</value></data>
   <data name="Handheld_ChordFormat" xml:space="preserve"><value>Ol ki: {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Maus</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Ol gesture bilong maus</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Tanim on ol gesture bilong maus</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Ol baten bilong gesture</value></data>
@@ -1416,6 +1407,7 @@
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>I no inap kisim Steam. Lukim konekson bilong yu. Ol profail yu kisim pinis i wok yet: ol i stap long dispela PC.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Traim gen</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Opim long Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Olpela</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Seivim profail</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Seivim na usim</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
@@ -1580,7 +1572,6 @@
   <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>Stik long han sut Y</value></data>
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Mota</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Skelim long sait</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Reset i go long Of</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Reset i go long Stik long han kais X</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profail</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd i no pinis insait long 60 minit.</value></data>
@@ -1935,7 +1926,7 @@
   <data name="Search_Docs_Format" xml:space="preserve"><value>Painim “{0}” long ol buk bilong save</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Em i kirap wantaim nogat kontrola. Em i lod long em yet taim wanpela gem bilong en i stap long pes.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Putim gem i ran nau</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>I no gat narapela program i gat windo i op.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>I no painim narapela windo i op.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Rausim {0}</value></data>
   <data name="Handheld_StartOver" xml:space="preserve"><value>Kirap gen</value></data>
   <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
@@ -1958,4 +1949,5 @@
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Ol profail i redi pinis bilong wanpela kain gem olgeta. Makim wanpela, givim long wanem kontrola, na pilai.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} long {1} i on</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ol dispela profail yu kisim i gat nupela version long Steam Workshop. Kisim ol gen long Kisim ol profail bilong kisim ol senis.</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Spit</value></data>
 </root>

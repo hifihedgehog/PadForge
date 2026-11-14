@@ -212,8 +212,11 @@ namespace PadForge.ViewModels
                     }
                 }
             }
-            OnPropertyChanged(nameof(TriggerDeviceGuid));
+            // The stored device goes back first and the box reads it after,
+            // the order the profile list below keeps: whatever the Clear()
+            // wrote through the box is gone before anything reads it.
             Data.TriggerDeviceGuid = currentGuid;
+            OnPropertyChanged(nameof(TriggerDeviceGuid));
         }
 
         // ─────────────────────────────────────────────

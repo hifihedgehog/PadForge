@@ -288,6 +288,11 @@ namespace PadForge.Tests
                 Add(PeripheralLinker.SteelSeriesVid, product, name, source);
             foreach (var d in PluginDeviceLighting.Devices)
                 Add(d.VendorId, d.ProductId, d.Name, d.Plugin);
+            // Another product ID of a device OpenRGB lists is lit as that device, under its name.
+            foreach (var (other, same) in CorsairPeripheralV2Lighting.OtherIds)
+                Add(CorsairLights.VendorId, other,
+                    OpenRgbRegistrations.Of(CorsairPeripheralV2Lighting.OpenRgbFamily).First(r => r.ProductId == same).Name,
+                    "OpenRGB " + CorsairPeripheralV2Lighting.OpenRgbFamily);
             foreach (var d in CorsairPeripheralV2Lighting.PluginDevices.Value)
                 Add(CorsairLights.VendorId, d.ProductId, d.Name, "SignalRGB Corsair_Bragi_Device.js");
             foreach (var (name, _, product, _, _) in CorsairLights.V1Sections)

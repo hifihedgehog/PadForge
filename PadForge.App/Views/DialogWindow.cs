@@ -63,7 +63,6 @@ namespace PadForge.Views
                 if (PressLandedOnSomethingClickable(e.OriginalSource as DependencyObject)) return;
                 try { DragMove(); } catch (InvalidOperationException) { }
             };
-            ApplicationThemeManager.Changed += OnThemeChanged;
         }
 
         /// <summary>The line under the title: text, or a TextBlock with runs of its own.</summary>
@@ -113,8 +112,12 @@ namespace PadForge.Views
         {
             for (var d = hit; d != null;)
             {
+                // The template wraps every dialog's body in one scroller,
+                // which is no control: counted as one, it kept a press
+                // anywhere in a body from moving the window.
                 if (d is ButtonBase or TextBoxBase or Selector or ScrollBar or Thumb
-                    or ScrollViewer or ComboBox or Slider or MenuItem)
+                    or ComboBox or Slider or MenuItem
+                    or ScrollViewer { Name: not "PART_BodyScroll" })
                     return true;
                 if (d is FrameworkElement fe && fe.Cursor == Cursors.Hand)
                     return true;
@@ -130,6 +133,11 @@ namespace PadForge.Views
             double cap = SystemParameters.WorkArea.Height - 64;
             if (cap > 200 && MaxHeight > cap) MaxHeight = cap;
             ApplyEdge();
+            // The theme is followed from here, where the window has come to
+            // be, to OnClosed. Subscribed in the constructor, a dialog that
+            // was built and never shown stayed on this static event for
+            // good.
+            ApplicationThemeManager.Changed += OnThemeChanged;
         }
 
         // FluentWindow paints the edge on activation and resets it on deactivation, so the dialogs' color goes

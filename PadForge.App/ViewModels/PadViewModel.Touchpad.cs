@@ -63,6 +63,10 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _maxTouchpadIndex, Math.Max(0, value)))
                 {
+                    // A pad past the new count goes back to the first, before
+                    // the list is raised: a pick the new list does not hold
+                    // left the box blank over the old index.
+                    if (_selectedTouchpadIndex >= Math.Max(1, _maxTouchpadIndex)) SelectedTouchpadIndex = 0;
                     OnPropertyChanged(nameof(HasMultipleTouchpads));
                     OnPropertyChanged(nameof(TouchpadIndexOptions));
                 }

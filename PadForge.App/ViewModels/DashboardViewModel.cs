@@ -68,7 +68,8 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// Rebuilds the SlotSummaries to only include slots with mapped devices.
+        /// Rebuilds the SlotSummaries: one for each created slot, with
+        /// devices or none.
         /// Called from InputService after UpdatePadDeviceInfo().
         /// </summary>
         public void RefreshActiveSlots(System.Collections.Generic.IList<int> activeSlots, bool canAddMore)
@@ -632,16 +633,6 @@ namespace PadForge.ViewModels
         {
             get => _gameTelemetryStatus;
             set => SetProperty(ref _gameTelemetryStatus, value ?? Strings.Instance.Common_Stopped);
-        }
-
-        private bool _isGameTelemetryRunning;
-
-        /// <summary>Serving truth for the card's flame: the row is open,
-        /// whatever the switch says.</summary>
-        public bool IsGameTelemetryRunning
-        {
-            get => _isGameTelemetryRunning;
-            set => SetProperty(ref _isGameTelemetryRunning, value);
         }
 
         private bool _isGameTelemetryReceiving;
@@ -1421,15 +1412,6 @@ namespace PadForge.ViewModels
             _newWebAccessCodeCommand ??= new RelayCommand(
                 () => WebControllerAccessCode = Services.WebControllerAccess.Generate());
 
-        private bool _isWebControllerPlainRunning;
-
-        /// <summary>Serving truth for the plain address's flame.</summary>
-        public bool IsWebControllerPlainRunning
-        {
-            get => _isWebControllerPlainRunning;
-            set => SetProperty(ref _isWebControllerPlainRunning, value);
-        }
-
         private string _webControllerPlainStatus;
 
         /// <summary>Where the plain address runs, or why it does not. Null
@@ -1958,45 +1940,13 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _mappedDevices, value);
         }
 
-        private string _deviceName = Strings.Instance.Dashboard_NoDevice;
-
-        /// <summary>Name of the primary device mapped to this slot.</summary>
-        public string DeviceName
-        {
-            get => _deviceName;
-            set => SetProperty(ref _deviceName, value);
-        }
-
-        private string _batteryText = string.Empty;
-
-        /// <summary>Battery of the first mapped device reporting one,
-        /// e.g. "78%". Empty otherwise. Cold side (#175, issue #167 lane).</summary>
-        public string BatteryText
-        {
-            get => _batteryText;
-            set => SetProperty(ref _batteryText, value ?? string.Empty);
-        }
-
-        private bool _isActive;
-
-        /// <summary>Whether this slot has at least one online mapped device.</summary>
-        public bool IsActive
-        {
-            get => _isActive;
-            set => SetProperty(ref _isActive, value);
-        }
-
         private bool _isVirtualControllerConnected;
 
         /// <summary>Whether the virtual controller for this slot is connected to its backend.</summary>
         public bool IsVirtualControllerConnected
         {
             get => _isVirtualControllerConnected;
-            set
-            {
-                if (SetProperty(ref _isVirtualControllerConnected, value))
-                    OnPropertyChanged(nameof(StatusText));
-            }
+            set => SetProperty(ref _isVirtualControllerConnected, value);
         }
 
         private bool _isInitializing;
@@ -2005,11 +1955,7 @@ namespace PadForge.ViewModels
         public bool IsInitializing
         {
             get => _isInitializing;
-            set
-            {
-                if (SetProperty(ref _isInitializing, value))
-                    OnPropertyChanged(nameof(StatusText));
-            }
+            set => SetProperty(ref _isInitializing, value);
         }
 
         private bool _isCreateFailed;
@@ -2021,11 +1967,7 @@ namespace PadForge.ViewModels
         public bool IsCreateFailed
         {
             get => _isCreateFailed;
-            set
-            {
-                if (SetProperty(ref _isCreateFailed, value))
-                    OnPropertyChanged(nameof(StatusText));
-            }
+            set => SetProperty(ref _isCreateFailed, value);
         }
 
         private int _mappedDeviceCount;
@@ -2037,10 +1979,7 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _mappedDeviceCount, value))
-                {
                     OnPropertyChanged(nameof(HasMappedDevices));
-                    OnPropertyChanged(nameof(StatusText));
-                }
             }
         }
 
@@ -2055,11 +1994,7 @@ namespace PadForge.ViewModels
         public int ConnectedDeviceCount
         {
             get => _connectedDeviceCount;
-            set
-            {
-                if (SetProperty(ref _connectedDeviceCount, value))
-                    OnPropertyChanged(nameof(StatusText));
-            }
+            set => SetProperty(ref _connectedDeviceCount, value);
         }
 
         private bool _engineStopped = true;
@@ -2209,47 +2144,13 @@ namespace PadForge.ViewModels
         /// still it waited for may have been made.</summary>
         internal void ForgetPicture() => _pictureMade = false;
 
-        private string _statusText = Strings.Instance.Common_Idle;
-
-        /// <summary>Status text for the slot (e.g., "Active", "Cold",
-        /// "Awaiting Devices", "Disabled"). Ember vocabulary (#175): an
-        /// enabled slot with zero mappings reads "Cold"; mapped but with
-        /// nothing connected reads as awaiting devices ONLY once the live
-        /// VC is gone. While the VC survives the inactivity grace (60 s
-        /// default), a device dropout must not flap the card to awaiting:
-        /// the VC teardown is the status transition, exactly like the nav
-        /// flame (the contract a churning Wii chain exposed, 2026-07-11).
-        /// Other states pass through whatever the engine refresh
-        /// assigned.</summary>
-        public string StatusText
-        {
-            get
-            {
-                if (_isEnabled && !_isInitializing)
-                {
-                    if (_isCreateFailed)
-                        return Strings.Instance.Main_VcFailed;
-                    if (_mappedDeviceCount == 0)
-                        return Strings.Instance.Dashboard_StatusCold;
-                    if (_connectedDeviceCount == 0 && !_isVirtualControllerConnected)
-                        return Strings.Instance.Main_AwaitingDevices;
-                }
-                return _statusText;
-            }
-            set => SetProperty(ref _statusText, value);
-        }
-
         private bool _isEnabled = true;
 
         /// <summary>Whether this virtual controller slot is enabled for output.</summary>
         public bool IsEnabled
         {
             get => _isEnabled;
-            set
-            {
-                if (SetProperty(ref _isEnabled, value))
-                    OnPropertyChanged(nameof(StatusText));
-            }
+            set => SetProperty(ref _isEnabled, value);
         }
 
         private int _slotNumber = 1;

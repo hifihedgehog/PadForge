@@ -136,7 +136,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge kapatılıyor...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge başlatılıyor…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Önceki oturumdan kalan sanal kontrolcüler temizleniyor.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> cihaz</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Kontrolcü ekle</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Kontrolcü ekle</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Oyunların ne görmesi gerektiğini seçin. Kontrolcü, tıkladığınız anda eklenir.</value></data>
@@ -280,7 +279,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>"{0}" için kayıt zaman aşımına uğradı.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Motor başlatıldı.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motor durduruldu.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Eşleme yok</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Hata: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} oluşturulamadı.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil değiştirildi: {0}</value></data>
@@ -298,7 +296,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Kayıt yapılıyor...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>şu durumda</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>şurada</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}", {1} numaralı sanal kontrolcüye atandı.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}" ataması {1} numaralı sanal kontrolcüden kaldırıldı.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Cihaz kaldırıldı.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Sanal kontrolcü {0} silindi.</value></data>
@@ -529,7 +526,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>Uzak Bağlantı için eşleştirdiğiniz bilgisayarlar. Birinin bağlanmasını durdurmak için eşleştirmesini kaldırın. Yeniden bağlanması için tekrar eşleştirilmesi gerekir.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Eşleştirmeyi kaldır</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Tüm eşleştirmeleri kaldır</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Yeniden adlandır</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Dokunmatik yüzey kaplaması</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Dokunmatik ekran veya fare için, PlayStation dokunmatik yüzeyli oyunlara yönelik ekran üstü dokunma yüzeyi.</value></data>
   <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Dokunmatik yüzey kaplamasını etkinleştir</value></data>
@@ -763,7 +759,6 @@
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Visual Studio lisans koşulları</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair SDK koşulları</value></data>
@@ -1110,9 +1105,7 @@
   <data name="Pad_Mappings" xml:space="preserve"><value>Eşlemeler</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Çubuklar</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Tetikler</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Kuvvet geri bildirimi</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse tetikleri</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse tetikleri</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Tetik başına kazanç, motor değişimi, uyarlanabilir tetik titreşimleri, Sabit tetik kuvveti</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Tetik başına motor komutlarını (Xbox Impulse Triggers) sanal kontrolcüden atanmış fiziksel Xbox One, Elite veya Series kontrolcüsüne iletir. Oyunun yönettiği tetik titreşimi otomatik olarak aktarılır. Aşağıdaki denetimler büyüklüğü tetik başına ölçekler.</value></data>
@@ -1178,7 +1171,6 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Sol tetiği sıfırla</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Sağ tetiği sıfırla</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Uyarlanabilir tetikler</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Uyarlanabilir tetikler</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Atanmış fiziksel DualSense üzerindeki tetik geri bildirim efektlerini yapılandırın. Bir oyundan veya oyun modundan gelen tetik efektleri otomatik olarak iletilir. Buradaki ayarlar, ikisi de yazmadığında çalışan, kullanıcı tarafından yapılandırılmış bir katman ekler.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Çubuklar</value></data>
@@ -1224,7 +1216,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Aydınlatma</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Aydınlatma</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Atanmış fiziksel kontrolcüdeki ışık çubuğunun temel rengini ve ses davranışını ayarlayın. Oyunun yazdığı değerler her zaman önceliklidir. Kullanıcı ayarları, ışık çubuğunu hiçbir oyun yönetmediğinde uygulanır.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Oyuncu numarası seçiliyken kumanda, boştayken sanal kontrolcüsünün oyuncu kimliğini gösterir: ışık çubuğunda Sony oyuncu rengi (1 mavi, 2 kırmızı, 3 yeşil, 4 pembe) ve DualSense'te buna karşılık gelen oyuncu ışıkları. Aynı sanal kontrolcüdeki her cihaz aynı numarayı gösterir. Oyunlar aydınlatmaya yazdıklarında denetimi devralır, burada ayarladığınız her şey her zaman önceliklidir ve Kapalı seçeneği ışığı tamamen söndürür.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Oyuncu numarası seçiliyken kumanda, boştayken sanal kontrolcüsünün oyuncu kimliğini gösterir: ışık çubuğunda Sony oyuncu rengi (1 mavi, 2 kırmızı, 3 yeşil, 4 pembe) ve DualSense'te buna karşılık gelen oyuncu ışıkları. Aynı sanal kontrolcüdeki her cihaz aynı numarayı gösterir. Bir oyun aydınlatmaya yazdığı anda denetimi devralır. Burada seçilen diğer her mod oyuncu rengini değiştirir ve Kapalı seçeneği ışığı tamamen söndürür.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Bu sanal kontrolcü, cihazı bir DualSense ışık çubuğundaki modların aynısıyla aydınlatır ve bu modlar burada yalnızca bu kontrolcü için ayarlanır. PlayStation sanal kontrolcüsünde, ışık çubuğuna yazan bir oyun tıpkı DualSense'te olduğu gibi denetimi devralır.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Bu cihazın aydınlatmasını denetle</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Aydınlatma denetimi</value></data>
@@ -1446,9 +1438,9 @@
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Tetikler</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV'lar</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Düğmeler</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>İçe aktarılan profiller…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Kontrolcü ön ayarları…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Genişletilmiş kontrolcü</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Kullanıcının içe aktardığı HIDMaestro profillerini yönetin: bağlı bir cihazdan yeni bir profil yakalayın, mevcut bir profili JSON olarak dışa aktarın veya artık gerekmeyen bir profili silin.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Eklediğiniz kontrolcü ön ayarlarını yönetin: bir dosyadan veya bağlı bir cihazdan ön ayar içe aktarın, birini JSON olarak dışa aktarın veya artık gerekmeyen birini silin.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Cihazı 1:1 klonla</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Seçili cihazdaki her ekseni, düğmeyi ve şapkayı aynı numaralı sanal çıkışa doğrudan eşler. Düzeni cihaza göre boyutlandırır ve bu cihazın yuvadaki satırlarını 1:1 doğrudan aktarımla değiştirir.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Cihazı 1:1 klonla</value></data>
@@ -1463,18 +1455,18 @@
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Bağlı bir cihazdan içe aktar</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Dışa aktar…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Sil</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Profil JSON'unu dışa aktar</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Ön ayar JSON'unu dışa aktar</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Ön ayar silinsin mi?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>{0} ön ayarını kullanan her kontrolcü Özel girdisine döner. Bu geri alınamaz.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Şuraya dışa aktarıldı: {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Dışa aktarılamadı: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" silindi.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Bir dosyadan içe aktar…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Profil JSON'unu içe aktar</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Ön ayar JSON'unu içe aktar</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Şuradan içe aktarıldı: {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Okunamadı: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro bu profili {1} konumunda reddetti: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Bu profilde HID tanımlayıcısı yok, bu yüzden ondan bir kontrolcü oluşturulamaz.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro bu ön ayarı {1} konumunda reddetti: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Bu ön ayarda HID tanımlayıcısı yok, bu yüzden ondan bir kontrolcü oluşturulamaz.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Hiçbir şey içe aktarılmadı. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>İçe aktar</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(adsız HID cihazı)</value></data>
@@ -1585,9 +1577,7 @@
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>2D görünüme geç</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>3D görünüme geç</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Sol motoru test etmek için tıklayın</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Sol motor</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Sağ motoru test etmek için tıklayın</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Sağ motor</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Tümünü eşle</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Eşleyin: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Tüm eşlemeleri sırayla tek tek kaydet</value></data>
@@ -1691,6 +1681,11 @@
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Doğru/yanlış değerini ters çevir</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Eğer, şu kalıpla: (koşul) ? öyleyse : değilse</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Eğer-öyleyse-değilse yapısının değilse kısmı</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>ve</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>veya</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>değil</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>eğer?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>değilse:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Büyüklük (işareti atar)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>İki değerden küçüğü</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>İki değerden büyüğü</value></data>
@@ -1759,6 +1754,7 @@
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Merkezi kalibre et</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Merkez noktası</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Merkez</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Hız</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Ölü bölge</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Merkez ofsetleri, ölü bölge şekli ve eksen başına değerler, her eksen için bir eğri, aralık, yönlendirme</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Sayılarla aralık, ham değerler</value></data>
@@ -1982,7 +1978,6 @@
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Yapışkan (tutma)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Sol motor</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Sağ motor</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Tutma</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Solma</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -2091,7 +2086,6 @@
   <data name="Pad_Touchpad" xml:space="preserve"><value>Dokunmatik yüzey</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Dokunmatik yüzey</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Dokunmatik yüzey başına giriş. Jestler (hızlı kaydırmalar, dokunmalar, kıstırmalar, şekiller) ve sürekli çıkış modları (sanal çubuk / yön tuşları, fare), herhangi bir çıkışa atayabileceğiniz eşleme kaynakları olur.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Dokunmatik yüzey</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Dokunmatik yüzey numarası</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Aşağıdaki ayarların bu kontrolcüdeki hangi dokunmatik yüzeye uygulanacağı. Her dokunmatik yüzey kendi jestlerini, fare hissini ve işaretçi bölgesini saklar.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Jest algılama</value></data>
@@ -2542,8 +2536,6 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Fare hareketi Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Hassasiyet</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Kaynak başına IR işaretçi hassasiyeti. 1.0, kameranın görüş alanının kenarında tam çubuk itmesine ulaşır. 1.0'ın üzerindeki değerler tam itmeye daha az nişan hareketiyle ulaşır. 1.0'ın altındaki değerler daha fazlasını gerektirir.</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Hassasiyet</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Düz bir eksen, kaydırıcı veya oyun kumandası çubuğu / tetiği için kaynak başına hassasiyet. 1.0, girişi değiştirmeden bırakır. 1.0'ın üzerindeki değerler tam itmeye daha az hareketle ulaşır. 1.0'ın altındaki değerler daha fazlasını gerektirir.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Oyun kumandası {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Kaynak başına fare hareketi hassasiyeti. 1.0, tam itmeye gerçek bir farenin ulaşacağı hızda ulaşır. 1.0'ın üzerindeki değerler daha az hareket, altındaki değerler daha fazla hareket gerektirir.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Denge toplam ağırlığı</value></data>
@@ -2680,7 +2672,7 @@
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Bir profil, oyunlarından biri öndeyken kendiliğinden yüklenir.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Kontrolcüsüz başlar. Oyunlarından biri öndeyken kendiliğinden yüklenir.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Çalışan oyun ekle</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Başka hiçbir programın açık penceresi yok.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Başka açık pencere bulunamadı.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} öğesini kaldır</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Bu profil yüklüyken yoklama hızı</value></data>
 
@@ -3262,7 +3254,6 @@
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Her tam kilitte sırayla geçilecek renkler ekleyin.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Işık çubuğu tutmayı sıfırla</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Ses</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>İşaretçi</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR işaretçi</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Bu Wii Remote'u IR kamerasıyla ekrana doğrultun. Ekranın üstünde veya altında bir sensör çubuğu ya da iki kızılötesi LED gerekir. Tam noktaya nişan almak için Cihazlar sayfasında ışık tabancası olarak kalibre edin. Kalibre edilmiş bir kumanda, Sensör çubuğu konumu ve Dikey ofset ayarlarını yok sayar.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>İşaretçi ayarı</value></data>
@@ -3617,7 +3608,6 @@
   <data name="Ds3Pair_NoRadio" xml:space="preserve"><value>Kullanılabilir bir Bluetooth radyosu yok. Bluetooth'u açıp yeniden deneyin. Eşleştirme yalnızca kablosuz kullanım için gereklidir. Kabloyla bağlı bir kontrolcü eşleştirme olmadan çalışır.</value></data>
   <data name="Ds3Pair_Failed" xml:space="preserve"><value>Eşleştirme tamamlanmadı. Başarısız olan adım yukarıda gösterilir.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Kapat</value></data>
-  <data name="Common_ResizePanes" xml:space="preserve"><value>Bölmeleri Yeniden Boyutlandır</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC etiketleri</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>Okuyucuya bir etiket dokundurun ve ona ad verin. Eşleyebileceğiniz bir düğme olur.</value></data>
   <data name="Nfc_TapPrompt" xml:space="preserve"><value>Okuyucuya bir etiket dokundurun.</value></data>
@@ -3625,7 +3615,6 @@
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Bu etikete ad ver</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Kaydet</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Kayıtlı</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>NFC okuyucu algılanmadı. Bir PC/SC okuyucu bağlayıp yeniden açın.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Etiket yakalandı. Bir ad girin ve Kaydet'e tıklayın. Değiştirmek için başka bir etiket dokundurun.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>"{0}" kaydedildi. Daha fazla eklemek için başka bir etiket dokundurun.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC etiketlerini kaydet / yönet</value></data>
@@ -3652,7 +3641,6 @@
   <data name="VrCtl_Z" xml:space="preserve"><value>Kontrolcü Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Çubuk X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Çubuk Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Tetik</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Tutamak</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Çubuk tıklaması</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Birincil düğme</value></data>
@@ -3755,7 +3743,6 @@
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>El tipi bilgisayar düğmelerini etkinleştir</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Cihazlar sayfasına bir Gizli düğmeler cihazı ve bir Sistem hareketi cihazı ekler. Kapalıyken hiçbir şey çalışmaz.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Tüketici {0}</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Fare</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Fare jestleri</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Jest düğmesini basılı tutup fareyi hızla bir yöne çekin. Bıraktığınızda tek bir eylem tetiklenir: sol, sağ, yukarı, aşağı veya flick mesafesinin altındaysa düz bir tıklama. Beş jesti herhangi bir çıkışa eşleyin veya makro tetikleyicisi olarak kullanın.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Fare jestlerini etkinleştir</value></data>
@@ -3944,8 +3931,9 @@
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam'e ulaşılamıyor</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Steam'e ulaşılamadı. Bağlantınızı denetleyin. Daha önce içe aktardığınız profiller çalışmaya devam eder: bu bilgisayarda saklanırlar.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Yeniden dene</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>2016 dönemine ait bu yapılandırma, Steam'in yapılandırma CDN'inden eskidir. Steam'de abone olun, PadForge onu Steam klasörünüzden okur.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam bu yapılandırma için indirilecek bir dosya listelemiyor ve Steam klasörünüzde de bir kopyası yok. Steam'de abone olun, PadForge onu oradan okur.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam Atölyesi'nde aç</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Eski</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Nelerin aktarılacağını görmek için bir yapılandırma seçin.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Aktarılanlar</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Dönüşür</value></data>
@@ -4171,7 +4159,6 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menüde atanmış hücre yok</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menüyü barındıran yüzey desteklenmiyor ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menü hücresi simgesi tanınmadı ({0}), bu yüzden hücre metin etiketini korur</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shaker'lar</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Çıkış</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Düğmeler</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tuşlar ve Fare</value></data>
@@ -4650,7 +4637,6 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Yöne göre ayır</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Merkez ölü bölgesi</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Kapalıya sıfırla</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Sol çubuk X değerine sıfırla</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Gücü sıfırla (%50)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Merkez ölü bölgesini sıfırla (%2)</value></data>
@@ -4730,7 +4716,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>Pakete dahil SDL3.dll içine derlenen HID katmanı. Geliştiren: Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Simge kaynakları</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Alev glifi Material Design Icons'tan (Pictogrammers, Apache-2.0), genel oyun kumandası simgesi Ionicons'tan (Ionic, MIT), Genişletilmiş joystick simgesi Jam Icons'tan (Michael Amprimo, MIT), Xbox ve PlayStation simgeleri ise her simgenin sayfasındaki lisansla SVG Repo'dan alınmıştır.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Alev glifi Material Design Icons'tan (Pictogrammers, Apache-2.0), Genişletilmiş joystick simgesi Jam Icons'tan (Michael Amprimo, MIT), Xbox ve PlayStation simgeleri ise her simgenin sayfasındaki lisansla SVG Repo'dan alınmıştır.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Uzak Bağlantı'nın yedek yolunun arkasındaki aktarıcı protokolü. FlexInput'un yaptığı gibi n0.computer'ın ücretsiz genel aktarıcılarıyla konuşulur. iroh: MIT OR Apache-2.0. FlexInput: MIT. Yalnızca belge, hiçbir kod dağıtılmıyor.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

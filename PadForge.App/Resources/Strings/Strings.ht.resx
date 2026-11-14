@@ -124,7 +124,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge ap fèmen...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge ap demare…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Ap netwaye kontwolè vityèl ki te rete nan yon sesyon anvan.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> aparèy</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Ajoute kontwolè</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Ajoute yon kontwolè</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Chwazi sa jwèt yo dwe wè. Kontwolè a ajoute depi ou klike.</value></data>
@@ -259,7 +258,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Tan anrejistreman an fini pou "{0}".</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Motè a demare.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motè a kanpe.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Pa gen asiyasyon</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Erè: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>Yo pa t ka kreye {0}.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Pwofil chanje: {0}</value></data>
@@ -277,7 +275,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Ap anrejistre...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>lè</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>sou</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>"{0}" asiyen nan Kontwolè vityèl {1}.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}" retire nan Kontwolè vityèl {1}.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Aparèy la retire.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Kontwolè vityèl {0} efase.</value></data>
@@ -468,7 +465,6 @@
   <data name="RemoteLink_PairedPeersDescription" xml:space="preserve"><value>PC ou te asosye pou Remote Link. Anile aksè youn pou l pa ka konekte ankò. Li ta oblije asosye ankò.</value></data>
   <data name="RemoteLink_Revoke" xml:space="preserve"><value>Anile aksè</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve"><value>Anile aksè tout</value></data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Chanje non</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Opasite</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Reyinisyalize pozisyon</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>Klike adwat epi kenbe pou trennen</value></data>
@@ -914,9 +910,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Asiyasyon</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Stick</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Gachèt</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Retou fòs</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Gachèt Impulse</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Gachèt Impulse</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Fòs pa gachèt, chanje plas motè yo, vibrasyon gachèt adaptatif, Fòs konstan sou gachèt</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Voye kòmand motè pou chak gachèt (Xbox Impulse Triggers) soti nan kontwolè vityèl la rive nan kontwolè fizik Xbox One, Elite oswa Series ki asiyen an. Vibrasyon gachèt jwèt la voye pase otomatikman. Kontwòl ki anba yo ajiste fòs la pou chak gachèt.</value></data>
@@ -981,7 +975,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Reyinisyalize gachèt gòch</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Reyinisyalize gachèt dwat</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Gachèt adaptatif</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Gachèt adaptatif</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfigire efè gachèt yo sou DualSense fizik ki asiyen an. Efè gachèt yon jwèt oswa yon mod jwèt voye pase otomatikman. Paramèt isit yo ajoute yon kouch itilizatè ki mache lè ni youn ni lòt p ap ekri.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Stick</value></data>
@@ -1018,7 +1011,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>Limyè</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Limyè</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Chwazi koulè baz ba limyè a ak konpòtman odyo sou kontwolè fizik ki asiyen an. Sa jwèt la ekri toujou genyen. Paramèt itilizatè yo aplike lè okenn jwèt p ap kontwole ba limyè a.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Lè mòd la sou Nimewo jwè, kontwolè a montre idantite jwè kontwolè vityèl li lè l pa fè anyen: koulè jwè Sony a sou ba limyè a (1 ble, 2 wouj, 3 vèt, 4 woz) ak ti limyè jwè ki koresponn yo sou yon DualSense. Tout aparèy ki sou menm kontwolè vityèl la montre menm nimewo a. Jwèt yo pran kontwòl chak fwa yo ekri limyè, sa ou chwazi isit toujou genyen, epi Etenn fè yon limyè fènwa nèt.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Lè mòd la sou Nimewo jwè, kontwolè a montre idantite jwè kontwolè vityèl li lè l pa fè anyen: koulè jwè Sony a sou ba limyè a (1 ble, 2 wouj, 3 vèt, 4 woz) ak ti limyè jwè ki koresponn yo sou yon DualSense. Tout aparèy ki sou menm kontwolè vityèl la montre menm nimewo a. Yon jwèt pran kontwòl chak fwa li ekri limyè. Nenpòt lòt mòd ou chwazi isit ranplase koulè jwè a, epi Etenn fè yon limyè fènwa nèt.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Kontwolè vityèl sa a limen aparèy la ak menm mòd ba limyè yon DualSense genyen, ou chwazi yo isit pou kontwolè sa a sèlman. Sou yon kontwolè vityèl PlayStation, yon jwèt ki ekri ba limyè a pran kontwòl menm jan li fè sou yon DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Kontwole limyè aparèy sa a</value></data>
   <data name="Pad_Lighting_ClaimLevel" xml:space="preserve"><value>Kontwòl limyè</value></data>
@@ -1124,9 +1117,9 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gachèt</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Bouton</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Pwofil enpòte…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Prereglaj kontwolè…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Kontwolè elaji</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Jere pwofil HIDMaestro itilizatè enpòte: kaptire yon nouvo apati yon aparèy ki konekte, ekspòte youn ki egziste an JSON, oswa efase youn ou pa bezwen ankò.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Jere prereglaj kontwolè ou ajoute yo: enpòte youn apati yon fichye oswa yon aparèy ki konekte, ekspòte youn an JSON, oswa efase youn ou pa bezwen ankò.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Klone aparèy 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Asiyen chak aks, bouton ak POV sou aparèy ou chwazi a dirèkteman nan sòti vityèl ki gen menm nimewo a. Li ajiste dispozisyon an selon aparèy la epi li ranplase liy aparèy sa a sou plas la ak yon pasaj dirèk 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Klone aparèy 1:1</value></data>
@@ -1141,18 +1134,18 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Enpòte apati yon aparèy konekte</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Ekspòte…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Efase</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Ekspòte JSON pwofil la</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Ekspòte JSON prereglaj la</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Efase prereglaj la?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Tout kontwolè ki itilize {0} tounen sou antre Custom la. Ou pa ka anile sa.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Ekspòte nan {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Ekspòtasyon echwe: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>"{0}" efase.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Enpòte apati fichye…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Enpòte JSON pwofil</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Enpòte JSON prereglaj</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Enpòte apati {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Lekti echwe: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro refize pwofil sa a nan {1}: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Pwofil sa a pa gen deskriptè HID, kidonk yo pa ka fè okenn kontwolè avè l.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro refize prereglaj sa a nan {1}: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Prereglaj sa a pa gen deskriptè HID, kidonk yo pa ka fè okenn kontwolè avè l.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Anyen pa t enpòte. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Enpòte</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(aparèy HID san non)</value></data>
@@ -1248,9 +1241,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Pase nan vi 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Pase nan vi 3D</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Klike pou teste motè gòch la</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Motè gòch</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Klike pou teste motè dwat la</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Motè dwat</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Asiyen tout</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Asiyen: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Anrejistre tout asiyasyon yo youn apre lòt</value></data>
@@ -1388,6 +1379,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Kalibre sant</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Pwen santral</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Sant</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Vitès</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zòn mò</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Dekalaj sant, fòm zòn mò ak valè pa aks, yon koub pou chak aks, plaj, direksyon</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Plaj an chif, valè brit</value></data>
@@ -1570,7 +1562,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Macro_RumbleHold_Label" xml:space="preserve"><value>Kenbe</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Motè goch</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Motè dwat</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Kenbe</value></data>
 
   <!-- ═══ POV Directions ═══ -->
   <data name="POV_Centered" xml:space="preserve"><value>Santre</value></data>
@@ -1676,7 +1667,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Antre pou chak touchpad. Jès yo (glise, tape, pense, fòm) ak mòd sòti kontinyèl yo (stick vityèl / D-pad, sourit) vin tounen sous asiyasyon ou ka konekte ak nenpòt sòti.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Nimewo touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Ki touchpad sou kontwolè sa a paramèt ki anba yo aplike. Chak touchpad gen pwòp jès li, pwòp fason sourit la reyaji ak pwòp zòn kisè li.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Deteksyon jès</value></data>
@@ -2054,7 +2044,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Mouvman sourit X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Mouvman sourit Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sansiblite</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sansiblite</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Kontwolè {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Sansiblite mouvman sourit la pou chak sous. Avèk 1.0, li rive nan deplasman konplè a menm vitès ak yon vrè sourit, valè ki pi wo pase 1.0 bezwen mwens mouvman, valè ki pi ba bezwen plis.</value></data>
 
@@ -2621,7 +2610,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Reyinisyalize rezistans gachèt toupre limit</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Ajoute koulè pou pase youn apre lòt, yon koulè pou chak limit.</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Odyo</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Pwentè</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Pwentè IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Vize ekran an ak kamera IR Wii Remote sa a. Li bezwen yon ba detektè, oswa de LED enfrawouj, anlè oswa anba ekran an. Kalibre l kòm yon zam limyè nan paj Aparèy yo pou vize pwen egzak la. Yon Wii Remote ki kalibre pa okipe Pozisyon ba detektè ak Dekalaj vètikal.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Ajisteman pwentè</value></data>
@@ -2957,7 +2945,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Bay etikèt sa a yon non</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Anrejistre</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Anrejistre</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Pa gen lektè NFC. Konekte yon lektè PC/SC epi louvri ankò.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Etikèt la kaptire. Antre yon non epi klike sou Anrejistre. Tape yon lòt etikèt pou ranplase l.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>"{0}" anrejistre. Tape yon lòt etikèt pou ajoute plis.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Anrejistre / jere etikèt NFC</value></data>
@@ -2984,7 +2971,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="VrCtl_Z" xml:space="preserve"><value>Kontwolè Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Stick X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Stick Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Gachèt</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Klik stick</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Bouton prensipal</value></data>
   <data name="VrCtl_Secondary" xml:space="preserve"><value>Bouton segondè</value></data>
@@ -3053,7 +3039,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Settings_HandheldDesc" xml:space="preserve"><value>PC pòtab pou jwe ak laptop gen bouton sistèm operasyon an pa janm montre kòm yon kontwolè: pal dèyè, touch meni, wou, rakousi manifakti a. Aktive sa pou aprann yo yon sèl fwa lè ou peze yo, epi fè asiyasyon pou yo tankou nenpòt lòt bouton. Li ajoute jiwoskòp machin nan tou kòm yon aparèy mouvman.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Aktive bouton PC pòtab</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Ajoute yon aparèy Bouton kache ak yon aparèy Mouvman sistèm nan paj Aparèy yo. Lè l etenn, anyen pa fonksyone.</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Sourit</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Jès sourit</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Aktive jès sourit</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Bouton jès</value></data>
@@ -3159,6 +3144,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Pa t kapab rive jwenn Steam. Tcheke koneksyon ou. Pwofil ou deja enpòte yo ap kontinye mache: yo sou PC sa a.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Eseye ankò</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Louvri nan Steam Workshop</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Ansyen</value></data>
   <data name="Workshop_StatClean" xml:space="preserve"><value>Pwòp</value></data>
   <data name="Workshop_StatPartial" xml:space="preserve"><value>Pasyèl</value></data>
   <data name="Workshop_StatSkipped" xml:space="preserve"><value>Sote</value></data>
@@ -3700,7 +3686,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motè</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Separe selon direksyon</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zòn mò sant</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Remèt sou Etenn</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Remèt sou Stick gòch X</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Reyinisyalize fòs (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Reyinisyalize zòn mò sant (2%)</value></data>
@@ -3780,7 +3765,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>Kouch HID ki konpile nan SDL3.dll ki vini avè l la, pa Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Sous ikòn yo</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Glif flanm nan soti nan Material Design Icons (Pictogrammers, Apache-2.0), ikòn kontwolè jeneral la soti nan Ionicons (Ionic, MIT), joystick Extended la soti nan Jam Icons (Michael Amprimo, MIT), ak ikòn Xbox ak PlayStation yo soti nan SVG Repo, anba lisans ki sou paj chak ikòn.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Glif flanm nan soti nan Material Design Icons (Pictogrammers, Apache-2.0), joystick Extended la soti nan Jam Icons (Michael Amprimo, MIT), ak ikòn Xbox ak PlayStation yo soti nan SVG Repo, anba lisans ki sou paj chak ikòn.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Pwotokòl relè ki dèyè wout sekou Remote Link la, li pale ak relè piblik gratis n0.computer yo menm jan FlexInput fè l. iroh: MIT OR Apache-2.0. FlexInput: MIT. Dokimantasyon sèlman, okenn kòd pa enkli.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>
@@ -4240,7 +4225,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Kondisyon lisans Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Kondisyon SDK Corsair</value></data>
@@ -4253,11 +4237,14 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Import_Detail_Format" xml:space="preserve"><value>{0}. {1}</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Li kòmanse san kontwolè. Li chaje poukont li lè youn nan jwèt li yo devan.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Ajoute yon jwèt k ap mache</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Pa gen lòt pwogram ki gen yon fenèt louvri.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Pa jwenn okenn lòt fenèt louvri.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Retire {0}</value></data>
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Mete yon modpas</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Debloke Remote Link</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Modpas</value></data>
   <data name="Telemetry_Formats_More" xml:space="preserve"><value>Kle obligatwa pou pakè JSON, valè bwat vitès</value></data>
   <data name="Pad_RumbleAudio_Frequency" xml:space="preserve"><value>Frekans</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>ak</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>oswa</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>pa</value></data>
 </root>

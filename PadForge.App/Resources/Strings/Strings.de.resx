@@ -132,7 +132,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge wird geschlossen...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge wird gestartet…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Virtuelle Controller aus einer vorherigen Sitzung werden bereinigt.</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> Gerät(e)</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Controller hinzufügen</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Controller hinzufügen</value></data>
   <data name="AddController_Subtitle" xml:space="preserve"><value>Wählen Sie, was Spiele sehen sollen. Der Controller wird mit dem Klick hinzugefügt.</value></data>
@@ -269,7 +268,6 @@
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Aufnahme für „{0}" abgelaufen.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Engine gestartet.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Engine gestoppt.</value></data>
-  <data name="Status_NoMapping" xml:space="preserve"><value>Keine Zuordnung</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Fehler: {0}</value></data>
   <data name="Status_SlotCreateFailed_Format" xml:space="preserve"><value>{0} konnte nicht erstellt werden.</value></data>
   <data name="Status_ProfileSwitched_Format" xml:space="preserve"><value>Profil gewechselt: {0}</value></data>
@@ -287,7 +285,6 @@
   <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Aufnahme...</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>wenn</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>auf</value></data>
-  <data name="Status_DeviceAssignedSlot_Format" xml:space="preserve"><value>„{0}" wurde Virtueller Controller {1} zugewiesen.</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>„{0}" wurde von Virtueller Controller {1} entfernt.</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Gerät entfernt.</value></data>
   <data name="Status_VCDeleted_Format" xml:space="preserve"><value>Virtueller Controller {0} gelöscht.</value></data>
@@ -601,7 +598,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="About_License_CcByNcSa4" xml:space="preserve"><value>CC BY-NC-SA 4.0</value></data>
   <data name="About_License_CcBy3" xml:space="preserve"><value>CC BY 3.0</value></data>
   <data name="About_License_CgTrader" xml:space="preserve"><value>CGTrader Royalty Free</value></data>
-  <data name="About_License_BouncyCastle" xml:space="preserve"><value>Bouncy Castle Licence</value></data>
   <data name="About_License_WyvrnEula" xml:space="preserve"><value>Wyvrn EULA</value></data>
   <data name="About_License_VisualStudio" xml:space="preserve"><value>Lizenzbedingungen von Visual Studio</value></data>
   <data name="About_License_CorsairSdk" xml:space="preserve"><value>Corsair-SDK-Bedingungen</value></data>
@@ -766,33 +762,32 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Zuordnungen</value></data>
   <data name="Pad_Sticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_Triggers" xml:space="preserve"><value>Trigger</value></data>
-  <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Voreinstellung</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Trigger</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Tasten</value></data>
-  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Importierte Profile…</value></data>
+  <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Controller-Presets…</value></data>
   <data name="Pad_ExtendedCard_Title" xml:space="preserve"><value>Erweiterter Controller</value></data>
-  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Benutzer-importierte HIDMaestro-Profile verwalten: ein neues von einem verbundenen Gerät erfassen, ein vorhandenes als JSON exportieren oder eines löschen, das nicht mehr benötigt wird.</value></data>
+  <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Die hinzugefügten Controller-Presets verwalten: eines aus einer Datei oder von einem verbundenen Gerät importieren, eines als JSON exportieren oder eines löschen, das nicht mehr benötigt wird.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Controller-Presets</value></data>
   <data name="ManageProfiles_Description" xml:space="preserve"><value>Ein Preset für einen Controller hinzufügen, den PadForge nicht mitbringt, aus einer Datei oder vom Controller selbst.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Importiert</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Von einem verbundenen Gerät importieren</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Exportieren…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Löschen</value></data>
-  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Profil-JSON exportieren</value></data>
+  <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Preset-JSON exportieren</value></data>
   <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Preset löschen?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Jeder Controller, der {0} verwendet, geht zurück auf den Eintrag Custom. Das kann nicht rückgängig gemacht werden.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Exportiert nach {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Export fehlgeschlagen: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>„{0}" gelöscht.</value></data>
   <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Aus einer Datei importieren…</value></data>
-  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Profil-JSON importieren</value></data>
+  <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Preset-JSON importieren</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Aus {0} importiert.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Lesen fehlgeschlagen: {0}</value></data>
-  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro hat dieses Profil bei {1} abgelehnt: {0}</value></data>
-  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Dieses Profil hat keinen HID-Deskriptor, daher kann daraus kein Controller erstellt werden.</value></data>
+  <data name="ManageProfiles_ProblemRefused_Format" xml:space="preserve"><value>HIDMaestro hat dieses Preset bei {1} abgelehnt: {0}</value></data>
+  <data name="ManageProfiles_ProblemNoDescriptor" xml:space="preserve"><value>Dieses Preset hat keinen HID-Deskriptor, daher kann daraus kein Controller erstellt werden.</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Es wurde nichts importiert. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importieren</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(unbenanntes HID-Gerät)</value></data>
@@ -834,9 +829,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Zur 2D-Ansicht wechseln</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Zur 3D-Ansicht wechseln</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Klicken, um den linken Motor zu testen</value></data>
-  <data name="Pad_LeftMotor" xml:space="preserve"><value>Linker Motor</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Klicken, um den rechten Motor zu testen</value></data>
-  <data name="Pad_RightMotor" xml:space="preserve"><value>Rechter Motor</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Alle zuordnen</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Zuordnen: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Alle Zuordnungen nacheinander aufnehmen</value></data>
@@ -941,6 +934,11 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Formula_Chip_FlipBool" xml:space="preserve"><value>Wahr/Falsch umkehren</value></data>
   <data name="Pad_Formula_Chip_If" xml:space="preserve"><value>Wenn, mit Muster (Bedingung) ? dann : sonst</value></data>
   <data name="Pad_Formula_Chip_Else" xml:space="preserve"><value>Sonst-Teil eines Wenn-Dann-Sonst</value></data>
+  <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>und</value></data>
+  <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>oder</value></data>
+  <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>nicht</value></data>
+  <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>wenn?</value></data>
+  <data name="Pad_Formula_Chip_Else_Face" xml:space="preserve"><value>sonst:</value></data>
   <data name="Pad_Formula_Chip_Abs" xml:space="preserve"><value>Betrag (verwirft das Vorzeichen)</value></data>
   <data name="Pad_Formula_Chip_Min" xml:space="preserve"><value>Kleinerer von zwei Werten</value></data>
   <data name="Pad_Formula_Chip_Max" xml:space="preserve"><value>Größerer von zwei Werten</value></data>
@@ -1009,6 +1007,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Mitte kalibrieren</value></data>
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Mittelpunkt</value></data>
   <data name="Pad_Stick_Center" xml:space="preserve"><value>Mitte</value></data>
+  <data name="Pad_Stick_Speed" xml:space="preserve"><value>Geschwindigkeit</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Mittelpunkt-Versatz, Totzonenform und Deadzone pro Achse, Kurve pro Achse, Bereich, Lenkung</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Der Bereich in Zahlen, Rohwerte</value></data>
@@ -1220,7 +1219,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Macro_RumbleHold_Sticky" xml:space="preserve"><value>Permanent (halten)</value></data>
   <data name="Macro_RumbleStrengthLeft_Label" xml:space="preserve"><value>Linker Motor</value></data>
   <data name="Macro_RumbleStrengthRight_Label" xml:space="preserve"><value>Rechter Motor</value></data>
-  <data name="Macro_RumbleHoldMs_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Macro_RumbleFadeMs_Label" xml:space="preserve"><value>Ausblenden</value></data>
 
   <!-- ═══ POV Directions ═══ -->
@@ -1293,7 +1291,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Ein Profil wird von selbst geladen, wenn eines seiner Spiele im Vordergrund ist.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Beginnt ohne Controller. Es wird von selbst geladen, wenn eines seiner Spiele im Vordergrund ist.</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Laufendes Spiel hinzufügen</value></data>
-  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Kein anderes Programm hat ein Fenster geöffnet.</value></data>
+  <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Es wurde kein anderes geöffnetes Fenster gefunden.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} entfernen</value></data>
   <data name="ProfileDialog_MoreHint" xml:space="preserve"><value>Abfragerate, solange dieses Profil geladen ist</value></data>
 
@@ -1958,7 +1956,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="About_DsBtHapticsDesc" xml:space="preserve"><value>Bluetooth-Lautsprecher-Rezept von awalol: Opus-Framing und Paketlayout. Dank auch an TechAntohere für geteilte Erkenntnisse und Tests.</value></data>
   <data name="About_DualSenseY" xml:space="preserve"><value>DualSenseY-v2</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>Referenzimplementierung für USB-Controller-Audio-Passthrough. Von WujekFoliarz.</value></data>
-  <data name="Pad_AdaptiveTriggers" xml:space="preserve"><value>Adaptive Trigger</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptive Trigger</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfiguriert die Trigger-Effekte am zugewiesenen physischen DualSense. Trigger-Effekte aus einem Spiel oder einer Spiel-Mod werden automatisch weitergeleitet. Die hier gewählten Einstellungen bilden eine zusätzliche Schicht, die greift, wenn keines von beiden schreibt.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Sticks</value></data>
@@ -2002,7 +1999,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Lighting" xml:space="preserve"><value>Beleuchtung</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Beleuchtung</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Legt die Grundfarbe der Lightbar und das Audioverhalten am zugewiesenen physischen Controller fest. Spielschreibvorgänge gewinnen immer. Benutzereinstellungen greifen, wenn kein Spiel die Lightbar ansteuert.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Solange Spielernummer gewählt ist, zeigt das Pad im Leerlauf die Spieler-Identität seines virtuellen Controllers: die Sony-Spielerfarbe auf der Lightbar (1 Blau, 2 Rot, 3 Grün, 4 Pink) und beim DualSense die passenden Spieler-LEDs. Alle Geräte am selben virtuellen Controller zeigen dieselbe Nummer. Spiele übernehmen, sobald sie Beleuchtung schreiben, alles, was hier eingestellt ist, hat immer Vorrang, und Aus macht das jeweilige Licht vollständig dunkel.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Solange Spielernummer gewählt ist, zeigt das Pad im Leerlauf die Spieler-Identität seines virtuellen Controllers: die Sony-Spielerfarbe auf der Lightbar (1 Blau, 2 Rot, 3 Grün, 4 Pink) und beim DualSense die passenden Spieler-LEDs. Alle Geräte am selben virtuellen Controller zeigen dieselbe Nummer. Ein Spiel übernimmt, sobald es Beleuchtung schreibt. Jeder andere hier eingestellte Modus ersetzt die Spielerfarbe, und Aus macht das jeweilige Licht vollständig dunkel.</value></data>
   <data name="Pad_Lighting_PeripheralSubtitle" xml:space="preserve"><value>Dieser virtuelle Controller beleuchtet das Gerät mit denselben Modi wie die Lightbar eines DualSense, hier nur für diesen Controller eingestellt. Auf einem virtuellen PlayStation-Controller übernimmt ein Spiel, das die Lightbar setzt, so wie bei einem DualSense.</value></data>
   <data name="Pad_Lighting_ControlDevice" xml:space="preserve"><value>Beleuchtung dieses Geräts steuern</value></data>
   <data name="Pad_Lighting_ControlCard" xml:space="preserve"><value>Beleuchtungssteuerung</value></data>
@@ -2377,7 +2374,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_ResetAudioTriggerCutoff" xml:space="preserve"><value>Bassfrequenz-Grenze zurücksetzen</value></data>
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Linken Trigger zurücksetzen</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Rechten Trigger zurücksetzen</value></data>
-  <data name="Pad_ImpulseTriggers" xml:space="preserve"><value>Impulse-Trigger</value></data>
   <data name="Mapping_TouchpadGesture_SwipeUp" xml:space="preserve"><value>Wischen nach oben</value></data>
   <data name="Mapping_TouchpadGesture_SwipeDown" xml:space="preserve"><value>Wischen nach unten</value></data>
   <data name="Mapping_TouchpadGesture_SwipeLeft" xml:space="preserve"><value>Wischen nach links</value></data>
@@ -2435,7 +2431,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Eingaben pro Touchpad. Gesten (Wischen, Tippen, Zoomen, Formen) und kontinuierliche Ausgabemodi (virtueller Stick / Steuerkreuz, Maus) werden zu Mapping-Quellen, die Sie jeder Ausgabe zuordnen können.</value></data>
-  <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad" xml:space="preserve"><value>Touchpad-Nummer</value></data>
   <data name="Pad_Touchpad_SelectedTouchpad_Tooltip" xml:space="preserve"><value>Auf welches Touchpad dieses Controllers sich die Einstellungen unten beziehen. Jedes Touchpad hat eigene Gesten, eigenes Mausverhalten und einen eigenen Zeigerbereich.</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Gestenerkennung</value></data>
@@ -2651,7 +2646,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Farben hinzufügen, die pro Anschlag nacheinander durchlaufen werden.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Lightbar-Haltedauer zurücksetzen</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Pointer" xml:space="preserve"><value>Zeiger</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-Zeiger</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Richten Sie diese Wii-Fernbedienung mit ihrer IR-Kamera auf den Bildschirm. Erfordert eine Sensorleiste oder zwei Infrarot-LEDs ober- oder unterhalb des Bildschirms. Kalibrieren Sie sie auf der Seite Geräte als Lightgun, um genau auf die Stelle zu zielen. Eine kalibrierte Fernbedienung ignoriert Position der Sensorleiste und Vertikaler Versatz.</value></data>
   <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Zeiger-Abstimmung</value></data>
@@ -2946,7 +2940,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="RemoteLink_RevokeAll" xml:space="preserve">
     <value>Alle widerrufen</value>
   </data>
-  <data name="RemoteLink_Rename" xml:space="preserve"><value>Umbenennen</value></data>
   <data name="RemoteLink_StatusListening" xml:space="preserve">
     <value>Empfangsbereit auf {0}</value>
   </data>
@@ -3013,7 +3006,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="WiiPair_Failed" xml:space="preserve"><value>Die Wii-Kopplung konnte nicht abgeschlossen werden. Versuchen Sie es erneut.</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Fertig</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Schließen</value></data>
-  <data name="Common_ResizePanes" xml:space="preserve"><value>Bereichsgröße ändern</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC-Tags</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>Ein Tag an den Leser halten und benennen. Es wird zu einer Taste, die Sie zuordnen können.</value></data>
   <data name="Nfc_TapPrompt" xml:space="preserve"><value>Ein Tag an den Leser halten.</value></data>
@@ -3021,7 +3013,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Nfc_NamePlaceholder" xml:space="preserve"><value>Tag benennen</value></data>
   <data name="Nfc_RegisterButton" xml:space="preserve"><value>Registrieren</value></data>
   <data name="Nfc_RegisteredTagsHeader" xml:space="preserve"><value>Registriert</value></data>
-  <data name="Nfc_NoReader" xml:space="preserve"><value>Kein NFC-Leser erkannt. Schließen Sie einen PC/SC-Leser an und öffnen Sie das Fenster erneut.</value></data>
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Tag erfasst. Geben Sie einen Namen ein und klicken Sie auf „Registrieren“. Halten Sie ein anderes Tag an, um es zu ersetzen.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>„{0}“ registriert. Halten Sie ein weiteres Tag an, um mehr hinzuzufügen.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC-Tags registrieren/verwalten</value></data>
@@ -3048,7 +3039,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="VrCtl_Z" xml:space="preserve"><value>Controller-Z</value></data>
   <data name="VrCtl_StickX" xml:space="preserve"><value>Joystick X</value></data>
   <data name="VrCtl_StickY" xml:space="preserve"><value>Joystick Y</value></data>
-  <data name="VrCtl_Trigger" xml:space="preserve"><value>Auslöser</value></data>
   <data name="VrCtl_Grip" xml:space="preserve"><value>Griff</value></data>
   <data name="VrCtl_StickClick" xml:space="preserve"><value>Joystick-Klick</value></data>
   <data name="VrCtl_Primary" xml:space="preserve"><value>Primäre Taste</value></data>
@@ -3512,7 +3502,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>Nunchuk-Beschleunigungssensor</value></data>
   <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>Beschleunigungssensor linker Joy-Con</value></data>
   <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>Zusätzlicher Bewegungs-Beschleunigungssensor</value></data>
-  <data name="Pad_Mouse" xml:space="preserve"><value>Maus</value></data>
   <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Mausgesten</value></data>
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Gestentaste halten, Maus bewegen, und beim Loslassen wird genau eine Aktion ausgelöst: links, rechts, hoch, runter oder ein einfacher Klick unterhalb der Bewegungsschwelle. Die fünf Gesten lassen sich jeder Ausgabe zuweisen oder als Makro-Auslöser verwenden.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Mausgesten aktivieren</value></data>
@@ -3701,8 +3690,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Klicken Sie und bewegen Sie dann den Cursor auf das Ziel. Die Position wird nach einem kurzen Countdown erfasst.</value></data>
   <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Druck</value></data>
   <data name="Mapping_TouchpadFingerRing_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Ring</value></data>
-  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Empfindlichkeit</value></data>
-  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Empfindlichkeit pro Quelle für eine einfache Achse, einen Slider oder Gamepad-Stick / -Trigger. 1.0 lässt die Eingabe unverändert. Werte über 1.0 erreichen den Vollausschlag mit weniger Weg. Werte unter 1.0 brauchen mehr.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Community-Konfigurationen</value></data>
   <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Durchsuchen Sie von der Community erstellte Steam Input-Controllerkonfigurationen und übersetzen Sie sie in PadForge-Profile. PadForge verbindet sich nur dann direkt mit den Servern von Steam, wenn Sie suchen, eine Konfiguration öffnen oder Ihre importierten Konfigurationen auf Updates prüfen. Gesendet werden Ihr Suchtext, die IDs der beteiligten Spiele, Konfigurationen und Ersteller sowie die PadForge-Version. Die anonyme Steam-Anmeldung sendet außerdem Ihre Windows-Version und eine Geräte-ID aus Hashwerten Ihrer Windows-Installations-ID, der Adressen Ihrer Netzwerkadapter und der Seriennummer Ihres Startlaufwerks. Keine Telemetrie, kein Drittanbieterdienst, kein Steam-Konto.</value></data>
@@ -3759,8 +3746,9 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam ist nicht erreichbar</value></data>
   <data name="Workshop_ErrorBody" xml:space="preserve"><value>Steam konnte nicht erreicht werden. Prüfen Sie Ihre Verbindung. Bereits importierte Profile funktionieren weiter: Sie liegen auf diesem PC.</value></data>
   <data name="Workshop_Retry" xml:space="preserve"><value>Erneut versuchen</value></data>
-  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Diese Konfiguration aus der Zeit um 2016 stammt von vor Steams Konfigurations-CDN. Abonnieren Sie sie in Steam, und PadForge liest sie aus Ihrem Steam-Ordner.</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam bietet für diese Konfiguration keine Datei zum Herunterladen an, und in Ihrem Steam-Ordner liegt keine Kopie davon. Abonnieren Sie sie in Steam, und PadForge liest sie von dort.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Im Steam Workshop öffnen</value></data>
+  <data name="Workshop_LegacyTag" xml:space="preserve"><value>Veraltet</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Wählen Sie eine Konfiguration, um zu sehen, was übernommen wird.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Was übernommen wird</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Wird zu</value></data>
@@ -4109,7 +4097,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>Menü hat keine belegten Felder</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>Menü-Host-Oberfläche nicht unterstützt ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>Menü-Feld-Symbol nicht erkannt ({0}), das Feld behält daher seine Textbeschriftung</value></data>
-  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass-Shaker</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Ausgabe</value></data>
   <data name="Pad_Section_Buttons" xml:space="preserve"><value>Tasten</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tasten &amp; Maus</value></data>
@@ -4599,7 +4586,6 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Pad_SteeringAngleRumble_MotorSplit" xml:space="preserve"><value>Nach Richtung aufteilen</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Mittlere Totzone</value></data>
-  <data name="Common_ResetToOff" xml:space="preserve"><value>Auf Aus zurücksetzen</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Auf linken Stick X zurücksetzen</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Stärke zurücksetzen (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Mittlere Totzone zurücksetzen (2%)</value></data>
@@ -4679,7 +4665,7 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="About_Hidapi" xml:space="preserve"><value>HIDAPI</value></data>
   <data name="About_HidapiDesc" xml:space="preserve"><value>Die HID-Schicht, die in die mitgelieferte SDL3.dll kompiliert ist, von Alan Ott, Signal 11 Software.</value></data>
   <data name="About_IconSources" xml:space="preserve"><value>Symbolquellen</value></data>
-  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Das Flammensymbol aus Material Design Icons (Pictogrammers, Apache-2.0), das allgemeine Gamepad-Symbol aus Ionicons (Ionic, MIT), der Joystick für Erweitert aus Jam Icons (Michael Amprimo, MIT) sowie die Xbox- und PlayStation-Symbole von SVG Repo, unter der Lizenz auf der Seite des jeweiligen Symbols.</value></data>
+  <data name="About_IconSourcesDesc" xml:space="preserve"><value>Das Flammensymbol aus Material Design Icons (Pictogrammers, Apache-2.0), der Joystick für Erweitert aus Jam Icons (Michael Amprimo, MIT) sowie die Xbox- und PlayStation-Symbole von SVG Repo, unter der Lizenz auf der Seite des jeweiligen Symbols.</value></data>
   <data name="About_IrohFlexInput" xml:space="preserve"><value>iroh / FlexInput</value></data>
   <data name="About_IrohFlexInputDesc" xml:space="preserve"><value>Das Relay-Protokoll hinter der Ausweichroute von Remote Link, gesprochen mit den kostenlosen öffentlichen Relays von n0.computer, wie FlexInput es tut. iroh: MIT OR Apache-2.0. FlexInput: MIT. Nur Dokumentation, kein Code wird ausgeliefert.</value></data>
   <data name="About_Jc2Mouse" xml:space="preserve"><value>jc2mouse / joycon2cpp / joycon2mouse</value></data>

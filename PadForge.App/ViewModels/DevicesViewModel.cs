@@ -41,6 +41,9 @@ namespace PadForge.ViewModels
             // built from the string table.
             OnPropertyChanged(nameof(TestPressedLead));
             OnPropertyChanged(nameof(TestPressedTail));
+            // The two touchpad previews' labels are worded from it too.
+            OnPropertyChanged(nameof(TouchpadLabel));
+            OnPropertyChanged(nameof(Touchpad2Label));
             RenamePressed();
             foreach (var item in ActiveSlotItems)
                 item.RaiseLabel();
@@ -1618,11 +1621,6 @@ namespace PadForge.ViewModels
             get => _isPressed;
             set => SetProperty(ref _isPressed, value);
         }
-
-        /// <summary>Canvas width for the keyboard layout (for XAML binding).</summary>
-        public const double LayoutWidth = 556;
-        /// <summary>Canvas height for the keyboard layout (for XAML binding).</summary>
-        public const double LayoutHeight = 136;
 
         /// <summary>
         /// Builds a full ANSI QWERTY keyboard layout with numpad as positioned key items.

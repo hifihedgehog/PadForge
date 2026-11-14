@@ -32,7 +32,7 @@ namespace PadForge.Tests
 
         /// <summary>An answer as Windows reads it: report ID 0, then
         /// hidapi's bytes: the write command, the command, the error byte
-        /// and a 32-bit value from byte 3 (GetAddress, lines 292-319).</summary>
+        /// and a 32-bit value from byte 3 (GetAddress, lines 291-318).</summary>
         private static byte[] Answer(byte cmd, byte op, byte error = 0, uint value = 0)
         {
             var answer = new byte[65];
@@ -92,7 +92,7 @@ namespace PadForge.Tests
             Assert.All(CorsairLights.V2Devices.Where(d => d.ProductId is not (0x1BAF or 0x1BB3)),
                 d => Assert.Equal((0x5F, 65, 1), (d.LightCtrlReg, d.PacketSize, d.PictureHandle)));
             // The devices only SignalRGB's plugin lists paint on handle 0, as the plugin
-            // opens it (Corsair_Bragi_Device.js:318) and ckb-next does (bragi_proto.h:70).
+            // opens it (Corsair_Bragi_Device.js:1705-1706 and 2458) and ckb-next does (bragi_proto.h:70).
             Assert.All(CorsairPeripheralV2Lighting.PluginDevices.Value,
                 d => Assert.Equal((0x5F, 65, 0), (d.LightCtrlReg, d.PacketSize, d.PictureHandle)));
             var dark = CorsairPeripheralV2Lighting.DeviceOf(0x1B4B);
@@ -100,7 +100,7 @@ namespace PadForge.Tests
                 dark.Zones.Select(z => z.Name));
             Assert.Equal(CorsairZoneType.Linear, dark.Zones[1].Type);
             Assert.Equal(4, dark.Zones[1].Cols);
-            // The receivers are not in the list (lines 36-43).
+            // The receivers are not in the list (lines 38-47).
             foreach (ushort receiver in new ushort[] { 0x1BA6, 0x1B66, 0x1B65, 0x1BDC, 0x2B00 })
             {
                 Assert.Null(CorsairPeripheralV2Lighting.DeviceOf(receiver));
@@ -121,7 +121,7 @@ namespace PadForge.Tests
                 Assert.Equal(r.Name, model.Name);
                 Assert.Equal(new[] { VendorPrograms.CorsairIcue }, model.Programs);
                 // CORSAIR_V2_UPDATE_PERIOD, a resend timed as a picture
-                // (CorsairPeripheralV2Controller.h:34, RGBController_CorsairV2Software.cpp:205 and 225-238).
+                // (CorsairPeripheralV2Controller.h:34, RGBController_CorsairV2Software.cpp:205 and 225-239).
                 Assert.Equal(30000, model.KeepAliveMs);
                 Assert.Equal(30000, model.KeepAliveIdleMs);
                 Assert.Equal(0, model.RecheckMs);
@@ -154,7 +154,7 @@ namespace PadForge.Tests
         {
             var lights = CorsairPeripheralV2Lighting.Lights(CorsairPeripheralV2Lighting.DeviceOf(0x1B7C),
                 KeyboardLayout.AnsiQwerty, out int length);
-            // The highest value, "Logo R" 192 (CorsairPeripheralV2Devices.cpp:285), plus one.
+            // The highest value, "Logo R" 192 (CorsairPeripheralV2Devices.cpp:319), plus one.
             Assert.Equal(193, length);
             Assert.Equal((ushort)0x29, lights.Single(l => l.Address == 41).Usage);
             Assert.Equal(new[] { 190, 191, 192 }, lights.Where(l => l.Kind == LightKind.Logo).Select(l => l.Address).OrderBy(a => a));
@@ -178,11 +178,11 @@ namespace PadForge.Tests
             Assert.Equal(KeyboardLayout.Jis, CorsairPeripheralV2Lighting.LayoutOf(4));
             Assert.Equal(KeyboardLayout.AnsiQwerty, CorsairPeripheralV2Lighting.LayoutOf(3));
             Assert.Equal(KeyboardLayout.AnsiQwerty, CorsairPeripheralV2Lighting.LayoutOf(CorsairPeripheralV2Lighting.NoValue));
-            // The K70 RGB PRO's media and indicator keys (lines 141-151).
+            // The K70 RGB PRO's media and indicator keys (lines 175-183).
             Assert.Equal(LightLabel.Brightness, ansi.Single(l => l.Address == 113).Label);
             Assert.Equal(LightKind.Logo, ansi.Single(l => l.Address == 138).Kind);
             Assert.Equal(LightLabel.Mute, ansi.Single(l => l.Address == 102).Label);
-            // The K57's indicators (lines 65-66) and the K95 XT's top bar.
+            // The K57's indicators (lines 79-80) and the K95 XT's top bar.
             var k57 = CorsairPeripheralV2Lighting.Lights(CorsairPeripheralV2Lighting.DeviceOf(0x1B6E), KeyboardLayout.AnsiQwerty, out _);
             Assert.Equal(new[] { 0, 1 }, k57.Where(l => l.Kind == LightKind.Status).Select(l => l.Address).OrderBy(a => a));
             var xt = CorsairPeripheralV2Lighting.Lights(CorsairPeripheralV2Lighting.DeviceOf(0x1B89), KeyboardLayout.AnsiQwerty, out _);
@@ -236,7 +236,7 @@ namespace PadForge.Tests
             var data = Enumerable.Range(0, 200).Select(i => (byte)i).ToArray();
             var frames = CorsairPeripheralV2Lighting.DataFrames(0x08, 1, 65, data);
             // 57 + 61 + 61 + 21 on handle 1, whose number stays in byte 3 of every
-            // report (SetLEDs, CorsairPeripheralV2Controller.cpp:393-456 at b9d903b5).
+            // report (SetLEDs, CorsairPeripheralV2Controller.cpp:392-457 at b9d903b5).
             Assert.Equal(4, frames.Count);
             Assert.Equal("00 08 06 01 C8 00 00 00 00 01", Hex(frames[0], 10));
             Assert.Equal(56, frames[0][64]);
@@ -311,7 +311,7 @@ namespace PadForge.Tests
         public void AnUnansweredTransaction_FallsBackToo()
         {
             // StartTransaction returns buffer[2], the 0D it wrote, when no
-            // answer came (lines 321-340).
+            // answer came (lines 320-339).
             var model = Family().Match(Collection(0x1BC4));
             var io = Device(0x1BC4);
             var answer = io.Answer;
@@ -396,7 +396,7 @@ namespace PadForge.Tests
             Assert.NotNull(model.Begin(io, io.Wait));
             Assert.Equal(new[] { "out 00 09 02 12 00 00", "in 50", "wait 120", "out 00 09 02 12 00 00", "in 50", "wait 120",
                 "out 00 09 02 12 00 00", "in 50", "out 00 09 0D 00 22 00" }, io.Log.Take(9));
-            // An error answer is no value either (lines 311-316), and eight of them end the open.
+            // An error answer is no value either (lines 310-316), and eight of them end the open.
             var refusing = new FakeCorsairChannel { Answer = q => Answer(q[1], q[2], error: 3, value: 0x1BB5) };
             Assert.Null(model.Begin(refusing, refusing.Wait));
             Assert.Equal(8, refusing.Outputs.Count);
@@ -460,7 +460,7 @@ namespace PadForge.Tests
         /// resource probe, its own lighting register 6E, and 1025-byte reports, so a
         /// picture fits in one, as its own controller had it (08 06 01 73 01 00 00 12 00).
         /// SignalRGB's plugin names three more IDs and drives them the same way
-        /// (Corsair_K65_Mini_Keyboard.js:3 and 66-127).</summary>
+        /// (Corsair_K65_Mini_Keyboard.js:3, 65-81 and 95-146).</summary>
         [Theory]
         [InlineData(0x1BAF)]
         [InlineData(0x1BCF)]
@@ -499,6 +499,82 @@ namespace PadForge.Tests
             Assert.Equal("00 08 06 01 73 01 00 00 12 00", Hex(block, 10));
             Assert.Equal("11 22 33", Hex(block, 10 + 41 * 3, 3));
             Assert.Equal(1025, block.Length);
+        }
+
+        /// <summary>The K65 Mini's other IDs are lit as OpenRGB's K65 Mini and are no rows
+        /// of the plugins' list, where a second table stood for the same keyboard.</summary>
+        [Fact]
+        public void AnIdOfADeviceOfTheList_IsNoRowOfThePluginsList()
+        {
+            Assert.Equal(new ushort[] { 0x1BBD, 0x1BC3, 0x1BCF }, CorsairPeripheralV2Lighting.OtherIds.Keys.OrderBy(k => k));
+            foreach (ushort other in CorsairPeripheralV2Lighting.OtherIds.Keys)
+            {
+                // The plugins' tables do list it, and the family's list leaves it out.
+                Assert.Contains(PluginCorsairTables.Devices, d => d.Product == other);
+                Assert.DoesNotContain(CorsairPeripheralV2Lighting.PluginDevices.Value, d => d.ProductId == other);
+                Assert.Null(CorsairPeripheralV2Lighting.DeviceOf(other));
+                Assert.False(CorsairPeripheralV2Lighting.MayBeReceiver(other));
+                Assert.Null(CorsairPeripheralV2Lighting.PluginRegistration(Collection(other)));
+                Assert.Equal("Corsair K65 Mini", Family().Match(Collection(other)).Name);
+            }
+            // The rows that are no other device's are all still there.
+            Assert.Equal(PluginCorsairTables.Devices.Count(d => !CorsairPeripheralV2Lighting.IsReceiver(d.Product)
+                    && !CorsairPeripheralV2Lighting.OtherIds.ContainsKey((ushort)d.Product)
+                    && CorsairLights.V2Devices.All(v => v.ProductId != d.Product)) + 1,
+                CorsairPeripheralV2Lighting.PluginDevices.Value.Length);
+        }
+
+        /// <summary>A device only the plugins list writes at its collection's write length
+        /// where that is longer than 65, as the plugin does (Corsair_Bragi_Device.js at
+        /// 95031635, lines 1862-1864 and 2446-2474): its picture goes out in 1025-byte reports
+        /// with 1017 bytes of it in the first, and in 65-byte reports on a collection of 65,
+        /// 57 bytes and then 61. A device of OpenRGB's list keeps its table's packet size.</summary>
+        [Fact]
+        public void ARowOfThePluginsList_WritesAtItsCollectionsLength()
+        {
+            var row = CorsairPeripheralV2Lighting.PluginDevices.Value
+                .First(d => d.Type == CorsairDeviceType.Keyboard && d.OwnLights != null && d.OwnLights.Count > 60);
+            var model = Family().Match(Collection(row.ProductId, iface: row.OwnInterface));
+            Assert.NotNull(model);
+            byte[] Painted(int outputLength, out List<byte[]> reports)
+            {
+                var answers = Device(row.ProductId, pidByCmd: cmd => cmd == 0x09 ? 0xFFFFu : row.ProductId);
+                var io = new FakeCorsairChannel { OutputReportLength = outputLength, InputReportLength = outputLength, Answer = answers.Answer };
+                var session = Assert.IsType<CorsairPeripheralV2Lighting.Session>(model.Begin(io, io.Wait));
+                Assert.Equal(0, session.Device.PictureHandle);
+                io.Outputs.Clear();
+                var lights = session.Map.Lights;
+                var colors = lights.Select((_, n) => 0x100000 + n * 0x000301).ToList();
+                Assert.Equal(HidLightingPaint.Sent, session.Paint(io, io.Wait, lights, colors));
+                reports = io.Outputs.Where(f => f[2] is 0x06 or 0x07).ToList();
+                return CorsairPeripheralV2Lighting.PictureData(session.Triplets, session.BufferLength, lights, colors);
+            }
+
+            byte[] data = Painted(1025, out var longReports);
+            Assert.True(data.Length > 57 && data.Length <= 1017, $"the picture is {data.Length} bytes");
+            var only = Assert.Single(longReports);
+            Assert.Equal(1025, only.Length);
+            Assert.Equal(0x06, only[2]);
+            Assert.Equal(data.Length, only[4] | only[5] << 8);
+            Assert.Equal(data, only.Skip(8).Take(data.Length));
+            Assert.All(only.Skip(8 + data.Length), b => Assert.Equal(0, b));
+
+            byte[] same = Painted(65, out var shortReports);
+            Assert.Equal(data, same);
+            Assert.All(shortReports, f => Assert.Equal(65, f.Length));
+            Assert.Equal(1 + (data.Length - 57 + 60) / 61, shortReports.Count);
+            Assert.Equal(data, shortReports[0].Skip(8).Concat(shortReports.Skip(1).SelectMany(f => f.Skip(4))).Take(data.Length));
+
+            // A device of OpenRGB's list on a collection that takes longer reports
+            // still writes its table's 65, and the channel pads it.
+            var k100 = Family().Match(Collection(0x1B7C));
+            var wide = new FakeCorsairChannel { OutputReportLength = 1025, InputReportLength = 1025, Answer = Device(0x1B7C).Answer };
+            var listed = Assert.IsType<CorsairPeripheralV2Lighting.Session>(k100.Begin(wide, wide.Wait));
+            Assert.Equal(1, listed.Device.PictureHandle);
+            wide.Outputs.Clear();
+            listed.Paint(wide, wide.Wait, listed.Map.Lights, new int[listed.Map.Lights.Count]);
+            Assert.All(wide.Outputs, f => Assert.Equal(65, f.Length));
+            Assert.Contains(wide.Outputs, f => f[2] == 0x07);
         }
 
         /// <summary>The K70 RGB PRO V2 takes 1025-byte reports (OpenRGB dbb97ccb), so

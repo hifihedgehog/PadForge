@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [v5-dev]
+    branches: [v6-dev]
   pull_request:
-    branches: [v5-dev]
+    branches: [v6-dev]
   workflow_dispatch:
 
 env:

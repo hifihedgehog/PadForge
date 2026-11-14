@@ -1078,16 +1078,19 @@
                                         <!-- Used By: the virtual controllers, each a chip
                                              that puts the device on it or takes it off,
                                              then New Controller while a slot is free.
-                                             The label leads the chips on their line. The
-                                             chips come from code (UsedByContainer), since
-                                             a CollectionContainer is outside the tree. -->
+                                             The label leads the chips on their line. It is
+                                             a ListLabel: the list reads its words as its
+                                             name, and a screen reader passes over the
+                                             label's own item. The chips come from code
+                                             (UsedByContainer), since a CollectionContainer
+                                             is outside the tree. -->
                                         <ItemsControl x:Name="UsedByChips" Margin="0,14,0,-8" Focusable="False"
                                                       AutomationProperties.Name="{Binding Devices_UsedBy, Source={x:Static strings:Strings.Instance}}">
                                             <ItemsControl.ItemsSource>
                                                 <CompositeCollection>
-                                                    <TextBlock x:Name="UsedByLabel" Style="{StaticResource DeviceLabel}" Margin="0,0,10,8" MinHeight="26"
-                                                               Padding="0,5,0,0"
-                                                               Text="{Binding Devices_UsedBy, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <controls:ListLabel x:Name="UsedByLabel" Style="{StaticResource DeviceLabel}" Margin="0,0,10,8" MinHeight="26"
+                                                                        Padding="0,5,0,0"
+                                                                        Text="{Binding Devices_UsedBy, Source={x:Static strings:Strings.Instance}}"/>
                                                     <CollectionContainer x:Name="UsedByContainer"/>
                                                     <!-- The button stands in a holder: an item
                                                          that is its own container reads as a

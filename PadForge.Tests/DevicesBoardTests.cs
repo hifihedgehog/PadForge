@@ -719,7 +719,7 @@ namespace PadForge.Tests
 
             // Used By leads its chips on their line.
             var chips = Named(page, "UsedByChips").Descendants().Single(e => e.Name.LocalName == "CompositeCollection").Elements().ToList();
-            Assert.Equal(new[] { "TextBlock", "CollectionContainer", "Grid" }, chips.Select(c => c.Name.LocalName).ToArray());
+            Assert.Equal(new[] { "ListLabel", "CollectionContainer", "Grid" }, chips.Select(c => c.Name.LocalName).ToArray());
             Assert.Equal(S("Devices_UsedBy"), Attr(chips[0], "Text"));
 
             // The page's gutters are the board's.

@@ -767,6 +767,45 @@ namespace PadForge.Tests
             Assert.Contains("if (e.PropertyName == nameof(ViewModels.DevicesViewModel.CanAddController))", page);
         });
 
+        /// <summary>A label that leads a list's entries as one of the list's
+        /// items is passed over. The list reads the label's words as its
+        /// name, and left a plain text the label was also an entry that
+        /// repeated them and held nothing, which is what the audit found on the
+        /// Devices page's Used By. An item of a plain list answers what its
+        /// own element's peer answers, so the label's peer is neither a
+        /// control nor a content element. A plain text and a holder beside
+        /// it stay entries.</summary>
+        [Fact]
+        public void AListsLabel_IsNotOneOfItsEntries() => RunSta(() =>
+        {
+            var label = new ListLabel { Text = "Used By" };
+            var plain = new TextBlock { Text = "Plain" };
+            var holder = new Grid();
+            holder.Children.Add(new Button { Content = "New Controller" });
+            var list = new ItemsControl();
+            list.Items.Add(label);
+            list.Items.Add(plain);
+            list.Items.Add(holder);
+            Shown(list, () =>
+            {
+                var items = UIElementAutomationPeer.CreatePeerForElement(list).GetChildren();
+                Assert.Equal(3, items.Count);
+                Assert.False(items[0].IsControlElement());
+                Assert.False(items[0].IsContentElement());
+                Assert.True(items[1].IsControlElement());
+                Assert.True(items[2].IsControlElement());
+            });
+
+            XNamespace x = "http://schemas.microsoft.com/winfx/2006/xaml";
+            XDocument devices = XDocument.Parse(RepoText("PadForge.App", "Views", "DevicesPage.xaml"));
+            XElement usedBy = devices.Descendants().Single(e => (string)e.Attribute(x + "Name") == "UsedByLabel");
+            Assert.Equal("ListLabel", usedBy.Name.LocalName);
+            // The words the label shows are the words the list is named by.
+            XElement chips = devices.Descendants().Single(e => (string)e.Attribute(x + "Name") == "UsedByChips");
+            Assert.Equal((string)usedBy.Attribute("Text"),
+                chips.Attributes().Single(a => a.Name.LocalName == "AutomationProperties.Name").Value);
+        });
+
         /// <summary>The mapping list's filter box read "Picture": the words
         /// of the part switch before it had become its label. It reads the
         /// words it shows while empty.</summary>

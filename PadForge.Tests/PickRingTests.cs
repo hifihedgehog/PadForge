@@ -1062,6 +1062,91 @@ namespace PadForge.Tests
             Assert.Equal("ButtonA", vm.PickedTarget);
         }
 
+        // ── letting go of the pick ─────────────────────────────────────
+
+        /// <summary>A click on the picture that lands on no control lets go
+        /// of the picked one, and its bar and its ring go (owner,
+        /// 2026-11-14): there was no way to put the bar away again. The
+        /// release is heard however the picture handled it. A click on a
+        /// control or on a legend tag picks, a press that turned the model
+        /// is no click, and a button or a list over the picture keeps its
+        /// own click. A lone recording is canceled first, the way its Stop
+        /// cancels it, and Map All runs on. Escape lets go too, though not
+        /// while a control records, when a key may be the input it waits
+        /// for.</summary>
+        [Fact]
+        public void AClickOnNoControl_AndEscape_LetGoOfThePick()
+        {
+            // A click reaches as far as the 3D model lets a press move
+            // before it turns the model, in a straight line: the model
+            // drags past the threshold, and the page clicks up to it.
+            Assert.Equal(5, PadPage.PictureClickSlack);
+            Assert.Equal(ControllerModelView.DragThreshold, PadPage.PictureClickSlack);
+            Assert.Contains("if (ddx * ddx + ddy * ddy > DragThreshold * DragThreshold)",
+                ExtrasPageTests.RepoText("PadForge.App", "Views", "ControllerModelView.xaml.cs"));
+            Assert.True(PadPage.IsPictureClick(new Point(100, 100), new Point(100, 100)));
+            Assert.True(PadPage.IsPictureClick(new Point(100, 100), new Point(103, 96)));
+            Assert.True(PadPage.IsPictureClick(new Point(100, 100), new Point(105, 100)));
+            Assert.False(PadPage.IsPictureClick(new Point(100, 100), new Point(104, 96)));
+            Assert.False(PadPage.IsPictureClick(new Point(100, 100), new Point(105.5, 100)));
+            Assert.False(PadPage.IsPictureClick(new Point(100, 100), new Point(100, 94.5)));
+            RunSta(() =>
+            {
+                Assert.True(PadPage.IsAControlOverThePicture(new Button()));
+                Assert.True(PadPage.IsAControlOverThePicture(new System.Windows.Controls.Primitives.ToggleButton()));
+                Assert.True(PadPage.IsAControlOverThePicture(new ComboBox()));
+                Assert.True(PadPage.IsAControlOverThePicture(new TextBox()));
+                Assert.False(PadPage.IsAControlOverThePicture(new Border()));
+                Assert.False(PadPage.IsAControlOverThePicture(new Grid()));
+            });
+
+            string code = CodeBehind();
+            Assert.Contains("PictureHost.AddHandler(MouseLeftButtonUpEvent, new MouseButtonEventHandler(PictureHost_MouseLeftButtonUp), true);", code);
+            Assert.Contains("KeyDown += PadPage_KeyDown;", code);
+            Assert.Matches(@"private void OnModelRecordRequested\(object sender, string targetName\)\s*\{\s*//[^\n]*\s*_pictureClickActed = true;", code);
+            Assert.Matches(@"private void OnAnnotationChipNavigate\(object sender, string targetSettingName\)\s*\{\s*//[^\n]*\s*_pictureClickActed = true;", code);
+            Assert.Matches(@"_pictureDown = e\.GetPosition\(PictureHost\);\s*_pictureClickActed = false;\s*_pictureDragged = false;", code);
+            // A press that left the click's reach stays a drag when it comes
+            // back, and a press whose release the picture never saw is
+            // forgotten once the pointer moves over it with the button up.
+            Assert.Matches(@"if \(_pictureDown is not Point down\) return;\s*if \(e\.LeftButton != MouseButtonState\.Pressed\) \{ _pictureDown = null; return; \}\s*if \(!IsPictureClick\(down, e\.GetPosition\(PictureHost\)\)\) _pictureDragged = true;", code);
+            Assert.Matches(@"if \(down is not Point at \|\| _pictureClickActed \|\| _pictureDragged\) return;\s*if \(!IsPictureClick\(at, e\.GetPosition\(PictureHost\)\)\) return;\s*if \(!IsBarePicture\(e\.OriginalSource as DependencyObject\)\) return;\s*LetGoOfThePick\(\);", code);
+            Assert.Matches(@"if \(IsAControlOverThePicture\(at\)\) return false;\s*if \(ReferenceEquals\(at, PictureHost\)\) return true;", code);
+            Assert.Matches(@"if \(DataContext is not PadViewModel vm \|\| !vm\.IsButtonsPictureView \|\| vm\.IsMapAllActive\) return;\s*if \(vm\.PickedRow == null\) return;\s*string recording = vm\.CurrentRecordingTarget;\s*if \(!string\.IsNullOrEmpty\(recording\)\)\s*ControllerElementRecordRequested\?\.Invoke\(this, recording\);\s*vm\.PickedTarget = null;", code);
+            Assert.Matches(@"if \(e\.Key != Key\.Escape \|\| e\.Handled\) return;\s*if \(DataContext is not PadViewModel vm \|\| !vm\.IsButtonsPictureView \|\| vm\.PickedRow == null\) return;\s*if \(vm\.IsMapAllActive \|\| !string\.IsNullOrEmpty\(vm\.CurrentRecordingTarget\)\) return;\s*vm\.PickedTarget = null;\s*e\.Handled = true;", code);
+
+            // With the bar gone the picture takes back the room it kept for
+            // it: left as it was, it stayed small over an empty band. The
+            // bar's coming is heard from the bar itself, once it has a height.
+            Assert.Matches(@"else if \(e\.PropertyName == nameof\(PadViewModel\.ShowPictureBar\)\)\s*\{[^}]*if \(sender is PadViewModel barVm && !barVm\.ShowPictureBar\) SyncButtonsLayout\(\);\s*\}", code);
+            Assert.Matches(@"double bar = SteadyFoldedHeight\(vm\.ShowPictureBar, OneLineBarHeight\(\), ref _barMeasured\);", code);
+            double lastBar = 87;
+            Assert.Equal(0, PadPage.SteadyFoldedHeight(false, 87, ref lastBar));
+            Assert.Equal(600, PadPage.PictureHeightFor(800, 20, 0, 178, 1));
+            Assert.Equal(513, PadPage.PictureHeightFor(800, 20, 87, 178, 1));
+
+            // The host takes a click where a picture draws nothing too.
+            var host = Named(Page(), "PictureHost");
+            Assert.Equal("Transparent", (string)host.Attribute("Background"));
+            Assert.Equal("PictureHost_PreviewMouseLeftButtonDown", (string)host.Attribute("PreviewMouseLeftButtonDown"));
+            Assert.Equal("PictureHost_PreviewMouseMove", (string)host.Attribute("PreviewMouseMove"));
+
+            // With nothing picked the bar is away and nothing is ringed.
+            var vm = new PadViewModel(0);
+            vm.ApplyMappingPickerFilter();
+            Assert.True(vm.IsButtonsPictureView);
+            vm.PickedTarget = "ButtonA";
+            Assert.True(vm.ShowPictureBar);
+            var raised = new List<string>();
+            vm.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+            vm.PickedTarget = null;
+            Assert.Null(vm.PickedRow);
+            Assert.False(vm.ShowPictureBar);
+            Assert.Empty(vm.PickedTargets());
+            Assert.Contains(nameof(PadViewModel.PickedRow), raised);
+            Assert.Contains(nameof(PadViewModel.ShowPictureBar), raised);
+        }
+
         // ── the control under the pointer ──────────────────────────────
 
         /// <summary>The control under the pointer takes no ring. Every

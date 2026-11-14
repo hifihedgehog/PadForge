@@ -78,6 +78,24 @@ namespace PadForge.Tests
             Assert.True(side);
             Assert.Equal(478, settings);
             Assert.Equal(0, live);
+            // A live view of a fixed size names its least width: a body
+            // that would leave it less stacks the two. A stick's is 526
+            // beside settings of 360 in English, so its body stands them
+            // side by side from 908, and from 962 in a language whose
+            // labels take the column to 414.
+            (side, settings, live) = PartBodyPanel.Widths(908, 900, 360, 22, 526);
+            Assert.True(side);
+            Assert.Equal(360, settings);
+            Assert.Equal(526, live);
+            (side, settings, live) = PartBodyPanel.Widths(907, 900, 360, 22, 526);
+            Assert.False(side);
+            Assert.Equal(907, settings);
+            Assert.Equal(907, live);
+            Assert.False(PartBodyPanel.Widths(961, 900, 414, 22, 526).SideBySide);
+            Assert.True(PartBodyPanel.Widths(962, 900, 414, 22, 526).SideBySide);
+            // The least width is no reason to stand them side by side
+            // under the body's own least.
+            Assert.False(PartBodyPanel.Widths(899, 900, 100, 22, 526).SideBySide);
 
             Sta(() =>
             {
@@ -104,12 +122,93 @@ namespace PadForge.Tests
                 Assert.Equal(new Rect(0, 0, 700, 100), LayoutInformation.GetLayoutSlot(rows));
                 Assert.Equal(new Rect(0, 110, 700, 60), LayoutInformation.GetLayoutSlot(view));
 
+                // A live view that would get less than the least it names
+                // stands under the settings, and beside them once it gets it.
+                body.LiveLeastWidth = 419;
+                Lay(1000);
+                Assert.False(body.IsSideBySide);
+                Assert.Equal(new Rect(0, 0, 1000, 100), LayoutInformation.GetLayoutSlot(rows));
+                Assert.Equal(new Rect(0, 110, 1000, 60), LayoutInformation.GetLayoutSlot(view));
+                body.LiveLeastWidth = 418;
+                Lay(1000);
+                Assert.True(body.IsSideBySide);
+                Assert.Equal(new Rect(582, 0, 418, 60), LayoutInformation.GetLayoutSlot(view));
+                body.LiveLeastWidth = 0;
+
                 // A live view that does not show leaves the settings the
                 // whole width.
                 view.Visibility = Visibility.Collapsed;
                 Lay(1000);
                 Assert.False(body.IsSideBySide);
                 Assert.Equal(new Rect(0, 0, 1000, 100), LayoutInformation.GetLayoutSlot(rows));
+            });
+        }
+
+        /// <summary>A stick's well is a line of two parts that wraps: the
+        /// radar, and the readings, which take the room the radar leaves, to
+        /// 440. So the well is used from edge to edge where the card shares
+        /// its row, as a trigger's is, and no room stands empty beside the
+        /// readings (owner, 2026-11-14). The readings' two columns share
+        /// their width alike and are 112 each at the least, so the readings
+        /// ask for the same width whatever the values are. In a well too
+        /// narrow for both, the readings stand under the radar and nothing
+        /// is cut off.</summary>
+        [Fact]
+        public void AStickWell_GivesTheReadingsTheRoomTheRadarLeaves_AndWrapsThemUnderItWhenTheyDoNotFit()
+        {
+            Sta(() =>
+            {
+                var radar = new Border { Width = 212, Height = 212, VerticalAlignment = VerticalAlignment.Center };
+                var table = new Grid();
+                table.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto, MinWidth = 38 });
+                table.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star), MinWidth = 112 });
+                table.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star), MinWidth = 112 });
+                var value = new Border { Width = 60, Height = 16, HorizontalAlignment = HorizontalAlignment.Right };
+                Grid.SetColumn(value, 2);
+                table.Children.Add(value);
+                var readings = new StackPanel { MaxWidth = 440, VerticalAlignment = VerticalAlignment.Center };
+                readings.Children.Add(new Border { Height = 20 });
+                readings.Children.Add(table);
+                FlexLinePanel.SetGrow(readings, 1);
+                var well = new FlexLinePanel { Gap = 18, LineGap = 12 };
+                well.Children.Add(radar);
+                well.Children.Add(readings);
+                void Lay(double width)
+                {
+                    well.Measure(new Size(width, double.PositiveInfinity));
+                    well.Arrange(new Rect(0, 0, width, well.DesiredSize.Height));
+                }
+
+                // A well of 606 inside its edges, two cards to a row: the
+                // readings run to the well's end, and the Y column with them.
+                Lay(606);
+                Assert.Equal(212, well.DesiredSize.Height);
+                Assert.Equal(new Rect(0, 0, 212, 212), LayoutInformation.GetLayoutSlot(radar));
+                Assert.Equal(new Rect(230, 0, 376, 212), LayoutInformation.GetLayoutSlot(readings));
+                Assert.Equal(new Rect(207, 0, 169, 16), LayoutInformation.GetLayoutSlot(value));
+
+                // A wider well: the readings stop at 440.
+                Lay(800);
+                Assert.Equal(new Rect(230, 0, 440, 212), LayoutInformation.GetLayoutSlot(readings));
+                Assert.Equal(new Rect(239, 0, 201, 16), LayoutInformation.GetLayoutSlot(value));
+
+                // The least for one line: the radar, the gap and the
+                // readings at 38 and twice 112.
+                Lay(492);
+                Assert.Equal(212, well.DesiredSize.Height);
+                Assert.Equal(new Rect(230, 0, 262, 212), LayoutInformation.GetLayoutSlot(readings));
+                Assert.Equal(new Rect(150, 0, 112, 16), LayoutInformation.GetLayoutSlot(value));
+
+                // Narrower, the readings stand under the radar.
+                Lay(491);
+                Assert.Equal(212 + 12 + 36, well.DesiredSize.Height);
+                Assert.Equal(new Rect(0, 0, 212, 212), LayoutInformation.GetLayoutSlot(radar));
+                Assert.Equal(new Rect(0, 224, 440, 36), LayoutInformation.GetLayoutSlot(readings));
+
+                // The readings ask for the same width with a longer value.
+                value.Width = 100;
+                Lay(492);
+                Assert.Equal(new Rect(230, 0, 262, 212), LayoutInformation.GetLayoutSlot(readings));
             });
         }
 
@@ -395,38 +494,53 @@ namespace PadForge.Tests
 
         // ── Motion Passthrough and the cards' resets ───────────────────
 
-        /// <summary>A part body with no least width set stands its two parts
-        /// side by side whenever both fit: the settings at their width, the
-        /// gap, and the live view at the width it asks for. One short of
-        /// that, the live view goes under the settings. A stick's card is
-        /// such a body: its live view is an instrument of a fixed size and
-        /// its settings column is sized for the language, so no one number
-        /// is right for both.</summary>
+        /// <summary>A stick's live view reads each axis apart, in a column
+        /// of its own: before PadForge's pipeline in the axis's own units
+        /// and its share of the range, and after it as the output's. A
+        /// change of one axis is told for that axis's text alone, so the
+        /// other column is left as it is.</summary>
         [Fact]
-        public void APartBodyWithNoLeastWidth_StandsItsPartsSideBySideWheneverBothFit()
+        public void AStickReadsEachAxisApart_BeforeThePipelineAndAfterIt()
         {
-            Assert.Equal(708, PartBodyPanel.LeastSideBySide(double.NaN, 360, 22, 326));
-            Assert.Equal(900, PartBodyPanel.LeastSideBySide(900, 360, 22, 326));
-            Sta(() =>
+            var culture = CultureInfo.CurrentCulture;
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            try
             {
-                var settings = new Border { Height = 132 };
-                var live = new Border { Width = 326, Height = 300, HorizontalAlignment = HorizontalAlignment.Left };
-                var body = new PartBodyPanel { SideBySideWidth = double.NaN, SettingsWidth = 360, Gap = 22, StackGap = 16 };
-                body.Children.Add(settings);
-                body.Children.Add(live);
-                body.Measure(new Size(708, double.PositiveInfinity));
-                body.Arrange(new Rect(0, 0, 708, body.DesiredSize.Height));
-                Assert.True(body.IsSideBySide);
-                Assert.Equal(300, body.DesiredSize.Height);
-                Assert.Equal(new Rect(0, 0, 360, 300), LayoutInformation.GetLayoutSlot(settings));
-                Assert.Equal(382, LayoutInformation.GetLayoutSlot(live).X);
+                Assert.Equal("-644 (49.0%)", StickConfigItem.AxisText(-644.4, 49.02));
+                Assert.Equal("32767 (100.0%)", StickConfigItem.AxisText(32767, 100));
 
-                body.Measure(new Size(707, double.PositiveInfinity));
-                body.Arrange(new Rect(0, 0, 707, body.DesiredSize.Height));
-                Assert.False(body.IsSideBySide);
-                Assert.Equal(132 + 16 + 300, body.DesiredSize.Height);
-                Assert.Equal(new Rect(0, 148, 707, 300), LayoutInformation.GetLayoutSlot(live));
-            });
+                var stick = new StickConfigItem(0, "Left Stick");
+                Assert.Equal("0 (50.0%)", stick.InDisplayX);
+                Assert.Equal("0 (50.0%)", stick.InDisplayY);
+                Assert.Equal("0 (50.0%)", stick.OutDisplayX);
+                Assert.Equal("0 (50.0%)", stick.OutDisplayY);
+
+                var raised = new List<string>();
+                stick.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+                stick.RawPosX = 0.75;
+                Assert.Equal("16383 (75.0%)", stick.InDisplayX);
+                Assert.Contains(nameof(StickConfigItem.InDisplayX), raised);
+                Assert.DoesNotContain(nameof(StickConfigItem.InDisplayY), raised);
+                raised.Clear();
+                stick.RawPosY = 0.25;
+                Assert.Equal("-16384 (25.0%)", stick.InDisplayY);
+                Assert.Contains(nameof(StickConfigItem.InDisplayY), raised);
+                Assert.DoesNotContain(nameof(StickConfigItem.InDisplayX), raised);
+                raised.Clear();
+                stick.RawX = 16383;
+                Assert.Equal("16383 (75.0%)", stick.OutDisplayX);
+                Assert.Contains(nameof(StickConfigItem.OutDisplayX), raised);
+                Assert.DoesNotContain(nameof(StickConfigItem.OutDisplayY), raised);
+                raised.Clear();
+                stick.RawY = -32768;
+                Assert.Equal("-32768 (0.0%)", stick.OutDisplayY);
+                Assert.Contains(nameof(StickConfigItem.OutDisplayY), raised);
+                Assert.DoesNotContain(nameof(StickConfigItem.OutDisplayX), raised);
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = culture;
+            }
         }
 
         /// <summary>A legend tag of the 3D and 2D pictures lights while its

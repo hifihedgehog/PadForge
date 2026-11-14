@@ -1419,7 +1419,6 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>Nta na kimwe</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(ntibyashyizweho)</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Ibisohoka</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Buto</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Imfunguzo n'imbeba</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Amanota na CC</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Amaboko</value></data>
@@ -1786,8 +1785,8 @@
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Akira ingaruka za trigger zihinduka n'iz'amatara ziva muri mod z'imikino zandikiwe DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Fungura isohoka rya telemetry mu mukino maze uryerekeze kuri iyi PC n'iyi port.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ingaruka za mod zigera kuri buri kontorola ifite ibyuma bizikora.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Imiterere y'umutwe ni umurongo wa Head Tracker kuri [Ibikoresho]. Shyira yaw y'umutwe ku murongo wa stick mu gice cya Buto cya kontorola.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Agaciro ni umurongo wa Game Telemetry kuri [Ibikoresho]. Kahuze mu gice cya Buto cya kontorola cyangwa ugakoreshe gutangiza macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Imiterere y'umutwe ni umurongo wa Head Tracker kuri [Ibikoresho]. Shyira yaw y'umutwe ku murongo wa stick mu gice cya Amahuza cya kontorola.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Agaciro ni umurongo wa Game Telemetry kuri [Ibikoresho]. Kahuze mu gice cya Amahuza cya kontorola cyangwa ugakoreshe gutangiza macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Aho menu iri, ingano yayo n'ubugaragare bwayo bishyirwaho kuri menu ubwayo, mu gice cya [Macro na Menu] cya kontorola.</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Intera ya buri murongo. Zeru ikurikiza intera iri hejuru.</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Ku bwa mod zishaka DSX ikora mbere y'uko zohereza</value></data>

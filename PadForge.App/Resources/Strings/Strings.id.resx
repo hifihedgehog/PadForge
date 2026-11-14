@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Aktifkan keluaran telemetri di game dan arahkan ke PC dan port ini.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Di emulator, tambahkan sumber gerak pada alamat PC ini dan port ini.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Efek dari mod sampai ke setiap kontroler yang punya perangkat kerasnya.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pose kepala adalah baris Pelacak kepala di [Perangkat]. Petakan yaw kepala ke sumbu stik di bagian Tombol pada kontroler.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Nilainya adalah baris Telemetri Game di [Perangkat]. Petakan di bagian Tombol pada kontroler atau pakai untuk memicu makro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pose kepala adalah baris Pelacak kepala di [Perangkat]. Petakan yaw kepala ke sumbu stik di bagian Pemetaan pada kontroler.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Nilainya adalah baris Telemetri Game di [Perangkat]. Petakan di bagian Pemetaan pada kontroler atau pakai untuk memicu makro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Posisi, ukuran, dan opasitas menu diatur pada menunya, di bagian [Makro dan menu] pada kontroler.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Sumber</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack dan apa pun yang mengirim format UDP-nya</value></data>
@@ -3179,7 +3179,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Kemudi gerakan</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° sampai {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zona mati condong, Orientasi kontroler</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Pengaturan untuk input Condong gerakan: miringkan kontroler seperti setir. Petakan "Condong gerakan" ke sumbu stik di bagian Tombol.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Pengaturan untuk input Condong gerakan: miringkan kontroler seperti setir. Petakan "Condong gerakan" ke sumbu stik di bagian Pemetaan.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Atur ulang kemudi gerakan</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (stik kanan)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (stik kiri)</value></data>
@@ -4149,7 +4149,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>permukaan pembuka menu tidak didukung ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikon sel menu tidak dikenali ({0}), sehingga sel tetap memakai label teksnya</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Output</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Tombol</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Keyboard dan mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Not dan kontrol</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Tangan</value></data>
@@ -5269,7 +5268,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Titik aktuasi tombol analog tidak terbawa.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD mengirim kontroler ini ke perangkat lain melalui adaptor. PadForge memainkannya di PC ini, dan Tautan Jarak Jauh mengirimkannya ke PC lain yang menjalankan PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge membaca dua stik, dan ini menyebut stik ketiga.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emulasi setir tidak terbawa. Petakan setir di bagian Tombol.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emulasi setir tidak terbawa. Petakan setir di bagian Pemetaan.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Profil ini menyebut aksi khusus yang tidak ada di Actions.xml di samping folder Profiles-nya: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Pengaturan ini tidak terbawa: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD mencegah input ini mencapai Windows. Aktifkan Serap input yang dipetakan untuk {0} di halaman Perangkat, yang mencegah input yang dipetakan profil ini.</value></data>
@@ -5278,7 +5277,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>File ini memisahkan dua kontroler. Di PadForge, kontroler mana pun pada slot memicu pemetaan ini.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Kecepatan gerak atau flick tidak terbawa.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Ini tidak terbawa. Atur di bagian Gerak dan sentuhan.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Tidak ada apa pun di file ini yang membuka lapisan ini. Di bagian Tombol, klik kanan lapisan itu dan pilih Konfigurasikan aktivator.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Tidak ada apa pun di file ini yang membuka lapisan ini. Di bagian Pemetaan, klik kanan lapisan itu dan pilih Konfigurasikan aktivator.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Tombolnya menjalankan ini saat ditekan: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Pintasan profil</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Melakukan hal yang sama seperti pintasan profil: memuat profil bernama, profil berikutnya atau sebelumnya, menampilkan atau menyembunyikan jendela, atau mematikan dan menyalakan kontroler virtual.</value></data>
@@ -5555,7 +5554,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Tombol Handheld PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Lampu Tombol PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro tidak dapat menekan {0}. Pemetaan di bagian Tombol bisa.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro tidak dapat menekan {0}. Baris di bagian Pemetaan bisa.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge menjalankan delapan Overlay layar, dan ini adalah crosshair kesembilan atau kesepuluh milik reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge membaca Condong kiri dan kanan dari roll serta Condong dari yaw, bawaan reWASD. Preferensi reWASD dapat menukar keduanya, dan file ini tidak menyebut apakah keduanya ditukar.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Pada mode Tilt, Lean milik reWASD adalah putaran mengelilingi sumbu vertikal, dan sensor gerak tidak memberi sudut untuk putaran itu.</value></data>

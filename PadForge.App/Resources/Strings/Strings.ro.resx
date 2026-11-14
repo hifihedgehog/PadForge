@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Activați ieșirea de telemetrie în joc și îndreptați-o către acest PC și acest port.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>În emulator, adăugați o sursă de mișcare la adresa acestui PC și la acest port.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Efectele unei modificări ajung la fiecare controler care are hardware-ul necesar.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Poziția capului este rândul Urmărire a capului din [Dispozitive]. Mapați girația capului pe o axă de stick în secțiunea Butoane a unui controler.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Valorile sunt rândul Telemetrie de joc din [Dispozitive]. Mapați-le în secțiunea Butoane a unui controler sau folosiți-le pentru a declanșa macrocomenzi.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Poziția capului este rândul Urmărire a capului din [Dispozitive]. Mapați girația capului pe o axă de stick în secțiunea Mapări a unui controler.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Valorile sunt rândul Telemetrie de joc din [Dispozitive]. Mapați-le în secțiunea Mapări a unui controler sau folosiți-le pentru a declanșa macrocomenzi.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Poziția, dimensiunea și opacitatea unui meniu se setează pe meniu, în secțiunea [Macrocomenzi și meniuri] a unui controler.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Surse</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack și orice trimite formatul său UDP</value></data>
@@ -3179,7 +3179,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Direcție prin mișcare</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° până la {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zone moarte ale înclinării, Orientarea controlerului</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Setări pentru intrarea „Mișcare: înclinare”: înclinați controlerul ca pe un volan. Mapați „Mișcare: înclinare” pe o axă de stick în secțiunea Butoane.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Setări pentru intrarea „Mișcare: înclinare”: înclinați controlerul ca pe un volan. Mapați „Mișcare: înclinare” pe o axă de stick în secțiunea Mapări.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Resetare direcție prin mișcare</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (stick drept)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (stick stâng)</value></data>
@@ -4149,7 +4149,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>suprafața gazdă a meniului nu este acceptată ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>pictograma celulei de meniu nu a fost recunoscută ({0}), așa că celula își păstrează eticheta text</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Ieșire</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Butoane</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Taste și mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Note și controale</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Mâini</value></data>
@@ -5269,7 +5268,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Punctele de acționare analogică ale tastelor nu au fost preluate.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD a trimis acest controller către alt dispozitiv printr-un adaptor. PadForge îl redă pe acest PC, iar Legătură la distanță îl trimite către alt PC pe care rulează PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge citește două manete, iar aici este numită a treia.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emularea volanului nu a fost preluată. Mapați volanul în secțiunea Butoane.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emularea volanului nu a fost preluată. Mapați volanul în secțiunea Mapări.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Acest profil numește o acțiune specială care lipsește din Actions.xml de lângă dosarul său Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Această setare nu a fost preluată: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD a împiedicat aceste intrări să ajungă în Windows. Activați Blocare intrări mapate pentru {0} în pagina Dispozitive, care le blochează pe cele mapate de acest profil.</value></data>
@@ -5278,7 +5277,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Acest fișier ține separate două controllere. În PadForge, orice controller de pe slot activează aceste mapări.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Viteza de mișcare sau flick-ul nu au fost preluate.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Acestea nu au fost preluate. Setați-le în secțiunea Mișcare și atingere.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nimic din acest fișier nu deschide acest strat. În secțiunea Butoane, faceți clic dreapta pe strat și alegeți Configurare activator.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nimic din acest fișier nu deschide acest strat. În secțiunea Mapări, faceți clic dreapta pe strat și alegeți Configurare activator.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Butoanele sale rulează acestea când sunt apăsate: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Comandă rapidă de profil</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Face ce face o comandă rapidă de profil: încarcă un profil indicat prin nume, pe următorul sau pe cel anterior, afișează sau ascunde fereastra ori dezactivează și reactivează controllerele virtuale.</value></data>
@@ -5555,7 +5554,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Butoanele consolei portabile PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Luminile tastelor PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>O macrocomandă nu poate apăsa {0}. O mapare din secțiunea Butoane poate.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>O macrocomandă nu poate apăsa {0}. Un rând din secțiunea Mapări poate.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge rulează opt suprapuneri ecran, iar aceasta este al nouălea sau al zecelea reticul din reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge citește Giroscop: ruliu ca stânga și dreapta, iar Giroscop: girație ca înclinare, setarea implicită din reWASD. Preferințele reWASD le pot inversa, iar acest fișier nu spune dacă au fost inversate.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>În modul Tilt, înclinarea din reWASD este o rotire în jurul axei verticale, iar un senzor de mișcare nu dă niciun unghi pentru acea rotire.</value></data>

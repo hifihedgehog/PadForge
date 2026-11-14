@@ -440,24 +440,30 @@ namespace PadForge.ViewModels
         public short RawX
         {
             get => _rawX;
-            set { if (SetProperty(ref _rawX, value)) OnPropertyChanged(nameof(RawDisplay)); }
+            set { if (SetProperty(ref _rawX, value)) OnPropertyChanged(nameof(OutDisplayX)); }
         }
 
         private short _rawY;
         public short RawY
         {
             get => _rawY;
-            set { if (SetProperty(ref _rawY, value)) OnPropertyChanged(nameof(RawDisplay)); }
+            set { if (SetProperty(ref _rawY, value)) OnPropertyChanged(nameof(OutDisplayY)); }
         }
 
-        /// <summary>IN readout (#175): pre-pipeline position in the same
-        /// axis-unit format as RawDisplay, derived from RawPosX/RawPosY.</summary>
-        public string InDisplay =>
-            $"X: {(int)Math.Round(_rawPosX * 65535.0 - 32768.0)} ({_rawPosX * 100.0:F1}%)  Y: {(int)Math.Round(_rawPosY * 65535.0 - 32768.0)} ({_rawPosY * 100.0:F1}%)";
+        /// <summary>The stick's reading before PadForge's pipeline, one axis
+        /// each (#175): the axis's own units and its share of the range,
+        /// "-644 (49.0%)". Derived from RawPosX and RawPosY. The live view's
+        /// table has a column for each axis, so each has its own text.</summary>
+        public string InDisplayX => AxisText(_rawPosX * 65535.0 - 32768.0, _rawPosX * 100.0);
+        public string InDisplayY => AxisText(_rawPosY * 65535.0 - 32768.0, _rawPosY * 100.0);
 
-        /// <summary>Formatted display string: "X: -1234 (50.0%)  Y: 5678 (58.7%)"</summary>
-        public string RawDisplay =>
-            $"X: {_rawX} ({(_rawX + 32768.0) / 655.35:F1}%)  Y: {_rawY} ({(_rawY + 32768.0) / 655.35:F1}%)";
+        /// <summary>The stick's output, one axis each, in the same form:
+        /// "5678 (58.7%)".</summary>
+        public string OutDisplayX => AxisText(_rawX, (_rawX + 32768.0) / 655.35);
+        public string OutDisplayY => AxisText(_rawY, (_rawY + 32768.0) / 655.35);
+
+        internal static string AxisText(double units, double percent)
+            => $"{(int)Math.Round(units)} ({percent:F1}%)";
 
         /// <summary>Unprocessed hardware value for calibration (not affected by offset/deadzone).</summary>
         // Raw-stage dot position (0-1, pre-pipeline) for the two-stage
@@ -465,13 +471,13 @@ namespace PadForge.ViewModels
         public double RawPosX
         {
             get => _rawPosX;
-            set { if (SetProperty(ref _rawPosX, value)) OnPropertyChanged(nameof(InDisplay)); }
+            set { if (SetProperty(ref _rawPosX, value)) OnPropertyChanged(nameof(InDisplayX)); }
         }
         private double _rawPosX = 0.5;
         public double RawPosY
         {
             get => _rawPosY;
-            set { if (SetProperty(ref _rawPosY, value)) OnPropertyChanged(nameof(InDisplay)); }
+            set { if (SetProperty(ref _rawPosY, value)) OnPropertyChanged(nameof(InDisplayY)); }
         }
         private double _rawPosY = 0.5;
 

@@ -405,8 +405,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>فعّل إخراج بيانات القياس في اللعبة ووجّهه إلى هذا الكمبيوتر وهذا المنفذ.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>في المحاكي، أضف مصدر حركة بعنوان هذا الكمبيوتر وهذا المنفذ.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>تصل تأثيرات التعديل إلى كل وحدة تحكم فيها العتاد اللازم لها.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>وضع الرأس هو صف متتبع الرأس في [الأجهزة]. عيّن انعراج الرأس إلى محور عصا في قسم الأزرار بوحدة التحكم.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>القيم هي صف بيانات قياس الألعاب في [الأجهزة]. عيّنها في قسم الأزرار بوحدة التحكم أو استخدمها لتشغيل وحدات الماكرو.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>وضع الرأس هو صف متتبع الرأس في [الأجهزة]. عيّن انعراج الرأس إلى محور عصا في قسم التعيينات بوحدة التحكم.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>القيم هي صف بيانات قياس الألعاب في [الأجهزة]. عيّنها في قسم التعيينات بوحدة التحكم أو استخدمها لتشغيل وحدات الماكرو.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>يُضبط موضع القائمة وحجمها وشفافيتها على القائمة نفسها، في قسم [وحدات الماكرو والقوائم] بوحدة التحكم.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>المصادر</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack وكل ما يرسل بصيغة UDP الخاصة به</value></data>
@@ -2989,7 +2989,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>التوجيه بالحركة</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° إلى {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>المنطقة الميتة للميل، اتجاه وحدة التحكم</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>إعدادات مدخل «ميل الحركة»: أمل وحدة التحكم كعجلة القيادة. عيّن «ميل الحركة» إلى محور عصا في قسم «الأزرار».</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>إعدادات مدخل «ميل الحركة»: أمل وحدة التحكم كعجلة القيادة. عيّن «ميل الحركة» إلى محور عصا في قسم «التعيينات».</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>إعادة ضبط التوجيه بالحركة</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>عصا الالتفات السريع (العصا اليمنى)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>عصا الالتفات السريع (العصا اليسرى)</value></data>
@@ -3930,7 +3930,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>سطح فتح القائمة غير مدعوم ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>لم يتم التعرف على أيقونة خلية القائمة ({0})، لذا تحتفظ الخلية بتسميتها النصية</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>الإخراج</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>الأزرار</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>المفاتيح والماوس</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>النغمات وعناصر التحكم</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>اليدان</value></data>

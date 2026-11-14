@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Ieslēdziet telemetrijas izvadi spēlē un norādiet tai šo datoru un portu.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Emulatorā pievienojiet kustību avotu ar šī datora adresi un šo portu.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Modifikācijas efekti sasniedz katru kontrolleri, kuram ir tiem vajadzīgā aparatūra.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Galvas poza ir rinda Galvas izsekotājs lapā [Ierīces]. Piesaistiet galvas pagriezienu sviras asij kontrollera sadaļā Pogas.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Vērtības ir rinda Spēļu telemetrija lapā [Ierīces]. Piesaistiet tās kontrollera sadaļā Pogas vai izmantojiet makrosu aktivizēšanai.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Galvas poza ir rinda Galvas izsekotājs lapā [Ierīces]. Piesaistiet galvas pagriezienu sviras asij kontrollera sadaļā Piesaistes.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Vērtības ir rinda Spēļu telemetrija lapā [Ierīces]. Piesaistiet tās kontrollera sadaļā Piesaistes vai izmantojiet makrosu aktivizēšanai.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Izvēlnes atrašanās vietu, izmēru un necaurredzamību iestata pati izvēlne kontrollera sadaļā [Makrosi un izvēlnes].</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Avoti</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack un viss, kas sūta tā UDP formātu</value></data>
@@ -3179,7 +3179,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Stūrēšana ar kustību</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° līdz {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Noliekuma nejutības zonas, kontrollera orientācija</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Iestatījumi ievadei „Kustības noliekums”: sasveriet kontrolleri kā stūri. Piesaistiet „Kustības noliekums” sviras asij sadaļā „Pogas”.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Iestatījumi ievadei „Kustības noliekums”: sasveriet kontrolleri kā stūri. Piesaistiet „Kustības noliekums” sviras asij sadaļā „Piesaistes”.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Atiestatīt stūrēšanu ar kustību</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Rāviena svira (labā svira)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Rāviena svira (kreisā svira)</value></data>
@@ -4149,7 +4149,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>izvēlnes atvēršanas virsma netiek atbalstīta ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>izvēlnes šūnas ikona netika atpazīta ({0}), tāpēc šūnai paliek teksta nosaukums</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Izvade</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Pogas</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Taustiņi un pele</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Notis un vadīklas</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Rokas</value></data>
@@ -5269,7 +5268,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analogo taustiņu aktivizācijas punkti netika pārnesti.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD nosūtīja šo kontrolieri uz citu ierīci, izmantojot adapteri. PadForge to atskaņo šajā datorā, un Attālais savienojums to nosūta uz citu datoru, kurā darbojas PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge nolasa divas kursorsviras, bet šeit minēta trešā.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Stūres emulācija netika pārnesta. Piesaistiet stūri sadaļā Pogas.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Stūres emulācija netika pārnesta. Piesaistiet stūri sadaļā Piesaistes.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Šis profils min īpašu darbību, kuras nav failā Actions.xml blakus tā mapei Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Šis iestatījums netika pārnests: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD neļāva šiem ievades signāliem nonākt līdz Windows. Ieslēdziet Pārtvert piesaistīto ievadi ierīcei {0} lapā Ierīces, un tas apturēs tos, ko piesaista šis profils.</value></data>
@@ -5278,7 +5277,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Šajā failā abi kontrolieri ir nošķirti. PadForge šīs piesaistes aktivizē jebkurš slotā esošs kontrolieris.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Kustības ātrums vai grūdiens netika pārnests.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Tie netika pārnesti. Iestatiet tos sadaļā Kustība un skāriens.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nekas šajā failā neatver šo slāni. Sadaļā Pogas ar peles labo pogu noklikšķiniet uz slāņa un izvēlieties Konfigurēt aktivatoru.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nekas šajā failā neatver šo slāni. Sadaļā Piesaistes ar peles labo pogu noklikšķiniet uz slāņa un izvēlieties Konfigurēt aktivatoru.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Tā pogas, tās nospiežot, palaiž šo: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profila saīsne</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Veic to pašu, ko profila saīsne: ielādē norādītu profilu, nākamo vai iepriekšējo profilu, parāda vai paslēpj logu, vai izslēdz un ieslēdz virtuālos kontrolierus.</value></data>
@@ -5555,7 +5554,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge rokas konsoles pogas (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro profils (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge taustiņu apgaismojums (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro nevar nospiest {0}. To var izdarīt piesaiste sadaļā Pogas.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro nevar nospiest {0}. To var izdarīt rinda sadaļā Piesaistes.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge darbina astoņus ekrāna pārklājumus, un šis ir reWASD devītais vai desmitais mērķa krustiņš.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge nolasa žiroskopa kreiso un labo pusi no sānsveres, bet noliekumu no pagrieziena, kā reWASD pēc noklusējuma. reWASD preferencēs šos divus var apmainīt, un šis fails nenorāda, vai tie tika apmainīti.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Režīmā Tilt reWASD noliekums ir pagrieziens ap vertikālo asi, un kustības sensors šādam pagriezienam leņķi nenorāda.</value></data>

@@ -405,8 +405,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>ක්‍රීඩාවේ ටෙලිමෙට්‍රි ප්‍රතිදානය ක්‍රියාත්මක කර එය මෙම පරිගණකයට සහ තොටට යොමු කරන්න.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ඉමියුලේටරය තුළ, මෙම පරිගණකයේ ලිපිනයෙන් සහ මෙම තොටෙන් චලන මූලාශ්‍රයක් එක් කරන්න.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>මොඩ් එකක ප්‍රයෝග, ඒ සඳහා දෘඪාංග ඇති සෑම පාලකයකටම ළඟා වේ.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>හිස් ඉරියව්ව [උපාංග] පිටුවේ ඇති හිස් ට්‍රැකර පේළියයි. පාලකයක බොත්තම් කොටසේදී හිස් යෝ අගය ස්ටික් අක්ෂයකට සිතියම්ගත කරන්න.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>අගයන් [උපාංග] පිටුවේ ඇති ක්‍රීඩා ටෙලිමෙට්‍රි පේළියයි. පාලකයක බොත්තම් කොටසේදී ඒවා සිතියම්ගත කරන්න, නැතහොත් මැක්‍රෝ ක්‍රියාත්මක කිරීමට ඒවා භාවිත කරන්න.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>හිස් ඉරියව්ව [උපාංග] පිටුවේ ඇති හිස් ට්‍රැකර පේළියයි. පාලකයක සිතියම්ගත කිරීම් කොටසේදී හිස් යෝ අගය ස්ටික් අක්ෂයකට සිතියම්ගත කරන්න.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>අගයන් [උපාංග] පිටුවේ ඇති ක්‍රීඩා ටෙලිමෙට්‍රි පේළියයි. පාලකයක සිතියම්ගත කිරීම් කොටසේදී ඒවා සිතියම්ගත කරන්න, නැතහොත් මැක්‍රෝ ක්‍රියාත්මක කිරීමට ඒවා භාවිත කරන්න.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>මෙනුවක ස්ථානය, ප්‍රමාණය සහ පාරාන්ධතාව සකසන්නේ එම මෙනුවේමය, පාලකයක [මැක්‍රෝ සහ මෙනු] කොටසේදී.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>මූලාශ්‍ර</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack සහ එහි UDP ආකෘතිය යවන ඕනෑම දෙයක්</value></data>
@@ -2948,7 +2948,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>චලන සුක්කානම් හැසිරවීම</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° සිට {1}° දක්වා</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>ඇලවීමේ ඩෙඩ්සෝන්, පාලකයේ දිශානතිය</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>චලන ඇලවීම් ආදානය සඳහා සැකසීම්: පාලකය සුක්කානමක් මෙන් ඇල කරන්න. බොත්තම් යටතේ "චලන ඇලවීම" ස්ටික් අක්ෂයකට සිතියම්ගත කරන්න.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>චලන ඇලවීම් ආදානය සඳහා සැකසීම්: පාලකය සුක්කානමක් මෙන් ඇල කරන්න. සිතියම්ගත කිරීම් යටතේ "චලන ඇලවීම" ස්ටික් අක්ෂයකට සිතියම්ගත කරන්න.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>චලන සුක්කානම් හැසිරවීම යළි සකසන්න</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ෆ්ලික් ස්ටික් (දකුණු ස්ටික්)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>ෆ්ලික් ස්ටික් (වම් ස්ටික්)</value></data>
@@ -3889,7 +3889,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>මෙනු සත්කාරක පෘෂ්ඨය සඳහා සහාය නැත ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>මෙනු කොටු අයිකනය හඳුනා නොගැනිණි ({0}), එබැවින් කොටුව එහි පාඨ ලේබලය තබා ගනී</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>ප්‍රතිදානය</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>බොත්තම්</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>යතුරු සහ මූසිකය</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>ස්වර සහ පාලන</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>අත්</value></data>

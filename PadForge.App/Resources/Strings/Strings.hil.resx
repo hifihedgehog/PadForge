@@ -1523,7 +1523,6 @@
   <data name="Home_FirstRun_Title" xml:space="preserve"><value>Ano ang dapat makita sang mga game?</value></data>
   <data name="Home_FirstRun_Body" xml:space="preserve"><value>Ginahimo sang PadForge ini nga controller nga amo ang ginalauman sang imo mga game. Pili sang isa para magsugod. Mahimo mo ini islan sa ulihi sa isa ka click.</value></data>
   <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>Ginahimo sang PadForge ang imo controller nga amo ang ginalauman sang imo mga game. Pili sang isa para magsugod. Mahimo mo ini islan sa ulihi sa isa ka click.</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mga button</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Mga key kag mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Mga nota kag kontrol</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Mga kamot</value></data>
@@ -1598,8 +1597,8 @@
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Kuhaa ang adaptive trigger kag mga epekto sang suga halin sa mga game mod nga ginhimo para sa DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>I-on ang telemetry output sa game kag itudlo ini sa sini nga PC kag port.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ang mga epekto sang mod makaabot sa tagsa ka controller nga may hardware para sa ila.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ang head pose amo ang Head Tracker nga row sa [Mga device]. I-map ang head yaw sa axis sang stick sa Buttons nga seksyon sang controller.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ang mga balor amo ang Game Telemetry nga row sa [Mga device]. I-map sila sa Buttons nga seksyon sang controller ukon gamita sila sa pagpasugod sang mga macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ang head pose amo ang Head Tracker nga row sa [Mga device]. I-map ang head yaw sa axis sang stick sa Mga mapping nga seksyon sang controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ang mga balor amo ang Game Telemetry nga row sa [Mga device]. I-map sila sa Mga mapping nga seksyon sang controller ukon gamita sila sa pagpasugod sang mga macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ang kaugalingon nga lugar, kadakuon kag opacity sang menu ginabutang sa menu mismo, sa [Mga macro kag menu] nga seksyon sang controller.</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Range kada axis. Ang zero nagasunod sa range sa ibabaw.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ano ang Ginapakita</value></data>

@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Kveiktu á fjarmælingaúttaki í leiknum og beindu því að þessari tölvu og gátt.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Bættu við hreyfiuppsprettu í hermanum með vistfangi þessarar tölvu og þessari gátt.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Áhrif leikjabreytinga ná til allra leikjastýringa sem hafa vélbúnaðinn fyrir þau.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Höfuðstaðan er línan Höfuðrakningartæki á [Tækjum]. Varpaðu hliðarsnúningi höfuðsins á ás pinna í hlutanum Hnappar á síðu leikjastýringar.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Gildin eru línan Leikjafjarmælingar á [Tækjum]. Varpaðu þeim í hlutanum Hnappar á síðu leikjastýringar eða notaðu þau til að ræsa fjölva.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Höfuðstaðan er línan Höfuðrakningartæki á [Tækjum]. Varpaðu hliðarsnúningi höfuðsins á ás pinna í hlutanum Varpanir á síðu leikjastýringar.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Gildin eru línan Leikjafjarmælingar á [Tækjum]. Varpaðu þeim í hlutanum Varpanir á síðu leikjastýringar eða notaðu þau til að ræsa fjölva.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Staðsetning, stærð og ógegnsæi valmyndar eru stillt á valmyndinni sjálfri, í hlutanum [Fjölvar og valmyndir] á síðu leikjastýringar.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Uppsprettur</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack og allt sem sendir UDP-snið þess</value></data>
@@ -3179,7 +3179,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Hreyfistýring</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° til {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Dauð svæði hneigingar, Stefna leikjastýringar</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Stillingar fyrir inntakið „Hreyfiskynjun: hneiging“: hallaðu leikjastýringunni eins og stýri. Varpaðu „Hreyfiskynjun: hneiging“ á pinnaás undir „Hnappar“.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Stillingar fyrir inntakið „Hreyfiskynjun: hneiging“: hallaðu leikjastýringunni eins og stýri. Varpaðu „Hreyfiskynjun: hneiging“ á pinnaás undir „Varpanir“.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Endurstilla hreyfistýringu</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (hægri pinni)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (vinstri pinni)</value></data>
@@ -4149,7 +4149,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>hýsilflötur valmyndar ekki studdur ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>tákn valmyndarreits ekki þekkt ({0}), svo reiturinn heldur textamerkingu sinni</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Úttak</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Hnappar</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Lyklar og mús</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nótur og stýringar</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Hendur</value></data>
@@ -5269,7 +5268,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Greiningarpunktar hliðrænna lykla fluttust ekki með.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD sendi þennan stýripinna í annað tæki í gegnum millistykki. PadForge spilar hann á þessari tölvu og Fjartenging sendir hann í aðra tölvu sem keyrir PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge les tvo stýripinna og hér er nefndur sá þriðji.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Hermun stýris fluttist ekki með. Varpaðu stýrinu undir „Hnappar“.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Hermun stýris fluttist ekki með. Varpaðu stýrinu undir „Varpanir“.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Þetta snið nefnir sérstaka aðgerð sem vantar í Actions.xml við hlið Profiles-möppunnar: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Þessi stilling fluttist ekki með: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD kom í veg fyrir að þessi inntök næðu til Windows. Kveiktu á Gleypa varpað inntak fyrir {0} á Tækjasíðunni, sem stöðvar þau inntök sem þetta snið varpar.</value></data>
@@ -5278,7 +5277,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Þessi skrá heldur tveimur stýripinnum aðskildum. Í PadForge kveikir hvaða stýripinni sem er á raufinni á þessum varpunum.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Hreyfihraðinn eða rykkurinn fluttist ekki með.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Þetta fluttist ekki með. Stilltu það undir „Hreyfing og snerting“.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ekkert í þessari skrá opnar þetta lag. Undir „Hnappar“ skaltu hægrismella á lagið og velja „Stilla virki“.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ekkert í þessari skrá opnar þetta lag. Undir „Varpanir“ skaltu hægrismella á lagið og velja „Stilla virki“.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Hnappar þess keyra þetta þegar ýtt er á þá: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Flýtileið sniðs</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Gerir það sem flýtileið sniðs gerir: hleður tilteknu sniði, næsta eða fyrra sniði, sýnir eða felur gluggann, eða slekkur og kveikir á sýndarstýringum.</value></data>
@@ -5555,7 +5554,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge-hnappar handtölvu (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-snið (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge-lyklaljós (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Fjölvi getur ekki ýtt á {0}. Vörpun undir „Hnappar“ getur það.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Fjölvi getur ekki ýtt á {0}. Lína undir „Varpanir“ getur það.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge keyrir átta yfirlög skjás og þetta er níundi eða tíundi miðunarkross reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge les vinstri og hægri hreyfingu snúningsskynjara úr veltu og hneigingu úr snúningi, sem er sjálfgefið í reWASD. Stillingar reWASD geta víxlað þessu tvennu og skráin segir ekki hvort það var gert.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Í hallahami er hneiging í reWASD snúningur um lóðréttan ás og hreyfiskynjari gefur ekkert horn fyrir þann snúning.</value></data>

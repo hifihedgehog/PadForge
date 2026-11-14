@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Включете изхода на телеметрията в играта и го насочете към този компютър и порт.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>В емулатора добавете източник на движение с адреса на този компютър и този порт.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ефектите на мода стигат до всеки контролер, който има хардуера за тях.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Позата на главата е редът „Проследяване на главата“ в [Устройства]. Съпоставете завъртането на главата към ос на стик в раздела „Бутони“ на контролера.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Стойностите са редът „Игрова телеметрия“ в [Устройства]. Съпоставете ги в раздела „Бутони“ на контролера или ги използвайте за задействане на макроси.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Позата на главата е редът „Проследяване на главата“ в [Устройства]. Съпоставете завъртането на главата към ос на стик в раздела „Съпоставяния“ на контролера.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Стойностите са редът „Игрова телеметрия“ в [Устройства]. Съпоставете ги в раздела „Съпоставяния“ на контролера или ги използвайте за задействане на макроси.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Мястото, размерът и непрозрачността на менюто се задават в самото меню, в раздела [Макроси и менюта] на контролера.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Източници</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack и всичко, което изпраща формата му по UDP</value></data>
@@ -3179,7 +3179,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Управление с движение</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° до {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Мъртви зони на навеждането, Ориентация на контролера</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Настройки за входа „Движение: навеждане“: накланяйте контролера като волан. Съпоставете „Движение: навеждане“ към ос на стик в „Бутони“.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Настройки за входа „Движение: навеждане“: накланяйте контролера като волан. Съпоставете „Движение: навеждане“ към ос на стик в „Съпоставяния“.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Нулиране на управлението с движение</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Флик стик (десен стик)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Флик стик (ляв стик)</value></data>
@@ -4149,7 +4149,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>повърхността за менюто не се поддържа ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>иконата на клетката от менюто не е разпозната ({0}), затова клетката запазва текстовия си етикет</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Изход</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Бутони</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Клавиши и мишка</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Ноти и контроли</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Ръце</value></data>
@@ -5269,7 +5268,7 @@
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Точките на задействане на аналоговите клавиши не бяха пренесени.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD изпращаше този контролер към друго устройство чрез адаптер. PadForge го пуска на този компютър, а Отдалечена връзка го изпраща към друг компютър с PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge чете два стика, а тук е посочен трети.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Емулацията на волан не беше пренесена. Съпоставете волана в „Бутони“.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Емулацията на волан не беше пренесена. Съпоставете волана в „Съпоставяния“.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Този профил посочва специално действие, което липсва в Actions.xml до папката му Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Тази настройка не беше пренесена: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD пречеше на тези входове да стигнат до Windows. Включете Поглъщане на съпоставените входове за {0} на страницата Устройства, което спира входовете, съпоставени от този профил.</value></data>
@@ -5278,7 +5277,7 @@
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Този файл държи два контролера разделени. В PadForge всеки контролер на слота задейства тези съпоставяния.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Скоростта на движение или рязкото движение не бяха пренесени.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Те не бяха пренесени. Задайте ги в „Движение и докосване“.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Нищо в този файл не отваря този слой. В „Бутони“ щракнете с десния бутон върху слоя и изберете „Настройка на активатора“.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Нищо в този файл не отваря този слой. В „Съпоставяния“ щракнете с десния бутон върху слоя и изберете „Настройка на активатора“.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Бутоните му изпълняват това при натискане: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Пряк път към профил</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Прави това, което прави пряк път към профил: зарежда именуван профил, следващия или предишния, показва или скрива прозореца или изключва и включва виртуалните контролери.</value></data>
@@ -5555,7 +5554,7 @@
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Бутони на портативно устройство за PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Профил на HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Осветление на клавишите за PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макрос не може да натисне {0}. Съпоставяне в „Бутони“ може.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макрос не може да натисне {0}. Ред в „Съпоставяния“ може.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge поддържа осем Наслагвания на екрана, а това е деветият или десетият мерник на reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge чете Жироскоп наляво и надясно от крена, а навеждането от завъртането, както е по подразбиране в reWASD. Предпочитанията на reWASD могат да ги разменят, а този файл не показва дали са били разменени.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>В режим Наклон навеждането на reWASD е завъртане около вертикалната ос, а сензорът за движение не дава ъгъл за такова завъртане.</value></data>

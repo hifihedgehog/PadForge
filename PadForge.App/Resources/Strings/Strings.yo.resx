@@ -1492,7 +1492,6 @@
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(kò tíì ṣètò)</value></data>
   <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Ìsopọ̀ tàbí macro kan ń lò ó</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Ìjáde</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Àwọn bọ́tìnì</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Kọ́kọ́rọ́ àti máòsì</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nóòtì àti ìdarí</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Ọwọ́ méjèèjì</value></data>
@@ -1940,8 +1939,8 @@
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR ń ṣiṣẹ́</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Gba ipa adaptive trigger àti ti iná láti inú àwọn mod eré tí a kọ fún DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Tan ìjáde telemetry nínú eré, kí o sì darí rẹ̀ sí PC yìí àti pọ́ọ̀tì yìí.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ipò orí ni ìlà Head Tracker lórí [Àwọn ẹ̀rọ]. So yaw orí pọ̀ mọ́ ákísì ọ̀pá kan ní apá Àwọn bọ́tìnì ti ẹ̀rọ ìdarí kan.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Àwọn iye náà ni ìlà Game Telemetry lórí [Àwọn ẹ̀rọ]. So wọ́n pọ̀ ní apá Àwọn bọ́tìnì ti ẹ̀rọ ìdarí kan, tàbí lò wọ́n láti mú macro ṣiṣẹ́.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ipò orí ni ìlà Head Tracker lórí [Àwọn ẹ̀rọ]. So yaw orí pọ̀ mọ́ ákísì ọ̀pá kan ní apá Àwọn ìsopọ̀ ti ẹ̀rọ ìdarí kan.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Àwọn iye náà ni ìlà Game Telemetry lórí [Àwọn ẹ̀rọ]. So wọ́n pọ̀ ní apá Àwọn ìsopọ̀ ti ẹ̀rọ ìdarí kan, tàbí lò wọ́n láti mú macro ṣiṣẹ́.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ipò, ìtóbi àti ìmọ́lẹ̀kọjá àkójọ àṣàyàn kan ni a ń ṣètò lórí àkójọ náà, ní apá [Macro àti àkójọ àṣàyàn] ti ẹ̀rọ ìdarí kan.</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Ìwọ̀n</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Ìwọ̀n fún ákísì kọ̀ọ̀kan. Òdo ń tẹ̀lé ìwọ̀n tí ó wà lókè.</value></data>

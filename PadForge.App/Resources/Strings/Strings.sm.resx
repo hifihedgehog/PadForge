@@ -244,6 +244,7 @@
 
   <!-- ═══ Pad Page ═══ -->
   <data name="Macro_CopyNameFormat" xml:space="preserve"><value>{0} (Kopi)</value></data>
+  <data name="Pad_Mappings" xml:space="preserve"><value>Faʻafesoʻotaʻiga</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Trigger agavale</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Trigger taumatau</value></data>
@@ -1172,8 +1173,8 @@
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>E leʻi faʻapipiʻiina le SteamVR</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Ave aafiaga o trigger fetuutuunaʻi ma moli mai mod o taʻaloga na tusia mo DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Faʻaola le telemetry output i le taʻaloga ma faʻasino atu i lenei PC ma le port.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>O le tulaga o le ulu o le laina Head Tracker i [Masini]. Faʻafesoʻotaʻi le yaw o le ulu i se axis o le stick i le vaega Buttons a se controller.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>O tau o le laina Game Telemetry i [Masini]. Faʻafesoʻotaʻi i le vaega Buttons a se controller pe faʻaaogā e faʻaosofia ai macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>O le tulaga o le ulu o le laina Head Tracker i [Masini]. Faʻafesoʻotaʻi le yaw o le ulu i se axis o le stick i le vaega Faʻafesoʻotaʻiga a se controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>O tau o le laina Game Telemetry i [Masini]. Faʻafesoʻotaʻi i le vaega Faʻafesoʻotaʻiga a se controller pe faʻaaogā e faʻaosofia ai macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>O le nofoaga, le lapoʻa ma le manino o se menu e seti i luga o le menu, i le vaega [Macro ma Menu] a se controller.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Mea e Faʻaali</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Le li, le grid po o le pa o se menu aʻo tatala</value></data>

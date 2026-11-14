@@ -1299,7 +1299,6 @@
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Kuhaa an mga epekto han trigger ngan suga tikang ha mga game mod.</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita an mga menu, layer ngan pagbalhin hin profile samtang nagdudula ka.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, puli han DSX.exe</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mga button</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Mga key ngan mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Mga nota ngan control</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Mga kamot</value></data>
@@ -1373,8 +1372,8 @@
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>Diri naka-install an SteamVR</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Kuhaa an adaptive trigger ngan mga epekto han suga tikang ha mga game mod nga ginsurat para ha DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Buhata an telemetry output ha dula ngan itudlo ini ha ini nga PC ngan port.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>An pose han ulo amo an Head Tracker nga row ha [Mga device]. I-map an yaw han ulo ha usa nga axis han stick ha Buttons nga seksyon han controller.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>An mga value amo an Game Telemetry nga row ha [Mga device]. I-map hira ha Buttons nga seksyon han controller o gamita hira para magpatikang hin mga macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>An pose han ulo amo an Head Tracker nga row ha [Mga device]. I-map an yaw han ulo ha usa nga axis han stick ha Mga mapping nga seksyon han controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>An mga value amo an Game Telemetry nga row ha [Mga device]. I-map hira ha Mga mapping nga seksyon han controller o gamita hira para magpatikang hin mga macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>An kalugaringon nga lugar, kadako ngan opacity han menu ginbubutang ha menu mismo, ha [Mga macro ngan menu] nga seksyon han controller.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ano an Nakikita</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>An ring, grid o bar han menu samtang bukas ini</value></data>

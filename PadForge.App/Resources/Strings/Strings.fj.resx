@@ -794,4 +794,5 @@
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Digitaka na ka e vakaraitaka. E sega ni dua na ka e veisau me yacova ni o maroroya.</value></data>
   <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>E sega ni dua na ka e yaco ki na port me yacova ni o maroroya.</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>E tu ena Steam Workshop na veiyaga vou ni profile e vakacurumi qo. Vakacuruma tale mai na Taura na Profile mo taura kina na veisau.</value></data>
+  <data name="Pad_Mappings" xml:space="preserve"><value>Mapping</value></data>
 </root>

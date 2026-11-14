@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Включите вывод телеметрии в игре и укажите этот ПК и порт.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>В эмуляторе добавьте источник движения с адресом этого ПК и этим портом.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Эффекты мода доходят до каждого контроллера, у которого есть для них оборудование.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Положение головы показывает строка «Трекер головы» на странице [Устройства]. Назначьте рыскание головы на ось стика в разделе «Кнопки» контроллера.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Значения показывает строка «Игровая телеметрия» на странице [Устройства]. Назначайте их в разделе «Кнопки» контроллера или используйте для запуска макросов.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Положение головы показывает строка «Трекер головы» на странице [Устройства]. Назначьте рыскание головы на ось стика в разделе «Назначения» контроллера.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Значения показывает строка «Игровая телеметрия» на странице [Устройства]. Назначайте их в разделе «Назначения» контроллера или используйте для запуска макросов.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Место, размер и непрозрачность меню задаются в самом меню, в разделе [Макросы и меню] контроллера.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Источники</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack и все, что отправляет данные в его формате UDP</value></data>
@@ -3179,7 +3179,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Руление движением</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° до {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Внутренняя и внешняя мертвая зона наклона, Ориентация контроллера</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Настройки для источника «Движение: наклон»: наклоняйте контроллер как руль. Назначьте «Движение: наклон» на ось стика в разделе «Кнопки».</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Настройки для источника «Движение: наклон»: наклоняйте контроллер как руль. Назначьте «Движение: наклон» на ось стика в разделе «Назначения».</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Сбросить руление движением</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Флик-стик (правый стик)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Флик-стик (левый стик)</value></data>
@@ -4149,7 +4149,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>поверхность, открывающая меню, не поддерживается ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>значок ячейки меню не распознан ({0}), поэтому у ячейки остается текстовая подпись</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Выход</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Кнопки</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Клавиши и мышь</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Ноты и контроллеры</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Руки</value></data>
@@ -5269,7 +5268,7 @@
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Точки срабатывания аналоговых клавиш не были перенесены.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD отправлял этот контроллер на другое устройство через адаптер. PadForge воспроизводит его на этом ПК, а Удаленная связь отправляет его на другой ПК с PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge читает два стика, а здесь назван третий.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Эмуляция руля не была перенесена. Назначьте руль в разделе «Кнопки».</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Эмуляция руля не была перенесена. Назначьте руль в разделе «Назначения».</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Этот профиль называет особое действие, которого нет в Actions.xml рядом с папкой Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Эта настройка не была перенесена: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD не пропускал эти входы в Windows. Включите «Поглощать назначенный ввод» для {0} на странице «Устройства»: это остановит те входы, которые назначает этот профиль.</value></data>
@@ -5278,7 +5277,7 @@
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Этот файл разделяет два контроллера. В PadForge эти назначения срабатывают от любого контроллера в слоте.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Скорость движения или рывок не были перенесены.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Эти параметры не были перенесены. Задайте их в разделе «Движение и касание».</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ничто в этом файле не открывает этот слой. В разделе «Кнопки» щелкните слой правой кнопкой мыши и выберите «Настроить активатор».</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ничто в этом файле не открывает этот слой. В разделе «Назначения» щелкните слой правой кнопкой мыши и выберите «Настроить активатор».</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Его кнопки при нажатии запускают: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Быстрая команда профиля</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Делает то же, что и быстрая команда профиля: загружает профиль по имени, следующий или предыдущий профиль, показывает или скрывает окно, выключает и включает виртуальные контроллеры.</value></data>
@@ -5555,7 +5554,7 @@
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Кнопки портативной консоли PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Профиль HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Подсветка клавиш PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макрос не может нажать {0}. Назначение в разделе «Кнопки» может.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макрос не может нажать {0}. Строка в разделе «Назначения» может.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge запускает восемь оверлеев экрана, а это девятое или десятое перекрестие reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge читает «Гироскоп» влево и вправо по крену, а наклон по рысканию, как по умолчанию в reWASD. В настройках reWASD эти оси можно поменять местами, а этот файл не говорит, меняли ли их.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>В режиме Tilt наклон в reWASD это поворот вокруг вертикальной оси, а датчик движения не дает угла для такого поворота.</value></data>

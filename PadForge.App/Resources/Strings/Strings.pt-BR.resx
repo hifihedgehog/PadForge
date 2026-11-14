@@ -2613,7 +2613,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Direção por Movimento</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° a {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zonas mortas da inclinação, Orientação do Controle</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Configurações da entrada "Inclinação de Movimento": incline o controle como um volante. Atribua "Inclinação de Movimento" a um eixo do analógico em Botões.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Configurações da entrada "Inclinação de Movimento": incline o controle como um volante. Atribua "Inclinação de Movimento" a um eixo do analógico em Mapeamentos.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Redefinir Direção por Movimento</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback de Batente do Volante</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Um sinal no batente para um analógico em modo de volante</value></data>
@@ -3393,8 +3393,8 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Ative a saída de telemetria no jogo e aponte para este PC e esta porta.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>No emulador, adicione uma fonte de movimento no endereço deste PC e nesta porta.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Os efeitos de um mod chegam a todos os controles que têm o hardware para eles.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>A posição da cabeça é a linha Rastreador de Cabeça em [Dispositivos]. Mapeie a guinada da cabeça para um eixo de analógico na seção Botões de um controle.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Os valores são a linha Telemetria de Jogos em [Dispositivos]. Mapeie-os na seção Botões de um controle ou use-os para disparar macros.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>A posição da cabeça é a linha Rastreador de Cabeça em [Dispositivos]. Mapeie a guinada da cabeça para um eixo de analógico na seção Mapeamentos de um controle.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Os valores são a linha Telemetria de Jogos em [Dispositivos]. Mapeie-os na seção Mapeamentos de um controle ou use-os para disparar macros.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>O lugar, o tamanho e a opacidade de um menu são definidos no próprio menu, na seção [Macros e Menus] de um controle.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Fontes</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack e qualquer coisa que envie seu formato UDP</value></data>
@@ -4081,7 +4081,6 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>superfície host do menu não suportada ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ícone da célula do menu não reconhecido ({0}), então a célula mantém seu rótulo de texto</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Saída</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Botões</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Teclas e Mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Notas e Controles</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Mãos</value></data>
@@ -5212,7 +5211,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Os pontos de acionamento analógico das teclas não foram trazidos.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>O reWASD enviava este controle a outro dispositivo por meio de um adaptador. O PadForge o reproduz neste PC, e o Remote Link o envia a outro PC com o PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>O PadForge lê dois analógicos, e isto cita um terceiro.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>A emulação de volante não foi trazida. Mapeie o volante em Botões.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>A emulação de volante não foi trazida. Mapeie o volante em Mapeamentos.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Este perfil cita uma ação especial que não está no Actions.xml ao lado da pasta Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Esta configuração não foi trazida: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>O reWASD impedia que estas entradas chegassem ao Windows. Ative Consumir Entradas Mapeadas para {0} na página Dispositivos, o que bloqueia as que este perfil mapeia.</value></data>
@@ -5221,7 +5220,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Este arquivo mantém dois controles separados. No PadForge, qualquer controle no slot aciona estes mapeamentos.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>A velocidade do movimento ou o flick não foi trazido.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Estes não foram trazidos. Defina-os em Movimento e Toque.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nada neste arquivo abre esta camada. Em Botões, clique com o botão direito na camada e escolha Configurar Ativador.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nada neste arquivo abre esta camada. Em Mapeamentos, clique com o botão direito na camada e escolha Configurar Ativador.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Os botões dele executam isto quando pressionados: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Atalho de Perfil</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Faz o que um atalho de perfil faz: carrega um perfil pelo nome, o próximo ou o anterior, mostra ou oculta a janela, ou desliga e liga os controles virtuais.</value></data>
@@ -5498,7 +5497,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Botões do Handheld do PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Perfil do HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Luzes das Teclas do PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Uma macro não pode pressionar {0}. Um mapeamento em Botões pode.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Uma macro não pode pressionar {0}. Uma linha em Mapeamentos pode.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>O PadForge executa oito Sobreposições de Tela, e esta é a nona ou décima mira do reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>O PadForge lê Giroscópio Esquerda e Direita a partir do roll e Inclinação a partir do yaw, o padrão do reWASD. As Preferências do reWASD podem trocar os dois, e este arquivo não diz se foram trocados.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>No modo Tilt, a Inclinação do reWASD é uma rotação em torno do eixo vertical, e um sensor de movimento não fornece ângulo para essa rotação.</value></data>

@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Slå på telemetriutdata i spillet og pek det mot denne PC-en og porten.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Legg til en bevegelseskilde i emulatoren med adressen til denne PC-en og denne porten.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Effektene fra en modd når alle kontrollere som har maskinvaren for dem.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Hodestillingen er raden Hodesporer under [Enheter]. Tilordne giring av hodet til en stikkeakse i en kontrollers seksjon Knapper.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Verdiene er raden Spilltelemetri under [Enheter]. Tilordne dem i en kontrollers seksjon Knapper, eller bruk dem til å utløse makroer.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Hodestillingen er raden Hodesporer under [Enheter]. Tilordne giring av hodet til en stikkeakse i en kontrollers seksjon Tilordninger.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Verdiene er raden Spilltelemetri under [Enheter]. Tilordne dem i en kontrollers seksjon Tilordninger, eller bruk dem til å utløse makroer.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Plassering, størrelse og dekkevne for en meny angis på selve menyen, i en kontrollers seksjon [Makroer og menyer].</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Kilder</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack og alt som sender formatet for UDP</value></data>
@@ -3179,7 +3179,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Bevegelsesstyring</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° til {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Indre dødsone for helning, Ytre dødsone for helning, Kontrollerens retning</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Innstillinger for kilden «Bevegelse: helning», der du vipper kontrolleren som et ratt. Tilordne «Bevegelse: helning» til en stikkeakse under Knapper.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Innstillinger for kilden «Bevegelse: helning», der du vipper kontrolleren som et ratt. Tilordne «Bevegelse: helning» til en stikkeakse under Tilordninger.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Tilbakestill bevegelsesstyring</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (høyre stikke)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (venstre stikke)</value></data>
@@ -4149,7 +4149,6 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menyflaten støttes ikke ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikonet for menycellen ble ikke gjenkjent ({0}), så cellen beholder tekstetiketten</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Utgang</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Knapper</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Taster og mus</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Noter og kontroller</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Hender</value></data>
@@ -5269,7 +5268,7 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analoge aktiveringspunkter for taster kom ikke med.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD sendte denne kontrolleren til en annen enhet via en adapter. PadForge spiller den av på denne PC-en, og Fjernkobling sender den til en annen PC som kjører PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge leser to stikker, og dette navngir en tredje.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Rattemulering kom ikke med. Tilordne rattet under Knapper.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Rattemulering kom ikke med. Tilordne rattet under Tilordninger.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Denne profilen navngir en spesialhandling som mangler i Actions.xml ved siden av Profiles-mappen: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Denne innstillingen kom ikke med: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD hindret disse inndataene i å nå Windows. Slå på Blokker tilordnede inndata for {0} på Enheter-siden, som blokkerer de denne profilen tilordner.</value></data>
@@ -5278,7 +5277,7 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Denne filen holder to kontrollere adskilt. I PadForge utløser enhver kontroller på sporet disse tilordningene.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Bevegelseshastigheten eller rykket kom ikke med.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Disse kom ikke med. Sett dem under Bevegelse og berøring.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ingenting i denne filen åpner dette laget. Høyreklikk på laget under Knapper, og velg Konfigurer aktivator.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ingenting i denne filen åpner dette laget. Høyreklikk på laget under Tilordninger, og velg Konfigurer aktivator.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Knappene kjører disse når de trykkes: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profilsnarvei</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Gjør det en profilsnarvei gjør: laster en navngitt profil, den neste eller den forrige, viser eller skjuler vinduet, eller slår de virtuelle kontrollerne av og på.</value></data>
@@ -5555,7 +5554,7 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge-håndholdte knapper (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-profil (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge-tastelys (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>En makro kan ikke trykke {0}. En tilordning under Knapper kan.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>En makro kan ikke trykke {0}. En rad under Tilordninger kan.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge kjører åtte skjermoverlegg, og dette er reWASDs niende eller tiende trådkors.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge leser Gyro venstre og høyre fra rulling og Helning fra giring, som er standard i reWASD. reWASDs innstillinger kan bytte de to, og denne filen sier ikke om de ble byttet.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>I Tilt-modus er reWASDs Lean en dreining rundt den vertikale aksen, og en bevegelsessensor gir ingen vinkel for den dreiningen.</value></data>

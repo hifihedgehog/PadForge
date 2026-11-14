@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Turn on telemetry output in the game and point it at this PC and port.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>In the emulator, add a motion source at this PC's address and this port.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>A mod's effects reach every controller that has the hardware for them.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>The head pose is the Head Tracker row on [Devices]. Map head yaw to a stick axis in a controller's Buttons section.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>The values are the Game Telemetry row on [Devices]. Map them in a controller's Buttons section or use them to trigger macros.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>The head pose is the Head Tracker row on [Devices]. Map head yaw to a stick axis in a controller's Mappings section.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>The values are the Game Telemetry row on [Devices]. Map them in a controller's Mappings section or use them to trigger macros.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>A menu's own place, size and opacity are set on the menu, in a controller's [Macros &amp; Menus] section.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Sources</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack and anything that sends its UDP format</value></data>
@@ -3193,7 +3193,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Motion Steering</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° to {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Lean deadzones, Controller Orientation</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Settings for the Motion Lean input: tilt the controller like a wheel. Map "Motion Lean" to a stick axis under Buttons.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Settings for the Motion Lean input: tilt the controller like a wheel. Map "Motion Lean" to a stick axis under Mappings.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Reset Motion Steering</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (Right Stick)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (Left Stick)</value></data>
@@ -4170,7 +4170,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menu host surface not supported ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menu cell icon not recognized ({0}), so the cell keeps its text label</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Output</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Buttons</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Keys &amp; Mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Notes &amp; Controls</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Hands</value></data>
@@ -5303,13 +5302,13 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge does not recognize this output: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge has no such command: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>The virtual controller has no such button: {0}</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>A macro cannot press {0}. A mapping under Buttons can.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>A macro cannot press {0}. A row under Mappings can.</value></data>
   <data name="Import_Tr_Crosshair" xml:space="preserve"><value>A crosshair lives inside reWASD. Show your own picture with a Screen Overlay.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Stick jitter and shaking did not come across.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analog key actuation points did not come across.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD sent this controller to another device through an adapter. PadForge plays it on this PC, and Remote Link sends it to another PC running PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge reads two sticks, and this names a third.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Steering wheel emulation did not come across. Map the wheel under Buttons.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Steering wheel emulation did not come across. Map the wheel under Mappings.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>This profile names a special action missing from Actions.xml beside its Profiles folder: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>This setting did not come across: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD stopped these inputs reaching Windows. Turn on Consume Mapped Inputs for {0} on the Devices page, which stops the ones this profile maps.</value></data>
@@ -5319,7 +5318,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>This file keeps two controllers apart. In PadForge, any controller on the slot fires these mappings.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>The movement speed or flick did not come across.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>These did not come across. Set them under Motion &amp; Touch.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nothing in this file opens this layer. Under Buttons, right-click the layer and pick Configure Activator.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nothing in this file opens this layer. Under Mappings, right-click the layer and pick Configure Activator.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge runs eight Screen Overlays, and this is reWASD's ninth or tenth crosshair.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge reads Gyro Left and Right from roll and Lean from yaw, reWASD's default. reWASD's Preferences can swap the two, and this file does not say whether they were.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>In Tilt mode, reWASD's Lean is a turn around the vertical axis, and a motion sensor gives no angle for that turn.</value></data>

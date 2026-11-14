@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>เปิดเอาต์พุตเทเลเมทรีในเกม แล้วชี้มาที่พีซีเครื่องนี้และพอร์ตนี้</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ในอีมูเลเตอร์ ให้เพิ่มแหล่งการเคลื่อนไหวที่ที่อยู่ของพีซีเครื่องนี้และพอร์ตนี้</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>เอฟเฟกต์ของม็อดจะไปถึงทุกคอนโทรลเลอร์ที่มีฮาร์ดแวร์รองรับ</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ท่าทางของศีรษะคือแถวตัวติดตามศีรษะใน [อุปกรณ์] แมปการหันศีรษะ (yaw) ไปยังแกนสติ๊กในส่วนปุ่มของคอนโทรลเลอร์</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>ค่าต่าง ๆ คือแถวเทเลเมทรีเกมใน [อุปกรณ์] แมปค่าเหล่านี้ในส่วนปุ่มของคอนโทรลเลอร์ หรือใช้เป็นตัวเรียกแมโคร</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ท่าทางของศีรษะคือแถวตัวติดตามศีรษะใน [อุปกรณ์] แมปการหันศีรษะ (yaw) ไปยังแกนสติ๊กในส่วนการแมปของคอนโทรลเลอร์</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>ค่าต่าง ๆ คือแถวเทเลเมทรีเกมใน [อุปกรณ์] แมปค่าเหล่านี้ในส่วนการแมปของคอนโทรลเลอร์ หรือใช้เป็นตัวเรียกแมโคร</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>ตำแหน่ง ขนาด และความทึบแสงของเมนูแต่ละอันตั้งได้ที่ตัวเมนูเอง ในส่วน [แมโครและเมนู] ของคอนโทรลเลอร์</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>แหล่งที่มา</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack และทุกอย่างที่ส่งรูปแบบ UDP ของมัน</value></data>
@@ -3179,7 +3179,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>การบังคับเลี้ยวด้วยการเคลื่อนไหว</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° ถึง {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>เดดโซนการเอน การวางแนวคอนโทรลเลอร์</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>การตั้งค่าสำหรับอินพุตการเอนจากการเคลื่อนไหว: เอียงคอนโทรลเลอร์เหมือนพวงมาลัย แมป "การเอนจากการเคลื่อนไหว" ไปยังแกนสติ๊กในส่วนปุ่ม</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>การตั้งค่าสำหรับอินพุตการเอนจากการเคลื่อนไหว: เอียงคอนโทรลเลอร์เหมือนพวงมาลัย แมป "การเอนจากการเคลื่อนไหว" ไปยังแกนสติ๊กในส่วนการแมป</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>รีเซ็ตการบังคับเลี้ยวด้วยการเคลื่อนไหว</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ฟลิกสติ๊ก (สติ๊กขวา)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>ฟลิกสติ๊ก (สติ๊กซ้าย)</value></data>
@@ -4149,7 +4149,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>ไม่รองรับพื้นผิวที่ใช้เปิดเมนู ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ไม่รู้จักไอคอนของเซลล์เมนู ({0}) เซลล์จึงใช้ป้ายข้อความตามเดิม</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>เอาต์พุต</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>ปุ่ม</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>คีย์และเมาส์</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>โน้ตและตัวควบคุม</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>มือ</value></data>
@@ -5269,7 +5268,7 @@
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>จุดสั่งการของปุ่มอนาล็อกไม่ถูกนำมาด้วย</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD เคยส่งคอนโทรลเลอร์นี้ไปยังอุปกรณ์อื่นผ่านอะแดปเตอร์ PadForge จะเล่นคอนโทรลเลอร์นี้บนพีซีเครื่องนี้ และลิงก์ระยะไกลจะส่งไปยังพีซีอีกเครื่องที่รัน PadForge</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge อ่านสติ๊กสองอัน แต่ไฟล์นี้อ้างถึงอันที่สาม</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>การจำลองพวงมาลัยไม่ถูกนำมาด้วย ให้แมปพวงมาลัยในส่วนปุ่ม</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>การจำลองพวงมาลัยไม่ถูกนำมาด้วย ให้แมปพวงมาลัยในส่วนการแมป</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>โปรไฟล์นี้อ้างถึงการกระทำพิเศษที่ไม่มีใน Actions.xml ข้างโฟลเดอร์ Profiles ของมัน: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>การตั้งค่านี้ไม่ถูกนำมาด้วย: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD เคยกันอินพุตเหล่านี้ไม่ให้ไปถึง Windows เปิด ดักอินพุตที่แมปไว้ สำหรับ {0} ในหน้าอุปกรณ์ ซึ่งจะกันอินพุตที่โปรไฟล์นี้แมปไว้</value></data>
@@ -5278,7 +5277,7 @@
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>ไฟล์นี้แยกคอนโทรลเลอร์สองตัวออกจากกัน ใน PadForge คอนโทรลเลอร์ใดก็ตามบนสล็อตจะเรียกใช้การแมปเหล่านี้</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>ความเร็วการเคลื่อนที่หรือการสะบัดไม่ถูกนำมาด้วย</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>รายการเหล่านี้ไม่ถูกนำมาด้วย ตั้งค่าได้ในส่วนการเคลื่อนไหวและสัมผัส</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>ไม่มีสิ่งใดในไฟล์นี้เปิดเลเยอร์นี้ ในส่วนปุ่ม ให้คลิกขวาที่เลเยอร์แล้วเลือก “กำหนดค่าตัวเปิดใช้งาน”</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>ไม่มีสิ่งใดในไฟล์นี้เปิดเลเยอร์นี้ ในส่วนการแมป ให้คลิกขวาที่เลเยอร์แล้วเลือก “กำหนดค่าตัวเปิดใช้งาน”</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>ปุ่มของโปรไฟล์จะเรียกใช้สิ่งเหล่านี้เมื่อกด: {0}</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>ทางลัดโปรไฟล์</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>ทำสิ่งเดียวกับทางลัดโปรไฟล์ คือโหลดโปรไฟล์ที่ระบุชื่อ โปรไฟล์ถัดไปหรือก่อนหน้า แสดงหรือซ่อนหน้าต่าง หรือปิดและเปิดคอนโทรลเลอร์เสมือน</value></data>
@@ -5555,7 +5554,7 @@
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>ปุ่มเครื่องเล่นพกพา PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>โปรไฟล์ HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>ไฟปุ่ม PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>แมโครกด {0} ไม่ได้ แต่การแมปในส่วนปุ่มทำได้</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>แมโครกด {0} ไม่ได้ แต่แถวในส่วนการแมปทำได้</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge รันโอเวอร์เลย์หน้าจอได้แปดอัน และนี่คือเป้าเล็งอันที่เก้าหรือสิบของ reWASD</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge อ่านไจโรซ้ายและขวาจากโรล และการเอนจากยอว์ ซึ่งเป็นค่าเริ่มต้นของ reWASD การตั้งค่าของ reWASD สลับสองอย่างนี้ได้ และไฟล์นี้ไม่ได้บอกว่าสลับไว้หรือไม่</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>ในโหมดเอียง การเอนของ reWASD คือการหมุนรอบแกนตั้ง และเซ็นเซอร์การเคลื่อนไหวไม่ให้มุมของการหมุนนั้น</value></data>

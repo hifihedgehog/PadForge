@@ -2612,7 +2612,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>体感转向</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° 至 {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>倾斜内死区、倾斜外死区、手柄朝向</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>体感倾斜输入的设置：像方向盘一样倾斜手柄。在“按键”中将“体感倾斜”映射到摇杆轴。</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>体感倾斜输入的设置：像方向盘一样倾斜手柄。在“映射”中将“体感倾斜”映射到摇杆轴。</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>重置体感转向</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>转向极限反馈</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>转向模式摇杆到达极限时的提示</value></data>
@@ -3399,8 +3399,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>在游戏中开启遥测输出，并指向这台电脑和此端口。</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>在模拟器中，按这台电脑的地址和此端口添加一个体感源。</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>模组的效果会传到每个具备相应硬件的控制器。</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>头部姿态来自[设备]页面上的“头部追踪器”行。请在控制器的“按键”部分把头部偏航映射到摇杆轴。</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>这些数值来自[设备]页面上的“游戏遥测”行。可在控制器的“按键”部分映射它们，或用它们触发宏。</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>头部姿态来自[设备]页面上的“头部追踪器”行。请在控制器的“映射”部分把头部偏航映射到摇杆轴。</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>这些数值来自[设备]页面上的“游戏遥测”行。可在控制器的“映射”部分映射它们，或用它们触发宏。</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>菜单自身的位置、大小和不透明度，在控制器的[宏与菜单]部分中的该菜单上设置。</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>来源</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack 以及任何发送其 UDP 格式的程序</value></data>
@@ -4087,7 +4087,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>不支持菜单宿主表面（{0}）</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>无法识别菜单单元格图标（{0}），该单元格保留其文本标签</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>输出</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>按键</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>键盘与鼠标</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>音符与控制变化</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>双手</value></data>
@@ -5218,7 +5217,7 @@
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>模拟按键触发点未导入。</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD 通过适配器将此控制器发送到了另一台设备。PadForge 会在这台电脑上运行它，而 Remote Link 可将其发送到另一台运行 PadForge 的电脑。</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge 只读取两个摇杆，而此处指定了第三个。</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>方向盘模拟未导入。请在“按键”中映射方向盘。</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>方向盘模拟未导入。请在“映射”中映射方向盘。</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>此配置文件指定了一个特殊动作，但其 Profiles 文件夹旁的 Actions.xml 中没有它：{0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>此设置未导入：{0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD 会阻止这些输入传到 Windows。请在设备页面为 {0} 开启拦截已映射的输入，这会拦截此配置文件映射的输入。</value></data>
@@ -5227,7 +5226,7 @@
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>该文件将两个控制器分开处理。在 PadForge 中，插槽上的任何控制器都会触发这些映射。</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>移动速度或快速甩动未导入。</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>这些未导入。请在“体感与触控”中设置。</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>此文件中没有任何内容可打开此层。请在“按键”中右键点击该层，然后选择“配置激活器”。</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>此文件中没有任何内容可打开此层。请在“映射”中右键点击该层，然后选择“配置激活器”。</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>按下其按键时会运行:{0}。</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>配置文件快捷方式</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>执行配置文件快捷方式的操作:加载指定配置文件、下一个或上一个配置文件,显示或隐藏窗口,或关闭和开启虚拟控制器。</value></data>
@@ -5504,7 +5503,7 @@
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge 掌机按键 (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro 配置文件 (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge 按键灯光 (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>宏无法按下 {0}。“按键”中的映射可以。</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>宏无法按下 {0}。“映射”中的一行可以。</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge 运行八个屏幕叠加层，而这是 reWASD 的第九个或第十个准星。</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge 按 reWASD 的默认设置，从翻滚读取陀螺仪的左和右，从偏航读取倾斜。reWASD 的首选项可以将两者互换，而此文件没有说明是否互换过。</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>在倾斜模式下，reWASD 的倾斜是绕垂直轴的转动，而运动传感器不提供这种转动的角度。</value></data>

@@ -405,8 +405,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>I-on ang telemetry output sa laro at ituro ito sa PC at port na ito.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Sa emulator, magdagdag ng motion source sa address ng PC na ito at sa port na ito.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Aabot ang mga effect ng isang mod sa bawat controller na may hardware para sa mga ito.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ang head pose ay ang Head Tracker row sa [Mga Device]. I-map ang head yaw sa isang stick axis sa seksyong Mga Button ng isang controller.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ang mga value ay ang Game Telemetry row sa [Mga Device]. I-map ang mga ito sa seksyong Mga Button ng isang controller o gamitin para mag-trigger ng mga macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ang head pose ay ang Head Tracker row sa [Mga Device]. I-map ang head yaw sa isang stick axis sa seksyong Mga Mapping ng isang controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ang mga value ay ang Game Telemetry row sa [Mga Device]. I-map ang mga ito sa seksyong Mga Mapping ng isang controller o gamitin para mag-trigger ng mga macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ang sariling lugar, laki at opacity ng isang menu ay itinatakda sa menu mismo, sa seksyong [Mga Macro at Menu] ng isang controller.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Mga Pinagmulan</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack at anumang nagpapadala ng UDP format nito</value></data>
@@ -2798,7 +2798,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Motion Steering</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° hanggang {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Mga deadzone ng lean, Oryentasyon ng Controller</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Mga setting para sa Motion Lean input: ikiling ang controller na parang manibela. I-map ang "Motion Lean" sa isang stick axis sa ilalim ng Mga Button.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Mga setting para sa Motion Lean input: ikiling ang controller na parang manibela. I-map ang "Motion Lean" sa isang stick axis sa ilalim ng Mga Mapping.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>I-reset ang Motion Steering</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (Kanang Stick)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (Kaliwang Stick)</value></data>
@@ -3739,7 +3739,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>hindi sinusuportahan ang menu host surface ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>hindi nakilala ang icon ng menu cell ({0}), kaya pinananatili ng cell ang text label nito</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Output</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mga Button</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Mga Key at Mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Mga Note at Control</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Mga Kamay</value></data>

@@ -2633,7 +2633,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Bewegingsbesturing</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° tot {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Binnenste kanteldeadzone, Controllerstand</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Instellingen voor de invoer "Bewegingshelling": kantel de controller als een stuur. Wijs "Bewegingshelling" toe aan een stick-as onder Knoppen.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Instellingen voor de invoer "Bewegingshelling": kantel de controller als een stuur. Wijs "Bewegingshelling" toe aan een stick-as onder Toewijzingen.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Bewegingsbesturing herstellen</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback bij stuuraanslag</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Een signaal bij volledige stuuraanslag van een stick</value></data>
@@ -3419,8 +3419,8 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Zet telemetrie-uitvoer in de game aan en richt die op deze pc en poort.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Voeg in de emulator een bewegingsbron toe op het adres van deze pc en deze poort.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>De effecten van een mod bereiken elke controller met de juiste hardware.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>De hoofdpositie is de rij Hoofdtracker op [Apparaten]. Wijs het gieren van het hoofd toe aan een stick-as in het gedeelte Knoppen van een controller.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>De waarden zijn de rij Gametelemetrie op [Apparaten]. Wijs ze toe in het gedeelte Knoppen van een controller of gebruik ze om macro's te starten.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>De hoofdpositie is de rij Hoofdtracker op [Apparaten]. Wijs het gieren van het hoofd toe aan een stick-as in het gedeelte Toewijzingen van een controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>De waarden zijn de rij Gametelemetrie op [Apparaten]. Wijs ze toe in het gedeelte Toewijzingen van een controller of gebruik ze om macro's te starten.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>De plek, grootte en doorzichtigheid van een menu stel je in op het menu zelf, in het gedeelte [Macro's en menu's] van een controller.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Bronnen</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack en alles wat zijn UDP-indeling verstuurt</value></data>
@@ -4107,7 +4107,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menu-hostoppervlak niet ondersteund ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menucel-pictogram niet herkend ({0}), de cel behoudt daarom zijn tekstlabel</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Uitvoer</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Knoppen</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Toetsen en muis</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Noten en regelaars</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Handen</value></data>
@@ -5238,7 +5237,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analoge activeringspunten van toetsen zijn niet overgenomen.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD stuurde deze controller via een adapter naar een ander apparaat. PadForge speelt hem af op deze pc, en Remote Link stuurt hem naar een andere pc waarop PadForge draait.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge leest twee sticks en dit noemt een derde.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Stuurwielemulatie is niet overgenomen. Wijs het stuur toe onder Knoppen.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Stuurwielemulatie is niet overgenomen. Wijs het stuur toe onder Toewijzingen.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Dit profiel noemt een speciale actie die ontbreekt in Actions.xml naast de map Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Deze instelling is niet overgenomen: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD hield deze invoer tegen voordat die Windows bereikte. Zet Toegewezen invoer verbruiken aan voor {0} op de pagina Apparaten, zodat de invoer die dit profiel toewijst wordt tegengehouden.</value></data>
@@ -5247,7 +5246,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Dit bestand houdt twee controllers gescheiden. In PadForge activeert elke controller op het slot deze toewijzingen.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>De bewegingssnelheid of flick is niet overgenomen.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Deze zijn niet overgenomen. Stel ze in onder Beweging en aanraking.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Niets in dit bestand opent deze laag. Klik onder Knoppen met de rechtermuisknop op de laag en kies Activator configureren.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Niets in dit bestand opent deze laag. Klik onder Toewijzingen met de rechtermuisknop op de laag en kies Activator configureren.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>De knoppen voeren deze uit wanneer ze worden ingedrukt: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profielsnelkoppeling</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Doet wat een profielsnelkoppeling doet: laadt een profiel met een opgegeven naam, het volgende of het vorige profiel, toont of verbergt het venster, of schakelt de virtuele controllers uit en in.</value></data>
@@ -5524,7 +5523,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge Handheld Buttons (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-profiel (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge Key Lights (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Een macro kan {0} niet indrukken. Een toewijzing onder Knoppen kan dat wel.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Een macro kan {0} niet indrukken. Een regel onder Toewijzingen kan dat wel.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge draait acht schermoverlays, en dit is het negende of tiende dradenkruis van reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge leest Gyro links en rechts van roll en kanteling van yaw, de standaard van reWASD. In de voorkeuren van reWASD kunnen die twee worden omgewisseld, en dit bestand zegt niet of dat is gebeurd.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>In de modus Tilt is de kanteling van reWASD een draai om de verticale as, en een bewegingssensor geeft voor die draai geen hoek.</value></data>

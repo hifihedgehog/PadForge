@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Ενεργοποιήστε την έξοδο τηλεμετρίας στο παιχνίδι και στρέψτε την σε αυτόν τον υπολογιστή και σε αυτή τη θύρα.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Στον εξομοιωτή, προσθέστε μια πηγή κίνησης στη διεύθυνση αυτού του υπολογιστή και σε αυτή τη θύρα.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Τα εφέ ενός mod φτάνουν σε κάθε χειριστήριο που έχει το υλικό για αυτά.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Η στάση της κεφαλής είναι η γραμμή Ανιχνευτής κεφαλιού στις [Συσκευές]. Αντιστοιχίστε την εκτροπή της κεφαλής σε άξονα μοχλού στην ενότητα Κουμπιά ενός χειριστηρίου.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Οι τιμές είναι η γραμμή Τηλεμετρία παιχνιδιών στις [Συσκευές]. Αντιστοιχίστε τις στην ενότητα Κουμπιά ενός χειριστηρίου ή χρησιμοποιήστε τις για να ενεργοποιείτε μακροεντολές.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Η στάση της κεφαλής είναι η γραμμή Ανιχνευτής κεφαλιού στις [Συσκευές]. Αντιστοιχίστε την εκτροπή της κεφαλής σε άξονα μοχλού στην ενότητα Αντιστοιχίσεις ενός χειριστηρίου.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Οι τιμές είναι η γραμμή Τηλεμετρία παιχνιδιών στις [Συσκευές]. Αντιστοιχίστε τις στην ενότητα Αντιστοιχίσεις ενός χειριστηρίου ή χρησιμοποιήστε τις για να ενεργοποιείτε μακροεντολές.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Η θέση, το μέγεθος και η αδιαφάνεια ενός μενού ορίζονται στο ίδιο το μενού, στην ενότητα [Μακροεντολές και μενού] ενός χειριστηρίου.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Πηγές</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>Το OpenTrack και οτιδήποτε στέλνει τη μορφή UDP του</value></data>
@@ -3179,7 +3179,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Τιμόνι με κίνηση</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° έως {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Νεκρές ζώνες γερσίματος, Προσανατολισμός χειριστηρίου</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Ρυθμίσεις για την είσοδο «Κίνηση: γέρσιμο»: γείρετε το χειριστήριο σαν τιμόνι. Αντιστοιχίστε το «Κίνηση: γέρσιμο» σε έναν άξονα μοχλού στην ενότητα Κουμπιά.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Ρυθμίσεις για την είσοδο «Κίνηση: γέρσιμο»: γείρετε το χειριστήριο σαν τιμόνι. Αντιστοιχίστε το «Κίνηση: γέρσιμο» σε έναν άξονα μοχλού στην ενότητα Αντιστοιχίσεις.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Επαναφορά τιμονιού με κίνηση</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (δεξιός μοχλός)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (αριστερός μοχλός)</value></data>
@@ -4149,7 +4149,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>η επιφάνεια που φιλοξενεί το μενού δεν υποστηρίζεται ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>το εικονίδιο του κελιού μενού δεν αναγνωρίστηκε ({0}), επομένως το κελί διατηρεί την ετικέτα κειμένου του</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Έξοδος</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Κουμπιά</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Πλήκτρα και ποντίκι</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Νότες και στοιχεία ελέγχου</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Χέρια</value></data>
@@ -5269,7 +5268,7 @@
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Τα αναλογικά σημεία ενεργοποίησης πλήκτρων δεν μεταφέρθηκαν.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Το reWASD έστελνε αυτό το χειριστήριο σε άλλη συσκευή μέσω προσαρμογέα. Το PadForge το αναπαράγει σε αυτόν τον υπολογιστή και η Απομακρυσμένη σύνδεση το στέλνει σε άλλον υπολογιστή που εκτελεί το PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>Το PadForge διαβάζει δύο μοχλούς, και εδώ αναφέρεται τρίτος.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Η εξομοίωση τιμονιού δεν μεταφέρθηκε. Αντιστοιχίστε το τιμόνι στην ενότητα Κουμπιά.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Η εξομοίωση τιμονιού δεν μεταφέρθηκε. Αντιστοιχίστε το τιμόνι στην ενότητα Αντιστοιχίσεις.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Αυτό το προφίλ αναφέρει μια ειδική ενέργεια που λείπει από το Actions.xml δίπλα στον φάκελο Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Αυτή η ρύθμιση δεν μεταφέρθηκε: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>Το reWASD εμπόδιζε αυτές τις εισόδους να φτάνουν στα Windows. Ενεργοποιήστε την Κατακράτηση αντιστοιχισμένων εισόδων για τη συσκευή {0} στη σελίδα Συσκευές, ώστε να σταματούν αυτές που αντιστοιχίζει το προφίλ.</value></data>
@@ -5278,7 +5277,7 @@
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Αυτό το αρχείο κρατά δύο χειριστήρια χωριστά. Στο PadForge, οποιοδήποτε χειριστήριο στη θέση ενεργοποιεί αυτές τις αντιστοιχίσεις.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Η ταχύτητα κίνησης ή το απότομο τίναγμα δεν μεταφέρθηκε.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Αυτά δεν μεταφέρθηκαν. Ορίστε τα στην ενότητα Κίνηση και αφή.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Τίποτα σε αυτό το αρχείο δεν ανοίγει αυτό το επίπεδο. Στην ενότητα Κουμπιά, κάντε δεξί κλικ στο επίπεδο και επιλέξτε Ρύθμιση ενεργοποιητή.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Τίποτα σε αυτό το αρχείο δεν ανοίγει αυτό το επίπεδο. Στην ενότητα Αντιστοιχίσεις, κάντε δεξί κλικ στο επίπεδο και επιλέξτε Ρύθμιση ενεργοποιητή.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Τα κουμπιά του εκτελούν τα εξής όταν πατηθούν: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Συντόμευση προφίλ</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Κάνει ό,τι κάνει μια συντόμευση προφίλ: φορτώνει ένα προφίλ με όνομα, το επόμενο ή το προηγούμενο, εμφανίζει ή αποκρύπτει το παράθυρο, ή απενεργοποιεί και ενεργοποιεί τα εικονικά χειριστήρια.</value></data>
@@ -5555,7 +5554,7 @@
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Κουμπιά φορητής κονσόλας PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Προφίλ HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Φωτισμός πλήκτρων PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Μια μακροεντολή δεν μπορεί να πατήσει το {0}. Μια αντιστοίχιση στην ενότητα Κουμπιά μπορεί.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Μια μακροεντολή δεν μπορεί να πατήσει το {0}. Μια γραμμή στην ενότητα Αντιστοιχίσεις μπορεί.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>Το PadForge εκτελεί οκτώ Επικαλύψεις οθόνης, και αυτό είναι το ένατο ή δέκατο σταυρόνημα του reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>Το PadForge διαβάζει το Αριστερά και Δεξιά του γυροσκοπίου από τον διατοιχισμό και το Γέρσιμο από την εκτροπή, την προεπιλογή του reWASD. Οι Προτιμήσεις του reWASD μπορούν να εναλλάξουν τα δύο, και αυτό το αρχείο δεν λέει αν εναλλάχθηκαν.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Στη λειτουργία Κλίσης, το Γέρσιμο του reWASD είναι στροφή γύρω από τον κατακόρυφο άξονα, και ένας αισθητήρας κίνησης δεν δίνει γωνία για αυτή τη στροφή.</value></data>

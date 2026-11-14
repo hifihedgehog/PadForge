@@ -1753,7 +1753,6 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge ebongolaka manette oyo na oyo masano na yo elingaka. Pona moko mpo na kobanda. Okoki kobongola yango sima na kofina mbala moko.</value></data>
   <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge ebongolaka manette na yo na oyo masano na yo elingaka. Pona moko mpo na kobanda. Okoki kobongola yango sima na kofina mbala moko.</value></data>
   <data name="Settings_AssignOfferHome_Tooltip" xml:space="preserve"><value>Ndako etunaka mbala moko mpo na appareil moko moko ya sika oyo manette virtuelle moko te ezali kosalela. Kosalela yango esalaka manette virtuelle mpo na yango, mpe Sikoyo te esukisaka motuna mpo na appareil wana.</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Ba bouton</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Ba touche na souris</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Ba note na ba contrôle</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Mabɔkɔ</value></data>
@@ -1827,8 +1826,8 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Zwa ba effet ya gâchette adaptative mpe ya mwinda uta na ba mod ya masano oyo ekomamaki mpo na DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Fungola bobimisi ya télémétrie na lisano mpe tinda yango na PC oyo mpe na port oyo.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ba effet ya mod ekomaka na manette nyonso oyo ezali na matériel mpo na yango.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ezalela ya motó ezali molongo Head Tracker na [Ba appareil]. Tia yaw ya motó na axe ya stick na eteni Ba bouton ya manette.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ba motuya ezali molongo Game Telemetry na [Ba appareil]. Tia yango na eteni Ba bouton ya manette to salela yango mpo na kobandisa ba macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ezalela ya motó ezali molongo Head Tracker na [Ba appareil]. Tia yaw ya motó na axe ya stick na eteni Ba assignation ya manette.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ba motuya ezali molongo Game Telemetry na [Ba appareil]. Tia yango na eteni Ba assignation ya manette to salela yango mpo na kobandisa ba macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Esika, monene mpe opacité ya menu moko moko ebongisamaka na menu yango, na eteni [Ba macro na ba menu] ya manette.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Masano Oyo PadForge Eyebi Te</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Mpo na ba mod oyo elukaka DSX ezali kosala liboso ya kotinda</value></data>

@@ -1802,7 +1802,6 @@
   <data name="Home_FirstRun_Title" xml:space="preserve"><value>Ol gem i mas lukim wanem samting?</value></data>
   <data name="Home_FirstRun_Body" xml:space="preserve"><value>PadForge i senisim dispela kontrola i kamap wanpela ol gem bilong yu i laikim. Makim wanpela bilong kirap. Yu inap senisim bihain long wanpela klik.</value></data>
   <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>PadForge i senisim kontrola bilong yu i kamap wanpela ol gem bilong yu i laikim. Makim wanpela bilong kirap. Yu inap senisim bihain long wanpela klik.</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Ol baten</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Ol ki na maus</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Ol not na kontrol</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Ol han</value></data>
@@ -1844,8 +1843,8 @@
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Klinim triga</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Kisim ol adaptive triga na ol lait efek long ol gem mod ol i raitim bilong DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Onim telemetry autput insait long gem na salim long dispela PC na pot.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pasin bilong het i lain Head Tracker long [Ol masin]. Mapim yaw bilong het long wanpela eksis bilong stik long hap Ol baten bilong wanpela kontrola.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ol namba i lain Game Telemetry long [Ol masin]. Mapim ol long hap Ol baten bilong wanpela kontrola o yusim ol long kirapim ol makro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pasin bilong het i lain Head Tracker long [Ol masin]. Mapim yaw bilong het long wanpela eksis bilong stik long hap Ol mapin bilong wanpela kontrola.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ol namba i lain Game Telemetry long [Ol masin]. Mapim ol long hap Ol mapin bilong wanpela kontrola o yusim ol long kirapim ol makro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ples, sais na klia bilong wanpela menu yet yu setim long menu, long hap [Ol makro na menu] bilong wanpela kontrola.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Wanem i soim</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Raun, grid o ba bilong wanpela menu taim em i op</value></data>

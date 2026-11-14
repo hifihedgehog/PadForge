@@ -4368,7 +4368,6 @@ public class Strings : INotifyPropertyChanged
 
     // Bass Shakers tab (issue #236, rumble to audio)
     public string Pad_Tab_Output => Get("Pad_Tab_Output");
-    public string Pad_Section_Buttons => Get("Pad_Section_Buttons");
     public string Pad_Section_KeysMouse => Get("Pad_Section_KeysMouse");
     public string Pad_Section_NotesControls => Get("Pad_Section_NotesControls");
     public string Pad_Section_Hands => Get("Pad_Section_Hands");

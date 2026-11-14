@@ -244,6 +244,7 @@
 
   <!-- ═══ Pad Page ═══ -->
   <data name="Macro_CopyNameFormat" xml:space="preserve"><value>{0} (Kopi)</value></data>
+  <data name="Pad_Mappings" xml:space="preserve"><value>Dikhokahanyo</value></data>
   <data name="Pad_GameModTriggers_Format" xml:space="preserve"><value>{0} e fetola di-trigger tsena. Disetting tsa mona di tla kgutla ha e emisa.</value></data>
   <data name="Pad_GameModLights_Format" xml:space="preserve"><value>{0} e fetola mabone ana. Disetting tsa mona di tla kgutla ha e emisa.</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
@@ -1061,8 +1062,8 @@
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Hlakola trigger</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Nka di-effect tsa adaptive trigger le tsa mabone ho tswa ho di-mod tsa dipapadi tse ngoletsweng DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Bulela telemetry papading mme o e lebise ho PC ena le port ena.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Boemo ba hlooho ke mola wa Head Tracker ho [Disebediswa]. Hokahanya yaw ya hlooho le axis ya stick karolong ya Dikonopo ya controller.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ditekanyetso ke mola wa Game Telemetry ho [Disebediswa]. Di hokahanye karolong ya Dikonopo ya controller kapa o di sebedise ho qala di-macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Boemo ba hlooho ke mola wa Head Tracker ho [Disebediswa]. Hokahanya yaw ya hlooho le axis ya stick karolong ya Dikhokahanyo ya controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ditekanyetso ke mola wa Game Telemetry ho [Disebediswa]. Di hokahanye karolong ya Dikhokahanyo ya controller kapa o di sebedise ho qala di-macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Sebaka, boholo le ponaletso ya menyu di behwa menyung ka boyona, karolong ya [Macros le Dimenyu] ya controller.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopitsa aterese</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Fono e hokahanang e hlaha mona le leqepheng la Disebediswa, moo o e abelang controller.</value></data>

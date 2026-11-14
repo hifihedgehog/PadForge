@@ -360,7 +360,7 @@ namespace PadForge.Tests
             };
             string[] sectionKeys =
             {
-                "Pad_Section_Buttons", "Pad_Section_Sticks", "Pad_Section_Rumble",
+                "Pad_Mappings", "Pad_Section_Sticks", "Pad_Section_Rumble",
                 "Pad_Section_Motion", "Pad_Section_Lights", "Pad_Section_Macros",
             };
 
@@ -1150,33 +1150,87 @@ namespace PadForge.Tests
             Assert.Contains(ranges, r => r.Attributes().Any(a => a.Name.LocalName == "SettingRow.Fills" && a.Value == "True") && r.Attribute("Width") == null);
 
             // The stick card: a title row, its body as every part card's
-            // (the settings, then the live view beside them while both fit
-            // at their own widths), then More. The curve for each axis is
-            // under More, each with its own axis's live dot, and none for
-            // both axes stands up front: it repeated the two and showed the
-            // X axis alone (owner, 2026-11-14).
+            // (the settings, then the live view, beside them in a wide card
+            // and under them in a card that shares its row), then More. The
+            // curve for each axis is under More, each with its own axis's
+            // live dot, and none for both axes stands up front: it repeated
+            // the two and showed the X axis alone (owner, 2026-11-14).
             var more = Assert.Single(page.Descendants(), e => Id(e) == "Pad_More_Stick");
             var card = more.Parent!;
             Assert.Equal("StackPanel", card.Name.LocalName);
             Assert.Equal("{StaticResource CardBorder}", (string)card.Parent!.Attribute("Style"));
             Assert.Equal(new[] { "DockPanel", "PartBodyPanel", "MoreRow" }, card.Elements().Select(e => e.Name.LocalName));
             var line = card.Elements().ElementAt(1);
-            Assert.Equal("22", (string)line.Attribute("Gap"));
-            Assert.Equal("NaN", (string)line.Attribute("SideBySideWidth"));
+            // The body switches at the width every part card's does. Beside
+            // the live view, the settings' column is sized for the language,
+            // and the view stands there only where it has room for the radar
+            // with the readings beside it, which the page sizes for the
+            // language too.
+            Assert.Null(line.Attribute("SideBySideWidth"));
             Assert.Equal("{DynamicResource FirstRowSettingsMost}", (string)line.Attribute("SettingsWidth"));
+            Assert.Equal("{DynamicResource StickLiveLeast}", (string)line.Attribute("LiveLeastWidth"));
             Assert.Equal(new[] { "StackPanel", "Border" }, line.Elements().Select(e => e.Name.LocalName));
             var left = line.Elements().ElementAt(0);
             var view = line.Elements().ElementAt(1);
-            // The settings: a column sized for the language, so a reset
-            // stands beside its control.
-            Assert.Equal("{DynamicResource FirstRowSettingsMost}", (string)left.Attribute("MaxWidth"));
+            // Under each other, the settings run the card's width.
+            Assert.Null(left.Attribute("MaxWidth"));
             Assert.Equal(new[] { "SettingRow", "SettingRow", "SettingRow", "SettingRow" }, left.Elements().Select(e => e.Name.LocalName));
             Assert.All(left.Elements(), r => Assert.Equal("{StaticResource DzFirstLabel}", (string)r.Elements().First().Attribute("Style")));
             Assert.Contains(left.Descendants(), e => Id(e) == "StickDeadZoneBothSlider");
             Assert.Contains(left.Descendants(), e => Id(e) == "SensitivityBothCombo");
             Assert.Contains(left.Descendants(), e => (string)e.Attribute("Click") == "CalibrateCenter_Click");
-            // The live view keeps its own width, after the settings.
-            Assert.Equal("Left", (string)view.Attribute("HorizontalAlignment"));
+            // The live view is in the well every part's is: the radar, and
+            // beside it the legend with the peak over a table of what the
+            // stick reads, a column for each axis, before the pipeline in
+            // the cold blue and after it in ember. The readings take the
+            // room the radar leaves, to 440, so the well is used from edge
+            // to edge, and stand under the radar in a well too narrow for
+            // both: the line wraps.
+            Assert.Equal("{StaticResource LiveWell}", (string)view.Attribute("Style"));
+            var well = Assert.Single(view.Elements(), e => e.Name.LocalName == "FlexLinePanel");
+            Assert.Equal(("18", "12"), ((string)well.Attribute("Gap"), (string)well.Attribute("LineGap")));
+            var wellParts = well.Elements().ToList();
+            Assert.Equal(new[] { "Border", "StackPanel" }, wellParts.Select(e => e.Name.LocalName));
+            Assert.Equal("212", (string)wellParts[0].Attribute("Width"));
+            Assert.Equal("Center", (string)wellParts[0].Attribute("VerticalAlignment"));
+            Assert.Equal("1", (string)wellParts[1].Attributes().Single(a => a.Name.LocalName == "FlexLinePanel.Grow"));
+            Assert.Equal("440", (string)wellParts[1].Attribute("MaxWidth"));
+            Assert.Equal("Center", (string)wellParts[1].Attribute("VerticalAlignment"));
+            Assert.Null(wellParts[1].Attribute("Margin"));
+            Assert.Null(wellParts[1].Attribute("HorizontalAlignment"));
+            Assert.Equal(new[] { "DockPanel", "Grid" }, wellParts[1].Elements().Select(e => e.Name.LocalName));
+            Assert.Contains(wellParts[1].Descendants(), e => (string)e.Attribute(X + "Name") == "PeakReadout");
+            // The legend's chips stand at the line's start and the peak at
+            // its end. The two axes' columns share the width alike, each
+            // 112 at the least, so a changing value moves no other.
+            var legend = wellParts[1].Elements().First();
+            Assert.Equal("False", (string)legend.Attribute("LastChildFill"));
+            Assert.Equal(new[] { "Left", "Right" }, legend.Elements().Select(e => (string)e.Attributes().Single(a => a.Name.LocalName == "DockPanel.Dock")));
+            var columns = wellParts[1].Elements().Last().Elements().Single(e => e.Name.LocalName == "Grid.ColumnDefinitions").Elements().ToList();
+            Assert.Equal(new[] { ("Auto", "38"), ("*", "112"), ("*", "112") },
+                columns.Select(c => ((string)c.Attribute("Width"), (string)c.Attribute("MinWidth"))));
+            var readings = wellParts[1].Elements().Last().Elements().Where(e => e.Name.LocalName == "TextBlock").ToList();
+            Assert.Equal(new[] { "X", "Y", "{Binding Instr_Raw, Source={x:Static strings:Strings.Instance}}", "{Binding InDisplayX, Mode=OneWay}",
+                "{Binding InDisplayY, Mode=OneWay}", "{Binding Instr_Out, Source={x:Static strings:Strings.Instance}}", "{Binding OutDisplayX, Mode=OneWay}",
+                "{Binding OutDisplayY, Mode=OneWay}" }, readings.Select(t => (string)t.Attribute("Text")));
+            Assert.All(readings.Where(t => ((string)t.Attribute("Text")).Contains("InDisplay")),
+                t => Assert.Equal("{DynamicResource ColdBrush}", (string)t.Attribute("Foreground")));
+            Assert.All(readings.Where(t => ((string)t.Attribute("Text")).Contains("OutDisplay")),
+                t => Assert.Equal("{DynamicResource EmberHotBrush}", (string)t.Attribute("Foreground")));
+            // The sticks, and the triggers, stand two to a row where each
+            // has 600, as the cards of the other sections do, and a card
+            // keeps its own height beside a taller one.
+            foreach (string list in new[] { "{Binding StickConfigs}", "{Binding TriggerConfigs}" })
+            {
+                var items = Assert.Single(page.Descendants(), e => e.Name.LocalName == "ItemsControl" && (string)e.Attribute("ItemsSource") == list);
+                var grid = Assert.Single(items.Elements().Single(e => e.Name.LocalName == "ItemsControl.ItemsPanel").Descendants(),
+                    e => e.Name.LocalName == "TileGridPanel");
+                Assert.Equal(("600", "16", "0", "True"), ((string)grid.Attribute("MinItemWidth"), (string)grid.Attribute("Gap"),
+                    (string)grid.Attribute("RowGap"), (string)grid.Attribute("Balance")));
+                var tile = items.Descendants().First(e => e.Name.LocalName == "DataTemplate").Elements().Single();
+                Assert.Equal("{StaticResource CardBorder}", (string)tile.Attribute("Style"));
+                Assert.Equal("Top", (string)tile.Attribute("VerticalAlignment"));
+            }
             Assert.DoesNotContain(line.Descendants(), e => e.Name.LocalName == "CurveEditor");
             Assert.DoesNotContain(page.Descendants(), e => Id(e) == "SensitivityBothChart");
             Assert.DoesNotContain("Pad_BothAxes", PageText());
@@ -1185,12 +1239,30 @@ namespace PadForge.Tests
                 curves.Select(c => (string)c.Attribute("CurveString")));
             Assert.Equal(new[] { "{Binding LiveInputX}", "{Binding LiveInputY}" }, curves.Select(c => (string)c.Attribute("LiveInput")));
             Assert.DoesNotContain("ChartSize=\"96\"", PageText());
-            // The label column is the language's: the three numbers are
+            // The label column is the language's: the numbers are
             // English's, and the page sets them when it is shown.
             XElement Number(string key) => Assert.Single(own.Elements(), e => (string)e.Attribute(X + "Key") == key);
             Assert.Equal("96", Number("FirstRowLabelWidth").Value);
-            Assert.Equal("300", Number("FirstRowSettingsBasis").Value);
             Assert.Equal("360", Number("FirstRowSettingsMost").Value);
+            Assert.DoesNotContain("FirstRowSettingsBasis", PageText());
+            // The least width of a stick's live view beside its settings:
+            // its well's edges (34), the radar (212), the gap (18), the
+            // captions' column and a column of 112 for each axis. The
+            // captions' column is the wider caption and 8 more, 38 at the
+            // least, which English's two captions stay under.
+            Assert.Equal("526", Number("StickLiveLeast").Value);
+            Assert.Equal(526, 34 + 212 + 18 + 38 + 2 * 112);
+            Assert.Equal(526, PadForge.Views.PadPage.StickLiveLeast(new[] { 19.8, 20.4 }));
+            Assert.Equal(526, PadForge.Views.PadPage.StickLiveLeast(new[] { 30.0 }));
+            Assert.Equal(526, PadForge.Views.PadPage.StickLiveLeast(Array.Empty<double>()));
+            Assert.Equal(527, PadForge.Views.PadPage.StickLiveLeast(new[] { 30.2 }));
+            Assert.Equal(542, PadForge.Views.PadPage.StickLiveLeast(new[] { 20.4, 45.2 }));
+            string sizing = ExtrasPageTests.RepoText("PadForge.App", "Views", "PadPage.xaml.cs");
+            Assert.Contains("foreach (string caption in new[] { s.Instr_Raw, s.Instr_Out })", sizing);
+            Assert.Contains("SticksSectionScroll.Resources[\"StickLiveLeast\"] = StickLiveLeast(captions);", sizing);
+            // The parts the least is summed from are the page's own.
+            Assert.Equal("16,12", Setter(Assert.Single(XDocument.Parse(ExtrasPageTests.RepoText("PadForge.App", "Resources", "ControllerIcons.xaml")).Descendants(),
+                e => (string)e.Attribute(X + "Key") == "LiveWell"), "Padding"));
             Assert.Equal("{DynamicResource FirstRowLabelWidth}", Setter(Style("DzFirstLabel"), "Width"));
             Assert.Equal("{StaticResource DzLabel}", (string)Style("DzFirstLabel").Attribute("BasedOn"));
             // The head: the mark at 28, the name in the display face, the tag
@@ -1255,22 +1327,25 @@ namespace PadForge.Tests
             // No rule between the groups: each has its label.
             Assert.DoesNotContain(body.Descendants().Take(400), e => e.Name.LocalName == "Separator" && e.Parent == body);
 
-            // A trigger's card: its three settings beside the chart with its
-            // hint and the live meter under it, then More, where the range
-            // is typed and the raw values stand.
+            // A trigger's card, with a stick's body: its three settings, and
+            // beside them in a wide card, or under them in a card that
+            // shares its row, the chart with its hint and the live meter
+            // under it. Then More, where the range is typed and the raw
+            // values stand.
             var triggers = Named(page, "TabTriggers");
             var triggerMore = Assert.Single(triggers.Descendants(), e => e.Name.LocalName == "MoreRow");
             Assert.Equal("Pad_More_Trigger", Id(triggerMore));
             var triggerCard = triggerMore.Parent!;
-            Assert.Equal(new[] { "DockPanel", "FlexLinePanel", "MoreRow" }, triggerCard.Elements().Select(e => e.Name.LocalName));
+            Assert.Equal(new[] { "DockPanel", "PartBodyPanel", "MoreRow" }, triggerCard.Elements().Select(e => e.Name.LocalName));
             var triggerHead = triggerCard.Elements().First();
             Assert.Equal(new[] { "LabeledShapeIcon", "TextBlock", "Border", "Button", "TextBlock" }, triggerHead.Elements().Select(e => e.Name.LocalName));
             IsDeviceTag(triggerHead.Elements().ElementAt(2));
             var triggerLine = triggerCard.Elements().ElementAt(1);
+            Assert.Null(triggerLine.Attribute("SideBySideWidth"));
+            Assert.Equal("{DynamicResource FirstRowSettingsMost}", (string)triggerLine.Attribute("SettingsWidth"));
             Assert.Equal(new[] { "StackPanel", "StackPanel" }, triggerLine.Elements().Select(e => e.Name.LocalName));
+            Assert.All(triggerLine.Elements(), column => Assert.Empty(column.Attributes()));
             var triggerRows = triggerLine.Elements().First();
-            string Flex(XElement e, string name) => (string)e.Attributes().FirstOrDefault(a => a.Name.LocalName == "FlexLinePanel." + name);
-            Assert.Equal("{DynamicResource FirstRowSettingsBasis}", Flex(triggerRows, "Basis"));
             Assert.Equal(new[] { "SettingRow", "SettingRow", "SettingRow" }, triggerRows.Elements().Select(e => e.Name.LocalName));
             // The range's row reads its two ends beside the slider and has
             // no box: the boxes are under More.
@@ -2176,7 +2251,10 @@ namespace PadForge.Tests
             var table = XDocument.Parse(ExtrasPageTests.RepoText("PadForge.App", "Resources", "Strings", "Strings.resx"));
             string English(string key) => (string)Assert.Single(table.Root!.Elements("data"),
                 d => (string)d.Attribute("name") == key).Element("value");
-            Assert.Equal("Buttons", English("Pad_Section_Buttons"));
+            // A controller's first section maps every control, so it is
+            // named Mappings, the list's own word, and no longer Buttons.
+            Assert.Equal("Mappings", English("Pad_Mappings"));
+            Assert.DoesNotContain(table.Root!.Elements("data"), d => (string)d.Attribute("name") == "Pad_Section_Buttons");
             Assert.Equal("Sticks & Triggers", English("Pad_Section_Sticks"));
             Assert.Equal("Rumble & Haptics", English("Pad_Section_Rumble"));
             Assert.Equal("Motion & Touch", English("Pad_Section_Motion"));

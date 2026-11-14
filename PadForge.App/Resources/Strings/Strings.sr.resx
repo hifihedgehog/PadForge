@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Укључите излаз телеметрије у игри и усмерите га на овај рачунар и порт.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>У емулатору додајте извор покрета на адреси овог рачунара и на овом порту.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ефекти мода стижу до сваког контролера који има хардвер за њих.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Поза главе је ред Праћење главе на страници [Уређаји]. Мапирајте скретање главе на осу палице у одељку Дугмад на страници контролера.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Вредности су ред Телеметрија игре на страници [Уређаји]. Мапирајте их у одељку Дугмад на страници контролера или их користите за покретање макроа.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Поза главе је ред Праћење главе на страници [Уређаји]. Мапирајте скретање главе на осу палице у одељку Мапирања на страници контролера.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Вредности су ред Телеметрија игре на страници [Уређаји]. Мапирајте их у одељку Мапирања на страници контролера или их користите за покретање макроа.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Место, величину и провидност менија подешавате на самом менију, у одељку [Макрои и менији] на страници контролера.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Извори</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack и све што шаље његов UDP формат</value></data>
@@ -3179,7 +3179,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Управљање покретом</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° до {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Мртве зоне нагињања, Оријентација контролера</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Подешавања за улаз „Покрет: нагињање“: нагињите контролер као волан. Мапирајте „Покрет: нагињање“ на осу палице у одељку „Дугмад“.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Подешавања за улаз „Покрет: нагињање“: нагињите контролер као волан. Мапирајте „Покрет: нагињање“ на осу палице у одељку „Мапирања“.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Ресетуј управљање покретом</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (десна палица)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (лева палица)</value></data>
@@ -4149,7 +4149,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>површина за отварање менија није подржана ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>икона ћелије менија није препозната ({0}), па ћелија задржава текстуалну ознаку</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Излаз</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Дугмад</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Тастери и миш</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Ноте и контроле</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Руке</value></data>
@@ -5269,7 +5268,7 @@
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Аналогне тачке активирања тастера нису пренете.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD је слао овај контролер на други уређај преко адаптера. PadForge га покреће на овом рачунару, а Удаљена веза га шаље на други рачунар на коме ради PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge чита два штапића, а овде се помиње трећи.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Емулација управљача није пренета. Мапирајте управљач у одељку „Дугмад“.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Емулација управљача није пренета. Мапирајте управљач у одељку „Мапирања“.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Овај профил помиње посебну радњу која недостаје у датотеци Actions.xml поред његове фасцикле Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Ово подешавање није пренето: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD је спречавао да ови улази стигну до система Windows. Укључите Блокирај мапиране улазе за {0} на страници Уређаји, што блокира оне које овај профил мапира.</value></data>
@@ -5278,7 +5277,7 @@
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Ова датотека раздваја два контролера. У PadForge-у ова мапирања активира било који контролер на слоту.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Брзина кретања или брзи покрет нису пренети.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Ово није пренето. Подесите то у одељку „Покрет и додир“.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ништа у овој датотеци не отвара овај слој. У одељку „Дугмад“ кликните десним тастером на слој и изаберите „Подеси активатор“.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ништа у овој датотеци не отвара овај слој. У одељку „Мапирања“ кликните десним тастером на слој и изаберите „Подеси активатор“.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Његова дугмад при притиску покрећу следеће: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Пречица профила</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Ради оно што ради пречица профила: учитава именовани профил, следећи или претходни, приказује или сакрива прозор, или искључује и укључује виртуелне контролере.</value></data>
@@ -5555,7 +5554,7 @@
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge дугмад ручног уређаја (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro профил (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge осветљење тастера (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макро не може да притисне {0}. Мапирање у одељку „Дугмад“ може.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макро не може да притисне {0}. Ред у одељку „Мапирања“ може.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge покреће осам оверлеја екрана, а ово је девети или десети нишан програма reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge чита лево и десно са жироскопа из ваљања, а нагињање из скретања, што је подразумевано у програму reWASD. Подешавања програма reWASD могу да замене та два, а ова датотека не каже да ли јесу.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>У режиму нагиба, нагињање у програму reWASD је окретање око усправне осе, а сензор покрета не даје угао за то окретање.</value></data>

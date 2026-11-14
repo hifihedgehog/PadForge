@@ -958,7 +958,6 @@
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe ke badle</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, Full speed, Custom format</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Use karo</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Button</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Key aur Mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Note aur Control</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Haath</value></data>
@@ -1024,8 +1023,8 @@
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Trigger saaf karo</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Driving game jon speed, pedal aur gear bheje, uske koi bhi input ke rakam map karo.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>DSX ke liye likha game mod se adaptive trigger aur light effect lelo.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Head pose [Device] pe Head Tracker wala row hai. Head yaw ke controller ke Button section me koi stick axis pe map karo.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Value sab [Device] pe Game Telemetry wala row hai. Inke controller ke Button section me map karo nahi to macro trigger kare ke liye use karo.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Head pose [Device] pe Head Tracker wala row hai. Head yaw ke controller ke Mapping section me koi stick axis pe map karo.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Value sab [Device] pe Game Telemetry wala row hai. Inke controller ke Mapping section me map karo nahi to macro trigger kare ke liye use karo.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Menu ke apan jagah, size aur opacity menu pe set hota, controller ke [Macro aur Menu] section me.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Game Jon PadForge Nai Jaane</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Address copy karo</value></data>

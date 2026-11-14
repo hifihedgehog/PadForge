@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>V hre zapnite výstup telemetrie a nasmerujte ho na tento počítač a port.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>V emulátore pridajte zdroj pohybu na adrese tohto počítača a na tomto porte.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Efekty módu sa dostanú ku každému ovládaču, ktorý má na ne hardvér.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Poloha hlavy je riadok Sledovač hlavy na [Zariadeniach]. Otočenie hlavy namapujte na os páčky v sekcii Tlačidlá ovládača.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Hodnoty sú riadok Herná telemetria na [Zariadeniach]. Namapujte ich v sekcii Tlačidlá ovládača alebo nimi spúšťajte makrá.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Poloha hlavy je riadok Sledovač hlavy na [Zariadeniach]. Otočenie hlavy namapujte na os páčky v sekcii Mapovania ovládača.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Hodnoty sú riadok Herná telemetria na [Zariadeniach]. Namapujte ich v sekcii Mapovania ovládača alebo nimi spúšťajte makrá.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Vlastné umiestnenie, veľkosť a priehľadnosť ponuky sa nastavujú na samotnej ponuke, v sekcii [Makrá a ponuky] ovládača.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Zdroje</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack a čokoľvek, čo posiela jeho formát UDP</value></data>
@@ -3179,7 +3179,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Riadenie pohybom</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° až {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Mŕtve zóny nakláňania, Orientácia ovládača</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Nastavenia vstupu „Pohyb: nakláňanie“, pri ktorom nakláňate ovládač ako volant. Namapujte „Pohyb: nakláňanie“ na os páčky v časti Tlačidlá.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Nastavenia vstupu „Pohyb: nakláňanie“, pri ktorom nakláňate ovládač ako volant. Namapujte „Pohyb: nakláňanie“ na os páčky v časti Mapovania.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Resetovať riadenie pohybom</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (pravá páčka)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (ľavá páčka)</value></data>
@@ -4149,7 +4149,6 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>plocha hostiteľa ponuky nie je podporovaná ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikona bunky ponuky nebola rozpoznaná ({0}), preto si bunka ponechá textový popisok</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Výstup</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Tlačidlá</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Klávesy a myš</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Noty a ovládacie prvky</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Ruky</value></data>
@@ -5269,7 +5268,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Body aktivácie analógových klávesov sa nepreniesli.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD poslal tento ovládač cez adaptér do iného zariadenia. PadForge ho prehráva na tomto počítači a Vzdialené prepojenie ho posiela do iného počítača so spusteným PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge číta dve páčky a toto uvádza tretiu.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emulácia volantu sa nepreniesla. Volant namapujte v časti Tlačidlá.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emulácia volantu sa nepreniesla. Volant namapujte v časti Mapovania.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Tento profil uvádza špeciálnu akciu, ktorá chýba v Actions.xml vedľa priečinka Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Toto nastavenie sa neprenieslo: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD bránil týmto vstupom dostať sa do Windowsu. Zapnite Pohltiť namapované vstupy pre {0} na stránke Zariadenia, čo zastaví tie, ktoré tento profil mapuje.</value></data>
@@ -5278,7 +5277,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Tento súbor oddeľuje dva ovládače. V PadForge tieto mapovania spustí ktorýkoľvek ovládač na slote.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Rýchlosť pohybu alebo švih sa nepreniesli.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Tieto sa nepreniesli. Nastavte ich v časti Pohyb a dotyk.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nič v tomto súbore túto vrstvu neotvára. V časti Tlačidlá kliknite pravým tlačidlom myši na vrstvu a vyberte Konfigurovať aktivátor.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nič v tomto súbore túto vrstvu neotvára. V časti Mapovania kliknite pravým tlačidlom myši na vrstvu a vyberte Konfigurovať aktivátor.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Jeho tlačidlá po stlačení spustia: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Skratka profilu</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Vykoná to, čo skratka profilu: načíta pomenovaný profil, nasledujúci alebo predchádzajúci, zobrazí alebo skryje okno, alebo vypne a zapne virtuálne ovládače.</value></data>
@@ -5555,7 +5554,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Tlačidlá handheldu PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Podsvietenie klávesov PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro nedokáže stlačiť {0}. Mapovanie v časti Tlačidlá to dokáže.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro nedokáže stlačiť {0}. Riadok v časti Mapovania to dokáže.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge spúšťa osem prekrytí obrazovky a toto je deviaty alebo desiaty zameriavač z reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge číta Gyroskop – nakláňanie X z náklonu a nakláňanie Y z otáčania, ako je to predvolené v reWASD. Predvoľby reWASD môžu tieto dve osi vymeniť a tento súbor neuvádza, či sa tak stalo.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>V režime Tilt je nakláňanie v reWASD otáčanie okolo zvislej osi a pohybový snímač pre takéto otáčanie neposkytuje uhol.</value></data>

@@ -93,7 +93,9 @@ namespace PadForge.Views
         private bool _isLeftDragging;
         private bool _leftMouseActive;   // true only when our handler captured the mouse (not button clicks)
         private Point _leftDragStart;          // initial left-down position (for click vs drag threshold)
-        private const double DragThreshold = 5; // pixels before left-click becomes a drag
+        // Pixels before a left click becomes a drag. The page reads it too:
+        // a press that turned the model is no click on the picture.
+        internal const double DragThreshold = 5;
         private Point _rightDragLast;
         private double _modelYaw;    // degrees around Z axis (horizontal drag)
         private double _modelPitch;  // degrees around X axis (vertical drag)

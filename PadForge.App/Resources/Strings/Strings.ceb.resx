@@ -2041,7 +2041,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Pagmaneho gamit ang motion</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° hangtod {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Mga deadzone sa pagkiling, Oryentasyon sa controller</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Mga setting alang sa input nga Kiling sa motion: ikiling ang controller sama sa manibela. I-map ang “Kiling sa motion” sa usa ka stick axis sa Mga button.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Mga setting alang sa input nga Kiling sa motion: ikiling ang controller sama sa manibela. I-map ang “Kiling sa motion” sa usa ka stick axis sa Mga mapping.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>I-reset ang pagmaneho gamit ang motion</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (tuong stick)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (walang stick)</value></data>
@@ -3642,7 +3642,6 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Home_FirstRun_Title" xml:space="preserve"><value>Unsay angay makita sa mga dula?</value></data>
   <data name="Home_FirstRun_Body" xml:space="preserve"><value>Himoon sa PadForge kini nga controller nga mao ang gilauman sa imong mga dula. Pili og usa aron magsugod. Mausab nimo kini unya sa usa ka click.</value></data>
   <data name="Home_FirstRun_BodyNoDevice" xml:space="preserve"><value>Himoon sa PadForge ang imong controller nga mao ang gilauman sa imong mga dula. Pili og usa aron magsugod. Mausab nimo kini unya sa usa ka click.</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mga button</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Mga key ug mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Mga nota ug control</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Mga kamot</value></data>
@@ -3708,8 +3707,8 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Duha ka stick</value></data>
   <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Giunsa pagkupot ang controller</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ang mga effect sa usa ka mod moabot sa matag controller nga adunay hardware para niini.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ang posisyon sa ulo mao ang Head Tracker nga row sa [Mga device]. I-map ang yaw sa ulo ngadto sa axis sa stick sa seksyon nga Mga button sa usa ka controller.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ang mga bili mao ang Game telemetry nga row sa [Mga device]. I-map kini sa seksyon nga Mga button sa usa ka controller o gamita kini aron mo-trigger og mga macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ang posisyon sa ulo mao ang Head Tracker nga row sa [Mga device]. I-map ang yaw sa ulo ngadto sa axis sa stick sa seksyon nga Mga mapping sa usa ka controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ang mga bili mao ang Game telemetry nga row sa [Mga device]. I-map kini sa seksyon nga Mga mapping sa usa ka controller o gamita kini aron mo-trigger og mga macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ang kaugalingong dapit, gidak-on ug opacity sa usa ka menu gitakda sa menu mismo, sa seksyon nga [Mga macro ug menu] sa usa ka controller.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Mga tinubdan</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack ug bisan unsa nga mopadala sa UDP format niini</value></data>

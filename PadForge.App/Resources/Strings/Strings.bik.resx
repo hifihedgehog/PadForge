@@ -1184,7 +1184,6 @@
   <data name="Search_Title" xml:space="preserve"><value>Hanapon</value></data>
   <data name="Search_Results" xml:space="preserve"><value>Mga resulta</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Gamiton</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mga button</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Mga key asin mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Mga nota asin kontrol</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Mga kamot</value></data>
@@ -1253,8 +1252,8 @@
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>I-map an speed, mga pedal asin mga gear na ipinapadara kan sarong driving game, arog kan ano man na input.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Kuanon an mga adaptive trigger asin mga epekto nin ilaw hale sa mga game mod na ginibo para sa DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Buksan an telemetry output sa game asin itudok ini sa PC na ini asin sa port na ini.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>An head pose iyo an Head Tracker na hilera sa [Mga device]. I-map an head yaw sa sarong stick axis sa seksyon na Mga button kan sarong controller.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>An mga halaga iyo an Game Telemetry na hilera sa [Mga device]. I-map sinda sa seksyon na Mga button kan sarong controller o gamiton sinda sa pagpaandar nin mga macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>An head pose iyo an Head Tracker na hilera sa [Mga device]. I-map an head yaw sa sarong stick axis sa seksyon na Mga mapping kan sarong controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>An mga halaga iyo an Game Telemetry na hilera sa [Mga device]. I-map sinda sa seksyon na Mga mapping kan sarong controller o gamiton sinda sa pagpaandar nin mga macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>An sadiring lugar, sukol asin opacity kan sarong menu itinatakda sa menu mismo, sa seksyon na [Mga macro asin menu] kan sarong controller.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>An Ipinapahiling</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>An ring, grid o bar kan sarong menu mantang bukas ini</value></data>

@@ -1611,7 +1611,6 @@
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Tekem ol efek blong triga mo laet long ol mod blong gem.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Pot, plen HTTP, kod blong akses</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Pot, samting we i tekem ples blong DSX.exe</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Ol baten</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Ki mo maos</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Not mo kontrol</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Ol han</value></data>
@@ -1654,8 +1653,8 @@
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Tekem ol efek blong adaptive triga mo laet long ol mod blong gem we oli raetem blong DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Statem telemetry autput long gem mo talem long hem blong sendem i kam long PC ia mo pot ia.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ol efek blong wan mod oli kasem evri kontrola we i gat hadwea blong olgeta.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pos blong hed i stap long lain Head Tracker long [Ol divaes]. Mapem yaw blong hed i go long wan aksis blong stik long seksen Ol baten blong wan kontrola.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ol valiu oli stap long lain Game Telemetry long [Ol divaes]. Mapem olgeta long seksen Ol baten blong wan kontrola o yusum olgeta blong statem ol makro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pos blong hed i stap long lain Head Tracker long [Ol divaes]. Mapem yaw blong hed i go long wan aksis blong stik long seksen Ol mapping blong wan kontrola.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ol valiu oli stap long lain Game Telemetry long [Ol divaes]. Mapem olgeta long seksen Ol mapping blong wan kontrola o yusum olgeta blong statem ol makro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ples, saes mo klia blong wan menu oli stap long menu ia, long seksen [Makro mo menu] blong wan kontrola.</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Blong ol mod we oli lukaotem wan DSX we i stap ron bifo oli sendem</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopi adres</value></data>

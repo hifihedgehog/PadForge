@@ -405,8 +405,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>በጨዋታው ውስጥ የቴሌሜትሪ ውጽዓትን ያብሩ እና ወደዚህ ፒሲ እና ወደብ ያመልክቱት።</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>በኢምዩሌተሩ ውስጥ በዚህ ፒሲ አድራሻ እና በዚህ ወደብ የእንቅስቃሴ ምንጭ ያክሉ።</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>የሞድ ኢፌክቶች ለእነሱ የሚሆን ሃርድዌር ያለውን እያንዳንዱን መቆጣጠሪያ ይደርሳሉ።</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>የራስ አቀማመጡ በ[መሣሪያዎች] ላይ ያለው የራስ መከታተያ ረድፍ ነው። የራስ ያውን በመቆጣጠሪያ የአዝራሮች ክፍል ውስጥ ከስቲክ ዘንግ ጋር ያዛምዱ።</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>እሴቶቹ በ[መሣሪያዎች] ላይ ያለው የጨዋታ ቴሌሜትሪ ረድፍ ናቸው። በመቆጣጠሪያ የአዝራሮች ክፍል ውስጥ ያዛምዷቸው ወይም ማክሮዎችን ለማስነሳት ይጠቀሙባቸው።</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>የራስ አቀማመጡ በ[መሣሪያዎች] ላይ ያለው የራስ መከታተያ ረድፍ ነው። የራስ ያውን በመቆጣጠሪያ የማዛመጃዎች ክፍል ውስጥ ከስቲክ ዘንግ ጋር ያዛምዱ።</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>እሴቶቹ በ[መሣሪያዎች] ላይ ያለው የጨዋታ ቴሌሜትሪ ረድፍ ናቸው። በመቆጣጠሪያ የማዛመጃዎች ክፍል ውስጥ ያዛምዷቸው ወይም ማክሮዎችን ለማስነሳት ይጠቀሙባቸው።</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>የአንድ ምናሌ የራሱ ቦታ፣ መጠን እና ግልጽነት በምናሌው ላይ፣ በመቆጣጠሪያ የ[ማክሮዎች እና ምናሌዎች] ክፍል ውስጥ ይዘጋጃሉ።</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>ምንጮች</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack እና የUDP ቅርጸቱን የሚልክ ማንኛውም ፕሮግራም</value></data>
@@ -2951,7 +2951,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>በእንቅስቃሴ መሪ ማዞር</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>ከ{0}° እስከ {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>የማዘንበል የሞተ ቀጠናዎች፣ የመቆጣጠሪያ አቅጣጫ</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>ለእንቅስቃሴ ዘንበል ግብዓት ቅንብሮች፦ መቆጣጠሪያውን እንደ መሪ ያዘንብሉት። በ«አዝራሮች» ስር «የእንቅስቃሴ ዘንበል»ን ወደ ስቲክ ዘንግ ያዛምዱ።</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>ለእንቅስቃሴ ዘንበል ግብዓት ቅንብሮች፦ መቆጣጠሪያውን እንደ መሪ ያዘንብሉት። በ«ማዛመጃዎች» ስር «የእንቅስቃሴ ዘንበል»ን ወደ ስቲክ ዘንግ ያዛምዱ።</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>በእንቅስቃሴ መሪ ማዞርን ዳግም አስጀምር</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ፍሊክ ስቲክ (ቀኝ ስቲክ)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>ፍሊክ ስቲክ (ግራ ስቲክ)</value></data>
@@ -3892,7 +3892,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>የምናሌ አስተናጋጅ ወለል አይደገፍም ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>የምናሌ ሕዋስ አዶ አልታወቀም ({0})፣ ስለዚህ ሕዋሱ የጽሑፍ መለያውን ይይዛል</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>ውፅዓት</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>አዝራሮች</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>ቁልፎች እና መዳፊት</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>ኖታዎች እና መቆጣጠሪያዎች</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>እጆች</value></data>

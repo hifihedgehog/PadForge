@@ -1638,7 +1638,6 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>Tsy misy</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(tsy voafaritra)</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Fivoahana</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Bokotra</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Fitendry sy totozy</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nota sy CC</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Tanana</value></data>
@@ -2091,8 +2090,8 @@
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Fafao ny mpanetsika</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Tendreo toy ny fidirana hafa rehetra ny hafainganana, ny pedal ary ny vitesy alefan'ny lalao fiara.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Alefaso ao amin'ny lalao ny fandefasana télémétrie ary tondroy amin'ity PC ity sy ity port ity.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ny toeran'ny loha dia ny andalana Head Tracker ao amin'ny [Fitaovana]. Tendreo amin'ny axe stick ny fihodinan'ny loha ao amin'ny fizarana Bokotra an'ny contrôleur.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ny sanda dia ny andalana Télémétrie lalao ao amin'ny [Fitaovana]. Tendreo ao amin'ny fizarana Bokotra an'ny contrôleur izy ireo na ampiasao hanombohana macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ny toeran'ny loha dia ny andalana Head Tracker ao amin'ny [Fitaovana]. Tendreo amin'ny axe stick ny fihodinan'ny loha ao amin'ny fizarana Mapping an'ny contrôleur.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ny sanda dia ny andalana Télémétrie lalao ao amin'ny [Fitaovana]. Tendreo ao amin'ny fizarana Mapping an'ny contrôleur izy ireo na ampiasao hanombohana macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ny toerana, ny habe ary ny hamangarahan'ny menu dia apetraka ao amin'ny menu ihany, ao amin'ny fizarana [Macro sy menu] an'ny contrôleur.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Lalao tsy fantatry ny PadForge</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Adikao ny adiresy</value></data>

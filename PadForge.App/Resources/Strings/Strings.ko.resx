@@ -2613,7 +2613,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>모션 조향</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}°에서 {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>기울이기 데드존, 컨트롤러 방향</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>"모션 기울임" 입력 설정: 컨트롤러를 핸들처럼 기울이세요. 버튼 섹션에서 "모션 기울임"을 스틱 축에 할당하세요.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>"모션 기울임" 입력 설정: 컨트롤러를 핸들처럼 기울이세요. 매핑 섹션에서 "모션 기울임"을 스틱 축에 할당하세요.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>모션 조향 초기화</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>조향 끝점 피드백</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>조향 모드 스틱이 끝점에 닿을 때의 신호</value></data>
@@ -3399,8 +3399,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>게임에서 텔레메트리 출력을 켜고 이 PC와 포트로 보내세요.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>에뮬레이터에서 이 PC의 주소와 이 포트로 모션 소스를 추가하세요.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>모드의 효과는 해당 하드웨어가 있는 모든 컨트롤러에 전달됩니다.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>머리 자세는 [장치]의 헤드 트래커 행입니다. 컨트롤러의 버튼 섹션에서 머리 요를 스틱 축에 매핑하세요.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>값은 [장치]의 게임 텔레메트리 행입니다. 컨트롤러의 버튼 섹션에서 매핑하거나 매크로를 실행하는 데 사용하세요.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>머리 자세는 [장치]의 헤드 트래커 행입니다. 컨트롤러의 매핑 섹션에서 머리 요를 스틱 축에 매핑하세요.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>값은 [장치]의 게임 텔레메트리 행입니다. 컨트롤러의 매핑 섹션에서 매핑하거나 매크로를 실행하는 데 사용하세요.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>메뉴의 위치, 크기, 불투명도는 컨트롤러의 [매크로 및 메뉴] 섹션에 있는 해당 메뉴에서 설정합니다.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>소스</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack 및 해당 UDP 형식을 보내는 모든 프로그램</value></data>
@@ -4087,7 +4087,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>메뉴 호스트 표면 미지원({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>메뉴 셀 아이콘을 인식할 수 없음({0}), 해당 셀은 텍스트 레이블을 유지합니다</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>출력</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>버튼</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>키 및 마우스</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>노트 및 컨트롤</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>손</value></data>
@@ -5218,7 +5217,7 @@
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>아날로그 키 작동 지점은 가져오지 못했습니다.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD는 어댑터를 통해 이 컨트롤러를 다른 장치로 보냈습니다. PadForge는 이 컨트롤러를 이 PC에서 실행하며, Remote Link를 사용하면 PadForge가 실행 중인 다른 PC로 보낼 수 있습니다.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge는 스틱을 두 개까지 읽는데, 여기에는 세 번째 스틱이 지정되어 있습니다.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>스티어링 휠 에뮬레이션은 가져오지 못했습니다. 버튼 섹션에서 휠을 매핑하세요.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>스티어링 휠 에뮬레이션은 가져오지 못했습니다. 매핑 섹션에서 휠을 매핑하세요.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>이 프로필이 지정한 특수 동작이 Profiles 폴더 옆의 Actions.xml에 없습니다: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>이 설정은 가져오지 못했습니다: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD가 이 입력들이 Windows에 전달되지 않게 막았습니다. 장치 페이지에서 {0}의 매핑된 입력 소비를 켜면 이 프로필이 매핑한 입력이 차단됩니다.</value></data>
@@ -5227,7 +5226,7 @@
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>이 파일은 컨트롤러 두 개를 따로 취급합니다. PadForge에서는 슬롯에 연결된 어떤 컨트롤러든 이 매핑을 실행합니다.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>이동 속도와 플릭은 가져오지 못했습니다.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>이 항목은 가져오지 못했습니다. 모션 및 터치 섹션에서 설정하세요.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>이 파일에는 이 레이어를 여는 항목이 없습니다. 버튼 섹션에서 레이어를 우클릭하고 활성화 구성을 선택하세요.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>이 파일에는 이 레이어를 여는 항목이 없습니다. 매핑 섹션에서 레이어를 우클릭하고 활성화 구성을 선택하세요.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>이 프로필의 버튼을 누르면 다음이 실행됩니다: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>프로필 바로 가기</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>프로필 바로 가기와 같은 동작을 합니다. 이름을 지정한 프로필, 다음 프로필 또는 이전 프로필을 불러오거나, 창을 표시하거나 숨기거나, 가상 컨트롤러를 끄고 켭니다.</value></data>
@@ -5504,7 +5503,7 @@
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge 휴대용 버튼 (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro 프로필 (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge 키 조명 (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>매크로는 {0}을(를) 누를 수 없습니다. 버튼 섹션의 매핑은 누를 수 있습니다.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>매크로는 {0}을(를) 누를 수 없습니다. 매핑 섹션의 행은 누를 수 있습니다.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge는 화면 오버레이를 여덟 개까지 실행하는데, 이것은 reWASD의 아홉 번째 또는 열 번째 조준선입니다.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge는 자이로 롤에서 좌우를, 자이로 요에서 기울기를 읽으며, 이는 reWASD의 기본값입니다. reWASD의 환경설정에서 둘을 바꿀 수 있는데, 이 파일에는 바꿨는지 여부가 없습니다.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Tilt 모드에서 reWASD의 기울기는 수직축을 중심으로 한 회전이며, 모션 센서는 그 회전의 각도를 제공하지 않습니다.</value></data>

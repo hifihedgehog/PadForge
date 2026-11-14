@@ -2613,7 +2613,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Dirección por movimiento</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° a {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zonas muertas de inclinación, Orientación del mando</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Ajustes de la entrada "Inclinación de movimiento": incline el mando como un volante. Asigne "Inclinación de movimiento" a un eje de stick en Botones.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Ajustes de la entrada "Inclinación de movimiento": incline el mando como un volante. Asigne "Inclinación de movimiento" a un eje de stick en Asignaciones.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Restablecer Dirección por movimiento</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Respuesta al tope del volante</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Una señal al llegar al tope con un stick en modo de dirección</value></data>
@@ -3399,8 +3399,8 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Activa la salida de telemetría en el juego y apúntala a este PC y a este puerto.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>En el emulador, agrega una fuente de movimiento con la dirección de este PC y este puerto.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Los efectos de un mod llegan a todos los controles que tengan el hardware necesario.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>La postura de la cabeza es la fila Head Tracker en [Dispositivos]. Asigna el giro de la cabeza a un eje de palanca en la sección Botones de un control.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Los valores son la fila Game Telemetry en [Dispositivos]. Asígnalos en la sección Botones de un control o úsalos para activar macros.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>La postura de la cabeza es la fila Head Tracker en [Dispositivos]. Asigna el giro de la cabeza a un eje de palanca en la sección Asignaciones de un control.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Los valores son la fila Game Telemetry en [Dispositivos]. Asígnalos en la sección Asignaciones de un control o úsalos para activar macros.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>La posición, el tamaño y la opacidad de un menú se ajustan en el propio menú, en la sección [Macros y menús] de un control.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Fuentes</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack y cualquier programa que envíe su formato UDP</value></data>
@@ -4087,7 +4087,6 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>superficie host del menú no compatible ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>icono de celda del menú no reconocido ({0}), por lo que la celda conserva su etiqueta de texto</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Salida</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Botones</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Teclas y ratón</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Notas y controles</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Manos</value></data>
@@ -5218,7 +5217,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Los puntos de actuación analógica de las teclas no se trasladaron.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD enviaba este mando a otro dispositivo mediante un adaptador. PadForge lo reproduce en este PC, y Remote Link lo envía a otro PC que ejecute PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge lee dos sticks, y esto nombra un tercero.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>La emulación de volante no se trasladó. Asigne el volante en Botones.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>La emulación de volante no se trasladó. Asigne el volante en Asignaciones.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Este perfil nombra una acción especial que falta en Actions.xml, junto a su carpeta Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Este ajuste no se trasladó: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD impedía que estas entradas llegaran a Windows. Activa Consumir entradas asignadas para {0} en la página Dispositivos, que bloquea las que asigna este perfil.</value></data>
@@ -5227,7 +5226,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Este archivo mantiene separados dos mandos. En PadForge, cualquier mando de la ranura activa estas asignaciones.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>La velocidad de movimiento o el flick no se trasladaron.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Esto no se trasladó. Configúrelo en Movimiento y tacto.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nada en este archivo abre esta capa. En Botones, haga clic derecho en la capa y elija Configurar activador.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nada en este archivo abre esta capa. En Asignaciones, haga clic derecho en la capa y elija Configurar activador.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Sus botones ejecutan esto al pulsarse: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Atajo de perfil</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Hace lo que hace un atajo de perfil: carga un perfil con nombre, el siguiente o el anterior, muestra u oculta la ventana, o apaga y enciende los mandos virtuales.</value></data>
@@ -5504,7 +5503,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Botones de portátil de PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Perfil de HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Luces de teclas de PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Una macro no puede pulsar {0}. Una asignación en Botones sí.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Una macro no puede pulsar {0}. Una fila en Asignaciones sí.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge ejecuta ocho Superposiciones de pantalla, y esta es la novena o décima mira de reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge lee Giroscopio izquierda y derecha a partir del alabeo y la inclinación a partir de la guiñada, como reWASD por defecto. Las Preferencias de reWASD pueden intercambiarlos, y este archivo no dice si lo estaban.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>En modo Tilt, la inclinación de reWASD es un giro alrededor del eje vertical, y un sensor de movimiento no da ningún ángulo para ese giro.</value></data>

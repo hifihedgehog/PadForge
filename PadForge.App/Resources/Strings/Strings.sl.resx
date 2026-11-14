@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>V igri vklopite izhod telemetrije in ga usmerite na ta računalnik in vrata.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>V emulatorju dodajte vir gibanja z naslovom tega računalnika in temi vrati.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Učinki modifikacije dosežejo vsak krmilnik, ki ima zanje strojno opremo.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Poza glave je vrstica Sledilnik glave na strani [Naprave]. Zasuk glave preslikajte na os palice v razdelku Gumbi na strani krmilnika.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Vrednosti so vrstica Telemetrija iger na strani [Naprave]. Preslikajte jih v razdelku Gumbi na strani krmilnika ali z njimi sprožajte makre.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Poza glave je vrstica Sledilnik glave na strani [Naprave]. Zasuk glave preslikajte na os palice v razdelku Preslikave na strani krmilnika.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Vrednosti so vrstica Telemetrija iger na strani [Naprave]. Preslikajte jih v razdelku Preslikave na strani krmilnika ali z njimi sprožajte makre.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Mesto, velikost in prosojnost menija se nastavijo pri samem meniju, v razdelku [Makri in meniji] na strani krmilnika.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Viri</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack in vse, kar pošilja njegovo obliko UDP</value></data>
@@ -3179,7 +3179,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Krmiljenje z gibanjem</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° do {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Notranje mrtvo območje nagnjenosti, Usmerjenost krmilnika</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Nastavitve za vnos „Gibanje: nagnjenost“: krmilnik nagibajte kot volan. V razdelku Gumbi preslikajte „Gibanje: nagnjenost“ na os palice.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Nastavitve za vnos „Gibanje: nagnjenost“: krmilnik nagibajte kot volan. V razdelku Preslikave preslikajte „Gibanje: nagnjenost“ na os palice.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Ponastavi krmiljenje z gibanjem</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (desna palica)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (leva palica)</value></data>
@@ -4149,7 +4149,6 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>gostiteljska površina menija ni podprta ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ikona celice menija ni prepoznana ({0}), zato celica ohrani besedilno oznako</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Izhod</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Gumbi</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tipke in miška</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Note in kontrolniki</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Roki</value></data>
@@ -5269,7 +5268,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analogne točke aktivacije tipk se niso prenesle.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD je ta krmilnik prek adapterja poslal na drugo napravo. PadForge ga predvaja na tem računalniku, Oddaljena povezava pa ga pošlje na drug računalnik, na katerem teče PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge bere dve palčki, ta pa omenja tretjo.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Posnemanje volana se ni preneslo. Volan preslikajte v razdelku Gumbi.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Posnemanje volana se ni preneslo. Volan preslikajte v razdelku Preslikave.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Ta profil omenja posebno dejanje, ki manjka v datoteki Actions.xml poleg mape Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Ta nastavitev se ni prenesla: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD je tem vnosom preprečil dostop do sistema Windows. Na strani Naprave vklopite Zadrži preslikane vnose za {0}, kar zadrži vnose, ki jih preslika ta profil.</value></data>
@@ -5278,7 +5277,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Ta datoteka ločuje dva krmilnika. V PadForge te preslikave sproži kateri koli krmilnik na reži.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Hitrost premikanja ali sunek se nista prenesla.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Ti se niso prenesli. Nastavite jih v razdelku Gibanje in dotik.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nič v tej datoteki ne odpre te plasti. V razdelku Gumbi z desno tipko miške kliknite plast in izberite „Nastavi aktivator“.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nič v tej datoteki ne odpre te plasti. V razdelku Preslikave z desno tipko miške kliknite plast in izberite „Nastavi aktivator“.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Njegovi gumbi ob pritisku zaženejo: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Bližnjica profila</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Naredi to, kar naredi bližnjica profila: naloži imenovan profil, naslednjega ali prejšnjega, pokaže ali skrije okno ali izklopi in vklopi virtualne krmilnike.</value></data>
@@ -5555,7 +5554,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Gumbi ročne konzole PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Osvetlitev tipk PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro ne more pritisniti {0}. Preslikava v razdelku Gumbi lahko.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro ne more pritisniti {0}. Vrstica v razdelku Preslikave lahko.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge izvaja osem prekrivnih prikazov zaslona, to pa je deveti ali deseti merilni križ iz reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge bere Žiroskop levo in desno iz nagiba, Nagnjenost pa iz zasuka, kot je privzeto v reWASD. Nastavitve reWASD lahko to dvoje zamenjajo, ta datoteka pa ne pove, ali so bile zamenjani.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>V načinu Nagib je Nagnjenost v reWASD vrtenje okoli navpične osi, senzor gibanja pa za to vrtenje ne daje kota.</value></data>

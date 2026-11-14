@@ -302,7 +302,7 @@ namespace PadForge.Tests
                 var columns = row.ElementsBeforeSelf().LastOrDefault();
                 bool ofAStickOrATrigger = want.Id is "Pad_More_Stick" or "Pad_More_Trigger";
                 if (ofAStickOrATrigger)
-                    Assert.Equal(want.Id == "Pad_More_Stick" ? "PartBodyPanel" : "FlexLinePanel", columns.Name.LocalName);
+                    Assert.Equal("PartBodyPanel", columns.Name.LocalName);
                 string before = ofAStickOrATrigger
                     ? string.Concat(columns.Elements().Where(e => e.Name.LocalName == "StackPanel").Select(e => e.ToString()))
                     : string.Concat(row.ElementsBeforeSelf().Select(e => e.ToString()));

@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Oyunda telemetri çıkışını açın ve bu bilgisayarı ve bağlantı noktasını gösterin.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Öykünücüde bu bilgisayarın adresiyle ve bu bağlantı noktasıyla bir hareket kaynağı ekleyin.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Bir modun efektleri, donanımı olan her kontrolcüye ulaşır.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Kafa duruşu, [Cihazlar] sayfasındaki Kafa izleyici satırıdır. Kafa sapmasını bir kontrolcünün Düğmeler bölümünde bir çubuk eksenine eşleyin.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Değerler, [Cihazlar] sayfasındaki Oyun telemetrisi satırıdır. Bunları bir kontrolcünün Düğmeler bölümünde eşleyin veya makroları tetiklemek için kullanın.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Kafa duruşu, [Cihazlar] sayfasındaki Kafa izleyici satırıdır. Kafa sapmasını bir kontrolcünün Eşlemeler bölümünde bir çubuk eksenine eşleyin.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Değerler, [Cihazlar] sayfasındaki Oyun telemetrisi satırıdır. Bunları bir kontrolcünün Eşlemeler bölümünde eşleyin veya makroları tetiklemek için kullanın.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Bir menünün yeri, boyutu ve opaklığı menünün kendisinde, bir kontrolcünün [Makrolar ve Menüler] bölümünde ayarlanır.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Kaynaklar</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack ve UDP biçimini gönderen her şey</value></data>
@@ -3179,7 +3179,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Hareketle yönlendirme</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° ile {1}° arası</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Yatırma ölü bölgeleri, Kontrolcü yönü</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Hareket yatırması girişinin ayarları: kontrolcüyü direksiyon gibi yatırın. Düğmeler bölümünde "Hareket yatırması" girişini bir çubuk eksenine eşleyin.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Hareket yatırması girişinin ayarları: kontrolcüyü direksiyon gibi yatırın. Eşlemeler bölümünde "Hareket yatırması" girişini bir çubuk eksenine eşleyin.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Hareketle yönlendirmeyi sıfırla</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (sağ çubuk)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (sol çubuk)</value></data>
@@ -4149,7 +4149,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menüyü barındıran yüzey desteklenmiyor ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menü hücresi simgesi tanınmadı ({0}), bu yüzden hücre metin etiketini korur</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Çıkış</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Düğmeler</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tuşlar ve Fare</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Notalar ve Kontroller</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Eller</value></data>
@@ -5269,7 +5268,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analog tuş etkinleşme noktaları aktarılmadı.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD bu denetleyiciyi bir adaptör aracılığıyla başka bir cihaza gönderdi. PadForge onu bu bilgisayarda çalar, Uzak Bağlantı ise PadForge çalıştıran başka bir bilgisayara gönderir.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge iki çubuk okur, bu ise üçüncüsünü adlandırıyor.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Direksiyon emülasyonu aktarılmadı. Direksiyonu Düğmeler bölümünde eşleyin.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Direksiyon emülasyonu aktarılmadı. Direksiyonu Eşlemeler bölümünde eşleyin.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Bu profil, Profiles klasörünün yanındaki Actions.xml dosyasında bulunmayan bir özel eylemi adlandırıyor: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Bu ayar aktarılmadı: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD bu girişlerin Windows'a ulaşmasını engelledi. Cihazlar sayfasında {0} için Eşlenmiş girişleri tüket ayarını açın, bu ayar bu profilin eşlediği girişleri engeller.</value></data>
@@ -5278,7 +5277,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Bu dosya iki denetleyiciyi birbirinden ayrı tutuyor. PadForge'da yuvadaki herhangi bir denetleyici bu eşlemeleri tetikler.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Hareket hızı veya hızlı çevirme aktarılmadı.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Bunlar aktarılmadı. Bunları Hareket ve Dokunma bölümünde ayarlayın.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Bu dosyada bu katmanı açan hiçbir şey yok. Düğmeler bölümünde katmana sağ tıklayın ve Etkinleştiriciyi yapılandır öğesini seçin.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Bu dosyada bu katmanı açan hiçbir şey yok. Eşlemeler bölümünde katmana sağ tıklayın ve Etkinleştiriciyi yapılandır öğesini seçin.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Düğmeleri basıldığında şunları çalıştırır: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profil kısayolu</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Bir profil kısayolunun yaptığını yapar: adı verilen bir profili, sonrakini veya öncekini yükler, pencereyi gösterir veya gizler ya da sanal kumandaları kapatıp açar.</value></data>
@@ -5555,7 +5554,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge El Konsolu Düğmeleri (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro profili (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge Tuş Işıkları (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Bir makro {0} düğmesine basamaz. Düğmeler bölümündeki bir eşleme basabilir.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Bir makro {0} düğmesine basamaz. Eşlemeler bölümündeki bir satır basabilir.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge sekiz Ekran kaplaması çalıştırır, bu ise reWASD'in dokuzuncu veya onuncu artı işareti.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge, reWASD'in varsayılanı olarak Jiroskop Sol ve Sağ'ı yuvarlanmadan, Yatırmayı sapmadan okur. reWASD'in Tercihleri ikisini değiştirebilir ve bu dosya değiştirilip değiştirilmediğini söylemez.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Eğim modunda reWASD'in Yatırması dikey eksen etrafında bir dönüştür ve hareket sensörü bu dönüş için açı vermez.</value></data>

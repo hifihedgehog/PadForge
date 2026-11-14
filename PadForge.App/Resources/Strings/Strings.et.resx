@@ -405,8 +405,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Lülitage mängus telemeetria väljund sisse ja suunake see sellele arvutile ja pordile.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Lisage emulaatoris liikumisallikas selle arvuti aadressi ja selle pordiga.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Modi efektid jõuavad iga kontrollerini, millel on nende jaoks riistvara.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pea asend on lehe [Seadmed] rida Peajälgija. Vastendage pea pööre kangi teljele kontrolleri jaotises Nupud.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Väärtused on lehe [Seadmed] rida Mängu telemeetria. Vastendage need kontrolleri jaotises Nupud või kasutage makrode käivitamiseks.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pea asend on lehe [Seadmed] rida Peajälgija. Vastendage pea pööre kangi teljele kontrolleri jaotises Vastendused.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Väärtused on lehe [Seadmed] rida Mängu telemeetria. Vastendage need kontrolleri jaotises Vastendused või kasutage makrode käivitamiseks.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Menüü enda asukoht, suurus ja läbipaistmatus määratakse menüüs endas, kontrolleri jaotises [Makrod ja menüüd].</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Allikad</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack ja kõik, mis saadab selle UDP-vormingut</value></data>
@@ -2989,7 +2989,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Liikumisega roolimine</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° kuni {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Kallutuse surnud tsoonid, Kontrolleri suund</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Sisendi „Liikumine: kallutus“ sätted: kallutage kontrollerit nagu rooli. Vastendage jaotises Nupud „Liikumine: kallutus“ kangiteljele.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Sisendi „Liikumine: kallutus“ sätted: kallutage kontrollerit nagu rooli. Vastendage jaotises Vastendused „Liikumine: kallutus“ kangiteljele.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Lähtesta liikumisega roolimine</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (parem kang)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (vasak kang)</value></data>
@@ -3930,7 +3930,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menüü avajapinda ei toetata ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menüü lahtri ikooni ei tuvastatud ({0}), seega jääb lahtrile tekstisilt</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Väljund</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Nupud</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Klahvid ja hiir</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Noodid ja juhtelemendid</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Käed</value></data>

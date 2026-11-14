@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>खेलमा टेलिमेट्री आउटपुट सक्रिय गर्नुहोस् र यसलाई यो PC र यो पोर्टमा पठाउनुहोस्।</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>इमुलेटरमा यो PC को ठेगाना र यो पोर्टमा मोसन स्रोत थप्नुहोस्।</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>मोडका इफेक्टहरू तिनका लागि हार्डवेयर भएका सबै कन्ट्रोलरसम्म पुग्छन्।</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>हेड पोज [यन्त्रहरू]मा रहेको हेड ट्र्याकर पङ्क्ति हो। कन्ट्रोलरको बटनहरू खण्डमा हेड याउलाई स्टिक अक्षमा म्याप गर्नुहोस्।</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>मानहरू [यन्त्रहरू]मा रहेको गेम टेलिमेट्री पङ्क्ति हुन्। तिनलाई कन्ट्रोलरको बटनहरू खण्डमा म्याप गर्नुहोस् वा म्याक्रो ट्रिगर गर्न प्रयोग गर्नुहोस्।</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>हेड पोज [यन्त्रहरू]मा रहेको हेड ट्र्याकर पङ्क्ति हो। कन्ट्रोलरको म्यापिङहरू खण्डमा हेड याउलाई स्टिक अक्षमा म्याप गर्नुहोस्।</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>मानहरू [यन्त्रहरू]मा रहेको गेम टेलिमेट्री पङ्क्ति हुन्। तिनलाई कन्ट्रोलरको म्यापिङहरू खण्डमा म्याप गर्नुहोस् वा म्याक्रो ट्रिगर गर्न प्रयोग गर्नुहोस्।</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>मेनुको आफ्नै स्थान, आकार र अपारदर्शिता मेनुमै, कन्ट्रोलरको [म्याक्रो र मेनु] खण्डमा सेट गरिन्छ।</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>स्रोतहरू</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack र यसको UDP ढाँचा पठाउने जुनसुकै प्रोग्राम</value></data>
@@ -3179,7 +3179,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>मोसन स्टियरिङ</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° देखि {1}° सम्म</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>झुकावका डेडजोनहरू, कन्ट्रोलरको दिशा</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>मोसन झुकाव इनपुटका सेटिङहरू: कन्ट्रोलरलाई ह्विलजस्तै झुकाउनुहोस्। "बटनहरू" अन्तर्गत "मोसन झुकाव" लाई स्टिक अक्षमा म्याप गर्नुहोस्।</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>मोसन झुकाव इनपुटका सेटिङहरू: कन्ट्रोलरलाई ह्विलजस्तै झुकाउनुहोस्। "म्यापिङहरू" अन्तर्गत "मोसन झुकाव" लाई स्टिक अक्षमा म्याप गर्नुहोस्।</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>मोसन स्टियरिङ रिसेट गर्नुहोस्</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>फ्लिक स्टिक (दायाँ स्टिक)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>फ्लिक स्टिक (बायाँ स्टिक)</value></data>
@@ -4149,7 +4149,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>मेनु होस्ट सतह समर्थित छैन ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>मेनु सेल आइकन पहिचान भएन ({0}), त्यसैले सेलले आफ्नो पाठ लेबल राख्छ</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>आउटपुट</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>बटनहरू</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>कुञ्जी र माउस</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>नोट र कन्ट्रोल</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>हातहरू</value></data>
@@ -5269,7 +5268,7 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>एनालग कीका एक्चुएसन बिन्दुहरू आयात भएनन्।</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD ले यो कन्ट्रोलरलाई एउटा एडाप्टरमार्फत अर्को यन्त्रमा पठाएको थियो। PadForge ले यसलाई यही PC मा चलाउँछ, र रिमोट लिङ्कले यसलाई PadForge चलिरहेको अर्को PC मा पठाउँछ।</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge ले दुई स्टिक पढ्छ, र यसले तेस्रो स्टिकको नाम दिन्छ।</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>स्टेयरिङ ह्विल इमुलेसन आयात भएन। “बटनहरू” अन्तर्गत ह्विल म्याप गर्नुहोस्।</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>स्टेयरिङ ह्विल इमुलेसन आयात भएन। “म्यापिङहरू” अन्तर्गत ह्विल म्याप गर्नुहोस्।</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>यो प्रोफाइलले यसको Profiles फोल्डरको छेउमा रहेको Actions.xml मा नभएको विशेष कार्यको नाम दिन्छ: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>यो सेटिङ आयात भएन: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD ले यी इनपुटहरूलाई Windows सम्म पुग्न रोकेको थियो। यन्त्रहरू पृष्ठमा {0} का लागि म्याप गरिएका इनपुटहरू रोक्नुहोस् सक्रिय गर्नुहोस्, जसले यो प्रोफाइलले म्याप गर्ने इनपुटहरू रोक्छ।</value></data>
@@ -5278,7 +5277,7 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>यो फाइलले दुई कन्ट्रोलरलाई छुट्टै राख्छ। PadForge मा, स्लटमा भएको जुनसुकै कन्ट्रोलरले यी म्यापिङहरू सक्रिय गर्छ।</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>चाल गति वा फ्लिक आयात भएन।</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>यी आयात भएनन्। यिनलाई “मोसन र टच” अन्तर्गत सेट गर्नुहोस्।</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>यो फाइलमा कुनै पनि कुराले यो लेयर खोल्दैन। “बटनहरू” अन्तर्गत लेयरमा दायाँ-क्लिक गरेर “एक्टिभेटर कन्फिगर गर्नुहोस्” छान्नुहोस्।</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>यो फाइलमा कुनै पनि कुराले यो लेयर खोल्दैन। “म्यापिङहरू” अन्तर्गत लेयरमा दायाँ-क्लिक गरेर “एक्टिभेटर कन्फिगर गर्नुहोस्” छान्नुहोस्।</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>थिच्दा यसका बटनहरूले यी चलाउँछन्: {0}।</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>प्रोफाइल सर्टकट</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>प्रोफाइल सर्टकटले गर्ने काम गर्छ: नाम दिइएको प्रोफाइल, अर्को प्रोफाइल वा अघिल्लो प्रोफाइल लोड गर्छ, विन्डो देखाउँछ वा लुकाउँछ, वा भर्चुअल कन्ट्रोलरहरू बन्द र फेरि सुरु गर्छ।</value></data>
@@ -5555,7 +5554,7 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge ह्यान्डहेल्ड बटनहरू (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro प्रोफाइल (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge कुञ्जी लाइटहरू (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>म्याक्रोले {0} थिच्न सक्दैन। “बटनहरू” अन्तर्गतको म्यापिङले सक्छ।</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>म्याक्रोले {0} थिच्न सक्दैन। “म्यापिङहरू” अन्तर्गतको पङ्क्तिले सक्छ।</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge ले आठवटा स्क्रिन ओभरले चलाउँछ, र यो reWASD को नवौँ वा दशौँ क्रसहेयर हो।</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>reWASD को पूर्वनिर्धारित अनुसार, PadForge ले जाइरो बायाँ र दायाँ रोलबाट र झुकाव याउबाट पढ्छ। reWASD को Preferences ले यी दुई साट्न सक्छ, र यो फाइलले ती साटिएका थिए कि थिएनन् भन्दैन।</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>टिल्ट मोडमा, reWASD को झुकाव ठाडो अक्षको वरिपरिको घुमाइ हो, र मोसन सेन्सरले त्यो घुमाइको कुनै कोण दिँदैन।</value></data>

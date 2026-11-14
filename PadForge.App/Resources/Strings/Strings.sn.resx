@@ -1364,8 +1364,8 @@
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR iri kushanda</value></data>
   <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR iri kushanda, dhiraivha yakabatana</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Batidza kutumira telemetry mumutambo uye uinongedzere kuPC ino nepoti iyi.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Chimiro chemusoro ndiwo mutsara weHead Tracker pa[Midziyo]. Isa kutenderera kwemusoro pa-axis yestick muchikamu cheMabhatani chekontiroura.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Hukoshi uhu ndiwo mutsara weGame Telemetry pa[Midziyo]. Huise muchikamu cheMabhatani chekontiroura kana kuti hushandise kutanga mamacro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Chimiro chemusoro ndiwo mutsara weHead Tracker pa[Midziyo]. Isa kutenderera kwemusoro pa-axis yestick muchikamu cheMamapping chekontiroura.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Hukoshi uhu ndiwo mutsara weGame Telemetry pa[Midziyo]. Huise muchikamu cheMamapping chekontiroura kana kuti hushandise kutanga mamacro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Nzvimbo, saizi nekujeka kwemenyu zvinogadzwa pamenyu yacho, muchikamu che[Mamacro neMenyu] chekontiroura.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopa kero</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Foni inobatana inoratidzwa pano nepapeji reMidziyo, paunoipa kukontiroura.</value></data>
@@ -1434,4 +1434,5 @@
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Mapurofaira akagadzirwa kare erudzi rwese rwemitambo. Sarudza imwe, ipa chero kontiroura, wotamba.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} pa{1} zvakabatidzwa</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Mapurofaira aya akapinzwa ane shanduro itsva paSteam Workshop. Apinze zvakare kubva muWana mapurofaira kuti uwane shanduko.</value></data>
+  <data name="Pad_Mappings" xml:space="preserve"><value>Mamapping</value></data>
 </root>

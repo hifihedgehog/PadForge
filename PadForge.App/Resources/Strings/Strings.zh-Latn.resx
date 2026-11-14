@@ -405,8 +405,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Zài yóuxì zhōng kāiqǐ yáocè shūchū, bìng jiāng qí zhǐxiàng zhè tái diànnǎo hé cǐ duānkǒu.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Zài mónǐqì zhōng tiānjiā yí gè tǐgǎn yuán, shǐyòng zhè tái diànnǎo de dìzhǐ hé cǐ duānkǒu.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Mózǔ de xiàoguǒ huì sòngdá měi gè jùbèi xiāngyìng yìngjiàn de kòngzhìqì.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Tóubù zīshì shì [Shèbèi] zhōng de Tóubù zhuīzōngqì xíng. Zài kòngzhìqì de Ànjiàn bùfen zhōng jiāng tóubù piānháng yìngshè dào yáogǎn zhóu.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Zhèxiē shùzhí shì [Shèbèi] zhōng de Yóuxì yáocè xíng. Kě zài kòngzhìqì de Ànjiàn bùfen zhōng yìngshè tāmen, huò yòng tāmen chùfā hóng.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Tóubù zīshì shì [Shèbèi] zhōng de Tóubù zhuīzōngqì xíng. Zài kòngzhìqì de Yìngshè bùfen zhōng jiāng tóubù piānháng yìngshè dào yáogǎn zhóu.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Zhèxiē shùzhí shì [Shèbèi] zhōng de Yóuxì yáocè xíng. Kě zài kòngzhìqì de Yìngshè bùfen zhōng yìngshè tāmen, huò yòng tāmen chùfā hóng.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Càidān zìshēn de wèizhì, dàxiǎo hé bù tòumíngdù zài càidān shàng shèzhì, wèiyú kòngzhìqì de [Hóng yǔ càidān] bùfen.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Láiyuán</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack jí rènhé fāsòng qí UDP géshì de chéngxù</value></data>
@@ -2963,7 +2963,7 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Tǐgǎn zhuǎnxiàng</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° zhì {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Qīngxié sǐqū, Kòngzhìqì cháoxiàng</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Tǐgǎn qīngxié shūrù de shèzhì: xiàng fāngxiàngpán yíyàng qīngxié kòngzhìqì. Zài “Ànjiàn” zhōng bǎ “Tǐgǎn qīngxié” yìngshè dào yáogǎn zhóu.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Tǐgǎn qīngxié shūrù de shèzhì: xiàng fāngxiàngpán yíyàng qīngxié kòngzhìqì. Zài “Yìngshè” zhōng bǎ “Tǐgǎn qīngxié” yìngshè dào yáogǎn zhóu.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Chóngzhì tǐgǎn zhuǎnxiàng</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (yòu yáogǎn)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (zuǒ yáogǎn)</value></data>
@@ -3904,7 +3904,6 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>bù zhīchí càidān zhǔjī biǎomiàn ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>wúfǎ shíbié càidān dānyuángé túbiāo ({0}), gāi dānyuángé bǎoliú qí wénběn biāoqiān</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Shūchū</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Ànjiàn</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Jiànpán yǔ shǔbiāo</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Yīnfú yǔ kòngzhì biànhuà</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Shuāngshǒu</value></data>

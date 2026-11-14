@@ -1123,7 +1123,6 @@
   <data name="Extras_Group_Send" xml:space="preserve"><value>Emondo ambue hendápe</value></data>
   <data name="Extras_Tile_RemoteLink" xml:space="preserve"><value>Emboguata mando virtual kuéra ambue PCpe.</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Joaju jey ijeheguíva, puerto, ñembojoaju identidad, joaju direcciónpe</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Votõ kuéra</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tecla ha mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nota ha control</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Pokuéra</value></data>
@@ -1161,8 +1160,8 @@
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR mohendapyre</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR noñemohendái</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Mopotĩ activador</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Akã jere ojehechauka Head Tracker rysýipe [Mba'e'oka kuéra] kuatiaroguépe. Embojoaju akã jere peteĩ palanca ejépe mando Votõ kuéra pehẽme.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Umi valor ojehechauka Game Telemetry rysýipe [Mba'e'oka kuéra] kuatiaroguépe. Embojoaju umíva mando Votõ kuéra pehẽme térã eipuru macro omoñepyrũ hag̃ua.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Akã jere ojehechauka Head Tracker rysýipe [Mba'e'oka kuéra] kuatiaroguépe. Embojoaju akã jere peteĩ palanca ejépe mando Asignación kuéra pehẽme.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Umi valor ojehechauka Game Telemetry rysýipe [Mba'e'oka kuéra] kuatiaroguépe. Embojoaju umíva mando Asignación kuéra pehẽme térã eipuru macro omoñepyrũ hag̃ua.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Peteĩ menú renda, tamaño ha opacidad oñemboheko menúme voi, mando [Macro ha menúkuéra] pehẽme.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Ekopia dirección</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Pumbyry ojoajúva ojehechauka ko'ápe ha Mba'e'oka kuéra kuatiaroguépe, ha upépe emoĩ peteĩ mandope.</value></data>

@@ -1161,7 +1161,6 @@
   <data name="Search_Placeholder" xml:space="preserve"><value>Agsapul kadagiti setting, device ken profile</value></data>
   <data name="Search_Title" xml:space="preserve"><value>Agsapul</value></data>
   <data name="Search_Results" xml:space="preserve"><value>Dagiti resulta</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Dagiti button</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Dagiti key ken mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Dagiti nota ken kontrol</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Dagiti ima</value></data>
@@ -1234,8 +1233,8 @@
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>I-map ti kapardas, dagiti pedal ken gear nga ipatulod ti game ti panagmaneho, kas iti aniaman nga input.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Alaen dagiti epekto ti adaptive trigger ken silaw manipud kadagiti mod ti game a naaramid para iti DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Isindi ti telemetry output iti game ket iturongmo iti daytoy a PC ken port.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ti posision ti ulo ket ti row a Head Tracker iti [Dagiti device]. I-map ti yaw ti ulo iti axis ti stick iti seksion a Dagiti button ti maysa a controller.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Dagiti value ket ti row a Game Telemetry iti [Dagiti device]. I-map dagitoy iti seksion a Dagiti button ti maysa a controller wenno usarem a pangrugi kadagiti macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ti posision ti ulo ket ti row a Head Tracker iti [Dagiti device]. I-map ti yaw ti ulo iti axis ti stick iti seksion a Dagiti mapping ti maysa a controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Dagiti value ket ti row a Game Telemetry iti [Dagiti device]. I-map dagitoy iti seksion a Dagiti mapping ti maysa a controller wenno usarem a pangrugi kadagiti macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ti bukod a lugar, kadakkel ken opacity ti maysa a menu ket maikabil iti menu, iti seksion a [Dagiti macro ken menu] ti maysa a controller.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiaen ti address</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Ti telepono a sumilpo ket agparang ditoy ken iti panid a Dagiti device, a pangisaadam kenkuana iti maysa a controller.</value></data>

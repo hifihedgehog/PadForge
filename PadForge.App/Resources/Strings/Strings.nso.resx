@@ -1187,8 +1187,8 @@
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Hlakola trigger</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mapa lebelo, dipedala le digia tšeo papadi ya go otlela e di romelago, go swana le tsenyo efe goba efe.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Bula go romela telemetry ka papading gomme o e lebiše go PC ye le port ye.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Maemo a hlogo ke mothalo wa Head tracker go [Didirišwa]. Mapa go retologa ga hlogo go axis ya stick karolong ya Dikonope ya khontroulara.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Dipalo ke mothalo wa Telemetry ya papadi go [Didirišwa]. Di mape karolong ya Dikonope ya khontroulara goba o di diriše go thomiša dimakro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Maemo a hlogo ke mothalo wa Head tracker go [Didirišwa]. Mapa go retologa ga hlogo go axis ya stick karolong ya Dimapo ya khontroulara.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Dipalo ke mothalo wa Telemetry ya papadi go [Didirišwa]. Di mape karolong ya Dimapo ya khontroulara goba o di diriše go thomiša dimakro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Lefelo, bogolo le go bonagala ga lelokelelo di beakanywa go lelokelelo leo, karolong ya [Dimakro le Malokelelo] ya khontroulara.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiša aterese</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Mogala wo o kgokaganago o bonagala mo le letlakaleng la Didirišwa, moo o o abelago khontroulara.</value></data>
@@ -1258,4 +1258,5 @@
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Diprofaele tše di lokišitšwego bakeng sa mohuta ka moka wa dipapadi. Kgetha e tee, abela khontroulara efe goba efe, gomme o bapale.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} ya {1} di butšwe</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Diprofaele tše di tsentšhitšwego di na le diphetolelo tše mpsha go Steam Workshop. Di tsenye gape go tšwa go Hwetša diprofaele gore o hwetše diphetogo.</value></data>
+  <data name="Pad_Mappings" xml:space="preserve"><value>Dimapo</value></data>
 </root>

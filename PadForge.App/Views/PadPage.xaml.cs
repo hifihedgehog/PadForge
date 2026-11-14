@@ -110,6 +110,11 @@ namespace PadForge.Views
             // ring on the picked control moves with it (#574).
             foreach (var picture in PicturesWithPick())
                 picture.PickBoundsChanged += OnPickBoundsChanged;
+            // A click on the picture that lands on no control lets go of the
+            // picked one, and so does Escape. The release is heard however a
+            // picture handled it: the 3D model marks its own as handled.
+            PictureHost.AddHandler(MouseLeftButtonUpEvent, new MouseButtonEventHandler(PictureHost_MouseLeftButtonUp), true);
+            KeyDown += PadPage_KeyDown;
         }
 
         /// <summary>Hands the header the view model that knows each slot's
@@ -137,10 +142,10 @@ namespace PadForge.Views
 
         /// <summary>The label column of a stick's and a trigger's first
         /// rows: the board's 96 at the least and 150 at the most, where a
-        /// label wraps. The rest of such a row (a slider at its least, a
-        /// value box, a unit and a reset) takes 204, and the column grows
-        /// by 60 before the curve beside it takes the room.</summary>
-        internal const double FirstRowLabelLeast = 96, FirstRowLabelMost = 150, FirstRowRest = 204, FirstRowGrowth = 60;
+        /// label wraps. The rest of such a row (a slider, a value box, a
+        /// unit and a reset) takes 264 where the rows stand in a column
+        /// beside the card's live view.</summary>
+        internal const double FirstRowLabelLeast = 96, FirstRowLabelMost = 150, FirstRowRest = 264;
 
         /// <summary>The label column's width for labels of these widths: the
         /// widest and two more, so a label never wraps for the part of a
@@ -152,12 +157,35 @@ namespace PadForge.Views
             return Math.Clamp(Math.Ceiling(widest + 2), FirstRowLabelLeast, FirstRowLabelMost);
         }
 
+        /// <summary>The parts of a stick's live view, across: its well's two
+        /// edges (a padding of 16 and a line of 1 each), the radar, the
+        /// gap after it, and in the readings a column for each axis and
+        /// the captions' column, which is as wide as the wider caption and
+        /// 8 more, 38 at the least.</summary>
+        internal const double StickWellEdges = 34, StickRadarWidth = 212, StickWellGap = 18, StickAxisColumn = 112,
+            StickCaptionLeast = 38, StickCaptionRest = 8;
+
+        /// <summary>The least width a stick's live view takes beside its
+        /// settings, for captions of these widths: the radar with the
+        /// readings beside it, in the well. English's two captions keep the
+        /// column at its least, and the view takes 526.</summary>
+        internal static double StickLiveLeast(IEnumerable<double> captionWidths)
+        {
+            double widest = 0;
+            foreach (double width in captionWidths) widest = Math.Max(widest, width);
+            double captions = Math.Max(StickCaptionLeast, Math.Ceiling(widest) + StickCaptionRest);
+            return StickWellEdges + StickRadarWidth + StickWellGap + captions + 2 * StickAxisColumn;
+        }
+
         /// <summary>Sizes that column to the language. The five labels are
         /// measured in the section's own face and size, and the section's
-        /// three numbers (FirstRowLabelWidth and the two after it in
-        /// PadPage.xaml) are set from the widest. It runs when the page is
-        /// shown and when the language changes. English keeps the board's
-        /// 96, 300 and 360.</summary>
+        /// two numbers (FirstRowLabelWidth and the one after it in
+        /// PadPage.xaml) are set from the widest. The section's third
+        /// number, the least width of a stick's live view beside its
+        /// settings, is set from the readings' two captions, measured in
+        /// their own face and size. It runs when the page is shown and when
+        /// the language changes. English keeps the board's 96 and 360, and
+        /// 526.</summary>
         private void SizeFirstRows()
         {
             var s = Strings.Instance;
@@ -174,8 +202,131 @@ namespace PadForge.Views
             }
             double width = FirstRowLabelWidth(widths);
             SticksSectionScroll.Resources["FirstRowLabelWidth"] = width;
-            SticksSectionScroll.Resources["FirstRowSettingsBasis"] = width + FirstRowRest;
-            SticksSectionScroll.Resources["FirstRowSettingsMost"] = width + FirstRowRest + FirstRowGrowth;
+            SticksSectionScroll.Resources["FirstRowSettingsMost"] = width + FirstRowRest;
+
+            // The readings' captions, in the readings' mono face at 11.
+            var mono = new Typeface(TryFindResource("TelemetryFontFamily") as FontFamily ?? typeface.FontFamily,
+                FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
+            var captions = new List<double>();
+            foreach (string caption in new[] { s.Instr_Raw, s.Instr_Out })
+            {
+                if (string.IsNullOrEmpty(caption)) continue;
+                var text = new FormattedText(caption, CultureInfo.CurrentUICulture, FlowDirection, mono, 11, Brushes.Black, dip);
+                captions.Add(text.WidthIncludingTrailingWhitespace);
+            }
+            SticksSectionScroll.Resources["StickLiveLeast"] = StickLiveLeast(captions);
+        }
+
+        // ─────────────────────────────────────────────
+        //  Letting go of the picked control (#574)
+        // ─────────────────────────────────────────────
+
+        // Where the left button went down on the picture, whether that
+        // press has picked or recorded a control since, and whether the
+        // pointer has left the click's reach while it was held.
+        private Point? _pictureDown;
+        private bool _pictureClickActed;
+        private bool _pictureDragged;
+
+        /// <summary>How far the pointer may move from where it went down
+        /// and the press still be a click. It is the 3D model's own
+        /// measure: past it, the press turns the model.</summary>
+        internal const double PictureClickSlack = ControllerModelView.DragThreshold;
+
+        /// <summary>Whether the pointer is within a click's reach of where
+        /// it went down: no further than <see cref="PictureClickSlack"/>
+        /// in a straight line.</summary>
+        internal static bool IsPictureClick(Point down, Point at)
+        {
+            double dx = at.X - down.X, dy = at.Y - down.Y;
+            return dx * dx + dy * dy <= PictureClickSlack * PictureClickSlack;
+        }
+
+        private void PictureHost_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _pictureDown = e.GetPosition(PictureHost);
+            _pictureClickActed = false;
+            _pictureDragged = false;
+        }
+
+        /// <summary>A press that leaves the click's reach is a drag from
+        /// then on, also when it comes back to where it began: the model
+        /// has turned by then. A press whose release the picture never saw
+        /// (the button came up off the picture) is forgotten once the
+        /// pointer moves over the picture with the button up.</summary>
+        private void PictureHost_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (_pictureDown is not Point down) return;
+            if (e.LeftButton != MouseButtonState.Pressed) { _pictureDown = null; return; }
+            if (!IsPictureClick(down, e.GetPosition(PictureHost))) _pictureDragged = true;
+        }
+
+        /// <summary>A click on the picture that lands on no control lets go
+        /// of the picked one (owner, 2026-11-14): there was no way to put
+        /// the bar under the picture away again. A click on a control picks
+        /// it, a click on a legend tag picks its control, a press that
+        /// turned the model is no click, and a button or a list over the
+        /// picture keeps its own click.</summary>
+        private void PictureHost_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Point? down = _pictureDown;
+            _pictureDown = null;
+            if (down is not Point at || _pictureClickActed || _pictureDragged) return;
+            if (!IsPictureClick(at, e.GetPosition(PictureHost))) return;
+            if (!IsBarePicture(e.OriginalSource as DependencyObject)) return;
+            LetGoOfThePick();
+        }
+
+        /// <summary>Whether a click's target is the picture itself: inside
+        /// the picture's host, and in no button, list, text box or slider
+        /// thumb that stands over it.</summary>
+        private bool IsBarePicture(DependencyObject source)
+        {
+            for (var at = source; at != null; at = ParentOf(at))
+            {
+                if (IsAControlOverThePicture(at)) return false;
+                if (ReferenceEquals(at, PictureHost)) return true;
+            }
+            return false;
+        }
+
+        /// <summary>Whether an element is a control that takes its own
+        /// clicks: a button of any kind, a list, a text box or a thumb.</summary>
+        internal static bool IsAControlOverThePicture(DependencyObject element)
+            => element is System.Windows.Controls.Primitives.ButtonBase
+                or System.Windows.Controls.Primitives.Selector
+                or System.Windows.Controls.Primitives.TextBoxBase
+                or System.Windows.Controls.Primitives.Thumb;
+
+        private static DependencyObject ParentOf(DependencyObject at)
+            => at is Visual or System.Windows.Media.Media3D.Visual3D
+                ? VisualTreeHelper.GetParent(at)
+                : LogicalTreeHelper.GetParent(at);
+
+        /// <summary>Lets go of the picked control: its bar and its ring go.
+        /// A lone recording is canceled first, the way the line's Stop
+        /// cancels it, so no control is left listening with nothing to show
+        /// for it. Map All runs on: its own Stop ends it.</summary>
+        private void LetGoOfThePick()
+        {
+            if (DataContext is not PadViewModel vm || !vm.IsButtonsPictureView || vm.IsMapAllActive) return;
+            if (vm.PickedRow == null) return;
+            string recording = vm.CurrentRecordingTarget;
+            if (!string.IsNullOrEmpty(recording))
+                ControllerElementRecordRequested?.Invoke(this, recording);
+            vm.PickedTarget = null;
+        }
+
+        /// <summary>Escape lets go of the picked control, for a hand on the
+        /// keyboard. Not while a control records: a key may be the input it
+        /// waits for.</summary>
+        private void PadPage_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Escape || e.Handled) return;
+            if (DataContext is not PadViewModel vm || !vm.IsButtonsPictureView || vm.PickedRow == null) return;
+            if (vm.IsMapAllActive || !string.IsNullOrEmpty(vm.CurrentRecordingTarget)) return;
+            vm.PickedTarget = null;
+            e.Handled = true;
         }
 
         // ─────────────────────────────────────────────
@@ -1346,6 +1497,8 @@ namespace PadForge.Views
 
         private void OnModelRecordRequested(object sender, string targetName)
         {
+            // The press landed on a control, so its release lets go of none.
+            _pictureClickActed = true;
             if (DataContext is PadViewModel vm)
             {
                 // The record handler's row lookup needs the slot's own row
@@ -1391,6 +1544,8 @@ namespace PadForge.Views
         /// jump to the Mappings tab while the table lived there (#574).</summary>
         private void OnAnnotationChipNavigate(object sender, string targetSettingName)
         {
+            // A legend tag was clicked: that click lets go of no control.
+            _pictureClickActed = true;
             if (DataContext is not PadViewModel vm) return;
             if (vm.RowOfTarget(targetSettingName) == null) return;
             vm.PickedTarget = targetSettingName;
@@ -1738,7 +1893,7 @@ namespace PadForge.Views
         /// <summary>The line under the picture's Stop: ends Map All when it
         /// runs, else cancels the one recording. The cancel goes the way a
         /// second click on the control goes, through the page's record
-        /// event, which the window answers by cancelling the recording of
+        /// event, which the window answers by canceling the recording of
         /// the control it is told is already recording.</summary>
         private void ListeningStop_Click(object sender, RoutedEventArgs e)
         {
@@ -3816,6 +3971,16 @@ namespace PadForge.Views
                 // started or ended: the ring goes to the picked control, or
                 // goes away with it or while it records.
                 QueuePickRingSync();
+            }
+            else if (e.PropertyName == nameof(PadViewModel.ShowPictureBar))
+            {
+                // The bar went away with the pick: the picture takes back
+                // the room it kept for it. Left as it was, the picture stayed
+                // small over an empty band (seen 2026-11-14, the first time a
+                // pick could be let go of). The bar's coming is heard from
+                // the bar itself, once it has a height to size the picture
+                // by (PictureBar_SizeChanged).
+                if (sender is PadViewModel barVm && !barVm.ShowPictureBar) SyncButtonsLayout();
             }
             else if (e.PropertyName == nameof(PadViewModel.RumbleAudioTabVisible)
                      || e.PropertyName == nameof(PadViewModel.OutputTabVisible))

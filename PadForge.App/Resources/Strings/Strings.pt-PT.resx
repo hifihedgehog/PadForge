@@ -405,8 +405,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Ative a saída de telemetria no jogo e aponte-a para este PC e esta porta.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>No emulador, adicione uma fonte de movimento com o endereço deste PC e esta porta.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Os efeitos de um mod chegam a todos os comandos que têm o hardware necessário.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>A posição da cabeça é a linha Rastreador de cabeça em [Dispositivos]. Mapeie a rotação da cabeça para um eixo de manípulo na secção Botões de um comando.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Os valores são a linha Telemetria de jogos em [Dispositivos]. Mapeie-os na secção Botões de um comando ou use-os para acionar macros.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>A posição da cabeça é a linha Rastreador de cabeça em [Dispositivos]. Mapeie a rotação da cabeça para um eixo de manípulo na secção Mapeamentos de um comando.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Os valores são a linha Telemetria de jogos em [Dispositivos]. Mapeie-os na secção Mapeamentos de um comando ou use-os para acionar macros.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>O local, o tamanho e a opacidade de um menu definem-se no próprio menu, na secção [Macros e menus] de um comando.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Fontes</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack e tudo o que envia o seu formato UDP</value></data>
@@ -2990,7 +2990,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Direção por movimento</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° a {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zonas mortas da inclinação, Orientação do comando</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Definições da entrada Inclinação de movimento: incline o comando como um volante. Mapeie "Inclinação de movimento" para um eixo de manípulo na secção Botões.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Definições da entrada Inclinação de movimento: incline o comando como um volante. Mapeie "Inclinação de movimento" para um eixo de manípulo na secção Mapeamentos.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Repor direção por movimento</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (manípulo direito)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (manípulo esquerdo)</value></data>
@@ -3931,7 +3931,6 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>superfície anfitriã do menu não suportada ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ícone da célula do menu não reconhecido ({0}), pelo que a célula mantém a etiqueta de texto</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Saída</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Botões</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Teclas e rato</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Notas e controlos</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Mãos</value></data>

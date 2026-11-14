@@ -1062,8 +1062,8 @@
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR e tsentswe</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Phepafatsa trigger</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Bulela telemetry mo motshamekong o bo o e lebisa kwa PC e le kwa port e.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Maemo a tlhogo ke mola wa Head Tracker mo go [Didirisiwa]. Golaganya go retologa ga tlhogo le axis ya stick mo karolong ya Dikonopo ya controller.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Dipalo tse ke mola wa Game Telemetry mo go [Didirisiwa]. Di golaganye mo karolong ya Dikonopo ya controller kgotsa o di dirise go simolodisa dimacro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Maemo a tlhogo ke mola wa Head Tracker mo go [Didirisiwa]. Golaganya go retologa ga tlhogo le axis ya stick mo karolong ya Dikgolagano ya controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Dipalo tse ke mola wa Game Telemetry mo go [Didirisiwa]. Di golaganye mo karolong ya Dikgolagano ya controller kgotsa o di dirise go simolodisa dimacro.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopolola aterese</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Founu e e golaganang e bonala fa le mo tsebeng ya Didirisiwa, kwa o e abelang controller teng.</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Batla didirisiwa</value></data>
@@ -1131,4 +1131,5 @@
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Diporofaele tse di setseng di baakantswe tsa mofuta otlhe wa metshameko. Tlhopha nngwe, abela controller epe fela, mme o tshameke.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} ya {1} di buletswe</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Diporofaele tse di tsentsweng tse di na le diphetolelo tse dintšhwa mo Steam Workshop. Di tsenye gape go tswa mo Bona diporofaele go bona diphetogo.</value></data>
+  <data name="Pad_Mappings" xml:space="preserve"><value>Dikgolagano</value></data>
 </root>

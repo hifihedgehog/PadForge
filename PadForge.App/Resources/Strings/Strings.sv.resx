@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Slå på telemetriutdata i spelet och rikta den mot den här datorn och porten.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Lägg till en rörelsekälla i emulatorn med den här datorns adress och porten.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>En mods effekter når varje handkontroll som har maskinvaran för dem.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Huvudets position är raden Huvudspårare under [Enheter]. Mappa huvudets girning till en spakaxel i en handkontrolls avsnitt Knappar.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Värdena finns på raden Spelstatistik under [Enheter]. Mappa dem i en handkontrolls avsnitt Knappar eller använd dem för att utlösa makron.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Huvudets position är raden Huvudspårare under [Enheter]. Mappa huvudets girning till en spakaxel i en handkontrolls avsnitt Mappningar.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Värdena finns på raden Spelstatistik under [Enheter]. Mappa dem i en handkontrolls avsnitt Mappningar eller använd dem för att utlösa makron.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>En menys egen placering, storlek och opacitet ställs in på menyn, i en handkontrolls avsnitt [Makron och menyer].</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Källor</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack och allt som skickar dess UDP-format</value></data>
@@ -3179,7 +3179,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Rörelsestyrning</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° till {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Döda zoner för lutning, Handkontrollens orientering</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Inställningar för inmatningen Rörelse lutning: luta handkontrollen som en ratt. Mappa ”Rörelse lutning” till en spakaxel under Knappar.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Inställningar för inmatningen Rörelse lutning: luta handkontrollen som en ratt. Mappa ”Rörelse lutning” till en spakaxel under Mappningar.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Återställ rörelsestyrning</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (höger spak)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (vänster spak)</value></data>
@@ -4149,7 +4149,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menyns värdyta stöds inte ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menycellens ikon kändes inte igen ({0}), så cellen behåller sin textetikett</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Utdata</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Knappar</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tangenter och mus</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Noter och kontroller</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Händer</value></data>
@@ -5269,7 +5268,7 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analoga aktiveringspunkter för tangenter fördes inte över.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD skickade den här handkontrollen till en annan enhet via en adapter. PadForge spelar upp den på den här datorn, och Fjärrlänk skickar den till en annan dator som kör PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge läser två spakar, och här nämns en tredje.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emulering av ratt fördes inte över. Mappa ratten under Knappar.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emulering av ratt fördes inte över. Mappa ratten under Mappningar.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Profilen nämner en särskild åtgärd som saknas i Actions.xml bredvid mappen Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Den här inställningen fördes inte över: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD hindrade de här insignalerna från att nå Windows. Aktivera Fånga upp mappade inmatningar för {0} på sidan Enheter, vilket stoppar dem som profilen mappar.</value></data>
@@ -5278,7 +5277,7 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Filen håller två handkontroller isär. I PadForge utlöser vilken handkontroll som helst på platsen de här mappningarna.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Rörelsehastigheten eller snärten fördes inte över.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Dessa fördes inte över. Ställ in dem under Rörelse och touch.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ingenting i filen öppnar det här lagret. Högerklicka på lagret under Knappar och välj Konfigurera aktiverare.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ingenting i filen öppnar det här lagret. Högerklicka på lagret under Mappningar och välj Konfigurera aktiverare.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Dess knappar kör följande när de trycks: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profilgenväg</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Gör det en profilgenväg gör: läser in en namngiven profil, nästa eller föregående, visar eller döljer fönstret eller stänger av och slår på de virtuella handkontrollerna.</value></data>
@@ -5555,7 +5554,7 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge-knappar för handhållen enhet (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-profil (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge-tangentljus (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Ett makro kan inte trycka på {0}. En mappning under Knappar kan det.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Ett makro kan inte trycka på {0}. En rad under Mappningar kan det.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge kör åtta skärmöverlägg, och det här är reWASD:s nionde eller tionde hårkors.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge läser Gyro vänster och höger från roll och Lutning från gir, som är reWASD:s standard. reWASD:s inställningar kan byta plats på de två, och filen anger inte om det gjordes.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>I läget Tilt är reWASD:s Lean en vridning runt den lodräta axeln, och en rörelsesensor ger ingen vinkel för den vridningen.</value></data>

@@ -3518,8 +3518,14 @@
                     <!-- ══════════════════════════════════════
                          CONTROLLER MODEL (2D / 3D)
                          ══════════════════════════════════════ -->
+                    <!-- The host takes a click anywhere in it, also where a
+                         picture draws nothing: a click that lands on no control
+                         lets go of the picked one (PictureHost_MouseLeftButtonUp). -->
                     <Grid x:Name="PictureHost" AutomationProperties.AutomationId="ControllerModelHost"
-                          SizeChanged="PictureHost_SizeChanged">
+                          Background="Transparent"
+                          SizeChanged="PictureHost_SizeChanged"
+                          PreviewMouseLeftButtonDown="PictureHost_PreviewMouseLeftButtonDown"
+                          PreviewMouseMove="PictureHost_PreviewMouseMove">
                         <views:ControllerModelView x:Name="ControllerModel3D"
                                                    AutomationProperties.Name="{Binding Pad_View_Picture, Source={x:Static strings:Strings.Instance}}"/>
                         <views:ControllerModel2DView x:Name="ControllerModel2D" Visibility="Collapsed"
@@ -5098,15 +5104,19 @@
                             <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
                         </Style>
                         <!-- The first rows of a stick's and a trigger's card stand in a
-                             column of their own beside the card's chart (the world-class
-                             pass). Their label column is as wide as the widest of their
-                             labels in the language, 96 at the least and 150 at the most,
-                             where a label wraps. The column is the label and 204 more,
-                             and grows by 60. The three numbers here are English's, and
-                             PadPage.SizeFirstRows sets them for the language. -->
+                             column of their own beside the card's live view, in a card
+                             wide enough for both. Their label column is as wide as the
+                             widest of their labels in the language, 96 at the least and
+                             150 at the most, where a label wraps. The column is the label
+                             and 264 more. A stick's live view stands beside that column
+                             only where it has its least width: its well's edges, the
+                             radar, and the readings beside the radar, whose captions'
+                             column grows with the language. The three numbers here are
+                             English's, and PadPage.SizeFirstRows sets them for the
+                             language. -->
                         <sys:Double x:Key="FirstRowLabelWidth">96</sys:Double>
-                        <sys:Double x:Key="FirstRowSettingsBasis">300</sys:Double>
                         <sys:Double x:Key="FirstRowSettingsMost">360</sys:Double>
+                        <sys:Double x:Key="StickLiveLeast">526</sys:Double>
                         <Style x:Key="DzFirstLabel" TargetType="TextBlock" BasedOn="{StaticResource DzLabel}">
                             <Setter Property="Width" Value="{DynamicResource FirstRowLabelWidth}"/>
                         </Style>
@@ -5146,9 +5156,18 @@
                               AutomationProperties.Name="{Binding Pad_Sticks_Header, Source={x:Static strings:Strings.Instance}}">
                     <StackPanel>
                     <ItemsControl ItemsSource="{Binding StickConfigs}">
+                        <!-- The sticks stand two to a row where each has 600, as the
+                             cards of the other sections do, the left stick at the
+                             left. A stick alone takes the row. A card keeps its own
+                             height beside a taller one, as one with More open. -->
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <controls:TileGridPanel MinItemWidth="600" Gap="16" RowGap="0" Balance="True"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type vm:StickConfigItem}">
-                                <Border Style="{StaticResource CardBorder}">
+                                <Border Style="{StaticResource CardBorder}" VerticalAlignment="Top">
                                 <StackPanel>
                                     <!-- The card's head, as the Sticks board draws it: the stick's mark, its
                                          name, what its deadzone is set to in the mono face, and Reset All at
@@ -5180,14 +5199,16 @@
                                     </DockPanel>
 
                                     <!-- The card's body, as every part card's: the settings, then the live
-                                         view beside them while both fit and under them where they do not.
-                                         The settings' column is sized for the language, so each row's reset
-                                         stands beside its control. A curve for each axis, with its own live
-                                         dot, is under More: a curve for both axes up front only repeated
-                                         them, and showed the X axis alone. -->
-                                    <controls:PartBodyPanel SideBySideWidth="NaN" SettingsWidth="{DynamicResource FirstRowSettingsMost}"
-                                                            Gap="22" StackGap="16" Margin="0,6,8,6">
-                                        <StackPanel MaxWidth="{DynamicResource FirstRowSettingsMost}">
+                                         view, beside them in a wide card and under them in a card that
+                                         shares its row. Beside the view the settings' column is sized for
+                                         the language, so each row's reset stands beside its control. A
+                                         curve for each axis, with its own live dot, is under More: a curve
+                                         for both axes up front only repeated them, and showed the X axis
+                                         alone. The view stands beside the settings only where it has
+                                         room for the radar with the readings beside it. -->
+                                    <controls:PartBodyPanel SettingsWidth="{DynamicResource FirstRowSettingsMost}"
+                                                            LiveLeastWidth="{DynamicResource StickLiveLeast}" Margin="0,6,0,6">
+                                        <StackPanel>
                                             <!-- Up front (#574): one deadzone and one sensitivity preset for the stick. Each sets its X and
                                                  its Y setting together. The settings for one axis, and everything else, are under More. -->
                                             <controls:SettingRow Grow="True" MinHeight="44">
@@ -5253,17 +5274,17 @@
                                             </Button>
                                             </controls:SettingRow>
                                         </StackPanel>
-                                        <!-- Live preview: inset instrument panel (#175 iteration 21,
-                                             matching the trigger instrument), at its own width after
-                                             the settings. -->
-                                        <Border VerticalAlignment="Top" HorizontalAlignment="Left"
-                                                Background="{DynamicResource ControlFillColorDefaultBrush}"
-                                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
-                                                BorderThickness="1" CornerRadius="8" Padding="12">
-                                        <StackPanel MinWidth="216">
+                                        <!-- The stick's live view, in the well every part's live view has:
+                                             the radar, and beside it its legend and what it reads for each
+                                             axis, before PadForge's pipeline and after it. The readings take
+                                             the room the radar leaves, to 440, so the well is used from edge
+                                             to edge as a trigger's is. In a well too narrow for both, they
+                                             stand under the radar. -->
+                                        <Border Style="{StaticResource LiveWell}">
+                                        <controls:FlexLinePanel Gap="18" LineGap="12">
                                             <Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
                                                     BorderThickness="1" CornerRadius="8"
-                                                    Padding="4" Width="212" Height="212"
+                                                    Padding="4" Width="212" Height="212" VerticalAlignment="Center"
                                                     ClipToBounds="True">
                                                 <Grid Width="200" Height="200">
                                                     <!-- Radar ground (#175 artifact): near-black plot
@@ -5446,15 +5467,17 @@
                                                     </Canvas>
                                                 </Grid>
                                             </Border>
+                                            <StackPanel controls:FlexLinePanel.Grow="1" MaxWidth="440" VerticalAlignment="Center">
                                             <!-- Radar legend + peak readout (#175 competitor item 3):
-                                                 one quiet mono row aligned to the radar edges. Chips
+                                                 one quiet mono row over the readings, the chips at
+                                                 its start and the peak at its end. Chips
                                                  follow the ChipEmber / steel tint grammar at
                                                  legend scale (mono 9px). RAW/OUT reuse the instrument
                                                  caption strings. DZ and PEAK are locale-neutral
                                                  telemetry tokens like the axis-unit formats in
                                                  StickConfigItem. PeakReadout's value text is written by
                                                  StickPeakHoldBehavior. -->
-                                            <DockPanel Width="212" Margin="0,8,0,0" HorizontalAlignment="Center" LastChildFill="False">
+                                            <DockPanel LastChildFill="False">
                                                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
                                                     <Border Background="#1A58B6E4" BorderBrush="#5958B6E4" BorderThickness="1"
                                                             CornerRadius="8" Padding="6,1" Margin="0,0,4,0" VerticalAlignment="Center">
@@ -5499,40 +5522,59 @@
                                                                Foreground="{DynamicResource EmberHotBrush}" VerticalAlignment="Center"/>
                                                 </StackPanel>
                                             </DockPanel>
-                                            <!-- Readout (#175): RAW (pre-pipeline, cold) over OUT
-                                                 (forged, ember), original number format. Fixed-width
-                                                 grid so changing values never resize the instrument. -->
-                                            <Grid HorizontalAlignment="Center" Margin="0,10,0,0" Width="300">
+                                            <!-- Readings (#175): RAW (pre-pipeline, cold) over OUT
+                                                 (forged, ember), a column for each axis, in the
+                                                 original number format. The two columns share the
+                                                 width alike and each is 112 at the least, which the
+                                                 longest value fits, so a changing value never moves
+                                                 the others. X and Y are locale-neutral axis names. -->
+                                            <Grid Margin="0,12,0,0">
                                                 <Grid.ColumnDefinitions>
                                                     <!-- As wide as the longer caption and 8 more, 38 at the
                                                          least: the word is seven letters in some languages
                                                          and stood past a column of a fixed 38. -->
                                                     <ColumnDefinition Width="Auto" MinWidth="38"/>
-                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*" MinWidth="112"/>
+                                                    <ColumnDefinition Width="*" MinWidth="112"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,8,0"
+                                                <TextBlock Grid.Row="0" Grid.Column="1" Text="X" TextAlignment="Right"
+                                                           FontFamily="{StaticResource TelemetryFontFamily}"
+                                                           FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Y" TextAlignment="Right"
+                                                           FontFamily="{StaticResource TelemetryFontFamily}"
+                                                           FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,5,8,0"
                                                            Text="{Binding Instr_Raw, Source={x:Static strings:Strings.Instance}}"
                                                            FontFamily="{StaticResource TelemetryFontFamily}"
                                                            FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                                <TextBlock Grid.Row="0" Grid.Column="1"
-                                                           Text="{Binding InDisplay, Mode=OneWay}"
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,5,0,0" TextAlignment="Right"
+                                                           Text="{Binding InDisplayX, Mode=OneWay}"
                                                            FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11.5"
                                                            Foreground="{DynamicResource ColdBrush}"/>
-                                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,3,8,0"
+                                                <TextBlock Grid.Row="1" Grid.Column="2" Margin="0,5,0,0" TextAlignment="Right"
+                                                           Text="{Binding InDisplayY, Mode=OneWay}"
+                                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11.5"
+                                                           Foreground="{DynamicResource ColdBrush}"/>
+                                                <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,5,8,0"
                                                            Text="{Binding Instr_Out, Source={x:Static strings:Strings.Instance}}"
                                                            FontFamily="{StaticResource TelemetryFontFamily}"
                                                            FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,3,0,0"
-                                                           Text="{Binding RawDisplay, Mode=OneWay}"
+                                                <TextBlock Grid.Row="2" Grid.Column="1" Margin="0,5,0,0" TextAlignment="Right"
+                                                           Text="{Binding OutDisplayX, Mode=OneWay}"
+                                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11.5"
+                                                           Foreground="{DynamicResource EmberHotBrush}"/>
+                                                <TextBlock Grid.Row="2" Grid.Column="2" Margin="0,5,0,0" TextAlignment="Right"
+                                                           Text="{Binding OutDisplayY, Mode=OneWay}"
                                                            FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11.5"
                                                            Foreground="{DynamicResource EmberHotBrush}"/>
                                             </Grid>
-
-                                        </StackPanel>
+                                            </StackPanel>
+                                        </controls:FlexLinePanel>
                                         </Border>
                                     </controls:PartBodyPanel>
                                     <!-- More (#574): the settings fewer people change, opened in place. Each stick remembers
@@ -6283,9 +6325,15 @@
                               AutomationProperties.Name="{Binding Pad_Triggers_Header, Source={x:Static strings:Strings.Instance}}">
                     <StackPanel>
                     <ItemsControl ItemsSource="{Binding TriggerConfigs}">
+                        <!-- Two to a row, as the sticks are. -->
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <controls:TileGridPanel MinItemWidth="600" Gap="16" RowGap="0" Balance="True"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type vm:TriggerConfigItem}">
-                                <Border Style="{StaticResource CardBorder}">
+                                <Border Style="{StaticResource CardBorder}" VerticalAlignment="Top">
                                 <StackPanel>
                                     <!-- The card's head, as a stick's: the trigger's mark, its name, its
                                          range in the mono face, and Reset All at the head's end. -->
@@ -6313,12 +6361,11 @@
                                                 Text="{Binding MaxRange, Mode=OneWay, StringFormat={}{0:0}%}"/></TextBlock>
                                     </DockPanel>
 
-                                    <!-- The card's body, as the board draws it: the three settings in a
-                                         column of their own, and beside them the curve over the live
-                                         meter. -->
-                                    <controls:FlexLinePanel Gap="22" LineGap="16" Margin="0,6,8,6">
-                                        <StackPanel controls:FlexLinePanel.Basis="{DynamicResource FirstRowSettingsBasis}" controls:FlexLinePanel.Grow="1"
-                                                    MaxWidth="{DynamicResource FirstRowSettingsMost}">
+                                    <!-- The card's body, as a stick's: the three settings, and beside
+                                         them in a wide card, or under them in a card that shares its
+                                         row, the curve over the live meter. -->
+                                    <controls:PartBodyPanel SettingsWidth="{DynamicResource FirstRowSettingsMost}" Margin="0,6,0,6">
+                                        <StackPanel>
                                             <!-- Range (dual-thumb: deadzone floor to max range ceiling). Its
                                                  two ends read beside the slider, and are typed under More.
                                                  Each thumb is a Tab stop the arrow keys move. -->
@@ -6364,7 +6411,7 @@
                                             </controls:SettingRow>
 
                                         </StackPanel>
-                                        <StackPanel controls:FlexLinePanel.Basis="380" controls:FlexLinePanel.Grow="2">
+                                        <StackPanel>
                                             <!-- Full-width forge canvas (#175 competitor item 4):
                                                  the trigger curve at card width beside the sensitivity
                                                  controls. Caption keeps the mono-10-tertiary
@@ -6452,7 +6499,7 @@
                                                 </Grid>
                                             </Border>
                                         </StackPanel>
-                                    </controls:FlexLinePanel>
+                                    </controls:PartBodyPanel>
                                     <!-- More (#574, the world-class pass): the range's two ends typed as
                                          numbers, in percent and as the device's own raw values, and the
                                          anti-deadzone as a raw value. Each trigger remembers whether its

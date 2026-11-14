@@ -2635,7 +2635,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Sterzo a movimento</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>da {0}° a {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zona morta interna inclinazione, Zona morta esterna inclinazione, Orientamento controller</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Impostazioni per l’input "Inclinazione di movimento": inclina il controller come un volante. Assegna "Inclinazione di movimento" a un asse dello stick nella sezione Pulsanti.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Impostazioni per l’input "Inclinazione di movimento": inclina il controller come un volante. Assegna "Inclinazione di movimento" a un asse dello stick nella sezione Mappature.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Reimposta Sterzo di movimento</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback sterzo a fine corsa</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un segnale al fine corsa per una levetta in modalità sterzo</value></data>
@@ -3421,8 +3421,8 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Attiva l'output di telemetria nel gioco e puntalo a questo PC e a questa porta.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Nell'emulatore, aggiungi una sorgente di movimento all'indirizzo di questo PC e a questa porta.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Gli effetti di una mod arrivano a ogni controller dotato dell'hardware necessario.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>La posa della testa è la riga Head Tracker in [Dispositivi]. Associa l'imbardata della testa a un asse di una levetta nella sezione Pulsanti di un controller.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>I valori sono la riga Telemetria di gioco in [Dispositivi]. Mappali nella sezione Pulsanti di un controller o usali per attivare macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>La posa della testa è la riga Head Tracker in [Dispositivi]. Associa l'imbardata della testa a un asse di una levetta nella sezione Mappature di un controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>I valori sono la riga Telemetria di gioco in [Dispositivi]. Mappali nella sezione Mappature di un controller o usali per attivare macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Posizione, dimensione e opacità di un menu si impostano sul menu, nella sezione [Macro e menu] di un controller.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Sorgenti</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack e qualsiasi programma che invia il suo formato UDP</value></data>
@@ -4109,7 +4109,6 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>superficie host del menu non supportata ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>icona della cella del menu non riconosciuta ({0}), quindi la cella mantiene la sua etichetta di testo</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Uscita</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Pulsanti</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tasti e mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Note e controlli</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Mani</value></data>
@@ -5240,7 +5239,7 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>I punti di attuazione analogici dei tasti non sono stati importati.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD inviava questo controller a un altro dispositivo tramite un adattatore. PadForge lo riproduce su questo PC e Remote Link lo invia a un altro PC con PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge legge due stick, mentre qui se ne indica un terzo.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>L'emulazione del volante non è stata importata. Mappa il volante nella sezione Pulsanti.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>L'emulazione del volante non è stata importata. Mappa il volante nella sezione Mappature.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Questo profilo indica un'azione speciale che manca in Actions.xml accanto alla sua cartella Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Questa impostazione non è stata importata: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD impediva a questi input di raggiungere Windows. Attiva Consuma input mappati per {0} nella pagina Dispositivi, che blocca quelli mappati da questo profilo.</value></data>
@@ -5249,7 +5248,7 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Questo file tiene separati due controller. In PadForge, qualsiasi controller sullo slot attiva queste mappature.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>La velocità di movimento o lo scatto rapido non sono stati importati.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Questi non sono stati importati. Impostali nella sezione Movimento e tocco.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nulla in questo file apre questo livello. Nella sezione Pulsanti, fai clic destro sul livello e scegli Configura attivatore.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nulla in questo file apre questo livello. Nella sezione Mappature, fai clic destro sul livello e scegli Configura attivatore.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>I suoi pulsanti eseguono questi comandi quando vengono premuti: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Scorciatoia profilo</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Fa ciò che fa una scorciatoia profilo: carica un profilo indicato, il successivo o il precedente, mostra o nasconde la finestra, oppure disattiva e riattiva i controller virtuali.</value></data>
@@ -5526,7 +5525,7 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Pulsanti portatile PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profilo HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Luci dei tasti PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Una macro non può premere {0}. Una mappatura nella sezione Pulsanti sì.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Una macro non può premere {0}. Una riga nella sezione Mappature sì.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge gestisce otto Overlay schermo, e questo è il nono o il decimo mirino di reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge legge Giroscopio sinistra e destra dal rollio e l'inclinazione dall'imbardata, come da impostazione predefinita di reWASD. Le Preferenze di reWASD possono scambiare i due assi, e questo file non indica se è stato fatto.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>In modalità Tilt, l'inclinazione di reWASD è una rotazione attorno all'asse verticale, e un sensore di movimento non dà alcun angolo per quella rotazione.</value></data>

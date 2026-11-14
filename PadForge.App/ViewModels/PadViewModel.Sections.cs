@@ -435,16 +435,19 @@ namespace PadForge.ViewModels
         /// picture, where the rings are, and not under the list.</summary>
         public bool ShowVrFoot => IsButtonsPictureView && OutputType == VirtualControllerType.Vr;
 
-        /// <summary>The first section's name, by what the slot's picture
-        /// holds, as each slot's board names it: Buttons on a controller,
-        /// Keys &amp; Mouse on a Keyboard + Mouse slot, Notes &amp; Controls on
-        /// a MIDI slot, Hands on a VR slot.</summary>
+        /// <summary>The first section's name. On a Keyboard + Mouse, a
+        /// MIDI and a VR slot it says what the slot's picture holds, as
+        /// each slot's board names it: Keys &amp; Mouse, Notes &amp; Controls,
+        /// Hands. On a controller it is Mappings: the section maps every
+        /// control the picture draws, the sticks, the triggers and the
+        /// D-pad with the buttons, so Buttons named a part of it (owner,
+        /// 2026-11-14).</summary>
         public string FirstSectionName => OutputType switch
         {
             VirtualControllerType.KeyboardMouse => Strings.Instance.Pad_Section_KeysMouse,
             VirtualControllerType.Midi => Strings.Instance.Pad_Section_NotesControls,
             VirtualControllerType.Vr => Strings.Instance.Pad_Section_Hands,
-            _ => Strings.Instance.Pad_Section_Buttons,
+            _ => Strings.Instance.Pad_Mappings,
         };
 
         /// <summary>The hint over the picture, in the words of what the

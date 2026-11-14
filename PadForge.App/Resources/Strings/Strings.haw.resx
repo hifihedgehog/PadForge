@@ -977,7 +977,6 @@
   <data name="MacroAction_TriggerEffect_StrengthB" xml:space="preserve"><value>Ikaika B</value></data>
   <data name="MacroAction_TriggerEffect_Duration" xml:space="preserve"><value>Manawa</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Nā mea keu</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Nā pihi</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Nā pihi a me ka ʻiole</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nā hua mele a me nā mea hoʻokele</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Nā lima</value></data>
@@ -1015,8 +1014,8 @@
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>Ke holo nei ʻo SteamVR</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Holoi i ka trigger</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>E hoʻā i ka hoʻopuka telemetry i loko o ka pāʻani a kuhikuhi iā ia i kēia PC a me kēia port.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ʻO ke kūlana o ke poʻo ka lālani Head Tracker ma [Nā hāmeʻa]. E hoʻopili i ka huli ʻākau a hema o ke poʻo i kekahi axis stick ma ka māhele Nā pihi o kekahi controller.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>ʻO nā waiwai ka lālani Game Telemetry ma [Nā hāmeʻa]. E hoʻopili iā lākou ma ka māhele Nā pihi o kekahi controller a i ʻole e hoʻohana iā lākou e hoʻomaka i nā macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ʻO ke kūlana o ke poʻo ka lālani Head Tracker ma [Nā hāmeʻa]. E hoʻopili i ka huli ʻākau a hema o ke poʻo i kekahi axis stick ma ka māhele Nā mapping o kekahi controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>ʻO nā waiwai ka lālani Game Telemetry ma [Nā hāmeʻa]. E hoʻopili iā lākou ma ka māhele Nā mapping o kekahi controller a i ʻole e hoʻohana iā lākou e hoʻomaka i nā macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Hoʻonohonoho ʻia ke kūlana, ka nui a me ka opacity o kekahi papa kuhikuhi ma ka papa kuhikuhi ponoʻī, ma ka māhele [Nā macro a me nā papa kuhikuhi] o kekahi controller.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kope i ka helu wahi</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Hōʻike ʻia ke kelepona e hoʻopili mai ma ʻaneʻi a ma ka ʻaoʻao Nā hāmeʻa, kahi āu e hāʻawi ai iā ia i kekahi controller.</value></data>

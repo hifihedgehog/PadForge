@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Ota pelissä telemetria käyttöön ja osoita se tähän tietokoneeseen ja porttiin.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Lisää emulaattoriin liikelähde tämän tietokoneen osoitteella ja tällä portilla.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Modin tehosteet tavoittavat jokaisen ohjaimen, jonka laitteisto tukee niitä.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pään asento on Päänseuranta-rivi sivulla [Laitteet]. Kohdista pään kääntö sivusuunnassa sauvan akseliin ohjaimen Painikkeet-osiossa.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Arvot ovat Pelitelemetria-rivi sivulla [Laitteet]. Kohdista ne ohjaimen Painikkeet-osiossa tai käytä niitä makrojen laukaisemiseen.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pään asento on Päänseuranta-rivi sivulla [Laitteet]. Kohdista pään kääntö sivusuunnassa sauvan akseliin ohjaimen Määritykset-osiossa.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Arvot ovat Pelitelemetria-rivi sivulla [Laitteet]. Kohdista ne ohjaimen Määritykset-osiossa tai käytä niitä makrojen laukaisemiseen.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Valikon oma paikka, koko ja läpinäkyvyys asetetaan valikossa, ohjaimen osiossa [Makrot ja valikot].</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Lähteet</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack ja kaikki, mikä lähettää sen UDP-muotoa</value></data>
@@ -3179,7 +3179,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Liikeohjaus</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>välillä {0}° ja {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Nojauksen kuolleet alueet, Ohjaimen suunta</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Liikkeen nojaus -syötteen asetukset: kallista ohjainta kuin rattia. Määritä ”Liikkeen nojaus” sauva-akselille Painikkeet-osiossa.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Liikkeen nojaus -syötteen asetukset: kallista ohjainta kuin rattia. Määritä ”Liikkeen nojaus” sauva-akselille Määritykset-osiossa.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Palauta liikeohjaus</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (oikea sauva)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (vasen sauva)</value></data>
@@ -4149,7 +4149,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>valikon isäntäpintaa ei tueta ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>valikon solun kuvaketta ei tunnistettu ({0}), joten solu säilyttää tekstinimensä</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Lähtö</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Painikkeet</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Näppäimet ja hiiri</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nuotit ja säätimet</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Kädet</value></data>
@@ -5269,7 +5268,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analogisten näppäinten aktivointipisteitä ei saatu mukaan.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD lähetti tämän ohjaimen toiseen laitteeseen sovittimen kautta. PadForge toistaa sen tällä tietokoneella, ja Etälinkki lähettää sen toiselle tietokoneelle, jolla PadForge on käynnissä.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge lukee kaksi sauvaa, ja tämä nimeää kolmannen.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Ohjauspyörän emulointia ei saatu mukaan. Määritä pyörä Painikkeet-osiossa.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Ohjauspyörän emulointia ei saatu mukaan. Määritä pyörä Määritykset-osiossa.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Tämä profiili viittaa erikoistoimintoon, jota ei löydy Actions.xml-tiedostosta Profiles-kansion vierestä: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Tätä asetusta ei saatu mukaan: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD esti nämä syötteet pääsemästä Windowsiin. Ota Estä määritetyt syötteet käyttöön laitteelle {0} Laitteet-sivulla, jolloin tämän profiilin määrittämät syötteet estetään.</value></data>
@@ -5278,7 +5277,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Tämä tiedosto pitää kaksi ohjainta erillään. PadForge-ssa mikä tahansa paikan ohjain laukaisee nämä määritykset.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Liikenopeutta tai pyyhkäisyä ei saatu mukaan.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Näitä ei saatu mukaan. Määritä ne Liike ja kosketus -osiossa.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Mikään tämän tiedoston kohta ei avaa tätä kerrosta. Napsauta Painikkeet-osiossa kerrosta hiiren oikealla painikkeella ja valitse Määritä aktivoija.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Mikään tämän tiedoston kohta ei avaa tätä kerrosta. Napsauta Määritykset-osiossa kerrosta hiiren oikealla painikkeella ja valitse Määritä aktivoija.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Sen painikkeet suorittavat nämä painettaessa: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profiilin pikavalinta</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Tekee saman kuin profiilin pikavalinta: lataa nimetyn profiilin, seuraavan tai edellisen, näyttää tai piilottaa ikkunan tai kytkee virtuaaliohjaimet pois päältä ja takaisin päälle.</value></data>
@@ -5555,7 +5554,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge-käsikonsolin painikkeet (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-profiili (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge-näppäinvalot (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro ei voi painaa kohdetta {0}. Painikkeet-osion määritys voi.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro ei voi painaa kohdetta {0}. Määritykset-osion rivi voi.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge näyttää kahdeksan Näytön peittokuvaa, ja tämä on reWASD-in yhdeksäs tai kymmenes tähtäin.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge lukee Gyron vasemman ja oikean suunnan kallistuksesta ja Gyron nojauksen kiertymästä, kuten reWASD oletuksena. reWASD-in Preferences-asetuksissa nämä kaksi voi vaihtaa keskenään, eikä tämä tiedosto kerro, onko niin tehty.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Tilt-tilassa reWASD-in Lean on kierto pystyakselin ympäri, eikä liikeanturi anna kulmaa tälle kierrolle.</value></data>

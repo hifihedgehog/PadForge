@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>在遊戲中開啟遙測輸出，並指向這部電腦和此連接埠。</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>在模擬器中，以這部電腦的位址和此連接埠新增動作來源。</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>模組的效果會送到每個具備對應硬體的控制器。</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>頭部姿態就是「[裝置]」上的頭部追蹤器列。請在控制器的「按鈕」區段中，把頭部偏航對應到搖桿軸。</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>這些數值就是「[裝置]」上的遊戲遙測列。請在控制器的「按鈕」區段中對應它們，或用來觸發巨集。</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>頭部姿態就是「[裝置]」上的頭部追蹤器列。請在控制器的「對應」區段中，把頭部偏航對應到搖桿軸。</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>這些數值就是「[裝置]」上的遊戲遙測列。請在控制器的「對應」區段中對應它們，或用來觸發巨集。</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>選單自己的位置、大小和不透明度，請在控制器的「[巨集與選單]」區段中，於該選單上設定。</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>來源</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack 以及任何送出其 UDP 格式的程式</value></data>
@@ -3179,7 +3179,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>體感轉向</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° 至 {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>傾斜內側死區、傾斜外側死區、控制器方向</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>「體感傾斜」輸入的設定：像方向盤一樣傾斜控制器。請在「按鈕」中將「體感傾斜」對應到搖桿軸。</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>「體感傾斜」輸入的設定：像方向盤一樣傾斜控制器。請在「對應」中將「體感傾斜」對應到搖桿軸。</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>重設體感轉向</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick（右搖桿）</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick（左搖桿）</value></data>
@@ -4149,7 +4149,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>不支援選單的開啟來源表面（{0}）</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>無法辨識選單格子的圖示（{0}），因此該格子保留其文字標籤</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>輸出</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>按鈕</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>按鍵與滑鼠</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>音符與控制變更</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>雙手</value></data>
@@ -5269,7 +5268,7 @@
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>類比按鍵觸發點未能帶入。</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD 曾透過轉接器將此控制器傳送到另一台裝置。PadForge 會在這部電腦上播放它，而遠端連結則會將它傳送到另一部執行 PadForge 的電腦。</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge 讀取兩個搖桿，而此處指定了第三個。</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>方向盤模擬未能帶入。請在「按鈕」中對應方向盤。</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>方向盤模擬未能帶入。請在「對應」中對應方向盤。</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>此設定檔指定的特殊動作，在其 Profiles 資料夾旁的 Actions.xml 中找不到：{0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>此設定未能帶入：{0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD 會阻止這些輸入傳到 Windows。請在裝置頁面為 {0} 開啟攔截已對應的輸入，這會攔截此設定檔所對應的輸入。</value></data>
@@ -5278,7 +5277,7 @@
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>此檔案將兩個控制器分開處理。在 PadForge 中，插槽上的任何控制器都會觸發這些對應。</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>移動速度或快速甩動未能帶入。</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>這些未能帶入。請在「動作與觸控」中設定。</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>此檔案中沒有任何項目能開啟此圖層。請在「按鈕」中以滑鼠右鍵按一下該圖層，然後選擇「設定啟動鍵」。</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>此檔案中沒有任何項目能開啟此圖層。請在「對應」中以滑鼠右鍵按一下該圖層，然後選擇「設定啟動鍵」。</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>它的按鈕被按下時會執行：{0}。</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>設定檔捷徑</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>執行設定檔捷徑的動作：載入指定名稱的設定檔、下一個或上一個設定檔、顯示或隱藏視窗，或關閉與開啟虛擬控制器。</value></data>
@@ -5555,7 +5554,7 @@
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge 掌機按鈕 (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro 設定檔 (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge 按鍵燈光 (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>巨集無法按下 {0}。「按鈕」中的對應可以。</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>巨集無法按下 {0}。「對應」中的列可以。</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge 可執行八個螢幕重疊介面，而這是 reWASD 的第九或第十個準星。</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge 以滾轉讀取陀螺儀的左右，以偏航讀取傾斜，這是 reWASD 的預設。reWASD 的偏好設定可以對調兩者，而此檔案沒有說明是否已對調。</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>在傾斜模式下，reWASD 的傾斜是繞垂直軸的轉動，而動作感應器不會提供該轉動的角度。</value></data>

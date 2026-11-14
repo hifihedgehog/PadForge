@@ -781,4 +781,5 @@
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Ɛrekɔ so: {0} wɔ {1} mu</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} wɔ {1} mu abue</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Profiles a wɔde aba yi wɔ nea ɛyɛ foforo wɔ Steam Workshop so. San fa wɔn bra bio fi Nya Profiles mu na nsakrae no nka ho.</value></data>
+  <data name="Pad_Mappings" xml:space="preserve"><value>Nhyehyɛeɛ</value></data>
 </root>

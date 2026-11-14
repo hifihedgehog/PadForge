@@ -405,8 +405,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Trowch allbwn telemetreg ymlaen yn y gêm a'i bwyntio at y PC hwn a'r porth hwn.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Yn yr efelychydd, ychwanegwch ffynhonnell symudiad yng nghyfeiriad y PC hwn a'r porth hwn.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Mae effeithiau mod yn cyrraedd pob rheolydd sydd â'r caledwedd ar eu cyfer.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Osgo'r pen yw'r rhes Traciwr Pen ar [Dyfeisiau]. Mapiwch wyro'r pen i echelin ffon yn adran Botymau rheolydd.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Y gwerthoedd yw'r rhes Telemetreg Gêm ar [Dyfeisiau]. Mapiwch nhw yn adran Botymau rheolydd neu defnyddiwch nhw i sbarduno macros.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Osgo'r pen yw'r rhes Traciwr Pen ar [Dyfeisiau]. Mapiwch wyro'r pen i echelin ffon yn adran Mapiadau rheolydd.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Y gwerthoedd yw'r rhes Telemetreg Gêm ar [Dyfeisiau]. Mapiwch nhw yn adran Mapiadau rheolydd neu defnyddiwch nhw i sbarduno macros.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Gosodir lle, maint a thryloywder dewislen ar y ddewislen ei hun, yn adran [Macros a Dewislenni] rheolydd.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Ffynonellau</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack ac unrhyw beth sy'n anfon ei fformat UDP</value></data>
@@ -2984,7 +2984,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Llywio symudiad</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° i {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Parth marw mewnol gogwyddo, parth marw allanol gogwyddo, cyfeiriadedd y rheolydd</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Gosodiadau ar gyfer y mewnbwn Gogwydd symudiad: gogwyddwch y rheolydd fel olwyn. Mapiwch "Gogwydd symudiad" i echelin ffon yn yr adran Botymau.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Gosodiadau ar gyfer y mewnbwn Gogwydd symudiad: gogwyddwch y rheolydd fel olwyn. Mapiwch "Gogwydd symudiad" i echelin ffon yn yr adran Mapiadau.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Ailosod llywio symudiad</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (ffon dde)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (ffon chwith)</value></data>
@@ -3925,7 +3925,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>ni chefnogir arwyneb gwesteiwr y ddewislen ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ni chydnabuwyd eicon cell y ddewislen ({0}), felly mae'r gell yn cadw ei label testun</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Allbwn</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Botymau</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Bysellau a Llygoden</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nodau a Rheolyddion</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Dwylo</value></data>

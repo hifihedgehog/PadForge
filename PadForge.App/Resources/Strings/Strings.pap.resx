@@ -2599,7 +2599,6 @@
   <data name="Home_FirstRun_MoreTypes_Format" xml:space="preserve"><value>Mas tipo: [{0}, {1}, {2} i {3}]</value></data>
   <data name="Home_FirstRun_Mapped" xml:space="preserve"><value>Boton, stick i trigger ta wòrdu asigná 1:1 ora e kontrol ta wòrdu krea.</value></data>
   <data name="Home_FirstRun_Pair" xml:space="preserve"><value>Pareá un kontrol Bluetooth</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Boton</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tekla i mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nota i kontrol</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Mannan</value></data>
@@ -2644,8 +2643,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Aktivá salida di telemetria den e wega i pon'é manda na e PC i e pòrt aki.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Den e emuladó, agregá un fuente di movementu ku e adrès di e PC aki i e pòrt aki.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>E efektonan di un mod ta yega na tur kontrol ku tin e hardware pa nan.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>E posishon di kabes ta e fila di Head Tracker na [Aparatonan]. Asigná yaw di kabes na un eje di stick den e sekshon Boton di un kontrol.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>E balornan ta e fila di telemetria di wega na [Aparatonan]. Asigná nan den e sekshon Boton di un kontrol òf usa nan pa aktivá makro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>E posishon di kabes ta e fila di Head Tracker na [Aparatonan]. Asigná yaw di kabes na un eje di stick den e sekshon Asignashonnan di un kontrol.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>E balornan ta e fila di telemetria di wega na [Aparatonan]. Asigná nan den e sekshon Asignashonnan di un kontrol òf usa nan pa aktivá makro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>E lugá, tamaño i opasidat di un menu ta wòrdu poné riba e menu mes, den e sekshon [Makro i menu] di un kontrol.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Wega ku PadForge no konosé</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Kiko ta mustra</value></data>

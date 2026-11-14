@@ -384,6 +384,7 @@
   <!-- ═══ Pad Page ═══ -->
   <data name="Pad_Macros" xml:space="preserve"><value>Ngā mākoro</value></data>
   <data name="Macro_CopyNameFormat" xml:space="preserve"><value>{0} (Tārua)</value></data>
+  <data name="Pad_Mappings" xml:space="preserve"><value>Ngā mahere</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Trigger mauī</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Trigger matau</value></data>
@@ -1441,7 +1442,6 @@
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(kāore i tautuhia)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Tahua {0} Pūtau {1}</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Huaputa</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Ngā pātene</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Ngā pātuhi me te kiore</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Ngā orotahi me ngā control</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Ngā ringa</value></data>
@@ -1875,8 +1875,8 @@
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Tangohia ngā pānga trigger urutau me ngā pānga rama i ngā mod kēmu i tuhia mō DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Whakakāhia te tuku telemetry i roto i te kēmu, ka tohu ai ki tēnei PC me tēnei port.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ka tae ngā pānga o tētahi mod ki ia controller kei a ia te pūmārō mō aua pānga.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ko te tū o te māhunga te rārangi Head Tracker i [Ngā pūrere]. Mahere i te huri o te māhunga ki tētahi tuaka stick i te wāhanga Ngā pātene o tētahi controller.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ko ngā uara te rārangi Game Telemetry i [Ngā pūrere]. Mahere i a rātou i te wāhanga Ngā pātene o tētahi controller, whakamahia rānei hei whakaoho mākoro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ko te tū o te māhunga te rārangi Head Tracker i [Ngā pūrere]. Mahere i te huri o te māhunga ki tētahi tuaka stick i te wāhanga Ngā mahere o tētahi controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ko ngā uara te rārangi Game Telemetry i [Ngā pūrere]. Mahere i a rātou i te wāhanga Ngā mahere o tētahi controller, whakamahia rānei hei whakaoho mākoro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ko te tūnga, te rahi me te pūataata o tētahi tahua ka tautuhia ki te tahua anō, i te wāhanga [Ngā mākoro me ngā tahua] o tētahi controller.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Ngā kēmu kāore e mōhiotia ana e PadForge</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Mō ngā mod e rapu ana i tētahi DSX e rere ana i mua i tā rātou tuku</value></data>

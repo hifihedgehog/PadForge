@@ -405,8 +405,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>गेममध्ये टेलिमेट्री आउटपुट चालू करा आणि ते या PC व पोर्टकडे वळवा.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>एमुलेटरमध्ये या PC च्या पत्त्यावर आणि या पोर्टवर मोशन स्रोत जोडा.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>मॉडचे इफेक्ट त्यासाठी हार्डवेअर असलेल्या प्रत्येक कंट्रोलरपर्यंत पोहोचतात.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>हेड पोज ही [डिव्हाइस] वरील हेड ट्रॅकर रांग आहे. हेड यॉ स्टिक अक्षाला कंट्रोलरच्या बटणे विभागात मॅप करा.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>ही मूल्ये [डिव्हाइस] वरील गेम टेलिमेट्री रांग आहेत. ती कंट्रोलरच्या बटणे विभागात मॅप करा किंवा मॅक्रो चालवण्यासाठी वापरा.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>हेड पोज ही [डिव्हाइस] वरील हेड ट्रॅकर रांग आहे. हेड यॉ स्टिक अक्षाला कंट्रोलरच्या मॅपिंग विभागात मॅप करा.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>ही मूल्ये [डिव्हाइस] वरील गेम टेलिमेट्री रांग आहेत. ती कंट्रोलरच्या मॅपिंग विभागात मॅप करा किंवा मॅक्रो चालवण्यासाठी वापरा.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>मेनूचे स्थान, आकार आणि अपारदर्शकता मेनूवरच सेट होतात, कंट्रोलरच्या [मॅक्रो आणि मेनू] विभागात.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>स्रोत</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack आणि त्याचे UDP स्वरूप पाठवणारे काहीही</value></data>
@@ -2978,7 +2978,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>मोशन स्टीअरिंग</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° ते {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>झुकावाचा आतील डेडझोन, झुकावाचा बाहेरील डेडझोन, कंट्रोलरची दिशा</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>मोशन लीन इनपुटसाठी सेटिंग्ज: कंट्रोलर व्हीलसारखा तिरपा करा. “बटणे” मध्ये “मोशन लीन” स्टिक अक्षाला मॅप करा.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>मोशन लीन इनपुटसाठी सेटिंग्ज: कंट्रोलर व्हीलसारखा तिरपा करा. “मॅपिंग” मध्ये “मोशन लीन” स्टिक अक्षाला मॅप करा.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>मोशन स्टीअरिंग रीसेट करा</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>फ्लिक स्टिक (उजवी स्टिक)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>फ्लिक स्टिक (डावी स्टिक)</value></data>
@@ -3919,7 +3919,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>मेनू होस्ट पृष्ठभाग समर्थित नाही ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>मेनू सेल आयकॉन ओळखला गेला नाही ({0}), म्हणून सेल त्याचे मजकूर लेबल ठेवतो</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>आउटपुट</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>बटणे</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>की आणि माउस</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>नोट आणि कंट्रोल</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>हात</value></data>

@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Kapcsolja be a telemetriakimenetet a játékban, és irányítsa erre a számítógépre és portra.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Az emulátorban adjon hozzá egy mozgásforrást ennek a számítógépnek a címével és ezzel a porttal.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>A mod hatásai minden olyan kontrollerhez eljutnak, amelynek megvan hozzá a hardvere.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>A fej pózát az [Eszközök] oldal Fejkövető sora adja. A fej elfordulását egy kontroller Gombok szakaszában rendelheti analóg kar tengelyéhez.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Az értékeket az [Eszközök] oldal Játéktelemetria sora adja. Képezze le őket egy kontroller Gombok szakaszában, vagy használja őket makrók indítására.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>A fej pózát az [Eszközök] oldal Fejkövető sora adja. A fej elfordulását egy kontroller Hozzárendelések szakaszában rendelheti analóg kar tengelyéhez.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Az értékeket az [Eszközök] oldal Játéktelemetria sora adja. Képezze le őket egy kontroller Hozzárendelések szakaszában, vagy használja őket makrók indítására.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Egy menü saját helyét, méretét és átlátszatlanságát magán a menün lehet beállítani, egy kontroller [Makrók és menük] szakaszában.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Források</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack és minden program, amely UDP-formátumban küld</value></data>
@@ -3179,7 +3179,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Mozgásos kormányzás</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° és {1}° között</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Dőlés holtzónái, Kontroller tájolása</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>A Mozgás: dőlés bemenet beállításai: döntse a kontrollert úgy, mint egy kormányt. A Gombok szakaszban rendelje a „Mozgás: dőlés” bemenetet egy kartengelyhez.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>A Mozgás: dőlés bemenet beállításai: döntse a kontrollert úgy, mint egy kormányt. A Hozzárendelések szakaszban rendelje a „Mozgás: dőlés” bemenetet egy kartengelyhez.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Mozgásos kormányzás visszaállítása</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (jobb kar)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (bal kar)</value></data>
@@ -4149,7 +4149,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>a menüt megnyitó felület nem támogatott ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>a menücella ikonja nem ismerhető fel ({0}), ezért a cella megtartja a szöveges feliratát</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Kimenet</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Gombok</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Billentyűk és egér</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Hangjegyek és vezérlők</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Kezek</value></data>
@@ -5269,7 +5268,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Az analóg billentyűk aktiválási pontjai nem kerültek át.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>A reWASD ezt a vezérlőt egy adapteren keresztül egy másik eszközre küldte. A PadForge ezen a számítógépen játssza le, a Távoli kapcsolat pedig egy másik, PadForge-ot futtató számítógépre küldi.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>A PadForge két kart olvas, ez pedig egy harmadikat nevez meg.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>A kormány emulálása nem került át. Rendelje hozzá a kormányt a Gombok szakaszban.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>A kormány emulálása nem került át. Rendelje hozzá a kormányt a Hozzárendelések szakaszban.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Ez a profil olyan különleges műveletet nevez meg, amely hiányzik a Profiles mappa melletti Actions.xml fájlból: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Ez a beállítás nem került át: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>A reWASD megakadályozta, hogy ezek a bemenetek eljussanak a Windowsig. Kapcsolja be a Hozzárendelt bemenetek elnyelése beállítást a(z) {0} eszközhöz az Eszközök oldalon, amely elnyeli a profil által hozzárendelteket.</value></data>
@@ -5278,7 +5277,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Ez a fájl két vezérlőt tart külön. A PadForge-ban a szlot bármely vezérlője kiváltja ezeket a hozzárendeléseket.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>A mozgás sebessége vagy a gyors elhúzás nem került át.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Ezek nem kerültek át. Állítsa be őket a Mozgás és érintés szakaszban.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>A fájlban semmi nem nyitja meg ezt a réteget. A Gombok szakaszban kattintson a jobb gombbal a rétegre, és válassza az Aktivátor beállítása lehetőséget.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>A fájlban semmi nem nyitja meg ezt a réteget. A Hozzárendelések szakaszban kattintson a jobb gombbal a rétegre, és válassza az Aktivátor beállítása lehetőséget.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>A gombjai megnyomáskor ezeket futtatják: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profil-gyorsparancs</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Azt teszi, amit egy profil-gyorsparancs: betölt egy megnevezett profilt, a következőt vagy az előzőt, megjeleníti vagy elrejti az ablakot, vagy ki- és bekapcsolja a virtuális vezérlőket.</value></data>
@@ -5555,7 +5554,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge-kézikonzolgombok (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-profil (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge-billentyűfények (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>A makró nem tudja megnyomni ezt: {0}. A Gombok szakaszban egy hozzárendelés igen.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>A makró nem tudja megnyomni ezt: {0}. A Hozzárendelések szakaszban egy sor igen.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>A PadForge nyolc Képernyő-átfedést futtat, ez pedig a reWASD kilencedik vagy tizedik célkeresztje.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>A PadForge a Balra és Jobbra irányt az orsózásból, a Dőlést a legyezésből olvassa, a reWASD alapértelmezése szerint. A reWASD Beállításaiban a kettő felcserélhető, és ez a fájl nem mondja meg, felcserélték-e.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Billentés módban a reWASD Dőlése a függőleges tengely körüli fordulat, és a mozgásérzékelő nem ad szöget ehhez a fordulathoz.</value></data>

@@ -2049,7 +2049,6 @@
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Ama-overlay</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>I-overlay yokushintsha iphrofayela</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Okukhiphayo</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Izinkinobho</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Okhiye negundane</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Amanothi nokulawula</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Izandla</value></data>
@@ -2561,8 +2560,8 @@
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Thatha imiphumela yama-adaptive trigger neyokukhanya kuma-mod emidlalo enzelwe i-DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Vula ukukhipha kwe-telemetry emdlalweni bese ukuqondisa kule PC nakule mbobo.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Imiphumela ye-mod ifinyelela kuzo zonke izilawuli ezinehadiwe eyidingayo.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ukuma kwekhanda kungumugqa wesilandeleli sekhanda ku-[Amadivayisi]. Mepha i-yaw yekhanda kwi-eksisi yenduku esigabeni esithi Izinkinobho sesilawuli.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Amanani angumugqa we-telemetry yemidlalo ku-[Amadivayisi]. Wamephe esigabeni esithi Izinkinobho sesilawuli noma uwasebenzise ukuqalisa ama-macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ukuma kwekhanda kungumugqa wesilandeleli sekhanda ku-[Amadivayisi]. Mepha i-yaw yekhanda kwi-eksisi yenduku esigabeni esithi Ukumepha sesilawuli.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Amanani angumugqa we-telemetry yemidlalo ku-[Amadivayisi]. Wamephe esigabeni esithi Ukumepha sesilawuli noma uwasebenzise ukuqalisa ama-macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Indawo yemenyu, usayizi nokubonakala kwayo kusethwa kumenyu uqobo, esigabeni sesilawuli esithi [Ama-macro namamenyu].</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Imithombo</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>I-OpenTrack nanoma yini ethumela ngefomethi yayo ye-UDP</value></data>

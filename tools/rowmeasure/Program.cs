@@ -364,14 +364,14 @@ internal static class Program
     // Preset wrap in the first. The power button with the slot's state
     // word and the More button each take what they need at the right.
     // Line 2 holds Driven by, a pill for each device and Add Device, and
-    // wraps. The six sections wrap in a row of their own. Buttons switches
+    // wraps. The six sections wrap in a row of their own. Mappings switches
     // between its picture and its list, and Macros & Menus between its two
     // parts, each with a strip in the content. Each piece is measured with
     // the real font and the real chrome. The header's own margin is 32 a
     // side.
     static readonly string[] SectionKeys =
     {
-        "Pad_Section_Buttons", "Pad_Section_Sticks", "Pad_Section_Rumble",
+        "Pad_Mappings", "Pad_Section_Sticks", "Pad_Section_Rumble",
         "Pad_Section_Motion", "Pad_Section_Lights", "Pad_Section_Macros",
     };
 

@@ -405,8 +405,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>دەرچوونی تێلێمەتری لە یارییەکەدا هەڵبکە و ئاڕاستەی بکە بۆ ئەم کۆمپیوتەرە و ئەم پۆرتە.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>لە ئیمولەیتەرەکەدا، سەرچاوەیەکی جووڵە بە ناونیشانی ئەم کۆمپیوتەرە و ئەم پۆرتە زیاد بکە.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>کاریگەرییەکانی مۆدێک دەگاتە هەر کۆنترۆڵەرێک کە ڕەقەکاڵای بۆیان هەبێت.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>هەڵوێستی سەر ڕیزی شوێنپێهەڵگری سەرە لە [ئامێرەکان]. سووڕانەوەی ئاسۆیی سەر بە تەوەرێکی ستیک ببەستەوە لە بەشی دوگمەکانی کۆنترۆڵەرێکدا.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>بەهاکان ڕیزی تێلێمەتریی یارین لە [ئامێرەکان]. لە بەشی دوگمەکانی کۆنترۆڵەرێکدا بیانبەستەوە یان بۆ دەستپێکردنی ماکرۆکان بەکاریان بهێنە.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>هەڵوێستی سەر ڕیزی شوێنپێهەڵگری سەرە لە [ئامێرەکان]. سووڕانەوەی ئاسۆیی سەر بە تەوەرێکی ستیک ببەستەوە لە بەشی بەستنەوەکانی کۆنترۆڵەرێکدا.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>بەهاکان ڕیزی تێلێمەتریی یارین لە [ئامێرەکان]. لە بەشی بەستنەوەکانی کۆنترۆڵەرێکدا بیانبەستەوە یان بۆ دەستپێکردنی ماکرۆکان بەکاریان بهێنە.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>شوێن، قەبارە و ڕوونیی تایبەتی مێنیوێک لەسەر خودی مێنیوەکە دادەنرێن، لە بەشی [ماکرۆکان و مێنیوەکان] لە کۆنترۆڵەرێکدا.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>سەرچاوەکان</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack و هەر بەرنامەیەک کە بە هەمان فۆرماتی UDP دەنێرێت</value></data>
@@ -2975,7 +2975,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>ئاراستەکردن بە جووڵە</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° تا {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>ناوچە مردووەکانی لاربوونەوە، ئاراستەی کۆنترۆڵەر</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>ڕێکخستنەکان بۆ تێخراوی لاربوونەوەی جووڵە: کۆنترۆڵەرەکە وەک سوکان لار بکەرەوە. «لاربوونەوەی جووڵە» لە بەشی «دوگمەکان» بە تەوەرێکی ستیکەوە ببەستەوە.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>ڕێکخستنەکان بۆ تێخراوی لاربوونەوەی جووڵە: کۆنترۆڵەرەکە وەک سوکان لار بکەرەوە. «لاربوونەوەی جووڵە» لە بەشی «بەستنەوەکان» بە تەوەرێکی ستیکەوە ببەستەوە.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>گەڕاندنەوەی ئاراستەکردن بە جووڵە</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>فلیک ستیک (ستیکی ڕاست)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>فلیک ستیک (ستیکی چەپ)</value></data>
@@ -3915,7 +3915,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>ڕووی خانەخوێی مێنیو پشتگیری ناکرێت ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ئایکۆنی خانەی مێنیو نەناسرایەوە ({0})، بۆیە خانەکە ناوە دەقییەکەی دەهێڵێتەوە</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>دەرچوو</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>دوگمەکان</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>کلیلەکان و ماوس</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>نۆتەکان و کۆنترۆڵەکان</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>دەستەکان</value></data>

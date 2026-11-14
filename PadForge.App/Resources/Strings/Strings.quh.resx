@@ -1477,7 +1477,6 @@
   <data name="Search_Group_Pages" xml:space="preserve"><value>Paginakuna</value></data>
   <data name="Search_Group_Actions" xml:space="preserve"><value>Ruwaykuna</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Llank'achiy</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Botonkuna</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Teclakuna &amp; Mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Notakuna &amp; Controlkuna</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Makikuna</value></data>
@@ -1512,8 +1511,8 @@
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Activadorta pichay</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Auto pukllay kachamusqan velocidadta, pedalkunata, cambiokunatapas huk entrada hina asignay.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Pukllaypi telemetría lluqsiyta hap'ichiy, kay PC-man kay puertomanpas apuntachiy.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Umapa kuyuyninqa [Dispositivokuna] nisqapi Head Tracker filam. Umapa muyuyninta huk palancapa ejenman asignay, huk controlpa Botonkuna seccionninpi.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Chaninkunaqa [Dispositivokuna] nisqapi Game Telemetry filam. Huk controlpa Botonkuna seccionninpi asignay, utaq macrokunata qallarichinapaq llamk'achiy.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Umapa kuyuyninqa [Dispositivokuna] nisqapi Head Tracker filam. Umapa muyuyninta huk palancapa ejenman asignay, huk controlpa Asignacionkuna seccionninpi.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Chaninkunaqa [Dispositivokuna] nisqapi Game Telemetry filam. Huk controlpa Asignacionkuna seccionninpi asignay, utaq macrokunata qallarichinapaq llamk'achiy.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Huk menúpa maypi kasqan, sayaynin, opacidadnin ima menúllapitaq churakun, huk controlpa [Macrokuna &amp; Menúkuna] seccionninpi.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Imakuna rikhurin</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Huk menúpa muyunin, cuadrículan utaq barran kicharisqa kachkaptin</value></data>

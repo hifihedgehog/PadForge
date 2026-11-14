@@ -403,8 +403,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Žaidime įjunkite telemetrijos išvestį ir nukreipkite ją į šį kompiuterį ir prievadą.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Emuliatoriuje pridėkite judesio šaltinį šio kompiuterio adresu ir šiuo prievadu.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Modifikacijos efektai pasiekia kiekvieną valdiklį, turintį jiems reikalingą aparatinę įrangą.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Galvos padėtis yra eilutė „Galvos sekiklis“ skiltyje [Įrenginiai]. Galvos posūkį priskirkite svirtelės ašiai valdiklio skiltyje „Mygtukai“.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Reikšmės yra eilutė „Žaidimų telemetrija“ skiltyje [Įrenginiai]. Priskirkite jas valdiklio skiltyje „Mygtukai“ arba naudokite makrokomandoms paleisti.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Galvos padėtis yra eilutė „Galvos sekiklis“ skiltyje [Įrenginiai]. Galvos posūkį priskirkite svirtelės ašiai valdiklio skiltyje „Priskyrimai“.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Reikšmės yra eilutė „Žaidimų telemetrija“ skiltyje [Įrenginiai]. Priskirkite jas valdiklio skiltyje „Priskyrimai“ arba naudokite makrokomandoms paleisti.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Meniu vieta, dydis ir skaidrumas nustatomi pačiame meniu, valdiklio skiltyje [Makrokomandos ir meniu].</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Šaltiniai</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack ir viskas, kas siunčia jo UDP formatą</value></data>
@@ -2983,7 +2983,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Vairavimas judesiu</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° iki {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Pakrypimo nejautros zonos, valdiklio orientacija</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Įvesties „Judesio pakrypimas“ nustatymai: kreipkite valdiklį kaip vairą. Skiltyje „Mygtukai“ priskirkite „Judesio pakrypimas“ svirtelės ašiai.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Įvesties „Judesio pakrypimas“ nustatymai: kreipkite valdiklį kaip vairą. Skiltyje „Priskyrimai“ priskirkite „Judesio pakrypimas“ svirtelės ašiai.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Nustatyti vairavimą judesiu iš naujo</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Mostelėjimo svirtelė (dešinioji svirtelė)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Mostelėjimo svirtelė (kairioji svirtelė)</value></data>
@@ -3924,7 +3924,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>meniu pagrindinis paviršius nepalaikomas ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>meniu langelio piktograma neatpažinta ({0}), todėl langelyje lieka tekstinis užrašas</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Išvestis</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Mygtukai</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Klavišai ir pelė</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Natos ir CC</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Rankos</value></data>

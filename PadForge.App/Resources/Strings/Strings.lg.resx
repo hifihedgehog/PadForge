@@ -729,8 +729,8 @@
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Controller yonna</value></data>
   <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Kebera shakers</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Omuzannyi oba Ensi</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Embeera y'omutwe ye lunyiriri lwa Head Tracker ku [Ebyuma]. Teeka okukyuka kw'omutwe ku axis ya stick mu kitundu kya Buttons ekya controller.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Emiwendo gye lunyiriri lwa Game Telemetry ku [Ebyuma]. Gitekeko mu kitundu kya Buttons ekya controller oba gikozese okutandika macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Embeera y'omutwe ye lunyiriri lwa Head Tracker ku [Ebyuma]. Teeka okukyuka kw'omutwe ku axis ya stick mu kitundu kya Mappings ekya controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Emiwendo gye lunyiriri lwa Game Telemetry ku [Ebyuma]. Gitekeko mu kitundu kya Mappings ekya controller oba gikozese okutandika macro.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Koppa endagiriro</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Essimu eyungiddwa erabikira wano ne ku lupapula lwa Ebyuma, w'ogigaba eri controller.</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Noonya ebyuma</value></data>
@@ -795,4 +795,5 @@
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Londa ky'eraga. Tewali kikyuka okutuusa lw'otereka.</value></data>
   <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Tewali kituuka ku port okutuusa lw'otereka.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} ku {1} bikola</value></data>
+  <data name="Pad_Mappings" xml:space="preserve"><value>Mappings</value></data>
 </root>

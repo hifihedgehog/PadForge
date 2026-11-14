@@ -2437,7 +2437,6 @@
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Overlay di menu</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Overlay</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Saída</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Botons</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Téklas i Mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Notas i Kontrolus</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Mons</value></data>
@@ -2979,8 +2978,8 @@
   <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Preamp, bandas, inportason</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR instaladu</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR ka sta instaladu</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pozison di kabesa e linha Head Tracker na [Dispozitivus]. Mapia yaw di kabesa pa un eixu di stick na seson Botons di un komandu.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Valoris e linha Telemetria di jogu na [Dispozitivus]. Mapia-s na seson Botons di un komandu o uza-s pa dispara makrus.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pozison di kabesa e linha Head Tracker na [Dispozitivus]. Mapia yaw di kabesa pa un eixu di stick na seson Mapiamentus di un komandu.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Valoris e linha Telemetria di jogu na [Dispozitivus]. Mapia-s na seson Mapiamentus di un komandu o uza-s pa dispara makrus.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Lugar, tamanhu i opasidadi di un menu ta konfiguradu na menu, na seson [Makrus i Menu] di un komandu.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Fontis</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack i kualker kusa ki ta manda si formatu UDP</value></data>

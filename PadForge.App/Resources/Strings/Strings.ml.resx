@@ -405,8 +405,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>ഗെയിമിൽ ടെലിമെട്രി ഔട്ട്പുട്ട് ഓണാക്കി ഈ PC വിലാസവും പോർട്ടും നൽകുക.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>എമുലേറ്ററിൽ ഈ PC വിലാസത്തിലും ഈ പോർട്ടിലും ഒരു മോഷൻ ഉറവിടം ചേർക്കുക.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>ഒരു മോഡിന്റെ ഇഫക്റ്റുകൾ അവയ്ക്കുള്ള ഹാർഡ്വെയർ ഉള്ള എല്ലാ കൺട്രോളറിലും എത്തുന്നു.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ഹെഡ് പോസ് [ഉപകരണങ്ങൾ] പേജിലെ ഹെഡ് ട്രാക്കർ വരിയാണ്. ഹെഡ് യോ ഒരു സ്റ്റിക്ക് ആക്സിസിലേക്ക് മാപ്പ് ചെയ്യാൻ കൺട്രോളറിലെ ബട്ടണുകൾ വിഭാഗം ഉപയോഗിക്കുക.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>മൂല്യങ്ങൾ [ഉപകരണങ്ങൾ] പേജിലെ ഗെയിം ടെലിമെട്രി വരിയാണ്. കൺട്രോളറിലെ ബട്ടണുകൾ വിഭാഗത്തിൽ അവ മാപ്പ് ചെയ്യുക, അല്ലെങ്കിൽ മാക്രോകൾ പ്രവർത്തിപ്പിക്കാൻ ഉപയോഗിക്കുക.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ഹെഡ് പോസ് [ഉപകരണങ്ങൾ] പേജിലെ ഹെഡ് ട്രാക്കർ വരിയാണ്. ഹെഡ് യോ ഒരു സ്റ്റിക്ക് ആക്സിസിലേക്ക് മാപ്പ് ചെയ്യാൻ കൺട്രോളറിലെ മാപ്പിംഗുകൾ വിഭാഗം ഉപയോഗിക്കുക.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>മൂല്യങ്ങൾ [ഉപകരണങ്ങൾ] പേജിലെ ഗെയിം ടെലിമെട്രി വരിയാണ്. കൺട്രോളറിലെ മാപ്പിംഗുകൾ വിഭാഗത്തിൽ അവ മാപ്പ് ചെയ്യുക, അല്ലെങ്കിൽ മാക്രോകൾ പ്രവർത്തിപ്പിക്കാൻ ഉപയോഗിക്കുക.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>ഒരു മെനുവിന്റെ സ്ഥാനം, വലുപ്പം, അതാര്യത എന്നിവ കൺട്രോളറിലെ [മാക്രോകൾ &amp; മെനുകൾ] വിഭാഗത്തിൽ ആ മെനുവിൽ തന്നെ സജ്ജമാക്കുന്നു.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>ഉറവിടങ്ങൾ</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack, അതിന്റെ UDP ഫോർമാറ്റ് അയയ്ക്കുന്ന മറ്റെന്തും</value></data>
@@ -2953,7 +2953,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>മോഷൻ സ്റ്റിയറിംഗ്</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° മുതൽ {1}° വരെ</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>ചരിവ് ഇന്നർ ഡെഡ് സോൺ, ചരിവ് ഔട്ടർ ഡെഡ് സോൺ, കൺട്രോളർ ഓറിയന്റേഷൻ</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>മോഷൻ ലീൻ ഇൻപുട്ടിനുള്ള ക്രമീകരണങ്ങൾ: കൺട്രോളറിനെ വീൽ പോലെ ചരിക്കുക. ബട്ടണുകൾ വിഭാഗത്തിൽ "മോഷൻ ലീൻ" ഒരു സ്റ്റിക്ക് ആക്സിസിലേക്ക് മാപ്പ് ചെയ്യുക.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>മോഷൻ ലീൻ ഇൻപുട്ടിനുള്ള ക്രമീകരണങ്ങൾ: കൺട്രോളറിനെ വീൽ പോലെ ചരിക്കുക. മാപ്പിംഗുകൾ വിഭാഗത്തിൽ "മോഷൻ ലീൻ" ഒരു സ്റ്റിക്ക് ആക്സിസിലേക്ക് മാപ്പ് ചെയ്യുക.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>മോഷൻ സ്റ്റിയറിംഗ് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ഫ്ലിക്ക് സ്റ്റിക്ക് (വലത് സ്റ്റിക്ക്)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>ഫ്ലിക്ക് സ്റ്റിക്ക് (ഇടത് സ്റ്റിക്ക്)</value></data>
@@ -3894,7 +3894,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>മെനു ഹോസ്റ്റ് പ്രതലം പിന്തുണയ്ക്കുന്നില്ല ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>മെനു സെൽ ഐക്കൺ തിരിച്ചറിഞ്ഞില്ല ({0}), അതിനാൽ സെൽ അതിന്റെ വാചക ലേബൽ നിലനിർത്തുന്നു</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>ഔട്ട്പുട്ട്</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>ബട്ടണുകൾ</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>കീകൾ &amp; മൗസ്</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>നോട്ടുകൾ &amp; കൺട്രോളുകൾ</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>കൈകൾ</value></data>

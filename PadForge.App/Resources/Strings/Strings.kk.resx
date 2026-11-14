@@ -405,8 +405,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Ойында телеметрия шығысын қосып, оны осы компьютер мен портқа бағыттаңыз.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Эмуляторда осы компьютердің мекенжайы мен осы порт бойынша қозғалыс көзін қосыңыз.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Модтың әсерлері оларға арналған жабдығы бар әрбір контроллерге жетеді.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Бас қалпы [Құрылғылар] бетіндегі Бас трекері жолында көрінеді. Бас бұрылысын контроллердің Түймелер бөлімінде стик осіне сәйкестендіріңіз.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Мәндер [Құрылғылар] бетіндегі Ойын телеметриясы жолында көрінеді. Оларды контроллердің Түймелер бөлімінде сәйкестендіріңіз немесе макростарды іске қосу үшін пайдаланыңыз.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Бас қалпы [Құрылғылар] бетіндегі Бас трекері жолында көрінеді. Бас бұрылысын контроллердің Тағайындаулар бөлімінде стик осіне сәйкестендіріңіз.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Мәндер [Құрылғылар] бетіндегі Ойын телеметриясы жолында көрінеді. Оларды контроллердің Тағайындаулар бөлімінде сәйкестендіріңіз немесе макростарды іске қосу үшін пайдаланыңыз.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Мәзірдің орны, өлшемі және мөлдірсіздігі мәзірдің өзінде, контроллердің [Макростар және мәзірлер] бөлімінде орнатылады.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Көздер</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack және оның UDP пішімін жіберетін кез келген бағдарлама</value></data>
@@ -2985,7 +2985,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Қозғалыспен рөлдеу</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° мен {1}° аралығында</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Көлбеудің өлі аймақтары, Контроллер бағдары</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>«Қозғалыс: көлбеу» кірісінің параметрлері: контроллерді рөл сияқты еңкейтіңіз. «Түймелер» бөлімінде «Қозғалыс: көлбеу» кірісін стик осіне тағайындаңыз.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>«Қозғалыс: көлбеу» кірісінің параметрлері: контроллерді рөл сияқты еңкейтіңіз. «Тағайындаулар» бөлімінде «Қозғалыс: көлбеу» кірісін стик осіне тағайындаңыз.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Қозғалыспен рөлдеуді қалпына келтіру</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (оң стик)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (сол стик)</value></data>
@@ -3926,7 +3926,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>мәзір орналастырылатын бетке қолдау жоқ ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>мәзір ұяшығының белгішесі танылмады ({0}), сондықтан ұяшық мәтіндік белгісін сақтайды</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Шығыс</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Түймелер</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Пернелер және тінтуір</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Ноталар және реттегіштер</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Қолдар</value></data>

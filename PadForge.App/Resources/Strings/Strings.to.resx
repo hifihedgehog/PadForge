@@ -738,8 +738,8 @@
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Controller kotoa</value></data>
   <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Vakaiʻi ʻa e ngaahi shaker</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Player pe Māmani</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ko e tuʻunga ʻo e ʻulú ʻoku hā ia ʻi he laine Head Tracker ʻi he [Ngaahi naunau]. Fakafehokotaki ʻa e takai ʻo e ʻulú ki ha axis ʻo ha stick ʻi he konga Ngaahi button ʻo ha controller.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ko e ngaahi mahuʻingá ʻoku hā ia ʻi he laine Game Telemetry ʻi he [Ngaahi naunau]. Fakafehokotaki kinautolu ʻi he konga Ngaahi button ʻo ha controller pe ngāueʻaki ke fakaʻaiʻai ha ngaahi macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ko e tuʻunga ʻo e ʻulú ʻoku hā ia ʻi he laine Head Tracker ʻi he [Ngaahi naunau]. Fakafehokotaki ʻa e takai ʻo e ʻulú ki ha axis ʻo ha stick ʻi he konga Ngaahi fakafehokotaki ʻo ha controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ko e ngaahi mahuʻingá ʻoku hā ia ʻi he laine Game Telemetry ʻi he [Ngaahi naunau]. Fakafehokotaki kinautolu ʻi he konga Ngaahi fakafehokotaki ʻo ha controller pe ngāueʻaki ke fakaʻaiʻai ha ngaahi macro.</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>ʻOku hā heni ha telefoni ʻoku fehokotaki pea ʻi he peesi Ngaahi naunau, ʻa ia ʻokú ke vaheʻi ai ia ki ha controller.</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Kumi naunau</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Kotoa</value></data>
@@ -799,4 +799,5 @@
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Ngaahi profile kuo ʻosi teuteu ki ha faʻahinga vaʻinga kakato. Fili ha taha, vaheʻi ha controller pē, pea vaʻinga.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} ʻi he {1} ʻoku fakaʻā</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>ʻOku ʻi ai ha ngaahi tatau foʻou ange ʻo e ngaahi profile ko ʻeni ne hū mai ʻi he Steam Workshop. Toe hū mai kinautolu mei he Maʻu ha ngaahi profile ke maʻu ʻa e ngaahi liliu.</value></data>
+  <data name="Pad_Mappings" xml:space="preserve"><value>Ngaahi fakafehokotaki</value></data>
 </root>

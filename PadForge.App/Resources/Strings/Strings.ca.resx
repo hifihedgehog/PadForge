@@ -403,8 +403,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Activa la sortida de telemetria al joc i apunta-la a aquest PC i port.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>A l'emulador, afegeix una font de moviment amb l'adreça d'aquest PC i aquest port.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Els efectes d'un mod arriben a tots els comandaments que tenen el maquinari necessari.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>La posició del cap és la fila Seguidor del cap de [Dispositius]. Assigna la guinyada del cap a un eix de palanca a la secció Botons d'un comandament.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Els valors són la fila Telemetria de joc de [Dispositius]. Assigna'ls a la secció Botons d'un comandament o fes-los servir per activar macros.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>La posició del cap és la fila Seguidor del cap de [Dispositius]. Assigna la guinyada del cap a un eix de palanca a la secció Assignacions d'un comandament.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Els valors són la fila Telemetria de joc de [Dispositius]. Assigna'ls a la secció Assignacions d'un comandament o fes-los servir per activar macros.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>La posició, la mida i l'opacitat d'un menú es defineixen al mateix menú, a la secció [Macros i menús] d'un comandament.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Fonts</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack i qualsevol programa que enviï el seu format UDP</value></data>
@@ -2988,7 +2988,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Direcció per moviment</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° a {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zones mortes de la inclinació, orientació del comandament</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Configuració de l'entrada Inclinació de moviment: inclina el comandament com un volant. Assigna «Inclinació de moviment» a un eix de palanca des de la secció Botons.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Configuració de l'entrada Inclinació de moviment: inclina el comandament com un volant. Assigna «Inclinació de moviment» a un eix de palanca des de la secció Assignacions.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Restableix la direcció per moviment</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (palanca dreta)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (palanca esquerra)</value></data>
@@ -3929,7 +3929,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>no s'admet la superfície d'entrada del menú ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>no s'ha reconegut la icona de la cel·la del menú ({0}), així que la cel·la conserva l'etiqueta de text</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Sortida</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Botons</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tecles i ratolí</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Notes i controls</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Mans</value></data>

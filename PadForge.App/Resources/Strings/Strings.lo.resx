@@ -405,8 +405,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>ເປີດການສົ່ງເທເລເມທຣີໃນເກມ ແລະ ຕັ້ງໃຫ້ສົ່ງມາຫາ PC ນີ້ ແລະ ພອດນີ້.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ໃນອີມູເລເຕີ, ເພີ່ມແຫຼ່ງການເຄື່ອນໄຫວທີ່ທີ່ຢູ່ຂອງ PC ນີ້ ແລະ ພອດນີ້.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>ເອັບເຟັກຂອງມອດຈະໄປຮອດທຸກຕົວຄວບຄຸມທີ່ມີຮາດແວຮອງຮັບ.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ທ່າຂອງຫົວແມ່ນແຖວ ຕົວຕິດຕາມຫົວ ໃນໜ້າ [ອຸປະກອນ]. ແມັບການຫັນຫົວຊ້າຍຂວາໃສ່ແກນສະຕິກໃນສ່ວນ ປຸ່ມ ຂອງຕົວຄວບຄຸມ.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>ຄ່າເຫຼົ່ານີ້ແມ່ນແຖວ ເທເລເມທຣີເກມ ໃນໜ້າ [ອຸປະກອນ]. ແມັບພວກມັນໃນສ່ວນ ປຸ່ມ ຂອງຕົວຄວບຄຸມ ຫຼື ໃຊ້ພວກມັນເພື່ອເປີດໃຊ້ມາໂຄຣ.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ທ່າຂອງຫົວແມ່ນແຖວ ຕົວຕິດຕາມຫົວ ໃນໜ້າ [ອຸປະກອນ]. ແມັບການຫັນຫົວຊ້າຍຂວາໃສ່ແກນສະຕິກໃນສ່ວນ ການແມັບ ຂອງຕົວຄວບຄຸມ.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>ຄ່າເຫຼົ່ານີ້ແມ່ນແຖວ ເທເລເມທຣີເກມ ໃນໜ້າ [ອຸປະກອນ]. ແມັບພວກມັນໃນສ່ວນ ການແມັບ ຂອງຕົວຄວບຄຸມ ຫຼື ໃຊ້ພວກມັນເພື່ອເປີດໃຊ້ມາໂຄຣ.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>ຕຳແໜ່ງ, ຂະໜາດ ແລະ ຄວາມທຶບຂອງເມນູແມ່ນຕັ້ງຢູ່ໃນເມນູເອງ, ໃນສ່ວນ [ມາໂຄຣ ແລະ ເມນູ] ຂອງຕົວຄວບຄຸມ.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>ແຫຼ່ງທີ່ມາ</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack ແລະ ທຸກໂປຣແກຣມທີ່ສົ່ງຮູບແບບ UDP ຂອງມັນ</value></data>
@@ -2971,7 +2971,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>ການບັງຄັບລ້ຽວດ້ວຍການເຄື່ອນໄຫວ</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° ຫາ {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>ເດດໂຊນການອຽງ, ທິດທາງຂອງຕົວຄວບຄຸມ</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>ການຕັ້ງຄ່າສຳລັບອິນພຸດ ການອຽງດ້ວຍການເຄື່ອນໄຫວ: ອຽງຕົວຄວບຄຸມຄືພວງມາໄລ. ແມັບ “ການອຽງດ້ວຍການເຄື່ອນໄຫວ” ໄປຫາແກນສະຕິກໃນ “ປຸ່ມ”.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>ການຕັ້ງຄ່າສຳລັບອິນພຸດ ການອຽງດ້ວຍການເຄື່ອນໄຫວ: ອຽງຕົວຄວບຄຸມຄືພວງມາໄລ. ແມັບ “ການອຽງດ້ວຍການເຄື່ອນໄຫວ” ໄປຫາແກນສະຕິກໃນ “ການແມັບ”.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>ຄືນຄ່າການບັງຄັບລ້ຽວດ້ວຍການເຄື່ອນໄຫວ</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ຟລິກສະຕິກ (ສະຕິກຂວາ)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>ຟລິກສະຕິກ (ສະຕິກຊ້າຍ)</value></data>
@@ -3910,7 +3910,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>ບໍ່ຮອງຮັບພື້ນຜິວທີ່ເປີດເມນູ ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ບໍ່ຮູ້ຈັກໄອຄອນເຊວເມນູ ({0}), ສະນັ້ນເຊວຈະໃຊ້ປ້າຍຂໍ້ຄວາມຂອງມັນ</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>ເອົາພຸດ</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>ປຸ່ມ</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>ປຸ່ມແປ້ນພິມ ແລະ ເມົ້າ</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>ໂນ້ດ ແລະ ສ່ວນຄວບຄຸມ</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>ມື</value></data>

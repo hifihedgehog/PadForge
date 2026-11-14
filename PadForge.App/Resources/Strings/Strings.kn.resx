@@ -403,8 +403,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>ಆಟದಲ್ಲಿ ಟೆಲಿಮೆಟ್ರಿ ಔಟ್‌ಪುಟ್ ಆನ್ ಮಾಡಿ, ಈ PC ಮತ್ತು ಪೋರ್ಟ್‌ಗೆ ಗುರಿಯಿಡಿ.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ಎಮ್ಯುಲೇಟರ್‌ನಲ್ಲಿ ಈ PC ಯ ವಿಳಾಸ ಮತ್ತು ಈ ಪೋರ್ಟ್‌ನೊಂದಿಗೆ ಮೋಷನ್ ಮೂಲ ಸೇರಿಸಿ.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>ಮಾಡ್‌ನ ಪರಿಣಾಮಗಳು ಅದಕ್ಕೆ ಬೇಕಾದ ಹಾರ್ಡ್‌ವೇರ್ ಇರುವ ಪ್ರತಿ ಕಂಟ್ರೋಲರ್‌ಗೂ ತಲುಪುತ್ತವೆ.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ಹೆಡ್ ಭಂಗಿಯು [ಸಾಧನಗಳು] ಪುಟದಲ್ಲಿರುವ ಹೆಡ್ ಟ್ರ್ಯಾಕರ್ ಸಾಲು. ಹೆಡ್ ಯಾ ಅನ್ನು ಕಂಟ್ರೋಲರ್‌ನ ಬಟನ್‌ಗಳ ವಿಭಾಗದಲ್ಲಿ ಸ್ಟಿಕ್ ಅಕ್ಷಕ್ಕೆ ಮ್ಯಾಪ್ ಮಾಡಿ.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>ಮೌಲ್ಯಗಳು [ಸಾಧನಗಳು] ಪುಟದಲ್ಲಿರುವ ಗೇಮ್ ಟೆಲಿಮೆಟ್ರಿ ಸಾಲು. ಅವನ್ನು ಕಂಟ್ರೋಲರ್‌ನ ಬಟನ್‌ಗಳ ವಿಭಾಗದಲ್ಲಿ ಮ್ಯಾಪ್ ಮಾಡಿ, ಅಥವಾ ಮ್ಯಾಕ್ರೋಗಳನ್ನು ಪ್ರಚೋದಿಸಲು ಬಳಸಿ.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ಹೆಡ್ ಭಂಗಿಯು [ಸಾಧನಗಳು] ಪುಟದಲ್ಲಿರುವ ಹೆಡ್ ಟ್ರ್ಯಾಕರ್ ಸಾಲು. ಹೆಡ್ ಯಾ ಅನ್ನು ಕಂಟ್ರೋಲರ್‌ನ ಮ್ಯಾಪಿಂಗ್‌ಗಳ ವಿಭಾಗದಲ್ಲಿ ಸ್ಟಿಕ್ ಅಕ್ಷಕ್ಕೆ ಮ್ಯಾಪ್ ಮಾಡಿ.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>ಮೌಲ್ಯಗಳು [ಸಾಧನಗಳು] ಪುಟದಲ್ಲಿರುವ ಗೇಮ್ ಟೆಲಿಮೆಟ್ರಿ ಸಾಲು. ಅವನ್ನು ಕಂಟ್ರೋಲರ್‌ನ ಮ್ಯಾಪಿಂಗ್‌ಗಳ ವಿಭಾಗದಲ್ಲಿ ಮ್ಯಾಪ್ ಮಾಡಿ, ಅಥವಾ ಮ್ಯಾಕ್ರೋಗಳನ್ನು ಪ್ರಚೋದಿಸಲು ಬಳಸಿ.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>ಮೆನುವಿನ ಸ್ಥಾನ, ಗಾತ್ರ ಮತ್ತು ಅಪಾರದರ್ಶಕತೆಯನ್ನು ಮೆನುವಿನಲ್ಲೇ, ಕಂಟ್ರೋಲರ್‌ನ [ಮ್ಯಾಕ್ರೋಗಳು ಮತ್ತು ಮೆನುಗಳು] ವಿಭಾಗದಲ್ಲಿ ಹೊಂದಿಸಲಾಗುತ್ತದೆ.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>ಮೂಲಗಳು</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack ಮತ್ತು ಅದರ UDP ಸ್ವರೂಪವನ್ನು ಕಳುಹಿಸುವ ಯಾವುದೇ ಪ್ರೋಗ್ರಾಂ</value></data>
@@ -2971,7 +2971,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>ಚಲನೆಯ ಸ್ಟೀರಿಂಗ್</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° ರಿಂದ {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>ಓರೆಯ ಡೆಡ್ ಜೋನ್, ಕಂಟ್ರೋಲರ್ ದಿಕ್ಕು</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>"ಚಲನೆ ವಾಲುವಿಕೆ" ಇನ್‌ಪುಟ್‌ನ ಸೆಟ್ಟಿಂಗ್ಸ್: ಕಂಟ್ರೋಲರ್ ಅನ್ನು ಸ್ಟೀರಿಂಗ್ ವೀಲ್‌ನಂತೆ ಓರೆಯಾಗಿಸಿ. ಬಟನ್‌ಗಳು ವಿಭಾಗದಲ್ಲಿ "ಚಲನೆ ವಾಲುವಿಕೆ" ಅನ್ನು ಸ್ಟಿಕ್ ಅಕ್ಷಕ್ಕೆ ಮ್ಯಾಪ್ ಮಾಡಿ.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>"ಚಲನೆ ವಾಲುವಿಕೆ" ಇನ್‌ಪುಟ್‌ನ ಸೆಟ್ಟಿಂಗ್ಸ್: ಕಂಟ್ರೋಲರ್ ಅನ್ನು ಸ್ಟೀರಿಂಗ್ ವೀಲ್‌ನಂತೆ ಓರೆಯಾಗಿಸಿ. ಮ್ಯಾಪಿಂಗ್‌ಗಳು ವಿಭಾಗದಲ್ಲಿ "ಚಲನೆ ವಾಲುವಿಕೆ" ಅನ್ನು ಸ್ಟಿಕ್ ಅಕ್ಷಕ್ಕೆ ಮ್ಯಾಪ್ ಮಾಡಿ.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>ಚಲನೆಯ ಸ್ಟೀರಿಂಗ್ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ಫ್ಲಿಕ್ ಸ್ಟಿಕ್ (ಬಲ ಸ್ಟಿಕ್)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>ಫ್ಲಿಕ್ ಸ್ಟಿಕ್ (ಎಡ ಸ್ಟಿಕ್)</value></data>
@@ -3912,7 +3912,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>ಮೆನು ಹೋಸ್ಟ್ ಮೇಲ್ಮೈ ಬೆಂಬಲಿತವಲ್ಲ ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ಮೆನು ಕೋಶ ಐಕಾನ್ ಗುರುತಿಸಲಾಗಿಲ್ಲ ({0}), ಆದ್ದರಿಂದ ಕೋಶ ತನ್ನ ಪಠ್ಯ ಲೇಬಲ್ ಉಳಿಸಿಕೊಳ್ಳುತ್ತದೆ</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>ಔಟ್‌ಪುಟ್</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>ಬಟನ್‌ಗಳು</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>ಕೀಗಳು ಮತ್ತು ಮೌಸ್</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>ನೋಟ್‌ಗಳು ಮತ್ತು ಕಂಟ್ರೋಲ್‌ಗಳು</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>ಕೈಗಳು</value></data>

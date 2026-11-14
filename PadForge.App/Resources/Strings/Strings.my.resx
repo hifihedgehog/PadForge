@@ -405,8 +405,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>ဂိမ်းထဲတွင် တယ်လီမီထရီ အထွက်ကို ဖွင့်ပြီး ဤ PC နှင့် ဤပေါ့တ်သို့ ညွှန်ပါ။</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>အီမြူလေတာထဲတွင် ဤ PC ၏ လိပ်စာနှင့် ဤပေါ့တ်ဖြင့် လှုပ်ရှားမှုရင်းမြစ်တစ်ခု ထည့်ပါ။</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>မော့တစ်ခု၏ အကျိုးသက်ရောက်မှုများသည် ၎င်းတို့အတွက် ဟာ့ဒ်ဝဲရှိသော ကွန်ထရိုလာတိုင်းထံ ရောက်သည်။</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ဦးခေါင်းအနေအထားသည် [စက်ပစ္စည်းများ] ရှိ ခေါင်းခြေရာခံကိရိယာ အတန်း ဖြစ်သည်။ ဦးခေါင်း၏ ဘယ်ညာလှည့်မှုကို ကွန်ထရိုလာ၏ ခလုတ်များ အပိုင်းတွင် စတစ်ဝင်ရိုးတစ်ခုသို့ မက်ပ်လုပ်ပါ။</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>တန်ဖိုးများသည် [စက်ပစ္စည်းများ] ရှိ ဂိမ်း တယ်လီမီထရီ အတန်း ဖြစ်သည်။ ၎င်းတို့ကို ကွန်ထရိုလာ၏ ခလုတ်များ အပိုင်းတွင် မက်ပ်လုပ်ပါ သို့မဟုတ် မက်ခရိုများ စတင်ရန် အသုံးပြုပါ။</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ဦးခေါင်းအနေအထားသည် [စက်ပစ္စည်းများ] ရှိ ခေါင်းခြေရာခံကိရိယာ အတန်း ဖြစ်သည်။ ဦးခေါင်း၏ ဘယ်ညာလှည့်မှုကို ကွန်ထရိုလာ၏ မက်ပင်းများ အပိုင်းတွင် စတစ်ဝင်ရိုးတစ်ခုသို့ မက်ပ်လုပ်ပါ။</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>တန်ဖိုးများသည် [စက်ပစ္စည်းများ] ရှိ ဂိမ်း တယ်လီမီထရီ အတန်း ဖြစ်သည်။ ၎င်းတို့ကို ကွန်ထရိုလာ၏ မက်ပင်းများ အပိုင်းတွင် မက်ပ်လုပ်ပါ သို့မဟုတ် မက်ခရိုများ စတင်ရန် အသုံးပြုပါ။</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>မီနူးတစ်ခု၏ ကိုယ်ပိုင်နေရာ၊ အရွယ်အစားနှင့် အလင်းပိတ်မှုကို ကွန်ထရိုလာ၏ [မက်ခရိုနှင့် မီနူးများ] အပိုင်းရှိ ထိုမီနူးပေါ်တွင် သတ်မှတ်သည်။</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>ရင်းမြစ်များ</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack နှင့် ၎င်း၏ UDP ပုံစံကို ပို့သော မည်သည့်အရာမဆို</value></data>
@@ -2983,7 +2983,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>လှုပ်ရှားမှု စတီယာရင်ထိန်းခြင်း</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° မှ {1}° အထိ</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>ယိမ်းစောင်းမှု ဒက်ဇုန်များ၊ ကွန်ထရိုလာ ဦးတည်ပုံ</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>လှုပ်ရှားမှု ယိမ်းစောင်းခြင်း အဝင်အတွက် ဆက်တင်များ: ကွန်ထရိုလာကို စတီယာရင်ဘီးကဲ့သို့ စောင်းပါ။ “ခလုတ်များ” အပိုင်းတွင် “လှုပ်ရှားမှု ယိမ်းစောင်းခြင်း” ကို စတစ်ဝင်ရိုးတစ်ခုသို့ မက်ပင်းလုပ်ပါ။</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>လှုပ်ရှားမှု ယိမ်းစောင်းခြင်း အဝင်အတွက် ဆက်တင်များ: ကွန်ထရိုလာကို စတီယာရင်ဘီးကဲ့သို့ စောင်းပါ။ “မက်ပင်းများ” အပိုင်းတွင် “လှုပ်ရှားမှု ယိမ်းစောင်းခြင်း” ကို စတစ်ဝင်ရိုးတစ်ခုသို့ မက်ပင်းလုပ်ပါ။</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>လှုပ်ရှားမှု စတီယာရင်ထိန်းခြင်း ပြန်လည်သတ်မှတ်</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ဖလစ်စတစ် (ညာစတစ်)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>ဖလစ်စတစ် (ဘယ်စတစ်)</value></data>
@@ -3923,7 +3923,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>မီနူးဖွင့်သည့် ထိန်းချုပ်မျက်နှာပြင်ကို မပံ့ပိုးပါ ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>မီနူးအကွက် အိုင်ကွန်ကို မသိရှိပါ ({0})၊ ထို့ကြောင့် အကွက်သည် ၎င်း၏ စာသားတံဆိပ်ကို ဆက်ထားသည်</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>အထွက်</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>ခလုတ်များ</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>ကီးများနှင့် မောက်စ်</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>နုတ်နှင့် ထိန်းချုပ်ကွက်များ</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>လက်များ</value></data>

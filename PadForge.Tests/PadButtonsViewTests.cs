@@ -367,7 +367,7 @@ namespace PadForge.Tests
         {
             var s = PadForge.Resources.Strings.Strings.Instance;
             var vm = new PadViewModel(0);
-            Assert.Equal(s.Pad_Section_Buttons, vm.FirstSectionName);
+            Assert.Equal(s.Pad_Mappings, vm.FirstSectionName);
             Assert.Equal(s.Pad_PictureHint, vm.PictureHintText);
             Assert.False(vm.ShowVrFoot);
             var raised = new List<string>();
@@ -550,7 +550,7 @@ namespace PadForge.Tests
             // A click on the picture picks the control before it asks for a
             // recording, so the bar shows a control no device can record.
             Assert.Matches(@"targetName = MappingTargetOf\(vm, targetName\);\s*if \(targetName == null\) return;[^}]*vm\.PickedTarget = targetName;\s*\}\s*ControllerElementRecordRequested\?\.Invoke\(this, targetName\);", code);
-            // The window still answers the page's event by cancelling the
+            // The window still answers the page's event by canceling the
             // recording of the control it is told is already recording.
             Assert.Matches(@"if \(padVm\.CurrentRecordingTarget == targetName\)\s*\{\s*_recorderService\.CancelRecording\(\);",
                 ExtrasPageTests.RepoText("PadForge.App", "MainWindow.xaml.cs"));
@@ -945,7 +945,7 @@ namespace PadForge.Tests
             Assert.Matches(@"if \(e\.AddedItems\.Count > 0 && e\.AddedItems\[0\] is MappingItem picked\s*&& DataContext is PadViewModel pickVm\)\s*pickVm\.PickedTarget = picked\.TargetSettingName;", code);
             // A chip on the picture picks its control and stays on the
             // picture.
-            Assert.Matches(@"private void OnAnnotationChipNavigate\(object sender, string targetSettingName\)\s*\{\s*if \(DataContext is not PadViewModel vm\) return;\s*if \(vm\.RowOfTarget\(targetSettingName\) == null\) return;\s*vm\.PickedTarget = targetSettingName;", code);
+            Assert.Matches(@"private void OnAnnotationChipNavigate\(object sender, string targetSettingName\)\s*\{\s*//[^\n]*\s*_pictureClickActed = true;\s*if \(DataContext is not PadViewModel vm\) return;\s*if \(vm\.RowOfTarget\(targetSettingName\) == null\) return;\s*vm\.PickedTarget = targetSettingName;", code);
             Assert.DoesNotContain("vm.SelectedConfigTab = 2;", code);
         }
 

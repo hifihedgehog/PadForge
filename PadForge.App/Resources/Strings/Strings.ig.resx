@@ -256,6 +256,7 @@
 
   <!-- ═══ Pad Page ═══ -->
   <data name="Macro_CopyNameFormat" xml:space="preserve"><value>{0} (Oyiri)</value></data>
+  <data name="Pad_Mappings" xml:space="preserve"><value>Nhazi</value></data>
   <!-- Impulse Triggers tab (Xbox One+ family) -->
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Trigger aka ekpe</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Trigger aka nri</value></data>
@@ -1317,8 +1318,8 @@
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Hazie ọsọ, pedal na gia nke egwuregwu ịnya ụgbọ ala na-eziga, dị ka ntinye ọ bụla.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Nweta mmetụta trigger na-agbanwe agbanwe na ọkụ site na mod egwuregwu e dere maka DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Gbanye mbupụ telemetry n'egwuregwu ahụ ma tụgharịa ya gaa na PC a na port a.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ọnọdụ isi bụ ahịrị Head Tracker na [Ngwaọrụ]. Hazie ntụgharị isi gaa n'axis stick na ngalaba Bọtịn nke controller.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Uru ndị ahụ bụ ahịrị Game Telemetry na [Ngwaọrụ]. Hazie ha na ngalaba Bọtịn nke controller ma ọ bụ jiri ha malite macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ọnọdụ isi bụ ahịrị Head Tracker na [Ngwaọrụ]. Hazie ntụgharị isi gaa n'axis stick na ngalaba Nhazi nke controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Uru ndị ahụ bụ ahịrị Game Telemetry na [Ngwaọrụ]. Hazie ha na ngalaba Nhazi nke controller ma ọ bụ jiri ha malite macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>A na-edozi ebe, nha na nghọta nke menu n'onwe ya na menu ahụ, na ngalaba [Macro na Menu] nke controller.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ihe na-egosi</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Okirikiri, grid ma ọ bụ bar nke menu mgbe ọ meghere</value></data>

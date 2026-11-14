@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>در بازی خروجی تله‌متری را روشن کنید و آن را به این رایانه و پورت هدایت کنید.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>در شبیه‌ساز، یک منبع حرکت با نشانی این رایانه و این پورت اضافه کنید.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>جلوه‌های هر مود به هر کنترلری که سخت‌افزار لازم را دارد می‌رسد.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>وضعیت سر همان ردیف ردیاب سر در [دستگاه‌ها] است. چرخش سر را در بخش دکمه‌های یک کنترلر به یک محور استیک نگاشت کنید.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>مقادیر همان ردیف تله‌متری بازی در [دستگاه‌ها] هستند. آن‌ها را در بخش دکمه‌های یک کنترلر نگاشت کنید یا برای فعال کردن ماکروها به کار ببرید.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>وضعیت سر همان ردیف ردیاب سر در [دستگاه‌ها] است. چرخش سر را در بخش نگاشت‌های یک کنترلر به یک محور استیک نگاشت کنید.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>مقادیر همان ردیف تله‌متری بازی در [دستگاه‌ها] هستند. آن‌ها را در بخش نگاشت‌های یک کنترلر نگاشت کنید یا برای فعال کردن ماکروها به کار ببرید.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>جای منو، اندازه و شفافیت آن روی خود منو، در بخش [ماکروها و منوها] یک کنترلر تنظیم می‌شود.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>منابع</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack و هر چیزی که قالب UDP آن را می‌فرستد</value></data>
@@ -3179,7 +3179,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>هدایت با حرکت</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° تا {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>ناحیه مرده کج کردن، جهت‌گیری کنترلر</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>تنظیمات ورودی «کج کردن حرکتی»: کنترلر را مانند فرمان کج کنید. «کج کردن حرکتی» را در بخش «دکمه‌ها» به یک محور استیک نگاشت کنید.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>تنظیمات ورودی «کج کردن حرکتی»: کنترلر را مانند فرمان کج کنید. «کج کردن حرکتی» را در بخش «نگاشت‌ها» به یک محور استیک نگاشت کنید.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>بازنشانی هدایت با حرکت</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>فلیک استیک (استیک راست)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>فلیک استیک (استیک چپ)</value></data>
@@ -4149,7 +4149,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>سطح میزبان منو پشتیبانی نمی‌شود ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>نماد خانه منو شناخته نشد ({0})، بنابراین خانه برچسب متنی خود را نگه می‌دارد</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>خروجی</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>دکمه‌ها</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>کلیدها و ماوس</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>نت‌ها و کنترل‌ها</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>دست‌ها</value></data>
@@ -5269,7 +5268,7 @@
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>نقاط فعال‌سازی آنالوگ کلیدها منتقل نشد.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD این کنترلر را از طریق یک آداپتور به دستگاه دیگری می‌فرستاد. PadForge آن را روی همین رایانه اجرا می‌کند و پیوند از راه دور آن را به رایانه دیگری که PadForge روی آن اجرا می‌شود می‌فرستد.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge دو استیک را می‌خواند و این مورد استیک سومی را نام می‌برد.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>شبیه‌سازی فرمان منتقل نشد. فرمان را در بخش «دکمه‌ها» نگاشت کنید.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>شبیه‌سازی فرمان منتقل نشد. فرمان را در بخش «نگاشت‌ها» نگاشت کنید.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>این پروفایل یک کنش ویژه را نام می‌برد که در Actions.xml کنار پوشه Profiles آن وجود ندارد: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>این تنظیم منتقل نشد: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD جلوی رسیدن این ورودی‌ها به ویندوز را می‌گرفت. مصرف ورودی‌های نگاشت‌شده را برای {0} در صفحه دستگاه‌ها روشن کنید تا ورودی‌هایی که این پروفایل نگاشت می‌کند مسدود شوند.</value></data>
@@ -5278,7 +5277,7 @@
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>این فایل دو کنترلر را از هم جدا نگه می‌دارد. در PadForge، هر کنترلری روی اسلات، این نگاشت‌ها را اجرا می‌کند.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>سرعت حرکت یا فلیک منتقل نشد.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>این موارد منتقل نشدند. آن‌ها را در بخش «حرکت و لمس» تنظیم کنید.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>هیچ چیز در این فایل این لایه را باز نمی‌کند. در بخش «دکمه‌ها» روی لایه راست‌کلیک کنید و «پیکربندی فعال‌ساز» را انتخاب کنید.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>هیچ چیز در این فایل این لایه را باز نمی‌کند. در بخش «نگاشت‌ها» روی لایه راست‌کلیک کنید و «پیکربندی فعال‌ساز» را انتخاب کنید.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>دکمه‌های آن هنگام فشردن این موارد را اجرا می‌کنند: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>میانبر پروفایل</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>همان کار میانبر پروفایل را انجام می‌دهد: پروفایلی با نام مشخص، بعدی یا قبلی را بارگذاری می‌کند، پنجره را نشان می‌دهد یا پنهان می‌کند، یا کنترلرهای مجازی را خاموش و روشن می‌کند.</value></data>
@@ -5555,7 +5554,7 @@
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>دکمه‌های کنسول دستی PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>پروفایل HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>نورهای کلید PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>ماکرو نمی‌تواند {0} را فشار دهد. نگاشتی در بخش «دکمه‌ها» می‌تواند.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>ماکرو نمی‌تواند {0} را فشار دهد. ردیفی در بخش «نگاشت‌ها» می‌تواند.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge هشت اورلی صفحه‌نمایش اجرا می‌کند و این ضربدر نشانه‌گیری نهم یا دهم reWASD است.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge چپ و راست ژیروسکوپ را از رول و کج کردن را از یاو می‌خواند، که پیش‌فرض reWASD است. تنظیمات reWASD می‌تواند این دو را عوض کند و این فایل نمی‌گوید عوض شده‌اند یا نه.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>در حالت Tilt، کج کردن reWASD چرخشی حول محور عمودی است و حسگر حرکت برای آن چرخش زاویه‌ای نمی‌دهد.</value></data>

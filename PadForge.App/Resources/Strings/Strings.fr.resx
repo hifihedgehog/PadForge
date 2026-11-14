@@ -2613,7 +2613,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Direction par mouvement</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° à {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Zones mortes d'inclinaison, Orientation de la manette</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Réglages de l’entrée "Inclinaison de mouvement" : inclinez la manette comme un volant. Affectez "Inclinaison de mouvement" à un axe de stick dans la section Boutons.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Réglages de l’entrée "Inclinaison de mouvement" : inclinez la manette comme un volant. Affectez "Inclinaison de mouvement" à un axe de stick dans la section Mappings.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Réinitialiser la direction par mouvement</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Retour en butée de braquage</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Un signal en butée pour un stick en mode direction</value></data>
@@ -3399,8 +3399,8 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Activez la sortie de télémétrie dans le jeu et dirigez-la vers ce PC et ce port.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Dans l'émulateur, ajoutez une source de mouvement à l'adresse de ce PC et sur ce port.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Les effets d'un mod atteignent chaque manette dotée du matériel nécessaire.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>La pose de la tête est la ligne Suivi de tête de [Appareils]. Mappez le lacet de la tête sur un axe de stick dans la section Boutons d'une manette.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Les valeurs sont la ligne Télémétrie de jeu de [Appareils]. Mappez-les dans la section Boutons d'une manette ou utilisez-les pour déclencher des macros.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>La pose de la tête est la ligne Suivi de tête de [Appareils]. Mappez le lacet de la tête sur un axe de stick dans la section Mappings d'une manette.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Les valeurs sont la ligne Télémétrie de jeu de [Appareils]. Mappez-les dans la section Mappings d'une manette ou utilisez-les pour déclencher des macros.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>L'emplacement, la taille et l'opacité d'un menu se règlent sur le menu, dans la section [Macros et menus] d'une manette.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Sources</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack et tout ce qui envoie son format UDP</value></data>
@@ -4087,7 +4087,6 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>surface hôte du menu non prise en charge ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>icône de case du menu non reconnue ({0}), la case conserve donc son libellé texte</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Sortie</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Boutons</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Touches et souris</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Notes et contrôles</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Mains</value></data>
@@ -5218,7 +5217,7 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Les points d'actionnement analogique des touches n'ont pas été repris.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD envoyait cette manette vers un autre appareil par un adaptateur. PadForge la crée sur ce PC, et Remote Link l'envoie vers un autre PC où PadForge est installé.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge lit deux sticks, et ceci en désigne un troisième.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>L'émulation de volant n'a pas été reprise. Assignez le volant dans la section Boutons.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>L'émulation de volant n'a pas été reprise. Assignez le volant dans la section Mappings.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Ce profil désigne une action spéciale absente d'Actions.xml, situé à côté de son dossier Profiles : {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Ce réglage n'a pas été repris : {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD empêchait ces entrées d'atteindre Windows. Activez Consommer les entrées assignées pour {0} dans la page Appareils, ce qui bloque celles que ce profil assigne.</value></data>
@@ -5227,7 +5226,7 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Ce fichier sépare deux manettes. Dans PadForge, n'importe quelle manette du slot déclenche ces assignations.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>La vitesse de déplacement ou le coup sec n'a pas été repris.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Ceux-ci n'ont pas été repris. Réglez-les dans la section Mouvement et toucher.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Rien dans ce fichier n'ouvre cette couche. Dans la section Boutons, faites un clic droit sur la couche et choisissez Configurer l'activateur.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Rien dans ce fichier n'ouvre cette couche. Dans la section Mappings, faites un clic droit sur la couche et choisissez Configurer l'activateur.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Ses boutons exécutent ceci à l'appui : {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Raccourci de profil</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Fait ce que fait un raccourci de profil : charge un profil nommé, le suivant ou le précédent, affiche ou masque la fenêtre, ou désactive et réactive les manettes virtuelles.</value></data>
@@ -5504,7 +5503,7 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Boutons de console portable PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Éclairage des touches PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Une macro ne peut pas appuyer sur {0}. Une assignation dans la section Boutons le peut.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Une macro ne peut pas appuyer sur {0}. Une ligne dans la section Mappings le peut.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge gère huit superpositions d'écran, et celui-ci est le neuvième ou le dixième réticule de reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge lit Gyro Gauche et Droite à partir du roulis et Inclinaison à partir du lacet, comme le fait reWASD par défaut. Les Préférences de reWASD peuvent échanger les deux, et ce fichier n'indique pas si c'était le cas.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>En mode Tilt, l'Inclinaison de reWASD est une rotation autour de l'axe vertical, et un capteur de mouvement ne donne aucun angle pour cette rotation.</value></data>

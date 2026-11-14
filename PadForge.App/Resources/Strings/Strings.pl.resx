@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Włącz w grze wyjście telemetrii i wskaż ten komputer oraz port.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>W emulatorze dodaj źródło ruchu pod adresem tego komputera i na tym porcie.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Efekty moda trafiają do każdego kontrolera, który ma do nich sprzęt.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pozycja głowy to wiersz Head Tracker na stronie [Urządzenia]. Przypisz obrót głowy w poziomie do osi drążka w sekcji Przyciski kontrolera.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Wartości to wiersz Game Telemetry na stronie [Urządzenia]. Mapuj je w sekcji Przyciski kontrolera lub użyj ich do wyzwalania makr.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Pozycja głowy to wiersz Head Tracker na stronie [Urządzenia]. Przypisz obrót głowy w poziomie do osi drążka w sekcji Mapowania kontrolera.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Wartości to wiersz Game Telemetry na stronie [Urządzenia]. Mapuj je w sekcji Mapowania kontrolera lub użyj ich do wyzwalania makr.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Położenie, rozmiar i przezroczystość menu ustawia się w samym menu, w sekcji [Makra i menu] kontrolera.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Źródła</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack i wszystko, co wysyła jego format UDP</value></data>
@@ -3179,7 +3179,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Kierowanie ruchem</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° do {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Wewnętrzna martwa strefa nachylenia, Orientacja kontrolera</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Ustawienia wejścia „Ruch: nachylenie”: przechylaj kontroler jak kierownicę. Zmapuj „Ruch: nachylenie” na oś drążka w sekcji Przyciski.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Ustawienia wejścia „Ruch: nachylenie”: przechylaj kontroler jak kierownicę. Zmapuj „Ruch: nachylenie” na oś drążka w sekcji Mapowania.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Resetuj kierowanie ruchem</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (prawy drążek)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (lewy drążek)</value></data>
@@ -4149,7 +4149,6 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>powierzchnia źródłowa menu nie jest obsługiwana ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>nie rozpoznano ikony komórki menu ({0}), więc komórka zachowuje etykietę tekstową</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Wyjście</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Przyciski</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Klawisze i mysz</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nuty i kontrolery</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Ręce</value></data>
@@ -5269,7 +5268,7 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analogowe punkty aktywacji klawiszy nie zostały przeniesione.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD wysyłał ten kontroler na inne urządzenie przez adapter. PadForge odtwarza go na tym komputerze, a Łącze zdalne wysyła go na inny komputer z PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge odczytuje dwa drążki, a tu wskazano trzeci.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emulacja kierownicy nie została przeniesiona. Zmapuj kierownicę w sekcji Przyciski.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Emulacja kierownicy nie została przeniesiona. Zmapuj kierownicę w sekcji Mapowania.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Ten profil wskazuje akcję specjalną, której brakuje w pliku Actions.xml obok folderu Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>To ustawienie nie zostało przeniesione: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD blokował dotarcie tych wejść do Windows. Włącz Przechwytuj zmapowane wejścia dla {0} na stronie Urządzenia, co zablokuje te wejścia, które mapuje ten profil.</value></data>
@@ -5278,7 +5277,7 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Ten plik rozdziela dwa kontrolery. W PadForge każdy kontroler przypisany do slotu uruchamia te mapowania.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Prędkość ruchu lub szybki ruch nie zostały przeniesione.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Te ustawienia nie zostały przeniesione. Ustaw je w sekcji Ruch i dotyk.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nic w tym pliku nie otwiera tej warstwy. W sekcji Przyciski kliknij warstwę prawym przyciskiem myszy i wybierz Konfiguruj aktywator.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nic w tym pliku nie otwiera tej warstwy. W sekcji Mapowania kliknij warstwę prawym przyciskiem myszy i wybierz Konfiguruj aktywator.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Jego przyciski uruchamiają po naciśnięciu: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Skrót profilu</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Robi to, co skrót profilu: wczytuje wskazany profil, następny lub poprzedni, pokazuje albo ukrywa okno, albo wyłącza i włącza wirtualne kontrolery.</value></data>
@@ -5555,7 +5554,7 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Przyciski konsoli przenośnej PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Podświetlenie klawiszy PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro nie może nacisnąć {0}. Może to zrobić mapowanie w sekcji Przyciski.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro nie może nacisnąć {0}. Może to zrobić wiersz w sekcji Mapowania.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge obsługuje osiem Nakładek ekranowych, a to dziewiąty lub dziesiąty celownik z reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge odczytuje Żyroskop: przechylenie jako lewo i prawo, a Żyroskop: nachylenie X i Y z odchylenia, jak domyślnie reWASD. W Preferencjach reWASD można zamienić te dwie osie, a ten plik nie mówi, czy to zrobiono.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>W trybie Tilt nachylenie w reWASD to obrót wokół osi pionowej, a czujnik ruchu nie podaje kąta takiego obrotu.</value></data>

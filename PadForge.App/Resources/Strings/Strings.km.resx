@@ -405,8 +405,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>បើកលទ្ធផលតេឡេម៉ែត្រនៅក្នុងហ្គេម ហើយតម្រង់វាទៅកុំព្យូទ័រនេះ និងច្រកនេះ។</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>នៅក្នុងកម្មវិធីត្រាប់តាម បន្ថែមប្រភពចលនាមួយនៅអាសយដ្ឋានរបស់កុំព្យូទ័រនេះ និងច្រកនេះ។</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>បែបផែនរបស់ម៉ូដទៅដល់ឧបករណ៍បញ្ជាគ្រប់ឧបករណ៍ដែលមានផ្នែករឹងសម្រាប់វា។</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ទីតាំងក្បាលគឺជាជួរឧបករណ៍តាមដានក្បាលនៅលើទំព័រ [ឧបករណ៍]។ ម៉ាបការងាកក្បាលទៅអ័ក្សដងបញ្ជា នៅក្នុងផ្នែកប៊ូតុងរបស់ឧបករណ៍បញ្ជា។</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>តម្លៃទាំងនេះគឺជាជួរតេឡេម៉ែត្រហ្គេមនៅលើទំព័រ [ឧបករណ៍]។ ម៉ាបវានៅក្នុងផ្នែកប៊ូតុងរបស់ឧបករណ៍បញ្ជា ឬប្រើវាដើម្បីចាប់ផ្ដើមម៉ាក្រូ។</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ទីតាំងក្បាលគឺជាជួរឧបករណ៍តាមដានក្បាលនៅលើទំព័រ [ឧបករណ៍]។ ម៉ាបការងាកក្បាលទៅអ័ក្សដងបញ្ជា នៅក្នុងផ្នែកការម៉ាបរបស់ឧបករណ៍បញ្ជា។</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>តម្លៃទាំងនេះគឺជាជួរតេឡេម៉ែត្រហ្គេមនៅលើទំព័រ [ឧបករណ៍]។ ម៉ាបវានៅក្នុងផ្នែកការម៉ាបរបស់ឧបករណ៍បញ្ជា ឬប្រើវាដើម្បីចាប់ផ្ដើមម៉ាក្រូ។</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>ទីតាំង ទំហំ និងភាពស្រអាប់ផ្ទាល់របស់ម៉ឺនុយ ត្រូវកំណត់នៅលើម៉ឺនុយ ក្នុងផ្នែក [ម៉ាក្រូ និងម៉ឺនុយ] របស់ឧបករណ៍បញ្ជា។</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>ប្រភព</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack និងកម្មវិធីណាដែលផ្ញើទម្រង់ UDP របស់វា</value></data>
@@ -2985,7 +2985,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>ការបត់ចង្កូតដោយចលនា</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° ដល់ {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>តំបន់ងាប់នៃការផ្អៀង, ទិសរបស់ឧបករណ៍បញ្ជា</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>ការកំណត់សម្រាប់ការបញ្ចូល «ទំនោរចលនា»៖ ផ្អៀងឧបករណ៍បញ្ជាដូចចង្កូត។ ម៉ាប «ទំនោរចលនា» ទៅអ័ក្សដងបញ្ជា ក្នុងផ្នែក «ប៊ូតុង»។</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>ការកំណត់សម្រាប់ការបញ្ចូល «ទំនោរចលនា»៖ ផ្អៀងឧបករណ៍បញ្ជាដូចចង្កូត។ ម៉ាប «ទំនោរចលនា» ទៅអ័ក្សដងបញ្ជា ក្នុងផ្នែក «ការម៉ាប»។</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>កំណត់ការបត់ចង្កូតដោយចលនាឡើងវិញ</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ហ្វ្លិកស្ទីក (ដងបញ្ជាស្ដាំ)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>ហ្វ្លិកស្ទីក (ដងបញ្ជាឆ្វេង)</value></data>
@@ -3925,7 +3925,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>ផ្ទៃបើកម៉ឺនុយមិនត្រូវបានគាំទ្រ ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>មិនស្គាល់រូបតំណាងក្រឡាម៉ឺនុយ ({0}) ដូច្នេះក្រឡារក្សាស្លាកអត្ថបទរបស់វា</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>លទ្ធផល</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>ប៊ូតុង</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>គ្រាប់ចុច និងកណ្ដុរ</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>ណូត និងផ្នែកបញ្ជា</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>ដៃ</value></data>

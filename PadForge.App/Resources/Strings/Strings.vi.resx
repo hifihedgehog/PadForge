@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Bật đầu ra telemetry trong trò chơi và trỏ nó tới PC này cùng cổng này.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Trong trình giả lập, thêm một nguồn chuyển động tại địa chỉ của PC này và cổng này.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Hiệu ứng của mod đến mọi tay cầm có phần cứng hỗ trợ chúng.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Tư thế đầu là hàng Theo dõi đầu trên trang [Thiết bị]. Hãy ánh xạ góc xoay ngang của đầu vào một trục cần analog trong mục Nút bấm của tay cầm.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Các giá trị nằm ở hàng Telemetry trò chơi trên trang [Thiết bị]. Hãy ánh xạ chúng trong mục Nút bấm của tay cầm hoặc dùng chúng để kích hoạt macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Tư thế đầu là hàng Theo dõi đầu trên trang [Thiết bị]. Hãy ánh xạ góc xoay ngang của đầu vào một trục cần analog trong mục Ánh xạ của tay cầm.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Các giá trị nằm ở hàng Telemetry trò chơi trên trang [Thiết bị]. Hãy ánh xạ chúng trong mục Ánh xạ của tay cầm hoặc dùng chúng để kích hoạt macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Vị trí, kích thước và độ mờ của một menu được đặt ngay trên menu đó, trong mục [Macro và menu] của tay cầm.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Nguồn</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack và mọi thứ gửi theo định dạng UDP của nó</value></data>
@@ -3179,7 +3179,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Đánh lái bằng chuyển động</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° đến {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Vùng chết trong của độ ngả, Vùng chết ngoài của độ ngả, Hướng tay cầm</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Thiết lập cho đầu vào Chuyển động ngả: nghiêng tay cầm như một vô lăng. Hãy ánh xạ "Chuyển động ngả" sang một trục cần analog trong mục Nút bấm.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Thiết lập cho đầu vào Chuyển động ngả: nghiêng tay cầm như một vô lăng. Hãy ánh xạ "Chuyển động ngả" sang một trục cần analog trong mục Ánh xạ.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Đặt lại đánh lái bằng chuyển động</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick stick (cần phải)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick stick (cần trái)</value></data>
@@ -4149,7 +4149,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>không hỗ trợ bề mặt mở menu ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>không nhận ra biểu tượng của ô menu ({0}), nên ô giữ nhãn văn bản</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Đầu ra</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Nút bấm</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Phím và chuột</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nốt và điều khiển</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Tay</value></data>
@@ -5269,7 +5268,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Điểm kích hoạt analog của phím đã không được chuyển sang.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD đã gửi tay cầm này sang một thiết bị khác qua bộ chuyển đổi. PadForge chạy tay cầm đó trên PC này, còn Liên kết từ xa gửi nó sang một PC khác đang chạy PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge đọc hai cần analog, còn mục này nêu tên một cần thứ ba.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Giả lập vô lăng đã không được chuyển sang. Hãy ánh xạ vô lăng trong mục Nút bấm.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Giả lập vô lăng đã không được chuyển sang. Hãy ánh xạ vô lăng trong mục Ánh xạ.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Hồ sơ này nêu một hành động đặc biệt không có trong Actions.xml cạnh thư mục Profiles của nó: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Thiết lập này đã không được chuyển sang: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD đã chặn các đầu vào này không đến được Windows. Hãy bật Chặn các đầu vào đã ánh xạ cho {0} trên trang Thiết bị, tùy chọn này chặn những đầu vào mà hồ sơ này ánh xạ.</value></data>
@@ -5278,7 +5277,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Tệp này tách riêng hai tay cầm. Trong PadForge, bất kỳ tay cầm nào ở ô này đều kích hoạt các ánh xạ này.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Tốc độ di chuyển hoặc cú gạt nhanh đã không được chuyển sang.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Những mục này đã không được chuyển sang. Hãy đặt chúng trong mục Chuyển động và cảm ứng.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Không có gì trong tệp này mở lớp này. Trong mục Nút bấm, hãy nhấp chuột phải vào lớp rồi chọn Cấu hình bộ kích hoạt.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Không có gì trong tệp này mở lớp này. Trong mục Ánh xạ, hãy nhấp chuột phải vào lớp rồi chọn Cấu hình bộ kích hoạt.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Các nút của hồ sơ chạy những lệnh này khi được nhấn: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Phím tắt hồ sơ</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Làm việc mà một phím tắt hồ sơ làm: tải hồ sơ có tên, hồ sơ kế tiếp hoặc hồ sơ trước đó, hiện hoặc ẩn cửa sổ, hoặc tắt và bật các tay cầm ảo.</value></data>
@@ -5555,7 +5554,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Nút máy cầm tay PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Hồ sơ HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Đèn phím PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Macro không thể nhấn {0}. Một ánh xạ trong mục Nút bấm thì có thể.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Macro không thể nhấn {0}. Một hàng trong mục Ánh xạ thì có thể.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge chạy tám Lớp phủ màn hình, còn đây là tâm ngắm thứ chín hoặc thứ mười của reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge đọc Con quay hồi chuyển trái và phải từ roll, và ngả từ yaw, theo mặc định của reWASD. Preferences của reWASD có thể đổi hai trục này, và tệp này không cho biết có đổi hay không.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Ở chế độ Tilt, ngả của reWASD là một vòng xoay quanh trục thẳng đứng, và cảm biến chuyển động không cho góc nào cho vòng xoay đó.</value></data>

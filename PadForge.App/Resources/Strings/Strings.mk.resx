@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Вклучете излез на телеметрија во играта и насочете го кон овој компјутер и порта.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Во емулаторот додајте извор на движење на адресата на овој компјутер и на оваа порта.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ефектите на модот стигнуваат до секој контролер што има хардвер за нив.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Положбата на главата е редот за следење на глава на [Уреди]. Мапирајте го вртењето на главата лево-десно на оска на стик во делот Копчиња на контролерот.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Вредностите се редот за телеметрија од игра на [Уреди]. Мапирајте ги во делот Копчиња на контролерот или користете ги за активирање макроа.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Положбата на главата е редот за следење на глава на [Уреди]. Мапирајте го вртењето на главата лево-десно на оска на стик во делот Мапирања на контролерот.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Вредностите се редот за телеметрија од игра на [Уреди]. Мапирајте ги во делот Мапирања на контролерот или користете ги за активирање макроа.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Местото, големината и непроѕирноста на менито се поставуваат на самото мени, во делот [Макроа и менија] на контролерот.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Извори</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack и сè што испраќа во неговиот UDP-формат</value></data>
@@ -3179,7 +3179,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Управување со движење</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° до {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Внатрешна мртва зона на наведнувањето, Ориентација на контролерот</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Поставки за влезот „Движење: наведнување“: навалувајте го контролерот како волан. Мапирајте „Движење: наведнување“ на оска на палка во делот „Копчиња“.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Поставки за влезот „Движење: наведнување“: навалувајте го контролерот како волан. Мапирајте „Движење: наведнување“ на оска на палка во делот „Мапирања“.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Ресетирај го управувањето со движење</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Флик-стик (десна палка)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Флик-стик (лева палка)</value></data>
@@ -4149,7 +4149,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>површината на која е менито не е поддржана ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>иконата на ќелијата од менито не е препознаена ({0}), па ќелијата ја задржува текстуалната ознака</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Излез</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Копчиња</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Тастери и глушец</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Ноти и контроли</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Раце</value></data>
@@ -5269,7 +5268,7 @@
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Точките на активирање на аналогните тастери не се пренесоа.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD го испраќаше овој контролер до друг уред преку адаптер. PadForge го пушта на овој компјутер, а Далечинска врска го испраќа до друг компјутер на кој работи PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge чита два стика, а овде се именува трет.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Емулацијата на воланот не се пренесе. Мапирајте го воланот во делот „Копчиња“.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Емулацијата на воланот не се пренесе. Мапирајте го воланот во делот „Мапирања“.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Овој профил именува посебна акција што недостасува во Actions.xml покрај неговата папка Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Оваа поставка не се пренесе: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD спречуваше овие влезови да стигнат до Windows. Вклучете Блокирај мапирани влезови за {0} на страницата Уреди, што ги запира оние што овој профил ги мапира.</value></data>
@@ -5278,7 +5277,7 @@
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Оваа датотека одржува два контролера одделно. Во PadForge, секој контролер на слотот ги активира овие мапирања.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Брзината на движење или нагло движење не се пренесоа.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Овие не се пренесоа. Поставете ги во делот „Движење и допир“.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ништо во оваа датотека не го отвора овој слој. Во делот „Копчиња“ кликнете со десното копче на слојот и изберете „Конфигурирај активатор“.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Ништо во оваа датотека не го отвора овој слој. Во делот „Мапирања“ кликнете со десното копче на слојот и изберете „Конфигурирај активатор“.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Неговите копчиња ги извршуваат овие при притискање: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Кратенка за профил</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Го прави она што го прави кратенката за профил: вчитува именуван профил, следниот или претходниот, го прикажува или скрива прозорецот или ги исклучува и вклучува виртуелните контролери.</value></data>
@@ -5555,7 +5554,7 @@
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Копчиња на преносен уред на PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Профил на HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Светла на тастерите на PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макро не може да притисне {0}. Мапирање во делот „Копчиња“ може.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макро не може да притисне {0}. Ред во делот „Мапирања“ може.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge извршува осум оверлеи на екранот, а ова е деветти или десетти нишан на reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge чита Жироскоп: навалување како лево и десно, а Жироскоп: вртење како навалување, што е стандардно кај reWASD. Поставките на reWASD можат да ги заменат двете, а оваа датотека не кажува дали биле заменети.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Во режимот Наклон, навалувањето на reWASD е вртење околу вертикалната оска, а сензорот за движење не дава агол за тоа вртење.</value></data>

@@ -1360,8 +1360,8 @@
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR ikuyenda</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Chotsani trigger</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Yatsani kutumiza kwa telemetry mu masewera ndipo mulozetse ku PC iyi ndi port iyi.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Malo a mutu ali pa mzere wa Head Tracker pa [Zipangizo]. Ikani kutembenuka kwa mutu pa axis ya stick mu gawo la Mabatani la kontrola.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Manambalawa ali pa mzere wa Game Telemetry pa [Zipangizo]. Muwaike mu gawo la Mabatani la kontrola kapena muwagwiritse ntchito kuyambitsa ma macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Malo a mutu ali pa mzere wa Head Tracker pa [Zipangizo]. Ikani kutembenuka kwa mutu pa axis ya stick mu gawo la Ma mapping la kontrola.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Manambalawa ali pa mzere wa Game Telemetry pa [Zipangizo]. Muwaike mu gawo la Ma mapping la kontrola kapena muwagwiritse ntchito kuyambitsa ma macro.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Koperani adilesi</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Foni yolumikizidwa imaonekera pano ndi pa tsamba la Zipangizo, pomwe mumaipatsa kontrola.</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Sakani zipangizo</value></data>
@@ -1430,4 +1430,5 @@
   <data name="Common_CurveEditor" xml:space="preserve"><value>chosinthira curve</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} mwa {1} zayatsidwa</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Mbiri zolowetsedwa izi zili ndi mitundu yatsopano pa Steam Workshop. Zilowetseninso kuchokera ku Pezani mbiri kuti mupeze zosinthazo.</value></data>
+  <data name="Pad_Mappings" xml:space="preserve"><value>Ma mapping</value></data>
 </root>

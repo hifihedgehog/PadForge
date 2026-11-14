@@ -2613,7 +2613,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>モーションステアリング</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° から {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>リーンのデッドゾーン、コントローラーの向き</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>「モーションリーン」入力の設定。コントローラーをハンドルのように傾けます。「ボタン」セクションで「モーションリーン」をスティック軸に割り当ててください。</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>「モーションリーン」入力の設定。コントローラーをハンドルのように傾けます。「マッピング」セクションで「モーションリーン」をスティック軸に割り当ててください。</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>モーションステアリングをリセット</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ステアリングロックフィードバック</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>ステアリングモードのスティックがフルロックで合図</value></data>
@@ -3399,8 +3399,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>ゲーム側でテレメトリー出力をオンにし、この PC とポートを送信先に指定してください。</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>エミュレーター側で、この PC のアドレスとこのポートを指定してモーションソースを追加してください。</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>MOD のエフェクトは、対応するハードウェアを持つすべてのコントローラーに届きます。</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>頭の姿勢は、[デバイス]の「ヘッド トラッカー」行です。コントローラーのボタンセクションで、頭のヨーをスティック軸に割り当てます。</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>値は、[デバイス]の「ゲームテレメトリー」行です。コントローラーのボタンセクションで割り当てるか、マクロのトリガーに使います。</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>頭の姿勢は、[デバイス]の「ヘッド トラッカー」行です。コントローラーのマッピングセクションで、頭のヨーをスティック軸に割り当てます。</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>値は、[デバイス]の「ゲームテレメトリー」行です。コントローラーのマッピングセクションで割り当てるか、マクロのトリガーに使います。</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>メニューの位置、サイズ、不透明度は、コントローラーの[マクロとメニュー]セクションで、メニューごとに設定します。</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>入力元</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack と、その UDP 形式を送信するすべてのもの</value></data>
@@ -4087,7 +4087,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>メニューのホストサーフェスは未対応 ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>メニューセルのアイコンを認識できません ({0})。このセルはテキストラベルを表示します</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>出力</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>ボタン</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>キーとマウス</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>ノートとコントロール</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>ハンド</value></data>
@@ -5218,7 +5217,7 @@
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>アナログキーのアクチュエーションポイントは引き継がれませんでした。</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASDはこのコントローラーをアダプター経由で別のデバイスに送っていました。PadForgeはこのPCでそのコントローラーを再現し、Remote LinkはPadForgeが動作している別のPCに送ります。</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForgeが読み取るスティックは2本ですが、ここには3本目が指定されています。</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>ステアリングホイールのエミュレーションは引き継がれませんでした。「ボタン」セクションでホイールをマッピングしてください。</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>ステアリングホイールのエミュレーションは引き継がれませんでした。「マッピング」セクションでホイールをマッピングしてください。</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>このプロファイルは、Profilesフォルダーと同じ場所にあるActions.xmlに存在しない特殊アクションを指定しています: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>この設定は引き継がれませんでした: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASDはこれらの入力がWindowsに届かないようにしていました。デバイスページで{0}のマッピング済み入力を消費するをオンにすると、このプロファイルがマッピングしている入力が届かなくなります。</value></data>
@@ -5227,7 +5226,7 @@
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>このファイルは2つのコントローラーを区別して扱います。PadForgeでは、そのスロット上のどのコントローラーでもこれらのマッピングが働きます。</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>移動速度とフリックは引き継がれませんでした。</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>これらは引き継がれませんでした。「モーションとタッチ」で設定してください。</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>このファイルには、このレイヤーを開くものがありません。「ボタン」セクションでレイヤーを右クリックし、「アクティベーターを構成」を選んでください。</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>このファイルには、このレイヤーを開くものがありません。「マッピング」セクションでレイヤーを右クリックし、「アクティベーターを構成」を選んでください。</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>ボタンを押すと、次を実行します: {0}。</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>プロファイルショートカット</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>プロファイルショートカットと同じ動作をします。指定したプロファイル、次または前のプロファイルの読み込み、ウィンドウの表示と非表示、仮想コントローラーのオフとオンの切り替えができます。</value></data>
@@ -5504,7 +5503,7 @@
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge ハンドヘルドのボタン (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro プロファイル (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge キーライト (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>マクロでは {0} を押せません。「ボタン」セクションのマッピングなら押せます。</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>マクロでは {0} を押せません。「マッピング」セクションの行なら押せます。</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForgeが実行できる画面オーバーレイは 8 つで、これはreWASDの 9 つ目または 10 個目の照準です。</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForgeは、reWASDの既定どおり、ジャイロの左右をロールから、傾きをヨーから読み取ります。reWASDの設定でこの 2 つを入れ替えられますが、このファイルには入れ替えたかどうかが記録されていません。</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>チルトモードでは、reWASDの傾きは垂直軸まわりの回転です。モーションセンサーはその回転の角度を返しません。</value></data>

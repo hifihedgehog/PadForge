@@ -1703,7 +1703,6 @@
   <data name="Search_Group_Pages" xml:space="preserve"><value>Amaphepha</value></data>
   <data name="Search_Group_Actions" xml:space="preserve"><value>Izenzo</value></data>
   <data name="Home_Offer_Use" xml:space="preserve"><value>Sebenzisa</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Amaqhosha</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Amaqhosha &amp; Impuku</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Iinowuthi &amp; Izilawuli</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Izandla</value></data>
@@ -1747,8 +1746,8 @@
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Yabela isantya, iipedali neegiya ezithunyelwa ngumdlalo wokuqhuba, njengalo naliphi na igalelo.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Thatha iziphumo ze-adaptive trigger nezokukhanya kwiimowudi zemidlalo ezibhalelwe i-DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Vula ukuphuma kwe-telemetry emdlalweni uze uyalathise kule PC nakweli zibuko.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Indlela intloko ebekwe ngayo ngumgca we-Head Tracker kwi-[Izixhobo]. Yabela i-yaw yentloko kwi-axis yentonga kwicandelo lamaqhosha esilawuli.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Amaxabiso ngumgca we-Game Telemetry kwi-[Izixhobo]. Wayabele kwicandelo lamaqhosha esilawuli okanye uwasebenzise ukuqalisa iimakhro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Indlela intloko ebekwe ngayo ngumgca we-Head Tracker kwi-[Izixhobo]. Yabela i-yaw yentloko kwi-axis yentonga kwicandelo leemephu zesilawuli.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Amaxabiso ngumgca we-Game Telemetry kwi-[Izixhobo]. Wayabele kwicandelo leemephu zesilawuli okanye uwasebenzise ukuqalisa iimakhro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Indawo, ubungakanani nokubonakala kwemenyu ngokwayo zisetwa kwimenyu leyo, kwicandelo lesilawuli elithi [Iimakhro &amp; Iimenyu].</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Uluhlu nge-axis nganye. U-0 ulandela uluhlu olungentla.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Imidlalo engaziwayo yi-PadForge</value></data>

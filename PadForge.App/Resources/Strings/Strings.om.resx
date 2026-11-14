@@ -1552,7 +1552,6 @@
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Oovarleeyii baafataa</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Oovarleeyii jijjiirraa piroofaayilii</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Bahiinsa</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Qabduulee</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Furtuuwwan fi maawusii</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Noota fi to'annoowwan</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Harkoota</value></data>
@@ -1963,8 +1962,8 @@
   <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR hojjechaa jira, draayivariin walqabateera</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Qubni abbaa lamaanuu qabduulee irra osoo jiruu, hordofaa mataa ykn heedseetii VR tiin naannoo kee ilaali.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Tapha keessatti bahiinsa telemeetirii bansiisii gara PC fi poortii kanaatti qajeelchi.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Haalli mataa tarree Head Tracker kan [Meeshaalee] irra jiruudha. Kutaa Qabduulee kontirolaa tokkoo keessatti naanna'iinsa mataa aksisii sitikii tokkootti ramadi.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Gatiiwwan kun tarree Game Telemetry kan [Meeshaalee] irra jiruudha. Kutaa Qabduulee kontirolaa tokkoo keessatti ramadi ykn maakiroowwan kaasuuf itti fayyadami.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Haalli mataa tarree Head Tracker kan [Meeshaalee] irra jiruudha. Kutaa Ramaddiiwwan kontirolaa tokkoo keessatti naanna'iinsa mataa aksisii sitikii tokkootti ramadi.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Gatiiwwan kun tarree Game Telemetry kan [Meeshaalee] irra jiruudha. Kutaa Ramaddiiwwan kontirolaa tokkoo keessatti ramadi ykn maakiroowwan kaasuuf itti fayyadami.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Maddoota</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Geengoo, kaarqaa ykn baarii meenuu yeroo inni banamee jiru</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Maqaa piroofaayilii yeroo piroofaayiliin jijjiiramu</value></data>
@@ -2048,4 +2047,5 @@
   <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Hanga ati olkaa'tutti wanti tokkollee poortii hin ga'u.</value></data>
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Kallattii: {0} kan {1}</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} kan {1} keessaa banaa</value></data>
+  <data name="Pad_Mappings" xml:space="preserve"><value>Ramaddiiwwan</value></data>
 </root>

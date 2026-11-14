@@ -403,8 +403,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Schalt d'Telemetrie-Ausgab am Spill un a riicht se op dëse PC an dëse Port.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Setzt am Emulator eng Beweegungsquell mat der Adress vun dësem PC an dësem Port derbäi.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>D'Effekter vun engem Mod erreechen all Controller, deen d'Hardware dofir huet.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>D'Kappositioun ass d'Zeil Head-Tracker op [Apparater]. Ordnt de Kapp-Yaw an der Sektioun Knäppercher vun engem Controller enger Stick-Achs zou.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>D'Wäerter sinn d'Zeil Spill-Telemetrie op [Apparater]. Ordnt se an der Sektioun Knäppercher vun engem Controller zou oder léist domat Makroen aus.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>D'Kappositioun ass d'Zeil Head-Tracker op [Apparater]. Ordnt de Kapp-Yaw an der Sektioun Zouuerdnungen vun engem Controller enger Stick-Achs zou.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>D'Wäerter sinn d'Zeil Spill-Telemetrie op [Apparater]. Ordnt se an der Sektioun Zouuerdnungen vun engem Controller zou oder léist domat Makroen aus.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Plaz, Gréisst an Opazitéit vun engem Menü ginn um Menü selwer agestallt, an der Sektioun [Makroen an Menüen] vun engem Controller.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Quellen</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack an alles, wat säin UDP-Format schéckt</value></data>
@@ -2965,7 +2965,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Beweegungssteierung</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° bis {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Neigungs-Doudzonen, Orientéierung vum Controller</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Astellunge fir d'Agab „Beweegung Neigung“: kippt de Controller wéi e Steierrad. Ordnet „Beweegung Neigung“ ënner „Knäppercher“ enger Stick-Achs zou.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Astellunge fir d'Agab „Beweegung Neigung“: kippt de Controller wéi e Steierrad. Ordnet „Beweegung Neigung“ ënner „Zouuerdnungen“ enger Stick-Achs zou.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Beweegungssteierung zrécksetzen</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (rietse Stick)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (lénkse Stick)</value></data>
@@ -3904,7 +3904,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>Host-Fläch vum Menü net ënnerstëtzt ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>Symbol vun der Menü-Zell net erkannt ({0}), dofir behält d'Zell hir Textbeschrëftung</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Ausgab</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Knäppercher</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tasten a Maus</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Nouten a Regeler</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Hänn</value></data>

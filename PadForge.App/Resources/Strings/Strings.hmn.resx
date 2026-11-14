@@ -1397,7 +1397,6 @@
   <data name="Search_Placeholder" xml:space="preserve"><value>Nrhiav kev teeb tsa, khoom siv thiab profile</value></data>
   <data name="Search_Title" xml:space="preserve"><value>Nrhiav</value></data>
   <data name="Search_Results" xml:space="preserve"><value>Cov txiaj ntsig</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Cov khawm</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Cov key thiab mouse</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Cov note thiab control</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Tes</value></data>
@@ -1436,8 +1435,8 @@
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR tsis tau nruab</value></data>
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR tab tom khiav</value></data>
   <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR tab tom khiav, driver txuas lawm</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Txoj kev tig ntawm lub taub hau yog kab Head Tracker hauv [Cov khoom siv]. Map yaw ntawm lub taub hau rau ib txoj axis ntawm stick hauv ntu Cov khawm ntawm ib lub controller.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Cov nqi no yog kab Game Telemetry hauv [Cov khoom siv]. Map lawv hauv ntu Cov khawm ntawm ib lub controller lossis siv lawv los pib macro.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Txoj kev tig ntawm lub taub hau yog kab Head Tracker hauv [Cov khoom siv]. Map yaw ntawm lub taub hau rau ib txoj axis ntawm stick hauv ntu Cov mapping ntawm ib lub controller.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Cov nqi no yog kab Game Telemetry hauv [Cov khoom siv]. Map lawv hauv ntu Cov mapping ntawm ib lub controller lossis siv lawv los pib macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ib lub menu qhov chaw, qhov loj thiab qhov pom tseeb teeb tsa rau ntawm lub menu, hauv ntu [Cov macro thiab menu] ntawm ib lub controller.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Yam uas tshwm</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Theej chaw nyob</value></data>

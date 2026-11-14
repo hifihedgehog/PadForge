@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Уключыце вывад тэлеметрыі ў гульні і ўкажыце гэты ПК і порт.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>У эмулятары дадайце крыніцу руху з адрасам гэтага ПК і гэтым портам.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Эфекты мода трапляюць на кожны кантролер, у якім ёсць для іх апаратная частка.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Становішча галавы гэта радок «Трэкер галавы» на старонцы [Прылады]. Прызначце рысканне галавы на вось стыка ў раздзеле «Кнопкі» кантролера.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Значэнні гэта радок «Гульнявая тэлеметрыя» на старонцы [Прылады]. Прызначайце іх у раздзеле «Кнопкі» кантролера або выкарыстоўвайце, каб запускаць макрасы.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Становішча галавы гэта радок «Трэкер галавы» на старонцы [Прылады]. Прызначце рысканне галавы на вось стыка ў раздзеле «Прызначэнні» кантролера.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Значэнні гэта радок «Гульнявая тэлеметрыя» на старонцы [Прылады]. Прызначайце іх у раздзеле «Прызначэнні» кантролера або выкарыстоўвайце, каб запускаць макрасы.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Месца, памер і непразрыстасць меню задаюцца на самім меню, у раздзеле [Макрасы і меню] кантролера.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Крыніцы</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack і ўсё, што адпраўляе яго фармат UDP</value></data>
@@ -3179,7 +3179,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Рулявое кіраванне рухам</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° да {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Мёртвыя зоны нахілу, Арыентацыя кантролера</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Налады ўводу «Рух: нахіл»: нахіляйце кантролер, як руль. Прызначце «Рух: нахіл» на вось стыка ў раздзеле «Кнопкі».</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Налады ўводу «Рух: нахіл»: нахіляйце кантролер, як руль. Прызначце «Рух: нахіл» на вось стыка ў раздзеле «Прызначэнні».</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Скінуць рулявое кіраванне рухам</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Флік-стык (правы стык)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Флік-стык (левы стык)</value></data>
@@ -4149,7 +4149,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>паверхня-носьбіт меню не падтрымліваецца ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>значок ячэйкі меню не распазнаны ({0}), таму ячэйка пакідае тэкставы подпіс</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Выхад</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Кнопкі</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Клавішы і мыш</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Ноты і рэгулятары</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Рукі</value></data>
@@ -5269,7 +5268,7 @@
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Кропкі аналагавага зрабатання клавіш не перанесліся.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD адпраўляў гэты кантролер на іншую прыладу праз адаптар. PadForge ўзнаўляе яго на гэтым ПК, а Аддаленая сувязь адпраўляе яго на іншы ПК з PadForge.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge чытае два стыкі, а тут названы трэці.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Эмуляцыя руля не перанеслася. Прызначце руль у раздзеле «Кнопкі».</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Эмуляцыя руля не перанеслася. Прызначце руль у раздзеле «Прызначэнні».</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Гэты профіль называе асаблівае дзеянне, якога няма ў Actions.xml побач з яго папкай Profiles: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Гэта налада не перанеслася: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD не пускаў гэтыя ўводы ў Windows. Уключыце Паглынаць прызначаныя ўводы для {0} на старонцы Прылады: гэта спыніць тыя, што прызначае гэты профіль.</value></data>
@@ -5278,7 +5277,7 @@
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Гэты файл трымае два кантролеры асобна. У PadForge гэтыя прызначэнні выконвае любы кантролер на слоце.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Хуткасць руху або рэзкі рух не перанеслася.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Гэтыя налады не перанесліся. Задайце іх у раздзеле «Рух і сэнсар».</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Нічога ў гэтым файле не адкрывае гэты слой. У раздзеле «Кнопкі» зрабіце правы клік па назве слоя і выберыце «Наладзіць актыватар».</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Нічога ў гэтым файле не адкрывае гэты слой. У раздзеле «Прызначэнні» зрабіце правы клік па назве слоя і выберыце «Наладзіць актыватар».</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Яго кнопкі запускаюць пры націсканні: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Хуткая каманда профілю</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Выконвае тое, што робіць хуткая каманда профілю: загружае профіль з назвай, наступны або папярэдні, паказвае ці хавае акно, або выключае і ўключае віртуальныя кантролеры.</value></data>
@@ -5555,7 +5554,7 @@
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>Кнопкі партатыўнай прылады PadForge (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Профіль HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Падсветка клавіш PadForge (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макрас не можа націснуць {0}. Прызначэнне ў раздзеле «Кнопкі» можа.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макрас не можа націснуць {0}. Радок у раздзеле «Прызначэнні» можа.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge запускае восем Накладак экрана, а гэта дзевяты або дзясяты прыцэл reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge чытае Гіраскоп: крэн як налева і направа, а Гіраскоп: рысканне як нахіл, як у reWASD па змаўчанні. У наладах reWASD іх можна памяняць месцамі, і гэты файл не паказвае, ці мянялі.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>У рэжыме нахілу нахіл reWASD азначае паварот вакол вертыкальнай восі, а датчык руху не дае вугла для такога павароту.</value></data>

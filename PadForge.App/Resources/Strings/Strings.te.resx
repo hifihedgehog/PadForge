@@ -418,8 +418,8 @@
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>గేమ్‌లో టెలిమెట్రీ అవుట్పుట్ ఆన్ చేసి, ఈ PCని, ఈ పోర్ట్‌ను చూపండి.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>ఎమ్యులేటర్‌లో ఈ PC చిరునామా, ఈ పోర్ట్‌తో ఒక మోషన్ సోర్స్‌ను జోడించండి.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>మోడ్ ప్రభావాలు, వాటికి కావలసిన హార్డ్‌వేర్ ఉన్న ప్రతి కంట్రోలర్‌కు చేరతాయి.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>తల భంగిమ [పరికరాలు] పేజీలోని హెడ్ ట్రాకర్ వరుస. హెడ్ యాను కంట్రోలర్ బటన్లు విభాగంలో ఒక స్టిక్ అక్షానికి మ్యాప్ చేయండి.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>విలువలు [పరికరాలు] పేజీలోని గేమ్ టెలిమెట్రీ వరుసలో ఉంటాయి. వాటిని కంట్రోలర్ బటన్లు విభాగంలో మ్యాప్ చేయండి, లేదా మాక్రోలను ప్రేరేపించడానికి వాడండి.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>తల భంగిమ [పరికరాలు] పేజీలోని హెడ్ ట్రాకర్ వరుస. హెడ్ యాను కంట్రోలర్ మ్యాపింగ్లు విభాగంలో ఒక స్టిక్ అక్షానికి మ్యాప్ చేయండి.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>విలువలు [పరికరాలు] పేజీలోని గేమ్ టెలిమెట్రీ వరుసలో ఉంటాయి. వాటిని కంట్రోలర్ మ్యాపింగ్లు విభాగంలో మ్యాప్ చేయండి, లేదా మాక్రోలను ప్రేరేపించడానికి వాడండి.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>మెనూ స్థానం, పరిమాణం, అపారదర్శకత మెనూలోనే, కంట్రోలర్ [మాక్రోలు &amp; మెనూలు] విభాగంలో సెట్ అవుతాయి.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>మూలాలు</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack, దాని UDP ఫార్మాట్ పంపే ఏదైనా</value></data>
@@ -3179,7 +3179,7 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>మోషన్ స్టీరింగ్</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° నుండి {1}° వరకు</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>లీన్ డెడ్ జోన్లు, కంట్రోలర్ ఓరియెంటేషన్</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>మోషన్ వంపు ఇన్పుట్ కోసం సెట్టింగులు: కంట్రోలర్ను స్టీరింగ్ వీల్లా వంచండి. బటన్లు విభాగంలో "మోషన్ వంపు" ను ఒక స్టిక్ అక్షానికి మ్యాప్ చేయండి.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>మోషన్ వంపు ఇన్పుట్ కోసం సెట్టింగులు: కంట్రోలర్ను స్టీరింగ్ వీల్లా వంచండి. మ్యాపింగ్లు విభాగంలో "మోషన్ వంపు" ను ఒక స్టిక్ అక్షానికి మ్యాప్ చేయండి.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>మోషన్ స్టీరింగ్ రీసెట్ చేయి</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>ఫ్లిక్ స్టిక్ (కుడి స్టిక్)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>ఫ్లిక్ స్టిక్ (ఎడమ స్టిక్)</value></data>
@@ -4149,7 +4149,6 @@
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>మెను హోస్ట్ ఉపరితలానికి మద్దతు లేదు ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>మెను సెల్ ఐకాన్ గుర్తించబడలేదు ({0}), కాబట్టి సెల్ తన పాఠ్య లేబుల్ను ఉంచుతుంది</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>అవుట్పుట్</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>బటన్లు</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>కీలు &amp; మౌస్</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>నోట్స్ &amp; కంట్రోల్స్</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>చేతులు</value></data>
@@ -5269,7 +5268,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>అనలాగ్ కీ యాక్చుయేషన్ పాయింట్లు రాలేదు.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD ఈ కంట్రోలర్‌ను అడాప్టర్ ద్వారా మరో పరికరానికి పంపింది. PadForge దాన్ని ఈ PCలో ప్లే చేస్తుంది, మరియు రిమోట్ లింక్ దాన్ని PadForge నడుస్తున్న మరో PCకి పంపుతుంది.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge రెండు స్టిక్‌లను చదువుతుంది, ఇది మూడోదాన్ని పేర్కొంటోంది.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>స్టీరింగ్ వీల్ ఎమ్యులేషన్ రాలేదు. వీల్‌ను బటన్లు విభాగంలో మ్యాప్ చేయండి.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>స్టీరింగ్ వీల్ ఎమ్యులేషన్ రాలేదు. వీల్‌ను మ్యాపింగ్లు విభాగంలో మ్యాప్ చేయండి.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>ఈ ప్రొఫైల్ దాని Profiles ఫోల్డర్ పక్కన ఉన్న Actions.xml లో లేని ప్రత్యేక చర్యను పేర్కొంటోంది: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>ఈ సెట్టింగ్ రాలేదు: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD ఈ ఇన్‌పుట్‌లు Windowsకు చేరకుండా ఆపింది. పరికరాలు పేజీలో {0} కోసం మ్యాప్ చేసిన ఇన్పుట్లను వినియోగించు ను ఆన్ చేయండి, ఇది ఈ ప్రొఫైల్ మ్యాప్ చేసిన వాటిని ఆపుతుంది.</value></data>
@@ -5278,7 +5277,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>ఈ ఫైల్ రెండు కంట్రోలర్‌లను వేరుగా ఉంచుతుంది. PadForgeలో, ఆ స్లాట్‌లోని ఏ కంట్రోలర్ అయినా ఈ మ్యాపింగ్‌లను అమలు చేస్తుంది.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>కదలిక వేగం లేదా ఫ్లిక్ రాలేదు.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>ఇవి రాలేదు. వాటిని మోషన్ &amp; టచ్ విభాగంలో సెట్ చేయండి.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>ఈ ఫైల్‌లో ఏదీ ఈ లేయర్‌ను తెరవదు. బటన్లు విభాగంలో లేయర్‌పై రైట్ క్లిక్ చేసి, “యాక్టివేటర్ కాన్ఫిగర్ చేయండి” ఎంచుకోండి.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>ఈ ఫైల్‌లో ఏదీ ఈ లేయర్‌ను తెరవదు. మ్యాపింగ్లు విభాగంలో లేయర్‌పై రైట్ క్లిక్ చేసి, “యాక్టివేటర్ కాన్ఫిగర్ చేయండి” ఎంచుకోండి.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>దీని బటన్లు నొక్కినప్పుడు ఇవి నడుస్తాయి: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>ప్రొఫైల్ షార్ట్‌కట్</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>ప్రొఫైల్ షార్ట్‌కట్ చేసే పనిని చేస్తుంది: పేరున్న ప్రొఫైల్‌ను, తదుపరి లేదా మునుపటి ప్రొఫైల్‌ను లోడ్ చేస్తుంది, విండోను చూపిస్తుంది లేదా దాచుతుంది, లేదా వర్చువల్ కంట్రోలర్లను ఆఫ్ చేసి ఆన్ చేస్తుంది.</value></data>
@@ -5555,7 +5554,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge హ్యాండ్‌హెల్డ్ బటన్లు (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro ప్రొఫైల్ (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge కీ లైట్లు (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>మాక్రో {0} నొక్కలేదు. బటన్లు విభాగంలోని మ్యాపింగ్ నొక్కగలదు.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>మాక్రో {0} నొక్కలేదు. మ్యాపింగ్లు విభాగంలోని వరుస నొక్కగలదు.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge ఎనిమిది స్క్రీన్ ఓవర్లేలను నడుపుతుంది, ఇది reWASD తొమ్మిదో లేదా పదో క్రాస్‌హెయిర్.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge గైరో ఎడమ, కుడిని రోల్ నుండి, వంపును యా నుండి చదువుతుంది, ఇది reWASD డిఫాల్ట్. reWASD ప్రాధాన్యతలలో ఈ రెండింటినీ మార్చుకోవచ్చు, అవి మార్చబడ్డాయో లేదో ఈ ఫైల్ చెప్పదు.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>టిల్ట్ మోడ్‌లో, reWASD వంపు అంటే నిలువు అక్షం చుట్టూ తిరగడం, దానికి మోషన్ సెన్సార్ కోణాన్ని ఇవ్వదు.</value></data>

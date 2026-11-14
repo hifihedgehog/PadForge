@@ -2613,7 +2613,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Bewegungslenkung</value></data>
   <data name="Pad_DegreeRange_Format" xml:space="preserve"><value>{0}° bis {1}°</value></data>
   <data name="Pad_MotionSteering_FoldHint" xml:space="preserve"><value>Neigungs-Deadzone, Controller-Ausrichtung</value></data>
-  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Einstellungen für die Eingabe "Bewegungsneigung": Controller wie ein Lenkrad kippen. "Bewegungsneigung" unter Tasten einer Stick-Achse zuweisen.</value></data>
+  <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Einstellungen für die Eingabe "Bewegungsneigung": Controller wie ein Lenkrad kippen. "Bewegungsneigung" unter Zuordnungen einer Stick-Achse zuweisen.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Bewegungslenkung zurücksetzen</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Lenkanschlag-Feedback</value></data>
   <data name="Pad_LockFeedback_FoldHint" xml:space="preserve"><value>Signal am Vollanschlag für Sticks im Lenkmodus</value></data>
@@ -3399,8 +3399,8 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Telemetrieausgabe im Spiel aktivieren und auf diesen PC und diesen Port richten.</value></data>
   <data name="Extras_StatusHint_MotionServer" xml:space="preserve"><value>Im Emulator eine Bewegungsquelle mit der Adresse dieses PCs und diesem Port hinzufügen.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Die Effekte eines Mods erreichen jeden Controller, der die passende Hardware hat.</value></data>
-  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Die Kopfpose ist die Zeile Head-Tracker auf [Geräte]. Ordnen Sie das Gieren des Kopfes im Bereich Tasten eines Controllers einer Stickachse zu.</value></data>
-  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Die Werte sind die Zeile Spieltelemetrie auf [Geräte]. Ordnen Sie sie im Bereich Tasten eines Controllers zu oder lösen Sie damit Makros aus.</value></data>
+  <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Die Kopfpose ist die Zeile Head-Tracker auf [Geräte]. Ordnen Sie das Gieren des Kopfes im Bereich Zuordnungen eines Controllers einer Stickachse zu.</value></data>
+  <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Die Werte sind die Zeile Spieltelemetrie auf [Geräte]. Ordnen Sie sie im Bereich Zuordnungen eines Controllers zu oder lösen Sie damit Makros aus.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Position, Größe und Deckkraft eines Menüs werden am Menü selbst festgelegt, im Bereich [Makros &amp; Menüs] eines Controllers.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Quellen</value></data>
   <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack und alles, was dessen UDP-Format sendet</value></data>
@@ -4087,7 +4087,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>Menü-Host-Oberfläche nicht unterstützt ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>Menü-Feld-Symbol nicht erkannt ({0}), das Feld behält daher seine Textbeschriftung</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Ausgabe</value></data>
-  <data name="Pad_Section_Buttons" xml:space="preserve"><value>Tasten</value></data>
   <data name="Pad_Section_KeysMouse" xml:space="preserve"><value>Tasten &amp; Maus</value></data>
   <data name="Pad_Section_NotesControls" xml:space="preserve"><value>Noten &amp; Regler</value></data>
   <data name="Pad_Section_Hands" xml:space="preserve"><value>Hände</value></data>
@@ -5218,7 +5217,7 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analoge Auslösepunkte von Tasten wurden nicht übernommen.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD hat diesen Controller über einen Adapter an ein anderes Gerät gesendet. PadForge spielt ihn auf diesem PC ab, und Remote Link sendet ihn an einen anderen PC, auf dem PadForge läuft.</value></data>
   <data name="Import_Tr_ThirdStick" xml:space="preserve"><value>PadForge liest zwei Sticks, und hier ist ein dritter genannt.</value></data>
-  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Die Lenkrademulation wurde nicht übernommen. Ordnen Sie das Lenkrad unter Tasten zu.</value></data>
+  <data name="Import_Tr_SteeringWheel" xml:space="preserve"><value>Die Lenkrademulation wurde nicht übernommen. Ordnen Sie das Lenkrad unter Zuordnungen zu.</value></data>
   <data name="Import_Tr_ActionNotFound" xml:space="preserve"><value>Dieses Profil nennt eine Spezialaktion, die in Actions.xml neben seinem Profiles-Ordner fehlt: {0}</value></data>
   <data name="Import_Tr_ControllerSetting" xml:space="preserve"><value>Diese Einstellung wurde nicht übernommen: {0}</value></data>
   <data name="Import_Tr_ConsumeKeys" xml:space="preserve"><value>reWASD hat verhindert, dass diese Eingaben Windows erreichen. Aktiviere auf der Geräte-Seite für {0} die Option Zugeordnete Eingaben verbrauchen, die die in diesem Profil zugeordneten Eingaben abfängt.</value></data>
@@ -5227,7 +5226,7 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="Import_Tr_SharedControllers" xml:space="preserve"><value>Diese Datei hält zwei Controller getrennt. In PadForge löst jeder Controller auf dem Slot diese Zuordnungen aus.</value></data>
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>Die Bewegungsgeschwindigkeit oder der Flick wurde nicht übernommen.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>Diese wurden nicht übernommen. Stellen Sie sie unter Bewegung &amp; Touch ein.</value></data>
-  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nichts in dieser Datei öffnet diese Ebene. Klicken Sie unter Tasten mit der rechten Maustaste auf die Ebene und wählen Sie „Aktivator konfigurieren“.</value></data>
+  <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nichts in dieser Datei öffnet diese Ebene. Klicken Sie unter Zuordnungen mit der rechten Maustaste auf die Ebene und wählen Sie „Aktivator konfigurieren“.</value></data>
   <data name="Import_NoteRuns_Format" xml:space="preserve"><value>Seine Tasten führen beim Drücken Folgendes aus: {0}.</value></data>
   <data name="MacroAction_Type_ProfileShortcut" xml:space="preserve"><value>Profil-Shortcut</value></data>
   <data name="MacroAction_ProfileShortcut_Tooltip" xml:space="preserve"><value>Tut, was ein Profil-Shortcut tut: lädt ein benanntes Profil, das nächste oder das vorherige, zeigt oder verbirgt das Fenster oder schaltet die virtuellen Controller aus und wieder ein.</value></data>
@@ -5504,7 +5503,7 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="FileDialog_HandheldButtonsFilter" xml:space="preserve"><value>PadForge-Handheld-Tasten (*.json)|*.json</value></data>
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-Profil (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge-Tastenbeleuchtung (*.json)|*.json</value></data>
-  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Ein Makro kann {0} nicht drücken. Eine Zuordnung unter Tasten kann es.</value></data>
+  <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Ein Makro kann {0} nicht drücken. Eine Zeile unter Zuordnungen kann es.</value></data>
   <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge führt acht Bildschirm-Overlays aus, und dies ist das neunte oder zehnte Fadenkreuz von reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge liest Gyro Links und Rechts aus dem Rollen und Neigung aus dem Gieren, wie es bei reWASD standardmäßig ist. In den Einstellungen von reWASD lassen sich beide vertauschen, und diese Datei sagt nicht, ob das geschehen ist.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Im Modus Tilt ist die Neigung (Lean) von reWASD eine Drehung um die senkrechte Achse, und ein Bewegungssensor liefert für diese Drehung keinen Winkel.</value></data>

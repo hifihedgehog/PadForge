@@ -331,7 +331,6 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Ukukhanya</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Ukukhanya</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>I-lightbar</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Cimile</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Seta kwakhona i-lightbar</value></data>
   <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>Seta kwakhona i-force feedback</value></data>
@@ -733,7 +732,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>I-gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>I-gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Ukulinganisa</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Uvakalelo</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Iiyunithi, guqula ii-axis, Ukulinganisa kwehlabathi lokwenyani</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° ngomjikelo</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Guqula i-pitch (Y)</value></data>
@@ -755,9 +753,6 @@
   <data name="Settings_GyroEngageStickDirection_XPos" xml:space="preserve"><value>Ekunene (X+)</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Ezantsi (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Phezulu (Y+)</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Seta kwakhona ukulinganisa</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Seta kwakhona uvakalelo</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Seta kwakhona i-passthrough yentshukumo</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Seta kwakhona uvakalelo oluthe tye</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Seta kwakhona uvakalelo oluthe nkqo</value></data>
   <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>Seta kwakhona iiyunithi</value></data>
@@ -1747,11 +1742,10 @@
   <data name="Menu_Cell_Action" xml:space="preserve"><value>Isenzo</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Esi sixhobo</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Isilawuli sonke</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Iintonga zombini</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>I-SteamVR ifakiwe</value></data>
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>I-SteamVR iyasebenza</value></data>
   <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>I-SteamVR iyasebenza, idrayiva iqhagamshelwe</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Ekhohlo</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Ekunene</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Yabela isantya, iipedali neegiya ezithunyelwa ngumdlalo wokuqhuba, njengalo naliphi na igalelo.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Thatha iziphumo ze-adaptive trigger nezokukhanya kwiimowudi zemidlalo ezibhalelwe i-DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Vula ukuphuma kwe-telemetry emdlalweni uze uyalathise kule PC nakweli zibuko.</value></data>
@@ -1856,4 +1850,8 @@
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Iiprofayile ezilungiselelwe uhlobo lonke lwemidlalo. Khetha enye, yabela nasiphi na isilawuli, uze udlale.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} kwezi {1} zivuliwe</value></data>
   <data name="Pad_Stick_Speed" xml:space="preserve"><value>Isantya</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Ekrwada</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Elungisiweyo</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Umdlalo ufunda intshukumo elinganisiweyo kwaye usebenzisa olwawo uvakalelo nokugudisa.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Umdlalo ufunda intshukumo enovakalelo, ukugudisa kunye negophe elimiselwe apha.</value></data>
 </root>

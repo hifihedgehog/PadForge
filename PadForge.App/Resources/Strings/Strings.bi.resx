@@ -442,7 +442,6 @@
   <data name="Pad_Lighting_RouteOtherControllerOnly" xml:space="preserve"><value>Virtual kontrola {0} i laetem divaes ya.</value></data>
   <data name="Pad_Lighting_RouteWaiting" xml:space="preserve"><value>Wet long {0}. Ol kala oli soem taem hem i ron.</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ol hedset</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Laetba</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Of</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Putum bak laetba</value></data>
@@ -727,7 +726,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Gaero</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gaero</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibresen</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitiviti</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Ol yunit, invert ol aksis, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Invert pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Invert yaw (X)</value></data>
@@ -743,9 +741,6 @@
   <data name="Settings_GyroEngageStickDirection_XPos" xml:space="preserve"><value>Raet (X+)</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Daon (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Antap (Y+)</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Putum bak kalibresen</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Putum bak sensitiviti</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Putum bak passthrough blong muvmen</value></data>
   <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>Putum bak invert pitch</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Putum bak dedzon</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Passthrough blong muvmen</value></data>
@@ -1652,12 +1647,11 @@
   <data name="Menu_Cell_Name" xml:space="preserve"><value>Nem</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Divaes ia</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Kontrola olgeta</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Tufala stik</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR i instol finis</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR i no instol yet</value></data>
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR i stap ron</value></data>
   <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR i stap ron, draeva i konek</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Lef</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Raet</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Klinim triga</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Tekem ol efek blong adaptive triga mo laet long ol mod blong gem we oli raetem blong DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Statem telemetry autput long gem mo talem long hem blong sendem i kam long PC ia mo pot ia.</value></data>
@@ -1759,4 +1753,8 @@
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} long {1} i on</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ol profael ia we yu bin impotem oli gat niu vesen long Steam Workshop. Impotem olgeta bakegen long Kasem ol Profael blong kasem ol jenis.</value></data>
   <data name="Pad_Stick_Speed" xml:space="preserve"><value>Spid</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Ro</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Tiun</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Gem i ridim muvmen we i kalibreit finis, mo i putum sensitiviti mo smuting blong hem wan.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Gem i ridim muvmen wetem sensitiviti, smuting mo kev we yu setem long kad ia.</value></data>
 </root>

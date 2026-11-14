@@ -1181,6 +1181,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Ρυθμίζει πώς το PadForge κλιμακώνει τα συμβάντα ανάδρασης δύναμης του παιχνιδιού και πώς τα δρομολογεί στους κινητήρες δόνησης ή στους απτικούς επενεργητές του φυσικού χειριστηρίου. Η «Δόνηση από ήχο» προσθέτει από πάνω ένα επίπεδο που οδηγείται από τον ήχο του συστήματος.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Αυτή η συσκευή</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Όλο το χειριστήριο</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Και οι δύο μοχλοί</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Η δόνηση αναπαράγεται στη συσκευή {0} ως απτικοί παλμοί, που στέλνονται απευθείας στη συσκευή. Η ισχυρότερη δόνηση επιλέγει ισχυρότερο παλμό και τον επαναλαμβάνει πιο γρήγορα.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Η απτική ανάδραση είναι απενεργοποιημένη για τη συσκευή {0} στο Logi Options+, επομένως δεν αναπαράγεται τίποτα μέχρι να την ενεργοποιήσετε ξανά εκεί.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Αυτή η συσκευή δεν έχει απαντήσει ακόμη. Η δόνησή της θα αναπαραχθεί μόλις ξυπνήσει.</value></data>
@@ -1267,7 +1268,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>μητρικές, κάρτες γραφικών και μνήμες</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>μητρικές και κάρτες γραφικών</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepad, σετ κεφαλής και βάσεις για σετ κεφαλής</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Φωτεινή μπάρα</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Τα παιχνίδια αναλαμβάνουν κάθε φορά που γράφουν φωτισμό.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Εισαγάγετε ένα εξαψήφιο δεκαεξαδικό χρώμα (RRGGBB ή #RRGGBB) και πατήστε Enter ή κάντε κλικ αλλού για εφαρμογή.</value></data>
@@ -1897,7 +1897,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Απελευθέρωση ποντικιού {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Εναλλαγή επικάλυψης επιφάνειας αφής</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Ορισμός χρώματος φωτεινής μπάρας</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Παρακάμπτει τη φωτεινή μπάρα της ανατεθειμένης υποδοχής PlayStation με ένα επιλεγμένο χρώμα RGB. Η «Παροδική» σβήνει σταδιακά από την πλήρη ένταση στο μαύρο μέσα στο ρυθμισμένο διάστημα εξασθένησης και έπειτα επιστρέφει στις ρυθμίσεις της κάρτας «Φωτεινή μπάρα». Η «Μόνιμη» κρατά το χρώμα μέχρι να εκτελεστεί μια ενέργεια «Εκκαθάριση παράκαμψης φωτεινής μπάρας». Οι εγγραφές του παιχνιδιού εξακολουθούν να έχουν προτεραιότητα έναντι της παράκαμψης.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Παρακάμπτει τη φωτεινή μπάρα της ανατεθειμένης υποδοχής PlayStation με ένα επιλεγμένο χρώμα RGB. Η «Παροδική» σβήνει σταδιακά από την πλήρη ένταση στο μαύρο μέσα στο ρυθμισμένο διάστημα εξασθένησης και έπειτα επιστρέφει στις ρυθμίσεις της κάρτας «Φωτισμός». Η «Μόνιμη» κρατά το χρώμα μέχρι να εκτελεστεί μια ενέργεια «Εκκαθάριση παράκαμψης φωτεινής μπάρας». Οι εγγραφές του παιχνιδιού εξακολουθούν να έχουν προτεραιότητα έναντι της παράκαμψης.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Αναλαμπή φωτεινής μπάρας {0} (εξασθένηση {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Κράτημα φωτεινής μπάρας {0} μέχρι την εκκαθάριση</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Εκκαθάριση παράκαμψης φωτεινής μπάρας</value></data>
@@ -1905,7 +1905,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Αποδεσμεύει κάθε ενεργή παράκαμψη φωτεινής μπάρας στην ανατεθειμένη υποδοχή. Συνδυάστε τη με μια «Μόνιμη» ενέργεια «Ορισμός χρώματος φωτεινής μπάρας» για να την αναιρείτε μέσω άλλης μακροεντολής.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Ορισμός λειτουργίας φωτεινής μπάρας</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Ορισμός λειτουργίας φωτεινής μπάρας σε: {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Ορίζει τη λειτουργία φωτεινής μπάρας της ανατεθειμένης υποδοχής σε μια συγκεκριμένη τιμή. Παραμένει, όπως μια αλλαγή στην κάρτα «Φωτεινή μπάρα», μέχρι να την αλλάξει άλλη ενέργεια ή ο χρήστης.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Ορίζει τη λειτουργία φωτεινής μπάρας της ανατεθειμένης υποδοχής σε μια συγκεκριμένη τιμή. Παραμένει, όπως μια αλλαγή στην κάρτα «Φωτισμός», μέχρι να την αλλάξει άλλη ενέργεια ή ο χρήστης.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Κυκλική εναλλαγή λειτουργιών φωτεινής μπάρας</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Κυκλική εναλλαγή σε {0} λειτουργίες φωτεινής μπάρας</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Προχωρά τη λειτουργία φωτεινής μπάρας της υποδοχής στις λειτουργίες που επιλέγονται παρακάτω. Κάθε εκτέλεση μεταβαίνει στην επόμενη επιλεγμένη λειτουργία. Η θέση στον κύκλο είναι ξεχωριστή για κάθε ενέργεια και μηδενίζεται όταν επανεκκινείται η εφαρμογή.</value></data>
@@ -1920,7 +1920,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Εξασθένηση</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Σβήσιμο</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Παλέτα</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Μια κενή παλέτα χρησιμοποιεί την παλέτα της κάρτας «Φωτεινή μπάρα» της υποδοχής.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Μια κενή παλέτα χρησιμοποιεί την παλέτα της κάρτας «Φωτισμός» της υποδοχής.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Λειτουργία</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Επιλέξτε ανάμεσα σε ποιες λειτουργίες φωτεινής μπάρας θα εναλλάσσεται κυκλικά η μακροεντολή. Κάθε εκτέλεση προχωρά στην επόμενη επιλεγμένη λειτουργία.</value></data>
 
@@ -2150,6 +2150,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Έξοδος ποντικιού</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Αντιστροφή, Ορμή, Απόκριση, Επιτάχυνση, εκτόξευση</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Θέση μπάρας αισθητήρων, Κατακόρυφη μετατόπιση, Εξομάλυνση</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Ρυθμίζει την ταχύτητα του δείκτη όταν ένα δάχτυλο της επιφάνειας αφής αντιστοιχίζεται στο X/Y του ποντικιού σε εικονικό χειριστήριο «Πληκτρολόγιο + ποντίκι». Η προεπιλογή είναι 1.0. Αυξήστε οποιονδήποτε άξονα για ταχύτερο δείκτη, μειώστε τον για πιο αργό. Η αντιστροφή αναστρέφει οποιονδήποτε άξονα.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Ευαισθησία ποντικιού X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Πολλαπλασιαστής της οριζόντιας μεταβολής επιφάνεια αφής → ποντίκι. Κάτω από 1.0 επιβραδύνει τον δείκτη. Πάνω από 1.0 τον επιταχύνει.</value></data>
@@ -2355,7 +2356,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Βαθμονόμηση… κρατήστε το ακίνητο</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Επαναφορά βαθμονόμησης</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Διαγράφει το σφάλμα ηρεμίας του γυροσκοπίου και τη χρονική σήμανση της τελευταίας βαθμονόμησης. Ο επόμενος κύκλος δειγματοληψίας εκτελεί ξανά την αυτόματη βαθμονόμηση 1.5 δευτερολέπτου σε αυτή τη συσκευή.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Γυροσκόπιο σε πραγματικό χρόνο</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Επιταχυνσιόμετρο σε πραγματικό χρόνο</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Οριζόντια ευαισθησία</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Κλιμακώνει την οριζόντια συνεισφορά του γυροσκοπίου (εκτροπή + διατοιχισμός) στην έξοδο. Το 1.0 αφήνει τον ρυθμό όπως τον βλέπει η μηχανή. Οι μεγαλύτερες τιμές ενισχύουν, οι μικρότερες εξασθενούν. Εφαρμόζεται σε επίπεδο συσκευής, ώστε κάθε αντιστοίχιση γυροσκοπίου σε αυτό το χειριστήριο να έχει την ίδια οριζόντια αίσθηση.</value></data>
@@ -2375,8 +2375,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Γυροσκόπιο</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Ρυθμίστε πώς ο αισθητήρας κίνησης αυτού του χειριστηρίου οδηγεί την έξοδο ποντικιού και μοχλού. Βαθμονομήστε σε επίπεδη επιφάνεια για να μηδενίσετε την ολίσθηση ηρεμίας και έπειτα ρυθμίστε την ευαισθησία, την εξομάλυνση και τους κανόνες ενεργοποίησης όπως σας ταιριάζει.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Βαθμονόμηση</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Γυροσκόπιο και επιταχυνσιόμετρο σε πραγματικό χρόνο</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Ευαισθησία</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Μονάδες, αντιστροφή αξόνων, Βαθμονόμηση πραγματικού κόσμου</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° ανά στροφή</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Διαμόρφωση απόκρισης</value></data>
@@ -2462,11 +2460,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Πολύ ευρεία</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Πολλαπλασιαστής</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Μοίρες ανά στροφή οθόνης</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Επαναφορά βαθμονόμησης</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Επαναφορά ευαισθησίας</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Επαναφορά διαμόρφωσης απόκρισης</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Επαναφορά ενεργοποίησης</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Επαναφορά διέλευσης κίνησης</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Επαναφορά χώρου</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Επαναφορά λαβής</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Επαναφορά οριζόντιας ευαισθησίας</value></data>
@@ -2486,8 +2481,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Επαναφορά μοχλού ενεργοποίησης</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Επαναφορά κατεύθυνσης ενεργοποίησης</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Διέλευση κίνησης</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Εφαρμογή ρυθμίσεων γυροσκοπίου στη διέλευση κίνησης</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Εφαρμόζει τις προαιρετικές ρυθμίσεις των καρτών «Γυροσκόπιο» (νεκρή ζώνη, ευαισθησία, εξομάλυνση, καμπύλη απόκρισης, αντιστροφή) στην κίνηση που αναφέρει το εικονικό χειριστήριο στο παιχνίδι ή στον εξομοιωτή. Απενεργοποιήστε το για να στέλνεται μόνο η βαθμονομημένη ένδειξη και να εφαρμόζει το παιχνίδι τη δική του ευαισθησία και εξομάλυνση. Η διόρθωση ολίσθησης της βαθμονόμησης εφαρμόζεται πάντα, σε κάθε περίπτωση.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Η «Ρυθμισμένη» εφαρμόζει τις ρυθμίσεις της κάρτας «Γυροσκόπιο» (νεκρή ζώνη, ευαισθησία, εξομάλυνση, καμπύλη απόκρισης, αντιστροφή) στην κίνηση που αναφέρει το εικονικό χειριστήριο στο παιχνίδι ή στον εξομοιωτή. Η «Ωμή» στέλνει μόνο τη βαθμονομημένη ένδειξη και αφήνει το παιχνίδι να εφαρμόσει τη δική του ευαισθησία και εξομάλυνση. Η διόρθωση ολίσθησης της βαθμονόμησης εφαρμόζεται σε κάθε περίπτωση.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Ωμή</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Ρυθμισμένη</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Το παιχνίδι διαβάζει τη βαθμονομημένη κίνηση και εφαρμόζει τη δική του ευαισθησία και εξομάλυνση.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Το παιχνίδι διαβάζει την κίνηση με την ευαισθησία, την εξομάλυνση και την καμπύλη που ορίζονται εδώ.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Επαναφορά ρυθμίσεων διέλευσης</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Ευαισθησία</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Πολλαπλασιαστής ευαισθησίας γυροσκοπίου ανά πηγή. 1.0 = η προεπιλογή της μηχανής (500°/s → πλήρης απόκλιση). Οι τιμές πάνω από 1.0 είναι πιο ευαίσθητες. Οι τιμές κάτω από 1.0 είναι λιγότερο ευαίσθητες.</value></data>
@@ -2735,8 +2733,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Αυτό το χειριστήριο δεν έχει κινητήρες σκανδαλών, επομένως τα παιχνίδια που χρησιμοποιούν τις σκανδάλες ώθησης του Xbox δεν θα γίνονταν αισθητά. Αντί γι' αυτό, κάθε κανάλι σκανδάλης ενσωματώνεται στον κύριο κινητήρα της ίδιας πλευράς.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Δοκιμή δόνησης</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Δραστηριότητα κινητήρων</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Αριστερός</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Δεξιός</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Εφαρμόζει συνεχή δύναμη σε αυτή τη συσκευή μέχρι να την απενεργοποιήσετε. Η δύναμη που προκαλεί το παιχνίδι, από οποιαδήποτε πηγή, υπερισχύει όσο είναι ενεργή, και η σταθερή δύναμη συνεχίζεται όταν το παιχνίδι σταματήσει.</value></data>
@@ -3256,7 +3252,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>Ήχος</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Δείκτης IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Στοχεύστε με αυτό το Wii Remote την οθόνη μέσω της κάμερας IR του. Χρειάζεται μπάρα αισθητήρων ή δύο υπέρυθρα LED πάνω ή κάτω από την οθόνη. Βαθμονομήστε το ως light gun στη σελίδα «Συσκευές» για να στοχεύετε στο ακριβές σημείο. Ένα βαθμονομημένο τηλεχειριστήριο αγνοεί τη «Θέση μπάρας αισθητήρων» και την «Κατακόρυφη μετατόπιση».</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Ρύθμιση δείκτη</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Θέση μπάρας αισθητήρων</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Στο κέντρο</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Πάνω από την οθόνη</value></data>
@@ -3283,8 +3278,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Προχωρά τη λειτουργία δείκτη Wii στις λειτουργίες που επιλέγονται παρακάτω, για κάθε τηλεχειριστήριο με δυνατότητα IR στην υποδοχή. Κάθε εκτέλεση μεταβαίνει στην επόμενη επιλεγμένη λειτουργία. Η θέση στον κύκλο είναι ξεχωριστή για κάθε ενέργεια και μηδενίζεται όταν επανεκκινείται η εφαρμογή.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Επιλέξτε ανάμεσα σε ποιες λειτουργίες δείκτη θα εναλλάσσεται κυκλικά η μακροεντολή. Κάθε εκτέλεση προχωρά στην επόμενη επιλεγμένη λειτουργία.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Ήχος</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Οι ήχοι των μακροεντολών και ο κατοπτρισμένος ήχος του συστήματος αναπαράγονται από το ενσωματωμένο ηχείο του επιλεγμένου χειριστηρίου, μέσω USB ή Bluetooth. Επιλέξτε τη συσκευή στην αναπτυσσόμενη λίστα παραπάνω. Κάθε ρύθμιση εδώ αφορά αυτήν.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Έξοδος ήχου</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Οι ήχοι των μακροεντολών και ο κατοπτρισμένος ήχος του συστήματος αναπαράγονται από το ενσωματωμένο ηχείο της συσκευής που επιλέγεται στο «Είσοδος από», μέσω USB ή Bluetooth. Κάθε ρύθμιση εδώ αφορά αυτήν τη συσκευή.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Πηγή κατοπτρισμού, Ένταση ακουστικών, ενδιάμεση μνήμη, Διαδρομή εξόδου</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Οι ήχοι δρομολογούνται αυτόματα στο επιλεγμένο χειριστήριο. Μέσω USB, το τελικό σημείο ήχου του ίδιου του χειριστηρίου εντοπίζεται βάσει του κοντέινερ υλικού. Μέσω Bluetooth, ο ήχος μεταδίδεται σε πλαίσια HID της Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Πηγή κατοπτρισμού</value></data>
@@ -3347,7 +3341,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Επαναφορά ορίου τόνου</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Αντιγράφει παράλληλα ό,τι αναπαράγει η προεπιλεγμένη έξοδος του συστήματος στο ενσωματωμένο ηχείο αυτού του χειριστηρίου. Λειτουργεί μέσω USB και Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Η επιλεγμένη συσκευή δεν έχει ενσωματωμένο ηχείο. Οι ήχοι μακροεντολών για αυτό το χειριστήριο αναπαράγονται στην προεπιλεγμένη έξοδο του συστήματος.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Επαναφορά εξόδου ήχου</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Σουίτα δοκιμών DualSense για πρόγραμμα περιήγησης, του Xuezhou Dai (daidr): αναφορά για την πλαισίωση CRC των αναφορών feature της Sony και για τις εντολές δοκιμής υλικολογισμικού που προωθεί το PadForge από τα εικονικά στα φυσικά χειριστήρια.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Φωτεινότητα LED Guide: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Ορίζει τη φωτεινότητα του LED του κουμπιού Guide ή Home για κάθε χειριστήριο της υποδοχής που το υποστηρίζει. Τα χειριστήρια Xbox τη δέχονται μόνο μέσω USB.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Ισχύει για χειριστήρια Xbox μέσω USB, για το Steam Controller του 2015 και για χειριστήρια Switch με LED στο κουμπί Home. Συνδυάστε δύο τέτοιες ενέργειες για να αναβοσβήνει το LED όταν ξεκινά μια μακροεντολή και να επανέρχεται όταν τελειώνει.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Επαναφορά λειτουργίας δείκτη</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Επαναφορά ρύθμισης δείκτη</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Επαναφορά θέσης μπάρας αισθητήρων</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Επαναφορά κατακόρυφης μετατόπισης</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Επαναφορά εξομάλυνσης</value></data>

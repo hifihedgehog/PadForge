@@ -305,7 +305,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Iwase, vukica na axis, Real-World Calibration</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Taura</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Toggle</value></data>
@@ -745,8 +744,6 @@
   <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Source, Threshold, Direction, Consume Trigger Buttons, Vakaruataka</value></data>
   <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Vakadikeva na shaker</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Dauqito se Vuravura</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Imawi</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Imatau</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Na vanua, na levu kei na matata ni dua na menu e tuvai ena menu ga, ena iwasewase [Macro kei na Menu] ni dua na controller.</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Vakasaqara na iyaya</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Kece</value></data>

@@ -1093,6 +1093,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Stellt an, wéi PadForge Force-Feedback-Evenementer vum Spill skaléiert a wéi et se op d'Vibratiounsmotoren oder haptesch Aktuatoren vum physesche Controller leet. Audio-Vibratioun setzt eng Schicht drop, déi vum Systemaudio gesteiert gëtt.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Dësen Apparat</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Ganze Controller</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Béid Sticks</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Vibratioun gëtt op {0} als haptesch Impulser ofgespillt, direkt un den Apparat geschéckt. Méi staark Vibratioun wielt e méi staarken Impuls a widderhëlt en méi séier.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Haptescht Feedback ass fir {0} a Logi Options+ ausgeschalt, also spillt et näischt of, bis Dir et do erëm uschalt.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Dësen Apparat huet nach net geäntwert. Seng Vibratioun spillt, soubal en erwächt.</value></data>
@@ -1158,7 +1159,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>Headsets, Mauspads a Chroma-Link-Liichtstreifen</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>Headsets, Mauspads a Lautsprecher</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>Headsets</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Liichtbalken</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Spiller iwwerhuelen, soubal se Beliichtung schreiwen.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Gitt eng sechsstelleg Hex-Faarf an (RRGGBB oder #RRGGBB) an dréckt Enter oder klickt anerwäerts, fir se z'iwwerhuelen.</value></data>
@@ -1700,7 +1700,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Mausknäppchen {0} lassloossen</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay ëmschalten</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Faarf vum Liichtbalken setzen</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Iwwerschreift de Liichtbalken vum zougewisene PlayStation-Slot mat enger gewielter RGB-Faarf. Reaktiv blendt vu voller Intensitéit iwwer déi agestallten Ofnamzäit op schwaarz aus a gëtt dann un d'Astellunge vun der Liichtbalken-Kaart zréck. Permanent hält d'Faarf, bis eng Aktioun „Liichtbalken-Override ophiewen“ leeft. Wäerter, déi d'Spill schreift, hu weiderhin Virrang virum Override.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Iwwerschreift de Liichtbalken vum zougewisene PlayStation-Slot mat enger gewielter RGB-Faarf. Reaktiv blendt vu voller Intensitéit iwwer déi agestallten Ofnamzäit op schwaarz aus a gëtt dann un d'Astellunge vun der Beliichtungs-Kaart zréck. Permanent hält d'Faarf, bis eng Aktioun „Liichtbalken-Override ophiewen“ leeft. Wäerter, déi d'Spill schreift, hu weiderhin Virrang virum Override.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Liichtbalken {0} blénke loossen (Ofnam {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Liichtbalken {0} halen, bis en opgehuewe gëtt</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Liichtbalken-Override ophiewen</value></data>
@@ -1708,7 +1708,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Hieft all aktiven Liichtbalken-Override um zougewisene Slot op. Kombinéiert et mat enger permanenter Aktioun „Faarf vum Liichtbalken setzen“, fir en iwwer en anere Makro réckgängeg ze maachen.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Liichtbalken-Modus setzen</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Liichtbalken-Modus op {0} setzen</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Setzt de Liichtbalken-Modus vum zougewisene Slot op e bestëmmte Wäert. Bleift wéi eng Ännerung op der Liichtbalken-Kaart, bis eng aner Aktioun oder de Benotzer en ännert.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Setzt de Liichtbalken-Modus vum zougewisene Slot op e bestëmmte Wäert. Bleift wéi eng Ännerung op der Beliichtungs-Kaart, bis eng aner Aktioun oder de Benotzer en ännert.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Liichtbalken-Modi duerchlafen</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} Liichtbalken-Modi duerchlafen</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Schalt de Liichtbalken-Modus vum Slot duerch déi hei ënne gewielte Modi weider. All Ausléisung spréngt op deen nächste markéierte Modus. D'Positioun am Zyklus gëllt pro Aktioun a gëtt beim Neistart vun der App zréckgesat.</value></data>
@@ -1723,7 +1723,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Ofnam</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Ausblenden</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palett</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Eng eidel Palett benotzt d'Palett op der Liichtbalken-Kaart vum Slot.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Eng eidel Palett benotzt d'Palett op der Beliichtungs-Kaart vum Slot.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Wielt, duerch wéi eng Liichtbalken-Modi de Makro wiessele soll. All Ausléisung spréngt op deen nächste markéierte Modus.</value></data>
 
@@ -1953,6 +1953,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Mausausgab</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invertéieren, Schwong, Reaktioun, Beschleunegung, Schwongverstäerkung</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Positioun vun der Sensorleescht, Vertikal Verschiebung, Glättung</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Stellt d'Vitess vum Mauszeiger an, wann e Fanger vum Touchpad op Maus X/Y vun engem virtuelle Controller Tastatur / Maus zougeuerdnet ass. 1.0 ass de Standard. Méi héich mécht de Mauszeiger méi séier, méi déif méi lues. Invertéieren dréint déi jeeweileg Achs ëm.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Mausempfindlechkeet X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplikator fir déi horizontal Beweegung Touchpad → Maus. Ënner 1.0 gëtt de Mauszeiger méi lues, iwwer 1.0 méi séier.</value></data>
@@ -2158,7 +2159,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibréieren… roueg halen</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Kalibréierung zrécksetzen</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Läscht de Gyro-Offset a Rou an den Zäitpunkt vun der leschter Kalibréierung. Beim nächste Polling-Zyklus leeft déi automatesch Kalibréierung vun 1.5 Sekonnen op dësem Apparat nees.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Gyroskop live</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Beschleunegungssensor live</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Horizontal Empfindlechkeet</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Skaléiert den horizontalen Gyro-Undeel (Yaw + Roll) un der Ausgab. 1.0 léisst d'Rate esou, wéi d'Engine se gesäit. Méi héich Wäerter verstäerken, méi niddreg dämpfen. Gëllt um Niveau vum Apparat, sou datt sech all Gyro-Zouuerdnung op dësem Controller horizontal gläich ufillt.</value></data>
@@ -2178,8 +2178,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Stellt an, wéi de Beweegungssensor vun dësem Controller Maus- a Stick-Ausgab steiert. Kalibréiert op enger flaacher Fläch, fir den Drift a Rou op null ze setzen, a stellt dann Empfindlechkeet, Glättung an Aktivéierungsreegelen no Wonsch an.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibréierung</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Live-Wäerter vu Gyroskop a Beschleunegungssensor</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Empfindlechkeet</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Eenheeten, Achsen invertéieren, Realitéitskalibréierung</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° pro Dréiung</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Reaktiounsform</value></data>
@@ -2265,11 +2263,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Extra breet</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplikator</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Grad pro Dréiung um Ecran</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Kalibréierung zrécksetzen</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Empfindlechkeet zrécksetzen</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Reaktiounsform zrécksetzen</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Aktivéierung zrécksetzen</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Beweegungs-Passthrough zrécksetzen</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Referenzsystem zrécksetzen</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Haltung zrécksetzen</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Horizontal Empfindlechkeet zrécksetzen</value></data>
@@ -2289,8 +2284,11 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Aktivéierungsstick zrécksetzen</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Aktivéierungsrichtung zrécksetzen</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Beweegungs-Passthrough</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Gyro-Astellungen op de Beweegungs-Passthrough applizéieren</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Applizéiert déi optional Astellunge vun de Gyro-Kaarten (Doudzon, Empfindlechkeet, Glättung, Reaktiounskurv, Invertéieren) op d'Beweegung, déi de virtuelle Controller dem Spill oder dem Emulator mellt. Schalt et aus, fir nëmmen déi kalibréiert Moossung ze schécken an d'Spill seng eege Empfindlechkeet a Glättung uwenden ze loossen. D'Korrektur vum Kalibréierungsdrift gëllt an all Fall.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Ugepasst applizéiert d'Astellunge vun der Gyro-Kaart (Doudzon, Empfindlechkeet, Glättung, Reaktiounskurv, Invertéieren) op d'Beweegung, déi de virtuelle Controller dem Spill oder dem Emulator mellt. Réi schéckt nëmmen déi kalibréiert Moossung a léisst d'Spill seng eege Empfindlechkeet a Glättung uwenden. D'Korrektur vum Kalibréierungsdrift gëllt an all Fall.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Réi</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Ugepasst</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>D'Spill liest déi kalibréiert Beweegung an applizéiert seng eege Empfindlechkeet a Glättung.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>D'Spill liest d'Beweegung mat der Empfindlechkeet, der Glättung an der Kurv, déi hei agestallt sinn.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Passthrough-Astellungen zrécksetzen</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Empfindlechkeet</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplikator fir d'Gyro-Empfindlechkeet pro Quell. 1.0 = Standard vun der Engine (500°/s → vollen Ausschlag). Wäerter iwwer 1.0 si méi empfindlech. Wäerter ënner 1.0 si manner empfindlech.</value></data>
@@ -2531,8 +2529,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Dëse Controller huet keng Trigger-Motoren, dofir géif een a Spiller, déi Xbox-Impulse-Trigger benotzen, näischt spieren. Amplaz gëtt all Trigger-Kanal an den Haaptmotor op der selwechter Säit gemëscht.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Vibratioun testen</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoraktivitéit</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Lénks</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Riets</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Wendt eng kontinuéierlech Kraaft op dësen Apparat un, bis Dir se ausschalt. Kraaft vum Spill aus iergendenger Quell huet Virrang, soulaang se aktiv ass, an d'konstant Kraaft fänkt erëm un, wann d'Spill ophält.</value></data>
@@ -3042,7 +3038,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-Zeiger</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Riicht dës Wii Remote mat hirer IR-Kamera op de Bildschierm. Dir braucht eng Sensorleescht oder zwou Infrarout-LEDs iwwer oder ënner dem Bildschierm. Kalibréiert se op der Säit Apparater als Liichtpistoul, fir genee op déi Plaz ze zielen. Eng kalibréiert Remote ignoréiert Positioun vun der Sensorleescht a Vertikal Verschiebung.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Feinastellung vum Zeiger</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Positioun vun der Sensorleescht</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Zentréiert</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Iwwer dem Bildschierm</value></data>
@@ -3069,8 +3064,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Schalt de Wii-Zeigermodus fir all IR-fäeg Remote um Slot duerch déi Modi, déi hei ënnendrënner gewielt sinn. All Ausléisung geet op den nächsten ugekräizte Modus. D'Positioun gëllt pro Aktioun a gëtt beim Neistart vun der App zréckgesat.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Wielt, wéi eng Zeigermodi de Makro duerchschalte soll. All Ausléisung geet op den nächsten ugekräizte Modus.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makro-Téin a gespigelten System-Audio spillen iwwer den agebaute Lautsprecher vum gewielte Controller, iwwer USB oder Bluetooth. Wielt den Apparat an der Lëscht uewendriwwer. All Astellung hei follegt him.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Tounausgab</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makro-Téin a gespigelten System-Audio spillen iwwer den agebaute Lautsprecher vum Apparat, deen ënner „Gesteiert vun“ gewielt ass, iwwer USB oder Bluetooth. All Astellung hei follegt dësem Apparat.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Spigelquell, Kopfhörer-Lautstäerkt, Puffer, Ausgabwee</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Téin ginn automatesch op de gewielte Controller geleet. Iwwer USB gëtt den eegenen Audio-Endpunkt vum Pad iwwer den Hardware-Container fonnt. Iwwer Bluetooth gëtt den Audio a Sony-HID-Frames gestreamt.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Spigelquell</value></data>
@@ -3133,7 +3127,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Tounlimit zrécksetzen</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopéiert alles, wat déi standard Systemausgab spillt, parallel op den agebaute Lautsprecher vun dësem Controller. Funktionéiert iwwer USB a Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>De gewielten Apparat huet keen agebaute Lautsprecher. Makro-Téin fir dëse Pad spillen op der standard Systemausgab.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Tounausgab zrécksetzen</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>DualSense-Testsuite fir de Browser vum Xuezhou Dai (daidr): Referenz fir d'CRC-Framing vun de Sony-Feature-Reports an d'Firmware-Testbefeeler, déi PadForge vu virtuellen op physesch Pads weiderleet.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3564,8 +3557,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide-LED-Hellegkeet: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Setzt d'Hellegkeet vun der Guide- oder Home-Knäppchen-LED fir all kompatibele Controller am Slot. Xbox-Controller akzeptéieren dat just iwwer USB.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Gëllt fir Xbox-Controller iwwer USB, de Steam Controller vun 2015 a Switch-Controller mat enger Home-Knäppchen-LED. Kombinéiert zwou vun dësen Aktiounen, fir d'LED blénken ze loossen, wann e Makro ufänkt, a se erëmhierzestellen, wann e fäerdeg ass.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Zeigermodus zrécksetzen</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Zeigerastellung zrécksetzen</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Positioun vun der Sensorleescht zrécksetzen</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Vertikal Verréckelung zrécksetzen</value></data>
   <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>Audio-Spigelung zrécksetzen</value></data>

@@ -1039,7 +1039,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>kas, tapi sourit ak bann Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>kas, tapi sourit ak opalè</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>kas</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Ba limyè</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Jwèt yo pran kontwòl chak fwa yo ekri limyè.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Antre yon koulè ekzadesimal sis chif (RRGGBB oswa #RRGGBB) epi peze Enter oswa klike yon lòt kote pou aplike l.</value></data>
@@ -1729,6 +1728,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Soti sourit</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Envèse, Momantòm, Repons, Akselerasyon, lanse</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Pozisyon ba detektè, Dekalaj vètikal, Adousisman</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Ajiste vitès kisè a lè yon dwèt touchpad asiyen sou sourit X/Y nan yon kontwolè vityèl Klavye / Sourit. 1.0 se valè pa defo a. Ogmante nenpòt aks pou kisè a ale pi vit, bese l pou li ale pi dousman. Envèse chanje direksyon nenpòt aks.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Sansiblite sourit X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Miltiplikatè pou mouvman orizontal touchpad → sourit. Anba 1.0 kisè a ralanti. Anwo 1.0 li akselere.</value></data>
@@ -1925,7 +1925,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Pa janm kalibre</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Ap kalibre… pa bouje</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Reyinisyalize kalibrasyon</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Jiwoskòp an dirèk</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Akselewomèt an dirèk</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Sansiblite orizontal</value></data>
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Sansiblite vètikal</value></data>
@@ -1938,8 +1937,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Jiwoskòp</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Jiwoskòp</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrasyon</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Valè jiwoskòp ak akselewomèt an dirèk</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sansiblite</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Inite, envèse aks yo, Kalibrasyon monn reyèl</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° pa vire</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Espas</value></data>
@@ -2005,10 +2002,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Trè laj</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Miltiplikatè</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Degre pou chak tou ekran</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Reyinisyalize kalibrasyon</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Reyinisyalize sansiblite</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Reyinisyalize aktivasyon</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Reyinisyalize pasaj dirèk mouvman</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Reyinisyalize espas</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Reyinisyalize fason pou kenbe</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Reyinisyalize sansiblite orizontal</value></data>
@@ -2025,7 +2019,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Reyinisyalize stick aktivasyon</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Reyinisyalize direksyon aktivasyon</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Pasaj dirèk mouvman</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Aplike paramèt jiwoskòp yo sou pasaj dirèk mouvman</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Reyinisyalize paramèt pasaj dirèk</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sansiblite</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Miltiplikatè sansiblite jiwoskòp pou chak sous. 1.0 = valè pa defo (500°/s → deplasman konplè). Valè ki pi wo pase 1.0 pi sansib. Valè ki pi ba pase 1.0 mwens sansib.</value></data>
@@ -2203,8 +2196,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Chanje plas motè gòch ak motè dwat</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Teste vibrasyon</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktivite motè</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Gòch</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Dwat</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Aplike fòs konstan</value></data>
@@ -2612,7 +2603,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Odyo</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Pwentè IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Vize ekran an ak kamera IR Wii Remote sa a. Li bezwen yon ba detektè, oswa de LED enfrawouj, anlè oswa anba ekran an. Kalibre l kòm yon zam limyè nan paj Aparèy yo pou vize pwen egzak la. Yon Wii Remote ki kalibre pa okipe Pozisyon ba detektè ak Dekalaj vètikal.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Ajisteman pwentè</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Pozisyon ba detektè</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Nan mitan</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Anlè ekran an</value></data>
@@ -2639,8 +2629,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Fè mòd pwentè Wii a avanse nan mòd ou chwazi anba yo pou chak Wii Remote ki gen IR sou plas la. Chak deklanchman pase nan pwochen mòd ki koche. Pozisyon sik la separe pou chak aksyon epi li reyinisyalize lè aplikasyon an rekòmanse.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Chwazi ki mòd pwentè makwo a dwe fè sik ladan yo. Chak deklanchman avanse nan pwochen mòd ki koche.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Odyo</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Son makwo ak odyo sistèm ki kopye a jwe nan opalè entegre kontwolè ou chwazi a, sou USB oswa Bluetooth. Chwazi aparèy la nan lis anlè a. Tout paramèt isit la swiv li.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sòti son</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Son makwo ak odyo sistèm ki kopye a jwe nan opalè entegre aparèy ou chwazi anba Sous la, sou USB oswa Bluetooth. Tout paramèt isit la swiv aparèy sa a.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Sous miwa, Volim ekoutè, tanpon, Chemen sòti</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Sous miwa</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Ki aparèy lekti pou kopye nan opalè kontwolè a. Jwèt ki voye kèk son nan yon aparèy lekti apa ka vize sa a.</value></data>
@@ -2700,7 +2689,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Reyinisyalize limit son</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopye tou sa sòti pa defo sistèm nan ap jwe nan opalè entegre kontwolè sa a, an paralèl. Mache sou USB ak Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Aparèy ou chwazi a pa gen opalè entegre. Son makwo pou kontwolè sa a jwe sou sòti pa defo sistèm nan.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Reyinisyalize sòti son</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Ekspòte…</value></data>
@@ -3082,7 +3070,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="MacroAction_Type_GuideLedBrightness" xml:space="preserve"><value>Chwazi klète LED Guide</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Klète LED Guide: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Chwazi klète LED bouton Guide oswa Home pou chak kontwolè ki kapab nan plas la. Kontwolè Xbox aksepte l sou USB sèlman.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Reyinisyalize mòd pwentè</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Reyinisyalize dekalaj vètikal</value></data>
   <data name="Pad_Mapping_MotionMode" xml:space="preserve"><value>Mòd mouvman</value></data>
   <data name="Pad_Mapping_MotionSpeed_Name" xml:space="preserve"><value>Vitès</value></data>
@@ -4149,6 +4136,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Menu_NewMenu" xml:space="preserve"><value>Nouvo meni</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Aparèy sa a</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Tout kontwolè a</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>De stick yo</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Non pwofil la lè pwofil la chanje</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopye adrès la</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Plas sou ekran an</value></data>
@@ -4247,4 +4235,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>ak</value></data>
   <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>oswa</value></data>
   <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>pa</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Kri</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Ajiste</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Jwèt la li mouvman kalibre a epi li aplike pwòp sansiblite ak adousisman pa li.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Jwèt la li mouvman an ak sansiblite, adousisman ak koub ki regle isit la.</value></data>
 </root>

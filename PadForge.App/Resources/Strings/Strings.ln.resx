@@ -389,7 +389,6 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Miinda</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Miinda</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Barre lumineuse</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Longola langi oyo na palette</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Ezimi</value></data>
@@ -748,7 +747,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyroscope</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyroscope</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibrage</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Ba unité, kobalola ba axe, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Kobalola tangage (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Kobalola lacet (X)</value></data>
@@ -767,8 +765,6 @@
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Mosakani</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Mokili</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplicateur</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Kozongisa calibrage</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Kozongisa sensibilité</value></data>
   <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>Kozongisa kobalola tangage</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Kozongisa zone morte</value></data>
   <data name="Pad_ResetGyroAcceleration" xml:space="preserve"><value>Kozongisa accélération</value></data>
@@ -1827,10 +1823,9 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Menu_Cell_Icon" xml:space="preserve"><value>Icône</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Appareil oyo</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Manette mobimba</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Ba stick nyonso mibale</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Mosakani to Mokili</value></data>
   <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Préampli, ba bande, kokotisa</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Ya mwasi</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Ya mobali</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Zwa ba effet ya gâchette adaptative mpe ya mwinda uta na ba mod ya masano oyo ekomamaki mpo na DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Fungola bobimisi ya télémétrie na lisano mpe tinda yango na PC oyo mpe na port oyo.</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ba effet ya mod ekomaka na manette nyonso oyo ezali na matériel mpo na yango.</value></data>

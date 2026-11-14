@@ -1101,6 +1101,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>ක්‍රීඩාවෙන් එන බල ප්‍රතිපෝෂණ සිදුවීම් PadForge පරිමාණය කරන ආකාරය සහ ඒවා භෞතික පාලකයේ කම්පන මෝටර හෝ හැප්ටික් ක්‍රියාකාරක වෙත යොමු කරන ආකාරය සුසර කරයි. ශ්‍රව්‍ය කම්පනය ඊට ඉහළින් පද්ධති ශ්‍රව්‍යයෙන් ධාවනය වන ස්ථරයක් එක් කරයි.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>මෙම උපාංගය</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>මුළු පාලකය</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>ස්ටික් දෙකම</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>කම්පනය {0} මත හැප්ටික් ස්පන්දන ලෙස වාදනය වන අතර, සෘජුවම උපාංගයට යවනු ලැබේ. ප්‍රබල කම්පනයක් ප්‍රබල ස්පන්දනයක් තෝරා එය වේගයෙන් පුනරාවර්තනය කරයි.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Logi Options+ තුළ {0} සඳහා හැප්ටික් ප්‍රතිපෝෂණය අක්‍රිය කර ඇත, එබැවින් ඔබ එය එහි නැවත සක්‍රිය කරන තෙක් එය කිසිවක් වාදනය නොකරයි.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>මෙම උපාංගය තවමත් පිළිතුරු දී නැත. එය අවදි වූ පසු එහි කම්පනය වාදනය වේ.</value></data>
@@ -1166,7 +1167,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>හෙඩ්සෙට්, මූසික පෑඩ සහ Chroma Link තීරු</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>හෙඩ්සෙට්, මූසික පෑඩ සහ ස්පීකර</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>හෙඩ්සෙට්</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>ලයිට්බාර්</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>ක්‍රීඩා ආලෝකකරණය ලියන සෑම විටම පාලනය ලබා ගනී.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ඉලක්කම් හයක hex වර්ණයක් (RRGGBB හෝ #RRGGBB) ඇතුළත් කර, යෙදීමට Enter ඔබන්න හෝ වෙනත් තැනක ක්ලික් කරන්න.</value></data>
@@ -1708,7 +1708,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>මූසිකය මුදා හරින්න {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>ටච්පෑඩ් ඕවර්ලේ ටොගල් කරන්න</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>ලයිට්බාර් වර්ණය සකසන්න</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>පවරා ඇති PlayStation ස්ලොට් එකේ ලයිට්බාර් එක තෝරාගත් RGB වර්ණයකින් අභිබවා යන්න. ප්‍රතික්‍රියාශීලී ප්‍රකාරය සකසා ඇති ක්ෂය කාලය තුළ සම්පූර්ණ තීව්‍රතාවයේ සිට කළු දක්වා මැකී යයි, ඉන්පසු ලයිට්බාර් කාඩ්පතේ සැකසීම් වෙත නැවත භාර දෙයි. ඇලෙන ප්‍රකාරය ලයිට්බාර් අභිබවා යාම ඉවත් කරන්න ක්‍රියාවක් ධාවනය වන තුරු වර්ණය රඳවා ගනී. ක්‍රීඩාව මඟින් කරන ලිවීම් තවමත් අභිබවා යාමට වඩා ප්‍රමුඛත්වය ගනී.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>පවරා ඇති PlayStation ස්ලොට් එකේ ලයිට්බාර් එක තෝරාගත් RGB වර්ණයකින් අභිබවා යන්න. ප්‍රතික්‍රියාශීලී ප්‍රකාරය සකසා ඇති ක්ෂය කාලය තුළ සම්පූර්ණ තීව්‍රතාවයේ සිට කළු දක්වා මැකී යයි, ඉන්පසු ආලෝකකරණ කාඩ්පතේ සැකසීම් වෙත නැවත භාර දෙයි. ඇලෙන ප්‍රකාරය ලයිට්බාර් අභිබවා යාම ඉවත් කරන්න ක්‍රියාවක් ධාවනය වන තුරු වර්ණය රඳවා ගනී. ක්‍රීඩාව මඟින් කරන ලිවීම් තවමත් අභිබවා යාමට වඩා ප්‍රමුඛත්වය ගනී.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>ලයිට්බාර් {0} දල්වන්න (ක්ෂය {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>ඉවත් කරන තුරු ලයිට්බාර් {0} රඳවන්න</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>ලයිට්බාර් අභිබවා යාම ඉවත් කරන්න</value></data>
@@ -1716,7 +1716,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>පවරා ඇති ස්ලොට් එකේ ඕනෑම සක්‍රිය ලයිට්බාර් අභිබවා යාමක් මුදා හරියි. වෙනත් මැක්‍රෝවකින් එය අහෝසි කිරීමට, ඇලෙන ලයිට්බාර් වර්ණය සකසන්න ක්‍රියාවක් සමඟ එක්ව භාවිත කරන්න.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>ලයිට්බාර් ප්‍රකාරය සකසන්න</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>ලයිට්බාර් ප්‍රකාරය {0} ලෙස සකසන්න</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>පවරා ඇති ස්ලොට් එකේ ලයිට්බාර් ප්‍රකාරය නිශ්චිත අගයකට සකසයි. වෙනත් ක්‍රියාවක් හෝ පරිශීලකයා එය වෙනස් කරන තුරු ලයිට්බාර් කාඩ්පතේ කළ සංස්කරණයක් මෙන් පවතී.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>පවරා ඇති ස්ලොට් එකේ ලයිට්බාර් ප්‍රකාරය නිශ්චිත අගයකට සකසයි. වෙනත් ක්‍රියාවක් හෝ පරිශීලකයා එය වෙනස් කරන තුරු ආලෝකකරණ කාඩ්පතේ කළ සංස්කරණයක් මෙන් පවතී.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>ලයිට්බාර් ප්‍රකාර චක්‍රීය කරන්න</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>ලයිට්බාර් ප්‍රකාර {0} ක් හරහා චක්‍රීය කරන්න</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>පහත තෝරාගත් ප්‍රකාර හරහා ස්ලොට් එකේ ලයිට්බාර් ප්‍රකාරය ඉදිරියට ගෙන යයි. සෑම ක්‍රියාත්මක වීමක්ම ඊළඟ සලකුණු කළ ප්‍රකාරයට ගමන් කරයි. චක්‍රයේ පිහිටීම එක් එක් ක්‍රියාවට වෙන් වන අතර යෙදුම නැවත ආරම්භ කළ විට යළි සැකසේ.</value></data>
@@ -1731,7 +1731,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>ක්ෂය</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>මැකීම</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>පැලට්</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>හිස් පැලට් එකක් ස්ලොට් එකේ ලයිට්බාර් කාඩ්පතේ ඇති වර්ණ තලය භාවිත කරයි.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>හිස් පැලට් එකක් ස්ලොට් එකේ ආලෝකකරණ කාඩ්පතේ ඇති වර්ණ තලය භාවිත කරයි.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>ප්‍රකාරය</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>මැක්‍රෝව චක්‍රීය කළ යුතු ලයිට්බාර් ප්‍රකාර තෝරන්න. සෑම ක්‍රියාත්මක වීමක්ම ඊළඟ සලකුණු කළ ප්‍රකාරයට ගෙන යයි.</value></data>
 
@@ -1961,6 +1961,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>මූසික ප්‍රතිදානය</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>ප්‍රතිලෝම කිරීම, ගම්‍යතාව, ප්‍රතිචාරය, ත්වරණය, විසි කිරීම</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>සංවේදක තීරුවේ පිහිටීම, සිරස් ඕෆ්සෙට්, සුමටනය</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>යතුරුපුවරු / මූසික අතථ්‍ය පාලකයක ටච්පෑඩ් ඇඟිල්ලක් මූසික X/Y වෙත සිතියම්ගත කළ විට කර්සර වේගය සුසර කරයි. 1.0 පෙරනිමියයි. වේගවත් කර්සරයක් සඳහා ඕනෑම අක්ෂයක් වැඩි කරන්න, මන්දගාමී කර්සරයක් සඳහා අඩු කරන්න. ප්‍රතිලෝම කිරීම ඕනෑම අක්ෂයක් පෙරළයි.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>මූසික සංවේදීතාව X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>තිරස් ටච්පෑඩ් → මූසික චලනය මත ගුණකය. 1.0 ට අඩු අගයක් කර්සරය මන්දගාමී කරයි. 1.0 ට වැඩි අගයක් එය වේගවත් කරයි.</value></data>
@@ -2166,7 +2167,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>ක්‍රමාංකනය කරමින්… නොසෙල්වී තබාගන්න</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>ක්‍රමාංකනය යළි සකසන්න</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>නිශ්චල ගයිරෝ ඕෆ්සෙට් සහ අවසන් ක්‍රමාංකන කාල මුද්‍රාව ඉවත් කරයි. ඊළඟ විමසුම් චක්‍රය මෙම උපාංගයේ තත්පර 1.5 ස්වයංක්‍රීය ක්‍රමාංකනය නැවත ධාවනය කරයි.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>සජීවී ගයිරෝස්කෝපය</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>සජීවී ත්වරණමානය</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>තිරස් සංවේදීතාව</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>ප්‍රතිදානයට තිරස් (යෝ + රෝල්) ගයිරෝ දායකත්වය පරිමාණය කරයි. 1.0 එන්ජිම දකින අනුපාතය එලෙසම තබයි. ඉහළ අගයන් විශාල කරයි, අඩු අගයන් දුර්වල කරයි. මෙම පාලකයේ සෑම ගයිරෝ බැඳීමකටම එකම තිරස් හැඟීම ලැබෙන පරිදි උපාංග මට්ටමින් යොදන්න.</value></data>
@@ -2186,8 +2186,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ගයිරෝ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>මෙම පෑඩයේ චලන සංවේදකය මූසික සහ ස්ටික් ප්‍රතිදානය පාලනය කරන ආකාරය සුසර කරන්න. නිශ්චල ඇදීම ශුන්‍ය කිරීමට සමතල පෘෂ්ඨයක් මත ක්‍රමාංකනය කරන්න, ඉන්පසු සංවේදීතාව, සුමට කිරීම සහ සක්‍රිය කිරීමේ නීති ඔබේ රුචියට සකසන්න.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>ක්‍රමාංකනය</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>සජීවී ගයිරෝස්කෝප සහ ත්වරණමාන කියවීම්</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>සංවේදීතාව</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>ඒකක, අක්ෂ ප්‍රතිලෝම කිරීම, සැබෑ ලෝක ක්‍රමාංකනය</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>එක් වටයකට ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>ප්‍රතිචාර හැඩගැස්වීම</value></data>
@@ -2273,11 +2271,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>අති පුළුල්</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>ගුණකය</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>තිර හැරීමකට අංශක</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>ක්‍රමාංකනය යළි සකසන්න</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>සංවේදීතාව යළි සකසන්න</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>ප්‍රතිචාර හැඩගැස්වීම යළි සකසන්න</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>සක්‍රිය කිරීම යළි සකසන්න</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>චලන පාස්ත්‍රූ යළි සකසන්න</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>අවකාශය යළි සකසන්න</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>ග්‍රහණය යළි සකසන්න</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>තිරස් සංවේදීතාව යළි සකසන්න</value></data>
@@ -2297,8 +2292,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>සක්‍රිය කිරීමේ ස්ටික් යළි සකසන්න</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>සක්‍රිය කිරීමේ දිශාව යළි සකසන්න</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>චලන පාස්ත්‍රූ</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>ගයිරෝ සුසර කිරීම චලන පාස්ත්‍රූ වෙත යොදන්න</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ගයිරෝ කාඩ්පත්වල අභිමත සුසර කිරීම (ඩෙඩ්සෝන්, සංවේදීතාව, සුමට කිරීම, ප්‍රතිචාර වක්‍රය, ප්‍රතිලෝම කිරීම) අතථ්‍ය පාලකය ක්‍රීඩාවට හෝ ඉමියුලේටරයට වාර්තා කරන චලනය මත ධාවනය කරයි. ක්‍රමාංකනය කළ කියවීම පමණක් යවා, ක්‍රීඩාවට තමන්ගේම සංවේදීතාව සහ සුමට කිරීම යෙදීමට ඉඩ දීමට එය අක්‍රිය කරන්න. ක්‍රමාංකන ඇදීම් නිවැරදි කිරීම කෙසේ වෙතත් සැමවිටම යෙදේ.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>සුසර කළ ප්‍රකාරය ගයිරෝ කාඩ්පතේ සුසර කිරීම (ඩෙඩ්සෝන්, සංවේදීතාව, සුමට කිරීම, ප්‍රතිචාර වක්‍රය, ප්‍රතිලෝම කිරීම) අතථ්‍ය පාලකය ක්‍රීඩාවට හෝ ඉමියුලේටරයට වාර්තා කරන චලනය මත ධාවනය කරයි. අමු ප්‍රකාරය ක්‍රමාංකනය කළ කියවීම පමණක් යවා, ක්‍රීඩාවට තමන්ගේම සංවේදීතාව සහ සුමට කිරීම යෙදීමට ඉඩ දෙයි. ක්‍රමාංකන ඇදීම් නිවැරදි කිරීම කෙසේ වෙතත් යෙදේ.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>අමු</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>සුසර කළ</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>ක්‍රීඩාව ක්‍රමාංකනය කළ චලනය කියවා, තමන්ගේම සංවේදීතාව සහ සුමට කිරීම යොදයි.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>ක්‍රීඩාව මෙහි සකසා ඇති සංවේදීතාව, සුමට කිරීම සහ වක්‍රය සමඟ චලනය කියවයි.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>පාස්ත්‍රූ සුසර කිරීම යළි සකසන්න</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>සංවේදීතාව</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>මූලාශ්‍රය අනුව ගයිරෝ සංවේදීතා ගුණකය. 1.0 = එන්ජිමේ පෙරනිමිය (500°/s → සම්පූර්ණ අපගමනය). 1.0 ට වැඩි අගයන් වඩා සංවේදී වේ. 1.0 ට අඩු අගයන් අඩුවෙන් සංවේදී වේ.</value></data>
@@ -2541,8 +2539,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>මෙම පාලකයේ ට්‍රිගර මෝටර නැත, එබැවින් Xbox ආවේග ට්‍රිගර භාවිත කරන ක්‍රීඩාවල කම්පනය නොදැනේ. ඒ වෙනුවට එක් එක් ට්‍රිගර නාලිකාව එම පැත්තේම ප්‍රධාන මෝටරයට ඒකාබද්ධ කරන්න.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>කම්පනය පරීක්ෂා කරන්න</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>මෝටර ක්‍රියාකාරිත්වය</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>වම</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>දකුණ</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>ඔබ ටොගල් කර අක්‍රිය කරන තුරු මෙම උපාංගයට අඛණ්ඩ බලයක් යොදන්න. ඕනෑම ප්‍රභවයකින් ක්‍රීඩාව එවන බලය සක්‍රියව ඇති අතරතුර එය මෙය අභිබවා යන අතර, ක්‍රීඩාව නැවැත්වූ විට මෙය නැවත ආරම්භ වේ.</value></data>
@@ -3025,7 +3021,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>ශ්‍රව්‍ය</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR පොයින්ටරය</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>මෙම Wii Remote එක එහි IR කැමරාව සමඟ තිරය දෙසට යොමු කරන්න. සංදර්ශකයට ඉහළින් හෝ පහළින් සංවේදක තීරුවක් හෝ අධෝරක්ත LED දෙකක් අවශ්‍යයි. නිවැරදි ස්ථානයටම ඉලක්ක කිරීමට උපාංග පිටුවේ එය ලයිට් ගන් එකක් ලෙස ක්‍රමාංකනය කරන්න. ක්‍රමාංකනය කළ දුරස්ථ පාලකයක් සංවේදක තීරුවේ පිහිටීම සහ සිරස් ඕෆ්සෙට් නොසලකා හරියි.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>පොයින්ටර සුසර කිරීම</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>සංවේදක තීරුවේ පිහිටීම</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>මධ්‍යගත</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>තිරයට ඉහළින්</value></data>
@@ -3052,8 +3047,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>ස්ලොට් එකේ ඇති IR හැකියාව සහිත සෑම දුරස්ථ පාලකයක් සඳහාම, පහත තෝරාගත් ප්‍රකාර හරහා Wii පොයින්ටර ප්‍රකාරය ඉදිරියට ගෙන යයි. සෑම ක්‍රියාත්මක වීමක්ම ඊළඟ සලකුණු කළ ප්‍රකාරයට යයි. චක්‍රයේ පිහිටීම එක් එක් ක්‍රියාවට වෙන් වන අතර යෙදුම නැවත ආරම්භ කළ විට යළි සැකසේ.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>මැක්‍රෝව චක්‍රීයව මාරු කළ යුතු පොයින්ටර ප්‍රකාර තෝරන්න. සෑම ක්‍රියාත්මක වීමක්ම ඊළඟ සලකුණු කළ ප්‍රකාරයට ඉදිරියට යයි.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ශ්‍රව්‍ය</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>මැක්‍රෝ ශබ්ද සහ පිළිබිඹු කළ පද්ධති ශ්‍රව්‍ය, USB හෝ Bluetooth හරහා, තෝරාගත් පාලකයේ ඇතුළත් ස්පීකරයෙන් වාදනය වේ. ඉහත පතන ලැයිස්තුවෙන් උපාංගය තෝරන්න. මෙහි ඇති සෑම සැකසීමක්ම එය අනුගමනය කරයි.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>ශබ්ද ප්‍රතිදානය</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>මැක්‍රෝ ශබ්ද සහ පිළිබිඹු කළ පද්ධති ශ්‍රව්‍ය, USB හෝ Bluetooth හරහා, ආදාන මූලාශ්‍රය යටතේ තෝරාගත් උපාංගයේ ඇතුළත් ස්පීකරයෙන් වාදනය වේ. මෙහි ඇති සෑම සැකසීමක්ම එම උපාංගය අනුගමනය කරයි.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>පිළිබිඹු ප්‍රභවය, හෙඩ්ෆෝන් හඬ පරිමාව, බෆරය, ප්‍රතිදාන මාර්ගය</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>ශබ්ද ස්වයංක්‍රීයව තෝරාගත් පාලකයට යොමු වේ. USB හරහා, පෑඩයේම ශ්‍රව්‍ය අන්ත ලක්ෂ්‍යය දෘඪාංග බහාලුම අනුව ගළපනු ලැබේ. Bluetooth හරහා, ශ්‍රව්‍ය Sony HID රාමු තුළ ප්‍රවාහය කෙරේ.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>පිළිබිඹු ප්‍රභවය</value></data>
@@ -3116,7 +3110,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>නාද සීමාව යළි සකසන්න</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>පද්ධති පෙරනිමි ප්‍රතිදානය වාදනය කරන ඕනෑම දෙයක් සමාන්තරව මෙම පාලකයේ ඇතුළත් ස්පීකරයට පිටපත් කරයි. USB සහ Bluetooth හරහා ක්‍රියා කරයි.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>තෝරාගත් උපාංගයේ ඇතුළත් ස්පීකරයක් නැත. මෙම පෑඩය සඳහා මැක්‍රෝ ශබ්ද පද්ධති පෙරනිමි ප්‍රතිදානයේ වාදනය වේ.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>ශබ්ද ප්‍රතිදානය යළි සකසන්න</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) විසින් සාදන ලද බ්‍රවුසර DualSense පරීක්ෂණ කට්ටලය: PadForge අතථ්‍ය පෑඩවලින් භෞතික පෑඩවලට යොමු කරන Sony feature-report CRC රාමුකරණය සහ ස්ථිරාංග පරීක්ෂණ විධාන සඳහා යොමුව.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3547,8 +3540,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide LED දීප්තිය: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>ස්ලොට් එකේ හැකියාව ඇති සෑම පාලකයක් සඳහාම Guide හෝ Home බොත්තම් LED දීප්තිය සකසයි. Xbox පාලක එය පිළිගන්නේ USB හරහා පමණි.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>USB හරහා Xbox පාලක, 2015 Steam Controller, සහ Home බොත්තම් LED සහිත Switch පාලක සඳහා අදාළ වේ. මැක්‍රෝවක් ආරම්භ වන විට LED එක දැල්වීමට සහ එය අවසන් වන විට යථා තත්ත්වයට පත් කිරීමට මෙවැනි ක්‍රියා දෙකක් එකට භාවිත කරන්න.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>දර්ශක ප්‍රකාරය යළි සකසන්න</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>දර්ශක සුසර කිරීම යළි සකසන්න</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>සංවේදක තීරු පිහිටීම යළි සකසන්න</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>සිරස් ඕෆ්සෙට් යළි සකසන්න</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>සුමට කිරීම යළි සකසන්න</value></data>

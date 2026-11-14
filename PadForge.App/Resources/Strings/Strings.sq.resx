@@ -1101,6 +1101,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Rregullon si i shkallëzon PadForge ngjarjet e force feedback nga loja dhe si i përcjell te motorët e dridhjes ose aktuatorët haptikë të kontrolluesit fizik. Dridhja nga audio shton një shtresë të drejtuar nga audio e sistemit sipër.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Kjo pajisje</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Gjithë kontrolluesi</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Të dyja levat</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Dridhja luhet në {0} si impulse haptikë, të dërguar drejtpërdrejt te pajisja. Dridhja më e fortë zgjedh një impuls më të fortë dhe e përsërit më shpejt.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Reagimi haptik është çaktivizuar për {0} në Logi Options+, ndaj nuk luan asgjë deri sa ta aktivizoni përsëri atje.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Kjo pajisje nuk është përgjigjur ende. Dridhja e saj luhet sapo të zgjohet.</value></data>
@@ -1166,7 +1167,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>kufje, tapete mausi dhe shirita Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>kufje, tapete mausi dhe altoparlantë</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>kufje</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Shiriti i dritës</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Lojërat marrin kontrollin sa herë që shkruajnë ndriçim.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Futni një ngjyrë hex gjashtëshifrore (RRGGBB ose #RRGGBB) dhe shtypni Enter ose klikoni jashtë për ta zbatuar.</value></data>
@@ -1708,7 +1708,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Lëshimi i mausit {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Ndërro mbivendosjen e touchpad</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Cakto ngjyrën e shiritit të dritës</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Ndryshon shiritin e dritës të slotit PlayStation të caktuar në një ngjyrë RGB të zgjedhur. Reaktive zbehet nga intensiteti i plotë në të zezë gjatë dritares së caktuar të shuarjes, pastaj ia kthen cilësimeve të kartës „Shiriti i dritës“. E ngjitur e mban ngjyrën derisa të ekzekutohet veprimi Pastro ndryshimin e shiritit të dritës. Shkrimet e drejtuara nga loja kanë prapë përparësi mbi ndryshimin.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Ndryshon shiritin e dritës të slotit PlayStation të caktuar në një ngjyrë RGB të zgjedhur. Reaktive zbehet nga intensiteti i plotë në të zezë gjatë dritares së caktuar të shuarjes, pastaj ia kthen cilësimeve të kartës „Ndriçimi“. E ngjitur e mban ngjyrën derisa të ekzekutohet veprimi Pastro ndryshimin e shiritit të dritës. Shkrimet e drejtuara nga loja kanë prapë përparësi mbi ndryshimin.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Pulso shiritin e dritës {0} (shuarje {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Mbaje shiritin e dritës {0} deri në pastrim</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Pastro ndryshimin e shiritit të dritës</value></data>
@@ -1716,7 +1716,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Lëshon çdo ndryshim aktiv të shiritit të dritës në slotin e caktuar. Çiftoje me një veprim Cakto ngjyrën e shiritit të dritës të ngjitur për ta zhbërë përmes një makroje tjetër.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Cakto mënyrën e shiritit të dritës</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Cakto mënyrën e shiritit të dritës në {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Cakton mënyrën e shiritit të dritës të slotit në një vlerë të caktuar. Mbetet si një redaktim në kartën „Shiriti i dritës“ derisa ta ndryshojë një veprim tjetër ose përdoruesi.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Cakton mënyrën e shiritit të dritës të slotit në një vlerë të caktuar. Mbetet si një redaktim në kartën „Ndriçimi“ derisa ta ndryshojë një veprim tjetër ose përdoruesi.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Qarko mënyrat e shiritit të dritës</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Qarko nëpër {0} mënyra të shiritit të dritës</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>E çon mënyrën e shiritit të dritës të slotit nëpër mënyrat e zgjedhura më poshtë. Çdo aktivizim kalon te mënyra tjetër e shënuar. Pozicioni i ciklit është për çdo veprim dhe rivendoset kur riniset aplikacioni.</value></data>
@@ -1731,7 +1731,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Shuarja</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Zbehja</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Paleta</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Një paletë e zbrazët përdor paletën në kartën „Shiriti i dritës“ të slotit.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Një paletë e zbrazët përdor paletën në kartën „Ndriçimi“ të slotit.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mënyra</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Zgjidh nëpër cilat mënyra të shiritit të dritës duhet të qarkojë makroja. Çdo aktivizim kalon te mënyra tjetër e shënuar.</value></data>
 
@@ -1961,6 +1961,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Dalja e mausit</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Përmbysja, Vrulli, Përgjigjja, Përshpejtimi, hedhja</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Pozicioni i sensor bar, Zhvendosja vertikale, Zbutja</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Rregullon shpejtësinë e kursorit kur një gisht i touchpad-it hartëzohet te maus X/Y në një kontrollues virtual Tastierë / Maus. 1.0 është parazgjedhja. Rritni njërin bosht për kursor më të shpejtë, ulni për më të ngadaltë. Përmbysja kthen përmbys cilindo bosht.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Ndjeshmëria e mausit X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Shumëzues për lëvizjen horizontale touchpad → maus. Nën 1.0 e ngadalëson kursorin. Mbi 1.0 e shpejton.</value></data>
@@ -2166,7 +2167,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Po kalibrohet… qëndroni pa lëvizur</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Rivendos kalibrimin</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Pastron anshmërinë e xhirës në pushim dhe vulën kohore të kalibrimit të fundit. Cikli tjetër i pyetjes e ekzekuton sërish vetëkalibrimin 1.5-sekondësh në këtë pajisje.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Xhiroskopi drejtpërdrejt</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Akselerometri drejtpërdrejt</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Ndjeshmëria horizontale</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Shkallëzon kontributin horizontal (kthim + rrotullim) të xhirës në dalje. 1.0 e lë shpejtësinë ashtu siç e sheh motori. Vlerat më të larta amplifikojnë, më të ulëtat zbuthin. Zbatohet në nivel pajisjeje, që çdo lidhje xhire në këtë kontrollues të ketë të njëjtën ndjesi horizontale.</value></data>
@@ -2186,8 +2186,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Xhira</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Rregulloni si e drejton sensori i lëvizjes i këtij kontrolluesi daljen e mausit dhe të levës. Kalibroni në një sipërfaqe të sheshtë për të zeruar zhvendosjen në pushim, pastaj rregulloni ndjeshmërinë, zbutjen dhe rregullat e aktivizimit sipas dëshirës.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrimi</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Xhiroskopi dhe akselerometri drejtpërdrejt</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Ndjeshmëria</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Njësitë, përmbysja e boshteve, Kalibrimi në botën reale</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° për rrotullim</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Formësimi i përgjigjes</value></data>
@@ -2273,11 +2271,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Shumë e gjerë</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Shumëzues</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Gradë për kthesë ekrani</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Rivendos kalibrimin</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Rivendos ndjeshmërinë</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Rivendos formësimin e përgjigjes</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Rivendos aktivizimin</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Rivendos kalimin e drejtpërdrejtë të lëvizjes</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Rivendos hapësirën</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Rivendos mbajtjen</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Rivendos ndjeshmërinë horizontale</value></data>
@@ -2297,8 +2292,11 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Rivendos levën e aktivizimit</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Rivendos drejtimin e aktivizimit</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Kalim i drejtpërdrejtë i lëvizjes</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Zbato rregullimin e xhirës te kalimi i drejtpërdrejtë i lëvizjes</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Ekzekuton rregullimin opsional të kartave të grupit Xhira (zonë e vdekur, ndjeshmëri, zbutje, kurbë përgjigjeje, përmbysje) te lëvizja që kontrolluesi virtual i raporton lojës ose emulatorit. Çaktivizojeni që të dërgohet vetëm leximi i kalibruar dhe loja të zbatojë ndjeshmërinë dhe zbutjen e vet. Korrigjimi i zhvendosjes së kalibrimit zbatohet gjithmonë.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Rregulluar ekzekuton rregullimin e kartës Xhira (zonë e vdekur, ndjeshmëri, zbutje, kurbë përgjigjeje, përmbysje) te lëvizja që kontrolluesi virtual i raporton lojës ose emulatorit. Bruto dërgon vetëm leximin e kalibruar dhe e lë lojën të zbatojë ndjeshmërinë dhe zbutjen e vet. Korrigjimi i zhvendosjes së kalibrimit zbatohet në të dyja rastet.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Bruto</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Rregulluar</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Loja lexon lëvizjen e kalibruar dhe zbaton ndjeshmërinë dhe zbutjen e vet.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Loja lexon lëvizjen me ndjeshmërinë, zbutjen dhe kurbën e caktuara këtu.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Rivendos rregullimin e kalimit të drejtpërdrejtë</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Ndjeshmëria</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Shumëzuesi i ndjeshmërisë së xhirës për burim. 1.0 = parazgjedhja e motorit (500°/s → devijim i plotë). Vlerat mbi 1.0 janë më të ndjeshme. Vlerat nën 1.0 janë më pak të ndjeshme.</value></data>
@@ -2534,8 +2532,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Ky kontrollues nuk ka motorë në këmbëza, ndaj lojërat që përdorin këmbëzat me impuls të Xbox nuk do të ndjeheshin. Në vend të kësaj, bashko çdo kanal këmbëze me motorin kryesor në të njëjtën anë.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Provo dridhjen</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktiviteti i motorëve</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>I majtë</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>I djathtë</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Apliko një forcë të vazhdueshme në këtë pajisje derisa ta çaktivizosh. Forca e dërguar nga loja, nga çdo burim, e zëvendëson atë për sa kohë është aktive dhe ajo rifillon kur loja ndalon.</value></data>
@@ -3011,7 +3007,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Treguesi IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Drejto këtë Wii Remote nga ekrani me kamerën e tij IR. Kërkon një sensor bar, ose dy LED infra të kuqe, mbi ose nën ekran. Kalibroje si pistoletë drite te faqja Pajisjet për të shënjuar pikën e saktë. Një telekomandë e kalibruar i injoron Pozicioni i sensor bar dhe Zhvendosja vertikale.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Akordimi i treguesit</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Pozicioni i sensor bar</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Në qendër</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Mbi ekran</value></data>
@@ -3038,8 +3033,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Kalon mënyrën e treguesit Wii nëpër mënyrat e zgjedhura më poshtë për çdo telekomandë me IR në slot. Çdo aktivizim kalon te mënyra tjetër e zgjedhur. Pozicioni i ciklit është për veprim dhe rivendoset kur riniset aplikacioni.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Zgjidh nëpër cilat mënyra treguesi duhet të kalojë makroja. Çdo aktivizim kalon te mënyra tjetër e zgjedhur.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Tingujt e makrove dhe audioja e pasqyruar e sistemit luhen përmes altoparlantit të integruar të kontrolluesit të zgjedhur, me USB ose Bluetooth. Zgjidh pajisjen te lista sipër. Çdo cilësim këtu e ndjek atë.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Dalja e zërit</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Tingujt e makrove dhe audioja e pasqyruar e sistemit luhen përmes altoparlantit të integruar të pajisjes së zgjedhur te Drejtuar nga, me USB ose Bluetooth. Çdo cilësim këtu e ndjek atë pajisje.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Burimi i pasqyrës, Volumi i kufjeve, buferi, Rruga e daljes</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Tingujt drejtohen automatikisht te kontrolluesi i zgjedhur. Me USB, pika e audios e vetë kontrolluesit përputhet sipas kontejnerit të harduerit. Me Bluetooth, audioja transmetohet në kuadro Sony HID.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Burimi i pasqyrës</value></data>
@@ -3102,7 +3096,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Rivendos kufirin e tonit</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopjon çfarë luan dalja e parazgjedhur e sistemit te altoparlanti i integruar i këtij kontrolluesi, paralelisht. Funksionon me USB dhe Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Pajisja e zgjedhur nuk ka altoparlant të integruar. Tingujt e makrove për këtë kontrollues luhen në daljen e parazgjedhur të sistemit.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Rivendos daljen e zërit</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Paketë testimi DualSense në shfletues nga Xuezhou Dai (daidr): referencë për kuadrimin CRC të feature report-eve të Sony dhe komandat e testimit të firmuerit që PadForge i përcjell nga kontrolluesit virtualë te ato fizikë.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3533,8 +3526,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Shkëlqimi i LED Guide: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Cakton shkëlqimin e LED-it të butonit Guide ose Home për çdo kontrollues të aftë në slot. Kontrolluesit Xbox e pranojnë vetëm përmes USB.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Zbatohet për kontrolluesit Xbox përmes USB, Steam Controller 2015 dhe kontrolluesit Switch me LED te butoni Home. Çifto dy veprime të tilla për ta pulsuar LED-in kur nis një makro dhe për ta rikthyer kur mbaron.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Rivendos mënyrën e treguesit</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Rivendos akordimin e treguesit</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Rivendos pozicionin e Sensor Bar</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Rivendos zhvendosjen vertikale</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Rivendos zbutjen</value></data>

@@ -1102,6 +1102,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Կարգավորում է, թե ինչպես է PadForge-ը մասշտաբավորում խաղից եկող հետադարձ ուժի իրադարձությունները և ինչպես է դրանք երթուղավորում ֆիզիկական կառավարչի թրթռաշարժիչներին կամ հապտիկ ակտուատորներին։ Աուդիո թրթռոցը ավելացնում է համակարգի աուդիոյով վարվող շերտ դրա վրա։</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Այս սարքը</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Ամբողջ կառավարիչը</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Երկու ձողերը</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Թրթռոցը նվագարկվում է {0}-ի վրա որպես հապտիկ իմպուլսներ, որոնք ուղարկվում են անմիջապես սարքին։ Ավելի ուժեղ թրթռոցն ընտրում է ավելի ուժեղ իմպուլս և կրկնում է այն ավելի արագ։</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>{0}-ի համար Logi Options+-ում հապտիկ հետադարձն անջատված է, ուստի ոչինչ չի նվագարկվում, մինչև այն նորից միացնեք այնտեղ։</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Այս սարքը դեռ չի պատասխանել։ Դրա թրթռոցը կնվագարկվի արթնանալուց հետո։</value></data>
@@ -1167,7 +1168,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>ականջակալներ, մկնիկի գորգեր և Chroma Link ժապավեններ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>ականջակալներ, մկնիկի գորգեր և բարձրախոսներ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ականջակալներ</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Լուսաշերտ</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Խաղերը վերցնում են վերահսկողությունը, երբ գրում են լուսավորություն։</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Մուտքագրեք վեցանիշ hex գույն (RRGGBB կամ #RRGGBB) և սեղմեք Enter կամ կտտացրեք այլ տեղ՝ կիրառելու համար։</value></data>
@@ -1709,7 +1709,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Մկնիկի բաց թողնում {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Փոխանջատել հպահարթակի վերադիրը</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Սահմանել լուսաշերտի գույնը</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Վերասահմանում է նշանակված PlayStation սլոթի լուսաշերտը ընտրված RGB գույնով։ Արձագանքողը լրիվ ուժգնությունից մարում է մինչև սև կարգավորված մարման պատուհանի ընթացքում, ապա վերադարձնում է կառավարումը Լուսաշերտ քարտի կարգավորումներին։ Կպչունը պահում է գույնը, մինչև գործարկվի Մաքրել լուսաշերտի վերասահմանումը գործողությունը։ Խաղի կողմից արված գրառումները դեռ առաջնահերթ են վերասահմանումից։</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Վերասահմանում է նշանակված PlayStation սլոթի լուսաշերտը ընտրված RGB գույնով։ Արձագանքողը լրիվ ուժգնությունից մարում է մինչև սև կարգավորված մարման պատուհանի ընթացքում, ապա վերադարձնում է կառավարումը Լուսավորություն քարտի կարգավորումներին։ Կպչունը պահում է գույնը, մինչև գործարկվի Մաքրել լուսաշերտի վերասահմանումը գործողությունը։ Խաղի կողմից արված գրառումները դեռ առաջնահերթ են վերասահմանումից։</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Լուսաշերտի փայլատակում {0} (մարում {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Պահել լուսաշերտը {0}՝ մինչև մաքրվի</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Մաքրել լուսաշերտի վերասահմանումը</value></data>
@@ -1717,7 +1717,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Վերացնում է նշանակված սլոթի ցանկացած ակտիվ լուսաշերտի վերասահմանում։ Զույգեք կպչուն Սահմանել լուսաշերտի գույնը գործողության հետ՝ այն մեկ այլ մակրոյով չեղարկելու համար։</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Սահմանել լուսաշերտի ռեժիմը</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Սահմանել լուսաշերտի ռեժիմը՝ {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Նշանակված սլոթի լուսաշերտի ռեժիմը սահմանում է կոնկրետ արժեքի։ Պահպանվում է ինչպես Լուսաշերտ քարտում կատարված խմբագրումը, մինչև մեկ այլ գործողություն կամ օգտատերը փոխի այն։</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Նշանակված սլոթի լուսաշերտի ռեժիմը սահմանում է կոնկրետ արժեքի։ Պահպանվում է ինչպես Լուսավորություն քարտում կատարված խմբագրումը, մինչև մեկ այլ գործողություն կամ օգտատերը փոխի այն։</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Շրջանցել լուսաշերտի ռեժիմները</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Շրջանցել {0} լուսաշերտի ռեժիմները</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Սլոթի լուսաշերտի ռեժիմը անցկացնում է ներքևում ընտրված ռեժիմներով։ Յուրաքանչյուր գործարկում անցնում է հաջորդ նշված ռեժիմին։ Շրջանի դիրքը յուրաքանչյուր գործողության համար առանձին է և վերականգնվում է հավելվածը վերագործարկելիս։</value></data>
@@ -1732,7 +1732,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Մարում</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Մարում</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Գունապնակ</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Դատարկ գունապնակի դեպքում օգտագործվում է սլոթի Լուսաշերտ քարտի գունապնակը։</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Դատարկ գունապնակի դեպքում օգտագործվում է սլոթի Լուսավորություն քարտի գունապնակը։</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Ռեժիմ</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Ընտրեք, թե լուսաշերտի որ ռեժիմներով պետք է անցնի մակրոն։ Յուրաքանչյուր գործարկում անցնում է հաջորդ նշված ռեժիմին։</value></data>
 
@@ -1962,6 +1962,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Մկնիկի ելք</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Շրջում, իներցիա, արձագանք, արագացում, նետում</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Սենսորային գոտու դիրք, ուղղահայաց շեղում, հարթեցում</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Կարգավորում է ցուցիչի արագությունը, երբ հպահարթակի մատը կապակցված է մկնիկի X/Y-ին «Ստեղնաշար / մկնիկ» վիրտուալ կառավարիչի վրա։ Լռելյայն արժեքը 1.0 է։ Ավելացրեք որևէ առանցք՝ ցուցիչը արագացնելու, պակասեցրեք՝ դանդաղեցնելու համար։ «Շրջել»-ը շրջում է որևէ առանցք։</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Մկնիկի զգայունություն X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Հորիզոնական հպահարթակ → մկնիկ տեղաշարժի բազմապատկիչ։ 1.0-ից ցածրը դանդաղեցնում է ցուցիչը։ 1.0-ից բարձրը արագացնում է։</value></data>
@@ -2167,7 +2168,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Չափաբերվում է… մի շարժեք</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Վերականգնել չափաբերումը</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Մաքրում է գիրոյի անշարժ վիճակի շեղումը և վերջին չափաբերման ժամանակը։ Հաջորդ հարցման ցիկլը այս սարքի վրա նորից կգործարկի 1.5 վայրկյանանոց ավտոմատ չափաբերումը։</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Կենդանի գիրոսկոպ</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Կենդանի արագացուցաչափ</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Հորիզոնական զգայունություն</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Մասշտաբավորում է հորիզոնական (պտույտ + գլորում) գիրոյի ներդրումը ելքի մեջ։ 1.0-ը թողնում է արագությունն այնպես, ինչպես այն տեսնում է շարժիչը։ Ավելի բարձր արժեքները ուժեղացնում են, ավելի ցածրը՝ թուլացնում։ Կիրառվում է սարքի մակարդակում, այնպես որ այս կառավարիչի յուրաքանչյուր գիրոյի կապակցում ժառանգում է նույն հորիզոնական զգացողությունը։</value></data>
@@ -2187,8 +2187,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Գիրո</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Կարգավորեք, թե ինչպես է այս կառավարիչի շարժման սենսորը կառավարում մկնիկի և ձողի ելքը։ Չափաբերեք հարթ մակերևույթի վրա՝ անշարժ վիճակի շեղումը զրոյացնելու համար, ապա ըստ ցանկության կարգավորեք զգայունությունը, հարթեցումը և միացման կանոնները։</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Չափաբերում</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Գիրոյի և արագացուցաչափի ընթացիկ ցուցմունքներ</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Զգայունություն</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Միավորներ, շրջում, իրական աշխարհի չափաբերում</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° մեկ պտույտի համար</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Արձագանքի ձևավորում</value></data>
@@ -2274,11 +2272,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Շատ լայն</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Բազմապատկիչ</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Աստիճաններ էկրանի պտույտի համար</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Վերականգնել չափաբերումը</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Վերականգնել զգայունությունը</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Վերականգնել արձագանքի ձևավորումը</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Վերականգնել միացումը</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Վերականգնել շարժման փոխանցումը</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Վերականգնել տարածքը</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Վերականգնել բռնելու ձևը</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Վերականգնել հորիզոնական զգայունությունը</value></data>
@@ -2298,8 +2293,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Վերականգնել միացման ձողը</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Վերականգնել միացման ուղղությունը</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Շարժման փոխանցում</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Կիրառել գիրոյի կարգավորումները շարժման փոխանցման վրա</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Գիրոյի քարտերի ըստ ցանկության կարգավորումները (մեռյալ գոտի, զգայունություն, հարթեցում, արձագանքի կոր, շրջում) կիրառում է այն շարժման վրա, որը վիրտուալ կառավարիչը հայտնում է խաղին կամ էմուլյատորին։ Անջատեք՝ միայն չափաբերված ցուցմունքն ուղարկելու համար, որպեսզի խաղն ինքը կիրառի իր զգայունությունն ու հարթեցումը։ Չափաբերման շեղման ուղղումը միշտ կիրառվում է երկու դեպքում էլ։</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>«Կարգավորված» ռեժիմը գիրոյի քարտի կարգավորումները (մեռյալ գոտի, զգայունություն, հարթեցում, արձագանքի կոր, շրջում) կիրառում է այն շարժման վրա, որը վիրտուալ կառավարիչը հայտնում է խաղին կամ էմուլյատորին։ «Չմշակված» ռեժիմը միայն չափաբերված ցուցմունքն է ուղարկում, և խաղն ինքն է կիրառում իր զգայունությունն ու հարթեցումը։ Չափաբերման շեղման ուղղումը կիրառվում է երկու դեպքում էլ։</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Չմշակված</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Կարգավորված</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Խաղը կարդում է չափաբերված շարժումը և կիրառում է իր զգայունությունն ու հարթեցումը։</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Խաղը կարդում է շարժումն այստեղ սահմանված զգայունությամբ, հարթեցմամբ և կորով։</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Վերականգնել փոխանցման կարգավորումները</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Զգայունություն</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Աղբյուրի գիրոյի զգայունության բազմապատկիչ։ 1.0 = շարժիչի լռելյայնը (500°/վ → լրիվ շեղում)։ 1.0-ից բարձր արժեքներն ավելի զգայուն են։ 1.0-ից ցածր արժեքներն ավելի քիչ զգայուն են։</value></data>
@@ -2535,8 +2533,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Այս կառավարիչը ձգանի թրթռաշարժիչներ չունի, ուստի Xbox-ի իմպուլսային ձգաններ օգտագործող խաղերում թրթռոցը չի զգացվի։ Փոխարենը ձգանի յուրաքանչյուր ալիքը ավելացրեք նույն կողմի հիմնական թրթռաշարժիչին։</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Ստուգել թրթռոցը</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Թրթռաշարժիչների ակտիվություն</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Ձախ</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Աջ</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Կիրառում է շարունակական ուժ այս սարքի վրա, մինչև չանջատեք։ Խաղի ուժը ցանկացած աղբյուրից գերակայում է հաստատուն ուժի վրա, մինչ ակտիվ է, իսկ խաղի դադարելուց հետո հաստատուն ուժը վերսկսվում է։</value></data>
@@ -3025,7 +3021,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>Աուդիո</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR ցուցիչ</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Ուղղեք այս Wii Remote-ը էկրանին՝ նրա IR տեսախցիկով։ Պահանջվում է սենսորային գոտի կամ երկու ինֆրակարմիր LED՝ էկրանից վերև կամ ներքև։ Չափաբերեք այն որպես լուսային ատրճանակ Սարքեր էջում՝ ճշգրիտ կետին նշանառելու համար։ Չափաբերված հեռակառավարիչը անտեսում է սենսորային գոտու դիրքը և ուղղահայաց շեղումը։</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Ցուցիչի կարգավորում</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Սենսորային գոտու դիրք</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Կենտրոնում</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Էկրանից վերև</value></data>
@@ -3052,8 +3047,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Wii ցուցիչի ռեժիմը փոխում է ստորև նշված ռեժիմների միջով՝ սլոթի յուրաքանչյուր IR-ընդունակ հեռակառավարիչի համար։ Յուրաքանչյուր գործարկում անցնում է հաջորդ նշված ռեժիմին։ Ցիկլի դիրքը յուրաքանչյուր գործողության համար առանձին է և վերականգնվում է ծրագրի վերագործարկման ժամանակ։</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Ընտրեք ցուցիչի այն ռեժիմները, որոնցով մակրոն պետք է անցնի։ Յուրաքանչյուր գործարկում անցնում է հաջորդ նշված ռեժիմին։</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Աուդիո</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Մակրոների ձայները և հայելացված համակարգային աուդիոն հնչում են ընտրված կառավարիչի ներկառուցված բարձրախոսով՝ USB կամ Bluetooth-ով։ Սարքն ընտրեք վերևի բացվող ցանկում։ Այստեղի բոլոր կարգավորումները հետևում են դրան։</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Ձայնի ելք</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Մակրոների ձայները և հայելացված համակարգային աուդիոն հնչում են «Ազդանշանի աղբյուր» դաշտում ընտրված սարքի ներկառուցված բարձրախոսով՝ USB կամ Bluetooth-ով։ Այստեղի բոլոր կարգավորումները հետևում են այդ սարքին։</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Հայելացման աղբյուր, ականջակալների ձայն, բուֆեր, ելքի ուղի</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Ձայները ինքնաբերաբար ուղղվում են ընտրված կառավարիչին։ USB-ով կառավարիչի սեփական աուդիո վերջնակետը համընկնում է սարքակազմի կոնտեյներով։ Bluetooth-ով աուդիոն հոսում է Sony HID շրջանակներով։</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Հայելացման աղբյուր</value></data>
@@ -3116,7 +3110,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Վերականգնել տոնի սահմանը</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Պատճենում է այն ամենը, ինչ նվագարկում է համակարգի լռելյայն ելքը, այս կառավարիչի ներկառուցված բարձրախոսին՝ զուգահեռաբար։ Աշխատում է USB-ով և Bluetooth-ով։</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Ընտրված սարքը ներկառուցված բարձրախոս չունի։ Այս կառավարիչի մակրո ձայները նվագարկվում են համակարգի լռելյայն ելքով։</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Վերականգնել ձայնի ելքը</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Բրաուզերային DualSense թեստային փաթեթ՝ Xuezhou Dai (daidr)։ Հղում է Sony feature-report CRC շրջանակավորման և որոնվածքի թեստային հրամանների համար, որոնք PadForge-ը փոխանցում է վիրտուալ կառավարիչներից ֆիզիկականներին։</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3547,8 +3540,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide LED-ի պայծառություն՝ {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Սահմանում է Guide կամ Home կոճակի LED-ի պայծառությունը սլոթի յուրաքանչյուր համապատասխան կառավարիչի համար։ Xbox կառավարիչները ընդունում են այն միայն USB-ով։</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Վերաբերում է USB-ով Xbox կառավարիչներին, 2015 թվականի Steam Controller-ին և Home կոճակի LED ունեցող Switch կառավարիչներին։ Զուգակցեք այս գործողություններից երկուսը, որպեսզի մակրոյի սկսվելիս LED-ը փայլատակի, իսկ ավարտվելիս վերականգնվի։</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Վերականգնել ցուցիչի ռեժիմը</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Վերականգնել ցուցիչի կարգավորումը</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Վերականգնել սենսորային գոտու դիրքը</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Վերականգնել ուղղահայաց շեղումը</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Վերականգնել հարթեցումը</value></data>

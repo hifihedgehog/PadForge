@@ -146,7 +146,10 @@ namespace PadForge.Tests
             Assert.Null(vm.PickedTarget);
             Assert.Null(vm.PickedRow);
             Assert.False(vm.ShowPictureBar);
-            Assert.True(vm.PictureIsCardFoot);
+            // Nothing but the card's tray of output lines follows the
+            // picture, and on this slot the tray is the card's foot.
+            Assert.True(vm.ShowOutputGroup);
+            Assert.False(vm.PictureIsCardFoot);
             Assert.Empty(vm.PickedTargets());
             Assert.Empty(Shown(vm));
             // The rows filtered again pick nothing either.
@@ -697,15 +700,18 @@ namespace PadForge.Tests
         // ── the output cards ───────────────────────────────────────────
 
         /// <summary>The Output tab's cards fold to one line each under the
-        /// picture, the lines of one card: the part's own title, a hint,
-        /// and the value it holds. Each keeps its gate, its Reset All and
-        /// every row it had.</summary>
+        /// picture, the lines of the Buttons card's tray at its foot (the
+        /// sections pass): the part's icon and its own title, a hint, and
+        /// the value it holds. Each keeps its gate, its Reset All and every
+        /// row it had.</summary>
         [Fact]
         public void TheOutputCardsFoldUnderThePicture()
         {
             var page = Page();
             var group = Named(page, "OutputGroup");
-            Assert.Equal("6", (string)group.Attribute("Grid.Row"));
+            Assert.Equal("5", (string)group.Attribute("Grid.Row"));
+            Assert.Equal("ButtonsTrayRow", Name(Named(page, "ButtonsPage").Elements().First(e => e.Name.LocalName == "Grid.RowDefinitions").Elements().ElementAt(5)));
+            Assert.Equal("0", (string)group.Attribute("Margin"));
             Assert.Equal("{StaticResource BareGroupBox}", (string)group.Attribute("Style"));
             // The parts stack at their full height in one list. The page
             // around them scrolls, so they have no scroll viewer of their
@@ -728,8 +734,14 @@ namespace PadForge.Tests
                 cards.Take(2).Select(c => (string)c.Attribute("Description")));
             Assert.Equal(new[] { "Pad_Socd_FoldHint", "Pad_Kbm_Socd_FoldHint", "Pad_KeepAwake_FoldHint" }.Select(k => "{Binding " + k + S),
                 cards.Select(c => (string)c.Attribute("Hint")));
-            Assert.Equal(new[] { "{Binding SocdSummary}", "{Binding KbmConfig.SocdSummary}", "{Binding KeepAwakeSummary}" },
+            // Keep Controller Awake's switch stands on its line (the
+            // sections pass), and the switch is its state, so no value is
+            // written beside it. Its icon lights while it is on.
+            Assert.Equal(new[] { "{Binding SocdSummary}", "{Binding KbmConfig.SocdSummary}", null },
                 cards.Select(c => (string)c.Attribute("Summary")));
+            Assert.Equal("{Binding KeepAwakeEnabled}", (string)cards[2].Attribute("IsOn"));
+            Assert.Equal("{Binding KeepAwakeEnabled, Mode=TwoWay}", (string)Assert.Single(cards[2].Elements(), e => e.Name.LocalName == "FoldCard.Switch")
+                .Descendants().Single(e => e.Name.LocalName == "CheckBox").Attribute("IsChecked"));
             Assert.Equal(new[] { "SocdCardVisible", "KbmSocdEditorVisible", "KeepAwakeCardVisible" }
                     .Select(k => "{Binding " + k + ", Converter={StaticResource BoolToVisibilityConverter}}"),
                 cards.Select(c => (string)c.Attribute("Visibility")));
@@ -764,10 +776,10 @@ namespace PadForge.Tests
             Assert.DoesNotContain("Pad_Output_Subtitle", text);
         }
 
-        /// <summary>What a folded card says: the SOCD mode's name, On or Off
-        /// for Keep Controller Awake, and the same for the Keyboard + Mouse
-        /// card from its own config. Each is raised with the setting it
-        /// reads.</summary>
+        /// <summary>What a folded card says: the SOCD mode's name, and the
+        /// same for the Keyboard + Mouse card from its own config. Each is
+        /// raised with the setting it reads. Keep Controller Awake says
+        /// nothing: its switch stands on its line.</summary>
         [Fact]
         public void AFoldedCardSaysItsValue()
         {
@@ -782,19 +794,17 @@ namespace PadForge.Tests
             kbm.SocdMode = "Neutral";
             Assert.Equal(strings.Pad_Kbm_Socd_Mode_Neutral_Name, kbm.SocdSummary);
 
-            // The gamepad card and Keep Controller Awake read the slot's
-            // mapping set, which a bare view model does not have: both say
-            // the off value, and their setters raise the folded value.
+            // The gamepad card reads the slot's mapping set, which a bare
+            // view model does not have: it says the off value, and its
+            // setter raises the folded value.
             var vm = new PadViewModel(0);
             Assert.Equal(strings.Pad_Kbm_Socd_Mode_Off_Name, vm.SocdSummary);
-            Assert.Equal(strings.Common_Off, vm.KeepAwakeSummary);
             string source = ExtrasPageTests.RepoText("PadForge.App", "ViewModels", "PadViewModel.cs");
             Assert.Matches(@"set\.SocdMode = value;\s*OnPropertyChanged\(nameof\(SocdMode\)\);\s*OnPropertyChanged\(nameof\(SocdSummary\)\);", source);
-            Assert.Matches(@"set\.KeepAwakeEnabled = value;\s*OnPropertyChanged\(nameof\(KeepAwakeEnabled\)\);\s*OnPropertyChanged\(nameof\(KeepAwakeSummary\)\);", source);
             Assert.Matches(@"OnPropertyChanged\(nameof\(AvailableSlotSocdModes\)\);\s*OnPropertyChanged\(nameof\(SocdSummary\)\);", source);
-            Assert.Matches(@"OnPropertyChanged\(nameof\(KeepAwakeEnabled\)\);\s*OnPropertyChanged\(nameof\(KeepAwakeSummary\)\);\s*OnPropertyChanged\(nameof\(KeepAwakeMotion\)\);", source);
-            // A language change re-words the line and the three values.
-            Assert.Matches(@"OnPropertyChanged\(nameof\(PictureLineText\)\);\s*OnPropertyChanged\(nameof\(SocdSummary\)\);\s*OnPropertyChanged\(nameof\(KeepAwakeSummary\)\);\s*_kbmConfig\?\.RaiseLocalizedChanged\(\);", source);
+            // A language change re-words the line and the values.
+            Assert.Matches(@"OnPropertyChanged\(nameof\(PictureLineText\)\);\s*OnPropertyChanged\(nameof\(SocdSummary\)\);\s*_kbmConfig\?\.RaiseLocalizedChanged\(\);", source);
+            Assert.DoesNotContain("KeepAwakeSummary", source + ExtrasPageTests.RepoText("PadForge.App", "ViewModels", "PadViewModel.Sections.cs"));
         }
 
         // ── the table in the page ──────────────────────────────────────
@@ -838,7 +848,7 @@ namespace PadForge.Tests
             var body = Named(page, "ButtonsCardBody");
             Assert.Same(Named(page, "ButtonsPage"), body.Parent);
             Assert.Equal("0", (string)body.Attribute("Grid.Row"));
-            Assert.Equal("5", (string)body.Attribute("Grid.RowSpan"));
+            Assert.Equal("6", (string)body.Attribute("Grid.RowSpan"));
             Assert.Equal("1,0,1,1", (string)body.Attribute("BorderThickness"));
             Assert.Equal("0,0,10,10", (string)body.Attribute("CornerRadius"));
             // The picture stands on the page's ground inside the card's
@@ -858,9 +868,9 @@ namespace PadForge.Tests
                     .Elements().Select(r => (string)r.Attribute("Height")));
             Assert.Equal("2", (string)scroll.Attribute("Grid.Row"));
             // The page inside: the picture, the line a recording shows, the
-            // bar, the table, the slot's own foot, the slot's own card, the
-            // cards, and an empty row that takes the viewport's leftover
-            // pixels.
+            // bar, the table, the slot's own foot, the card's tray of output
+            // lines, under the card the slot's own card, and an empty row
+            // that takes the viewport's leftover pixels.
             var rows = Named(page, "ButtonsPage").Elements().First(e => e.Name.LocalName == "Grid.RowDefinitions")
                 .Elements().ToList();
             Assert.Equal(8, rows.Count);
@@ -870,9 +880,10 @@ namespace PadForge.Tests
             Assert.Equal("2", (string)Named(page, "PictureBar").Attribute("Grid.Row"));
             Assert.Equal("ButtonsTableRow", Name(rows[3]));
             Assert.Equal("ButtonsFootRow", Name(rows[4]));
-            Assert.Equal("ButtonsSlotCardRow", Name(rows[5]));
+            Assert.Equal("ButtonsTrayRow", Name(rows[5]));
+            Assert.Equal("ButtonsSlotCardRow", Name(rows[6]));
             Assert.Equal("ButtonsFillRow", Name(rows[7]));
-            Assert.Equal("6", (string)Named(page, "OutputGroup").Attribute("Grid.Row"));
+            Assert.Equal("5", (string)Named(page, "OutputGroup").Attribute("Grid.Row"));
             Assert.DoesNotContain(Named(page, "ButtonsPage").Elements(),
                 e => (string)e.Attribute("Grid.Row") == "7");
             Assert.Equal("MappingDataGrid_PreviewMouseWheel", (string)table.Attribute("PreviewMouseWheel"));
@@ -1172,18 +1183,22 @@ namespace PadForge.Tests
             Assert.DoesNotContain("KbmDeviceBar.Visibility =", code);
             Assert.DoesNotContain("KEYBOARD + MOUSE DEVICE BAR", PageText());
 
-            // The view model: the foot is a Keyboard + Mouse slot's, and the
+            // The view model: the foot is a Keyboard + Mouse slot's. The
             // picture is the card's foot while nothing is picked on a slot
-            // that has none. The picture opens with nothing picked, so it
-            // is the foot then, and a pick's bar takes its place.
+            // that has no foot of its own and no output lines in the card's
+            // tray, a MIDI or a VR slot. The picture opens with nothing
+            // picked, so it is the foot then, and a pick's bar takes its
+            // place.
             var vm = new PadViewModel(0);
             vm.ApplyMappingPickerFilter();
+            vm.OutputType = PadForge.Engine.VirtualControllerType.Vr;
             Assert.False(vm.ShowKbmFoot);
+            Assert.False(vm.ShowOutputGroup);
             Assert.False(vm.ShowPictureBar);
             Assert.True(vm.PictureIsCardFoot);
             var raised = new List<string>();
             vm.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
-            vm.PickedTarget = "ButtonA";
+            vm.PickedTarget = vm.Mappings[0].TargetSettingName;
             Assert.True(vm.ShowPictureBar);
             Assert.False(vm.PictureIsCardFoot);
             Assert.Contains(nameof(PadViewModel.PictureIsCardFoot), raised);
@@ -1199,11 +1214,18 @@ namespace PadForge.Tests
             Assert.False(vm.PictureIsCardFoot);
             Assert.Contains(nameof(PadViewModel.ShowKbmFoot), raised);
             Assert.Contains(nameof(PadViewModel.PictureIsCardFoot), raised);
+            // An Xbox slot's output lines are the tray at the card's foot.
             raised.Clear();
             vm.OutputType = PadForge.Engine.VirtualControllerType.Xbox;
             Assert.False(vm.ShowKbmFoot);
-            Assert.True(vm.PictureIsCardFoot);
+            Assert.True(vm.ShowOutputGroup);
+            Assert.False(vm.PictureIsCardFoot);
             Assert.Contains(nameof(PadViewModel.ShowKbmFoot), raised);
+            raised.Clear();
+            vm.OutputType = PadForge.Engine.VirtualControllerType.Midi;
+            Assert.False(vm.ShowOutputGroup);
+            Assert.True(vm.PictureIsCardFoot);
+            Assert.Contains(nameof(PadViewModel.PictureIsCardFoot), raised);
         }
 
         /// <summary>A MIDI slot's card, as its board draws it: MIDI Output,
@@ -1218,7 +1240,7 @@ namespace PadForge.Tests
             var page = Page();
             var card = Named(page, "MidiConfigBar");
             Assert.Same(Named(page, "ButtonsPage"), card.Parent);
-            Assert.Equal("5", (string)card.Attribute("Grid.Row"));
+            Assert.Equal("6", (string)card.Attribute("Grid.Row"));
             Assert.Equal("{StaticResource CardBorder}", (string)card.Attribute("Style"));
             Assert.Equal("0,16,0,0", (string)card.Attribute("Margin"));
             Assert.Equal("{Binding ShowMidiCard, Converter={StaticResource BoolToVisibilityConverter}}", (string)card.Attribute("Visibility"));
@@ -1335,8 +1357,8 @@ namespace PadForge.Tests
             Assert.Same(Named(page, "ButtonsPage"), card.Parent);
             // The slot's own card has a row of its own, which a MIDI slot's
             // card shares: a slot is one kind or the other.
-            Assert.Equal("5", (string)card.Attribute("Grid.Row"));
-            Assert.Equal("5", (string)Named(page, "MidiConfigBar").Attribute("Grid.Row"));
+            Assert.Equal("6", (string)card.Attribute("Grid.Row"));
+            Assert.Equal("6", (string)Named(page, "MidiConfigBar").Attribute("Grid.Row"));
             Assert.Equal("{StaticResource CardBorder}", (string)card.Attribute("Style"));
             Assert.Equal("0,16,0,0", (string)card.Attribute("Margin"));
             Assert.Equal("{Binding ShowExtendedCard, Converter={StaticResource BoolToVisibilityConverter}}", (string)card.Attribute("Visibility"));

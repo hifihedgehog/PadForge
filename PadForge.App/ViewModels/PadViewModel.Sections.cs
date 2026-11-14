@@ -169,6 +169,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(IsButtonsPictureView));
             OnPropertyChanged(nameof(IsButtonsListView));
             OnPropertyChanged(nameof(ShowOutputGroup));
+            OnPropertyChanged(nameof(PictureIsCardFoot));
             OnPropertyChanged(nameof(ShowMidiCard));
             OnPropertyChanged(nameof(ShowExtendedCard));
             OnPropertyChanged(nameof(ShowVrFoot));
@@ -471,9 +472,10 @@ namespace PadForge.ViewModels
         };
 
         /// <summary>The picture is the card's foot, and takes its lower
-        /// corners: nothing is picked, so no bar follows it, and the slot
-        /// has no foot of its own.</summary>
-        public bool PictureIsCardFoot => !ShowPictureBar && !ShowKbmFoot;
+        /// corners: nothing is picked, so no bar follows it, the slot has no
+        /// foot of its own, and no output lines stand in the card's tray
+        /// under it (the sections pass).</summary>
+        public bool PictureIsCardFoot => !ShowPictureBar && !ShowKbmFoot && !ShowOutputGroup;
 
         private bool _isPickedOptionsOpen;
 
@@ -805,9 +807,5 @@ namespace PadForge.ViewModels
                 return Strings.Instance.Common_Off;
             }
         }
-
-        /// <summary>The Keep Controller Awake card's value while folded.</summary>
-        public string KeepAwakeSummary
-            => KeepAwakeEnabled ? Strings.Instance.Common_On : Strings.Instance.Common_Off;
     }
 }

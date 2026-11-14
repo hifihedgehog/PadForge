@@ -1181,6 +1181,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Justerar hur PadForge skalar kraftåterkopplingshändelser från spelet och hur de dirigeras till den fysiska handkontrollens vibrationsmotorer eller haptiska aktuatorer. Ljudstyrd vibration lägger till ett lager ovanpå som drivs av systemljudet.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Den här enheten</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Hela handkontrollen</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Båda spakarna</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Vibration spelas upp på {0} som haptiska pulser, skickade direkt till enheten. Starkare vibration väljer en starkare puls och upprepar den snabbare.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Haptisk återkoppling är avstängd för {0} i Logi Options+, så enheten spelar inte upp något förrän du slår på den igen där.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Den här enheten har inte svarat än. Dess vibration spelas upp när den vaknar.</value></data>
@@ -1267,7 +1268,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>moderkort, grafikkort och minnen</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>moderkort och grafikkort</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>musmattor, headset och headsetställ</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Ljusfält</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Spel tar över så fort de skriver belysning.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Ange en sexsiffrig hexfärg (RRGGBB eller #RRGGBB) och tryck på Retur eller klicka utanför för att tillämpa.</value></data>
@@ -1897,7 +1897,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Mussläpp {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Visa/dölj styrplatteöverlägg</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Ange ljusfältets färg</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Åsidosätt ljusfältet på den tilldelade PlayStation-platsen med en vald RGB-färg. Reaktiv tonar från full intensitet till svart under det inställda avklingningsfönstret och lämnar sedan tillbaka till inställningarna på kortet Ljusfält. Kvarstående håller färgen tills åtgärden Rensa åsidosättning av ljusfält körs. Det spelet skriver har fortfarande företräde framför åsidosättningen.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Åsidosätt ljusfältet på den tilldelade PlayStation-platsen med en vald RGB-färg. Reaktiv tonar från full intensitet till svart under det inställda avklingningsfönstret och lämnar sedan tillbaka till inställningarna på kortet Belysning. Kvarstående håller färgen tills åtgärden Rensa åsidosättning av ljusfält körs. Det spelet skriver har fortfarande företräde framför åsidosättningen.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Blinka ljusfältet {0} (avklingning {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Håll ljusfält {0} tills det rensas</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Rensa åsidosättning av ljusfält</value></data>
@@ -1905,7 +1905,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Släpper en eventuell aktiv åsidosättning av ljusfältet på den tilldelade platsen. Kombinera med en kvarstående åtgärd Ange ljusfältets färg för att ångra den via ett annat makro.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Ange ljusfältsläge</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Sätt ljusfältsläget till {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Ställer in den tilldelade platsens ljusfältsläge på ett visst värde. Består som en ändring på kortet Ljusfält tills en annan åtgärd eller användaren ändrar det.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Ställer in den tilldelade platsens ljusfältsläge på ett visst värde. Består som en ändring på kortet Belysning tills en annan åtgärd eller användaren ändrar det.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Bläddra mellan ljusfältslägen</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Bläddra mellan {0} ljusfältslägen</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Stegar platsens ljusfältsläge genom de lägen som är valda nedan. Varje utlösning går vidare till nästa markerade läge. Positionen i ordningen är per åtgärd och nollställs när appen startas om.</value></data>
@@ -1920,7 +1920,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Avklingning</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Uttoning</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palett</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>En tom palett använder platsens egen palett från kortet Ljusfält.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>En tom palett använder platsens egen palett från kortet Belysning.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Läge</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Välj vilka ljusfältslägen makrot ska bläddra mellan. Varje utlösning går vidare till nästa markerade läge.</value></data>
 
@@ -2150,6 +2150,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Musutdata</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invertera, Tröghet, Respons, Acceleration, kast</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Sensorlistens position, Vertikal förskjutning, Utjämning</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Justerar muspekarens hastighet när ett styrplattefinger är mappat till mus X/Y på en virtuell handkontroll av typen Tangentbord / mus. 1.0 är standard. Höj en axel för snabbare muspekare, sänk för långsammare. Invertera vänder en axel.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Muskänslighet X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplikator för horisontell rörelse från styrplatta → mus. Under 1.0 gör muspekaren långsammare. Över 1.0 gör den snabbare.</value></data>
@@ -2355,7 +2356,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibrerar… håll stilla</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Återställ kalibrering</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Rensar gyrots vilobias och tidsstämpeln för senaste kalibrering. Nästa avläsningscykel kör om den 1.5 sekunder långa autokalibreringen på den här enheten.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Gyroskop i realtid</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Accelerometer i realtid</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Horisontell känslighet</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Skalar gyrots horisontella bidrag (gir + roll) till utdata. 1.0 lämnar hastigheten som motorn ser den. Högre värden förstärker, lägre värden dämpar. Tillämpas på enhetsnivå så att varje gyrobindning på den här handkontrollen får samma horisontella känsla.</value></data>
@@ -2375,8 +2375,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Justera hur den här handkontrollens rörelsesensor styr mus- och spakutdata. Kalibrera på en plan yta för att nollställa drift i vila, och ställ sedan in känslighet, utjämning och aktiveringsregler efter smak.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrering</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Gyro- och accelerometeravläsningar i realtid</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Känslighet</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Måttenhet, invertera axlar, Verklighetskalibrering</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° per varv</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Responsformning</value></data>
@@ -2462,11 +2460,8 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Extra bred</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplikator</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Grader per skärmvarv</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Återställ kalibrering</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Återställ känslighet</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Återställ responsformning</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Återställ aktivering</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Återställ genomkoppling av rörelse</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Återställ koordinatrum</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Återställ grepp</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Återställ horisontell känslighet</value></data>
@@ -2486,8 +2481,11 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Återställ aktiveringsspak</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Återställ aktiveringsriktning</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Genomkoppling av rörelse</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Tillämpa gyrojustering på genomkoppling av rörelse</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Kör Gyro-kortens valfria justering (dödzon, känslighet, utjämning, responskurva, invertering) på den rörelse som den virtuella handkontrollen rapporterar till spelet eller emulatorn. Stäng av det för att bara skicka den kalibrerade avläsningen och låta spelet använda sin egen känslighet och utjämning. Kalibreringens driftkorrigering tillämpas alltid i båda fallen.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Justerad kör Gyro-kortets justering (dödzon, känslighet, utjämning, responskurva, invertering) på den rörelse som den virtuella handkontrollen rapporterar till spelet eller emulatorn. Rå skickar bara den kalibrerade avläsningen och låter spelet använda sin egen känslighet och utjämning. Kalibreringens driftkorrigering tillämpas i båda fallen.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Rå</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Justerad</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Spelet läser den kalibrerade rörelsen och använder sin egen känslighet och utjämning.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Spelet läser rörelsen med den känslighet, utjämning och kurva som är inställda här.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Återställ justering av genomkoppling</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Känslighet</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplikator för gyrokänslighet per källa. 1.0 = motorns standard (500°/s → fullt utslag). Värden över 1.0 är känsligare. Värden under 1.0 är mindre känsliga.</value></data>
@@ -2735,8 +2733,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Den här handkontrollen har inga avtryckarmotorer, så spel som använder Xbox-impulsavtryckare skulle inte kännas. Lägg i stället varje avtryckarkanal på huvudmotorn på samma sida.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Testa vibration</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoraktivitet</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Vänster</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Höger</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Lägg en kontinuerlig kraft på den här enheten tills du slår av det. Kraft som styrs av ett spel, oavsett källa, tar över medan den är aktiv, och den konstanta kraften återupptas när spelet slutar.</value></data>
@@ -3256,7 +3252,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Audio" xml:space="preserve"><value>Ljud</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-pekare</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Rikta den här Wii-fjärrkontrollen mot skärmen med dess IR-kamera. Kräver en sensorlist, eller två infraröda lysdioder, ovanför eller nedanför skärmen. Kalibrera den som en ljuspistol på sidan Enheter för att sikta på exakt rätt punkt. En kalibrerad fjärrkontroll ignorerar Sensorlistens position och Vertikal förskjutning.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Pekarjustering</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Sensorlistens position</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Centrerad</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Ovanför skärmen</value></data>
@@ -3283,8 +3278,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Stegar Wii-pekarläget genom de lägen som är valda nedan för varje IR-kapabel fjärrkontroll på platsen. Varje utlösning går vidare till nästa markerade läge. Positionen i ordningen är per åtgärd och nollställs när appen startas om.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Välj vilka pekarlägen makrot ska bläddra mellan. Varje utlösning går vidare till nästa markerade läge.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Ljud</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makroljud och speglat systemljud spelas upp genom den valda handkontrollens inbyggda högtalare, via USB eller Bluetooth. Välj enheten i listan ovan. Alla inställningar här följer den.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Ljudutdata</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makroljud och speglat systemljud spelas upp genom den inbyggda högtalaren i enheten som valts under Styrs av, via USB eller Bluetooth. Alla inställningar här följer den enheten.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Speglingskälla, Hörlursvolym, buffert, Utdataväg</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Ljud dirigeras automatiskt till den valda handkontrollen. Via USB matchas handkontrollens egen ljudslutpunkt utifrån maskinvarubehållare. Via Bluetooth strömmas ljudet i Sonys HID-ramar.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Speglingskälla</value></data>
@@ -3347,7 +3341,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Återställ tongräns</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopierar det som systemets standardutdata spelar upp till den här handkontrollens inbyggda högtalare, parallellt. Fungerar via USB och Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Den valda enheten har ingen inbyggd högtalare. Makroljud för den här handkontrollen spelas upp på systemets standardutdata.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Återställ ljudutdata</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Testsvit för DualSense i webbläsaren av Xuezhou Dai (daidr): referens för CRC-inramningen av Sonys funktionsrapporter och de testkommandon för firmware som PadForge vidarebefordrar från virtuella till fysiska handkontroller.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Ljusstyrka för Guide-LED: {0} %</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Ställer in ljusstyrkan för LED-lampan i Guide- eller Home-knappen för varje handkontroll på platsen som stöder det. Xbox-handkontroller tar bara emot den via USB.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Gäller Xbox-handkontroller via USB, Steam Controller från 2015 och Switch-handkontroller med LED-lampa i Home-knappen. Kombinera två av de här åtgärderna för att blinka med LED-lampan när ett makro startar och återställa den när det slutar.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Återställ pekarläge</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Återställ pekarjustering</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Återställ sensorlistens position</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Återställ vertikal förskjutning</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Återställ utjämning</value></data>

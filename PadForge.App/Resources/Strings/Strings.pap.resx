@@ -713,7 +713,6 @@
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>E kolornan ta pasa via {0}.</value></data>
   <data name="Pad_Lighting_RouteOtherControllerOnly" xml:space="preserve"><value>Kontrol virtual {0} ta iluminá e aparato aki.</value></data>
   <data name="Pad_Lighting_RouteWaiting" xml:space="preserve"><value>Ta warda {0}. E kolornan ta mustra ora e ta kore.</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Kita e kolor aki for di e paleta</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Pagá</value></data>
@@ -1275,7 +1274,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Giroskopio</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroskopio</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrashon</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilidat</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unidat, invertí eje, Kalibrashon di mundu real</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° pa rotashon</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Espasio</value></data>
@@ -1312,8 +1310,6 @@
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Agresivo</value></data>
   <data name="Pad_Gyro_Curve_Wide" xml:space="preserve"><value>Hanchu</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Ekstra hanchu</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Reset kalibrashon</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Reset sensibilidat</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Reset espasio</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Reset sensibilidat horizontal</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Reset sensibilidat vertikal</value></data>
@@ -1437,8 +1433,6 @@
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor drechi</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Purba vibrashon</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktividat di motor</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Robes</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Drechi</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Apliká forsa konstante</value></data>
@@ -2639,6 +2633,7 @@
   <data name="Menu_Cell_Icon" xml:space="preserve"><value>Ikono</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>E aparato aki</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Henter e kontrol</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Tur dos stick</value></data>
   <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR instalá</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR no instalá</value></data>

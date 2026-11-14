@@ -384,7 +384,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Units, axis ulta karo, Real-World Calibration</value></data>
   <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Calibration khatam karo</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Dabaae rakho</value></data>
@@ -392,8 +391,6 @@
   <data name="Settings_GyroEngageStickDirection_Full" xml:space="preserve"><value>Pura</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Niche (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Upar (Y+)</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Calibration reset karo</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Sensitivity reset karo</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Deadzone reset karo</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensitivity</value></data>

@@ -241,7 +241,7 @@
 
   <!-- ═══ Macro Action Display ═══ -->
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Set Lightbar Colour</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Override the assigned PlayStation slot's lightbar to a chosen RGB colour. Reactive fades from full intensity to black over the configured decay window, then hands back to the Lighting tab's settings. Sticky holds the colour until a Clear Lightbar Override action runs. Game-driven writes still take priority over the override.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Override the assigned PlayStation slot's lightbar to a chosen RGB colour. Reactive fades from full intensity to black over the configured decay window, then hands back to the Lighting card's settings. Sticky holds the colour until a Clear Lightbar Override action runs. Game-driven writes still take priority over the override.</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Releases any active lightbar override on the assigned slot. Pair with a Sticky Set Lightbar Colour action to undo it via another macro.</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Advances the slot's lightbar mode through the modes selected below. Each fire moves to the next ticked mode. The cycle position is per-action and resets on app restart.</value></data>
 

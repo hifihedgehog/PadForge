@@ -1102,6 +1102,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>يضبط كيفية تحجيم PadForge لأحداث ردود فعل القوة الواردة من اللعبة وكيفية توجيهها إلى محركات الاهتزاز أو المشغلات اللمسية في وحدة التحكم الفعلية. «الاهتزاز بالصوت» يضيف فوقها طبقة يشغّلها صوت النظام.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>هذا الجهاز</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>وحدة التحكم كلها</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>العصوان معا</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>يعمل الاهتزاز على {0} كنبضات لمسية ترسل مباشرة إلى الجهاز. الاهتزاز الأقوى يختار نبضة أقوى ويكررها أسرع.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>ردود الفعل اللمسية متوقفة للجهاز {0} في Logi Options+، لذا لن يشغّل شيئا إلى أن تعيد تشغيلها هناك.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>لم يستجب هذا الجهاز بعد. يعمل اهتزازه فور استيقاظه.</value></data>
@@ -1167,7 +1168,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>سماعات الرأس ولوحات الماوس وأشرطة Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>سماعات الرأس ولوحات الماوس ومكبرات الصوت</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>سماعات الرأس</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>شريط الإضاءة</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>تتولى الألعاب التحكم كلما كتبت إضاءة.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>أدخل لونا سداسيا عشريا من ستة أرقام (RRGGBB أو #RRGGBB) ثم اضغط Enter أو انقر في مكان آخر للتطبيق.</value></data>
@@ -1709,7 +1709,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>تحرير زر الماوس {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>تبديل تراكب لوحة اللمس</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>ضبط لون شريط الإضاءة</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>يتجاوز شريط إضاءة خانة PlayStation المعينة بلون RGB تختاره. «تفاعلي» يتلاشى من الشدة الكاملة إلى الأسود خلال مدة الاضمحلال المحددة، ثم يعيد التحكم إلى إعدادات بطاقة «شريط الإضاءة». «مستمر» يبقي اللون إلى أن يعمل إجراء «مسح تجاوز شريط الإضاءة». ما تكتبه اللعبة يبقى له الأولوية على التجاوز.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>يتجاوز شريط إضاءة خانة PlayStation المعينة بلون RGB تختاره. «تفاعلي» يتلاشى من الشدة الكاملة إلى الأسود خلال مدة الاضمحلال المحددة، ثم يعيد التحكم إلى إعدادات بطاقة «الإضاءة». «مستمر» يبقي اللون إلى أن يعمل إجراء «مسح تجاوز شريط الإضاءة». ما تكتبه اللعبة يبقى له الأولوية على التجاوز.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>وميض شريط الإضاءة {0} (اضمحلال {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>إبقاء شريط الإضاءة {0} حتى المسح</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>مسح تجاوز شريط الإضاءة</value></data>
@@ -1717,7 +1717,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>يلغي أي تجاوز نشط لشريط الإضاءة في الخانة المعينة. استخدمه مع إجراء «ضبط لون شريط الإضاءة» من نوع «مستمر» للتراجع عنه عبر ماكرو آخر.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>ضبط وضع شريط الإضاءة</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>ضبط وضع شريط الإضاءة على {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>يضبط وضع شريط الإضاءة في الخانة المعينة على قيمة محددة. يبقى كأي تعديل في بطاقة «شريط الإضاءة» إلى أن يغيّره إجراء آخر أو المستخدم.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>يضبط وضع شريط الإضاءة في الخانة المعينة على قيمة محددة. يبقى كأي تعديل في بطاقة «الإضاءة» إلى أن يغيّره إجراء آخر أو المستخدم.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>التنقل بين أوضاع شريط الإضاءة</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>التنقل بين {0} من أوضاع شريط الإضاءة</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>ينقل وضع شريط الإضاءة في الخانة بين الأوضاع المحددة أدناه. كل إطلاق ينتقل إلى الوضع المحدد التالي. موضع الدورة خاص بكل إجراء ويعاد ضبطه عند إعادة تشغيل التطبيق.</value></data>
@@ -1732,7 +1732,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>الاضمحلال</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>التلاشي</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>لوحة الألوان</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>لوحة الألوان الفارغة تستخدم لوحة الألوان في بطاقة «شريط الإضاءة» الخاصة بالخانة.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>لوحة الألوان الفارغة تستخدم لوحة الألوان في بطاقة «الإضاءة» الخاصة بالخانة.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>الوضع</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>اختر أوضاع شريط الإضاءة التي يتنقل الماكرو بينها. كل إطلاق ينتقل إلى الوضع المحدد التالي.</value></data>
 
@@ -1962,6 +1962,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>إخراج الماوس</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>العكس، الزخم، الاستجابة، التسارع، تعزيز الدفعة</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>موضع شريط الاستشعار، الإزاحة العمودية، التنعيم</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>يضبط سرعة المؤشر عندما يكون إصبع لوحة اللمس معينا إلى الماوس X/Y في وحدة تحكم ظاهرية من نوع لوحة مفاتيح / ماوس. القيمة الافتراضية 1.0. ارفع أي محور لمؤشر أسرع، واخفضه لمؤشر أبطأ. العكس يقلب أي محور.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>حساسية الماوس X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>معامل ضرب لفرق الحركة الأفقي (لوحة اللمس ← الماوس). أقل من 1.0 يبطئ المؤشر. أكثر من 1.0 يسرّعه.</value></data>
@@ -2167,7 +2168,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>جارٍ المعايرة… حافظ على الثبات</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>إعادة ضبط المعايرة</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>يمسح انحياز الجيروسكوب في وضع السكون وطابع وقت آخر معايرة. دورة الاستقصاء التالية تعيد تشغيل المعايرة التلقائية لمدة 1.5 ثانية على هذا الجهاز.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>الجيروسكوب المباشر</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>مقياس التسارع المباشر</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>الحساسية الأفقية</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>يحجّم مساهمة الجيروسكوب الأفقية (الانعراج + الدحرجة) في الإخراج. 1.0 تترك المعدل كما يراه المحرك. القيم الأعلى تضخّم والقيم الأدنى تخفف. يسري على مستوى الجهاز، فيرث كل ربط جيروسكوب في وحدة التحكم هذه الإحساس الأفقي نفسه.</value></data>
@@ -2187,8 +2187,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>الجيروسكوب</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>اضبط كيفية تحكم مستشعر الحركة في ذراع التحكم هذا في إخراج الماوس والعصا. عاير على سطح مستو لتصفير الانجراف في وضع السكون، ثم اضبط الحساسية والتنعيم وقواعد التفعيل كما يناسبك.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>المعايرة</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>قراءات حية للجيروسكوب ومقياس التسارع</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>الحساسية</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>الوحدات، عكس المحاور، معايرة العالم الحقيقي</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° لكل دورة</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>تشكيل الاستجابة</value></data>
@@ -2274,11 +2272,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>واسع جدا</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>المعامل</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>درجات لكل دورة شاشة</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>إعادة ضبط المعايرة</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>إعادة ضبط الحساسية</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>إعادة ضبط تشكيل الاستجابة</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>إعادة ضبط التفعيل</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>إعادة ضبط التمرير المباشر للحركة</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>إعادة ضبط الفضاء</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>إعادة ضبط الإمساك</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>إعادة ضبط الحساسية الأفقية</value></data>
@@ -2298,8 +2293,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>إعادة ضبط عصا التفعيل</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>إعادة ضبط اتجاه التفعيل</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>التمرير المباشر للحركة</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>تطبيق توليف الجيروسكوب على التمرير المباشر للحركة</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>يطبق التوليف الاختياري في بطاقات «الجيروسكوب» (المنطقة الميتة، الحساسية، التنعيم، منحنى الاستجابة، العكس) على الحركة التي تبلغ بها وحدة التحكم الظاهرية اللعبة أو المحاكي. أوقفه لإرسال القراءة المعايرة فقط وترك اللعبة تطبق حساسيتها وتنعيمها. تصحيح الانجراف الناتج عن المعايرة يسري دائما في الحالتين.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>«المضبوط» يطبق توليف بطاقة «الجيروسكوب» (المنطقة الميتة، الحساسية، التنعيم، منحنى الاستجابة، العكس) على الحركة التي تبلغ بها وحدة التحكم الظاهرية اللعبة أو المحاكي. «الخام» يرسل القراءة المعايرة فقط ويترك اللعبة تطبق حساسيتها وتنعيمها. تصحيح الانجراف الناتج عن المعايرة يسري في الحالتين.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>الخام</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>المضبوط</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>تقرأ اللعبة الحركة المعايرة وتطبق حساسيتها وتنعيمها الخاصين بها.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>تقرأ اللعبة الحركة وفق الحساسية والتنعيم والمنحنى المضبوطة هنا.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>إعادة ضبط توليف التمرير المباشر</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>الحساسية</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>معامل حساسية الجيروسكوب لكل مصدر. 1.0 = القيمة الافتراضية للمحرك (500°/ث ← انحراف كامل). القيم فوق 1.0 أكثر حساسية. القيم دون 1.0 أقل حساسية.</value></data>
@@ -2545,8 +2543,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>وحدة التحكم هذه بلا محركات أزندة، فلن تشعر بالألعاب التي تستخدم الأزندة النبضية في Xbox. ادمج قناة كل زناد في المحرك الرئيسي على الجانب نفسه بدلا من ذلك.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>اختبار الاهتزاز</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>نشاط المحركات</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>الأيسر</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>الأيمن</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>تطبيق قوة مستمرة على هذا الجهاز إلى أن توقفها. القوة التي تشغّلها اللعبة من أي مصدر تتجاوزها ما دامت نشطة، وتعود القوة الثابتة عندما تتوقف اللعبة.</value></data>
@@ -3066,7 +3062,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>الصوت</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>مؤشر IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>صوّب Wii Remote هذا نحو الشاشة بكاميرا IR الخاصة به. يتطلب شريط استشعار، أو مصباحي LED بالأشعة تحت الحمراء، أعلى الشاشة أو أسفلها. عايره كمسدس ضوئي من صفحة الأجهزة للتصويب على النقطة بدقة. جهاز Wii Remote الذي تمت معايرته يتجاهل «موضع شريط الاستشعار» و«الإزاحة العمودية».</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>توليف المؤشر</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>موضع شريط الاستشعار</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>في المنتصف</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>أعلى الشاشة</value></data>
@@ -3093,8 +3088,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>ينقل وضع مؤشر Wii بين الأوضاع المحددة أدناه لكل جهاز Wii Remote يدعم IR في الخانة. كل إطلاق ينتقل إلى الوضع المحدد التالي. موضع الدورة خاص بكل إجراء ويعاد ضبطه عند إعادة تشغيل التطبيق.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>اختر أوضاع المؤشر التي يتنقل الماكرو بينها. كل إطلاق ينتقل إلى الوضع المحدد التالي.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>الصوت</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>أصوات الماكرو وصوت النظام المنسوخ تعمل عبر مكبر الصوت المدمج في وحدة التحكم المحددة، عبر USB أو Bluetooth. اختر الجهاز من القائمة المنسدلة أعلاه. كل إعداد هنا يتبعه.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>إخراج الصوت</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>أصوات الماكرو وصوت النظام المنسوخ تعمل عبر مكبر الصوت المدمج في الجهاز المحدد ضمن «يتحكم به»، عبر USB أو Bluetooth. كل إعداد هنا يتبع ذلك الجهاز.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>مصدر النسخ، صوت سماعات الرأس، مخزن مؤقت، مسار الإخراج</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>يتم توجيه الأصوات إلى وحدة التحكم المحددة تلقائيا. عبر USB تتم مطابقة نقطة نهاية الصوت الخاصة بذراع التحكم بحسب حاوية العتاد. عبر Bluetooth يتم بث الصوت في إطارات Sony HID.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>مصدر النسخ</value></data>
@@ -3157,7 +3151,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>إعادة ضبط حد النغمة</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>ينسخ كل ما يشغّله جهاز الإخراج الافتراضي للنظام إلى مكبر الصوت المدمج في وحدة التحكم هذه، بالتوازي. يعمل عبر USB وBluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>الجهاز المحدد بلا مكبر صوت مدمج. أصوات الماكرو لذراع التحكم هذا تعمل على جهاز الإخراج الافتراضي للنظام.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>إعادة ضبط إخراج الصوت</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>مجموعة اختبارات DualSense تعمل في المتصفح من إعداد Xuezhou Dai (daidr): مرجع لتأطير CRC في تقارير الميزات من Sony ولأوامر اختبار البرنامج الثابت التي يمررها PadForge من أذرع التحكم الظاهرية إلى الفعلية.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3588,8 +3581,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>سطوع LED لزر Guide: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>يضبط سطوع مصباح LED لزر Guide أو Home لكل وحدة تحكم تدعمه في الخانة. وحدات تحكم Xbox تقبله عبر USB فقط.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>يسري على وحدات تحكم Xbox عبر USB، ووحدة Steam Controller لعام 2015، ووحدات تحكم Switch التي بها مصباح LED لزر Home. استخدم إجراءين من هذا النوع لوميض مصباح LED عند بدء الماكرو واستعادته عند انتهائه.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>إعادة ضبط وضع المؤشر</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>إعادة ضبط توليف المؤشر</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>إعادة ضبط موضع شريط الاستشعار</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>إعادة ضبط الإزاحة العمودية</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>إعادة ضبط التنعيم</value></data>

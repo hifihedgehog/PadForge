@@ -651,7 +651,6 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Iluminason</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Iluminason</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Dizligadu</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Dispozitivu di áudiu</value></data>
@@ -1311,6 +1310,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Saída di mouse</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Inverti, Inérsia, Resposta, Aselerason, lansamentu</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Pozison di barra di sensor, Disviu vertikal, Suavizason</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Sensibilidadi di mouse X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplikador di muvimentu orizontal touchpad → mouse. Menus di 1.0 ta poi kursor más devagar. Más di 1.0 ta poi-l más rápidu.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityY" xml:space="preserve"><value>Sensibilidadi di mouse Y</value></data>
@@ -1483,7 +1483,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Jiroskópiu</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Jiroskópiu</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrason</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilidadi</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unidadi, inverti eixus, Kalibrason di mundu real</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° pa volta</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Forma di resposta</value></data>
@@ -1539,11 +1538,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Extra largu</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplikador</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Grau pa volta di ekran</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Ripoi kalibrason</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Ripoi sensibilidadi</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Ripoi forma di resposta</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Ripoi ativason</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Ripoi passthrough di muvimentu</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Ripoi spasu</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Ripoi sensibilidadi orizontal</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Ripoi sensibilidadi vertikal</value></data>
@@ -1690,8 +1686,6 @@
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Troka motor di skerda ku motor di direita</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Testa vibrason</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Atividadi di motor</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Skerda</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Direita</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Aplika forsa konstanti</value></data>
@@ -2033,7 +2027,6 @@
   <data name="Pad_Pointer_FpsSpeed" xml:space="preserve"><value>Velosidadi FPS</value></data>
   <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>Ripoi velosidadi FPS</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Áudiu</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Saída di son</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Fonti di spedju, volumi di fon di kabesa, buffer, Kaminhu di saída</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Padron di sistema</value></data>
   <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(Dispozitivu ka disponível)</value></data>
@@ -2062,7 +2055,6 @@
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Ripoi padron (100%)</value></data>
   <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Ripoi pa 250 Hz</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Dispozitivu skodjedu ka ten kolúna. Sons di makru di es komandu ta toka na saída padron di sistema.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Ripoi saída di son</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Pad_Audio_Packages_Header" xml:space="preserve"><value>Pakotis di son</value></data>
@@ -2985,6 +2977,7 @@
   <data name="Menu_NewMenu" xml:space="preserve"><value>Menu nobu</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Es dispozitivu</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Komandu interu</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Dos sticks</value></data>
   <data name="Pad_AudioEq_FoldHint" xml:space="preserve"><value>Preamp, bandas, inportason</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR instaladu</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR ka sta instaladu</value></data>
@@ -3090,4 +3083,8 @@
   <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>i</value></data>
   <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>o</value></data>
   <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>ka</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Brutu</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Ajustadu</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Jogu ta lê muvimentu kalibradu i ta aplika se própriu sensibilidadi i suavizason.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Jogu ta lê muvimentu ku sensibilidadi, suavizason i kurva definidu li.</value></data>
 </root>

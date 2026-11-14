@@ -1100,6 +1100,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Ajusta com PadForge escala els esdeveniments de retroacció de força del joc i com els encamina cap als motors de vibració o els actuadors hàptics del comandament físic. Vibració per àudio hi afegeix una capa que depèn de l'àudio del sistema.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Aquest dispositiu</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Tot el comandament</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Les dues palanques</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>La vibració es reprodueix a {0} com a polsos hàptics, enviats directament al dispositiu. Com més forta és la vibració, més fort és el pols triat i més ràpid es repeteix.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>La resposta hàptica de {0} està desactivada a Logi Options+, així que no reprodueix res fins que la tornis a activar allà.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Aquest dispositiu encara no ha respost. La vibració es reproduirà quan es desperti.</value></data>
@@ -1165,7 +1166,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>auriculars, catifes de ratolí i tires Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>auriculars, catifes de ratolí i altaveus</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>auriculars</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Barra de llum</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Els jocs prenen el control quan escriuen la il·luminació.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Introdueix un color hexadecimal de sis dígits (RRGGBB o #RRGGBB) i prem Retorn o fes clic fora per aplicar-lo.</value></data>
@@ -1707,7 +1707,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Deixa anar el botó del ratolí {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Mostra o amaga la superposició del panell tàctil</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Defineix el color de la barra de llum</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Substitueix el color de la barra de llum de la ranura PlayStation assignada per un color RGB triat. Reactiu s'esvaeix de la intensitat màxima fins al negre durant la finestra d'esvaïment configurada i després torna a la configuració de la targeta Barra de llum. Persistent manté el color fins que s'executa una acció Esborra la substitució de la barra de llum. Les escriptures del joc continuen tenint prioritat sobre la substitució.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Substitueix el color de la barra de llum de la ranura PlayStation assignada per un color RGB triat. Reactiu s'esvaeix de la intensitat màxima fins al negre durant la finestra d'esvaïment configurada i després torna a la configuració de la targeta Il·luminació. Persistent manté el color fins que s'executa una acció Esborra la substitució de la barra de llum. Les escriptures del joc continuen tenint prioritat sobre la substitució.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Fes centellejar la barra de llum {0} (esvaïment {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Mantén la barra de llum {0} fins que s'esborri</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Esborra la substitució de la barra de llum</value></data>
@@ -1715,7 +1715,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Allibera qualsevol substitució activa de la barra de llum a la ranura assignada. Combina-la amb una acció Defineix el color de la barra de llum persistent per desfer-la des d'una altra macro.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Defineix el mode de la barra de llum</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Defineix el mode de la barra de llum a {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Defineix el mode de la barra de llum de la ranura assignada a un valor concret. Es conserva com un canvi fet a la targeta Barra de llum fins que una altra acció o l'usuari el canvia.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Defineix el mode de la barra de llum de la ranura assignada a un valor concret. Es conserva com un canvi fet a la targeta Il·luminació fins que una altra acció o l'usuari el canvia.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Canvia cíclicament els modes de la barra de llum</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Recorre cíclicament {0} modes de la barra de llum</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Fa avançar el mode de la barra de llum de la ranura pels modes seleccionats a sota. Cada activació passa al mode marcat següent. La posició del cicle és pròpia de cada acció i es restableix quan es reinicia l'aplicació.</value></data>
@@ -1730,7 +1730,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Esvaïment</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Fosa</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Paleta</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Una paleta buida fa servir la paleta de la targeta Barra de llum de la ranura.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Una paleta buida fa servir la paleta de la targeta Il·luminació de la ranura.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Tria per quins modes de la barra de llum ha de passar la macro. Cada activació avança al mode marcat següent.</value></data>
 
@@ -1960,6 +1960,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Sortida de ratolí</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Inversió, inèrcia, resposta, acceleració, llançament</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Posició de la barra de sensors, desplaçament vertical, suavitzat</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Ajusta la velocitat del cursor quan un dit del panell tàctil està assignat a X/Y del ratolí en un comandament virtual de teclat / ratolí. El valor per defecte és 1.0. Apuja qualsevol eix per tenir un cursor més ràpid, o abaixa'l per tenir-lo més lent. Inverteix capgira qualsevol eix.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Sensibilitat del ratolí X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplicador del desplaçament horitzontal del panell tàctil → ratolí. Per sota d'1.0 alenteix el cursor. Per sobre d'1.0 l'accelera.</value></data>
@@ -2165,7 +2166,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>S'està calibrant… no el moguis</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Restableix el calibratge</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Esborra el biaix del giroscopi en repòs i la marca de temps de l'últim calibratge. El cicle de sondeig següent torna a executar el calibratge automàtic d'1.5 segons en aquest dispositiu.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Giroscopi en temps real</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Acceleròmetre en temps real</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Sensibilitat horitzontal</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Escala la contribució horitzontal (guinyada + balanceig) del giroscopi a la sortida. Amb 1.0, la velocitat es queda tal com la veu el motor. Els valors més alts l'amplifiquen i els més baixos l'atenuen. S'aplica a nivell de dispositiu perquè totes les vinculacions del giroscopi d'aquest comandament heretin la mateixa sensació horitzontal.</value></data>
@@ -2185,8 +2185,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroscopi</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Ajusta com el sensor de moviment d'aquest comandament controla la sortida de ratolí i de palanca. Calibra'l sobre una superfície plana per anul·lar la deriva en repòs i, després, ajusta la sensibilitat, el suavitzat i les regles d'activació al teu gust.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibratge</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Giroscopi i acceleròmetre en temps real</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilitat</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unitats, inversió d'eixos, calibratge amb el món real</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° per volta</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Forma de la resposta</value></data>
@@ -2272,11 +2270,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Extraampla</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplicador</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Graus per volta de pantalla</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Restableix el calibratge</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Restableix la sensibilitat</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Restableix la forma de la resposta</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Restableix l'activació</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Restableix la transmissió directa del moviment</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Restableix l'espai</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Restableix la subjecció</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Restableix la sensibilitat horitzontal</value></data>
@@ -2296,8 +2291,11 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Restableix la palanca d'activació</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Restableix la direcció d'activació</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Transmissió directa del moviment</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Aplica l'ajust del giroscopi a la transmissió directa del moviment</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Aplica l'ajust opcional de les targetes de Giroscopi (zona morta, sensibilitat, suavitzat, corba de resposta, inversió) al moviment que el comandament virtual comunica al joc o a l'emulador. Desactiva-ho per enviar només la lectura calibrada i deixar que el joc apliqui la seva pròpia sensibilitat i suavitzat. La correcció de la deriva pel calibratge s'aplica sempre en tots dos casos.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Ajustat aplica l'ajust de la targeta de Giroscopi (zona morta, sensibilitat, suavitzat, corba de resposta, inversió) al moviment que el comandament virtual comunica al joc o a l'emulador. Brut envia només la lectura calibrada i deixa que el joc apliqui la seva pròpia sensibilitat i suavitzat. La correcció de la deriva pel calibratge s'aplica en tots dos casos.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Brut</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Ajustat</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>El joc llegeix el moviment calibrat i aplica la seva pròpia sensibilitat i suavitzat.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>El joc llegeix el moviment amb la sensibilitat, el suavitzat i la corba definits aquí.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Restableix l'ajust de la transmissió directa</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilitat</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicador de la sensibilitat del giroscopi per a cada font. 1.0 = el valor per defecte del motor (500°/s → desviació completa). Els valors per sobre d'1.0 són més sensibles. Els valors per sota d'1.0 són menys sensibles.</value></data>
@@ -2544,8 +2542,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Aquest comandament no té motors als gallets, de manera que no es notarien els jocs que fan servir els gallets d'impuls de Xbox. En lloc d'això, integra cada canal de gallet al motor principal del mateix costat.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Prova la vibració</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Activitat dels motors</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Esquerre</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Dret</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Aplica una força contínua a aquest dispositiu fins que la desactivis. La força que genera el joc, sigui quina sigui la font, té prioritat mentre està activa, i la força constant es reprèn quan el joc s'atura.</value></data>
@@ -3065,7 +3061,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Àudio</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Punter IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Apunta aquest comandament de Wii a la pantalla amb la seva càmera IR. Necessita una barra de sensors, o dos LED infrarojos, a sobre o a sota de la pantalla. Calibra'l com a pistola de llum a la pàgina Dispositius per apuntar al punt exacte. Un comandament calibrat ignora Posició de la barra de sensors i Desplaçament vertical.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Ajust del punter</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Posició de la barra de sensors</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Centrada</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>A sobre de la pantalla</value></data>
@@ -3092,8 +3087,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Fa avançar el mode del punter de la Wii pels modes seleccionats a sota per a cada comandament amb IR de la ranura. Cada activació passa al mode marcat següent. La posició del cicle és pròpia de cada acció i es restableix quan es reinicia l'aplicació.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Tria per quins modes del punter ha de passar la macro. Cada activació avança al mode marcat següent.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Àudio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Els sons de les macros i l'àudio del sistema replicat es reprodueixen per l'altaveu integrat del comandament seleccionat, per USB o Bluetooth. Tria el dispositiu a la llista desplegable de dalt. Tota la configuració d'aquí s'hi aplica.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sortida de so</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Els sons de les macros i l'àudio del sistema replicat es reprodueixen per l'altaveu integrat del dispositiu triat a Entrada de, per USB o Bluetooth. Tota la configuració d'aquí segueix aquest dispositiu.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Font de la rèplica, volum dels auriculars, memòria intermèdia, sortida d'àudio</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Els sons s'envien automàticament al comandament seleccionat. Per USB, el punt final d'àudio del comandament es fa correspondre pel contenidor de maquinari. Per Bluetooth, l'àudio es transmet en trames HID de Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Font de la rèplica</value></data>
@@ -3156,7 +3150,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Restableix el límit de to</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copia en paral·lel tot el que reprodueix la sortida per defecte del sistema a l'altaveu integrat d'aquest comandament. Funciona per USB i per Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>El dispositiu seleccionat no té cap altaveu integrat. Els sons de macro d'aquest comandament es reprodueixen a la sortida per defecte del sistema.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Restableix la sortida de so</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Conjunt de proves del DualSense per al navegador, de Xuezhou Dai (daidr): referència per a l'entramat amb CRC dels informes de característiques de Sony i per a les ordres de prova del microprogramari que PadForge reenvia dels comandaments virtuals als físics.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3587,8 +3580,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Brillantor del LED Guia: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Defineix la brillantor del LED del botó Guia o Home per a cada comandament compatible de la ranura. Els comandaments Xbox només l'accepten per USB.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>S'aplica als comandaments Xbox per USB, al Steam Controller del 2015 i als comandaments de Switch amb LED al botó Home. Combina dues d'aquestes accions per fer parpellejar el LED quan comença una macro i restaurar-lo quan acaba.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Restableix el mode del punter</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Restableix l'ajust del punter</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Restableix la posició de la barra de sensors</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Restableix el desplaçament vertical</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Restableix el suavitzat</value></data>

@@ -1102,6 +1102,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>PadForge тоглоомоос ирэх хүчний эргэх холбооны үйл явдлыг хэрхэн масштаблах, физик контроллерийн чичиргээний мотор эсвэл хаптик актуатор руу хэрхэн чиглүүлэхийг тохируулна. Аудио чичиргээ нь дээр нь системийн аудиогоор удирдагдах давхарга нэмнэ.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Энэ төхөөрөмж</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Бүтэн контроллер</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Хоёр стик</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Чичиргээ {0} дээр хаптик импульс болж, төхөөрөмж рүү шууд илгээгдэн тоглогдоно. Илүү хүчтэй чичиргээ илүү хүчтэй импульс сонгож, түүнийг илүү хурдан давтана.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Logi Options+ дотор энэ төхөөрөмжийн ({0}) хаптик эргэх холбоо унтраалттай тул тэнд дахин асаах хүртэл юу ч тоглогдохгүй.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Энэ төхөөрөмж хараахан хариу өгөөгүй байна. Сэрмэгц чичиргээ нь тоглогдоно.</value></data>
@@ -1167,7 +1168,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>чихэвч, хулганы дэвсгэр, Chroma Link зурвас</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>чихэвч, хулганы дэвсгэр, чанга яригч</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>чихэвч</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Гэрлийн зурвас</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Тоглоомууд гэрэлтүүлэг бичих бүрдээ удирдлагыг авдаг.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Зургаан оронтой hex өнгө (RRGGBB эсвэл #RRGGBB) оруулаад, хэрэгжүүлэхийн тулд Enter дарах эсвэл өөр газар дарна уу.</value></data>
@@ -1709,7 +1709,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Хулгана суллах: {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Мэдрэгч самбарын оверлейг сэлгэх</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Гэрлийн зурвасын өнгө тохируулах</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Оноосон PlayStation слотын гэрлийн зурвасыг сонгосон RGB өнгөөр дарж тохируулна. “Хариу үйлдэлт” горим тохируулсан бөхөх хугацааны турш бүрэн эрчмээс хар хүртэл бүдгэрч, дараа нь “Гэрлийн зурвас” картын тохиргоонд буцааж өгнө. “Тогтоох” горим “Гэрлийн зурвасын дарж тохируулгыг цэвэрлэх” үйлдэл ажиллах хүртэл өнгийг барина. Тоглоомын бичсэн утга дарж тохируулгаас давуу эрхтэй хэвээр байна.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Оноосон PlayStation слотын гэрлийн зурвасыг сонгосон RGB өнгөөр дарж тохируулна. “Хариу үйлдэлт” горим тохируулсан бөхөх хугацааны турш бүрэн эрчмээс хар хүртэл бүдгэрч, дараа нь “Гэрэлтүүлэг” картын тохиргоонд буцааж өгнө. “Тогтоох” горим “Гэрлийн зурвасын дарж тохируулгыг цэвэрлэх” үйлдэл ажиллах хүртэл өнгийг барина. Тоглоомын бичсэн утга дарж тохируулгаас давуу эрхтэй хэвээр байна.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Гэрлийн зурвас анивчих: {0} (бөхөлт {1} мс)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Цэвэрлэх хүртэл гэрлийн зурвасыг барих: {0}</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Гэрлийн зурвасын дарж тохируулгыг цэвэрлэх</value></data>
@@ -1717,7 +1717,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Оноосон слот дээрх идэвхтэй аливаа гэрлийн зурвасын дарж тохируулгыг суллана. Өөр макроор буцаахын тулд “Тогтоох” горимтой “Гэрлийн зурвасын өнгө тохируулах” үйлдэлтэй хослуулна уу.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Гэрлийн зурвасын горим тохируулах</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Гэрлийн зурвасын горимыг тохируулах: {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Оноосон слотын гэрлийн зурвасын горимыг тодорхой утгад тохируулна. Өөр үйлдэл эсвэл хэрэглэгч өөрчлөх хүртэл “Гэрлийн зурвас” карт дээр хийсэн засвар шиг хадгалагдана.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Оноосон слотын гэрлийн зурвасын горимыг тодорхой утгад тохируулна. Өөр үйлдэл эсвэл хэрэглэгч өөрчлөх хүртэл “Гэрэлтүүлэг” карт дээр хийсэн засвар шиг хадгалагдана.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Гэрлийн зурвасын горимуудыг ээлжлэх</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Гэрлийн зурвасын {0} горимыг ээлжлэх</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Слотын гэрлийн зурвасын горимыг доор сонгосон горимуудаар ээлжлүүлнэ. Ажиллах бүрд дараагийн чагтласан горим руу шилжинэ. Ээлжийн байрлал үйлдэл тус бүрд тусдаа бөгөөд програмыг дахин эхлүүлэхэд анхны байдалд орно.</value></data>
@@ -1732,7 +1732,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Бөхөлт</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Бүдгэрэлт</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Палитр</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Хоосон палитр слотын “Гэрлийн зурвас” карт дээрх палитрыг ашиглана.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Хоосон палитр слотын “Гэрэлтүүлэг” карт дээрх палитрыг ашиглана.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Горим</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Макро аль гэрлийн зурвасын горимуудыг ээлжлэхийг сонгоно уу. Ажиллах бүрд дараагийн чагтласан горим руу шилжинэ.</value></data>
 
@@ -1962,6 +1962,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Хулганы гаралт</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Урвуулах, Инерц, Хариу үйлдэл, Хурдатгал, шидэлт</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Мэдрэгч зурвасын байрлал, Босоо шилжилт, Зөөллөлт</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Мэдрэгч самбарын хурууг Гар / хулгана виртуал контроллер дээрх хулганы X/Y-д оноосон үед курсорын хурдыг тохируулна. Үндсэн утга 1.0. Курсорыг хурдасгах бол аль нэг тэнхлэгийг өсгөж, удаашруулах бол бууруулна уу. Урвуулах нь аль ч тэнхлэгийг эсрэгээр болгоно.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Хулганы мэдрэмж X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Хэвтээ чиглэлийн мэдрэгч самбар → хулганы шилжилтийн үржүүлэгч. 1.0-ээс бага бол курсорыг удаашруулна. 1.0-ээс их бол хурдасгана.</value></data>
@@ -2167,7 +2168,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Калибровк хийж байна… хөдөлгөөнгүй барина уу</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Калибровкийг дахин тохируулах</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Гироскопын тайван үеийн суурь алдаа болон сүүлд калибровк хийсэн цагийн тэмдгийг цэвэрлэнэ. Дараагийн уншилтын мөчлөг энэ төхөөрөмж дээр 1.5 секундын автомат калибровкийг дахин ажиллуулна.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Гироскоп (шууд)</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Акселерометр (шууд)</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Хэвтээ мэдрэмж</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Гаралтад орох гироскопын хэвтээ (зүүн-баруун эргэлт + хажуу тийш хазайлт) хувь нэмрийг масштаблана. 1.0 бол хурдыг хөдөлгүүрийн хүлээн авсан хэвээр үлдээнэ. Их утга өсгөж, бага утга сулруулна. Төхөөрөмжийн түвшинд хэрэгжих тул энэ контроллер дээрх гироскопын бүх холболт ижил хэвтээ мэдрэмжийг өвлөнө.</value></data>
@@ -2187,8 +2187,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Гироскоп</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Энэ геймпадын хөдөлгөөний мэдрэгч хулгана болон стикийн гаралтыг хэрхэн удирдахыг тохируулна. Тайван үеийн шилжилтийг тэглэхийн тулд тэгш гадаргуу дээр калибровк хийгээд, дараа нь мэдрэмж, зөөллөлт, идэвхжүүлэх дүрмийг дуртайгаараа тохируулна уу.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Калибровк</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Гироскоп ба акселерометрийн шууд уншилт</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Мэдрэмж</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Нэгж, тэнхлэгийг урвуулах, Бодит ертөнцийн калибровк</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° нэг эргэлтэд</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Хариу үйлдлийн хэлбэржүүлэлт</value></data>
@@ -2274,11 +2272,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Илүү өргөн</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Үржүүлэгч</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Дэлгэцийн эргэлтэд ногдох градус</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Калибровкийг дахин тохируулах</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Мэдрэмжийг дахин тохируулах</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Хариу үйлдлийн хэлбэржүүлэлтийг дахин тохируулах</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Идэвхжүүлэлтийг дахин тохируулах</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Хөдөлгөөний шууд дамжуулалтыг дахин тохируулах</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Орон зайг дахин тохируулах</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Барилтыг дахин тохируулах</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Хэвтээ мэдрэмжийг дахин тохируулах</value></data>
@@ -2298,8 +2293,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Идэвхжүүлэх стикийг дахин тохируулах</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Идэвхжүүлэх чиглэлийг дахин тохируулах</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Хөдөлгөөний шууд дамжуулалт</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Гироскопын тохиргоог хөдөлгөөний шууд дамжуулалтад хэрэглэх</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>“Гироскоп” бүлгийн картуудын сонголтот тохиргоог (үхсэн бүс, мэдрэмж, зөөллөлт, хариу үйлдлийн муруй, урвуулалт) виртуал контроллерийн тоглоом эсвэл эмулятор руу мэдээлэх хөдөлгөөнд хэрэглэнэ. Зөвхөн калибровк хийсэн уншилтыг илгээж, тоглоомд өөрийн мэдрэмж, зөөллөлтийг хэрэглүүлэхийг хүсвэл унтраана уу. Калибровкийн шилжилтийн засвар аль ч тохиолдолд үргэлж хэрэгжинэ.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>“Тохируулсан” горим “Гироскоп” картын тохиргоог (үхсэн бүс, мэдрэмж, зөөллөлт, хариу үйлдлийн муруй, урвуулалт) виртуал контроллерийн тоглоом эсвэл эмулятор руу мэдээлэх хөдөлгөөнд хэрэглэнэ. “Түүхий” горим зөвхөн калибровк хийсэн уншилтыг илгээж, тоглоомд өөрийн мэдрэмж, зөөллөлтийг хэрэглүүлнэ. Калибровкийн шилжилтийн засвар аль ч тохиолдолд хэрэгжинэ.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Түүхий</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Тохируулсан</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Тоглоом калибровк хийсэн хөдөлгөөнийг уншиж, өөрийн мэдрэмж, зөөллөлтийг хэрэглэнэ.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Тоглоом энд тохируулсан мэдрэмж, зөөллөлт, муруйтай хөдөлгөөнийг уншина.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Шууд дамжуулалтын тохиргоог дахин тохируулах</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Мэдрэмж</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Эх үүсвэр тус бүрийн гироскопын мэдрэмжийн үржүүлэгч. 1.0 = хөдөлгүүрийн үндсэн утга (500°/с → бүтэн хазайлт). 1.0-ээс их утга илүү мэдрэмтгий. 1.0-ээс бага утга бага мэдрэмтгий.</value></data>
@@ -2546,8 +2544,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Энэ контроллер гохны моторгүй тул Xbox-ын импульсийн гох ашигладаг тоглоомуудын чичиргээ мэдрэгдэхгүй. Оронд нь гохны суваг бүрийг ижил талын гол моторт нэгтгэнэ.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Чичиргээг турших</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Моторын идэвхжил</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Зүүн</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Баруун</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Унтраах хүртэл энэ төхөөрөмжид тасралтгүй хүч үзүүлнэ. Аливаа эх үүсвэрээс ирэх тоглоомын хүч идэвхтэй байх хугацаандаа давамгайлж, тоглоом зогсоход энэ хүч дахин үргэлжилнэ.</value></data>
@@ -3067,7 +3063,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>Аудио</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR заагч</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Энэ Wii Remote-ыг IR камераар нь дэлгэц рүү онилно. Дэлгэцийн дээр эсвэл доор мэдрэгч зурвас, эсвэл хоёр хэт улаан туяаны LED шаардлагатай. Яг цэг рүү онилохын тулд Төхөөрөмжүүд хуудсанд гэрлийн буу болгон калибровк хийнэ үү. Калибровк хийсэн удирдлага Мэдрэгч зурвасын байрлал болон Босоо шилжилтийг үл тооно.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Заагчийн тохиргоо</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Мэдрэгч зурвасын байрлал</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Төвд</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Дэлгэцийн дээр</value></data>
@@ -3094,8 +3089,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Слот дээрх IR чадвартай бүх удирдлагын Wii заагчийн горимыг доор сонгосон горимуудаар ээлжлүүлнэ. Ажиллах бүрд дараагийн чагтласан горим руу шилжинэ. Ээлжийн байрлал үйлдэл тус бүрд тусдаа бөгөөд програмыг дахин эхлүүлэхэд анхны байдалд орно.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Макро аль заагчийн горимуудыг ээлжлэхийг сонгоно уу. Ажиллах бүрд дараагийн чагтласан горим руу шилжинэ.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Аудио</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Макроны дуу болон давхардуулсан системийн аудио сонгосон контроллерийн суурилагдсан чанга яригчаар USB эсвэл Bluetooth-ээр тоглогдоно. Дээрх унждаг жагсаалтаас төхөөрөмжөө сонгоно уу. Энд байгаа бүх тохиргоо түүнийг дагана.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Дууны гаралт</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Макроны дуу болон давхардуулсан системийн аудио “Оролтын эх үүсвэр” хэсэгт сонгосон төхөөрөмжийн суурилагдсан чанга яригчаар USB эсвэл Bluetooth-ээр тоглогдоно. Энд байгаа бүх тохиргоо тэр төхөөрөмжийг дагана.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Давхардуулах эх үүсвэр, Чихэвчний дууны түвшин, буфер, Гаралтын зам</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Дуу сонгосон контроллер руу автоматаар чиглэнэ. USB-ээр холбогдсон үед геймпадын өөрийн аудио төгсгөлийг тоног төхөөрөмжийн контейнероор тааруулна. Bluetooth-ээр холбогдсон үед аудиог Sony HID фреймүүдээр дамжуулна.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Давхардуулах эх үүсвэр</value></data>
@@ -3158,7 +3152,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Аяны хязгаарыг дахин тохируулах</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Системийн үндсэн гаралтаар тоглож буй бүхнийг энэ контроллерын суурилуулсан чанга яригч руу зэрэг хуулна. USB болон Bluetooth-ээр ажиллана.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Сонгосон төхөөрөмжид суурилуулсан чанга яригч байхгүй. Энэ контроллерын макро дуу системийн үндсэн гаралтаар тоглоно.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Дууны гаралтыг дахин тохируулах</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr)-ийн хөтөч дээр ажилладаг DualSense туршилтын багц: Sony feature report-ын CRC хүрээлэлт болон PadForge-ийн виртуал контроллероос физик контроллер руу дамжуулдаг фирмвэрийн туршилтын командуудын лавлагаа.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3589,8 +3582,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide LED-ийн тод байдал: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Слот дээрх дэмждэг бүх контроллерын Guide эсвэл Home товчны LED-ийн тод байдлыг тохируулна. Xbox контроллерууд үүнийг зөвхөн USB-ээр хүлээн авна.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>USB-ээр холбогдсон Xbox контроллер, 2015 оны Steam Controller болон Home товчны LED-тэй Switch контроллеруудад үйлчилнэ. Макро эхлэхэд LED-ийг анивчуулж, дуусахад сэргээхийн тулд ийм хоёр үйлдлийг хослуулна уу.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Заагчийн горимыг дахин тохируулах</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Заагчийн нарийн тохиргоог дахин тохируулах</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Сенсор зурвасын байрлалыг дахин тохируулах</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Босоо шилжилтийг дахин тохируулах</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Зөөлрүүлэлтийг дахин тохируулах</value></data>

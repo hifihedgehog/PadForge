@@ -1181,6 +1181,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>تنظیم می‌کند PadForge رویدادهای فورس فیدبک بازی را چگونه مقیاس‌بندی و به موتورهای لرزش یا عملگرهای هپتیک کنترلر فیزیکی هدایت کند. «لرزش صوتی» لایه‌ای مبتنی بر صدای سیستم روی آن اضافه می‌کند.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>این دستگاه</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>کل کنترلر</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>هر دو استیک</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>لرزش روی {0} به‌صورت پالس‌های هپتیک پخش می‌شود که مستقیماً به دستگاه فرستاده می‌شوند. لرزش قوی‌تر پالس قوی‌تری انتخاب و آن را سریع‌تر تکرار می‌کند.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>بازخورد هپتیک برای {0} در Logi Options+ خاموش است، بنابراین تا وقتی آنجا دوباره روشنش نکنید چیزی پخش نمی‌شود.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>این دستگاه هنوز پاسخ نداده است. لرزش آن پس از بیدار شدنش پخش می‌شود.</value></data>
@@ -1267,7 +1268,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>مادربردها، کارت‌های گرافیک و حافظه</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>مادربردها و کارت‌های گرافیک</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>ماوس‌پدها، هدست‌ها و پایه‌های هدست</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>نوار نوری</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>هر وقت بازی‌ها نورپردازی را بنویسند کنترل را به دست می‌گیرند.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>یک رنگ هگز شش‌رقمی (RRGGBB یا #RRGGBB) وارد کنید و برای اعمال، Enter را فشار دهید یا بیرون از کادر کلیک کنید.</value></data>
@@ -1897,7 +1897,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>رها کردن ماوس {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>تغییر وضعیت اورلی تاچ‌پد</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>تنظیم رنگ نوار نوری</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>نوار نوری اسلات PlayStation اختصاص‌یافته را با یک رنگ RGB دلخواه بازنویسی می‌کند. «واکنشی» در بازه میرایی تنظیم‌شده از شدت کامل تا سیاهی محو می‌شود و سپس کنترل را به تنظیمات کارت «نوار نوری» برمی‌گرداند. «ماندگار» رنگ را تا اجرای کنش «پاک کردن بازنویسی نوار نوری» نگه می‌دارد. نوشتن‌های بازی همچنان بر این بازنویسی اولویت دارند.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>نوار نوری اسلات PlayStation اختصاص‌یافته را با یک رنگ RGB دلخواه بازنویسی می‌کند. «واکنشی» در بازه میرایی تنظیم‌شده از شدت کامل تا سیاهی محو می‌شود و سپس کنترل را به تنظیمات کارت «نورپردازی» برمی‌گرداند. «ماندگار» رنگ را تا اجرای کنش «پاک کردن بازنویسی نوار نوری» نگه می‌دارد. نوشتن‌های بازی همچنان بر این بازنویسی اولویت دارند.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>چشمک نوار نوری {0} (میرایی {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>نگه داشتن نوار نوری {0} تا پاک شدن</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>پاک کردن بازنویسی نوار نوری</value></data>
@@ -1905,7 +1905,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>هر بازنویسی فعال نوار نوری را در اسلات اختصاص‌یافته آزاد می‌کند. آن را با یک کنش «تنظیم رنگ نوار نوری» از نوع ماندگار همراه کنید تا با ماکروی دیگری لغوش کنید.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>تنظیم حالت نوار نوری</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>تنظیم حالت نوار نوری روی {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>حالت نوار نوری اسلات اختصاص‌یافته را روی مقدار مشخصی می‌گذارد. مانند ویرایشی در کارت «نوار نوری» باقی می‌ماند تا کنش دیگری یا کاربر آن را تغییر دهد.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>حالت نوار نوری اسلات اختصاص‌یافته را روی مقدار مشخصی می‌گذارد. مانند ویرایشی در کارت «نورپردازی» باقی می‌ماند تا کنش دیگری یا کاربر آن را تغییر دهد.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>چرخش حالت‌های نوار نوری</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>چرخش میان {0} حالت نوار نوری</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>حالت نوار نوری اسلات را میان حالت‌های انتخاب‌شده در زیر جلو می‌برد. هر بار اجرا به حالت تیک‌خورده بعدی می‌رود. موقعیت چرخه برای هر کنش جداست و با راه‌اندازی مجدد برنامه بازنشانی می‌شود.</value></data>
@@ -1920,7 +1920,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>میرایی</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>محو شدن</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>پالت</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>پالت خالی از پالت کارت «نوار نوری» خود اسلات استفاده می‌کند.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>پالت خالی از پالت کارت «نورپردازی» خود اسلات استفاده می‌کند.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>حالت</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>انتخاب کنید ماکرو میان کدام حالت‌های نوار نوری بچرخد. هر بار اجرا به حالت تیک‌خورده بعدی می‌رود.</value></data>
 
@@ -2150,6 +2150,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>خروجی ماوس</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>معکوس کردن، اینرسی، پاسخ، شتاب، پرتاب</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>موقعیت نوار حسگر، آفست عمودی، هموارسازی</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>سرعت نشانگر را وقتی تنظیم می‌کند که انگشت تاچ‌پد به X/Y ماوس در یک کنترلر مجازی صفحه‌کلید / ماوس نگاشت شده باشد. پیش‌فرض 1.0 است. برای نشانگر سریع‌تر هر محور را بالا ببرید و برای کندتر پایین بیاورید. «معکوس کردن» هر یک از محورها را وارونه می‌کند.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>حساسیت ماوس X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>ضریب تبدیل حرکت افقی تاچ‌پد ← ماوس. کمتر از 1.0 نشانگر را کند و بیشتر از 1.0 آن را تند می‌کند.</value></data>
@@ -2355,7 +2356,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>در حال کالیبراسیون… بی‌حرکت نگه دارید</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>بازنشانی کالیبراسیون</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>بایاس ژیروسکوپ در حالت سکون و زمان آخرین کالیبراسیون را پاک می‌کند. چرخه نمونه‌برداری بعدی، کالیبراسیون خودکار 1.5 ثانیه‌ای را دوباره روی این دستگاه اجرا می‌کند.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>ژیروسکوپ زنده</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>شتاب‌سنج زنده</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>حساسیت افقی</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>سهم افقی ژیروسکوپ (یاو + رول) را در خروجی مقیاس‌بندی می‌کند. مقدار 1.0 نرخ را همان‌طور که موتور می‌بیند باقی می‌گذارد. مقادیر بالاتر تقویت و مقادیر پایین‌تر تضعیف می‌کنند. در سطح دستگاه اعمال می‌شود تا همه مقیدسازی‌های ژیروسکوپ این کنترلر همان حس افقی را داشته باشند.</value></data>
@@ -2375,8 +2375,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ژیروسکوپ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>تنظیم کنید حسگر حرکتی این گیم‌پد چگونه خروجی ماوس و استیک را هدایت کند. برای صفر کردن دریفت حالت سکون، روی سطحی صاف کالیبره کنید و سپس حساسیت، هموارسازی و قواعد فعال‌سازی را به دلخواه تنظیم کنید.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>کالیبراسیون</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>خوانش‌های زنده ژیروسکوپ و شتاب‌سنج</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>حساسیت</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>واحدها، معکوس کردن محورها، کالیبراسیون دنیای واقعی</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° به ازای هر دور</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>شکل‌دهی پاسخ</value></data>
@@ -2462,11 +2460,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>خیلی پهن</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>ضریب</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>درجه در هر دور صفحه</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>بازنشانی کالیبراسیون</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>بازنشانی حساسیت</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>بازنشانی شکل‌دهی پاسخ</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>بازنشانی فعال‌سازی</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>بازنشانی عبور مستقیم حرکت</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>بازنشانی فضا</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>بازنشانی شیوه گرفتن</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>بازنشانی حساسیت افقی</value></data>
@@ -2486,8 +2481,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>بازنشانی استیک فعال‌سازی</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>بازنشانی جهت فعال‌سازی</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>عبور مستقیم حرکت</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>اعمال تنظیمات ژیروسکوپ بر عبور مستقیم حرکت</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>تنظیمات اختیاری کارت‌های «ژیروسکوپ» (ناحیه مرده، حساسیت، هموارسازی، منحنی پاسخ، معکوس کردن) را روی حرکتی اجرا می‌کند که کنترلر مجازی به بازی یا شبیه‌ساز گزارش می‌دهد. برای فرستادن فقط خوانش کالیبره‌شده و سپردن حساسیت و هموارسازی به خود بازی، آن را خاموش کنید. اصلاح دریفت کالیبراسیون در هر دو حالت همیشه اعمال می‌شود.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>حالت «تنظیم‌شده» تنظیمات کارت «ژیروسکوپ» (ناحیه مرده، حساسیت، هموارسازی، منحنی پاسخ، معکوس کردن) را روی حرکتی اجرا می‌کند که کنترلر مجازی به بازی یا شبیه‌ساز گزارش می‌دهد. حالت «خام» فقط خوانش کالیبره‌شده را می‌فرستد و حساسیت و هموارسازی را به خود بازی می‌سپارد. اصلاح دریفت کالیبراسیون در هر دو حالت اعمال می‌شود.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>خام</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>تنظیم‌شده</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>بازی حرکت کالیبره‌شده را می‌خواند و حساسیت و هموارسازی را خودش اعمال می‌کند.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>بازی حرکت را با حساسیت، هموارسازی و منحنی تنظیم‌شده در اینجا می‌خواند.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>بازنشانی تنظیمات عبور مستقیم</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>حساسیت</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ضریب حساسیت ژیروسکوپ برای هر منبع. 1.0 = پیش‌فرض موتور (500 درجه بر ثانیه ← انحراف کامل). مقادیر بالاتر از 1.0 حساس‌تر و مقادیر پایین‌تر از 1.0 کم‌حساس‌ترند.</value></data>
@@ -2735,8 +2733,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>این کنترلر موتور ماشه ندارد، پس بازی‌هایی که از ماشه‌های ایمپالس Xbox استفاده می‌کنند حس نمی‌شوند. در عوض هر کانال ماشه را در موتور اصلی همان سمت ادغام کنید.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>آزمایش لرزش</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>فعالیت موتور</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>چپ</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>راست</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>تا وقتی خاموشش نکنید، نیرویی پیوسته به این دستگاه اعمال می‌کند. نیرویی که بازی از هر منبعی می‌فرستد، تا وقتی فعال است جای آن را می‌گیرد و با توقف بازی، این نیرو از سر گرفته می‌شود.</value></data>
@@ -3256,7 +3252,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>صدا</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>نشانگر IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>این Wii Remote را با دوربین IR آن به سمت صفحه‌نمایش بگیرید. به یک نوار حسگر یا دو LED فروسرخ در بالا یا پایین نمایشگر نیاز دارد. برای نشانه‌گیری دقیق، آن را در صفحه «دستگاه‌ها» به‌عنوان تفنگ نوری کالیبره کنید. ریموت کالیبره‌شده «موقعیت نوار حسگر» و «آفست عمودی» را نادیده می‌گیرد.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>تنظیم نشانگر</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>موقعیت نوار حسگر</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>در مرکز</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>بالای صفحه‌نمایش</value></data>
@@ -3283,8 +3278,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>حالت نشانگر Wii را برای هر ریموت دارای IR در اسلات، میان حالت‌های انتخاب‌شده در زیر جلو می‌برد. هر بار اجرا به حالت تیک‌خورده بعدی می‌رود. موقعیت چرخه برای هر کنش جداست و با راه‌اندازی مجدد برنامه بازنشانی می‌شود.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>انتخاب کنید ماکرو میان کدام حالت‌های نشانگر بچرخد. هر بار اجرا به حالت تیک‌خورده بعدی می‌رود.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>صدا</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>صداهای ماکرو و صدای آینه‌شده سیستم از بلندگوی داخلی کنترلر انتخاب‌شده، از طریق USB یا بلوتوث، پخش می‌شوند. دستگاه را از فهرست کشویی بالا انتخاب کنید. همه تنظیمات اینجا از آن پیروی می‌کنند.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>خروجی صدا</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>صداهای ماکرو و صدای آینه‌شده سیستم از بلندگوی داخلی دستگاهی که زیر «ورودی از» انتخاب شده، از طریق USB یا بلوتوث، پخش می‌شوند. همه تنظیمات اینجا از آن دستگاه پیروی می‌کنند.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>منبع آینه‌سازی، میزان صدای هدفون، بافر، مسیر خروجی</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>صداها به‌طور خودکار به کنترلر انتخاب‌شده هدایت می‌شوند. در اتصال USB، نقطه پایانی صوتی خود گیم‌پد بر اساس کانتینر سخت‌افزاری تطبیق داده می‌شود. در اتصال بلوتوث، صدا در فریم‌های HID شرکت Sony جریان می‌یابد.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>منبع آینه‌سازی</value></data>
@@ -3347,7 +3341,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>بازنشانی حد تُن</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>هر چه خروجی پیش‌فرض سیستم پخش می‌کند را هم‌زمان روی بلندگوی داخلی این کنترلر هم کپی می‌کند. با USB و بلوتوث کار می‌کند.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>دستگاه انتخاب‌شده بلندگوی داخلی ندارد. صداهای ماکروی این گیم‌پد از خروجی پیش‌فرض سیستم پخش می‌شوند.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>بازنشانی خروجی صدا</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>مجموعه آزمون DualSense در مرورگر، اثر Xuezhou Dai با نام کاربری daidr: مرجع قاب‌بندی CRC در گزارش‌های feature شرکت Sony و فرمان‌های آزمون فریم‌ور که PadForge از گیم‌پد مجازی به فیزیکی می‌فرستد.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>روشنایی LED دکمه Guide: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>روشنایی LED دکمه Guide یا Home را برای هر کنترلر سازگار در اسلات تنظیم می‌کند. کنترلرهای Xbox آن را فقط از طریق USB می‌پذیرند.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>روی کنترلرهای Xbox از طریق USB، Steam Controller مدل 2015 و کنترلرهای Switch دارای LED دکمه Home اعمال می‌شود. دو تا از این کنش‌ها را با هم به کار ببرید تا با شروع ماکرو LED چشمک بزند و با پایان آن به حالت قبل برگردد.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>بازنشانی حالت نشانگر</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>بازنشانی تنظیم نشانگر</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>بازنشانی موقعیت نوار حسگر</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>بازنشانی آفست عمودی</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>بازنشانی هموارسازی</value></data>

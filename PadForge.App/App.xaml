@@ -105,6 +105,11 @@
                     <!-- A band across a card: the header of a group of rows,
                          one step under the card's own fill. -->
                     <SolidColorBrush x:Key="SteelBandBrush" Color="#0F1520"/>
+                    <!-- A part card's tray of feature lines, and the well of
+                         a live view with its hairline (the sections pass). -->
+                    <SolidColorBrush x:Key="SteelTrayBrush" Color="#0D131D"/>
+                    <SolidColorBrush x:Key="SteelWellBrush" Color="#0A0F17"/>
+                    <SolidColorBrush x:Key="SteelWellLineBrush" Color="#161E2B"/>
                     <SolidColorBrush x:Key="SteelPaneHoverBrush" Color="#121925"/>
                     <!-- Inside a card: a full-width row under the pointer
                          (a More row, a folded part's line), a reset
@@ -1530,6 +1535,7 @@
             <conv:SlopedWedgeGeometryConverter x:Key="SlopedWedgeGeometryConverter" />
             <conv:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
             <conv:OnOffTextConverter x:Key="OnOffTextConverter" />
+            <conv:AnyOnConverter x:Key="AnyOnConverter" />
             <conv:FormatTextConverter x:Key="FormatTextConverter" />
             <conv:ShownNamesConverter x:Key="ShownNamesConverter" />
             <conv:BracketPartConverter x:Key="BracketPartConverter" />

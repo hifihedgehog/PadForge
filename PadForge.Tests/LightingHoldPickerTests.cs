@@ -507,6 +507,35 @@ namespace PadForge.Tests
             Assert.Contains("<Setter Property=\"AutomationProperties.Name\" Value=\"{Binding ToolTip, RelativeSource={RelativeSource Self}", body);
         });
 
+        /// <summary>The Lighting Control line opens to the Lighting Hold row
+        /// (the sections pass of #574), so a device that offers no hold has
+        /// a line that does not open and a hint that names nothing it lacks.
+        /// Offered again, the line opens and its hint is the bound string,
+        /// which follows a change of language.</summary>
+        [Fact]
+        public void ALineWhoseDeviceOffersNoHold_DoesNotOpen() => RunSta(() =>
+        {
+            var line = new FoldCard();
+            Assert.True(line.CanOpen);
+            PadPage.ShowLightingControlLine(line, 0);
+            Assert.False(line.CanOpen);
+            Assert.Equal(string.Empty, line.Hint);
+            Assert.Null(System.Windows.Data.BindingOperations.GetBinding(line, FoldPart.HintProperty));
+            foreach (int offered in new[] { 1, 2 })
+            {
+                PadPage.ShowLightingControlLine(line, offered);
+                Assert.True(line.CanOpen);
+                Assert.Equal(Strings.Instance.Pad_LightingControl_FoldHint, line.Hint);
+                Assert.Equal(nameof(Strings.Pad_LightingControl_FoldHint),
+                    System.Windows.Data.BindingOperations.GetBinding(line, FoldPart.HintProperty).Path.Path);
+            }
+            PadPage.ShowLightingControlLine(line, 0);
+            Assert.False(line.CanOpen);
+            Assert.Equal(string.Empty, line.Hint);
+            // A null line is left alone.
+            PadPage.ShowLightingControlLine(null, 1);
+        });
+
         /// <summary>The row sits in the peripheral lighting panel, under
         /// the switch it qualifies and above the route line, and no other
         /// control on the page carries its IDs. Its picker's width is the
@@ -527,19 +556,25 @@ namespace PadForge.Tests
             }
             XElement Named(string name) => One(n => (string)n.Attribute(x + "Name") == name, "an element named " + name);
 
-            // The switch and the hold are the Lighting Control card's rows,
-            // the hold last, and the route line stays with the tab's text
-            // above the cards (#557: no setting sits outside a card).
-            // The card folds to one line since #574, and its rows are the
-            // fold card's one panel.
+            // The switch stands on the Lighting Control line itself (the
+            // sections pass of #574), with its own reset, and the line opens
+            // to the hold, its one row. The route line stays with the
+            // group's text above the cards (#557: no setting sits outside a
+            // card).
             var card = Named("PeripheralLightingCard");
             Assert.Equal("FoldCard", card.Name.LocalName);
+            var pair = Assert.Single(card.Elements().Single(e => e.Name.LocalName == "FoldCard.Switch").Elements());
+            Assert.Equal("{Binding DeviceConfig.PeripheralLightingEnabled, Mode=TwoWay}",
+                (string)pair.Elements().Single(e => e.Name.LocalName == "CheckBox").Attribute("IsChecked"));
+            Assert.Equal("Reset_DeviceSlotConfig_PeripheralLightingEnabled",
+                (string)pair.Elements().Single(e => e.Name.LocalName == "SettingResetButton").Attribute("AutomationProperties.AutomationId"));
             var rows = card.Elements().Single(e => e.Name.LocalName == "StackPanel")
                 .Elements().Select(e => (string)e.Attribute(x + "Name")).ToList();
-            int control = rows.IndexOf("PeripheralLightingControlRow");
-            Assert.True(control >= 0);
-            Assert.Equal("PeripheralClaimLevelRow", rows[control + 1]);
-            Assert.Equal(control + 2, rows.Count);
+            Assert.Equal(new[] { "PeripheralClaimLevelRow" }, rows);
+            Assert.DoesNotContain("PeripheralLightingControlRow", RepoText("PadForge.App", "Views", "PadPage.xaml"));
+            // A device that offers no hold has the switch alone, and the
+            // line neither opens nor names the hold in its hint.
+            Assert.Contains("ShowLightingControlLine(PeripheralLightingCard, offeredHold);", RepoText("PadForge.App", "Views", "PadPage.xaml.cs"));
             var panel = Named("PeripheralLightingPanel");
             Assert.Contains("PeripheralLightingRoute", panel.Elements().Select(e => (string)e.Attribute(x + "Name")));
 

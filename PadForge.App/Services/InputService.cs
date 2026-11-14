@@ -3179,6 +3179,23 @@ namespace PadForge.Services
                     if (selected != null && selected.InstanceGuid != Guid.Empty)
                     {
                         UserDevice ud = FindUserDevice(selected.InstanceGuid);
+                        // The device's own touchpad for the Touchpad card's
+                        // live view (the sections pass of #574): its first
+                        // pad's first two fingers, read as the Devices page's
+                        // preview reads them. A position is written before
+                        // its finger's contact, so a finger that lands is
+                        // drawn where it landed. No pad reads as no finger.
+                        {
+                            var pads = ud?.InputState?.Touchpads;
+                            var pad = ud != null && (ud.HasTouchpad || ud.IsTouchpad) && pads != null && pads.Length > 0 ? pads[0] : null;
+                            bool down0 = pad != null && pad.MaxFingers > 0 && pad.FingerDown[0];
+                            bool down1 = pad != null && pad.MaxFingers > 1 && pad.FingerDown[1];
+                            if (down0) { padVm.DeviceTouchX0 = pad.FingerX[0]; padVm.DeviceTouchY0 = pad.FingerY[0]; }
+                            if (down1) { padVm.DeviceTouchX1 = pad.FingerX[1]; padVm.DeviceTouchY1 = pad.FingerY[1]; }
+                            padVm.DeviceTouchDown0 = down0;
+                            padVm.DeviceTouchDown1 = down1;
+                            padVm.DeviceTouchTapered = ud != null && GameModEffects.IsSonyPad(ud.VendorId, ud.ProdId);
+                        }
                         if (ud != null && (ud.HasGyro || ud.HasAccel))
                         {
                             const double RadToDeg = 180.0 / System.Math.PI;
@@ -3260,6 +3277,14 @@ namespace PadForge.Services
                             if (DateTime.UtcNow >= padVm.GyroCalibrationLabelHoldUntilUtc)
                                 padVm.GyroCalibrationLabel = _gyroBiasMemo[i].Label;
                         }
+                    }
+                    else
+                    {
+                        // No device picked: no finger on the card's touchpad,
+                        // and the pad is drawn as no device's own.
+                        padVm.DeviceTouchDown0 = false;
+                        padVm.DeviceTouchDown1 = false;
+                        padVm.DeviceTouchTapered = false;
                     }
                 }
                 }
@@ -11861,15 +11886,13 @@ namespace PadForge.Services
             // PadSettings, NOT by the VM's AudioRumbleEnabled property. ──
             //
             // The VM property mirrors whichever device is currently
-            // selected in the assigned-devices dropdown — it loads from
-            // SelectedMappedDevice's PadSetting on selection switch.
-            // If we keyed the detector off the VM, switching the
-            // dropdown to a device that doesn't have audio rumble
+            // picked under Driven by: it loads from SelectedMappedDevice's
+            // PadSetting on selection switch. If we keyed the detector off
+            // the VM, picking a device that doesn't have audio rumble
             // enabled would STOP THE DETECTOR for the whole app, even
-            // though another device on the slot still has it on. The
-            // assigned-devices dropdown's job is JUST configuration —
-            // its current selection must not change which slots
-            // produce audio rumble at runtime.
+            // though another device on the slot still has it on. Picking
+            // a device under Driven by is JUST configuration: the pick
+            // must not change which slots produce audio rumble at runtime.
             //
             // Walk the actual UserSetting → PadSetting storage instead.
             // Detector runs when ANY (device, slot) PadSetting has

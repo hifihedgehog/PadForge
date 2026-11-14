@@ -1181,6 +1181,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>ปรับวิธีที่ PadForge ปรับสเกลเหตุการณ์ฟอร์ซฟีดแบ็กจากเกม และวิธีส่งไปยังมอเตอร์การสั่นหรือแอคชูเอเตอร์แฮปติกของคอนโทรลเลอร์จริง การสั่นตามเสียงจะเพิ่มชั้นที่ขับด้วยเสียงของระบบซ้อนทับอีกชั้นหนึ่ง</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>อุปกรณ์นี้</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>ทั้งคอนโทรลเลอร์</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>สติ๊กทั้งสอง</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>การสั่นจะเล่นบน {0} เป็นพัลส์แฮปติก โดยส่งตรงไปยังอุปกรณ์ การสั่นที่แรงขึ้นจะเลือกพัลส์ที่แรงขึ้นและเล่นซ้ำถี่ขึ้น</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>การตอบสนองแบบแฮปติกของ {0} ถูกปิดอยู่ใน Logi Options+ จึงไม่เล่นอะไรจนกว่าคุณจะเปิดกลับมาที่นั่น</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>อุปกรณ์นี้ยังไม่ตอบกลับ การสั่นจะเล่นเมื่ออุปกรณ์ตื่นขึ้น</value></data>
@@ -1267,7 +1268,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>เมนบอร์ด การ์ดจอ และหน่วยความจำ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>เมนบอร์ดและการ์ดจอ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>แผ่นรองเมาส์ ชุดหูฟัง และแท่นวางชุดหูฟัง</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>แถบไฟ</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>เกมจะเข้าควบคุมทุกครั้งที่เขียนค่าแสงไฟ</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ป้อนสีฐานสิบหกหกหลัก (RRGGBB หรือ #RRGGBB) แล้วกด Enter หรือคลิกที่อื่นเพื่อนำไปใช้</value></data>
@@ -1897,7 +1897,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>ปล่อยเมาส์ {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>สลับเปิด/ปิดโอเวอร์เลย์ทัชแพด</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>ตั้งสีแถบไฟ</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>แทนที่แถบไฟของช่อง PlayStation ที่กำหนดด้วยสี RGB ที่เลือก แบบ “ตอบสนอง” จะจางจากความเข้มเต็มที่ไปจนดำภายในช่วงเวลาจางลงที่กำหนด แล้วคืนการควบคุมให้การตั้งค่าของการ์ดแถบไฟ แบบ “ค้าง” จะคงสีไว้จนกว่าจะมีแอ็กชัน “ล้างการแทนที่แถบไฟ” ทำงาน ค่าที่เกมเขียนยังคงมีลำดับความสำคัญเหนือการแทนที่นี้</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>แทนที่แถบไฟของช่อง PlayStation ที่กำหนดด้วยสี RGB ที่เลือก แบบ “ตอบสนอง” จะจางจากความเข้มเต็มที่ไปจนดำภายในช่วงเวลาจางลงที่กำหนด แล้วคืนการควบคุมให้การตั้งค่าของการ์ดแสงไฟ แบบ “ค้าง” จะคงสีไว้จนกว่าจะมีแอ็กชัน “ล้างการแทนที่แถบไฟ” ทำงาน ค่าที่เกมเขียนยังคงมีลำดับความสำคัญเหนือการแทนที่นี้</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>กะพริบแถบไฟ {0} (จางลง {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>คงแถบไฟ {0} จนกว่าจะล้าง</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>ล้างการแทนที่แถบไฟ</value></data>
@@ -1905,7 +1905,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>ยกเลิกการแทนที่แถบไฟที่ทำงานอยู่บนช่องที่กำหนด ใช้คู่กับแอ็กชัน “ตั้งสีแถบไฟ” แบบค้าง เพื่อยกเลิกผ่านแมโครอื่น</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>ตั้งโหมดแถบไฟ</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>ตั้งโหมดแถบไฟเป็น {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>ตั้งโหมดแถบไฟของช่องที่กำหนดเป็นค่าที่ระบุ คงอยู่เหมือนการแก้ไขบนการ์ดแถบไฟ จนกว่าแอ็กชันอื่นหรือผู้ใช้จะเปลี่ยน</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>ตั้งโหมดแถบไฟของช่องที่กำหนดเป็นค่าที่ระบุ คงอยู่เหมือนการแก้ไขบนการ์ดแสงไฟ จนกว่าแอ็กชันอื่นหรือผู้ใช้จะเปลี่ยน</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>วนโหมดแถบไฟ</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>วนผ่านโหมดแถบไฟ {0} โหมด</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>เลื่อนโหมดแถบไฟของช่องไปตามโหมดที่เลือกด้านล่าง แต่ละครั้งที่ทำงานจะย้ายไปยังโหมดถัดไปที่เลือกไว้ ตำแหน่งในรอบวนแยกตามแอ็กชัน และรีเซ็ตเมื่อเริ่มแอปใหม่</value></data>
@@ -1920,7 +1920,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>การจางลง</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>เฟด</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>จานสี</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>จานสีว่างจะใช้จานสีบนการ์ดแถบไฟของช่อง</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>จานสีว่างจะใช้จานสีบนการ์ดแสงไฟของช่อง</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>โหมด</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>เลือกโหมดแถบไฟที่แมโครจะวนผ่าน แต่ละครั้งที่ทำงานจะเลื่อนไปยังโหมดถัดไปที่เลือกไว้</value></data>
 
@@ -2150,6 +2150,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>เอาต์พุตเมาส์</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>กลับทิศ โมเมนตัม การตอบสนอง ความเร่ง การสะบัด</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>ตำแหน่งเซนเซอร์บาร์ ค่าชดเชยแนวตั้ง การปรับเรียบ</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>ปรับความเร็วเคอร์เซอร์เมื่อแมปนิ้วบนทัชแพดไปยังเมาส์ X/Y บนคอนโทรลเลอร์เสมือนแบบคีย์บอร์ด / เมาส์ ค่าเริ่มต้นคือ 1.0 เพิ่มค่าของแกนใดแกนหนึ่งเพื่อให้เคอร์เซอร์เร็วขึ้น ลดค่าเพื่อให้ช้าลง “กลับทิศ” จะกลับทิศของแกนนั้น</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>ความไวเมาส์ X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>ตัวคูณสำหรับค่าเปลี่ยนแปลงแนวนอนจากทัชแพด → เมาส์ ต่ำกว่า 1.0 ทำให้เคอร์เซอร์ช้าลง สูงกว่า 1.0 ทำให้เร็วขึ้น</value></data>
@@ -2355,7 +2356,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>กำลังปรับเทียบ… ถือให้นิ่ง</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>รีเซ็ตการปรับเทียบ</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>ล้างค่าไบแอสของไจโรขณะอยู่นิ่งและเวลาที่ปรับเทียบล่าสุด รอบการโพลถัดไปจะเรียกใช้การปรับเทียบอัตโนมัติ 1.5 วินาทีบนอุปกรณ์นี้อีกครั้ง</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>ไจโรสโคปแบบสด</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>เซนเซอร์วัดความเร่งแบบสด</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>ความไวแนวนอน</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>ปรับสเกลส่วนของไจโรแนวนอน (ยอว์ + โรล) ที่ส่งไปยังเอาต์พุต 1.0 จะคงอัตราตามที่เอนจินเห็น ค่าที่สูงขึ้นจะขยาย ค่าที่ต่ำลงจะลดทอน มีผลในระดับอุปกรณ์ การผูกไจโรทุกรายการบนคอนโทรลเลอร์นี้จึงได้ความรู้สึกแนวนอนแบบเดียวกัน</value></data>
@@ -2375,8 +2375,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ไจโร</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>ปรับวิธีที่เซนเซอร์ตรวจจับการเคลื่อนไหวของเกมแพดนี้ควบคุมเอาต์พุตเมาส์และสติ๊ก ปรับเทียบบนพื้นผิวเรียบเพื่อขจัดการดริฟต์ขณะอยู่นิ่ง แล้วปรับความไว การปรับเรียบ และกฎการเปิดใช้ตามชอบ</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>การปรับเทียบ</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>ค่าแบบสดของไจโรสโคปและเซนเซอร์วัดความเร่ง</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>ความไว</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>หน่วย กลับทิศแกน การปรับเทียบกับโลกจริง</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° ต่อรอบ</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>การปรับรูปร่างการตอบสนอง</value></data>
@@ -2462,11 +2460,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>กว้างพิเศษ</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>ตัวคูณ</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>องศาต่อการหมุนหน้าจอหนึ่งรอบ</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>รีเซ็ตการปรับเทียบ</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>รีเซ็ตความไว</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>รีเซ็ตการปรับรูปร่างการตอบสนอง</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>รีเซ็ตการเปิดใช้</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>รีเซ็ตการส่งผ่านการเคลื่อนไหว</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>รีเซ็ตสเปซ</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>รีเซ็ตการถือ</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>รีเซ็ตความไวแนวนอน</value></data>
@@ -2486,8 +2481,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>รีเซ็ตสติ๊กเปิดใช้</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>รีเซ็ตทิศทางเปิดใช้</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>การส่งผ่านการเคลื่อนไหว</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>ใช้การปรับแต่งไจโรกับการส่งผ่านการเคลื่อนไหว</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ใช้การปรับแต่งที่เลือกได้ของการ์ดไจโร (เดดโซน ความไว การปรับเรียบ เส้นโค้งการตอบสนอง การกลับทิศ) กับการเคลื่อนไหวที่คอนโทรลเลอร์เสมือนรายงานให้เกมหรืออีมูเลเตอร์ ปิดเพื่อส่งเฉพาะค่าที่ปรับเทียบแล้ว และให้เกมใช้ความไวและการปรับเรียบของเกมเอง การแก้ไขการดริฟต์จากการปรับเทียบจะมีผลเสมอไม่ว่ากรณีใด</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ปรับแต่งจะใช้การปรับแต่งของการ์ดไจโร (เดดโซน ความไว การปรับเรียบ เส้นโค้งการตอบสนอง การกลับทิศ) กับการเคลื่อนไหวที่คอนโทรลเลอร์เสมือนรายงานให้เกมหรืออีมูเลเตอร์ ดิบจะส่งเฉพาะค่าที่ปรับเทียบแล้ว และให้เกมใช้ความไวและการปรับเรียบของเกมเอง การแก้ไขการดริฟต์จากการปรับเทียบจะมีผลไม่ว่ากรณีใด</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>ดิบ</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>ปรับแต่ง</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>เกมอ่านค่าการเคลื่อนไหวที่ปรับเทียบแล้ว และใช้ความไวและการปรับเรียบของเกมเอง</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>เกมอ่านการเคลื่อนไหวพร้อมความไว การปรับเรียบ และเส้นโค้งที่ตั้งไว้ที่นี่</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>รีเซ็ตการปรับแต่งการส่งผ่าน</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>ความไว</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ตัวคูณความไวไจโรรายแหล่งที่มา 1.0 = ค่าเริ่มต้นของเอนจิน (500°/s → ระยะโยกเต็ม) ค่าที่สูงกว่า 1.0 จะไวขึ้น ค่าที่ต่ำกว่า 1.0 จะไวน้อยลง</value></data>
@@ -2735,8 +2733,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>คอนโทรลเลอร์นี้ไม่มีมอเตอร์ทริกเกอร์ เกมที่ใช้อิมพัลส์ทริกเกอร์ของ Xbox จึงไม่ให้ความรู้สึกใด ๆ ตัวเลือกนี้จะรวมช่องสัญญาณทริกเกอร์แต่ละข้างเข้ากับมอเตอร์หลักฝั่งเดียวกันแทน</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>ทดสอบการสั่น</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>การทำงานของมอเตอร์</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>ซ้าย</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>ขวา</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>ส่งแรงต่อเนื่องไปยังอุปกรณ์นี้จนกว่าคุณจะปิด แรงที่เกมสั่งจากแหล่งใดก็ตามจะมีผลแทนขณะที่ทำงานอยู่ และแรงคงที่จะกลับมาเมื่อเกมหยุดสั่ง</value></data>
@@ -3256,7 +3252,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>เสียง</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>ตัวชี้ IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>เล็ง Wii Remote นี้ไปที่หน้าจอด้วยกล้อง IR ของรีโมต ต้องมีเซนเซอร์บาร์หรือ LED อินฟราเรดสองดวงอยู่เหนือหรือใต้จอแสดงผล ปรับเทียบเป็นปืนแสงในหน้าอุปกรณ์เพื่อเล็งให้ตรงจุด รีโมตที่ปรับเทียบแล้วจะไม่ใช้ค่าตำแหน่งเซนเซอร์บาร์และค่าชดเชยแนวตั้ง</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>การปรับแต่งตัวชี้</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>ตำแหน่งเซนเซอร์บาร์</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>กึ่งกลาง</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>เหนือหน้าจอ</value></data>
@@ -3283,8 +3278,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>เลื่อนโหมดตัวชี้ Wii ไปตามโหมดที่เลือกด้านล่างสำหรับรีโมตทุกตัวในช่องที่รองรับ IR แต่ละครั้งที่ทำงานจะย้ายไปยังโหมดถัดไปที่เลือกไว้ ตำแหน่งในรอบวนแยกตามแอ็กชัน และรีเซ็ตเมื่อเริ่มแอปใหม่</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>เลือกโหมดตัวชี้ที่แมโครจะวนผ่าน แต่ละครั้งที่ทำงานจะเลื่อนไปยังโหมดถัดไปที่เลือกไว้</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>เสียง</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>เสียงจากแมโครและเสียงของระบบที่มิเรอร์มาจะเล่นผ่านลำโพงในตัวของคอนโทรลเลอร์ที่เลือก ผ่าน USB หรือ Bluetooth เลือกอุปกรณ์ในรายการแบบหล่นลงด้านบน การตั้งค่าทั้งหมดที่นี่จะเป็นไปตามอุปกรณ์นั้น</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>เอาต์พุตเสียง</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>เสียงจากแมโครและเสียงของระบบที่มิเรอร์มาจะเล่นผ่านลำโพงในตัวของอุปกรณ์ที่เลือกไว้ใต้ ควบคุมโดย ผ่าน USB หรือ Bluetooth การตั้งค่าทั้งหมดที่นี่จะเป็นไปตามอุปกรณ์นั้น</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>แหล่งที่มาที่มิเรอร์ ระดับเสียงหูฟัง บัฟเฟอร์ เส้นทางเอาต์พุต</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>เสียงจะถูกส่งไปยังคอนโทรลเลอร์ที่เลือกโดยอัตโนมัติ ผ่าน USB จะจับคู่ปลายทางเสียงของเกมแพดเองด้วยคอนเทนเนอร์ฮาร์ดแวร์ ผ่าน Bluetooth เสียงจะถูกสตรีมในเฟรม HID ของ Sony</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>แหล่งที่มาที่มิเรอร์</value></data>
@@ -3347,7 +3341,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>รีเซ็ตขีดจำกัดโทน</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>คัดลอกทุกอย่างที่เอาต์พุตเริ่มต้นของระบบเล่นไปยังลำโพงในตัวของคอนโทรลเลอร์นี้แบบขนานกัน ใช้ได้ทั้งผ่าน USB และ Bluetooth</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>อุปกรณ์ที่เลือกไม่มีลำโพงในตัว เสียงจากแมโครของเกมแพดนี้จะเล่นบนเอาต์พุตเริ่มต้นของระบบ</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>รีเซ็ตเอาต์พุตเสียง</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>ชุดทดสอบ DualSense บนเบราว์เซอร์โดย Xuezhou Dai (daidr): ใช้อ้างอิงการจัดเฟรม CRC ของ feature report ของ Sony และคำสั่งทดสอบเฟิร์มแวร์ที่ PadForge ส่งต่อจากเกมแพดเสมือนไปยังเกมแพดจริง</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>ความสว่าง LED ปุ่ม Guide: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>ตั้งความสว่าง LED ของปุ่ม Guide หรือ Home สำหรับคอนโทรลเลอร์ทุกตัวในช่องที่รองรับ คอนโทรลเลอร์ Xbox รับค่านี้ผ่าน USB เท่านั้น</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>มีผลกับคอนโทรลเลอร์ Xbox ผ่าน USB, Steam Controller รุ่นปี 2015 และคอนโทรลเลอร์ Switch ที่มี LED ปุ่ม Home ใช้แอ็กชันนี้สองรายการคู่กันเพื่อกะพริบ LED เมื่อแมโครเริ่ม และคืนค่าเมื่อแมโครจบ</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>รีเซ็ตโหมดตัวชี้</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>รีเซ็ตการปรับแต่งตัวชี้</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>รีเซ็ตตำแหน่งเซนเซอร์บาร์</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>รีเซ็ตค่าชดเชยแนวตั้ง</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>รีเซ็ตการปรับเรียบ</value></data>

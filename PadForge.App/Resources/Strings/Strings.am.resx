@@ -1101,6 +1101,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>PadForge ከጨዋታው የሚመጡ የኃይል ግብረመልስ ክስተቶችን እንዴት እንደሚያመጣጥን እና ወደ አካላዊ መቆጣጠሪያው የንዝረት ሞተሮች ወይም የሃፕቲክ አንቀሳቃሾች እንዴት እንደሚያዘዋውራቸው ያስተካክላል። የድምጽ ንዝረት በላዩ ላይ በስርዓት ድምጽ የሚነዳ ንብርብር ያክላል።</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>ይህ መሣሪያ</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>መላው መቆጣጠሪያ</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>ሁለቱም ስቲኮች</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>ንዝረት በ{0} ላይ እንደ ሃፕቲክ ምቶች ይጫወታል፣ በቀጥታ ወደ መሣሪያው ይላካል። ጠንካራ ንዝረት ጠንካራ ምት ይመርጣል፣ በፍጥነትም ይደግመዋል።</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>ለ{0} የሃፕቲክ ግብረመልስ በLogi Options+ ውስጥ ጠፍቷል፣ ስለዚህ እዚያ መልሰህ እስክታበራው ድረስ ምንም አያጫውትም።</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>ይህ መሣሪያ እስካሁን አልመለሰም። ሲነቃ ንዝረቱ ይጫወታል።</value></data>
@@ -1166,7 +1167,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>ሄድሴቶች፣ የመዳፊት ሰሌዳዎች እና Chroma Link ስትሪፖች</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>ሄድሴቶች፣ የመዳፊት ሰሌዳዎች እና ድምጽ ማጉያዎች</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ሄድሴቶች</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>የብርሃን አሞሌ</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>ጨዋታዎች መብራት በጻፉ ቁጥር ይቆጣጠራሉ።</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ባለ ስድስት አሃዝ hex ቀለም (RRGGBB ወይም #RRGGBB) አስገባና ለመተግበር Enter ተጫን ወይም ሌላ ቦታ ጠቅ አድርግ።</value></data>
@@ -1708,7 +1708,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>የመዳፊት መልቀቅ {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>የመዳሰሻ ሰሌዳ ተደራቢን ቀያይር</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>የብርሃን አሞሌ ቀለም አዘጋጅ</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>የተመደበውን የPlayStation ቦታ የብርሃን አሞሌ በተመረጠ የRGB ቀለም ይሽራል። «ምላሽ ሰጪ» በተዋቀረው የመቀነስ ጊዜ ውስጥ ከሙሉ ጥንካሬ ወደ ጥቁር ይደበዝዛል፣ ከዚያም ቁጥጥሩን ለ«የብርሃን አሞሌ» ካርድ ቅንብሮች ይመልሳል። «ተጣባቂ» የብርሃን አሞሌ መሻርን አጽዳ ድርጊት እስኪሠራ ድረስ ቀለሙን ይይዛል። በጨዋታ የሚላኩ ትዕዛዞች አሁንም ከመሻሩ ቅድሚያ አላቸው።</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>የተመደበውን የPlayStation ቦታ የብርሃን አሞሌ በተመረጠ የRGB ቀለም ይሽራል። «ምላሽ ሰጪ» በተዋቀረው የመቀነስ ጊዜ ውስጥ ከሙሉ ጥንካሬ ወደ ጥቁር ይደበዝዛል፣ ከዚያም ቁጥጥሩን ለ«መብራት» ካርድ ቅንብሮች ይመልሳል። «ተጣባቂ» የብርሃን አሞሌ መሻርን አጽዳ ድርጊት እስኪሠራ ድረስ ቀለሙን ይይዛል። በጨዋታ የሚላኩ ትዕዛዞች አሁንም ከመሻሩ ቅድሚያ አላቸው።</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>የብርሃን አሞሌን {0} ብልጭ አድርግ (መቀነስ {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>እስኪጸዳ ድረስ የብርሃን አሞሌን {0} ያዝ</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>የብርሃን አሞሌ መሻርን አጽዳ</value></data>
@@ -1716,7 +1716,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>በተመደበው ቦታ ላይ ያለ ማንኛውንም ንቁ የብርሃን አሞሌ መሻር ይለቃል። በሌላ ማክሮ ለመቀልበስ ከተጣባቂ «የብርሃን አሞሌ ቀለም አዘጋጅ» ድርጊት ጋር አጣምረው።</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>የብርሃን አሞሌ ሁነታ አዘጋጅ</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>የብርሃን አሞሌ ሁነታን ወደ {0} አዘጋጅ</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>የተመደበውን ቦታ የብርሃን አሞሌ ሁነታ ወደ አንድ የተወሰነ እሴት ያዘጋጃል። ሌላ ድርጊት ወይም ተጠቃሚው እስኪቀይረው ድረስ በ«የብርሃን አሞሌ» ካርድ ላይ እንደተደረገ ለውጥ ይቆያል።</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>የተመደበውን ቦታ የብርሃን አሞሌ ሁነታ ወደ አንድ የተወሰነ እሴት ያዘጋጃል። ሌላ ድርጊት ወይም ተጠቃሚው እስኪቀይረው ድረስ በ«መብራት» ካርድ ላይ እንደተደረገ ለውጥ ይቆያል።</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>የብርሃን አሞሌ ሁነታዎችን አዟዙር</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>በ{0} የብርሃን አሞሌ ሁነታዎች መካከል አዟዙር</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>የቦታውን የብርሃን አሞሌ ሁነታ ከታች በተመረጡት ሁነታዎች ውስጥ ያሳልፋል። እያንዳንዱ ሥራ ወደ ቀጣዩ ምልክት የተደረገበት ሁነታ ይሄዳል። የዙሩ ቦታ ለእያንዳንዱ ድርጊት የተለየ ነው፣ መተግበሪያው እንደገና ሲጀመርም ዳግም ይጀምራል።</value></data>
@@ -1731,7 +1731,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>መቀነስ</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>መደብዘዝ</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>ቤተ-ቀለም</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>ባዶ ቤተ-ቀለም በቦታው «የብርሃን አሞሌ» ካርድ ላይ ያለውን የቀለም ስብስብ ይጠቀማል።</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>ባዶ ቤተ-ቀለም በቦታው «መብራት» ካርድ ላይ ያለውን የቀለም ስብስብ ይጠቀማል።</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>ሁነታ</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>ማክሮው የትኞቹን የብርሃን አሞሌ ሁነታዎች እንደሚያዟዙር ምረጥ። እያንዳንዱ ሥራ ወደ ቀጣዩ ምልክት የተደረገበት ሁነታ ይሄዳል።</value></data>
 
@@ -1961,6 +1961,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>የመዳፊት ውጤት</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>መገልበጥ፣ ሞመንተም፣ ምላሽ፣ ማፋጠን፣ ውርወራ</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>የሴንሰር አሞሌ ቦታ፣ ቁመታዊ ማካካሻ፣ ማለስለሻ</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>የመዳሰሻ ሰሌዳ ጣት በቁልፍ ሰሌዳ / መዳፊት ምናባዊ መቆጣጠሪያ ላይ ከመዳፊት X/Y ጋር ሲዛመድ የጠቋሚውን ፍጥነት ያስተካክላል። ነባሪው 1.0 ነው። ለፈጣን ጠቋሚ ማንኛውንም ዘንግ ጨምር፣ ለዝግተኛ ቀንስ። ገልብጥ ማንኛውንም ዘንግ ይገለብጣል።</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>የመዳፊት ትብነት X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>ለአግድም የመዳሰሻ ሰሌዳ → የመዳፊት ለውጥ ማባዣ። ከ1.0 በታች ጠቋሚውን ያዘገያል። ከ1.0 በላይ ያፈጥነዋል።</value></data>
@@ -2166,7 +2167,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>በማስተካከል ላይ… ሳታንቀሳቅስ ያዝ</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>ማስተካከያን ዳግም አስጀምር</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>የእረፍት የጋይሮ ልዩነትን እና የመጨረሻውን የማስተካከያ ጊዜ ማህተም ያጸዳል። ቀጣዩ የንባብ ዑደት በዚህ መሣሪያ ላይ የ1.5 ሰከንድ ራስ-ሰር ማስተካከያን እንደገና ያካሂዳል።</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>ቀጥታ ጋይሮስኮፕ</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>ቀጥታ አክስሌሮሜትር</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>አግድም ትብነት</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>የአግድም (ያው + ሮል) ጋይሮ አስተዋጽኦን ለውጤቱ ያመዛዝናል። 1.0 ፍጥነቱን ኢንጂኑ እንደሚያየው ይተዋል። ከፍተኛ እሴቶች ያጎላሉ፣ ዝቅተኛ እሴቶች ያዳክማሉ። በመሣሪያ ደረጃ ስለሚተገበር በዚህ መቆጣጠሪያ ላይ ያለ እያንዳንዱ የጋይሮ ማዛመጃ ተመሳሳይ አግድም ስሜት ይወርሳል።</value></data>
@@ -2186,8 +2186,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ጋይሮ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>የዚህ መቆጣጠሪያ የእንቅስቃሴ ዳሳሽ የመዳፊት እና የስቲክ ውጤትን እንዴት እንደሚመራ አስተካክል። የእረፍት መንሸራተትን ለማጥፋት በጠፍጣፋ ገጽ ላይ አስተካክል፣ ከዚያ ትብነትን፣ ማለስለስን እና የማንቃት ደንቦችን እንደፍላጎትህ አዘጋጅ።</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>ማስተካከያ</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>ቀጥታ የጋይሮስኮፕ እና የአክስሌሮሜትር ንባቦች</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>ትብነት</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>አሃዶች፣ ዘንጎችን መገልበጥ፣ የእውነተኛ ዓለም ማስተካከያ</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>በአንድ ዙር ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>የምላሽ ቅርጽ</value></data>
@@ -2273,11 +2271,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>በጣም ሰፊ</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>ማባዣ</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>ዲግሪ በማያ ገጽ ዙር</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>ማስተካከያን ዳግም አስጀምር</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>ትብነትን ዳግም አስጀምር</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>የምላሽ ቅርጽን ዳግም አስጀምር</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>ማንቃትን ዳግም አስጀምር</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>የእንቅስቃሴ ማሳለፍን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>ምህዳርን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>አያያዝን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>አግድም ትብነትን ዳግም አስጀምር</value></data>
@@ -2297,8 +2292,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>የማንቂያ ስቲክን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>የማንቂያ አቅጣጫን ዳግም አስጀምር</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>የእንቅስቃሴ ማሳለፍ</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>የጋይሮ ቅንብሮችን በእንቅስቃሴ ማሳለፍ ላይ ተግብር</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>የጋይሮ ካርዶቹን ተጨማሪ ቅንብሮች (የሞተ ቀጠና፣ ትብነት፣ ማለስለስ፣ የምላሽ ኩርባ፣ ገልብጥ) ምናባዊ መቆጣጠሪያው ለጨዋታው ወይም ለኢሙሌተሩ በሚዘግበው እንቅስቃሴ ላይ ያካሂዳል። የተስተካከለውን ንባብ ብቻ ለመላክ እና ጨዋታው የራሱን ትብነት እና ማለስለስ እንዲተገብር ለማድረግ አጥፋው። የማስተካከያ መንሸራተት እርማት በሁለቱም ሁኔታ ሁልጊዜ ይተገበራል።</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>«የተቃኘ» የጋይሮ ካርዱን ተጨማሪ ቅንብሮች (የሞተ ቀጠና፣ ትብነት፣ ማለስለስ፣ የምላሽ ኩርባ፣ ገልብጥ) ምናባዊ መቆጣጠሪያው ለጨዋታው ወይም ለኢሙሌተሩ በሚዘግበው እንቅስቃሴ ላይ ያካሂዳል። «ጥሬ» የተስተካከለውን ንባብ ብቻ ይልካል እና ጨዋታው የራሱን ትብነት እና ማለስለስ እንዲተገብር ያደርጋል። የማስተካከያ መንሸራተት እርማት በሁለቱም ሁኔታ ይተገበራል።</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>ጥሬ</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>የተቃኘ</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>ጨዋታው የተስተካከለውን እንቅስቃሴ ያነባል እና የራሱን ትብነት እና ማለስለስ ይተገብራል።</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>ጨዋታው እንቅስቃሴውን እዚህ በተዘጋጁት ትብነት፣ ማለስለስ እና ኩርባ ያነባል።</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>የማሳለፍ ቅንብሮችን ዳግም አስጀምር</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>ትብነት</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ለእያንዳንዱ ምንጭ የጋይሮ ትብነት ማባዣ። 1.0 = የኢንጂኑ ነባሪ (500°/s → ሙሉ ማፈንገጥ)። ከ1.0 በላይ ያሉ እሴቶች ይበልጥ ትብ ናቸው። ከ1.0 በታች ያሉ እሴቶች ትብነታቸው ያነሰ ነው።</value></data>
@@ -2539,8 +2537,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>ይህ መቆጣጠሪያ የትሪገር ሞተሮች የሉትም፣ ስለዚህ የXbox ኢምፐልስ ትሪገሮችን የሚጠቀሙ ጨዋታዎች አይሰማቸውም። በምትኩ እያንዳንዱን የትሪገር ቻናል በዚያው ጎን ወዳለው ዋና ሞተር አዋህድ።</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>ንዝረትን ሞክር</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>የሞተር እንቅስቃሴ</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>ግራ</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>ቀኝ</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>እስክታጠፋው ድረስ በዚህ መሣሪያ ላይ ቀጣይነት ያለው ኃይል ተግብር። ከማንኛውም ምንጭ በጨዋታ የሚላክ ኃይል ገባሪ ሆኖ ሳለ ይቀድማል፣ ጨዋታው ሲያቆም ደግሞ ይህ ኃይል ይቀጥላል።</value></data>
@@ -3028,7 +3024,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>ድምጽ</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR ጠቋሚ</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>ይህን Wii Remote በIR ካሜራው ወደ ማያ ገጹ ያነጣጥሩ። የሴንሰር አሞሌ ወይም ከማሳያው በላይ ወይም በታች ሁለት የኢንፍራሬድ LED መብራቶች ያስፈልጋሉ። ትክክለኛውን ቦታ ለማነጣጠር በመሣሪያዎች ገጽ ላይ እንደ የብርሃን ሽጉጥ ያስተካክሉት። የተስተካከለ ሪሞት የሴንሰር አሞሌ ቦታን እና ቁመታዊ ማካካሻን ችላ ይላል።</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>የጠቋሚ ማስተካከያ</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>የሴንሰር አሞሌ ቦታ</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>መሃል ላይ</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>ከማያ ገጹ በላይ</value></data>
@@ -3055,8 +3050,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>በቦታው ላይ IR ለሚደግፉ ሁሉም ሪሞቶች የWii ጠቋሚ ሁነታን ከታች በተመረጡት ሁነታዎች ውስጥ ወደፊት ያራምዳል። እያንዳንዱ ተግባር ወደ ቀጣዩ ምልክት የተደረገበት ሁነታ ይሸጋገራል። የዑደቱ ቦታ ለእያንዳንዱ እርምጃ የተለየ ነው፣ መተግበሪያው እንደገና ሲጀምርም ዳግም ይጀመራል።</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>ማክሮው በየትኞቹ የጠቋሚ ሁነታዎች መካከል መቀያየር እንዳለበት ይምረጡ። እያንዳንዱ ተግባር ወደ ቀጣዩ ምልክት የተደረገበት ሁነታ ያራምዳል።</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ድምጽ</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>የማክሮ ድምጾች እና የተንጸባረቀ የስርዓት ድምጽ በተመረጠው መቆጣጠሪያ አብሮገነብ ድምጽ ማጉያ በUSB ወይም በBluetooth ይጫወታሉ። መሣሪያውን ከላይ ባለው ተቆልቋይ ዝርዝር ይምረጡ። እዚህ ያለው እያንዳንዱ ቅንብር እሱን ይከተላል።</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>የድምጽ ውጽዓት</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>የማክሮ ድምጾች እና የተንጸባረቀ የስርዓት ድምጽ በ«ምንጭ» ስር በተመረጠው መሣሪያ አብሮገነብ ድምጽ ማጉያ በUSB ወይም በBluetooth ይጫወታሉ። እዚህ ያለው እያንዳንዱ ቅንብር ያንን መሣሪያ ይከተላል።</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>የማንጸባረቂያ ምንጭ፣ የጆሮ ማዳመጫ የድምጽ መጠን፣ ቋት፣ የውጤት መንገድ</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>ድምጾች ወደ ተመረጠው መቆጣጠሪያ በራስ-ሰር ይላካሉ። በUSB ላይ የመቆጣጠሪያው የራሱ የድምጽ መዳረሻ ነጥብ በሃርድዌር ኮንቴይነር ይዛመዳል። በBluetooth ላይ ድምጹ በSony HID ፍሬሞች ይተላለፋል።</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>የማንጸባረቂያ ምንጭ</value></data>
@@ -3119,7 +3113,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>የቃና ገደብን ዳግም አስጀምር</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>የስርዓቱ ነባሪ ውጽዓት የሚያጫውተውን ማንኛውንም ነገር በትይዩ ወደዚህ መቆጣጠሪያ አብሮገነብ ድምጽ ማጉያ ይቀዳል። በUSB እና በBluetooth ይሠራል።</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>የተመረጠው መሣሪያ አብሮገነብ ድምጽ ማጉያ የለውም። የዚህ መቆጣጠሪያ የማክሮ ድምጾች በስርዓቱ ነባሪ ውጽዓት ላይ ይጫወታሉ።</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>የድምጽ ውጽዓትን ዳግም አስጀምር</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>በXuezhou Dai (daidr) የተሠራ በአሳሽ የሚሠራ የDualSense መሞከሪያ ስብስብ፦ PadForge ከምናባዊ ወደ አካላዊ መቆጣጠሪያዎች ለሚያስተላልፋቸው የSony feature ሪፖርት CRC ክፈፎች እና የፈርምዌር የሙከራ ትዕዛዞች ማጣቀሻ።</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3550,8 +3543,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>የGuide LED ብሩህነት፦ {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>በቦታው ላይ ላለ እያንዳንዱ ተስማሚ መቆጣጠሪያ የGuide ወይም Home አዝራር LED ብሩህነትን ያዘጋጃል። የXbox መቆጣጠሪያዎች በUSB ብቻ ይቀበሉታል።</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>በUSB ለተገናኙ የXbox መቆጣጠሪያዎች፣ ለ2015 Steam Controller እና የHome አዝራር LED ላላቸው የSwitch መቆጣጠሪያዎች ይሠራል። ማክሮ ሲጀምር LEDውን ለማብለጭለጭና ሲያልቅ ለመመለስ ከእነዚህ ተግባራት ሁለቱን አብረው ይጠቀሙ።</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>የጠቋሚ ሁነታን ዳግም አስጀምር</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>የጠቋሚ ማመቻቸትን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>የሴንሰር አሞሌ አቀማመጥን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>አቀባዊ ማካካሻን ዳግም አስጀምር</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>ማለስለስን ዳግም አስጀምር</value></data>

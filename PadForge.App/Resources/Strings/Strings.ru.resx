@@ -1181,6 +1181,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Настраивает, как PadForge масштабирует события силовой обратной связи от игры и как направляет их на моторы вибрации или тактильные приводы физического контроллера. «Вибрация от звука» добавляет поверх слой, которым управляет системный звук.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Это устройство</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Весь контроллер</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Оба стика</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Вибрация воспроизводится на {0} в виде тактильных импульсов, которые отправляются прямо на устройство. Чем сильнее вибрация, тем сильнее импульс и тем чаще он повторяется.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Тактильная отдача для {0} отключена в Logi Options+, поэтому ничего не воспроизводится, пока вы не включите ее там снова.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Это устройство пока не ответило. Вибрация заработает, когда оно проснется.</value></data>
@@ -1267,7 +1268,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>материнские платы, видеокарты и память</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>материнские платы и видеокарты</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>коврики для мыши, гарнитуры и подставки для гарнитур</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Световая панель</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Игры перехватывают управление всякий раз, когда записывают подсветку.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Введите шестизначный шестнадцатеричный код цвета (RRGGBB или #RRGGBB) и нажмите Enter или щелкните в стороне, чтобы применить.</value></data>
@@ -1897,7 +1897,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Отпустить кнопку мыши: {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Переключить оверлей тачпада</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Задать цвет световой панели</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Переопределяет световую панель назначенного слота PlayStation выбранным цветом RGB. «Реактивный» режим угасает от полной яркости до черного за заданное время затухания, а затем возвращает управление настройкам карточки «Световая панель». «С фиксацией» держит цвет, пока не выполнится действие «Снять переопределение световой панели». Запись от игры по-прежнему имеет приоритет над переопределением.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Переопределяет световую панель назначенного слота PlayStation выбранным цветом RGB. «Реактивный» режим угасает от полной яркости до черного за заданное время затухания, а затем возвращает управление настройкам карточки «Подсветка». «С фиксацией» держит цвет, пока не выполнится действие «Снять переопределение световой панели». Запись от игры по-прежнему имеет приоритет над переопределением.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Вспышка световой панели: {0} (затухание {1} мс)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Держать световую панель {0} до снятия</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Снять переопределение световой панели</value></data>
@@ -1905,7 +1905,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Снимает любое активное переопределение световой панели в назначенном слоте. Используйте в паре с действием «Задать цвет световой панели» в режиме «С фиксацией», чтобы отменять его другим макросом.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Задать режим световой панели</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Задать режим световой панели: {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Задает конкретный режим световой панели назначенного слота. Сохраняется, как изменение в карточке «Световая панель», пока его не изменит другое действие или пользователь.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Задает конкретный режим световой панели назначенного слота. Сохраняется, как изменение в карточке «Подсветка», пока его не изменит другое действие или пользователь.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Перебирать режимы световой панели</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Перебор режимов световой панели: {0}</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Переключает режим световой панели слота по режимам, выбранным ниже. Каждое срабатывание переходит к следующему отмеченному режиму. Позиция в цикле своя у каждого действия и сбрасывается при перезапуске приложения.</value></data>
@@ -1920,7 +1920,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Затухание</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Спад</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Палитра</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>При пустой палитре используется палитра слота из карточки «Световая панель».</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>При пустой палитре используется палитра слота из карточки «Подсветка».</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Режим</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Выберите, какие режимы световой панели должен перебирать макрос. Каждое срабатывание переходит к следующему отмеченному режиму.</value></data>
 
@@ -2150,6 +2150,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Выход на мышь</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Инверсия, Инерция, Отклик, Ускорение, бросок</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Положение сенсорной планки, Вертикальное смещение, Сглаживание</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Настраивает скорость курсора, когда палец на тачпаде назначен на оси мыши X/Y виртуального контроллера «Клавиатура + мышь». По умолчанию 1.0. Увеличьте значение по любой оси, чтобы курсор двигался быстрее, уменьшите, чтобы медленнее. Инверсия переворачивает соответствующую ось.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Чувствительность мыши по X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Множитель горизонтального смещения тачпад → мышь. Ниже 1.0 курсор замедляется. Выше 1.0 ускоряется.</value></data>
@@ -2355,7 +2356,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Калибровка… не двигайте контроллер</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Сбросить калибровку</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Очищает смещение гироскопа в покое и отметку времени последней калибровки. В следующем цикле опроса на этом устройстве заново выполнится автокалибровка длительностью 1.5 секунды.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Гироскоп в реальном времени</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Акселерометр в реальном времени</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Горизонтальная чувствительность</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Масштабирует горизонтальный вклад гироскопа (рыскание + крен) в выход. При 1.0 скорость остается такой, какой ее видит движок. Большие значения усиливают, меньшие ослабляют. Применяется на уровне устройства, поэтому все привязки гироскопа на этом контроллере получают одинаковое горизонтальное ощущение.</value></data>
@@ -2375,8 +2375,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Гироскоп</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Настройте, как датчик движения этого геймпада управляет выходом мыши и стика. Откалибруйте его на ровной поверхности, чтобы обнулить дрейф в покое, а затем подберите по вкусу чувствительность, сглаживание и правила включения.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Калибровка</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Текущие показания гироскопа и акселерометра</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Чувствительность</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Единицы, инверсия осей, Калибровка по реальному повороту</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° на оборот</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Форма отклика</value></data>
@@ -2462,11 +2460,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Очень широкая</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Множитель</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Градусы на оборот экрана</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Сбросить калибровку</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Сбросить чувствительность</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Сбросить форму отклика</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Сбросить включение</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Сбросить сквозную передачу движения</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Сбросить пространство</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Сбросить хват</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Сбросить горизонтальную чувствительность</value></data>
@@ -2486,8 +2481,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Сбросить стик включения</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Сбросить направление включения</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Сквозная передача движения</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Применять настройки гироскопа к сквозной передаче движения</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Применяет необязательные настройки из карточек группы «Гироскоп» (мертвая зона, чувствительность, сглаживание, кривая отклика, инверсия) к движению, которое виртуальный контроллер сообщает игре или эмулятору. Выключите, чтобы отправлять только откалиброванные показания и дать игре применить собственные чувствительность и сглаживание. Коррекция дрейфа по калибровке применяется в любом случае.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>«Настроенное» применяет настройки из карточки «Гироскоп» (мертвая зона, чувствительность, сглаживание, кривая отклика, инверсия) к движению, которое виртуальный контроллер сообщает игре или эмулятору. «Исходное» отправляет только откалиброванные показания и дает игре применить собственные чувствительность и сглаживание. Коррекция дрейфа по калибровке применяется в любом случае.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Исходное</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Настроенное</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Игра получает откалиброванное движение и применяет собственные чувствительность и сглаживание.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Игра получает движение с чувствительностью, сглаживанием и кривой, заданными здесь.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Сбросить настройки сквозной передачи</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Чувствительность</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Множитель чувствительности гироскопа для отдельного источника. 1.0 = значение движка по умолчанию (500°/с → полное отклонение). Значения выше 1.0 повышают чувствительность. Значения ниже 1.0 понижают ее.</value></data>
@@ -2735,8 +2733,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>У этого контроллера нет моторов в триггерах, поэтому эффекты игр, использующих импульсные триггеры Xbox, не ощущались бы. Вместо этого каждый канал триггера переносится на основной мотор с той же стороны.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Проверить вибрацию</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Активность моторов</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Левый</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Правый</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Подает постоянное усилие на это устройство, пока вы его не выключите. Усилие, заданное игрой из любого источника, имеет приоритет, пока оно действует, а когда игра его прекращает, постоянное усилие возвращается.</value></data>
@@ -3256,7 +3252,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>Звук</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>ИК-указатель</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Наводите этот Wii Remote на экран с помощью его ИК-камеры. Нужна сенсорная планка или два инфракрасных светодиода над дисплеем или под ним. Чтобы попадать точно в нужную точку, откалибруйте его как световой пистолет на странице «Устройства». Откалиброванный пульт игнорирует параметры «Положение сенсорной планки» и «Вертикальное смещение».</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Настройка указателя</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Положение сенсорной планки</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>По центру</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Над экраном</value></data>
@@ -3283,8 +3278,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Переключает режим указателя Wii по режимам, выбранным ниже, для каждого пульта с ИК-камерой в этом слоте. Каждое срабатывание переходит к следующему отмеченному режиму. Позиция в цикле своя у каждого действия и сбрасывается при перезапуске приложения.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Выберите, какие режимы указателя должен перебирать макрос. Каждое срабатывание переходит к следующему отмеченному режиму.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Звук</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Звуки макросов и дублируемый системный звук воспроизводятся через встроенный динамик выбранного контроллера, по USB или Bluetooth. Выберите устройство в списке выше. Все настройки здесь относятся к нему.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Вывод звука</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Звуки макросов и дублируемый системный звук воспроизводятся через встроенный динамик устройства, выбранного в поле «Источник ввода», по USB или Bluetooth. Все настройки здесь относятся к этому устройству.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Источник дублирования, Громкость наушников, буфер, Путь вывода</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Звуки направляются на выбранный контроллер автоматически. По USB собственное аудиоустройство геймпада определяется по аппаратному контейнеру. По Bluetooth звук передается потоком в кадрах Sony HID.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Источник дублирования</value></data>
@@ -3347,7 +3341,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Сбросить предел тона</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Параллельно копирует все, что воспроизводит системное устройство вывода по умолчанию, на встроенный динамик этого контроллера. Работает по USB и Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>У выбранного устройства нет встроенного динамика. Звуки макросов для этого геймпада воспроизводятся на системном устройстве вывода по умолчанию.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Сбросить вывод звука</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Браузерный набор тестов DualSense от Xuezhou Dai (daidr): образец для кадрирования feature-отчетов Sony с CRC и тестовых команд прошивки, которые PadForge пересылает с виртуальных геймпадов на физические.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Яркость LED-индикатора Guide: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Задает яркость LED-индикатора кнопки Guide или Home для каждого поддерживающего это контроллера в слоте. Контроллеры Xbox принимают ее только по USB.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Действует на контроллеры Xbox по USB, Steam Controller 2015 года и контроллеры Switch с LED-индикатором кнопки Home. Используйте два таких действия в паре, чтобы мигнуть LED-индикатором при запуске макроса и восстановить его яркость по завершении.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Сбросить режим указателя</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Сбросить настройку указателя</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Сбросить положение сенсорной планки</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Сбросить вертикальное смещение</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Сбросить сглаживание</value></data>

@@ -1181,6 +1181,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Ladí, jak PadForge škáluje události silové zpětné vazby ze hry a jak je směruje do vibračních motorů nebo haptických aktuátorů fyzického ovladače. Vibrace podle zvuku k tomu přidávají vrstvu řízenou systémovým zvukem.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Toto zařízení</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Celý ovladač</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Obě páčky</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Vibrace se na zařízení {0} přehrávají jako haptické pulzy posílané přímo do zařízení. Silnější vibrace zvolí silnější pulz a opakuje ho rychleji.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Haptická odezva je pro {0} v Logi Options+ vypnutá, takže se nic nepřehraje, dokud ji tam znovu nezapnete.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Toto zařízení zatím neodpovědělo. Jeho vibrace se přehrají, jakmile se probudí.</value></data>
@@ -1267,7 +1268,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>základní desky, grafické karty a paměti</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>základní desky a grafické karty</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>podložky pod myš, sluchátka a stojany na sluchátka</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Světelný panel</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Hry osvětlení přebírají, kdykoli do něj zapíší.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Zadejte šestimístnou hexadecimální barvu (RRGGBB nebo #RRGGBB) a potvrďte ji klávesou Enter nebo kliknutím jinam.</value></data>
@@ -1897,7 +1897,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Uvolnit tlačítko myši {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Přepnout překryvný touchpad</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Nastavit barvu světelného panelu</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Přepíše světelný panel přiřazeného slotu PlayStation zvolenou barvou RGB. Režim Reaktivní během nastavené doby doznívání zeslábne z plné intenzity do černé a pak předá řízení zpět nastavení na kartě Světelný panel. Režim Trvalý drží barvu, dokud neproběhne akce Zrušit přepsání světelného panelu. Zápisy řízené hrou mají před přepsáním stále přednost.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Přepíše světelný panel přiřazeného slotu PlayStation zvolenou barvou RGB. Režim Reaktivní během nastavené doby doznívání zeslábne z plné intenzity do černé a pak předá řízení zpět nastavení na kartě Osvětlení. Režim Trvalý drží barvu, dokud neproběhne akce Zrušit přepsání světelného panelu. Zápisy řízené hrou mají před přepsáním stále přednost.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Bliknout světelným panelem: {0} (doznívání {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Držet světelný panel {0} do zrušení</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Zrušit přepsání světelného panelu</value></data>
@@ -1905,7 +1905,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Uvolní jakékoli aktivní přepsání světelného panelu na přiřazeném slotu. Zkombinujte s akcí Nastavit barvu světelného panelu v režimu Trvalý, abyste ji mohli zrušit jiným makrem.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Nastavit režim světelného panelu</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Nastavit režim světelného panelu na {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Nastaví režim světelného panelu přiřazeného slotu na konkrétní hodnotu. Zůstává v platnosti jako úprava na kartě Světelný panel, dokud ji nezmění jiná akce nebo uživatel.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Nastaví režim světelného panelu přiřazeného slotu na konkrétní hodnotu. Zůstává v platnosti jako úprava na kartě Osvětlení, dokud ji nezmění jiná akce nebo uživatel.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Střídat režimy světelného panelu</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Střídat režimy světelného panelu (počet: {0})</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Posouvá režim světelného panelu slotu přes režimy vybrané níže. Každé spuštění přejde na další zaškrtnutý režim. Pozice v cyklu je pro každou akci zvlášť a po restartu aplikace se resetuje.</value></data>
@@ -1920,7 +1920,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Doznívání</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Zeslabení</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Paleta</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Prázdná paleta použije paletu z karty Světelný panel daného slotu.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Prázdná paleta použije paletu z karty Osvětlení daného slotu.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Režim</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Vyberte, které režimy světelného panelu má makro střídat. Každé spuštění přejde na další zaškrtnutý režim.</value></data>
 
@@ -2150,6 +2150,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Výstup myši</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invertování, Setrvačnost, Odezva, Akcelerace, švih</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Poloha senzorové lišty, Svislý posun, Vyhlazování</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Ladí rychlost kurzoru, když je prst na touchpadu namapován na osy X/Y myši na virtuálním ovladači Klávesnice / myš. Výchozí hodnota je 1.0. Zvýšením hodnoty osy kurzor zrychlíte, snížením zpomalíte. Invertování osu obrátí.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Citlivost myši X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Násobitel vodorovné změny touchpad → myš. Hodnota pod 1.0 kurzor zpomalí. Hodnota nad 1.0 ho zrychlí.</value></data>
@@ -2355,7 +2356,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibrace… nehýbejte ovladačem</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Resetovat kalibraci</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Vymaže klidovou odchylku gyroskopu a čas poslední kalibrace. V příštím cyklu dotazování se na tomto zařízení znovu spustí automatická kalibrace trvající 1.5 sekundy.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Gyroskop živě</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Akcelerometr živě</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Vodorovná citlivost</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Škáluje vodorovný příspěvek gyroskopu (yaw + roll) k výstupu. Hodnota 1.0 ponechá rychlost tak, jak ji vidí jádro. Vyšší hodnoty zesilují, nižší zeslabují. Platí na úrovni zařízení, takže každá vazba gyroskopu na tomto ovladači dostane stejné vodorovné chování.</value></data>
@@ -2375,8 +2375,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyroskop</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Vylaďte, jak pohybový senzor tohoto gamepadu řídí výstup myši a páčky. Kalibrací na rovném povrchu vynulujete klidový drift, pak si podle chuti nastavte citlivost, vyhlazování a pravidla aktivace.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrace</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Živé hodnoty gyroskopu a akcelerometru</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Citlivost</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Jednotky, inverze os, Kalibrace na reálný svět</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° na otáčku</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Tvarování odezvy</value></data>
@@ -2462,11 +2460,8 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Velmi široká</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Násobitel</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Stupně na otáčku obrazovky</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Resetovat kalibraci</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Resetovat citlivost</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Resetovat tvarování odezvy</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Resetovat aktivaci</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Resetovat předávání pohybu</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Resetovat prostor</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Resetovat úchop</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Resetovat vodorovnou citlivost</value></data>
@@ -2486,8 +2481,11 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Resetovat aktivační páčku</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Resetovat směr aktivace</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Předávání pohybu</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Použít ladění gyroskopu na předávání pohybu</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Použije volitelné ladění z karet skupiny Gyroskop (mrtvá zóna, citlivost, vyhlazování, křivka odezvy, invertování) na pohyb, který virtuální ovladač hlásí hře nebo emulátoru. Vypněte, pokud chcete posílat jen kalibrovanou hodnotu a nechat hru použít vlastní citlivost a vyhlazování. Korekce driftu z kalibrace se použije vždy.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Vyladěný použije ladění z karty Gyroskop (mrtvá zóna, citlivost, vyhlazování, křivka odezvy, invertování) na pohyb, který virtuální ovladač hlásí hře nebo emulátoru. Surový posílá jen kalibrovanou hodnotu a nechá hru použít vlastní citlivost a vyhlazování. Korekce driftu z kalibrace se použije v obou případech.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Surový</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Vyladěný</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Hra čte kalibrovaný pohyb a použije vlastní citlivost a vyhlazování.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Hra čte pohyb s citlivostí, vyhlazováním a křivkou nastavenými zde.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Resetovat ladění předávání</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Citlivost</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Násobitel citlivosti gyroskopu pro jednotlivý zdroj. 1.0 = výchozí hodnota jádra (500°/s → plná výchylka). Hodnoty nad 1.0 jsou citlivější. Hodnoty pod 1.0 jsou méně citlivé.</value></data>
@@ -2735,8 +2733,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Tento ovladač nemá motory ve spouštích, takže hry využívající impulzní spouště Xbox by nebyly cítit. Sloučí proto každý kanál spouště do hlavního motoru na stejné straně.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Otestovat vibrace</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktivita motorů</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Levý</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Pravý</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Působí na toto zařízení nepřetržitou silou, dokud ji nevypnete. Síla řízená hrou z libovolného zdroje má přednost, dokud je aktivní, a po skončení hry se stálá síla obnoví.</value></data>
@@ -3256,7 +3252,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Zvuk</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR ukazatel</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Miřte tímto ovladačem Wii Remote na obrazovku pomocí jeho IR kamery. Vyžaduje senzorovou lištu nebo dvě infračervené diody LED nad displejem nebo pod ním. Chcete-li mířit přesně na dané místo, zkalibrujte ho na stránce Zařízení jako světelnou pistoli. Zkalibrovaný ovladač ignoruje Polohu senzorové lišty a Svislý posun.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Ladění ukazatele</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Poloha senzorové lišty</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Na střed</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Nad obrazovkou</value></data>
@@ -3283,8 +3278,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Posouvá režim ukazatele Wii přes režimy vybrané níže pro každý ovladač s IR ve slotu. Každé spuštění přejde na další zaškrtnutý režim. Pozice v cyklu je pro každou akci zvlášť a po restartu aplikace se resetuje.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Vyberte, které režimy ukazatele má makro střídat. Každé spuštění přejde na další zaškrtnutý režim.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Zvuk</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Zvuky maker a zrcadlený systémový zvuk se přehrávají vestavěným reproduktorem vybraného ovladače, přes USB nebo Bluetooth. Zařízení vyberte v rozevíracím seznamu výše. Řídí se jím všechna zdejší nastavení.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Zvukový výstup</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Zvuky maker a zrcadlený systémový zvuk se přehrávají vestavěným reproduktorem zařízení vybraného v poli Vstup ze zařízení, přes USB nebo Bluetooth. Řídí se jím všechna zdejší nastavení.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Zdroj zrcadlení, Hlasitost sluchátek, buffer, Výstupní cesta</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Zvuky se do vybraného ovladače směrují automaticky. Přes USB se vlastní zvukový koncový bod gamepadu dohledá podle hardwarového kontejneru. Přes Bluetooth se zvuk streamuje v rámcích Sony HID.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Zdroj zrcadlení</value></data>
@@ -3347,7 +3341,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Resetovat limit tónu</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Souběžně kopíruje vše, co hraje výchozí systémový výstup, do vestavěného reproduktoru tohoto ovladače. Funguje přes USB i Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Vybrané zařízení nemá vestavěný reproduktor. Zvuky maker pro tento gamepad se přehrávají na výchozím systémovém výstupu.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Resetovat zvukový výstup</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Sada testů DualSense pro prohlížeč, autor Xuezhou Dai (daidr): předloha pro rámcování CRC u feature reportů Sony a pro testovací příkazy firmwaru, které PadForge přeposílá z virtuálních gamepadů do fyzických.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Jas diody LED Guide: {0} %</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Nastaví jas diody LED tlačítka Guide nebo Home pro každý podporovaný ovladač ve slotu. Ovladače Xbox ho přijímají jen přes USB.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Platí pro ovladače Xbox přes USB, Steam Controller z roku 2015 a ovladače Switch s diodou LED tlačítka Home. Spojením dvou těchto akcí můžete při spuštění makra diodou LED bliknout a po jeho skončení ji obnovit.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Resetovat režim ukazatele</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Resetovat ladění ukazatele</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Resetovat polohu senzorové lišty</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Resetovat svislý posun</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Resetovat vyhlazování</value></data>

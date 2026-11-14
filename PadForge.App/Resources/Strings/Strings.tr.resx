@@ -1181,6 +1181,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>PadForge'un oyundan gelen kuvvet geri bildirimi olaylarını nasıl ölçeklediğini ve bunları fiziksel kontrolcünün titreşim motorlarına veya haptik aktüatörlerine nasıl yönlendirdiğini ayarlar. Sesle titreşim, bunun üzerine sistem sesiyle sürülen bir katman ekler.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Bu cihaz</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Tüm kontrolcü</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Her iki çubuk</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Titreşim, {0} üzerinde doğrudan cihaza gönderilen haptik darbeler olarak oynatılır. Daha güçlü titreşim daha güçlü bir darbe seçer ve onu daha hızlı tekrarlar.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Logi Options+ içinde {0} için haptik geri bildirim kapalı. Orada yeniden açana kadar hiçbir şey oynatılmaz.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Bu cihaz henüz yanıt vermedi. Uyandığında titreşimi oynatılır.</value></data>
@@ -1267,7 +1268,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>anakartlar, grafik kartları ve bellek</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>anakartlar ve grafik kartları</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>fare altlıkları, kulaklıklar ve kulaklık standları</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Işık çubuğu</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Oyunlar aydınlatmaya yazdıklarında denetimi devralır.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Altı haneli bir onaltılık renk (RRGGBB veya #RRGGBB) girin ve uygulamak için Enter'a basın ya da başka bir yere tıklayın.</value></data>
@@ -1897,7 +1897,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Fare düğmesini bırak: {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Dokunmatik yüzey kaplamasını aç/kapat</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Işık çubuğu rengini ayarla</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Atanmış PlayStation yuvasının ışık çubuğunu seçilen bir RGB rengiyle geçersiz kılar. Tepkili modu, ayarlanan sönüm süresi boyunca tam yoğunluktan siyaha doğru solar ve ardından denetimi Işık çubuğu kartının ayarlarına geri verir. Yapışkan modu, bir Işık çubuğu geçersiz kılmasını temizle eylemi çalışana kadar rengi tutar. Oyunun yazdığı değerler geçersiz kılmaya göre yine önceliklidir.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Atanmış PlayStation yuvasının ışık çubuğunu seçilen bir RGB rengiyle geçersiz kılar. Tepkili modu, ayarlanan sönüm süresi boyunca tam yoğunluktan siyaha doğru solar ve ardından denetimi Aydınlatma kartının ayarlarına geri verir. Yapışkan modu, bir Işık çubuğu geçersiz kılmasını temizle eylemi çalışana kadar rengi tutar. Oyunun yazdığı değerler geçersiz kılmaya göre yine önceliklidir.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Işık çubuğu flaşı: {0} (sönüm süresi {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Işık çubuğunu temizlenene kadar tut: {0}</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Işık çubuğu geçersiz kılmasını temizle</value></data>
@@ -1905,7 +1905,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Atanmış yuvadaki etkin ışık çubuğu geçersiz kılmasını bırakır. Başka bir makroyla geri almak için Yapışkan modundaki bir Işık çubuğu rengini ayarla eylemiyle birlikte kullanın.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Işık çubuğu modunu ayarla</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Işık çubuğu modunu şuna ayarla: {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Atanmış yuvanın ışık çubuğu modunu belirli bir değere ayarlar. Başka bir eylem veya kullanıcı değiştirene kadar, Işık çubuğu kartındaki bir düzenleme gibi kalıcıdır.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Atanmış yuvanın ışık çubuğu modunu belirli bir değere ayarlar. Başka bir eylem veya kullanıcı değiştirene kadar, Aydınlatma kartındaki bir düzenleme gibi kalıcıdır.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Işık çubuğu modları arasında dolaş</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} ışık çubuğu modu arasında dolaş</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Yuvanın ışık çubuğu modunu aşağıda seçilen modlar arasında ilerletir. Her tetiklenişte bir sonraki işaretli moda geçer. Döngü konumu eyleme özeldir ve uygulama yeniden başlatıldığında sıfırlanır.</value></data>
@@ -1920,7 +1920,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Sönüm</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Solma</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palet</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Boş palet, yuvanın Işık çubuğu kartındaki paleti kullanır.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Boş palet, yuvanın Aydınlatma kartındaki paleti kullanır.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mod</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Makronun hangi ışık çubuğu modları arasında dolaşacağını seçin. Her tetiklenişte bir sonraki işaretli moda geçer.</value></data>
 
@@ -2150,6 +2150,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Fare çıkışı</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Ters çevirme, Momentum, Tepki, İvme, fırlatma</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Sensör çubuğu konumu, Dikey ofset, Yumuşatma</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Bir dokunmatik yüzey parmağı, Klavye / Fare sanal kontrolcüsünde fare X/Y eksenine eşlendiğinde imleç hızını ayarlar. Varsayılan 1.0'dır. Daha hızlı bir imleç için eksenlerden birini artırın, daha yavaşı için azaltın. Ters çevir, ilgili ekseni ters çevirir.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Fare hassasiyeti X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Yatay dokunmatik yüzey → fare deltası için çarpan. 1.0'ın altı imleci yavaşlatır. 1.0'ın üstü hızlandırır.</value></data>
@@ -2355,7 +2356,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibre ediliyor… hareketsiz tutun</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Kalibrasyonu sıfırla</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Durağan haldeki jiroskop ofsetini ve son kalibrasyon zaman damgasını temizler. Bir sonraki yoklama döngüsü, bu cihazda 1.5 saniyelik otomatik kalibrasyonu yeniden çalıştırır.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Canlı jiroskop</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Canlı ivmeölçer</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Yatay hassasiyet</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Jiroskopun çıkışa yatay (sapma + yuvarlanma) katkısını ölçekler. 1.0, hızı motorun gördüğü haliyle bırakır. Daha yüksek değerler güçlendirir, daha düşük değerler zayıflatır. Cihaz düzeyinde uygulanır, böylece bu kontrolcüdeki her jiroskop ataması aynı yatay hissi devralır.</value></data>
@@ -2375,8 +2375,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Jiroskop</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Bu kumandanın hareket sensörünün fare ve çubuk çıkışını nasıl süreceğini ayarlayın. Durağan haldeki kaymayı sıfırlamak için düz bir yüzeyde kalibre edin, ardından hassasiyeti, yumuşatmayı ve devreye girme kurallarını zevkinize göre ayarlayın.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrasyon</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Canlı jiroskop ve ivmeölçer okumaları</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Hassasiyet</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Birimler, eksenleri ters çevirme, Gerçek dünya kalibrasyonu</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>Tur başına ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Tepki şekillendirme</value></data>
@@ -2462,11 +2460,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Çok geniş</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Çarpan</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Ekran dönüşü başına derece</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Kalibrasyonu sıfırla</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Hassasiyeti sıfırla</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Tepki şekillendirmeyi sıfırla</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Devreye almayı sıfırla</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Hareket doğrudan aktarımını sıfırla</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Koordinat uzayını sıfırla</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Tutuşu sıfırla</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Yatay hassasiyeti sıfırla</value></data>
@@ -2486,8 +2481,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Devreye alma çubuğunu sıfırla</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Devreye alma yönünü sıfırla</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Hareket doğrudan aktarımı</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Jiroskop ayarlarını hareket doğrudan aktarımına uygula</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Jiroskop kartlarındaki isteğe bağlı ayarları (ölü bölge, hassasiyet, yumuşatma, tepki eğrisi, ters çevirme) sanal kontrolcünün oyuna veya emülatöre bildirdiği harekete uygular. Yalnızca kalibre edilmiş okumayı göndermek ve hassasiyet ile yumuşatmayı oyunun kendisine bırakmak için kapatın. Kalibrasyonun kayma düzeltmesi her iki durumda da her zaman uygulanır.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Ayarlı, Jiroskop kartının ayarlarını (ölü bölge, hassasiyet, yumuşatma, tepki eğrisi, ters çevirme) sanal kontrolcünün oyuna veya emülatöre bildirdiği harekete uygular. Ham, yalnızca kalibre edilmiş okumayı gönderir ve hassasiyet ile yumuşatmayı oyunun kendisine bırakır. Kalibrasyonun kayma düzeltmesi her iki durumda da uygulanır.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Ham</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Ayarlı</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Oyun kalibre edilmiş hareketi okur ve hassasiyet ile yumuşatmayı kendisi uygular.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Oyun hareketi burada ayarlanan hassasiyet, yumuşatma ve eğriyle okur.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Doğrudan aktarım ayarını sıfırla</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Hassasiyet</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Kaynak başına jiroskop hassasiyet çarpanı. 1.0 = motorun varsayılanı (500°/s → tam itme). 1.0'ın üzerindeki değerler daha hassastır. 1.0'ın altındaki değerler daha az hassastır.</value></data>
@@ -2735,8 +2733,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Bu kontrolcüde tetik motoru olmadığından Xbox Impulse tetiklerini kullanan oyunlardaki titreşim hissedilmez. Bunun yerine her tetik kanalını aynı taraftaki ana motora aktarır.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Titreşimi test et</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motor etkinliği</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Sol</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Sağ</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Siz kapatana kadar bu cihaza sürekli bir kuvvet uygular. Oyunun herhangi bir kaynaktan yönettiği kuvvet, etkin olduğu sürece bunu geçersiz kılar. Oyun durduğunda sabit kuvvet kaldığı yerden devam eder.</value></data>
@@ -3256,7 +3252,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>Ses</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR işaretçi</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Bu Wii Remote'u IR kamerasıyla ekrana doğrultun. Ekranın üstünde veya altında bir sensör çubuğu ya da iki kızılötesi LED gerekir. Tam noktaya nişan almak için Cihazlar sayfasında ışık tabancası olarak kalibre edin. Kalibre edilmiş bir kumanda, Sensör çubuğu konumu ve Dikey ofset ayarlarını yok sayar.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>İşaretçi ayarı</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Sensör çubuğu konumu</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Ortada</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Ekranın üstünde</value></data>
@@ -3283,8 +3278,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Yuvadaki IR özellikli her kumanda için Wii işaretçi modunu aşağıda seçilen modlar arasında ilerletir. Her tetiklenişte bir sonraki işaretli moda geçer. Döngü konumu eyleme özeldir ve uygulama yeniden başlatıldığında sıfırlanır.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Makronun hangi işaretçi modları arasında dolaşacağını seçin. Her tetiklenişte bir sonraki işaretli moda geçer.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Ses</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makro sesleri ve yansıtılan sistem sesi, seçili kontrolcünün yerleşik hoparlöründen USB veya Bluetooth üzerinden çalınır. Cihazı yukarıdaki açılır listeden seçin. Buradaki tüm ayarlar o cihaza uygulanır.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Ses çıkışı</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makro sesleri ve yansıtılan sistem sesi, Giriş kaynağı altında seçilen cihazın yerleşik hoparlöründen USB veya Bluetooth üzerinden çalınır. Buradaki tüm ayarlar o cihaza uygulanır.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Yansıtma kaynağı, Kulaklık ses düzeyi, arabellek, Çıkış yolu</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Sesler seçili kontrolcüye otomatik olarak yönlendirilir. USB üzerinden kumandanın kendi ses uç noktası donanım kapsayıcısına göre eşleştirilir. Bluetooth üzerinden ses, Sony HID çerçeveleri içinde aktarılır.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Yansıtma kaynağı</value></data>
@@ -3347,7 +3341,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Ton sınırını sıfırla</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Sistemin varsayılan çıkışında çalınan her şeyi eşzamanlı olarak bu kontrolcünün yerleşik hoparlörüne kopyalar. USB ve Bluetooth üzerinden çalışır.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Seçili cihazda yerleşik hoparlör yok. Bu kumandanın makro sesleri sistemin varsayılan çıkışında çalınır.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Ses çıkışını sıfırla</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai'nin (daidr) tarayıcı tabanlı DualSense test paketi: PadForge'un sanal kumandalardan fiziksel kumandalara ilettiği Sony özellik raporu CRC çerçevelemesi ve donanım yazılımı test komutları için referans.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide LED parlaklığı: %{0}</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Yuvadaki destekleyen her kontrolcü için Guide veya Home düğmesi LED parlaklığını ayarlar. Xbox kontrolcüleri bunu yalnızca USB üzerinden kabul eder.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>USB üzerinden bağlı Xbox kontrolcülerine, 2015 Steam Controller'a ve Home düğmesi LED'i olan Switch kontrolcülerine uygulanır. Bir makro başladığında LED'i yakıp söndürmek ve bittiğinde eski haline döndürmek için bu eylemlerden ikisini birlikte kullanın.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>İşaretçi modunu sıfırla</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>İşaretçi ayarını sıfırla</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Sensör çubuğu konumunu sıfırla</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Dikey ofseti sıfırla</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Yumuşatmayı sıfırla</value></data>

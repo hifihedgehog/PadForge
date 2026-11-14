@@ -1150,7 +1150,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>マウス解放 {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイの切り替え</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>ライトバーの色を設定</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>割り当てられたPlayStationスロットのライトバーを、選択したRGBカラーで上書きします。リアクティブは、設定された減衰時間で最大輝度から黒へフェードしてから、「ライトバー」カードの設定に戻ります。スティッキーは「ライトバー上書き解除」アクションが実行されるまで色を保持します。ゲーム側の書き込みは引き続き優先されます。</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>割り当てられたPlayStationスロットのライトバーを、選択したRGBカラーで上書きします。リアクティブは、設定された減衰時間で最大輝度から黒へフェードしてから、「ライティング」カードの設定に戻ります。スティッキーは「ライトバー上書き解除」アクションが実行されるまで色を保持します。ゲーム側の書き込みは引き続き優先されます。</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>ライトバーを{0}でフラッシュ（減衰 {1} ms）</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>ライトバーを{0}で保持（解除まで）</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>ライトバー上書き解除</value></data>
@@ -1158,7 +1158,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>割り当てられたスロットでアクティブなライトバー上書きを解除します。スティッキーな「ライトバーの色を設定」と組み合わせて、別のマクロで取り消すために使用できます。</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>ライトバーモードを設定</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>ライトバーモードを{0}に設定</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>割り当てられたスロットのライトバーモードを特定の値に設定します。別のアクションかユーザーが変更するまで、「ライトバー」カードでの編集と同様に保持されます。</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>割り当てられたスロットのライトバーモードを特定の値に設定します。別のアクションかユーザーが変更するまで、「ライティング」カードでの編集と同様に保持されます。</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>ライトバーモードを循環</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0}個のライトバーモードを循環</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>下で選択したモードでスロットのライトバーモードを進めます。発火ごとに次のチェック済みモードへ移ります。位置はアクション単位で、アプリ再起動時にリセットされます。</value></data>
@@ -1173,7 +1173,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>減衰</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>フェード</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>パレット</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>空のパレットは、スロットの「ライトバー」カードのパレットを使用します。</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>空のパレットは、スロットの「ライティング」カードのパレットを使用します。</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>モード</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>マクロが循環するライトバーモードを選択します。発火ごとに次のチェック済みモードへ進みます。</value></data>
 
@@ -1360,8 +1360,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>このコントローラーにはトリガーモーターがないため、Xbox インパルストリガーを使うゲームの振動は感じられません。代わりに各トリガーチャンネルを同じ側のメインモーターに合流させます。</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>振動テスト</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>モーター動作</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>左</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>右</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>オフにするまでこのデバイスに継続的なフォースを適用します。ゲームからのフォースが入っている間はそちらが優先され、ゲームが停止したら再開します。</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>定常フォースを適用</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>グリッド内をドラッグして方向と強さを設定します。</value></data>
@@ -1735,7 +1733,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>較正中… 動かさないでください</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>較正をリセット</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>静止時のジャイロバイアスと最終較正のタイムスタンプをクリアします。次のポーリングサイクルで、このデバイスの 1.5 秒自動較正が再実行されます。</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>現在のジャイロスコープ</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>現在の加速度センサー</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>水平感度</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>ジャイロの水平 (Yaw + Roll) 出力をスケールします。1.0 はエンジンが見るレートのまま、それより大きい値は増幅、小さい値は減衰させます。デバイス全体に適用されます。</value></data>
@@ -1755,8 +1752,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ジャイロ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>このパッドのモーションセンサーがマウスやスティック出力をどう動かすか調整します。まず平らな所で校正して静止時のドリフトをゼロにし、その後で感度、スムージング、アクティベートルールを好みに合わせて詰めてください。</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>校正</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>ジャイロスコープと加速度センサーの現在値</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>感度</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>単位、軸の反転、実世界キャリブレーション</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>1 回転あたり ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>応答整形</value></data>
@@ -1842,11 +1837,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>エクストラワイド</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>倍率</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>画面 1 回転あたりの角度</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>校正をリセット</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>感度をリセット</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>応答整形をリセット</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>アクティベートをリセット</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>モーションのパススルーをリセット</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>座標系をリセット</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>持ち方をリセット</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>水平感度をリセット</value></data>
@@ -1866,8 +1858,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>起動スティックをリセット</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>起動方向をリセット</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>モーションのパススルー</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>ジャイロ調整をモーションのパススルーに適用</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>「ジャイロ」の各カードの任意の調整 (デッドゾーン、感度、スムージング、応答カーブ、反転) を、仮想コントローラーがゲームまたはエミュレーターに報告するモーションに適用します。オフにすると校正済みの値のみを送り、感度とスムージングはゲーム側に任せます。校正によるドリフト補正はどちらの場合も常に適用されます。</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>「調整済み」は、「ジャイロ」カードの調整 (デッドゾーン、感度、スムージング、応答カーブ、反転) を、仮想コントローラーがゲームまたはエミュレーターに報告するモーションに適用します。「未加工」は校正済みの値のみを送り、感度とスムージングはゲーム側に任せます。校正によるドリフト補正はどちらの場合も適用されます。</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>未加工</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>調整済み</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>ゲームは校正済みのモーションを読み取り、感度とスムージングをゲーム側で適用します。</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>ゲームは、ここで設定した感度、スムージング、カーブを適用したモーションを読み取ります。</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>パススルー調整をリセット</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>感度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ソースごとのジャイロ感度倍率。1.0 = エンジンの既定 (500°/s → フルディフレクション)。1.0 を超えると敏感になり、1.0 未満では鈍くなります。</value></data>
@@ -1966,6 +1961,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>PadForge がゲームからのフォースフィードバックイベントをどのようにスケーリングし、物理コントローラーの振動モーターやハプティックアクチュエーターにルーティングするかを調整します。オーディオラブルは、その上にシステムオーディオ駆動のレイヤーを追加します。</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>このデバイス</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>コントローラー全体</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>両スティック</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>振動は {0} にハプティックパルスとして直接送られます。振動が強いほど強いパルスを選び、より速く繰り返します。</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Logi Options+ で {0} のハプティックフィードバックがオフになっています。そこでオンに戻すまで何も再生されません。</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>このデバイスはまだ応答していません。スリープから復帰すると振動が再生されます。</value></data>
@@ -2050,7 +2046,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>マザーボード、グラフィックスカード、メモリ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>マザーボードとグラフィックスカード</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>マウスパッド、ヘッドセット、ヘッドセットスタンド</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>ライトバー</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>ゲームがライティングを書き込むとゲームが優先されます。</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>6 桁の 16 進カラー (RRGGBB または #RRGGBB) を入力し、Enter キーを押すかフォーカスを外すと適用されます。</value></data>
@@ -2478,6 +2473,7 @@
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} 本指</value></data>
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>マウス出力</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>反転、慣性、応答、加速、フリック</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>センサーバーの位置、垂直オフセット、スムージング</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>タッチパッドの指がキーボード / マウス仮想コントローラーのマウス X/Y に割り当てられているときのカーソル速度を調整します。1.0 が既定値です。いずれかの軸を上げるとカーソルが速く、下げると遅くなります。「反転」は該当する軸を反転します。</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>マウス感度 X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>横方向のタッチパッド → マウス差分の乗数。1.0 未満はカーソルを遅く、1.0 超は速くします。</value></data>
@@ -2648,7 +2644,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>オーディオ</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IRポインター</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>このWiiリモコンのIRカメラで画面に向けます。ディスプレイの上または下にセンサーバー（または赤外線LED2個）が必要です。正確な位置を狙うには、デバイスページでライトガンとしてキャリブレーションしてください。キャリブレーション済みのリモコンはセンサーバーの位置と垂直オフセットを使いません。</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>ポインター調整</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>センサーバーの位置</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>中央</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>画面の上</value></data>
@@ -2675,8 +2670,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>スロット上のIR対応リモコンすべてで、下で選んだモードの間をWiiポインターモードが順に進みます。発火ごとに次のチェック済みモードへ移ります。位置はアクションごとで、再起動でリセットされます。</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>マクロで切り替えるポインターモードを選択します。発火ごとに次のチェック済みモードへ進みます。</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>オーディオ</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>マクロサウンドとミラーされたシステム音声は、選択中のコントローラーの内蔵スピーカーからUSBまたはBluetooth経由で再生されます。上のドロップダウンでデバイスを選択してください。</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>サウンド出力</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>マクロサウンドとミラーされたシステム音声は、「入力元」で選択したデバイスの内蔵スピーカーからUSBまたはBluetooth経由で再生されます。ここにあるすべての設定はそのデバイスに従います。</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>ミラーソース、ヘッドホン音量、バッファ、出力パス</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>サウンドは選択中のコントローラーへ自動的にルーティングされます。USBではハードウェアコンテナでパッドのオーディオ端点を照合し、BluetoothではソニーHIDフレームで音声を送信します。</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>ミラーソース</value></data>
@@ -2745,7 +2739,6 @@
   <data name="About_QmkDesc" xml:space="preserve"><value>キーボード + マウスのプレビューが描画するキーボードのキー位置とベースレイヤーのキー。QMK のレイアウトデータと Keychron の QMK フォークから生成。</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>一本指の形状でポイントクラウドマッチャーと並行して動作する角度マージン方式のスコアリング。GestureSign の PointPatternAnalyzer のスコアリングの考え方を独自の C# で実装。ドキュメントのみ。</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>サウンド出力をリセット</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai（daidr）によるブラウザー版DualSenseテストスイート。SonyフィーチャーレポートのCRCフレーミングと、PadForgeが仮想パッドから物理パッドへ転送するファームウェアテストコマンドのリファレンス。</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3545,8 +3538,6 @@
   <data name="MacroAction_SetChromaColor_Format" xml:space="preserve"><value>Chroma {0}（{1} ms）</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>レイヤー{0}に切替</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>このスロットを選択したシフトレイヤーに切り替えます。レイヤーは次の切替、Latch/Cycleアクティベーター、またはプロファイル切替まで維持されます。Baseで基本レイヤーに戻ります。上のレイヤー限定と組み合わせると、同じボタンでレイヤーごとに異なるジャンプができます。</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>ポインターモードをリセット</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>ポインター調整をリセット</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>センサーバーの位置をリセット</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>垂直オフセットをリセット</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>スムージングをリセット</value></data>

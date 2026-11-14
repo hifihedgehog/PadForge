@@ -2194,13 +2194,12 @@ function Find-AllSlots {
 # The pad page's tabs are six sections (PadForge 6, #574). A recipe still
 # names what it wants by the tab's name, and this table says where that is
 # now: the section's button in the header, then either a part button (Buttons
-# has Picture and List, Macros & Menus has its two parts) or the heading of a
-# group in the section's scrolling column. Output is the cards under the
-# picture: its row goes to the picture and then opens the cards of the group
-# it names. Every value is an AutomationId, so a translated run finds the
-# same controls. A group's heading carries the id its tab button had, and it
-# is in the tree only while its section shows and the selected device has
-# that group.
+# has Picture and List, Macros & Menus has its two parts) or a group in the
+# section's scrolling column. Output is the cards under the picture: its row
+# goes to the picture and then opens the cards of the group it names. Every
+# value is an AutomationId, so a translated run finds the same controls. A
+# group carries the id its tab button had, and it is in the tree only while
+# its section shows and the selected device has that group.
 $script:PadTabs = @{
     "Preview"           = @{ Section = "Section_Buttons"; Part = "TabController" }
     "Mappings"          = @{ Section = "Section_Buttons"; Part = "MappingsTab" }
@@ -2287,7 +2286,7 @@ function Get-PadSectionNames {
 # view's scroll pattern, so the pointer stays parked and no wheel turns. The
 # view is a section's column of the pad page (SticksSectionScroll and the
 # rest), the Buttons section's ButtonsScroll, or an extra's PageScroll under
-# -PageAid ExtrasPageView. The element is a group's heading by its
+# -PageAid ExtrasPageView. The element is a group by its
 # AutomationId, an element by its exact name (with -Type, a ControlType's
 # name such as Text), searched under -Within when that is given, or the
 # element itself. WPF reports an element's whole rectangle whether or not it
@@ -2587,8 +2586,8 @@ function Tab {
 # Wait for what was a device-gated tab to come onto the pad page: Audio,
 # Adaptive Triggers, Pointer and the rest follow the selected device, and the
 # gate propagates up to about 10 s after a cold bring-up. Each try goes to
-# the tab, which is the only way to see a group: its heading is in the tree
-# only while its section shows. True with the tab in view.
+# the tab, which is the only way to see a group: it is in the tree only
+# while its section shows. True with the tab in view.
 function Wait-PadTab {
     param([string]$Name, [int]$Tries = 12, [int]$DelayMs = 1000)
     $t = $script:PadTabs[$Name]

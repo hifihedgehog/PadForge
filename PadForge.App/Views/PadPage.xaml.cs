@@ -451,6 +451,23 @@ namespace PadForge.Views
             }
         }
 
+        /// <summary>The Lighting Control line's switch stands on the line
+        /// (the sections pass of #574), and the line opens to the Lighting
+        /// Hold row. A device that offers no hold has the switch alone: the
+        /// line does not open, and its hint, which names the hold, is empty.
+        /// The hint is bound while it shows, so it follows a change of
+        /// language.</summary>
+        internal static void ShowLightingControlLine(PadForge.Controls.FoldCard line, int offered)
+        {
+            if (line == null) return;
+            line.CanOpen = offered >= 1;
+            const string hint = nameof(Strings.Pad_LightingControl_FoldHint);
+            if (offered < 1)
+                line.Hint = string.Empty;
+            else if (BindingOperations.GetBinding(line, PadForge.Controls.FoldPart.HintProperty)?.Path?.Path != hint)
+                line.SetBinding(PadForge.Controls.FoldPart.HintProperty, new Binding(hint) { Source = Strings.Instance });
+        }
+
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (_currentPadVm != null)
@@ -995,13 +1012,10 @@ namespace PadForge.Views
                 LightbarPreviewPanel.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
             if (PeripheralLightingPanel != null)
                 PeripheralLightingPanel.Visibility = hasPeripheralLighting ? Visibility.Visible : Visibility.Collapsed;
-            // The Lighting Control card holds the switch and the Lighting
-            // Hold row, for a mouse or keyboard row alone.
+            // The Lighting Control line holds the switch on its line and the
+            // Lighting Hold row under it, for a mouse or keyboard row alone.
             if (PeripheralLightingCard != null)
                 PeripheralLightingCard.Visibility = hasPeripheralLighting && !vendorLightingRow
-                    ? Visibility.Visible : Visibility.Collapsed;
-            if (PeripheralLightingControlRow != null)
-                PeripheralLightingControlRow.Visibility = hasPeripheralLighting && !vendorLightingRow
                     ? Visibility.Visible : Visibility.Collapsed;
             // The Lighting Hold row sits under the switch for a mouse or
             // keyboard whose device offers a hold above colors alone. A
@@ -1009,6 +1023,7 @@ namespace PadForge.Views
             // asks for colors alone.
             int offeredHold = hasPeripheralLighting && !vendorLightingRow ? OfferedLightingHold(lightingRow) : 0;
             ShowLightingHold(PeripheralClaimLevelRow, PeripheralClaimLevelPicker, PeripheralClaimLevelHostModeItem, offeredHold);
+            ShowLightingControlLine(PeripheralLightingCard, offeredHold);
             if (PeripheralLightingRoute != null)
             {
                 // The hold this controller's claim carries, as the
@@ -1113,9 +1128,14 @@ namespace PadForge.Views
                 GyroSimulationCard.Visibility = simulatesGyro ? Visibility.Visible : Visibility.Collapsed;
             // Gyro-rate cards (#392): hidden on an accelerometer-only device.
             var rateVis = hasGyroRate ? Visibility.Visible : Visibility.Collapsed;
+            // The Gyro card's rows by these names (the sections pass): the
+            // card itself stays, since its live horizon reads the
+            // accelerometer alone.
             if (GyroPassthroughCard != null) GyroPassthroughCard.Visibility = rateVis;
             if (GyroCalibrationCard != null) GyroCalibrationCard.Visibility = rateVis;
             if (GyroSensitivityCard != null) GyroSensitivityCard.Visibility = rateVis;
+            if (GyroSensitivityMore != null) GyroSensitivityMore.Visibility = rateVis;
+            if (GyroRatesLive != null) GyroRatesLive.Visibility = rateVis;
             if (GyroResponseCard != null) GyroResponseCard.Visibility = rateVis;
             if (GyroEngageCard != null) GyroEngageCard.Visibility = rateVis;
             if (GyroSpaceCard != null) GyroSpaceCard.Visibility = rateVis;

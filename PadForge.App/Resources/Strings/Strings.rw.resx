@@ -412,7 +412,6 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Amatara</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Amatara</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Bizimye</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Subiza uko byari biri: lightbar</value></data>
@@ -822,7 +821,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Ibipimo, guhindura imirongo, Real-World Calibration</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° ku kuzenguruka kumwe</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Hindura icyerekezo cya pitch (Y)</value></data>
@@ -840,8 +838,6 @@
   <data name="Settings_GyroEngageStickDirection_XPos" xml:space="preserve"><value>Iburyo (X+)</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Hasi (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Hejuru (Y+)</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Gusubiza uko byari biri: calibration</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Gusubiza uko byari biri: sensitivity</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Gusubiza uko byari biri: sensitivity itambitse</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Gusubiza uko byari biri: sensitivity ihagaze</value></data>
   <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>Gusubiza uko byari biri: ibipimo</value></data>
@@ -1782,13 +1778,12 @@
   <data name="Menu_Cell_Icon" xml:space="preserve"><value>Akashusho</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Iki gikoresho</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Kontorola yose</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Uduti twombi</value></data>
   <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Genzura shakers</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR yashyizweho</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR ntiyashyizweho</value></data>
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR iri gukora</value></data>
   <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR iri gukora, driver yahujwe</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Ibumoso</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Iburyo</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Reba hirya no hino ukoresheje head tracker cyangwa VR headset mu gihe ibikumwe byombi bigumye kuri buto.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Akira ingaruka za trigger zihinduka n'iz'amatara ziva muri mod z'imikino zandikiwe DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Fungura isohoka rya telemetry mu mukino maze uryerekeze kuri iyi PC n'iyi port.</value></data>

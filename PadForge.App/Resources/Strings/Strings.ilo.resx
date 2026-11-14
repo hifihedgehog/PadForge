@@ -292,7 +292,6 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Lighting</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Naiddep</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Audio device</value></data>
@@ -518,7 +517,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrasion</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Yunit, ibaliktad ti axis, Real-World Calibration</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Iggaman</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Toggle</value></data>
@@ -529,8 +527,6 @@
   <data name="Settings_GyroEngageStickDirection_XPos" xml:space="preserve"><value>Kannawan (X+)</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Baba (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Ngato (Y+)</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>I-reset ti kalibrasion</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>I-reset ti sensitivity</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>I-reset ti deadzone</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Lawag ti IR</value></data>
@@ -1235,8 +1231,6 @@
   <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Subokan dagiti shaker</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>Naikabil ti SteamVR</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>Saan a naikabil ti SteamVR</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Kannigid</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Kannawan</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Dalusan ti trigger</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>I-map ti kapardas, dagiti pedal ken gear nga ipatulod ti game ti panagmaneho, kas iti aniaman nga input.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Alaen dagiti epekto ti adaptive trigger ken silaw manipud kadagiti mod ti game a naaramid para iti DSX.</value></data>

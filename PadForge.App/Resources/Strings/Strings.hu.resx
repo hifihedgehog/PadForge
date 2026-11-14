@@ -1181,6 +1181,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Azt hangolja, hogyan skálázza a PadForge a játéktól érkező erő-visszacsatolási eseményeket, és hogyan irányítja őket a fizikai kontroller rezgőmotorjaira vagy haptikus aktuátoraira. A Hangalapú rezgés erre még egy rendszerhang által hajtott réteget tesz.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Ez az eszköz</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Egész kontroller</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Mindkét kar</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>A rezgés haptikus impulzusokként szólal meg ezen: {0}, közvetlenül az eszközre küldve. Az erősebb rezgés erősebb impulzust választ, és gyorsabban ismétli.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>A haptikus visszajelzés ki van kapcsolva a Logi Options+ alkalmazásban ehhez: {0}, ezért semmit sem játszik le, amíg ott vissza nem kapcsolja.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Ez az eszköz még nem válaszolt. A rezgése megszólal, amint felébred.</value></data>
@@ -1267,7 +1268,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>alaplapok, videokártyák és memóriák</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>alaplapok és videokártyák</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>egérpadok, headsetek és headsetállványok</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Fénysáv</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>A játékok átveszik az irányítást, valahányszor világítást írnak.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Adjon meg egy hatjegyű hexadecimális színt (RRGGBB vagy #RRGGBB), majd az alkalmazáshoz nyomja meg az Enter billentyűt, vagy kattintson máshová.</value></data>
@@ -1897,7 +1897,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Egérgomb felengedése: {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Érintőpad-átfedés be/ki</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Fénysáv színének beállítása</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>A hozzárendelt PlayStation-foglalat fénysávját a választott RGB-színnel bírálja felül. A Reaktív a beállított lecsengési idő alatt teljes intenzitásról feketére halványul, majd visszaadja a vezérlést a Fénysáv kártya beállításainak. A Beragadó megtartja a színt, amíg le nem fut egy Fénysáv-felülbírálás törlése művelet. A játék által vezérelt írások továbbra is elsőbbséget élveznek a felülbírálással szemben.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>A hozzárendelt PlayStation-foglalat fénysávját a választott RGB-színnel bírálja felül. A Reaktív a beállított lecsengési idő alatt teljes intenzitásról feketére halványul, majd visszaadja a vezérlést a Világítás kártya beállításainak. A Beragadó megtartja a színt, amíg le nem fut egy Fénysáv-felülbírálás törlése művelet. A játék által vezérelt írások továbbra is elsőbbséget élveznek a felülbírálással szemben.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Fénysáv villantása: {0} (lecsengés: {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Fénysáv tartása: {0}, törlésig</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Fénysáv-felülbírálás törlése</value></data>
@@ -1905,7 +1905,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Megszünteti a hozzárendelt foglalaton aktív fénysáv-felülbírálást. Egy Beragadó módú Fénysáv színének beállítása művelettel párosítva egy másik makróból vonható vissza vele a szín.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Fénysáv módjának beállítása</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Fénysáv módja: {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>A hozzárendelt foglalat fénysávmódját egy adott értékre állítja. Úgy marad meg, mint a Fénysáv kártyán végzett módosítás, amíg egy másik művelet vagy a felhasználó meg nem változtatja.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>A hozzárendelt foglalat fénysávmódját egy adott értékre állítja. Úgy marad meg, mint a Világítás kártyán végzett módosítás, amíg egy másik művelet vagy a felhasználó meg nem változtatja.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Fénysávmódok léptetése</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Léptetés {0} fénysávmód között</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>A foglalat fénysávmódját az alább kiválasztott módokon lépteti végig. Minden indítás a következő bejelölt módra lép. A léptetés állása műveletenként külön tárolódik, és az alkalmazás újraindításakor visszaáll.</value></data>
@@ -1920,7 +1920,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Lecsengés</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Elhalványulás</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Paletta</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Üres paletta esetén a foglalat Fénysáv kártyáján megadott paletta érvényes.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Üres paletta esetén a foglalat Világítás kártyáján megadott paletta érvényes.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mód</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Válassza ki, mely fénysávmódokon lépkedjen végig a makró. Minden indítás a következő bejelölt módra lép.</value></data>
 
@@ -2150,6 +2150,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Egérkimenet</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Megfordítás, Lendület, Válasz, Gyorsítás, lendítés</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Szenzorsáv helyzete, Függőleges eltolás, Simítás</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Az egérmutató sebességét hangolja, amikor az érintőpad egyik ujja egy Billentyűzet / egér virtuális kontroller egér X/Y tengelyéhez van rendelve. Az alapértelmezés 1.0. Bármelyik tengely növelése gyorsítja, csökkentése lassítja az egérmutatót. A Megfordítás bármelyik tengelyt megfordítja.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Egérérzékenység X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>A vízszintes érintőpad → egér elmozdulás szorzója. 1.0 alatt lassítja, 1.0 fölött gyorsítja az egérmutatót.</value></data>
@@ -2355,7 +2356,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibrálás… tartsa mozdulatlanul</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Kalibrálás visszaállítása</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Törli a giroszkóp nyugalmi eltolását és az utolsó kalibrálás időbélyegét. A következő lekérdezési ciklus újra lefuttatja az 1.5 másodperces automatikus kalibrálást ezen az eszközön.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Élő giroszkóp</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Élő gyorsulásmérő</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Vízszintes érzékenység</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>A giroszkóp vízszintes (legyezés + orsózás) hozzájárulását skálázza a kimenethez. 1.0 esetén a sebesség úgy marad, ahogy a bemeneti motor látja. A nagyobb értékek erősítenek, a kisebbek gyengítenek. Eszközszinten érvényes, így a kontroller minden giroszkóp-hozzárendelése ugyanazt a vízszintes érzetet örökli.</value></data>
@@ -2375,8 +2375,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroszkóp</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Azt hangolja, hogyan vezérli a kontroller mozgásérzékelője az egér- és a karkimenetet. Kalibráljon sík felületen a nyugalmi elmászás nullázásához, majd állítsa be ízlés szerint az érzékenységet, a simítást és az aktiválási szabályokat.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrálás</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>A giroszkóp és a gyorsulásmérő élő értékei</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Érzékenység</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Mértékegység, tengelyfordítás, Valós kalibrálás</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° fordulatonként</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Válasz formálása</value></data>
@@ -2462,11 +2460,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Extra széles</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Szorzó</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Fok/képernyőfordulat</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Kalibrálás visszaállítása</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Érzékenység visszaállítása</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Válasz formálásának visszaállítása</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Aktiválás visszaállítása</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Mozgásátengedés visszaállítása</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Tér visszaállítása</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Tartás visszaállítása</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Vízszintes érzékenység visszaállítása</value></data>
@@ -2486,8 +2481,11 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Aktiváló kar visszaállítása</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Aktiválási irány visszaállítása</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Mozgásátengedés</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Giroszkóphangolás alkalmazása a mozgásátengedésre</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>A Giroszkóp kártyáin megadott tetszőleges hangolást (holtzóna, érzékenység, simítás, válaszgörbe, megfordítás) alkalmazza arra a mozgásra, amelyet a virtuális kontroller a játéknak vagy az emulátornak jelent. Kapcsolja ki, ha csak a kalibrált értéket szeretné elküldeni, és a játékra bízná a saját érzékenységét és simítását. A kalibrálás elmászáskorrekciója mindkét esetben érvényes.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>A Hangolt a Giroszkóp kártya hangolását (holtzóna, érzékenység, simítás, válaszgörbe, megfordítás) alkalmazza arra a mozgásra, amelyet a virtuális kontroller a játéknak vagy az emulátornak jelent. A Nyers csak a kalibrált értéket küldi el, és a játékra bízza a saját érzékenységét és simítását. A kalibrálás elmászáskorrekciója mindkét esetben érvényes.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Nyers</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Hangolt</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>A játék a kalibrált mozgást olvassa, és a saját érzékenységét és simítását alkalmazza.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>A játék a mozgást az itt megadott érzékenységgel, simítással és görbével olvassa.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Átengedés hangolásának visszaállítása</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Érzékenység</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Forrásonkénti giroszkópérzékenység-szorzó. 1.0 = a bemeneti motor alapértelmezése (500°/s → teljes kitérés). Az 1.0 fölötti értékek érzékenyebbek, az 1.0 alattiak kevésbé érzékenyek.</value></data>
@@ -2735,8 +2733,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Ennek a kontrollernek nincsenek ravaszmotorjai, így az Xbox impulzusravaszokat használó játékok hatása nem lenne érezhető. Ehelyett minden ravaszcsatorna az azonos oldali fő motorba olvad be.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Rezgés tesztelése</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoraktivitás</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Bal</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Jobb</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Folyamatos erőt ad erre az eszközre, amíg ki nem kapcsolja. A játék által vezérelt, bármilyen forrásból érkező erő felülbírálja, amíg aktív, majd a játék leállásakor az állandó erő folytatódik.</value></data>
@@ -3256,7 +3252,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Audio" xml:space="preserve"><value>Hang</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-mutató</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Célozzon ezzel a Wii Remote-tal a képernyőre az IR-kamerája segítségével. Ehhez szenzorsáv vagy két infravörös LED szükséges a kijelző fölött vagy alatt. A pontos célzáshoz kalibrálja fénypisztolyként az Eszközök oldalon. A kalibrált távirányító figyelmen kívül hagyja a Szenzorsáv helyzete és a Függőleges eltolás beállítást.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Mutató hangolása</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Szenzorsáv helyzete</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Középen</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>A képernyő fölött</value></data>
@@ -3283,8 +3278,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>A Wii mutató módját az alább kiválasztott módokon lépteti végig a foglalat minden IR-képes távirányítójánál. Minden indítás a következő bejelölt módra lép. A léptetés állása műveletenként külön tárolódik, és az alkalmazás újraindításakor visszaáll.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Válassza ki, mely mutató módokon lépkedjen végig a makró. Minden indítás a következő bejelölt módra lép.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Hang</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>A makróhangok és a tükrözött rendszerhang a kiválasztott kontroller beépített hangszóróján szólalnak meg, USB-n vagy Bluetooth-on keresztül. Válassza ki az eszközt a fenti legördülő listában. Az itteni beállítások mind arra vonatkoznak.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Hangkimenet</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>A makróhangok és a tükrözött rendszerhang a Bemenet innen alatt kiválasztott eszköz beépített hangszóróján szólalnak meg, USB-n vagy Bluetooth-on keresztül. Az itteni beállítások mind arra az eszközre vonatkoznak.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Tükrözés forrása, Fejhallgató hangereje, puffer, Kimeneti útvonal</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>A hangok automatikusan a kiválasztott kontrollerre irányulnak. USB-n a kontroller saját hangvégpontját a program a hardvertároló alapján párosítja. Bluetooth-on a hang Sony HID-keretekben közvetítődik.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Tükrözés forrása</value></data>
@@ -3347,7 +3341,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Hanghatár visszaállítása</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Mindent, amit a rendszer alapértelmezett kimenete lejátszik, párhuzamosan a kontroller beépített hangszórójára is másol. USB-n és Bluetooth-on is működik.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>A kiválasztott eszköznek nincs beépített hangszórója. A kontroller makróhangjai a rendszer alapértelmezett kimenetén szólalnak meg.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Hangkimenet visszaállítása</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Böngészős DualSense-tesztcsomag, készítette: Xuezhou Dai (daidr). Referencia a Sony feature reportok CRC-keretezéséhez és azokhoz a firmware-tesztparancsokhoz, amelyeket a PadForge a virtuális kontrollerekről a fizikaiakra továbbít.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide LED fényereje: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Beállítja a Guide vagy Home gomb LED-jének fényerejét a foglalat minden erre képes kontrollerén. Az Xbox kontrollerek csak USB-n fogadják.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Az USB-n csatlakozó Xbox kontrollerekre, a 2015-ös Steam Controllerre és a Home gomb LED-del rendelkező Switch kontrollerekre vonatkozik. Két ilyen művelet párosításával a LED felvillantható a makró indulásakor, és visszaállítható a végén.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Mutató mód visszaállítása</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Mutató hangolásának visszaállítása</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Szenzorsáv helyzetének visszaállítása</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Függőleges eltolás visszaállítása</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Simítás visszaállítása</value></data>

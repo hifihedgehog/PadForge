@@ -878,7 +878,6 @@
   <data name="Settings_GyroSensitivityUnits" xml:space="preserve"><value>Waeine</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Tairongo</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Waeine, kōaro tuaka, Real-World Calibration</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° mō ia hurihanga</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Kāpehu</value></data>
@@ -901,7 +900,6 @@
   <data name="Pad_Gyro_Curve_Wide" xml:space="preserve"><value>Whānui</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Whānui rawa</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Whakarea</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Tautuhi anō i te tairongo</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Tautuhi anō i te tairongo whakapae</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Tautuhi anō i te tairongo poutū</value></data>
   <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>Tautuhi anō i ngā waeine</value></data>
@@ -1242,7 +1240,6 @@
   <data name="Pad_Pointer_Mode_Mouse" xml:space="preserve"><value>Kiore</value></data>
   <data name="Pad_Pointer_Mode_FpsMouse" xml:space="preserve"><value>Kiore FPS</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Oro</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Putanga oro</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Pūtake whakaata, rōrahi tīhoka taringa, pūreirei, ara putanga</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Taunoa pūnaha</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Rōrahi matua</value></data>
@@ -1875,8 +1872,6 @@
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>Kua tāutahia a SteamVR</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>Kāore a SteamVR i tāutahia</value></data>
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>E rere ana a SteamVR</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Mauī</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Matau</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Ūkui trigger</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mahere i te tere, ngā pēra me ngā kia e tukuna ana e tētahi kēmu taraiwa, pērā i tētahi atu tāuru.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Tangohia ngā pānga trigger urutau me ngā pānga rama i ngā mod kēmu i tuhia mō DSX.</value></data>

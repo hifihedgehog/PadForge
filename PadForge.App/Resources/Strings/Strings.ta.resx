@@ -1181,6 +1181,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>கேமிலிருந்து வரும் ஃபோர்ஸ் ஃபீட்பேக் நிகழ்வுகளை PadForge எவ்வாறு அளவுமாற்றுகிறது என்பதையும், அவற்றை இயற்பியல் கட்டுப்படுத்தியின் அதிர்வு மோட்டார்கள் அல்லது ஹாப்டிக் ஆக்சுவேட்டர்களுக்கு எவ்வாறு அனுப்புகிறது என்பதையும் சரிசெய்யும். ஆடியோ அதிர்வு, கணினி ஆடியோவால் இயங்கும் ஓர் அடுக்கை அதன் மேல் சேர்க்கும்.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>இந்தச் சாதனம்</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>முழுக் கட்டுப்படுத்தி</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>இரு ஸ்டிக்குகள்</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>அதிர்வு {0}-இல் ஹாப்டிக் துடிப்புகளாக இயங்கும், அவை நேரடியாகச் சாதனத்திற்கு அனுப்பப்படும். வலுவான அதிர்வு, வலுவான துடிப்பைத் தேர்ந்தெடுத்து அதை வேகமாக மீண்டும் மீண்டும் இயக்கும்.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Logi Options+ பயன்பாட்டில் {0}-க்கான ஹாப்டிக் ஃபீட்பேக் ஆஃப் செய்யப்பட்டுள்ளது, எனவே அங்கே அதை மீண்டும் ஆன் செய்யும் வரை அது எதையும் இயக்காது.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>இந்தச் சாதனம் இன்னும் பதிலளிக்கவில்லை. அது விழித்ததும் அதன் அதிர்வு இயங்கும்.</value></data>
@@ -1267,7 +1268,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>மதர்போர்டுகள், கிராபிக்ஸ் கார்டுகள், நினைவகம்</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>மதர்போர்டுகள், கிராபிக்ஸ் கார்டுகள்</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>மவுஸ்பேடுகள், ஹெட்செட்டுகள், ஹெட்செட் ஸ்டாண்டுகள்</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>லைட்பார்</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>கேம்கள் ஒளியமைப்பை எழுதும்போதெல்லாம் அவை பொறுப்பேற்கும்.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ஆறு இலக்க ஹெக்ஸ் நிறத்தை (RRGGBB அல்லது #RRGGBB) உள்ளிட்டு, பயன்படுத்த Enter-ஐ அழுத்தவும் அல்லது வெளியே கிளிக் செய்யவும்.</value></data>
@@ -1897,7 +1897,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>சுட்டி விடுவிப்பு {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>டச்பேட் மேலடுக்கை நிலைமாற்று</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>லைட்பார் நிறத்தை அமை</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>ஒதுக்கப்பட்ட PlayStation ஸ்லாட்டின் லைட்பாரை, தேர்ந்தெடுத்த RGB நிறத்துக்கு மேலெழுதும். எதிர்வினை என்பது, உள்ளமைத்த தேய்வுக் காலத்தில் முழுத் தீவிரத்திலிருந்து கருப்புக்கு மங்கி, பிறகு லைட்பார் கார்டின் அமைப்புகளுக்குத் திரும்பும். நிலைத்திருக்கும் என்பது, லைட்பார் மேலெழுதலை அழி செயல் இயங்கும் வரை நிறத்தை வைத்திருக்கும். கேம் எழுதுபவை மேலெழுதலை விடவும் முன்னுரிமை பெறும்.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>ஒதுக்கப்பட்ட PlayStation ஸ்லாட்டின் லைட்பாரை, தேர்ந்தெடுத்த RGB நிறத்துக்கு மேலெழுதும். எதிர்வினை என்பது, உள்ளமைத்த தேய்வுக் காலத்தில் முழுத் தீவிரத்திலிருந்து கருப்புக்கு மங்கி, பிறகு ஒளியமைப்பு கார்டின் அமைப்புகளுக்குத் திரும்பும். நிலைத்திருக்கும் என்பது, லைட்பார் மேலெழுதலை அழி செயல் இயங்கும் வரை நிறத்தை வைத்திருக்கும். கேம் எழுதுபவை மேலெழுதலை விடவும் முன்னுரிமை பெறும்.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>லைட்பார் ஃபிளாஷ் {0} (தேய்வு {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>அழிக்கும் வரை லைட்பார் {0}</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>லைட்பார் மேலெழுதலை அழி</value></data>
@@ -1905,7 +1905,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>ஒதுக்கப்பட்ட ஸ்லாட்டில் செயலிலுள்ள லைட்பார் மேலெழுதலை விடுவிக்கும். நிலைத்திருக்கும் லைட்பார் நிறத்தை அமை செயலை வேறொரு மேக்ரோ மூலம் நீக்க, அதனுடன் சேர்த்துப் பயன்படுத்தவும்.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>லைட்பார் பயன்முறையை அமை</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>லைட்பார் பயன்முறையை {0} என அமை</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>ஒதுக்கப்பட்ட ஸ்லாட்டின் லைட்பார் பயன்முறையைக் குறிப்பிட்ட மதிப்புக்கு அமைக்கும். வேறொரு செயலோ பயனரோ மாற்றும் வரை, லைட்பார் கார்டில் செய்த திருத்தம் போலவே நிலைத்திருக்கும்.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>ஒதுக்கப்பட்ட ஸ்லாட்டின் லைட்பார் பயன்முறையைக் குறிப்பிட்ட மதிப்புக்கு அமைக்கும். வேறொரு செயலோ பயனரோ மாற்றும் வரை, ஒளியமைப்பு கார்டில் செய்த திருத்தம் போலவே நிலைத்திருக்கும்.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>லைட்பார் பயன்முறைகளைச் சுழற்று</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} லைட்பார் பயன்முறைகளில் சுழற்று</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>ஸ்லாட்டின் லைட்பார் பயன்முறையைக் கீழே தேர்ந்தெடுத்த பயன்முறைகள் வழியாக முன்னேற்றும். ஒவ்வொரு தூண்டலும் அடுத்த தேர்வுசெய்த பயன்முறைக்கு நகரும். சுழற்சி நிலை ஒவ்வொரு செயலுக்கும் தனியானது, பயன்பாட்டை மறுதொடக்கம் செய்யும்போது மீட்டமைக்கப்படும்.</value></data>
@@ -1920,7 +1920,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>தேய்வு</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>மங்கல்</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>வண்ணத்தட்டு</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>வண்ணத்தட்டு காலியாக இருந்தால், ஸ்லாட்டின் லைட்பார் கார்டில் உள்ள வண்ணத்தட்டு பயன்படுத்தப்படும்.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>வண்ணத்தட்டு காலியாக இருந்தால், ஸ்லாட்டின் ஒளியமைப்பு கார்டில் உள்ள வண்ணத்தட்டு பயன்படுத்தப்படும்.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>பயன்முறை</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>மேக்ரோ எந்த லைட்பார் பயன்முறைகளில் சுழல வேண்டும் என்பதைத் தேர்ந்தெடுக்கவும். ஒவ்வொரு தூண்டலும் அடுத்த தேர்வுசெய்த பயன்முறைக்கு முன்னேறும்.</value></data>
 
@@ -2150,6 +2150,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>சுட்டி வெளியீடு</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>தலைகீழாக்கு, உந்தம், துலங்கல், முடுக்கம், சுண்டுதல் ஊக்கம்</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>சென்சார் பார் இருப்பிடம், செங்குத்து ஆஃப்செட், மென்மையாக்கம்</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>விசைப்பலகை / சுட்டி மெய்நிகர் கட்டுப்படுத்தியில் டச்பேட் விரல் சுட்டி X/Y-க்கு மேப் செய்யப்பட்டிருக்கும்போது சுட்டிக்குறி வேகத்தைச் சரிசெய்யும். 1.0 இயல்புநிலை. வேகமான சுட்டிக்குறிக்கு ஏதேனும் ஓர் அச்சை உயர்த்தவும், மெதுவானதற்குக் குறைக்கவும். தலைகீழாக்கு என்பது ஏதேனும் ஓர் அச்சைத் திருப்பும்.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>சுட்டி உணர்திறன் X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>கிடைமட்ட டச்பேட் → சுட்டி நகர்வுக்கான பெருக்கி. 1.0-க்குக் கீழே சுட்டிக்குறி மெதுவாகும். 1.0-க்கு மேலே வேகமாகும்.</value></data>
@@ -2355,7 +2356,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>அளவுத்திருத்துகிறது… அசையாமல் வைத்திருக்கவும்</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>அளவுத்திருத்தத்தை மீட்டமை</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>ஓய்வுநிலைக் கைரோ பயாஸையும் கடைசியாக அளவுத்திருத்திய நேரமுத்திரையையும் அழிக்கும். அடுத்த போலிங் சுழற்சி, இந்தச் சாதனத்தில் 1.5 வினாடி தானியங்கி அளவுத்திருத்தத்தை மீண்டும் இயக்கும்.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>நேரலைக் கைரோஸ்கோப்</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>நேரலை முடுக்கமானி</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>கிடைமட்ட உணர்திறன்</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>வெளியீட்டுக்குக் கிடைமட்ட (யா + ரோல்) கைரோவின் பங்களிப்பை அளவுமாற்றும். 1.0 எனில் வீதம் இன்ஜின் பார்க்கும்படியே இருக்கும். அதிக மதிப்புகள் பெருக்கும், குறைந்த மதிப்புகள் குறைக்கும். இது சாதன நிலையில் பொருந்துவதால், இந்தக் கட்டுப்படுத்தியின் ஒவ்வொரு கைரோ பிணைப்பும் அதே கிடைமட்ட உணர்வைப் பெறும்.</value></data>
@@ -2375,8 +2375,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>கைரோ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>இந்தப் பேடின் அசைவு சென்சார் சுட்டி மற்றும் ஸ்டிக் வெளியீட்டை எவ்வாறு இயக்குகிறது என்பதைச் சரிசெய்யவும். ஓய்வுநிலை டிரிஃப்டைப் பூஜ்ஜியமாக்க சமதளப் பரப்பில் அளவுத்திருத்தவும், பிறகு உணர்திறன், மென்மையாக்கம், செயல்படுத்தல் விதிகளை உங்கள் விருப்பப்படி அமைக்கவும்.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>அளவுத்திருத்தம்</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>நேரலைக் கைரோஸ்கோப் மற்றும் முடுக்கமானி அளவீடுகள்</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>உணர்திறன்</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>அலகுகள், அச்சுத் தலைகீழாக்கம், நிஜ உலக அளவுத்திருத்தம்</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>ஒரு திருப்பத்துக்கு ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>துலங்கல் வடிவமைப்பு</value></data>
@@ -2462,11 +2460,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>மிக அகலம்</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>பெருக்கி</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>திரைத் திருப்பத்துக்கான டிகிரிகள்</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>அளவுத்திருத்தத்தை மீட்டமை</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>உணர்திறனை மீட்டமை</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>துலங்கல் வடிவமைப்பை மீட்டமை</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>செயல்படுத்தலை மீட்டமை</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>அசைவு பாஸ்த்ரூவை மீட்டமை</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>ஆய வெளியை மீட்டமை</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>பிடிப்பு முறையை மீட்டமை</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>கிடைமட்ட உணர்திறனை மீட்டமை</value></data>
@@ -2486,8 +2481,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>செயல்படுத்தும் ஸ்டிக்கை மீட்டமை</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>செயல்படுத்தும் திசையை மீட்டமை</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>அசைவு பாஸ்த்ரூ</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>கைரோ சரிசெய்தலை அசைவு பாஸ்த்ரூவுக்குப் பயன்படுத்து</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>கைரோ கார்டுகளின் விருப்பத்தேர்வான சரிசெய்தலை (டெட்ஜோன், உணர்திறன், மென்மையாக்கம், துலங்கல் வளைவு, தலைகீழாக்கல்), மெய்நிகர் கட்டுப்படுத்தி கேமுக்கு அல்லது எமுலேட்டருக்குத் தெரிவிக்கும் அசைவின் மீது இயக்கும். அளவுத்திருத்திய அளவீட்டை மட்டும் அனுப்பி, கேம் தன் சொந்த உணர்திறனையும் மென்மையாக்கத்தையும் பயன்படுத்த வேண்டுமென்றால் இதை ஆஃப் செய்யவும். எதுவாயினும், அளவுத்திருத்த டிரிஃப்ட் திருத்தம் எப்போதும் பொருந்தும்.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>சரிசெய்தது என்பது, கைரோ கார்டின் சரிசெய்தலை (டெட்ஜோன், உணர்திறன், மென்மையாக்கம், துலங்கல் வளைவு, தலைகீழாக்கல்), மெய்நிகர் கட்டுப்படுத்தி கேமுக்கு அல்லது எமுலேட்டருக்குத் தெரிவிக்கும் அசைவின் மீது இயக்கும். நேரடி என்பது, அளவுத்திருத்திய அளவீட்டை மட்டும் அனுப்பி, கேம் தன் சொந்த உணர்திறனையும் மென்மையாக்கத்தையும் பயன்படுத்த விடும். இரண்டிலும் அளவுத்திருத்த டிரிஃப்ட் திருத்தம் பொருந்தும்.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>நேரடி</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>சரிசெய்தது</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>கேம் அளவுத்திருத்திய அசைவைப் படித்து, தன் சொந்த உணர்திறனையும் மென்மையாக்கத்தையும் பயன்படுத்தும்.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>இங்கு அமைத்த உணர்திறன், மென்மையாக்கம், வளைவு ஆகியவற்றுடன் கேம் அசைவைப் படிக்கும்.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>பாஸ்த்ரூ சரிசெய்தலை மீட்டமை</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>உணர்திறன்</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ஒவ்வொரு மூலத்துக்குமான கைரோ உணர்திறன் பெருக்கி. 1.0 = இன்ஜினின் இயல்புநிலை (500°/s → முழு விலகல்). 1.0-க்கு மேலான மதிப்புகள் அதிக உணர்திறன் கொண்டவை. 1.0-க்குக் கீழான மதிப்புகள் குறைந்த உணர்திறன் கொண்டவை.</value></data>
@@ -2735,8 +2733,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>இந்தக் கட்டுப்படுத்தியில் டிரிகர் மோட்டார்கள் இல்லை, எனவே Xbox இம்பல்ஸ் டிரிகர்களைப் பயன்படுத்தும் கேம்களின் அதிர்வு உணரப்படாது. அதற்குப் பதிலாக ஒவ்வொரு டிரிகர் சேனலையும் அதே பக்கத்திலுள்ள முதன்மை மோட்டாருடன் சேர்க்கும்.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>அதிர்வைச் சோதி</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>மோட்டார் செயல்பாடு</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>இடது</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>வலது</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>நீங்கள் ஆஃப் செய்யும் வரை இந்தச் சாதனத்துக்குத் தொடர்ச்சியான ஃபோர்ஸைச் செலுத்தும். எந்த மூலத்திலிருந்தும் வரும் கேம் இயக்கும் ஃபோர்ஸ், அது செயலில் இருக்கும்போது இதை மேலெழுதும், கேம் நிறுத்தியதும் இது மீண்டும் தொடரும்.</value></data>
@@ -3256,7 +3252,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>ஆடியோ</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR சுட்டிக்குறி</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>இந்த Wii Remote-ஐ அதன் IR கேமரா மூலம் திரையை நோக்கிக் குறிவைக்கவும். திரைக்கு மேலே அல்லது கீழே ஒரு சென்சார் பார், அல்லது இரண்டு அகச்சிவப்பு LED-கள் தேவை. துல்லியமான இடத்தைக் குறிவைக்க, சாதனங்கள் பக்கத்தில் இதை லைட் கன்னாக அளவுத்திருத்தவும். அளவுத்திருத்தப்பட்ட ரிமோட், சென்சார் பார் இருப்பிடம் மற்றும் செங்குத்து ஆஃப்செட்டைப் புறக்கணிக்கும்.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>சுட்டிக்குறி சரிசெய்தல்</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>சென்சார் பார் இருப்பிடம்</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>மையத்தில்</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>திரைக்கு மேலே</value></data>
@@ -3283,8 +3278,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>ஸ்லாட்டில் உள்ள IR திறன் கொண்ட ஒவ்வொரு ரிமோட்டுக்கும், Wii சுட்டிக்குறிப் பயன்முறையைக் கீழே தேர்ந்தெடுத்த பயன்முறைகள் வழியாக முன்னேற்றும். ஒவ்வொரு தூண்டலும் அடுத்த தேர்வுசெய்த பயன்முறைக்கு நகரும். சுழற்சி நிலை ஒவ்வொரு செயலுக்கும் தனியானது, பயன்பாட்டை மறுதொடக்கம் செய்யும்போது மீட்டமைக்கப்படும்.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>மேக்ரோ எந்தச் சுட்டிக்குறிப் பயன்முறைகளில் சுழல வேண்டும் என்பதைத் தேர்ந்தெடுக்கவும். ஒவ்வொரு தூண்டலும் அடுத்த தேர்வுசெய்த பயன்முறைக்கு முன்னேறும்.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ஆடியோ</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>மேக்ரோ ஒலிகளும் பிரதிபலிக்கப்படும் கணினி ஆடியோவும், தேர்ந்தெடுத்த கட்டுப்படுத்தியின் உள்ளமைந்த ஸ்பீக்கர் வழியாக, USB அல்லது Bluetooth மூலம் ஒலிக்கும். மேலே உள்ள கீழ்த்தோன்றல் பட்டியலில் சாதனத்தைத் தேர்ந்தெடுக்கவும். இங்குள்ள ஒவ்வொரு அமைப்பும் அதைப் பின்பற்றும்.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>ஒலி வெளியீடு</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>மேக்ரோ ஒலிகளும் பிரதிபலிக்கப்படும் கணினி ஆடியோவும், உள்ளீட்டு மூலம் என்பதன் கீழ் தேர்ந்தெடுத்த சாதனத்தின் உள்ளமைந்த ஸ்பீக்கர் வழியாக, USB அல்லது Bluetooth மூலம் ஒலிக்கும். இங்குள்ள ஒவ்வொரு அமைப்பும் அந்தச் சாதனத்தைப் பின்பற்றும்.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>பிரதிபலிப்பு மூலம், ஹெட்ஃபோன் ஒலியளவு, பஃபர், வெளியீட்டுப் பாதை</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>ஒலிகள் தானாகவே தேர்ந்தெடுத்த கட்டுப்படுத்திக்குச் செல்லும். USB வழியாக, பேடின் சொந்த ஆடியோ எண்ட்பாயிண்ட் வன்பொருள் கன்டெய்னர் மூலம் பொருத்தப்படும். Bluetooth வழியாக, ஆடியோ Sony HID ஃப்ரேம்களில் ஸ்ட்ரீம் செய்யப்படும்.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>பிரதிபலிப்பு மூலம்</value></data>
@@ -3347,7 +3341,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>தொனி வரம்பை மீட்டமை</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>கணினியின் இயல்புநிலை வெளியீடு இயக்கும் எதையும், அதே நேரத்தில் இந்தக் கட்டுப்படுத்தியின் உள்ளமைந்த ஸ்பீக்கருக்கும் நகலெடுக்கும். USB மற்றும் Bluetooth வழியாக வேலை செய்யும்.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>தேர்ந்தெடுத்த சாதனத்தில் உள்ளமைந்த ஸ்பீக்கர் இல்லை. இந்தப் பேடுக்கான மேக்ரோ ஒலிகள் கணினியின் இயல்புநிலை வெளியீட்டில் ஒலிக்கும்.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>ஒலி வெளியீட்டை மீட்டமை</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) உருவாக்கிய, உலாவியில் இயங்கும் DualSense சோதனைத் தொகுப்பு: PadForge மெய்நிகர் பேடுகளிலிருந்து இயற்பியல் பேடுகளுக்கு அனுப்பும் Sony ஃபீச்சர்-ரிப்போர்ட் CRC ஃப்ரேமிங் மற்றும் நிலைபொருள் சோதனைக் கட்டளைகளுக்கான மேற்கோள்.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide LED ஒளிர்வு: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>ஸ்லாட்டில் உள்ள திறன் கொண்ட ஒவ்வொரு கட்டுப்படுத்திக்கும் Guide அல்லது Home பொத்தான் LED ஒளிர்வை அமைக்கும். Xbox கட்டுப்படுத்திகள் இதை USB வழியாக மட்டுமே ஏற்கும்.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>USB வழியாக இணைந்த Xbox கட்டுப்படுத்திகள், 2015 Steam Controller, Home பொத்தான் LED உள்ள Switch கட்டுப்படுத்திகள் ஆகியவற்றுக்குப் பொருந்தும். மேக்ரோ தொடங்கும்போது LED-ஐ ஃபிளாஷ் செய்து, முடியும்போது மீட்டெடுக்க, இந்தச் செயல்களில் இரண்டைச் சேர்த்துப் பயன்படுத்தவும்.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>சுட்டிக்குறிப் பயன்முறையை மீட்டமை</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>சுட்டிக்குறி சரிசெய்தலை மீட்டமை</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>சென்சார் பார் இருப்பிடத்தை மீட்டமை</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>செங்குத்து ஆஃப்செட்டை மீட்டமை</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>மென்மையாக்கத்தை மீட்டமை</value></data>

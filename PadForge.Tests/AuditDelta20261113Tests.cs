@@ -998,20 +998,26 @@ namespace PadForge.Tests
         }
 
         /// <summary>The Mouse Gestures card has one label column, the
-        /// section's, for all five of its rows.</summary>
+        /// section's, for the four rows under its switch. The switch row
+        /// is an Ends row, as every switch row of the page is: its label
+        /// at the start and the switch at the far end.</summary>
         [Fact]
         public void TheMouseGesturesCard_HasOneLabelColumn()
         {
             var title = Page().Descendants().Single(e => e.Name.LocalName == "TextBlock" && At(e, "Text") == "{Binding Pad_MouseGestures_Header" + S);
-            var card = title.Ancestors().First(e => e.Name.LocalName == "Border");
-            var labels = card.Descendants().Where(e => e.Name.LocalName == "SettingRow").Select(row => row.Elements().First()).ToList();
-            Assert.Equal(5, labels.Count);
+            var card = title.Ancestors().First(e => e.Name.LocalName == "Border" && At(e, "Style") == "{StaticResource CardBorder}");
+            var rows = card.Descendants().Where(e => e.Name.LocalName == "SettingRow").ToList();
+            Assert.Equal(5, rows.Count);
+            Assert.Equal("True", At(rows[0], "SettingRow.Ends"));
+            Assert.Equal("{StaticResource EndsLabel}", At(rows[0].Elements().First(), "Style"));
+            Assert.All(rows.Skip(1), row => Assert.Null(At(row, "SettingRow.Ends")));
+            var labels = rows.Select(row => row.Elements().First()).ToList();
             Assert.All(labels, label =>
             {
                 Assert.Equal("TextBlock", label.Name.LocalName);
-                Assert.Equal("{StaticResource DzLabel}", At(label, "Style"));
                 Assert.Null(At(label, "Width"));
             });
+            Assert.All(labels.Skip(1), label => Assert.Equal("{StaticResource DzLabel}", At(label, "Style")));
             Assert.DoesNotContain(card.Descendants(), e => At(e, "Width") == "242");
         }
 
@@ -1081,22 +1087,28 @@ namespace PadForge.Tests
 
             var xml = Page();
             Assert.DoesNotContain("StringFormat={}Pitch ", page);
+            // The readings stand in the Gyro card's live view (the sections
+            // pass of #574): each axis's name in the language, its bar, and
+            // its number at the right of a column the three share, at least
+            // 78 wide, which holds -2000.0 degrees a second, so a changing
+            // digit moves nothing whatever the name's length.
             foreach (string axis in new[] { "Pitch", "Yaw", "Roll" })
             {
                 var number = xml.Descendants().Single(e => e.Name.LocalName == "TextBlock"
-                    && At(e, "Text") == "{Binding GyroLiveRate" + axis + ", StringFormat={}{0:+0.0;-0.0;0.0}\u00B0/s}");
-                Assert.Equal("{StaticResource LiveReadingNumber}", At(number, "Style"));
-                var parts = number.Parent.Elements().ToList();
-                Assert.Equal(2, parts.Count);
-                Assert.Equal("{Binding Dashboard_HeadTrackingAxis" + axis + S, At(parts[0], "Text"));
-                Assert.Equal("{StaticResource LiveReadingName}", At(parts[0], "Style"));
-                Assert.Equal("Horizontal", At(number.Parent, "Orientation"));
-                Assert.Equal("120", At(number.Parent, "MinWidth"));
+                    && At(e, "Text") == "{Binding GyroLiveRate" + axis + ", Mode=OneWay, StringFormat={}{0:+0.0;-0.0;0.0}\u00B0/s}");
+                Assert.Equal("{StaticResource LiveNumber}", At(number, "Style"));
+                Assert.Equal("78", At(number, "MinWidth"));
+                Assert.Equal("2", At(number, "Grid.Column"));
+                string row = At(number, "Grid.Row");
+                var name = number.Parent.Elements().Single(e => e.Name.LocalName == "TextBlock" && At(e, "Grid.Row") == row && At(e, "Grid.Column") == null);
+                Assert.Equal("{Binding Dashboard_HeadTrackingAxis" + axis + S, At(name, "Text"));
+                Assert.Equal("GyroRatesLive", (string)number.Parent.Attributes().Single(a => a.Name.LocalName == "Name"));
             }
             System.Xml.Linq.XElement Keyed(string key) => xml.Descendants().Single(e => e.Name.LocalName == "Style"
                 && (string)e.Attributes().FirstOrDefault(a => a.Name.LocalName == "Key") == key);
-            Assert.Contains(Keyed("LiveReadingName").Elements(), e => At(e, "Property") == "Width" && At(e, "Value") == "Auto");
-            Assert.Contains(Keyed("LiveReadingNumber").Elements(), e => At(e, "Property") == "Width" && At(e, "Value") == "78");
+            Assert.Contains(Keyed("LiveNumber").Elements(), e => At(e, "Property") == "TextAlignment" && At(e, "Value") == "Right");
+            Assert.DoesNotContain(xml.Descendants(), e => e.Name.LocalName == "Style"
+                && ((string)e.Attributes().FirstOrDefault(a => a.Name.LocalName == "Key") ?? "").StartsWith("LiveReading", StringComparison.Ordinal));
             var s = PadForge.Resources.Strings.Strings.Instance;
             Assert.Equal(new[] { "Pitch", "Yaw", "Roll" }, new[] { s.Dashboard_HeadTrackingAxisPitch, s.Dashboard_HeadTrackingAxisYaw, s.Dashboard_HeadTrackingAxisRoll });
         }

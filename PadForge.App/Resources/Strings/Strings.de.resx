@@ -1150,7 +1150,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Maustaste {0} loslassen</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Touchpad-Overlay umschalten</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Lightbar-Farbe festlegen</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Überschreibt die Lightbar des zugewiesenen PlayStation-Slots mit einer gewählten RGB-Farbe. Reaktiv blendet von voller Helligkeit auf Schwarz über das konfigurierte Abklingfenster aus, dann übernehmen wieder die Einstellungen der Lightbar-Karte. Permanent hält die Farbe, bis eine "Lightbar-Override aufheben"-Aktion läuft. Vom Spiel geschriebene Werte haben weiterhin Vorrang.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Überschreibt die Lightbar des zugewiesenen PlayStation-Slots mit einer gewählten RGB-Farbe. Reaktiv blendet von voller Helligkeit auf Schwarz über das konfigurierte Abklingfenster aus, dann übernehmen wieder die Einstellungen der Beleuchtungskarte. Permanent hält die Farbe, bis eine "Lightbar-Override aufheben"-Aktion läuft. Vom Spiel geschriebene Werte haben weiterhin Vorrang.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Lightbar {0} blitzen (Abklingen {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Lightbar {0} halten bis aufgehoben</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Lightbar-Override aufheben</value></data>
@@ -1158,7 +1158,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Hebt jede aktive Lightbar-Override des zugewiesenen Slots auf. Mit einer permanenten "Lightbar-Farbe festlegen"-Aktion kombinieren, um sie über ein anderes Makro zurückzunehmen.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Lightbar-Modus festlegen</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Lightbar-Modus auf {0} setzen</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Setzt den Lightbar-Modus des zugewiesenen Slots auf einen bestimmten Wert. Bleibt wie eine Änderung auf der Lightbar-Karte bestehen, bis eine andere Aktion oder der Benutzer ihn ändert.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Setzt den Lightbar-Modus des zugewiesenen Slots auf einen bestimmten Wert. Bleibt wie eine Änderung auf der Beleuchtungskarte bestehen, bis eine andere Aktion oder der Benutzer ihn ändert.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Lightbar-Modi durchlaufen</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} Lightbar-Modi durchlaufen</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Schaltet den Lightbar-Modus des Slots durch die unten ausgewählten Modi weiter. Jede Auslösung springt zum nächsten markierten Modus. Die Position ist pro Aktion und wird beim App-Neustart zurückgesetzt.</value></data>
@@ -1173,7 +1173,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Abklingen</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Ausblenden</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palette</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Eine leere Palette verwendet die Palette auf der Lightbar-Karte des Slots.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Eine leere Palette verwendet die Palette auf der Beleuchtungskarte des Slots.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Wähle aus, durch welche Lightbar-Modi das Makro wechseln soll. Jede Auslösung springt zum nächsten markierten Modus.</value></data>
 
@@ -1360,8 +1360,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Dieser Controller hat keine Trigger-Motoren, daher wären Spiele mit Xbox-Impulstriggern nicht spürbar. Stattdessen wird jeder Trigger-Kanal in den Hauptmotor derselben Seite eingemischt.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Vibration testen</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoraktivität</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Links</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Rechts</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Wendet eine kontinuierliche Kraft auf dieses Gerät an, bis du sie ausschaltest. Spielgesteuerte Kraft hat während ihrer Aktivität Vorrang und wird fortgesetzt, sobald das Spiel stoppt.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Konstante Kraft anwenden</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Im Raster ziehen, um Richtung und Stärke festzulegen.</value></data>
@@ -1735,7 +1733,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibrierung… ruhig halten</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Kalibrierung zurücksetzen</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Setzt den Ruhe-Gyro-Bias und den letzten Kalibrierungszeitpunkt zurück. Beim nächsten Polling-Zyklus läuft die 1.5-Sekunden-Auto-Kalibrierung für dieses Gerät erneut.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Aktuelles Gyroskop</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Aktueller Beschleunigungssensor</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Horizontale Empfindlichkeit</value></data>
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokal</value></data>
@@ -1755,11 +1752,8 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Extra breit</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplikator</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Grad pro Bildschirmdrehung</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Kalibrierung zurücksetzen</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Empfindlichkeit zurücksetzen</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Antwortform zurücksetzen</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Aktivierung zurücksetzen</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Bewegungsdurchleitung zurücksetzen</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Bezugssystem zurücksetzen</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Haltung zurücksetzen</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Horizontale Empfindlichkeit zurücksetzen</value></data>
@@ -1779,8 +1773,11 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Aktivierungs-Stick zurücksetzen</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Aktivierungsrichtung zurücksetzen</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Bewegungsdurchleitung</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Gyro-Abstimmung auf Bewegungsdurchleitung anwenden</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Wendet die optionale Abstimmung der Gyro-Karten (Totzone, Empfindlichkeit, Glättung, Antwortkurve, Invertierung) auf die Bewegungsdaten an, die der virtuelle Controller an das Spiel oder den Emulator meldet. Deaktivieren Sie es, um nur die kalibrierte Messung zu senden und das Spiel seine eigene Empfindlichkeit und Glättung anwenden zu lassen. Die Kalibrierungs-Driftkorrektur greift in beiden Fällen.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Abgestimmt wendet die Abstimmung der Gyro-Karte (Totzone, Empfindlichkeit, Glättung, Antwortkurve, Invertierung) auf die Bewegungsdaten an, die der virtuelle Controller an das Spiel oder den Emulator meldet. Roh sendet nur die kalibrierte Messung und lässt das Spiel seine eigene Empfindlichkeit und Glättung anwenden. Die Kalibrierungs-Driftkorrektur greift in beiden Fällen.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Roh</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Abgestimmt</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Das Spiel liest die kalibrierte Bewegung und wendet seine eigene Empfindlichkeit und Glättung an.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Das Spiel liest die Bewegung mit der hier eingestellten Empfindlichkeit, Glättung und Kurve.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Durchleitungs-Abstimmung zurücksetzen</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Skaliert den horizontalen (Yaw + Roll) Gyro-Anteil zur Ausgabe. 1.0 belässt die Rate unverändert. Höhere Werte verstärken, niedrigere dämpfen. Gilt geräteweit.</value></data>
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Vertikale Empfindlichkeit</value></data>
@@ -1799,8 +1796,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Steuere, wie der Bewegungssensor dieses Pads Maus- und Stick-Ausgaben antreibt. Zuerst auf ebener Fläche kalibrieren, um die Ruhedrift auszugleichen, dann Empfindlichkeit, Glättung und Aktivierungsregeln nach Geschmack einstellen.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrierung</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Aktuelle Gyroskop- und Beschleunigungswerte</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Empfindlichkeit</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Einheiten, Achsen invertieren, Reale Kalibrierung</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° pro Umdrehung</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Antwortform</value></data>
@@ -1966,6 +1961,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Stellt ein, wie PadForge Force-Feedback-Ereignisse aus dem Spiel skaliert und an die Rumble-Motoren oder haptischen Aktoren des Controllers leitet. Audio-Rumble fügt eine zusätzliche, vom Systemton gesteuerte Schicht hinzu.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Dieses Gerät</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Ganzer Controller</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Beide Sticks</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Rumble wird auf {0} als haptische Impulse abgespielt, direkt an das Gerät gesendet. Stärkeres Rumble wählt einen stärkeren Impuls und wiederholt ihn schneller.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Haptisches Feedback ist für {0} in Logi Options+ ausgeschaltet. Bis Sie es dort wieder einschalten, spielt es nichts ab.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Dieses Gerät hat noch nicht geantwortet. Sein Rumble spielt, sobald es aufwacht.</value></data>
@@ -2050,7 +2046,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>Mainboards, Grafikkarten und Arbeitsspeicher</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>Mainboards und Grafikkarten</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>Mauspads, Headsets und Headset-Ständer</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Spiele übernehmen, sobald sie Beleuchtung schreiben.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Sechsstelligen Hex-Farbwert eingeben (RRGGBB oder #RRGGBB) und Eingabe drücken oder den Bereich verlassen, um zu übernehmen.</value></data>
@@ -2478,6 +2473,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} Finger</value></data>
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Mausausgabe</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invertieren, Schwung, Reaktion, Beschleunigung, Schwungverstärkung</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Position der Sensorleiste, Vertikaler Versatz, Glättung</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Stellt die Cursorgeschwindigkeit ein, wenn ein Touchpad-Finger auf Maus X/Y eines Tastatur-/Maus-Virtual-Controllers gemappt ist. 1.0 ist der Standard. Höhere Werte beschleunigen den Cursor, niedrigere verlangsamen ihn. Invertieren kehrt die jeweilige Achse um.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Mausempfindlichkeit X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplikator für die horizontale Touchpad → Maus-Bewegung. Unter 1.0 verlangsamt den Cursor, über 1.0 beschleunigt ihn.</value></data>
@@ -2648,7 +2644,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-Zeiger</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Richten Sie diese Wii-Fernbedienung mit ihrer IR-Kamera auf den Bildschirm. Erfordert eine Sensorleiste oder zwei Infrarot-LEDs ober- oder unterhalb des Bildschirms. Kalibrieren Sie sie auf der Seite Geräte als Lightgun, um genau auf die Stelle zu zielen. Eine kalibrierte Fernbedienung ignoriert Position der Sensorleiste und Vertikaler Versatz.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Zeiger-Abstimmung</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Position der Sensorleiste</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Zentriert</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Über dem Bildschirm</value></data>
@@ -2675,8 +2670,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Schaltet den Wii-Zeigermodus für jede IR-fähige Remote des Slots durch die unten gewählten Modi. Jede Auslösung springt zum nächsten angehakten Modus. Die Position ist pro Aktion und wird beim Neustart zurückgesetzt.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Wählen, welche Zeigermodi das Makro durchschalten soll. Jede Auslösung springt zum nächsten angehakten Modus.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makro-Sounds und gespiegeltes Systemaudio laufen über den eingebauten Lautsprecher des ausgewählten Controllers, per USB oder Bluetooth. Wähle das Gerät im Dropdown darüber. Alle Einstellungen hier folgen ihm.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Soundausgabe</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makro-Sounds und gespiegeltes Systemaudio laufen über den eingebauten Lautsprecher des Geräts, das unter Gesteuert von gewählt ist, per USB oder Bluetooth. Alle Einstellungen hier folgen diesem Gerät.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Spiegelquelle, Kopfhörerlautstärke, Puffer, Ausgabepfad</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Sounds werden automatisch zum ausgewählten Controller geleitet. Über USB wird das Audio-Endpunkt des Pads per Hardware-Container zugeordnet. Über Bluetooth wird das Audio in Sony-HID-Frames gestreamt.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Spiegelquelle</value></data>
@@ -2745,7 +2739,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="About_QmkDesc" xml:space="preserve"><value>Tastenpositionen und Tasten der Basisebene der Tastaturen, die die Vorschau von Tastatur + Maus zeichnet, erzeugt aus den Layoutdaten von QMK und dem QMK-Fork von Keychron.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>Winkelmargen-Bewertung, die bei Einfinger-Formen neben dem Punktwolken-Matcher läuft. Setzt die Bewertungsidee aus dem PointPatternAnalyzer von GestureSign in eigenem C# um. Nur Dokumentation.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Tonausgabe zurücksetzen</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Browser-Testsuite für den DualSense von Xuezhou Dai (daidr): Referenz für das Sony-Feature-Report-CRC-Framing und die Firmware-Testbefehle, die PadForge vom virtuellen zum physischen Pad weiterleitet.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3545,8 +3538,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="MacroAction_SetChromaColor_Format" xml:space="preserve"><value>Chroma {0} für {1} ms</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Zu Ebene {0} wechseln</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Springt für diesen Slot zur gewählten Shift-Ebene. Die Ebene bleibt aktiv bis zum nächsten Wechsel, einem Latch- oder Cycle-Aktivator oder einem Profilwechsel. Basis kehrt zur Basisebene zurück. Mit einer Ebenen-Eingrenzung oben springt dieselbe Taste je Ebene unterschiedlich.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Zeigermodus zurücksetzen</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Zeiger-Abstimmung zurücksetzen</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Position der Sensorleiste zurücksetzen</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Vertikalen Versatz zurücksetzen</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Glättung zurücksetzen</value></data>

@@ -341,7 +341,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>mga headset, mousepad kag Chroma Link strip</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>mga headset, mousepad kag speaker</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>mga headset</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>I-reset ang lightbar</value></data>
   <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>I-reset ang force feedback</value></data>
@@ -624,7 +623,6 @@
   <data name="Settings_GyroEngageStickDirection_XPos" xml:space="preserve"><value>Tuo (X+)</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Idalom (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Ibabaw (Y+)</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>I-reset ang kalibrasyon</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>I-reset ang deadzone</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Kadasigon sang mouse X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Kadasigon sang mouse Y</value></data>
@@ -891,7 +889,6 @@
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Sa tunga</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Sa ibabaw sang screen</value></data>
   <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>Sa idalom sang screen</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Output sang tunog</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Mirror Source, Volume sang headphone, buffer, Output Path</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Default sang sistema</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>I-test</value></data>
@@ -910,7 +907,6 @@
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>I-reset sa default (100%)</value></data>
   <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>I-reset sa 250 Hz</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Wala sang built-in speaker ang napili nga device. Ang mga macro sound sang sini nga pad magatunog sa default output sang sistema.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>I-reset ang output sang tunog</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>I-export…</value></data>
   <data name="Profiles_Import" xml:space="preserve"><value>I-import…</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Na-export ang profile nga "{0}".</value></data>
@@ -1599,8 +1595,6 @@
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>Wala na-install ang SteamVR</value></data>
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>Nagadalagan ang SteamVR</value></data>
   <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>Nagadalagan ang SteamVR, konektado ang driver</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Wala</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Tuo</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>I-map ang tulin, mga pedal kag gear nga ginapadala sang driving game, pareho sang bisan ano nga input.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Kuhaa ang adaptive trigger kag mga epekto sang suga halin sa mga game mod nga ginhimo para sa DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>I-on ang telemetry output sa game kag itudlo ini sa sini nga PC kag port.</value></data>
@@ -1692,4 +1686,5 @@
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} sa {1} ang naka-on</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ining mga gin-import nga profile may mas bag-o nga bersyon sa Steam Workshop. I-import sila liwat halin sa Magkuha sang mga Profile para makuha ang mga pagbag-o.</value></data>
   <data name="Pad_Stick_Speed" xml:space="preserve"><value>Kadasigon</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Posisyon sang sensor bar, Vertical Offset, Smoothing</value></data>
 </root>

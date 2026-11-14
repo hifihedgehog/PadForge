@@ -627,7 +627,6 @@
   <data name="Pad_Lighting_RouteOtherController" xml:space="preserve"><value>Isilawuli esibonakalayo {0} naso sikhanyisa le divayisi, futhi umbala waso yiwo obonakalayo.</value></data>
   <data name="Pad_Lighting_RouteOtherControllerOnly" xml:space="preserve"><value>Isilawuli esibonakalayo {0} sikhanyisa le divayisi.</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ama-headset</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Ibha yokukhanya</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Kuvaliwe</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Landela idivayisi yomsindo</value></data>
@@ -1175,7 +1174,6 @@
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Akukaze kulinganiswe</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kuyalinganiswa… ungayinyakazisi</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Setha kabusha ukulinganisa</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>I-gyroscope ebukhoma</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>I-accelerometer ebukhoma</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Ukuzwela okuvundlile</value></data>
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Ukuzwela okuqondile</value></data>
@@ -1186,8 +1184,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>I-gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>I-gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Ukulinganisa</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Amanani abukhoma e-gyroscope ne-accelerometer</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Ukuzwela</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Amayunithi, ukuphendula ama-eksisi, Ukulinganisa komhlaba wangempela</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° ngokuzungeza okukodwa</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Phendula i-pitch (Y)</value></data>
@@ -1222,9 +1218,6 @@
   <data name="Pad_Gyro_Curve_Wide" xml:space="preserve"><value>Okubanzi</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Okubanzi kakhulu</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Isiphindi</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Setha kabusha ukulinganisa</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Setha kabusha ukuzwela</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Setha kabusha ukudlulisa ukunyakaza</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Setha kabusha ukubamba</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Setha kabusha ukuzwela okuvundlile</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Setha kabusha ukuzwela okuqondile</value></data>
@@ -1419,8 +1412,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Lesi silawuli asinazo izimoto zamathrigha, ngakho imidlalo esebenzisa ama-impulse trigger e-Xbox ibingeke izwakale. Esikhundleni salokho, faka isiteshi ngasinye sethrigha emotweni enkulu esohlangothini olufanayo.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Hlola ukudlidliza</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Umsebenzi wezimoto</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Engakwesokunxele</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Engakwesokudla</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Sebenzisa amandla aqhubekayo kule divayisi uze uwacime. Amandla aqhutshwa umdlalo avela kunoma yimuphi umthombo ayeqa lawa ngesikhathi esebenza, futhi lawa ayaqhubeka lapho umdlalo uyeka.</value></data>
@@ -1973,7 +1964,6 @@
   <data name="Pad_ResetGuideLedBrightness" xml:space="preserve"><value>Setha kabusha ukukhanya kwe-LED ye-Guide</value></data>
   <data name="MacroAction_Type_GuideLedBrightness" xml:space="preserve"><value>Setha ukukhanya kwe-LED ye-Guide</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Ukukhanya kwe-LED ye-Guide: {0}%</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Setha kabusha imodi yesikhombi</value></data>
   <data name="Pad_Mapping_MotionMode" xml:space="preserve"><value>Imodi yokunyakaza</value></data>
   <data name="Pad_Mapping_MotionSpeed_Name" xml:space="preserve"><value>Ijubane</value></data>
   <data name="Pad_Mapping_MotionAngle_Name" xml:space="preserve"><value>I-engeli</value></data>
@@ -2563,6 +2553,7 @@
   <data name="Menu_NewMenu" xml:space="preserve"><value>Imenyu entsha</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Le divayisi</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Isilawuli sonke</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Izinduku zombili</value></data>
   <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Indlela yokubamba isilawuli</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>I-SteamVR ifakiwe</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>I-SteamVR ayifakiwe</value></data>
@@ -2670,4 +2661,8 @@
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Kubukhoma: {0} kwangu-{1}</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} kwangu-{1} kuvuliwe</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Lawa maphrofayela angenisiwe anezinguqulo ezintsha ku-Steam Workshop. Wangenise futhi ku-Thola amaphrofayela ukuze uthole izinguquko.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Okungahlungiwe</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Okuhlungiwe</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Igeyimu ifunda ukunyakaza okulinganisiwe bese isebenzisa ukuzwela kwayo nokushelelisa kwayo.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Igeyimu ifunda ukunyakaza okunokuzwela, ukushelelisa nejika okusethwe lapha.</value></data>
 </root>

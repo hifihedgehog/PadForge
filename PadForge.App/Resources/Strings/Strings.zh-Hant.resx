@@ -1181,6 +1181,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>調整 PadForge 如何縮放來自遊戲的力回饋事件，以及如何將它們導向實體控制器的震動馬達或觸覺致動器。「音訊震動」會在其上再加一層由系統音訊驅動的效果。</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>此裝置</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>整個控制器</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>雙搖桿</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>震動會以觸覺脈衝的形式在 {0} 上播放，並直接傳送到裝置。震動越強，選用的脈衝就越強，重複也越快。</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>{0} 的觸覺回饋已在 Logi Options+ 中關閉，因此在您到那裡重新開啟之前，它不會播放任何效果。</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>此裝置尚未回應。它喚醒後就會播放震動。</value></data>
@@ -1267,7 +1268,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>主機板、顯示卡和記憶體</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>主機板和顯示卡</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>滑鼠墊、耳機和耳機架</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>燈條</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>遊戲一旦寫入燈光就會接管。</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>輸入六位數的十六進位色碼（RRGGBB 或 #RRGGBB），然後按 Enter 或按一下其他地方即可套用。</value></data>
@@ -1897,7 +1897,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>放開滑鼠 {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>切換觸控板重疊介面</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>設定燈條顏色</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>將已指派 PlayStation 插槽的燈條覆寫為所選的 RGB 顏色。「反應」會在設定的衰減時間內從最大亮度淡出到黑色，然後交還給「燈條」卡片的設定。「黏滯」會保持該顏色，直到執行「清除燈條覆寫」動作為止。遊戲驅動的寫入仍優先於此覆寫。</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>將已指派 PlayStation 插槽的燈條覆寫為所選的 RGB 顏色。「反應」會在設定的衰減時間內從最大亮度淡出到黑色，然後交還給「燈光」卡片的設定。「黏滯」會保持該顏色，直到執行「清除燈條覆寫」動作為止。遊戲驅動的寫入仍優先於此覆寫。</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>閃爍燈條 {0}（衰減時間 {1} ms）</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>保持燈條 {0}，直到清除為止</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>清除燈條覆寫</value></data>
@@ -1905,7 +1905,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>解除已指派插槽上任何作用中的燈條覆寫。可與黏滯的「設定燈條顏色」動作搭配，透過另一個巨集將其復原。</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>設定燈條模式</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>將燈條模式設為「{0}」</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>將已指派插槽的燈條模式設為指定的值。效果會像在「燈條」卡片上編輯一樣保留，直到其他動作或使用者變更為止。</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>將已指派插槽的燈條模式設為指定的值。效果會像在「燈光」卡片上編輯一樣保留，直到其他動作或使用者變更為止。</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>循環切換燈條模式</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>循環切換 {0} 種燈條模式</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>讓插槽的燈條模式在下方選取的模式之間依序前進。每次觸發都會移到下一個已勾選的模式。循環位置依動作各自記錄，並在應用程式重新啟動時重設。</value></data>
@@ -1920,7 +1920,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>衰減</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>淡出</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>調色盤</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>調色盤空白時，會使用插槽「燈條」卡片上的調色盤。</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>調色盤空白時，會使用插槽「燈光」卡片上的調色盤。</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>模式</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>選擇巨集要循環切換的燈條模式。每次觸發都會前進到下一個已勾選的模式。</value></data>
 
@@ -2150,6 +2150,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>滑鼠輸出</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>反轉、慣性、反應、加速度、甩動</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>感應條位置、垂直偏移、平滑</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>當觸控板手指對應到「鍵盤 / 滑鼠」虛擬控制器上的滑鼠 X/Y 時，調整游標速度。預設值為 1.0。調高任一軸可讓游標變快，調低則變慢。「反轉」可翻轉任一軸。</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>滑鼠靈敏度 X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>水平方向觸控板 → 滑鼠位移量的倍數。低於 1.0 會讓游標變慢。高於 1.0 會讓游標變快。</value></data>
@@ -2355,7 +2356,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>校正中… 請保持不動</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>重設校正</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>清除陀螺儀的靜止偏差值和上次校正的時間戳記。下一個輪詢週期會在此裝置上重新執行 1.5 秒的自動校正。</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>即時陀螺儀</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>即時加速度計</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>水平靈敏度</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>縮放陀螺儀水平方向（偏航 + 滾轉）對輸出的貢獻。1.0 會保持引擎所見的速率。數值越高越放大，越低越衰減。在裝置層級套用，讓此控制器上的每個陀螺儀繫結都有相同的水平手感。</value></data>
@@ -2375,8 +2375,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>陀螺儀</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>調整此手把的體感感應器如何驅動滑鼠和搖桿輸出。先在平坦的表面上校正，消除靜止時的飄移，再依喜好調整靈敏度、平滑和啟用規則。</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>校正</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>陀螺儀和加速度計的即時讀數</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>靈敏度</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>單位、反轉軸、真實世界校正</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>畫面每轉一圈 ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>反應塑形</value></data>
@@ -2462,11 +2460,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>特寬</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>倍率</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>畫面每轉一圈的度數</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>重設校正</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>重設靈敏度</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>重設反應塑形</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>重設啟用</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>重設體感直通</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>重設座標空間</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>重設握法</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>重設水平靈敏度</value></data>
@@ -2486,8 +2481,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>重設啟用搖桿</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>重設啟用方向</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>體感直通</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>將陀螺儀調校套用到體感直通</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>將「陀螺儀」各卡片中可自行決定的調校（死區、靈敏度、平滑、反應曲線、反轉），套用到虛擬控制器回報給遊戲或模擬器的體感。關閉後只會傳送校正過的讀數，讓遊戲套用它自己的靈敏度和平滑。不論開或關，校正的飄移修正一律會套用。</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>「調校」會將「陀螺儀」卡片中的調校（死區、靈敏度、平滑、反應曲線、反轉），套用到虛擬控制器回報給遊戲或模擬器的體感。「原始」只會傳送校正過的讀數，讓遊戲套用它自己的靈敏度和平滑。不論哪一種，校正的飄移修正都會套用。</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>原始</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>調校</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>遊戲讀取校正過的體感，並套用它自己的靈敏度和平滑。</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>遊戲讀取的體感會套用此處設定的靈敏度、平滑和曲線。</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>重設直通調校</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>靈敏度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>各來源的陀螺儀靈敏度倍數。1.0 = 引擎的預設值（500°/s → 完全偏轉）。高於 1.0 較靈敏。低於 1.0 較不靈敏。</value></data>
@@ -2735,8 +2733,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>此控制器沒有扳機馬達，因此使用 Xbox 脈衝扳機的遊戲會感受不到震動。可改將各扳機通道併入同一側的主馬達。</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>測試震動</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>馬達活動</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>左</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>右</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>對此裝置施加持續的力，直到您關閉為止。任何來源的遊戲驅動力作用時會取而代之，遊戲停止後恆定力就會恢復。</value></data>
@@ -3256,7 +3252,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>音訊</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>紅外線游標</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>用這支 Wii 遙控器的紅外線攝影機對準螢幕瞄準。需要在顯示器上方或下方放置感應條，或兩顆紅外線 LED。在「裝置」頁面上將它校正為光線槍，就能瞄準精確的位置。校正過的遙控器會忽略「感應條位置」和「垂直偏移」。</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>游標調校</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>感應條位置</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>置中</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>螢幕上方</value></data>
@@ -3283,8 +3278,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>讓插槽上每支具備紅外線功能的遙控器，其 Wii 游標模式在下方選取的模式之間依序前進。每次觸發都會移到下一個已勾選的模式。循環位置依動作各自記錄，並在應用程式重新啟動時重設。</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>選擇巨集要循環切換的游標模式。每次觸發都會前進到下一個已勾選的模式。</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>音訊</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>巨集聲音和鏡像的系統音訊會透過所選控制器的內建喇叭播放，USB 或藍牙皆可。請在上方的下拉式清單中選擇裝置。這裡的所有設定都跟著該裝置。</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>聲音輸出</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>巨集聲音和鏡像的系統音訊會透過「輸入來源」所選裝置的內建喇叭播放，USB 或藍牙皆可。這裡的所有設定都跟著該裝置。</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>鏡像來源、耳機音量、緩衝區、輸出路徑</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>聲音會自動導向所選的控制器。透過 USB 時，會依硬體容器比對出手把本身的音訊端點。透過藍牙時，音訊會以 Sony HID 訊框串流傳送。</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>鏡像來源</value></data>
@@ -3347,7 +3341,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>重設音調上限</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>將系統預設輸出播放的內容，同步複製到此控制器的內建喇叭。USB 和藍牙都適用。</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>所選裝置沒有內建喇叭。此手把的巨集聲音會在系統預設輸出上播放。</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>重設聲音輸出</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai(daidr)的瀏覽器版 DualSense 測試套件：PadForge 從虛擬手把轉送到實體手把的 Sony 功能報告 CRC 訊框格式和韌體測試指令，即以此為參考。</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide LED 亮度：{0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>為插槽上每個支援的控制器設定 Guide 或 Home 按鈕 LED 的亮度。Xbox 控制器只接受透過 USB 傳送。</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>適用於透過 USB 連接的 Xbox 控制器、2015 年款 Steam Controller，以及具有 Home 按鈕 LED 的 Switch 控制器。搭配兩個這種動作，就能在巨集開始時讓 LED 閃爍，並在結束時恢復。</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>重設游標模式</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>重設游標調校</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>重設感應條位置</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>重設垂直偏移</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>重設平滑</value></data>

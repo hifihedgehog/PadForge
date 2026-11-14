@@ -237,7 +237,6 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Ilaw</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Ilaw</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>I-reset an lightbar</value></data>
   <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>I-reset an force feedback</value></data>
@@ -413,7 +412,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrasyon</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Units, pagbaliktad kan mga axis, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Baliktadon an pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Baliktadon an yaw (X)</value></data>
@@ -428,8 +426,6 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Ibaba (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Itaas (Y+)</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Kinaban</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>I-reset an kalibrasyon</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>I-reset an sensitivity</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>I-reset an deadzone</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
@@ -1254,9 +1250,8 @@
   <data name="Menu_Cell_Action" xml:space="preserve"><value>Aksyon</value></data>
   <data name="Menu_Cell_Icon" xml:space="preserve"><value>Icon</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Bilog na controller</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Duwang stick</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Player o Kinaban</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Wala</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Tuo</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>I-map an speed, mga pedal asin mga gear na ipinapadara kan sarong driving game, arog kan ano man na input.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Kuanon an mga adaptive trigger asin mga epekto nin ilaw hale sa mga game mod na ginibo para sa DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Buksan an telemetry output sa game asin itudok ini sa PC na ini asin sa port na ini.</value></data>

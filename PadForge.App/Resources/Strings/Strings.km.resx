@@ -1102,6 +1102,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>កែសម្រួលរបៀបដែល PadForge កំណត់មាត្រដ្ឋានព្រឹត្តិការណ៍កម្លាំងតបពីហ្គេម និងរបៀបដែលវាបញ្ជូនពួកវាទៅម៉ូទ័រញ័រ ឬឧបករណ៍ញ័រលម្អិតរបស់ឧបករណ៍បញ្ជាពិត។ ការញ័រតាមសំឡេងបន្ថែមស្រទាប់មួយពីលើ ដែលដំណើរការដោយសំឡេងប្រព័ន្ធ។</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>ឧបករណ៍នេះ</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>ឧបករណ៍បញ្ជាទាំងមូល</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>ដងបញ្ជាទាំងពីរ</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>ការញ័រលេងលើ {0} ជាជីពចរញ័រលម្អិត ដែលផ្ញើដោយផ្ទាល់ទៅឧបករណ៍។ ការញ័រខ្លាំងជាង ជ្រើសជីពចរខ្លាំងជាង ហើយធ្វើវាឡើងវិញលឿនជាង។</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>ការញ័រតបលម្អិតត្រូវបានបិទសម្រាប់ {0} ក្នុង Logi Options+ ដូច្នេះវាមិនលេងអ្វីទេ រហូតដល់អ្នកបើកវាវិញនៅទីនោះ។</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>ឧបករណ៍នេះមិនទាន់ឆ្លើយតបនៅឡើយទេ។ ការញ័ររបស់វាលេង នៅពេលវាភ្ញាក់។</value></data>
@@ -1167,7 +1168,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>កាសពាក់ក្បាល កម្រាលកណ្ដុរ និងខ្សែភ្លើង Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>កាសពាក់ក្បាល កម្រាលកណ្ដុរ និងឧបករណ៍បំពងសំឡេង</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>កាសពាក់ក្បាល</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>របារភ្លើង</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>ហ្គេមគ្រប់គ្រងជំនួស គ្រប់ពេលដែលវាសរសេរពន្លឺ។</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>បញ្ចូលពណ៌ hex ប្រាំមួយខ្ទង់ (RRGGBB ឬ #RRGGBB) ហើយចុច Enter ឬចុចកន្លែងផ្សេង ដើម្បីអនុវត្ត។</value></data>
@@ -1709,7 +1709,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>លែងកណ្ដុរ {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>បិទ/បើកផ្ទាំងត្រួតផ្ទាំងប៉ះ</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>កំណត់ពណ៌របារភ្លើង</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>ជំនួសពណ៌របារភ្លើងរបស់រន្ធ PlayStation ដែលបានកំណត់ ដោយពណ៌ RGB ដែលបានជ្រើស។ «ប្រតិកម្ម» ស្រអាប់ពីកម្រិតពេញទៅខ្មៅក្នុងរយៈពេលរសាត់ដែលបានកំណត់ រួចប្រគល់ទៅការកំណត់នៃកាត «របារភ្លើង» វិញ។ «ជាប់» រក្សាពណ៌រហូតដល់សកម្មភាព «សម្អាតការជំនួសរបារភ្លើង» ដំណើរការ។ ការសរសេរពីហ្គេមនៅតែមានអាទិភាពជាងការជំនួសនេះ។</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>ជំនួសពណ៌របារភ្លើងរបស់រន្ធ PlayStation ដែលបានកំណត់ ដោយពណ៌ RGB ដែលបានជ្រើស។ «ប្រតិកម្ម» ស្រអាប់ពីកម្រិតពេញទៅខ្មៅក្នុងរយៈពេលរសាត់ដែលបានកំណត់ រួចប្រគល់ទៅការកំណត់នៃកាត «ពន្លឺ» វិញ។ «ជាប់» រក្សាពណ៌រហូតដល់សកម្មភាព «សម្អាតការជំនួសរបារភ្លើង» ដំណើរការ។ ការសរសេរពីហ្គេមនៅតែមានអាទិភាពជាងការជំនួសនេះ។</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>បញ្ចេញពន្លឺរបារភ្លើង {0} (រសាត់ {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>រក្សារបារភ្លើង {0} រហូតដល់សម្អាត</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>សម្អាតការជំនួសរបារភ្លើង</value></data>
@@ -1717,7 +1717,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>លែងការជំនួសរបារភ្លើងដែលកំពុងសកម្មលើរន្ធដែលបានកំណត់។ ប្រើជាមួយសកម្មភាព «កំណត់ពណ៌របារភ្លើង» ប្រភេទ «ជាប់» ដើម្បីលុបចោលវាតាមរយៈម៉ាក្រូមួយទៀត។</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>កំណត់របៀបរបារភ្លើង</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>កំណត់របៀបរបារភ្លើងទៅ {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>កំណត់របៀបរបារភ្លើងរបស់រន្ធដែលបានកំណត់ទៅតម្លៃជាក់លាក់មួយ។ នៅជាប់ដូចការកែលើកាត «របារភ្លើង» រហូតដល់សកម្មភាពផ្សេង ឬអ្នកប្រើប្ដូរវា។</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>កំណត់របៀបរបារភ្លើងរបស់រន្ធដែលបានកំណត់ទៅតម្លៃជាក់លាក់មួយ។ នៅជាប់ដូចការកែលើកាត «ពន្លឺ» រហូតដល់សកម្មភាពផ្សេង ឬអ្នកប្រើប្ដូរវា។</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>ប្ដូររបៀបរបារភ្លើងជាវដ្ត</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>ប្ដូរជាវដ្តតាមរបៀបរបារភ្លើង {0} របៀប</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>ប្ដូររបៀបរបារភ្លើងរបស់រន្ធតាមរបៀបដែលបានជ្រើសខាងក្រោម។ ការដំណើរការម្ដងៗប្ដូរទៅរបៀបដែលបានធីកបន្ទាប់។ ទីតាំងវដ្តគឺដាច់ដោយឡែកសម្រាប់សកម្មភាពនីមួយៗ ហើយកំណត់ឡើងវិញពេលចាប់ផ្ដើមកម្មវិធីឡើងវិញ។</value></data>
@@ -1732,7 +1732,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>ការរសាត់</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>ស្រអាប់</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>ក្ដារពណ៌</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>ក្ដារពណ៌ទទេប្រើក្ដារលាយពណ៌នៅលើកាត «របារភ្លើង» របស់រន្ធ។</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>ក្ដារពណ៌ទទេប្រើក្ដារលាយពណ៌នៅលើកាត «ពន្លឺ» របស់រន្ធ។</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>របៀប</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>ជ្រើសរបៀបរបារភ្លើងដែលម៉ាក្រូត្រូវប្ដូរជាវដ្ត។ ការដំណើរការម្ដងៗប្ដូរទៅរបៀបដែលបានធីកបន្ទាប់។</value></data>
 
@@ -1962,6 +1962,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>ទិន្នផលកណ្ដុរ</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>ការបញ្ច្រាស, សន្ទុះ, ការឆ្លើយតប, ការបង្កើនល្បឿន, ការផាត់</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>ទីតាំងរបារសេនស័រ, គម្លាតបញ្ឈរ, ការធ្វើឱ្យរលូន</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>កែល្បឿនទ្រនិចកណ្ដុរ ពេលម្រាមដៃលើផ្ទាំងប៉ះត្រូវបានម៉ាបទៅកណ្ដុរ X/Y លើឧបករណ៍បញ្ជានិម្មិតប្រភេទ ក្ដារចុច / កណ្ដុរ។ 1.0 ជាលំនាំដើម។ បង្កើនអ័ក្សណាមួយដើម្បីឲ្យទ្រនិចលឿនជាង បន្ថយដើម្បីឲ្យយឺតជាង។ «បញ្ច្រាស» ត្រឡប់អ័ក្សណាមួយ។</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>ភាពរសើបកណ្ដុរ X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>មេគុណលើ ផ្ទាំងប៉ះផ្ដេក → បម្លាស់ទីកណ្ដុរ។ ក្រោម 1.0 ធ្វើឲ្យទ្រនិចយឺត។ លើស 1.0 ធ្វើឲ្យវាលឿន។</value></data>
@@ -2167,7 +2168,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>កំពុងក្រិត… សូមកាន់ឲ្យនឹង</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>កំណត់ការក្រិតឡើងវិញ</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>សម្អាតគម្លាតហ្ស៊ីរ៉ូពេលនៅស្ងៀម និងត្រាពេលវេលាក្រិតចុងក្រោយ។ វដ្តស្ទង់បន្ទាប់នឹងដំណើរការការក្រិតស្វ័យប្រវត្តិ 1.5 វិនាទីឡើងវិញលើឧបករណ៍នេះ។</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>ហ្ស៊ីរ៉ូផ្ទាល់</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>ឧបករណ៍វាស់សំទុះផ្ទាល់</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>ភាពរសើបផ្ដេក</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>ធ្វើមាត្រដ្ឋានចំណែកហ្ស៊ីរ៉ូផ្ដេក (ងាកឆ្វេងស្ដាំ + ផ្អៀង) ក្នុងទិន្នផល។ 1.0 រក្សាអត្រាដូចដែលម៉ាស៊ីនឃើញ។ តម្លៃខ្ពស់ជាងពង្រីក តម្លៃទាបជាងបន្ថយ។ អនុវត្តនៅកម្រិតឧបករណ៍ ដូច្នេះការភ្ជាប់ហ្ស៊ីរ៉ូទាំងអស់លើឧបករណ៍បញ្ជានេះទទួលបានអារម្មណ៍ផ្ដេកដូចគ្នា។</value></data>
@@ -2187,8 +2187,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ហ្ស៊ីរ៉ូ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>កែរបៀបដែលឧបករណ៍ចាប់ចលនារបស់ឧបករណ៍បញ្ជានេះ បញ្ជាទិន្នផលកណ្ដុរ និងដងបញ្ជា។ ក្រិតលើផ្ទៃរាបស្មើ ដើម្បីលុបការរំកិលពេលនៅស្ងៀម បន្ទាប់មកកែភាពរសើប ការធ្វើឲ្យរលូន និងច្បាប់បើកដំណើរការ តាមចិត្ត។</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>ការក្រិត</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>ការអានផ្ទាល់នៃហ្ស៊ីរ៉ូស្កុប និងឧបករណ៍វាស់សំទុះ</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>ភាពរសើប</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>ឯកតា, ការបញ្ច្រាសអ័ក្ស, ការក្រិតតាមពិភពពិត</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° ក្នុងមួយជុំ</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>ការកែរាងការឆ្លើយតប</value></data>
@@ -2274,11 +2272,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>ទូលាយបំផុត</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>មេគុណ</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>ដឺក្រេក្នុងមួយជុំអេក្រង់</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>កំណត់ការក្រិតឡើងវិញ</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>កំណត់ភាពរសើបឡើងវិញ</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>កំណត់ការកែរាងការឆ្លើយតបឡើងវិញ</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>កំណត់ការបើកឡើងវិញ</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>កំណត់ការបញ្ជូនផ្ទាល់ចលនាឡើងវិញ</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>កំណត់លំហឡើងវិញ</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>កំណត់ការកាន់ឡើងវិញ</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>កំណត់ភាពរសើបផ្ដេកឡើងវិញ</value></data>
@@ -2298,8 +2293,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>កំណត់ដងបញ្ជាបើកឡើងវិញ</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>កំណត់ទិសបើកឡើងវិញ</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>ការបញ្ជូនផ្ទាល់ចលនា</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>អនុវត្តការកែហ្ស៊ីរ៉ូលើការបញ្ជូនផ្ទាល់ចលនា</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ដំណើរការការកែតាមជម្រើសនៃកាត «ហ្ស៊ីរ៉ូ» (តំបន់ងាប់ ភាពរសើប ការធ្វើឲ្យរលូន ខ្សែកោងឆ្លើយតប បញ្ច្រាស) លើចលនាដែលឧបករណ៍បញ្ជានិម្មិតរាយការណ៍ទៅហ្គេម ឬកម្មវិធីត្រាប់តាម។ បិទវា ដើម្បីផ្ញើតែការអានដែលបានក្រិត ហើយទុកឲ្យហ្គេមអនុវត្តភាពរសើប និងការធ្វើឲ្យរលូនរបស់ខ្លួន។ ការកែការរំកិលពីការក្រិតតែងតែអនុវត្ត មិនថាករណីណាទេ។</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>«កែសម្រួល» ដំណើរការការកែនៃកាត «ហ្ស៊ីរ៉ូ» (តំបន់ងាប់ ភាពរសើប ការធ្វើឲ្យរលូន ខ្សែកោងឆ្លើយតប បញ្ច្រាស) លើចលនាដែលឧបករណ៍បញ្ជានិម្មិតរាយការណ៍ទៅហ្គេម ឬកម្មវិធីត្រាប់តាម។ «ដើម» ផ្ញើតែការអានដែលបានក្រិត ហើយទុកឲ្យហ្គេមអនុវត្តភាពរសើប និងការធ្វើឲ្យរលូនរបស់ខ្លួន។ ការកែការរំកិលពីការក្រិតអនុវត្ត មិនថាករណីណាទេ។</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>ដើម</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>កែសម្រួល</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>ហ្គេមអានចលនាដែលបានក្រិត ហើយអនុវត្តភាពរសើប និងការធ្វើឱ្យរលូនរបស់ខ្លួន។</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>ហ្គេមអានចលនាជាមួយភាពរសើប ការធ្វើឱ្យរលូន និងខ្សែកោងដែលបានកំណត់នៅទីនេះ។</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>កំណត់ការកែការបញ្ជូនផ្ទាល់ឡើងវិញ</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>ភាពរសើប</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>មេគុណភាពរសើបហ្ស៊ីរ៉ូតាមប្រភព។ 1.0 = លំនាំដើមរបស់ម៉ាស៊ីន (500°/s → កម្រិតរុញពេញ)។ តម្លៃលើស 1.0 រសើបជាង។ តម្លៃក្រោម 1.0 រសើបតិចជាង។</value></data>
@@ -2543,8 +2541,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>ឧបករណ៍បញ្ជានេះគ្មានម៉ូទ័រទ្រីហ្គឺទេ ដូច្នេះការញ័រពីហ្គេមដែលប្រើ Impulse Triggers របស់ Xbox នឹងមិនត្រូវបានគេដឹងឡើយ។ បញ្ចូលឆានែលទ្រីហ្គឺនីមួយៗទៅម៉ូទ័រមេនៅផ្នែកដូចគ្នាជំនួសវិញ។</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>សាកល្បងការញ័រ</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>សកម្មភាពម៉ូទ័រ</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>ឆ្វេង</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>ស្ដាំ</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>អនុវត្តកម្លាំងជាប់ជានិច្ចលើឧបករណ៍នេះ រហូតដល់អ្នកបិទវា។ កម្លាំងដែលហ្គេមបញ្ជាពីប្រភពណាមួយ នឹងជំនួសវាខណៈពេលកម្លាំងនោះសកម្ម ហើយវាបន្តវិញនៅពេលហ្គេមឈប់។</value></data>
@@ -3062,7 +3058,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>សំឡេង</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>ទ្រនិច IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>តម្រង់ Wii Remote នេះទៅអេក្រង់ដោយប្រើកាមេរ៉ា IR របស់វា។ ត្រូវការរបារសេនស័រ ឬ LED អ៊ីនហ្វ្រារ៉េដពីរ នៅខាងលើ ឬខាងក្រោមអេក្រង់។ ក្រិតវាជាកាំភ្លើងពន្លឺនៅទំព័រឧបករណ៍ ដើម្បីតម្រង់ចំចំណុចពិតប្រាកដ។ ឧបករណ៍បញ្ជាដែលបានក្រិត មិនប្រើ ទីតាំងរបារសេនស័រ និង គម្លាតបញ្ឈរ ទេ។</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>ការលៃតម្រូវទ្រនិច</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>ទីតាំងរបារសេនស័រ</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>កណ្ដាល</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>ខាងលើអេក្រង់</value></data>
@@ -3089,8 +3084,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>ប្ដូររបៀបទ្រនិច Wii ទៅមុខតាមរបៀបដែលបានជ្រើសខាងក្រោម សម្រាប់ឧបករណ៍បញ្ជាដែលមាន IR ទាំងអស់នៅលើរន្ធ។ ការដំណើរការម្ដងៗប្ដូរទៅរបៀបដែលបានធីកបន្ទាប់។ ទីតាំងវិលជុំដាច់ដោយឡែកតាមសកម្មភាពនីមួយៗ ហើយកំណត់ឡើងវិញពេលកម្មវិធីចាប់ផ្ដើមឡើងវិញ។</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>ជ្រើសរើសរបៀបទ្រនិចដែលម៉ាក្រូត្រូវវិលជុំ។ ការដំណើរការម្ដងៗប្ដូរទៅរបៀបដែលបានធីកបន្ទាប់។</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>សំឡេង</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>សំឡេងម៉ាក្រូ និងសំឡេងប្រព័ន្ធដែលចម្លង ចាក់តាមឧបករណ៍បំពងសំឡេងដែលភ្ជាប់មកជាមួយឧបករណ៍បញ្ជាដែលបានជ្រើស តាម USB ឬ Bluetooth។ ជ្រើសរើសឧបករណ៍ក្នុងបញ្ជីទម្លាក់ចុះខាងលើ។ ការកំណត់ទាំងអស់នៅទីនេះអនុវត្តតាមវា។</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>លទ្ធផលសំឡេង</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>សំឡេងម៉ាក្រូ និងសំឡេងប្រព័ន្ធដែលចម្លង ចាក់តាមឧបករណ៍បំពងសំឡេងដែលភ្ជាប់មកជាមួយឧបករណ៍ដែលបានជ្រើសនៅ «បញ្ចូលពី» តាម USB ឬ Bluetooth។ ការកំណត់ទាំងអស់នៅទីនេះអនុវត្តតាមឧបករណ៍នោះ។</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>ប្រភពចម្លង, កម្រិតសំឡេងកាស, សតិបណ្ដោះអាសន្ន, ផ្លូវចេញសំឡេង</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>សំឡេងបញ្ជូនទៅឧបករណ៍បញ្ជាដែលបានជ្រើសដោយស្វ័យប្រវត្តិ។ តាម USB ចំណុចបញ្ចប់សំឡេងរបស់ឧបករណ៍បញ្ជាផ្ទាល់ត្រូវបានរកឃើញតាមកុងតឺន័រផ្នែករឹង។ តាម Bluetooth សំឡេងត្រូវបានបញ្ជូនជាស៊ុម HID របស់ Sony។</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>ប្រភពចម្លង</value></data>
@@ -3153,7 +3147,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>កំណត់ដែនកំណត់សំឡេងឡើងវិញ</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>ចម្លងអ្វីក៏ដោយដែលលទ្ធផលលំនាំដើមរបស់ប្រព័ន្ធចាក់ ទៅឧបករណ៍បំពងសំឡេងដែលភ្ជាប់មកជាមួយឧបករណ៍បញ្ជានេះ ក្នុងពេលដំណាលគ្នា។ ដំណើរការតាម USB និង Bluetooth។</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>ឧបករណ៍ដែលបានជ្រើសគ្មានឧបករណ៍បំពងសំឡេងភ្ជាប់មកជាមួយទេ។ សំឡេងម៉ាក្រូសម្រាប់ឧបករណ៍បញ្ជានេះចាក់នៅលើលទ្ធផលលំនាំដើមរបស់ប្រព័ន្ធ។</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>កំណត់លទ្ធផលសំឡេងឡើងវិញ</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>ឈុតសាកល្បង DualSense លើកម្មវិធីរុករក ដោយ Xuezhou Dai (daidr)៖ ឯកសារយោងសម្រាប់ការរៀបស៊ុម CRC នៃរបាយការណ៍មុខងាររបស់ Sony និងពាក្យបញ្ជាសាកល្បងហ្វឺមវែរ ដែល PadForge បញ្ជូនបន្តពីឧបករណ៍បញ្ជានិម្មិតទៅឧបករណ៍បញ្ជារូបវន្ត។</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3583,8 +3576,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>កម្រិតពន្លឺ LED Guide៖ {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>កំណត់កម្រិតពន្លឺ LED ប៊ូតុង Guide ឬ Home សម្រាប់ឧបករណ៍បញ្ជាដែលគាំទ្រទាំងអស់នៅលើរន្ធ។ ឧបករណ៍បញ្ជា Xbox ទទួលវាតាម USB តែប៉ុណ្ណោះ។</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>អនុវត្តចំពោះឧបករណ៍បញ្ជា Xbox តាម USB, Steam Controller ឆ្នាំ 2015 និងឧបករណ៍បញ្ជា Switch ដែលមាន LED ប៊ូតុង Home។ ប្រើសកម្មភាពទាំងនេះពីរជាគូ ដើម្បីបញ្ចេញពន្លឺ LED ពេលម៉ាក្រូចាប់ផ្ដើម ហើយស្ដារវាវិញពេលម៉ាក្រូបញ្ចប់។</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>កំណត់របៀបទ្រនិចឡើងវិញ</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>កំណត់ការលៃតម្រូវទ្រនិចឡើងវិញ</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>កំណត់ទីតាំងរបារសេនស័រឡើងវិញ</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>កំណត់គម្លាតបញ្ឈរឡើងវិញ</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>កំណត់ការធ្វើឱ្យរលូនឡើងវិញ</value></data>

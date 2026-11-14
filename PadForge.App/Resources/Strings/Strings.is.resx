@@ -1181,6 +1181,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Stillir hvernig PadForge kvarðar kraftsvörunaratburði frá leiknum og hvernig það beinir þeim til titringsmótora eða snertisvörunarbúnaðar raunverulegu leikjastýringarinnar. Hljóðtitringur bætir við lagi ofan á sem kerfishljóð knýr.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Þetta tæki</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Öll stýringin</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Báðir pinnar</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Titringur spilast á {0} sem snertisvörunarpúlsar, sendir beint í tækið. Sterkari titringur velur sterkari púls og endurtekur hann hraðar.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Slökkt er á snertisvörun fyrir {0} í Logi Options+, svo ekkert spilast fyrr en þú kveikir aftur á henni þar.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Þetta tæki hefur ekki svarað enn. Titringur þess spilast þegar það vaknar.</value></data>
@@ -1267,7 +1268,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>móðurborð, skjákort og minni</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>móðurborð og skjákort</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>músamottur, heyrnartól og heyrnartólastandar</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Ljósrönd</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Leikir taka yfir þegar þeir skrifa lýsingu.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Sláðu inn sex stafa hex-lit (RRGGBB eða #RRGGBB) og ýttu á Enter eða smelltu annars staðar til að virkja hann.</value></data>
@@ -1897,7 +1897,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Sleppa músarhnappi {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Víxla yfirlagi snertiflatar</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Stilla lit ljósrandar</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Hnekkir ljósrönd úthlutuðu PlayStation-raufarinnar með völdum RGB-lit. „Viðbragð“ dofnar úr fullum styrk í svart á stilltum dvínunartíma og skilar svo stjórninni aftur til stillinganna á spjaldinu „Ljósrönd“. „Fast“ heldur litnum þar til aðgerðin „Hreinsa hnekkingu ljósrandar“ keyrir. Það sem leikir skrifa gengur samt fyrir hnekkingunni.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Hnekkir ljósrönd úthlutuðu PlayStation-raufarinnar með völdum RGB-lit. „Viðbragð“ dofnar úr fullum styrk í svart á stilltum dvínunartíma og skilar svo stjórninni aftur til stillinganna á spjaldinu „Lýsing“. „Fast“ heldur litnum þar til aðgerðin „Hreinsa hnekkingu ljósrandar“ keyrir. Það sem leikir skrifa gengur samt fyrir hnekkingunni.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Blikka ljósrönd {0} (dvínun {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Halda ljósrönd {0} þar til hreinsað er</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Hreinsa hnekkingu ljósrandar</value></data>
@@ -1905,7 +1905,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Sleppir allri virkri hnekkingu ljósrandar á úthlutuðu raufinni. Notaðu með aðgerðinni „Stilla lit ljósrandar“ í ham „Fast“ til að afturkalla hana með öðrum fjölva.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Stilla ham ljósrandar</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Stilla ham ljósrandar á {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Stillir ham ljósrandar úthlutuðu raufarinnar á tiltekið gildi. Helst eins og breyting á spjaldinu „Ljósrönd“ þar til önnur aðgerð eða notandinn breytir honum.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Stillir ham ljósrandar úthlutuðu raufarinnar á tiltekið gildi. Helst eins og breyting á spjaldinu „Lýsing“ þar til önnur aðgerð eða notandinn breytir honum.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Fara í hring um hami ljósrandar</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Fara í hring um {0} hami ljósrandar</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Færir ham ljósrandar raufarinnar áfram í gegnum hamina sem valdir eru hér fyrir neðan. Í hvert sinn sem keyrt er færist yfir í næsta hakaða ham. Staðan í hringnum er fyrir hverja aðgerð og núllstillist þegar forritið er endurræst.</value></data>
@@ -1920,7 +1920,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Dvínun</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Dofnun</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Litaspjald</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Tómt litaspjald notar litaspjald raufarinnar á spjaldinu „Ljósrönd“.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Tómt litaspjald notar litaspjald raufarinnar á spjaldinu „Lýsing“.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Hamur</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Veldu hvaða hami ljósrandar fjölvinn á að fara í hring um. Í hvert sinn sem keyrt er færist yfir í næsta hakaða ham.</value></data>
 
@@ -2150,6 +2150,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Músarúttak</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Snúa við, Skriðþungi, Svörun, Hröðun, kast</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Staðsetning skynjarastangar, Lóðrétt hliðrun, Sléttun</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Stillir hraða bendilsins þegar fingri á snertifleti er varpað á X/Y músar á sýndarstýringu af gerðinni lyklaborð / mús. 1.0 er sjálfgefið. Hækkaðu hvorn ásinn sem er fyrir hraðari bendil, lækkaðu fyrir hægari. „Snúa við“ snýr hvorum ás sem er við.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Músarnæmi X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Margfaldari á láréttri hreyfingu snertiflatar → músarhreyfingu. Undir 1.0 hægir á bendlinum. Yfir 1.0 hraðar honum.</value></data>
@@ -2355,7 +2356,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kvarðar… haltu kyrru</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Endurstilla kvörðun</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Hreinsar hvíldarskekkju snúningsskynjarans og tímastimpil síðustu kvörðunar. Næsta könnunarlota keyrir aftur sjálfvirku 1.5 sekúndna kvörðunina á þessu tæki.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Snúningsskynjari í rauntíma</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Hröðunarmælir í rauntíma</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Lárétt næmi</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Kvarðar lárétt framlag snúningsskynjarans (snúningur + velta) til úttaksins. 1.0 lætur hraðann vera eins og vélin sér hann. Hærri gildi magna, lægri gildi deyfa. Gildir fyrir tækið í heild svo allar varpanir snúningsskynjara á þessari leikjastýringu fái sömu láréttu tilfinningu.</value></data>
@@ -2375,8 +2375,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Snúningsskynjari</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Stilltu hvernig hreyfiskynjari þessarar leikjastýringar stýrir úttaki músar og pinna. Kvarðaðu á sléttum fleti til að núlla rek í hvíld og stilltu svo næmi, sléttun og virkjunarreglur eftir smekk.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kvörðun</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Snúningsskynjari og hröðunarmælir í rauntíma</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Næmi</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Einingar, viðsnúningur ása, Kvörðun við raunheim</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° á hvern snúning</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Mótun svörunar</value></data>
@@ -2462,11 +2460,8 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Mjög breitt</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Margfaldari</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Gráður á skjásnúning</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Endurstilla kvörðun</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Endurstilla næmi</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Endurstilla mótun svörunar</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Endurstilla virkjun</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Endurstilla gegnumstreymi hreyfingar</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Endurstilla hnitakerfi</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Endurstilla hald</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Endurstilla lárétt næmi</value></data>
@@ -2486,8 +2481,11 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Endurstilla virkjunarpinna</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Endurstilla virkjunarstefnu</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Gegnumstreymi hreyfingar</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Nota stillingar snúningsskynjara á gegnumstreymi hreyfingar</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Beitir valfrjálsum stillingum á spjöldum snúningsskynjarans (dautt svæði, næmi, sléttun, svörunarferill, viðsnúningur) á hreyfinguna sem sýndarstýringin tilkynnir leiknum eða herminum. Slökktu á þessu til að senda aðeins kvarðaða mælingu og láta leikinn beita eigin næmi og sléttun. Leiðrétting á reki samkvæmt kvörðun gildir alltaf, hvort sem er.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>„Stillt“ beitir stillingum á spjaldi snúningsskynjarans (dautt svæði, næmi, sléttun, svörunarferill, viðsnúningur) á hreyfinguna sem sýndarstýringin tilkynnir leiknum eða herminum. „Óunnið“ sendir aðeins kvarðaða mælingu og lætur leikinn beita eigin næmi og sléttun. Leiðrétting á reki samkvæmt kvörðun gildir í báðum tilvikum.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Óunnið</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Stillt</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Leikurinn les kvörðuðu hreyfinguna og beitir eigin næmi og sléttun.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Leikurinn les hreyfinguna með næminu, sléttuninni og ferlinum sem eru stillt hér.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Endurstilla stillingar gegnumstreymis</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Næmi</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Margfaldari á næmi snúningsskynjara fyrir hverja uppsprettu. 1.0 = sjálfgefið gildi vélarinnar (500°/s → fullt útslag). Gildi yfir 1.0 eru næmari. Gildi undir 1.0 eru ónæmari.</value></data>
@@ -2735,8 +2733,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Þessi leikjastýring hefur enga gikkmótora, svo leikir sem nota Xbox Impulse Triggers myndu ekki finnast. Leggðu í staðinn hverja gikkrás inn í aðalmótorinn sömu megin.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Prófa titring</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Virkni mótora</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Vinstri</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Hægri</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Beita stöðugum krafti á þetta tæki þar til slökkt er á því. Kraftur frá leik, hvaðan sem hann kemur, gengur fyrir á meðan hann er virkur, og stöðugi krafturinn heldur áfram þegar leikurinn hættir.</value></data>
@@ -3256,7 +3252,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Hljóð</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-bendill</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Miðaðu þessari Wii Remote á skjáinn með IR-myndavélinni hennar. Þarf skynjarastöng, eða tvö innrauð LED-ljós, fyrir ofan eða neðan skjáinn. Kvarðaðu hana sem ljósbyssu á síðunni „Tæki“ til að miða á nákvæman stað. Kvörðuð fjarstýring hunsar „Staðsetning skynjarastangar“ og „Lóðrétt hliðrun“.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Stillingar bendils</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Staðsetning skynjarastangar</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Á miðju</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Fyrir ofan skjáinn</value></data>
@@ -3283,8 +3278,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Færir ham Wii-bendilsins áfram í gegnum hamina sem valdir eru hér fyrir neðan, fyrir allar fjarstýringar með IR í raufinni. Í hvert sinn sem keyrt er færist yfir í næsta hakaða ham. Staðan í hringnum er fyrir hverja aðgerð og núllstillist þegar forritið er endurræst.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Veldu hvaða hami bendils fjölvinn á að fara í hring um. Í hvert sinn sem keyrt er færist yfir í næsta hakaða ham.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Hljóð</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Fjölvahljóð og speglað kerfishljóð spilast í innbyggðum hátalara valdrar leikjastýringar, um USB eða Bluetooth. Veldu tækið í fellilistanum hér fyrir ofan. Allar stillingar hér fylgja því.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Hljóðúttak</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Fjölvahljóð og speglað kerfishljóð spilast í innbyggðum hátalara tækisins sem valið er undir Inntak frá, um USB eða Bluetooth. Allar stillingar hér fylgja því tæki.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Speglunaruppspretta, Hljóðstyrkur heyrnartóla, biðminni, Úttaksleið</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Hljóð er sjálfkrafa sent til valdrar leikjastýringar. Um USB er eigin hljóðendapunktur leikjastýringarinnar fundinn eftir vélbúnaðarhólfi. Um Bluetooth er hljóðinu streymt í HID-römmum frá Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Speglunaruppspretta</value></data>
@@ -3347,7 +3341,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Endurstilla tónmörk</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Afritar samhliða allt sem sjálfgefið úttak kerfisins spilar í innbyggðan hátalara þessarar leikjastýringar. Virkar um USB og Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Valda tækið hefur engan innbyggðan hátalara. Fjölvahljóð þessarar leikjastýringar spilast á sjálfgefnu úttaki kerfisins.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Endurstilla hljóðúttak</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Prófunarsafn fyrir DualSense í vafra eftir Xuezhou Dai (daidr): viðmiðun fyrir CRC-römmun feature-skýrslna frá Sony og prófunarskipanir fastbúnaðar sem PadForge framsendir frá sýndarleikjastýringum til raunverulegra.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Birtustig Guide-LED: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Stillir birtustig LED-ljóss Guide- eða Home-hnapps fyrir allar leikjastýringar í raufinni sem styðja það. Xbox-leikjastýringar taka aðeins við því um USB.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Á við um Xbox-leikjastýringar um USB, Steam Controller frá 2015 og Switch-leikjastýringar með LED-ljósi í Home-hnappi. Notaðu tvær slíkar aðgerðir saman til að láta LED-ljósið blikka þegar fjölvi byrjar og endurheimta það þegar honum lýkur.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Endurstilla ham bendils</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Endurstilla stillingar bendils</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Endurstilla staðsetningu skynjarastangar</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Endurstilla lóðrétta hliðrun</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Endurstilla sléttun</value></data>

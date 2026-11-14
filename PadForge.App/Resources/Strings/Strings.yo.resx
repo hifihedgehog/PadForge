@@ -357,7 +357,6 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Ìmọ́lẹ̀</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Ìmọ́lẹ̀</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Pa</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Ẹ̀rọ ohùn</value></data>
@@ -783,7 +782,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Ìwọ̀ntúnwọ̀nsì</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Ìfọkànsí</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Ẹ̀yà ìwọ̀n, yíyí ákísì padà, Real-World Calibration</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° fún yíyípo kan</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Yí pitch padà (Y)</value></data>
@@ -803,8 +801,6 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Ìsàlẹ̀ (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Òkè (Y+)</value></data>
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Ìdìmú</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Tún ìwọ̀ntúnwọ̀nsì tò</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Tún ìfọkànsí tò</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Tún ìdìmú tò</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Tún ìfọkànsí ìdábùú tò</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Tún ìfọkànsí òòró tò</value></data>
@@ -1201,7 +1197,6 @@
   <data name="Pad_ResetPointerMode" xml:space="preserve"><value>Tún ọ̀nà atọ́ka tò</value></data>
   <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>Tún iyára FPS tò</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Ohùn</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Ìjáde ohùn</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Orísun dígí, Ìwọ̀n ohùn agbékọrí, buffer, Ọ̀nà ìjáde</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Ariwo gbogbogbò</value></data>
   <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Tún ariwo gbogbogbò tò</value></data>
@@ -1940,12 +1935,11 @@
   <data name="Menu_Cell_Icon" xml:space="preserve"><value>Àmì</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Ẹ̀rọ yìí</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Gbogbo ẹ̀rọ ìdarí</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Ọ̀pá méjèèjì</value></data>
   <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Bí a ṣe ń di ẹ̀rọ ìdarí mú</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR wà lórí ẹ̀rọ</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR kò sí lórí ẹ̀rọ</value></data>
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR ń ṣiṣẹ́</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Òsì</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Ọ̀tún</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Gba ipa adaptive trigger àti ti iná láti inú àwọn mod eré tí a kọ fún DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Tan ìjáde telemetry nínú eré, kí o sì darí rẹ̀ sí PC yìí àti pọ́ọ̀tì yìí.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ipò orí ni ìlà Head Tracker lórí [Àwọn ẹ̀rọ]. So yaw orí pọ̀ mọ́ ákísì ọ̀pá kan ní apá Àwọn bọ́tìnì ti ẹ̀rọ ìdarí kan.</value></data>

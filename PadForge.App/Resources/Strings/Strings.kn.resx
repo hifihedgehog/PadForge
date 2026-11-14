@@ -1097,6 +1097,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>ಆಟದಿಂದ ಬರುವ ಫೋರ್ಸ್ ಫೀಡ್‌ಬ್ಯಾಕ್ ಘಟನೆಗಳನ್ನು PadForge ಹೇಗೆ ಅಳೆಯುತ್ತದೆ ಮತ್ತು ಭೌತಿಕ ಕಂಟ್ರೋಲರ್‌ನ ಕಂಪನ ಮೋಟಾರ್‌ಗಳು ಅಥವಾ ಹ್ಯಾಪ್ಟಿಕ್ ಆಕ್ಚುವೇಟರ್‌ಗಳಿಗೆ ಹೇಗೆ ರೂಟ್ ಮಾಡುತ್ತದೆ ಎಂಬುದನ್ನು ಹೊಂದಿಸುತ್ತದೆ. ಆಡಿಯೊ ಕಂಪನ ಸಿಸ್ಟಮ್ ಆಡಿಯೊ ಚಾಲಿತ ಪದರವನ್ನು ಅದರ ಮೇಲೆ ಸೇರಿಸುತ್ತದೆ.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>ಈ ಸಾಧನ</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>ಇಡೀ ಕಂಟ್ರೋಲರ್</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>ಎರಡೂ ಸ್ಟಿಕ್‌ಗಳು</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>{0} ನಲ್ಲಿ ಕಂಪನವು ಹ್ಯಾಪ್ಟಿಕ್ ಪಲ್ಸ್‌ಗಳಾಗಿ ಪ್ಲೇ ಆಗುತ್ತದೆ, ಸಾಧನಕ್ಕೆ ನೇರವಾಗಿ ಕಳುಹಿಸಲಾಗುತ್ತದೆ. ಬಲವಾದ ಕಂಪನವು ಬಲವಾದ ಪಲ್ಸ್ ಆರಿಸಿ ಅದನ್ನು ವೇಗವಾಗಿ ಪುನರಾವರ್ತಿಸುತ್ತದೆ.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>{0} ಗಾಗಿ Logi Options+ ನಲ್ಲಿ ಹ್ಯಾಪ್ಟಿಕ್ ಫೀಡ್‌ಬ್ಯಾಕ್ ಆಫ್ ಆಗಿದೆ, ಆದ್ದರಿಂದ ಅಲ್ಲಿ ಮತ್ತೆ ಆನ್ ಮಾಡುವವರೆಗೆ ಅದು ಏನನ್ನೂ ಪ್ಲೇ ಮಾಡುವುದಿಲ್ಲ.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>ಈ ಸಾಧನ ಇನ್ನೂ ಉತ್ತರಿಸಿಲ್ಲ. ಅದು ಎಚ್ಚರಗೊಂಡ ನಂತರ ಅದರ ಕಂಪನ ಪ್ಲೇ ಆಗುತ್ತದೆ.</value></data>
@@ -1162,7 +1163,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>ಹೆಡ್‌ಸೆಟ್‌ಗಳು, ಮೌಸ್‌ಪ್ಯಾಡ್‌ಗಳು ಮತ್ತು Chroma Link ಪಟ್ಟಿಗಳು</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>ಹೆಡ್‌ಸೆಟ್‌ಗಳು, ಮೌಸ್‌ಪ್ಯಾಡ್‌ಗಳು ಮತ್ತು ಸ್ಪೀಕರ್‌ಗಳು</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ಹೆಡ್‌ಸೆಟ್‌ಗಳು</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>ಲೈಟ್ ಬಾರ್</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>ಆಟಗಳು ಬೆಳಕನ್ನು ಬರೆದಾಗಲೆಲ್ಲಾ ನಿಯಂತ್ರಣ ತೆಗೆದುಕೊಳ್ಳುತ್ತವೆ.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ಆರು-ಅಂಕಿಯ ಹೆಕ್ಸ್ ಬಣ್ಣ (RRGGBB ಅಥವಾ #RRGGBB) ನಮೂದಿಸಿ, ಅನ್ವಯಿಸಲು Enter ಒತ್ತಿ ಅಥವಾ ಹೊರಗೆ ಕ್ಲಿಕ್ ಮಾಡಿ.</value></data>
@@ -1703,7 +1703,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>ಮೌಸ್ ಬಿಡು {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>ಟಚ್‌ಪ್ಯಾಡ್ ಓವರ್‌ಲೇ ಟಾಗಲ್ ಮಾಡಿ</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>ಲೈಟ್ ಬಾರ್ ಬಣ್ಣ ಹೊಂದಿಸಿ</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>ನಿಯೋಜಿತ PlayStation ಸ್ಲಾಟ್‌ನ ಲೈಟ್ ಬಾರ್ ಅನ್ನು ಆಯ್ದ RGB ಬಣ್ಣಕ್ಕೆ ಅತಿಕ್ರಮಿಸುತ್ತದೆ. ರಿಯಾಕ್ಟಿವ್ ಪೂರ್ಣ ತೀವ್ರತೆಯಿಂದ ಕಪ್ಪಿಗೆ ಕ್ರಮೇಣ ಮಸುಕಾಗುತ್ತದೆ, ನಂತರ ಲೈಟ್ ಬಾರ್ ಕಾರ್ಡ್‌ನ ಸೆಟ್ಟಿಂಗ್ಸ್‌ಗೆ ಹಿಂತಿರುಗುತ್ತದೆ. ಸ್ಟಿಕಿ 'ಲೈಟ್ ಬಾರ್ ಅತಿಕ್ರಮಣ ತೆರವುಗೊಳಿಸಿ' ಕ್ರಿಯೆ ನಡೆಯುವವರೆಗೆ ಬಣ್ಣವನ್ನು ಹಿಡಿದಿಡುತ್ತದೆ. ಆಟ ಬರೆಯುವ ಮೌಲ್ಯಗಳಿಗೇ ಇನ್ನೂ ಆದ್ಯತೆ ಇರುತ್ತದೆ.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>ನಿಯೋಜಿತ PlayStation ಸ್ಲಾಟ್‌ನ ಲೈಟ್ ಬಾರ್ ಅನ್ನು ಆಯ್ದ RGB ಬಣ್ಣಕ್ಕೆ ಅತಿಕ್ರಮಿಸುತ್ತದೆ. ರಿಯಾಕ್ಟಿವ್ ಪೂರ್ಣ ತೀವ್ರತೆಯಿಂದ ಕಪ್ಪಿಗೆ ಕ್ರಮೇಣ ಮಸುಕಾಗುತ್ತದೆ, ನಂತರ ಬೆಳಕು ಕಾರ್ಡ್‌ನ ಸೆಟ್ಟಿಂಗ್ಸ್‌ಗೆ ಹಿಂತಿರುಗುತ್ತದೆ. ಸ್ಟಿಕಿ 'ಲೈಟ್ ಬಾರ್ ಅತಿಕ್ರಮಣ ತೆರವುಗೊಳಿಸಿ' ಕ್ರಿಯೆ ನಡೆಯುವವರೆಗೆ ಬಣ್ಣವನ್ನು ಹಿಡಿದಿಡುತ್ತದೆ. ಆಟ ಬರೆಯುವ ಮೌಲ್ಯಗಳಿಗೇ ಇನ್ನೂ ಆದ್ಯತೆ ಇರುತ್ತದೆ.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>ಲೈಟ್ ಬಾರ್ {0} ಮಿನುಗಿಸು (ಕ್ಷಯ {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>ತೆರವುಗೊಳಿಸುವವರೆಗೆ ಲೈಟ್ ಬಾರ್ {0} ಹಿಡಿದಿಡಿ</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>ಲೈಟ್ ಬಾರ್ ಅತಿಕ್ರಮಣ ತೆರವುಗೊಳಿಸಿ</value></data>
@@ -1711,7 +1711,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>ನಿಯೋಜಿತ ಸ್ಲಾಟ್‌ನಲ್ಲಿರುವ ಯಾವುದೇ ಸಕ್ರಿಯ ಲೈಟ್ ಬಾರ್ ಅತಿಕ್ರಮಣವನ್ನು ಬಿಡುಗಡೆ ಮಾಡುತ್ತದೆ. ಇನ್ನೊಂದು ಮ್ಯಾಕ್ರೋ ಮೂಲಕ ಅದನ್ನು ರದ್ದುಗೊಳಿಸಲು ಸ್ಟಿಕಿ ಲೈಟ್ ಬಾರ್ ಬಣ್ಣ ಹೊಂದಿಸಿ ಕ್ರಿಯೆಯೊಂದಿಗೆ ಜೋಡಿಸಿ.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>ಲೈಟ್ ಬಾರ್ ಮೋಡ್ ಹೊಂದಿಸಿ</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>ಲೈಟ್ ಬಾರ್ ಮೋಡ್ ಅನ್ನು {0} ಗೆ ಹೊಂದಿಸಿ</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>ನಿಯೋಜಿತ ಸ್ಲಾಟ್‌ನ ಲೈಟ್ ಬಾರ್ ಮೋಡ್ ಅನ್ನು ನಿರ್ದಿಷ್ಟ ಮೌಲ್ಯಕ್ಕೆ ಹೊಂದಿಸುತ್ತದೆ. ಬೇರೆ ಕ್ರಿಯೆ ಅಥವಾ ಬಳಕೆದಾರ ಬದಲಾಯಿಸುವವರೆಗೆ ಲೈಟ್ ಬಾರ್ ಕಾರ್ಡ್‌ನಲ್ಲಿನ ಬದಲಾವಣೆಯಂತೆ ಉಳಿಯುತ್ತದೆ.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>ನಿಯೋಜಿತ ಸ್ಲಾಟ್‌ನ ಲೈಟ್ ಬಾರ್ ಮೋಡ್ ಅನ್ನು ನಿರ್ದಿಷ್ಟ ಮೌಲ್ಯಕ್ಕೆ ಹೊಂದಿಸುತ್ತದೆ. ಬೇರೆ ಕ್ರಿಯೆ ಅಥವಾ ಬಳಕೆದಾರ ಬದಲಾಯಿಸುವವರೆಗೆ ಬೆಳಕು ಕಾರ್ಡ್‌ನಲ್ಲಿನ ಬದಲಾವಣೆಯಂತೆ ಉಳಿಯುತ್ತದೆ.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>ಲೈಟ್ ಬಾರ್ ಮೋಡ್‌ಗಳ ಚಕ್ರ</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} ಲೈಟ್ ಬಾರ್ ಮೋಡ್‌ಗಳ ಮೂಲಕ ಸುತ್ತಿ</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>ಕೆಳಗೆ ಆಯ್ದ ಮೋಡ್‌ಗಳ ಮೂಲಕ ಸ್ಲಾಟ್‌ನ ಲೈಟ್ ಬಾರ್ ಮೋಡ್ ಅನ್ನು ಮುಂದುವರಿಸುತ್ತದೆ. ಪ್ರತಿ ಬಾರಿ ಚಲಿಸಿದಾಗ ಮುಂದಿನ ಟಿಕ್ ಮಾಡಿದ ಮೋಡ್‌ಗೆ ಹೋಗುತ್ತದೆ. ಚಕ್ರದ ಸ್ಥಾನ ಪ್ರತಿ ಕ್ರಿಯೆಗೂ ಪ್ರತ್ಯೇಕ, ಮತ್ತು ಆ್ಯಪ್ ಮರುಪ್ರಾರಂಭವಾದಾಗ ಮರುಹೊಂದುತ್ತದೆ.</value></data>
@@ -1726,7 +1726,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>ಕ್ಷಯ</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>ಮಸುಕು</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>ಪ್ಯಾಲೆಟ್</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>ಖಾಲಿ ಪ್ಯಾಲೆಟ್ ಸ್ಲಾಟ್‌ನ ಲೈಟ್ ಬಾರ್ ಕಾರ್ಡ್‌ನಲ್ಲಿರುವ ಪ್ಯಾಲೆಟ್ ಅನ್ನು ಬಳಸುತ್ತದೆ.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>ಖಾಲಿ ಪ್ಯಾಲೆಟ್ ಸ್ಲಾಟ್‌ನ ಬೆಳಕು ಕಾರ್ಡ್‌ನಲ್ಲಿರುವ ಪ್ಯಾಲೆಟ್ ಅನ್ನು ಬಳಸುತ್ತದೆ.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>ಮೋಡ್</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>ಮ್ಯಾಕ್ರೋ ಯಾವ ಲೈಟ್ ಬಾರ್ ಮೋಡ್‌ಗಳ ಮೂಲಕ ಸುತ್ತಬೇಕೆಂದು ಆರಿಸಿ. ಪ್ರತಿ ಬಾರಿ ಚಲಿಸಿದಾಗ ಮುಂದಿನ ಟಿಕ್ ಮಾಡಿದ ಮೋಡ್‌ಗೆ ಹೋಗುತ್ತದೆ.</value></data>
 
@@ -1956,6 +1956,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>ಮೌಸ್ ಔಟ್‌ಪುಟ್</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>ವಿಲೋಮ, ಮೊಮೆಂಟಮ್, ಪ್ರತಿಕ್ರಿಯೆ, ವೇಗವರ್ಧನೆ, ಚಿಮ್ಮು</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>ಸೆನ್ಸರ್ ಬಾರ್ ಸ್ಥಾನ, ಲಂಬ ಆಫ್‌ಸೆಟ್, ಸ್ಮೂತಿಂಗ್</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>ಕೀಬೋರ್ಡ್ / ಮೌಸ್ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ನಲ್ಲಿ ಟಚ್‌ಪ್ಯಾಡ್ ಬೆರಳನ್ನು ಮೌಸ್ X/Y ಗೆ ಮ್ಯಾಪ್ ಮಾಡಿದಾಗ ಕರ್ಸರ್ ವೇಗವನ್ನು ಹೊಂದಿಸುತ್ತದೆ. 1.0 ಡೀಫಾಲ್ಟ್. ಕರ್ಸರ್ ವೇಗವಾಗಲು ಯಾವುದೇ ಅಕ್ಷವನ್ನು ಹೆಚ್ಚಿಸಿ, ನಿಧಾನವಾಗಲು ಕಡಿಮೆ ಮಾಡಿ. ವಿಲೋಮಗೊಳಿಸು ಯಾವುದೇ ಅಕ್ಷವನ್ನು ತಿರುಗಿಸುತ್ತದೆ.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>ಮೌಸ್ ಸಂವೇದನಾಶೀಲತೆ X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>ಅಡ್ಡ ಟಚ್‌ಪ್ಯಾಡ್ → ಮೌಸ್ ಚಲನೆಗೆ ಗುಣಕ. 1.0 ಕ್ಕಿಂತ ಕಡಿಮೆ ಇದ್ದರೆ ಕರ್ಸರ್ ನಿಧಾನ. 1.0 ಕ್ಕಿಂತ ಹೆಚ್ಚು ಇದ್ದರೆ ವೇಗ.</value></data>
@@ -2161,7 +2162,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>ಕ್ಯಾಲಿಬ್ರೇಟ್ ಆಗುತ್ತಿದೆ… ಅಲುಗಾಡಿಸದೆ ಇರಿಸಿ</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>ಕ್ಯಾಲಿಬ್ರೇಶನ್ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>ವಿಶ್ರಾಂತಿ ಸ್ಥಿತಿಯ ಜೈರೋ ಬಯಾಸ್ ಮತ್ತು ಕೊನೆಯ ಕ್ಯಾಲಿಬ್ರೇಶನ್ ಸಮಯಮುದ್ರೆಯನ್ನು ತೆರವುಗೊಳಿಸುತ್ತದೆ. ಮುಂದಿನ ಪೋಲಿಂಗ್ ಚಕ್ರದಲ್ಲಿ ಈ ಸಾಧನದಲ್ಲಿ 1.5 ಸೆಕೆಂಡಿನ ಸ್ವಯಂ-ಕ್ಯಾಲಿಬ್ರೇಶನ್ ಮತ್ತೆ ನಡೆಯುತ್ತದೆ.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>ಲೈವ್ ಜೈರೋಸ್ಕೋಪ್</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>ಲೈವ್ ಆಕ್ಸೆಲರೋಮೀಟರ್</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>ಅಡ್ಡ ಸಂವೇದನಾಶೀಲತೆ</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>ಜೈರೋದ ಅಡ್ಡ (ಯಾ + ರೋಲ್) ಕೊಡುಗೆಯನ್ನು ಫಲಿತಾಂಶಕ್ಕೆ ಅಳೆಯುತ್ತದೆ. 1.0 ಎಂಜಿನ್ ನೋಡುವ ದರವನ್ನು ಹಾಗೆಯೇ ಬಿಡುತ್ತದೆ. ಹೆಚ್ಚಿನ ಮೌಲ್ಯಗಳು ವರ್ಧಿಸುತ್ತವೆ, ಕಡಿಮೆ ಮೌಲ್ಯಗಳು ತಗ್ಗಿಸುತ್ತವೆ. ಸಾಧನ ಮಟ್ಟದಲ್ಲಿ ಅನ್ವಯಿಸುತ್ತದೆ, ಆದ್ದರಿಂದ ಈ ಕಂಟ್ರೋಲರ್ ಮೇಲಿನ ಪ್ರತಿ ಜೈರೋ ಬೈಂಡಿಂಗ್ ಒಂದೇ ಅಡ್ಡ ಅನುಭವವನ್ನು ಪಡೆಯುತ್ತದೆ.</value></data>
@@ -2181,8 +2181,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ಜೈರೋ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>ಈ ಪ್ಯಾಡ್ ಚಲನೆ ಸಂವೇದಕವು ಮೌಸ್ ಮತ್ತು ಸ್ಟಿಕ್ ಫಲಿತಾಂಶವನ್ನು ಹೇಗೆ ನಿಯಂತ್ರಿಸುತ್ತದೆ ಎಂದು ಹೊಂದಿಸಿ. ವಿಶ್ರಾಂತಿ ಡ್ರಿಫ್ಟ್ ಸೊನ್ನೆ ಮಾಡಲು ಸಮತಟ್ಟಾದ ಮೇಲ್ಮೈಯಲ್ಲಿ ಕ್ಯಾಲಿಬ್ರೇಟ್ ಮಾಡಿ, ನಂತರ ಸಂವೇದನಾಶೀಲತೆ, ಸ್ಮೂಥಿಂಗ್ ಮತ್ತು ತೊಡಗಿಸುವ ನಿಯಮಗಳನ್ನು ನಿಮ್ಮ ಇಷ್ಟಕ್ಕೆ ತಕ್ಕಂತೆ ಹೊಂದಿಸಿ.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>ಕ್ಯಾಲಿಬ್ರೇಶನ್</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>ಲೈವ್ ಜೈರೋಸ್ಕೋಪ್ ಮತ್ತು ಆಕ್ಸೆಲರೋಮೀಟರ್ ರೀಡಿಂಗ್‌ಗಳು</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>ಸಂವೇದನಾಶೀಲತೆ</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>ಘಟಕಗಳು, ಅಕ್ಷ ವಿಲೋಮ, ನೈಜ-ಜಗತ್ತಿನ ಕ್ಯಾಲಿಬ್ರೇಶನ್</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>ಪ್ರತಿ ತಿರುವಿಗೆ ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>ಪ್ರತಿಕ್ರಿಯೆ ರೂಪಿಸುವಿಕೆ</value></data>
@@ -2268,11 +2266,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>ಅತಿ ವಿಶಾಲ</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>ಗುಣಕ</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>ಪರದೆ ತಿರುವಿಗೆ ಡಿಗ್ರಿಗಳು</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>ಕ್ಯಾಲಿಬ್ರೇಶನ್ ಮರುಹೊಂದಿಸು</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>ಸಂವೇದನಾಶೀಲತೆ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>ಪ್ರತಿಕ್ರಿಯೆ ರೂಪಿಸುವಿಕೆ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>ತೊಡಗಿಸುವಿಕೆ ಮರುಹೊಂದಿಸು</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>ಚಲನೆ ಪಾಸ್‌ಥ್ರೂ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>ಸ್ಪೇಸ್ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>ಹಿಡಿತ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>ಅಡ್ಡ ಸಂವೇದನಾಶೀಲತೆ ಮರುಹೊಂದಿಸು</value></data>
@@ -2292,8 +2287,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>ತೊಡಗಿಸುವ ಸ್ಟಿಕ್ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>ತೊಡಗಿಸುವ ದಿಕ್ಕು ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>ಚಲನೆ ಪಾಸ್‌ಥ್ರೂ</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>ಚಲನೆ ಪಾಸ್‌ಥ್ರೂ ಮೇಲೆ ಜೈರೋ ಟ್ಯೂನಿಂಗ್ ಅನ್ವಯಿಸಿ</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ಜೈರೋ ಕಾರ್ಡ್‌ಗಳ ಐಚ್ಛಿಕ ಟ್ಯೂನಿಂಗ್ (ಡೆಡ್ ಜೋನ್, ಸಂವೇದನಾಶೀಲತೆ, ಸ್ಮೂಥಿಂಗ್, ಪ್ರತಿಕ್ರಿಯೆ ವಕ್ರರೇಖೆ, ವಿಲೋಮ) ಅನ್ನು ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ ಆಟ ಅಥವಾ ಎಮ್ಯುಲೇಟರ್ ಕಡೆಗೆ ವರದಿ ಮಾಡುವ ಚಲನೆಯ ಮೇಲೆ ನಡೆಸುತ್ತದೆ. ಕ್ಯಾಲಿಬ್ರೇಟ್ ಮಾಡಿದ ರೀಡಿಂಗ್ ಮಾತ್ರ ಕಳುಹಿಸಲು ಮತ್ತು ಆಟವು ತನ್ನದೇ ಸಂವೇದನಾಶೀಲತೆ ಹಾಗೂ ಸ್ಮೂಥಿಂಗ್ ಅನ್ವಯಿಸಲು ಇದನ್ನು ಆಫ್ ಮಾಡಿ. ಕ್ಯಾಲಿಬ್ರೇಶನ್ ಡ್ರಿಫ್ಟ್ ತಿದ್ದುಪಡಿ ಎರಡೂ ಸಂದರ್ಭದಲ್ಲಿ ಯಾವಾಗಲೂ ಅನ್ವಯವಾಗುತ್ತದೆ.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ಟ್ಯೂನ್ಡ್ ಜೈರೋ ಕಾರ್ಡ್‌ನ ಟ್ಯೂನಿಂಗ್ (ಡೆಡ್ ಜೋನ್, ಸಂವೇದನಾಶೀಲತೆ, ಸ್ಮೂಥಿಂಗ್, ಪ್ರತಿಕ್ರಿಯೆ ವಕ್ರರೇಖೆ, ವಿಲೋಮ) ಅನ್ನು ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ ಆಟ ಅಥವಾ ಎಮ್ಯುಲೇಟರ್ ಕಡೆಗೆ ವರದಿ ಮಾಡುವ ಚಲನೆಯ ಮೇಲೆ ನಡೆಸುತ್ತದೆ. ರಾ ಕ್ಯಾಲಿಬ್ರೇಟ್ ಮಾಡಿದ ರೀಡಿಂಗ್ ಮಾತ್ರ ಕಳುಹಿಸುತ್ತದೆ ಮತ್ತು ಆಟವು ತನ್ನದೇ ಸಂವೇದನಾಶೀಲತೆ ಹಾಗೂ ಸ್ಮೂಥಿಂಗ್ ಅನ್ವಯಿಸಲು ಬಿಡುತ್ತದೆ. ಕ್ಯಾಲಿಬ್ರೇಶನ್ ಡ್ರಿಫ್ಟ್ ತಿದ್ದುಪಡಿ ಎರಡೂ ಸಂದರ್ಭದಲ್ಲಿ ಅನ್ವಯವಾಗುತ್ತದೆ.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>ರಾ</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>ಟ್ಯೂನ್ಡ್</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>ಆಟವು ಕ್ಯಾಲಿಬ್ರೇಟ್ ಮಾಡಿದ ಚಲನೆಯನ್ನು ಓದುತ್ತದೆ ಮತ್ತು ತನ್ನದೇ ಸಂವೇದನಾಶೀಲತೆ ಹಾಗೂ ಸ್ಮೂಥಿಂಗ್ ಅನ್ವಯಿಸುತ್ತದೆ.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>ಆಟವು ಇಲ್ಲಿ ಹೊಂದಿಸಿದ ಸಂವೇದನಾಶೀಲತೆ, ಸ್ಮೂಥಿಂಗ್ ಮತ್ತು ವಕ್ರರೇಖೆಯೊಂದಿಗೆ ಚಲನೆಯನ್ನು ಓದುತ್ತದೆ.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>ಪಾಸ್‌ಥ್ರೂ ಟ್ಯೂನಿಂಗ್ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>ಸಂವೇದನಾಶೀಲತೆ</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ಪ್ರತಿ-ಮೂಲ ಜೈರೋ ಸಂವೇದನಾಶೀಲತೆ ಗುಣಕ. 1.0 = ಎಂಜಿನ್ ಡೀಫಾಲ್ಟ್ (500°/s → ಪೂರ್ಣ ವಿಚಲನೆ). 1.0 ಕ್ಕಿಂತ ಹೆಚ್ಚಿನ ಮೌಲ್ಯಗಳು ಹೆಚ್ಚು ಸಂವೇದನಾಶೀಲ. 1.0 ಕ್ಕಿಂತ ಕಡಿಮೆ ಮೌಲ್ಯಗಳು ಕಡಿಮೆ ಸಂವೇದನಾಶೀಲ.</value></data>
@@ -2540,8 +2538,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>ಈ ಕಂಟ್ರೋಲರ್‌ಗೆ ಟ್ರಿಗರ್ ಮೋಟಾರ್‌ಗಳಿಲ್ಲ, ಆದ್ದರಿಂದ Xbox ಇಂಪಲ್ಸ್ ಟ್ರಿಗರ್‌ಗಳನ್ನು ಬಳಸುವ ಗೇಮ್‌ಗಳ ಕಂಪನ ಅನುಭವಕ್ಕೆ ಬರುವುದಿಲ್ಲ. ಬದಲಿಗೆ ಪ್ರತಿ ಟ್ರಿಗರ್ ಚಾನೆಲ್ ಅನ್ನು ಅದೇ ಬದಿಯ ಮುಖ್ಯ ಮೋಟಾರ್‌ಗೆ ಸೇರಿಸಿ.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>ಕಂಪನ ಪರೀಕ್ಷಿಸಿ</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>ಮೋಟಾರ್ ಚಟುವಟಿಕೆ</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>ಎಡ</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>ಬಲ</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>ನೀವು ಆಫ್ ಮಾಡುವವರೆಗೆ ಈ ಸಾಧನಕ್ಕೆ ನಿರಂತರ ಬಲವನ್ನು ಅನ್ವಯಿಸಿ. ಇದು ಸಕ್ರಿಯವಾಗಿರುವಾಗ ಯಾವುದೇ ಮೂಲದಿಂದ ಬರುವ ಗೇಮ್-ಚಾಲಿತ ಬಲ ಅದನ್ನು ಮೀರಿಸುತ್ತದೆ ಮತ್ತು ಗೇಮ್ ನಿಂತಾಗ ಪುನರಾರಂಭವಾಗುತ್ತದೆ.</value></data>
@@ -3048,7 +3044,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>ಆಡಿಯೊ</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR ಪಾಯಿಂಟರ್</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>ಈ Wii ರಿಮೋಟ್ ಅನ್ನು ಅದರ IR ಕ್ಯಾಮೆರಾದಿಂದ ಪರದೆಯತ್ತ ಗುರಿಯಿಡಿ. ಡಿಸ್‌ಪ್ಲೇಯ ಮೇಲೆ ಅಥವಾ ಕೆಳಗೆ ಸೆನ್ಸರ್ ಬಾರ್ ಅಥವಾ ಎರಡು ಇನ್ಫ್ರಾರೆಡ್ LED ಗಳು ಬೇಕು. ನಿಖರವಾದ ಸ್ಥಳಕ್ಕೆ ಗುರಿಯಿಡಲು ಸಾಧನಗಳ ಪುಟದಲ್ಲಿ ಇದನ್ನು ಲೈಟ್ ಗನ್ ಆಗಿ ಕ್ಯಾಲಿಬ್ರೇಟ್ ಮಾಡಿ. ಕ್ಯಾಲಿಬ್ರೇಟ್ ಮಾಡಿದ ರಿಮೋಟ್ ಸೆನ್ಸರ್ ಬಾರ್ ಸ್ಥಾನ ಮತ್ತು ಲಂಬ ಆಫ್‌ಸೆಟ್ ಅನ್ನು ನಿರ್ಲಕ್ಷಿಸುತ್ತದೆ.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>ಪಾಯಿಂಟರ್ ಟ್ಯೂನಿಂಗ್</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>ಸೆನ್ಸರ್ ಬಾರ್ ಸ್ಥಾನ</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>ಮಧ್ಯದಲ್ಲಿ</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>ಪರದೆಯ ಮೇಲೆ</value></data>
@@ -3075,8 +3070,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>ಸ್ಲಾಟ್‌ನಲ್ಲಿರುವ ಪ್ರತಿ IR-ಸಮರ್ಥ ರಿಮೋಟ್‌ಗೆ, ಕೆಳಗೆ ಆಯ್ಕೆ ಮಾಡಿದ ಮೋಡ್‌ಗಳ ಮೂಲಕ Wii ಪಾಯಿಂಟರ್ ಮೋಡ್ ಅನ್ನು ಮುಂದೆ ಸಾಗಿಸುತ್ತದೆ. ಪ್ರತಿ ಕಾರ್ಯಗತಗೊಳಿಸುವಿಕೆಯು ಗುರುತಿಸಿದ ಮುಂದಿನ ಮೋಡ್‌ಗೆ ಹೋಗುತ್ತದೆ. ಸೈಕಲ್ ಸ್ಥಾನ ಪ್ರತಿ ಕ್ರಿಯೆಗೆ ಪ್ರತ್ಯೇಕ ಮತ್ತು ಆ್ಯಪ್ ಮರುಪ್ರಾರಂಭದಲ್ಲಿ ಮರುಹೊಂದುತ್ತದೆ.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>ಮ್ಯಾಕ್ರೋ ಯಾವ ಪಾಯಿಂಟರ್ ಮೋಡ್‌ಗಳ ಮೂಲಕ ಸೈಕಲ್ ಆಗಬೇಕೆಂದು ಆಯ್ಕೆಮಾಡಿ. ಪ್ರತಿ ಕಾರ್ಯಗತಗೊಳಿಸುವಿಕೆ ಗುರುತಿಸಿದ ಮುಂದಿನ ಮೋಡ್‌ಗೆ ಹೋಗುತ್ತದೆ.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ಆಡಿಯೊ</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>ಮ್ಯಾಕ್ರೋ ಧ್ವನಿಗಳು ಮತ್ತು ಪ್ರತಿಬಿಂಬಿತ ಸಿಸ್ಟಮ್ ಆಡಿಯೊ ಆಯ್ಕೆಮಾಡಿದ ಕಂಟ್ರೋಲರ್‌ನ ಅಂತರ್ನಿರ್ಮಿತ ಸ್ಪೀಕರ್‌ನಲ್ಲಿ, USB ಅಥವಾ ಬ್ಲೂಟೂತ್ ಮೂಲಕ ಪ್ಲೇ ಆಗುತ್ತವೆ. ಮೇಲಿನ ಡ್ರಾಪ್‌ಡೌನ್‌ನಲ್ಲಿ ಸಾಧನವನ್ನು ಆಯ್ಕೆಮಾಡಿ. ಇಲ್ಲಿನ ಪ್ರತಿ ಸೆಟ್ಟಿಂಗ್ ಅದನ್ನು ಅನುಸರಿಸುತ್ತದೆ.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>ಧ್ವನಿ ಔಟ್‌ಪುಟ್</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>ಮ್ಯಾಕ್ರೋ ಧ್ವನಿಗಳು ಮತ್ತು ಪ್ರತಿಬಿಂಬಿತ ಸಿಸ್ಟಮ್ ಆಡಿಯೊ ಇನ್‌ಪುಟ್ ಮೂಲ ಅಡಿಯಲ್ಲಿ ಆಯ್ಕೆಮಾಡಿದ ಸಾಧನದ ಅಂತರ್ನಿರ್ಮಿತ ಸ್ಪೀಕರ್‌ನಲ್ಲಿ, USB ಅಥವಾ ಬ್ಲೂಟೂತ್ ಮೂಲಕ ಪ್ಲೇ ಆಗುತ್ತವೆ. ಇಲ್ಲಿನ ಪ್ರತಿ ಸೆಟ್ಟಿಂಗ್ ಆ ಸಾಧನವನ್ನು ಅನುಸರಿಸುತ್ತದೆ.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>ಮಿರರ್ ಮೂಲ, ಹೆಡ್‌ಫೋನ್ ವಾಲ್ಯೂಮ್, ಬಫರ್, ಔಟ್‌ಪುಟ್ ಮಾರ್ಗ</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>ಧ್ವನಿಗಳು ಆಯ್ಕೆಮಾಡಿದ ಕಂಟ್ರೋಲರ್‌ಗೆ ತಾನಾಗಿ ಹೋಗುತ್ತವೆ. USB ಮೂಲಕ ಪ್ಯಾಡ್‌ನ ಸ್ವಂತ ಆಡಿಯೊ ಎಂಡ್‌ಪಾಯಿಂಟ್ ಅನ್ನು ಹಾರ್ಡ್‌ವೇರ್ ಕಂಟೈನರ್ ಮೂಲಕ ಹೊಂದಿಸಲಾಗುತ್ತದೆ. ಬ್ಲೂಟೂತ್ ಮೂಲಕ ಆಡಿಯೊವನ್ನು Sony HID ಫ್ರೇಮ್‌ಗಳಲ್ಲಿ ಸ್ಟ್ರೀಮ್ ಮಾಡಲಾಗುತ್ತದೆ.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>ಮಿರರ್ ಮೂಲ</value></data>
@@ -3139,7 +3133,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>ಟೋನ್ ಮಿತಿ ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>ಸಿಸ್ಟಮ್ ಡೀಫಾಲ್ಟ್ ಔಟ್‌ಪುಟ್ ಪ್ಲೇ ಮಾಡುವ ಎಲ್ಲವನ್ನೂ ಈ ಕಂಟ್ರೋಲರ್‌ನ ಅಂತರ್ನಿರ್ಮಿತ ಸ್ಪೀಕರ್‌ಗೆ ಸಮಾನಾಂತರವಾಗಿ ನಕಲಿಸುತ್ತದೆ. USB ಮತ್ತು ಬ್ಲೂಟೂತ್ ಮೂಲಕ ಕೆಲಸ ಮಾಡುತ್ತದೆ.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>ಆಯ್ಕೆಮಾಡಿದ ಸಾಧನಕ್ಕೆ ಅಂತರ್ನಿರ್ಮಿತ ಸ್ಪೀಕರ್ ಇಲ್ಲ. ಈ ಪ್ಯಾಡ್‌ನ ಮ್ಯಾಕ್ರೋ ಧ್ವನಿಗಳು ಸಿಸ್ಟಮ್ ಡೀಫಾಲ್ಟ್ ಔಟ್‌ಪುಟ್‌ನಲ್ಲಿ ಪ್ಲೇ ಆಗುತ್ತವೆ.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>ಧ್ವನಿ ಔಟ್‌ಪುಟ್ ಮರುಹೊಂದಿಸು</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) ಅವರ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ನಡೆಯುವ DualSense ಪರೀಕ್ಷಾ ಸೂಟ್: PadForge ವರ್ಚುವಲ್ ಪ್ಯಾಡ್‌ಗಳಿಂದ ಭೌತಿಕ ಪ್ಯಾಡ್‌ಗಳಿಗೆ ರವಾನಿಸುವ Sony ಫೀಚರ್-ರಿಪೋರ್ಟ್ CRC ಫ್ರೇಮಿಂಗ್ ಮತ್ತು ಫರ್ಮ್‌ವೇರ್ ಪರೀಕ್ಷಾ ಆಜ್ಞೆಗಳ ಆಧಾರ.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3570,8 +3563,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>ಗೈಡ್ LED ಪ್ರಕಾಶಮಾನತೆ: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>ಸ್ಲಾಟ್‌ನಲ್ಲಿರುವ ಸಾಮರ್ಥ್ಯವುಳ್ಳ ಪ್ರತಿ ಕಂಟ್ರೋಲರ್‌ಗೆ ಗೈಡ್ ಅಥವಾ ಹೋಮ್ ಬಟನ್ LED ಪ್ರಕಾಶಮಾನತೆಯನ್ನು ಹೊಂದಿಸುತ್ತದೆ. Xbox ಕಂಟ್ರೋಲರ್‌ಗಳು ಇದನ್ನು USB ಮೂಲಕ ಮಾತ್ರ ಸ್ವೀಕರಿಸುತ್ತವೆ.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>USB ಮೂಲಕ Xbox ಕಂಟ್ರೋಲರ್‌ಗಳಿಗೆ, 2015 Steam Controller ಗೆ, ಮತ್ತು ಹೋಮ್ ಬಟನ್ LED ಇರುವ Switch ಕಂಟ್ರೋಲರ್‌ಗಳಿಗೆ ಅನ್ವಯಿಸುತ್ತದೆ. ಮ್ಯಾಕ್ರೋ ಪ್ರಾರಂಭವಾದಾಗ LED ಮಿನುಗಿಸಲು ಮತ್ತು ಮುಗಿದಾಗ ಮರುಸ್ಥಾಪಿಸಲು ಈ ಕ್ರಿಯೆಗಳಲ್ಲಿ ಎರಡನ್ನು ಜೋಡಿಸಿ.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>ಪಾಯಿಂಟರ್ ಮೋಡ್ ಮರುಹೊಂದಿಸಿ</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>ಪಾಯಿಂಟರ್ ಟ್ಯೂನಿಂಗ್ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>ಸೆನ್ಸರ್ ಬಾರ್ ಸ್ಥಾನ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>ಲಂಬ ಆಫ್‌ಸೆಟ್ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>ಸ್ಮೂತಿಂಗ್ ಮರುಹೊಂದಿಸಿ</value></data>

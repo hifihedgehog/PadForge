@@ -137,6 +137,12 @@ namespace PadForge.Common
             SetBrush("SteelSegmentBrush", dark ? Color.FromRgb(0x26, 0x31, 0x42) : Color.FromRgb(0xD9, 0xDD, 0xE6));
             // A band across a card: the header of a group of rows.
             SetBrush("SteelBandBrush", dark ? Color.FromRgb(0x0F, 0x15, 0x20) : Color.FromRgb(0xF3, 0xF4, 0xF7));
+            // A part card's tray, where its optional features stand as lines
+            // under its More row, and the well of a live view, a step under
+            // the card with a hairline of its own (the sections pass).
+            SetBrush("SteelTrayBrush", dark ? Color.FromRgb(0x0D, 0x13, 0x1D) : Color.FromRgb(0xF3, 0xF4, 0xF7));
+            SetBrush("SteelWellBrush", dark ? Color.FromRgb(0x0A, 0x0F, 0x17) : Color.FromRgb(0xEE, 0xF0, 0xF4));
+            SetBrush("SteelWellLineBrush", dark ? Color.FromRgb(0x16, 0x1E, 0x2B) : Color.FromRgb(0xDD, 0xE1, 0xE8));
             // The sidebar's rows. The selected one takes the raised fill and
             // one under the pointer a fainter lift. A controller's pill and
             // the Add Controller entry clear the row's own fills (their

@@ -1102,6 +1102,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>PadForge-k jokoaren indar-atzeraelikadurako gertaerak nola eskalatzen dituen eta kontrolagailu fisikoaren bibrazio-motorretara edo eragingailu haptikoetara nola bideratzen dituen doitzen du. Audio-bibrazioak sistemaren audioak eragindako geruza bat gehitzen du gainean.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Gailu hau</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Kontrolagailu osoa</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Bi palankak</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Bibrazioa {0} gailuan erreproduzitzen da pultsu haptiko gisa, zuzenean gailura bidalita. Bibrazio indartsuagoak pultsu indartsuagoa aukeratzen du eta azkarrago errepikatzen du.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Erantzun haptikoa desaktibatuta dago {0} gailurako Logi Options+ aplikazioan. Beraz, ez du ezer erreproduzituko han berriro aktibatu arte.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Gailu honek ez du oraindik erantzun. Haren bibrazioa esnatzen denean erreproduzituko da.</value></data>
@@ -1167,7 +1168,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>entzungailuak, sagu-alfonbrak eta Chroma Link tirak</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>entzungailuak, sagu-alfonbrak eta bozgorailuak</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>entzungailuak</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Argi-barra</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Jokoek kontrola hartzen dute argiztapena idazten duten bakoitzean.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Idatzi sei digituko kolore hamaseitar bat (RRGGBB edo #RRGGBB) eta sakatu Sartu edo egin klik kanpoan aplikatzeko.</value></data>
@@ -1709,7 +1709,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Saguaren askatzea: {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Erakutsi/ezkutatu ukipen-panelaren gainjartzea</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Ezarri argi-barraren kolorea</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Gainidatzi esleitutako PlayStation zirrikituaren argi-barra aukeratutako RGB kolore batekin. Erreaktiboak intentsitate osotik beltzera itzaltzen du konfiguratutako iraungitze-tartean, eta gero Argi-barra txarteleko ezarpenei itzultzen die kontrola. Iraunkorrak kolorea mantentzen du «Garbitu argi-barraren gainidazketa» ekintza bat exekutatu arte. Jokoek eragindako idazketek lehentasuna dute oraindik gainidazketaren gainetik.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Gainidatzi esleitutako PlayStation zirrikituaren argi-barra aukeratutako RGB kolore batekin. Erreaktiboak intentsitate osotik beltzera itzaltzen du konfiguratutako iraungitze-tartean, eta gero Argiztapen txarteleko ezarpenei itzultzen die kontrola. Iraunkorrak kolorea mantentzen du «Garbitu argi-barraren gainidazketa» ekintza bat exekutatu arte. Jokoek eragindako idazketek lehentasuna dute oraindik gainidazketaren gainetik.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Argi-barraren keinua {0} (iraungitzea {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Mantendu argi-barra {0} kolorean garbitu arte</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Garbitu argi-barraren gainidazketa</value></data>
@@ -1717,7 +1717,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Esleitutako zirrikituko argi-barraren gainidazketa aktiboak askatzen ditu. Erabili «Ezarri argi-barraren kolorea» ekintza iraunkor batekin batera, beste makro baten bidez desegiteko.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Ezarri argi-barraren modua</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Ezarri argi-barraren modua: {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Esleitutako zirrikituaren argi-barraren modua balio zehatz batean ezartzen du. Argi-barra txartelean egindako edizio bat bezala irauten du, beste ekintza batek edo erabiltzaileak aldatu arte.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Esleitutako zirrikituaren argi-barraren modua balio zehatz batean ezartzen du. Argiztapen txartelean egindako edizio bat bezala irauten du, beste ekintza batek edo erabiltzaileak aldatu arte.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Txandakatu argi-barraren moduak</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Txandakatu argi-barraren {0} modu</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Zirrikituaren argi-barraren modua aurreratzen du behean hautatutako moduen artean. Abiarazte bakoitzak hurrengo modu markatura igarotzen da. Zikloaren posizioa ekintza bakoitzekoa da, eta aplikazioa berrabiaraztean berrezartzen da.</value></data>
@@ -1732,7 +1732,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Iraungitzea</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Itzaltzea</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Paleta</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Paleta hutsak zirrikituaren Argi-barra txarteleko paleta erabiltzen du.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Paleta hutsak zirrikituaren Argiztapen txarteleko paleta erabiltzen du.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modua</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Aukeratu makroak zein argi-barra modu txandakatu behar dituen. Abiarazte bakoitzak hurrengo modu markatura aurreratzen du.</value></data>
 
@@ -1962,6 +1962,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Sagu-irteera</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Alderantzikatu, Inertzia, Erantzuna, Azelerazioa, jaurtiketa</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Sentsore-barraren posizioa, Desplazamendu bertikala, Leuntzea</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Kurtsorearen abiadura doitzen du ukipen-paneleko hatz bat sagu X/Y-ri esleituta dagoenean Teklatua / sagua kontrolagailu birtual batean. 1.0 da lehenetsia. Igo ardatz bat kurtsore azkarragoa izateko, edo jaitsi motelagoa izateko. Alderantzikatu aukerak ardatz bat iraultzen du.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Saguaren sentikortasuna X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Ukipen-panel → sagu delta horizontalaren biderkatzailea. 1.0 baino gutxiagok kurtsorea moteltzen du. 1.0 baino gehiagok azkartzen du.</value></data>
@@ -2167,7 +2168,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibratzen… egon geldi</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Berrezarri kalibrazioa</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Giroskopioaren atseden-desbiderapena eta azken kalibrazioaren data-zigilua garbitzen ditu. Hurrengo galdeketa-zikloak 1.5 segundoko kalibrazio automatikoa berriro exekutatzen du gailu honetan.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Giroskopioa zuzenean</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Azelerometroa zuzenean</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Sentikortasun horizontala</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Giroskopioak irteerari egiten dion ekarpen horizontala (ezker-eskuineko biraketa + alboko makurdura) eskalatzen du. 1.0 balioak abiadura motorrak ikusten duen bezala uzten du. Balio altuagoek handitu egiten dute, eta baxuagoek ahuldu. Gailu-mailan aplikatzen da, kontrolagailu honetako giroskopio-lotura guztiek sentsazio horizontal bera har dezaten.</value></data>
@@ -2187,8 +2187,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroskopioa</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Doitu kontrolagailu honen mugimendu-sentsoreak sagu- eta palanka-irteera nola eragiten duen. Kalibratu gainazal lau batean atsedeneko deriba zeroan jartzeko, eta gero doitu sentikortasuna, leuntzea eta aktibazio-arauak zure gustura.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrazioa</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Giroskopioa eta azelerometroa zuzenean</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sentikortasuna</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unitateak, ardatzen alderantzikatzea, Mundu errealeko kalibrazioa</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° bira bakoitzeko</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Erantzunaren moldaketa</value></data>
@@ -2274,11 +2272,8 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Oso zabala</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Biderkatzailea</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Graduak pantailako bira bakoitzeko</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Berrezarri kalibrazioa</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Berrezarri sentikortasuna</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Berrezarri erantzunaren moldaketa</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Berrezarri aktibazioa</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Berrezarri mugimenduaren igarotze zuzena</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Berrezarri espazioa</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Berrezarri eusteko modua</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Berrezarri sentikortasun horizontala</value></data>
@@ -2298,8 +2293,11 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Berrezarri aktibazio-palanka</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Berrezarri aktibazio-norabidea</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Mugimenduaren igarotze zuzena</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Aplikatu giroskopioaren doikuntza mugimenduaren igarotze zuzenari</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Giroskopio-txartelen aukerako doikuntza (gune hila, sentikortasuna, leuntzea, erantzun-kurba, alderantzikatzea) kontrolagailu birtualak jokoari edo emulatzaileari jakinarazten dion mugimenduari aplikatzen dio. Desaktibatu irakurketa kalibratua soilik bidaltzeko, eta utzi jokoari bere sentikortasuna eta leuntzea aplikatzen. Kalibrazioaren deriba-zuzenketa beti aplikatzen da, edozein kasutan.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Doitua aukerak Giroskopio-txartelaren doikuntza (gune hila, sentikortasuna, leuntzea, erantzun-kurba, alderantzikatzea) kontrolagailu birtualak jokoari edo emulatzaileari jakinarazten dion mugimenduari aplikatzen dio. Gordina aukerak irakurketa kalibratua soilik bidaltzen du, eta jokoari uzten dio bere sentikortasuna eta leuntzea aplikatzen. Kalibrazioaren deriba-zuzenketa edozein kasutan aplikatzen da.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Gordina</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Doitua</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Jokoak irakurketa kalibratua irakurtzen du eta bere sentikortasuna eta leuntzea aplikatzen ditu.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Jokoak mugimendua hemen ezarritako sentikortasun, leuntze eta kurbarekin irakurtzen du.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Berrezarri igarotze zuzenaren doikuntza</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sentikortasuna</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Iturburu bakoitzeko giroskopio-sentikortasunaren biderkatzailea. 1.0 = motorraren lehenetsia (500°/s → desbideratze osoa). 1.0 baino balio handiagoak sentikorragoak dira. 1.0 baino balio txikiagoak sentikortasun gutxiagokoak dira.</value></data>
@@ -2541,8 +2539,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Kontrolagailu honek ez du katu-motorrik. Beraz, Xbox inpultso-katuak erabiltzen dituzten jokoen bibrazioa ez litzateke nabarituko. Horren ordez, bildu katu-kanal bakoitza alde bereko motor nagusian.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Probatu bibrazioa</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motorren jarduera</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Ezkerrekoa</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Eskuinekoa</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Aplikatu indar jarraitua gailu honi desaktibatu arte. Jokoak edozein iturritatik eragindako indarrak lehentasuna du aktibo dagoen bitartean, eta indar konstantea berriro aplikatzen da jokoa gelditzean.</value></data>
@@ -3057,7 +3053,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audioa</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR erakuslea</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Apuntatu Wii Remote hau pantailara bere IR kamerarekin. Sentsore-barra bat behar du, edo bi LED infragorri, pantailaren gainean edo azpian. Kalibratu argi-pistola gisa Gailuak orrian, puntu zehatzera apuntatzeko. Kalibratutako Wii Remote batek ez ditu kontuan hartzen «Sentsore-barraren posizioa» eta «Desplazamendu bertikala».</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Erakuslearen doikuntza</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Sentsore-barraren posizioa</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Erdian</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Pantailaren gainean</value></data>
@@ -3084,8 +3079,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Wii erakusle-modua aurreratzen du behean hautatutako moduen artean, zirrikituko IR gaitasuna duen Wii Remote guztientzat. Abiarazte bakoitzak hurrengo modu markatura igarotzen da. Zikloaren posizioa ekintza bakoitzekoa da, eta aplikazioa berrabiaraztean berrezartzen da.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Aukeratu makroak zein erakusle-modu txandakatu behar dituen. Abiarazte bakoitzak hurrengo modu markatura aurreratzen du.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audioa</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makroen soinuak eta sistemaren audio islatua hautatutako kontrolagailuaren bozgorailu integratuan erreproduzitzen dira, USB edo Bluetooth bidez. Aukeratu gailua goiko zerrendan. Hemengo ezarpen guztiek hari jarraitzen diote.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Soinu-irteera</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makroen soinuak eta sistemaren audio islatua Sarrera-iturria atalean hautatutako gailuaren bozgorailu integratuan erreproduzitzen dira, USB edo Bluetooth bidez. Hemengo ezarpen guztiek gailu horri jarraitzen diote.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Islatzeko iturburua, Aurikularren bolumena, bufferra, Irteera-bidea</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Soinuak automatikoki bideratzen dira hautatutako kontrolagailura. USB bidez, kontrolagailuaren beraren audio-amaiera-puntua hardware-edukiontziaren bidez parekatzen da. Bluetooth bidez, audioa Sony-ren HID tramatan igortzen da.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Islatzeko iturburua</value></data>
@@ -3148,7 +3142,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Berrezarri tonu-muga</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Sistemaren irteera lehenetsiak erreproduzitzen duen guztia kopiatzen du, paraleloan, kontrolagailu honen bozgorailu integratura. USB eta Bluetooth bidez funtzionatzen du.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Hautatutako gailuak ez du bozgorailu integraturik. Kontrolagailu honetako makro-soinuak sistemaren irteera lehenetsian erreproduzitzen dira.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Berrezarri soinu-irteera</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai-ren (daidr) nabigatzailerako DualSense proba-multzoa: Sony-ren feature-report txostenen CRC tramaketaren eta PadForge-k kontrolagailu birtualetatik fisikoetara birbidaltzen dituen firmware-proba komandoen erreferentzia.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3579,8 +3572,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Gida LED-aren distira: %{0}</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Gida edo Home botoiaren LED-aren distira ezartzen du zirrikituko kontrolagailu gai guztietarako. Xbox kontrolagailuek USB bidez soilik onartzen dute.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Hauei aplikatzen zaie: USB bidezko Xbox kontrolagailuei, 2015eko Steam Controller-i eta Home botoian LED-a duten Switch kontrolagailuei. Erabili bi ekintza hauek batera, makro bat hastean LED-a keinuka jartzeko eta amaitzean leheneratzeko.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Berrezarri erakusle-modua</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Berrezarri erakuslearen doikuntza</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Berrezarri sentsore-barraren posizioa</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Berrezarri desplazamendu bertikala</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Berrezarri leuntzea</value></data>

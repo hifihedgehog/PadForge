@@ -154,11 +154,10 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(FirstSectionName));
             OnPropertyChanged(nameof(PictureHintText));
             OnPropertyChanged(nameof(MapAllButtonTooltip));
-            // The line under the picture and the two folded output cards'
-            // values are worded from the string table the same way (#574).
+            // The line under the picture and the folded SOCD line's value
+            // are worded from the string table the same way (#574).
             OnPropertyChanged(nameof(PictureLineText));
             OnPropertyChanged(nameof(SocdSummary));
-            OnPropertyChanged(nameof(KeepAwakeSummary));
             _kbmConfig?.RaiseLocalizedChanged();
             OnPropertyChanged(nameof(OutputTypeDisplayName));
             OnPropertyChanged(nameof(PresetDisplayName));
@@ -2057,6 +2056,28 @@ namespace PadForge.ViewModels
         /// blue highlight in the previews).</summary>
         public bool TouchpadClickPressed { get => _touchpadClickPressed; set => SetProperty(ref _touchpadClickPressed, value); }
 
+        // ── The touchpad of the device picked under Driven by, for the
+        //    Touchpad card's live view (the sections pass of #574). The slot's
+        //    state above is the virtual controller's own touchpad, which an
+        //    Xbox slot never has, so the card reads the device's. Positions
+        //    run from 0 to 1 across and down the device's first pad. ──
+        private float _deviceTouchX0, _deviceTouchY0, _deviceTouchX1, _deviceTouchY1;
+        private bool _deviceTouchDown0, _deviceTouchDown1;
+
+        public float DeviceTouchX0 { get => _deviceTouchX0; set => SetProperty(ref _deviceTouchX0, value); }
+        public float DeviceTouchY0 { get => _deviceTouchY0; set => SetProperty(ref _deviceTouchY0, value); }
+        public bool DeviceTouchDown0 { get => _deviceTouchDown0; set => SetProperty(ref _deviceTouchDown0, value); }
+        public float DeviceTouchX1 { get => _deviceTouchX1; set => SetProperty(ref _deviceTouchX1, value); }
+        public float DeviceTouchY1 { get => _deviceTouchY1; set => SetProperty(ref _deviceTouchY1, value); }
+        public bool DeviceTouchDown1 { get => _deviceTouchDown1; set => SetProperty(ref _deviceTouchDown1, value); }
+
+        private bool _deviceTouchTapered;
+
+        /// <summary>Whether the device's pad is a PlayStation pad, whose
+        /// sides close in toward its foot, so the live view draws that
+        /// outline. Any other pad is drawn as a rounded rectangle.</summary>
+        public bool DeviceTouchTapered { get => _deviceTouchTapered; set => SetProperty(ref _deviceTouchTapered, value); }
+
         // ── Per-device values for stick/trigger tab previews ──
         // These show the selected device only, not the combined slot.
 
@@ -3824,6 +3845,16 @@ namespace PadForge.ViewModels
             FlickSmoothing = -1; FlickOnEngage = false; FlickRotationOffset = 0;
         });
 
+        /// <summary>The Both Sticks card's Reset All (the sections pass of
+        /// #574): Steering Lock Feedback and Flick Stick, the two features
+        /// both sticks share.</summary>
+        private RelayCommand _resetBothSticksCommand;
+        public RelayCommand ResetBothSticksCommand => _resetBothSticksCommand ??= new RelayCommand(() =>
+        {
+            ResetSteeringLockAllCommand.Execute(null);
+            ResetFlickStickCardCommand.Execute(null);
+        });
+
         private double _gyroPlayerSpaceYawRelaxFactor = 1.41;
         public double GyroPlayerSpaceYawRelaxFactor
         {
@@ -4048,7 +4079,26 @@ namespace PadForge.ViewModels
         public bool GyroApplyTuningToPassthrough
         {
             get => _gyroApplyTuningToPassthrough;
-            set => SetProperty(ref _gyroApplyTuningToPassthrough, value);
+            set
+            {
+                if (SetProperty(ref _gyroApplyTuningToPassthrough, value))
+                    OnPropertyChanged(nameof(GyroPassthroughRaw));
+            }
+        }
+
+        /// <summary>Motion Passthrough's other choice, Raw: the game reads
+        /// the calibrated motion and tunes it itself. It is the inverse of
+        /// <see cref="GyroApplyTuningToPassthrough"/>, for the Gyro card's
+        /// two-way switch, Raw or Tuned (the sections pass of #574). Raw
+        /// chosen turns the tuning off. The switch's other choice going off
+        /// writes nothing: choosing Tuned is what turns it on.</summary>
+        public bool GyroPassthroughRaw
+        {
+            get => !_gyroApplyTuningToPassthrough;
+            set
+            {
+                if (value) GyroApplyTuningToPassthrough = false;
+            }
         }
 
         // Live calibrated rate readouts (deg/s) — refreshed by InputService
@@ -4272,15 +4322,17 @@ namespace PadForge.ViewModels
         //     inside its card to the canonical default — matches the
         //     "Reset All" button next to each card title used in the
         //     Triggers, AT, Lighting, and Force Feedback tabs. ───
-        private RelayCommand _resetGyroCalibrationCardCommand;
-        public RelayCommand ResetGyroCalibrationCardCommand =>
-            _resetGyroCalibrationCardCommand ??= new RelayCommand(FireGyroResetCalibration);
-
-        private RelayCommand _resetGyroSensitivityCardCommand;
-        public RelayCommand ResetGyroSensitivityCardCommand =>
-            _resetGyroSensitivityCardCommand ??= new RelayCommand(() =>
+        /// <summary>The Gyro card's Reset All (the sections pass of #574):
+        /// the card's own rows and its More, which are Motion Passthrough and
+        /// the sensitivity with its units, inverts and Real-World
+        /// Calibration. The calibration is a measurement, which Reset
+        /// Calibration alone clears, and each feature line resets its own
+        /// settings, the Reference Frame's included.</summary>
+        private RelayCommand _resetGyroCardCommand;
+        public RelayCommand ResetGyroCardCommand =>
+            _resetGyroCardCommand ??= new RelayCommand(() =>
             {
-                GyroSpace = "Local";
+                GyroApplyTuningToPassthrough = false;
                 GyroSensitivityH = 1.0;
                 GyroSensitivityV = 1.0;
                 GyroSensitivityUnits = "Multiplier";
@@ -6772,16 +6824,6 @@ namespace PadForge.ViewModels
         public RelayCommand ResetPointerFpsSpeedCommand =>
             _resetPointerFpsSpeedCommand ??= new RelayCommand(() => PointerFpsSpeed = 35);
 
-        private RelayCommand _resetPointerModeCardCommand;
-        /// <summary>Card-level Reset All for the Pointer Mode card:
-        /// mode + FPS speed together.</summary>
-        public RelayCommand ResetPointerModeCardCommand =>
-            _resetPointerModeCardCommand ??= new RelayCommand(() =>
-            {
-                PointerMode = "Mouse";
-                PointerFpsSpeed = 35;
-            });
-
         private RelayCommand _resetIrSensorBarPosCommand;
         public RelayCommand ResetIrSensorBarPosCommand =>
             _resetIrSensorBarPosCommand ??= new RelayCommand(() => IrSensorBarPos = 0);
@@ -6794,12 +6836,16 @@ namespace PadForge.ViewModels
         public RelayCommand ResetIrSmoothingCommand =>
             _resetIrSmoothingCommand ??= new RelayCommand(() => IrSmoothingPercent = 0);
 
-        private RelayCommand _resetPointerTuningCardCommand;
-        /// <summary>Card-level Reset All for the Pointer Tuning card: the
-        /// #146 tunables all default to zero (IrTunables_DefaultToZero).</summary>
-        public RelayCommand ResetPointerTuningCardCommand =>
-            _resetPointerTuningCardCommand ??= new RelayCommand(() =>
+        /// <summary>The IR Pointer card's Reset All (the sections pass of
+        /// #574): its mode and the mode's speed, which it shows first, and
+        /// its tuning under More, whose #146 tunables all default to zero
+        /// (IrTunables_DefaultToZero).</summary>
+        private RelayCommand _resetIrPointerCardCommand;
+        public RelayCommand ResetIrPointerCardCommand =>
+            _resetIrPointerCardCommand ??= new RelayCommand(() =>
             {
+                PointerMode = "Mouse";
+                PointerFpsSpeed = 35;
                 IrSensorBarPos = 0;
                 IrSensorBarCompPercent = 0;
                 IrSmoothingPercent = 0;
@@ -7694,7 +7740,6 @@ namespace PadForge.ViewModels
                 if (set == null || set.KeepAwakeEnabled == value) return;
                 set.KeepAwakeEnabled = value;
                 OnPropertyChanged(nameof(KeepAwakeEnabled));
-                OnPropertyChanged(nameof(KeepAwakeSummary));
                 ConfigItemDirtyCallback?.Invoke();
             }
         }
@@ -7808,7 +7853,6 @@ namespace PadForge.ViewModels
         {
             OnPropertyChanged(nameof(KeepAwakeCardVisible));
             OnPropertyChanged(nameof(KeepAwakeEnabled));
-            OnPropertyChanged(nameof(KeepAwakeSummary));
             OnPropertyChanged(nameof(KeepAwakeMotion));
             OnPropertyChanged(nameof(KeepAwakeAxis));
             OnPropertyChanged(nameof(AvailableKeepAwakeAxes));

@@ -50,6 +50,25 @@ namespace PadForge.Converters
     }
 
     /// <summary>
+    /// Whether any of a feature's flags is on, for a feature line's icon,
+    /// which is ember while the feature is on (the sections pass of #574).
+    /// The flags are read as <see cref="OnOffTextConverter"/> reads them.
+    /// </summary>
+    public sealed class AnyOnConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values == null) return false;
+            foreach (object flag in values)
+                if (OnOffTextConverter.IsOn(flag)) return true;
+            return false;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+            => throw new NotSupportedException();
+    }
+
+    /// <summary>
     /// A folded card's line for a setting picked from a list (#574): the
     /// name the list shows for the stored value. Values: the stored value,
     /// then the list of options (each a <see cref="ViewModels.GyroLabeledOption"/>),

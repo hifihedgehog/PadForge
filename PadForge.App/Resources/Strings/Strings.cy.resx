@@ -1100,6 +1100,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Yn tiwnio sut mae PadForge yn graddio digwyddiadau adborth grym o'r gêm a sut mae'n eu llwybro i foduron dirgryniad neu weithredyddion haptig y rheolydd ffisegol. Mae Dirgryniad Sain yn ychwanegu haen a yrrir gan sain y system ar ei ben.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Y ddyfais hon</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Y rheolydd cyfan</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Y ddwy ffon</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Mae dirgryniad yn chwarae ar {0} fel pyliau haptig, a anfonir yn syth i'r ddyfais. Mae dirgryniad cryfach yn dewis pwls cryfach ac yn ei ailadrodd yn gyflymach.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Mae adborth haptig wedi'i ddiffodd ar gyfer {0} yn Logi Options+, felly nid yw'n chwarae dim nes i chi ei droi yn ôl ymlaen yno.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Nid yw'r ddyfais hon wedi ateb eto. Bydd ei dirgryniad yn chwarae unwaith y bydd yn deffro.</value></data>
@@ -1165,7 +1166,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>clustffonau, matiau llygoden, a stribedi Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>clustffonau, matiau llygoden, ac uchelseinyddion</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>clustffonau</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Bar Golau</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Mae gemau'n cymryd drosodd pryd bynnag yr ysgrifennant oleuo.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Rhowch liw hecs chwe digid (RRGGBB neu #RRGGBB) a gwasgwch Enter neu cliciwch i ffwrdd i'w gymhwyso.</value></data>
@@ -1707,7 +1707,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Rhyddhau Llygoden {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Toglo Troshaen y Pad Cyffwrdd</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Gosod Lliw'r Bar Golau</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Yn diystyru bar golau y slot PlayStation neilltuedig i liw RGB a ddewiswyd. Mae Adweithiol yn pylu o ddwysedd llawn i ddu dros y ffenestr ddirywiad a ffurfweddwyd, yna'n trosglwyddo'n ôl i osodiadau'r cerdyn Bar Golau. Mae Gludiog yn dal y lliw nes bod gweithred Clirio Diystyriad y Bar Golau yn rhedeg. Mae ysgrifennu a yrrir gan y gêm yn dal i gael blaenoriaeth dros y diystyriad.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Yn diystyru bar golau y slot PlayStation neilltuedig i liw RGB a ddewiswyd. Mae Adweithiol yn pylu o ddwysedd llawn i ddu dros y ffenestr ddirywiad a ffurfweddwyd, yna'n trosglwyddo'n ôl i osodiadau'r cerdyn Goleuo. Mae Gludiog yn dal y lliw nes bod gweithred Clirio Diystyriad y Bar Golau yn rhedeg. Mae ysgrifennu a yrrir gan y gêm yn dal i gael blaenoriaeth dros y diystyriad.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Fflachio bar golau {0} (dirywiad {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Dal bar golau {0} nes ei glirio</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Clirio Diystyriad y Bar Golau</value></data>
@@ -1715,7 +1715,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Yn rhyddhau unrhyw ddiystyriad bar golau gweithredol ar y slot neilltuedig. Paraer â gweithred Gosod Lliw'r Bar Golau Gludiog i'w ddadwneud drwy facro arall.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Gosod Modd y Bar Golau</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Gosod modd y bar golau i {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Yn gosod modd bar golau y slot neilltuedig i werth penodol. Yn parhau fel golygiad ar y cerdyn Bar Golau nes bod gweithred arall neu'r defnyddiwr yn ei newid.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Yn gosod modd bar golau y slot neilltuedig i werth penodol. Yn parhau fel golygiad ar y cerdyn Goleuo nes bod gweithred arall neu'r defnyddiwr yn ei newid.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Cylchdroi Moddau'r Bar Golau</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Cylchdroi drwy {0} modd bar golau</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Yn symud modd bar golau y slot drwy'r moddau a ddewiswyd isod. Mae pob tanio yn symud i'r modd nesaf sydd wedi'i dicio. Mae safle'r gylchred yn perthyn i'r weithred ac yn ailosod pan fydd yr ap yn ailgychwyn.</value></data>
@@ -1730,7 +1730,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Dirywiad</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Pylu</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palet</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Mae palet gwag yn defnyddio'r palet ar gerdyn Bar Golau y slot.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Mae palet gwag yn defnyddio'r palet ar gerdyn Goleuo y slot.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modd</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Dewiswch ba foddau bar golau y dylai'r macro eu cylchdroi drwyddynt. Mae pob tanio yn symud i'r modd nesaf sydd wedi'i dicio.</value></data>
 
@@ -1960,6 +1960,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Allbwn llygoden</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Gwrthdroi, momentwm, ymateb, cyflymiad, taflu</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Safle'r bar synhwyrydd, gwrthbwyso fertigol, llyfnhau</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Yn tiwnio cyflymder y cyrchwr pan fydd bys pad cyffwrdd wedi'i fapio i X/Y y llygoden ar reolydd rhithwir Bysellfwrdd / Llygoden. 1.0 yw'r rhagosodiad. Codwch y naill echelin neu'r llall am gyrchwr cyflymach, gostyngwch am un arafach. Mae Gwrthdroi yn troi'r naill echelin neu'r llall.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Sensitifrwydd llygoden X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Lluosydd ar y delta llorweddol o'r pad cyffwrdd → llygoden. Mae islaw 1.0 yn arafu'r cyrchwr. Mae uwchlaw 1.0 yn ei gyflymu.</value></data>
@@ -2165,7 +2166,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Yn graddnodi… daliwch yn llonydd</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Ailosod graddnodi</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Yn clirio gogwydd gorffwys y gyrosgop a stamp amser y graddnodi diwethaf. Bydd y cylch pholio nesaf yn ail-redeg yr hunan-raddnodi 1.5 eiliad ar y ddyfais hon.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Gyrosgop byw</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Cyflymiadur byw</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Sensitifrwydd llorweddol</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Yn graddio cyfraniad llorweddol (gwyro + rholio) y gyrosgop i'r allbwn. Mae 1.0 yn gadael y gyfradd fel y mae'r injan yn ei gweld. Mae gwerthoedd uwch yn chwyddo, mae rhai is yn lleddfu. Cymhwysir ar lefel y ddyfais fel bod pob rhwymiad gyrosgop ar y rheolydd hwn yn etifeddu'r un teimlad llorweddol.</value></data>
@@ -2185,8 +2185,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyrosgop</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Tiwniwch sut mae synhwyrydd symudiad y pad hwn yn gyrru allbwn llygoden a ffon. Graddnodwch ar arwyneb gwastad i sero drifft gorffwys, yna addaswch sensitifrwydd, llyfnu a rheolau ymgysylltu at eich dant.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Graddnodi</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Darlleniadau byw o'r gyrosgop a'r cyflymiadur</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitifrwydd</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unedau, gwrthdroi echelinau, graddnodi byd go iawn</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° fesul tro</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Siapio ymateb</value></data>
@@ -2272,11 +2270,8 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Llydan iawn</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Lluosydd</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Graddau fesul tro sgrin</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Ailosod graddnodi</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Ailosod sensitifrwydd</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Ailosod siapio ymateb</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Ailosod ymgysylltu</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Ailosod tramwy symudiad</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Ailosod gofod</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Ailosod gafael</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Ailosod sensitifrwydd llorweddol</value></data>
@@ -2296,8 +2291,11 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Ailosod ffon ymgysylltu</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Ailosod cyfeiriad ymgysylltu</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Tramwy symudiad</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Cymhwyso tiwnio'r gyrosgop i dramwy symudiad</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Yn rhedeg tiwnio dewisol y cardiau Gyrosgop (parth marw, sensitifrwydd, llyfnu, cromlin ymateb, gwrthdroi) ar y symudiad y mae'r rheolydd rhithwir yn ei adrodd i'r gêm neu'r efelychydd. Diffoddwch ef i anfon y darlleniad graddnodedig yn unig a gadael i'r gêm gymhwyso ei sensitifrwydd a'i llyfnu ei hun. Mae cywiro drifft graddnodi bob amser yn berthnasol y naill ffordd neu'r llall.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Mae Tiwniedig yn rhedeg tiwnio'r cerdyn Gyrosgop (parth marw, sensitifrwydd, llyfnu, cromlin ymateb, gwrthdroi) ar y symudiad y mae'r rheolydd rhithwir yn ei adrodd i'r gêm neu'r efelychydd. Mae Crai yn anfon y darlleniad graddnodedig yn unig ac yn gadael i'r gêm gymhwyso ei sensitifrwydd a'i llyfnu ei hun. Mae cywiro drifft graddnodi yn berthnasol y naill ffordd neu'r llall.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Crai</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Tiwniedig</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Mae'r gêm yn darllen y symudiad graddnodedig ac yn cymhwyso ei sensitifrwydd a'i llyfnu ei hun.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Mae'r gêm yn darllen y symudiad gyda'r sensitifrwydd, y llyfnu a'r gromlin a osodir yma.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Ailosod tiwnio tramwy</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitifrwydd</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Lluosydd sensitifrwydd gyrosgop fesul ffynhonnell. 1.0 = rhagosodiad yr injan (500°/s → gwyriad llawn). Mae gwerthoedd uwchlaw 1.0 yn fwy sensitif. Mae gwerthoedd islaw 1.0 yn llai sensitif.</value></data>
@@ -2544,8 +2542,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Nid oes gan y rheolydd hwn foduron sbardun, felly ni theimlir gemau sy'n defnyddio sbardunau ysgogiad Xbox. Plygwch bob sianel sbardun i'r prif fodur ar yr un ochr yn lle hynny.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Profi Dirgryniad</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Gweithgarwch y Moduron</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Chwith</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>De</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Rhoi grym parhaus ar y ddyfais hon nes i chi ei ddiffodd. Mae grym a yrrir gan gêm o unrhyw ffynhonnell yn ei ddiystyru tra bo'n weithredol ac yn ailddechrau pan fydd y gêm yn stopio.</value></data>
@@ -3061,7 +3057,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Sain</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Pwyntydd IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Anelwch y Wii Remote hwn at y sgrin gyda'i gamera IR. Mae angen bar synhwyrydd, neu ddau LED isgoch, uwchben neu islaw'r arddangosfa. Graddnodwch ef fel gwn golau ar y dudalen Dyfeisiau i anelu at y man union. Mae teclyn pell wedi'i raddnodi yn anwybyddu Safle'r bar synhwyrydd a Gwrthbwyso fertigol.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Tiwnio'r pwyntydd</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Safle'r bar synhwyrydd</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Yn y canol</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Uwchben y sgrin</value></data>
@@ -3088,8 +3083,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Yn symud modd pwyntydd Wii drwy'r moddau a ddewiswyd isod ar gyfer pob teclyn pell sy'n gallu IR ar y slot. Mae pob tanio yn symud i'r modd nesaf a dicwyd. Mae safle'r cylch yn benodol i'r weithred ac yn ailosod pan fydd yr ap yn ailgychwyn.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Dewiswch pa foddau pwyntydd y dylai'r macro eu cylchu. Mae pob tanio yn symud i'r modd nesaf a dicwyd.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Sain</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Mae synau macro a sain system a ddrychir yn chwarae drwy uchelseinydd adeiledig y rheolydd a ddewiswyd, dros USB neu Bluetooth. Dewiswch y ddyfais yn y gwymplen uchod. Mae pob gosodiad yma yn ei dilyn.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Allbwn sain</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Mae synau macro a sain system a ddrychir yn chwarae drwy uchelseinydd adeiledig y ddyfais a ddewiswyd o dan Mewnbwn gan, dros USB neu Bluetooth. Mae pob gosodiad yma yn dilyn y ddyfais honno.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Ffynhonnell y drych, lefel sain y clustffonau, byffer, llwybr allbwn</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Mae synau'n cael eu llwybro i'r rheolydd a ddewiswyd yn awtomatig. Dros USB mae pwynt terfyn sain y pad ei hun yn cael ei baru yn ôl cynhwysydd caledwedd. Dros Bluetooth mae'r sain yn cael ei ffrydio mewn fframiau Sony HID.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Ffynhonnell y drych</value></data>
@@ -3152,7 +3146,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Ailosod terfyn tôn</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Yn copïo beth bynnag y mae allbwn rhagosodedig y system yn ei chwarae i uchelseinydd adeiledig y rheolydd hwn, ochr yn ochr. Yn gweithio dros USB a Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Nid oes gan y ddyfais a ddewiswyd uchelseinydd adeiledig. Mae synau macro ar gyfer y pad hwn yn chwarae ar allbwn rhagosodedig y system.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Ailosod allbwn sain</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Pecyn prawf DualSense yn y porwr gan Xuezhou Dai (daidr): cyfeirnod ar gyfer fframio CRC adroddiadau nodwedd Sony a gorchmynion prawf cadarnwedd y mae PadForge yn eu hanfon ymlaen o badiau rhithwir i badiau ffisegol.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3583,8 +3576,6 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Disgleirdeb LED Guide: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Yn gosod disgleirdeb LED y botwm Guide neu Home ar gyfer pob rheolydd galluog ar y slot. Mae rheolyddion Xbox yn ei dderbyn dros USB yn unig.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Yn berthnasol i reolyddion Xbox dros USB, Rheolydd Steam 2015, a rheolyddion Switch ag LED botwm Home. Defnyddiwch ddwy o'r gweithredoedd hyn gyda'i gilydd i fflachio'r LED pan fydd macro'n cychwyn a'i adfer pan fydd yn gorffen.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Ailosod modd pwyntydd</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Ailosod tiwnio pwyntydd</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Ailosod safle'r bar synhwyro</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Ailosod y gwrthbwyso fertigol</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Ailosod llyfnhau</value></data>

@@ -425,8 +425,6 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Godimo (Y+)</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Motshameki</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Lefatshe</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Busetsa calibration</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Busetsa sensitivity</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Busetsa deadzone</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Lebelo la mouse X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Lebelo la mouse Y</value></data>
@@ -1062,8 +1060,6 @@
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Controller yotlhe</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Motshameki kgotsa Lefatshe</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR e tsentswe</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Molema</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Moja</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Phepafatsa trigger</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Bulela telemetry mo motshamekong o bo o e lebisa kwa PC e le kwa port e.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Maemo a tlhogo ke mola wa Head Tracker mo go [Didirisiwa]. Golaganya go retologa ga tlhogo le axis ya stick mo karolong ya Dikonopo ya controller.</value></data>

@@ -1181,6 +1181,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>तय करता है कि PadForge गेम के फ़ोर्स फ़ीडबैक इवेंट को कैसे स्केल करे और उन्हें भौतिक कंट्रोलर की रंबल मोटर या हैप्टिक एक्चुएटर तक कैसे भेजे। ऑडियो रंबल इसके ऊपर सिस्टम ऑडियो से चलने वाली एक परत जोड़ता है।</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>यह डिवाइस</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>पूरा कंट्रोलर</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>दोनों स्टिक</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>रंबल {0} पर हैप्टिक पल्स के रूप में चलता है, जो सीधे डिवाइस को भेजे जाते हैं। तेज़ रंबल के लिए ज़्यादा तेज़ पल्स चुना जाता है और उसे ज़्यादा जल्दी-जल्दी दोहराया जाता है।</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Logi Options+ में {0} के लिए हैप्टिक फ़ीडबैक बंद है, इसलिए जब तक आप उसे वहाँ फिर चालू नहीं करते, यह कुछ नहीं चलाता।</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>इस डिवाइस ने अभी तक जवाब नहीं दिया है। इसके जागते ही इसका रंबल चलेगा।</value></data>
@@ -1267,7 +1268,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>मदरबोर्ड, ग्राफ़िक्स कार्ड और मेमोरी</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>मदरबोर्ड और ग्राफ़िक्स कार्ड</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>माउसपैड, हेडसेट और हेडसेट स्टैंड</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>लाइटबार</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>गेम जब भी लाइटिंग लिखते हैं तब नियंत्रण ले लेते हैं।</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>छह अंकों का हेक्स रंग (RRGGBB या #RRGGBB) डालें और लागू करने के लिए Enter दबाएँ या कहीं और क्लिक करें।</value></data>
@@ -1897,7 +1897,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>माउस {0} छोड़ें</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>टचपैड ओवरले टॉगल करें</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>लाइटबार रंग सेट करें</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>असाइन किए गए PlayStation स्लॉट की लाइटबार को चुने गए RGB रंग से ओवरराइड करें। रिएक्टिव में रंग तय क्षय अवधि में पूरी तीव्रता से काले तक फ़ेड होता है, फिर नियंत्रण लाइटबार कार्ड की सेटिंग्स को लौट जाता है। स्टिकी में रंग तब तक बना रहता है जब तक “लाइटबार ओवरराइड साफ़ करें” क्रिया नहीं चलती। गेम के लिखे मान अब भी ओवरराइड से ऊपर प्राथमिकता पाते हैं।</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>असाइन किए गए PlayStation स्लॉट की लाइटबार को चुने गए RGB रंग से ओवरराइड करें। रिएक्टिव में रंग तय क्षय अवधि में पूरी तीव्रता से काले तक फ़ेड होता है, फिर नियंत्रण लाइटिंग कार्ड की सेटिंग्स को लौट जाता है। स्टिकी में रंग तब तक बना रहता है जब तक “लाइटबार ओवरराइड साफ़ करें” क्रिया नहीं चलती। गेम के लिखे मान अब भी ओवरराइड से ऊपर प्राथमिकता पाते हैं।</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>लाइटबार {0} फ़्लैश करें (क्षय {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>साफ़ किए जाने तक लाइटबार {0} बनाए रखें</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>लाइटबार ओवरराइड साफ़ करें</value></data>
@@ -1905,7 +1905,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>असाइन किए गए स्लॉट पर सक्रिय कोई भी लाइटबार ओवरराइड हटा देता है। स्टिकी “लाइटबार रंग सेट करें” क्रिया के साथ जोड़ें, ताकि उसे किसी दूसरे मैक्रो से हटाया जा सके।</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>लाइटबार मोड सेट करें</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>लाइटबार मोड {0} पर सेट करें</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>असाइन किए गए स्लॉट का लाइटबार मोड एक तय मान पर सेट करता है। लाइटबार कार्ड पर किए गए बदलाव की तरह तब तक बना रहता है जब तक कोई दूसरी क्रिया या उपयोगकर्ता उसे नहीं बदलता।</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>असाइन किए गए स्लॉट का लाइटबार मोड एक तय मान पर सेट करता है। लाइटिंग कार्ड पर किए गए बदलाव की तरह तब तक बना रहता है जब तक कोई दूसरी क्रिया या उपयोगकर्ता उसे नहीं बदलता।</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>लाइटबार मोड बारी-बारी से बदलें</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} लाइटबार मोड बारी-बारी से बदलें</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>स्लॉट के लाइटबार मोड को नीचे चुने गए मोड में आगे बढ़ाता है। हर बार चलने पर अगले चेक किए गए मोड पर जाता है। चक्र की स्थिति हर क्रिया की अपनी होती है और ऐप रीस्टार्ट होने पर रीसेट हो जाती है।</value></data>
@@ -1920,7 +1920,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>क्षय</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>फ़ेड</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>पैलेट</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>पैलेट खाली होने पर स्लॉट के लाइटबार कार्ड का पैलेट उपयोग होता है।</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>पैलेट खाली होने पर स्लॉट के लाइटिंग कार्ड का पैलेट उपयोग होता है।</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>मोड</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>चुनें कि मैक्रो किन लाइटबार मोड के बीच बारी-बारी से बदले। हर बार चलने पर अगले चेक किए गए मोड पर जाता है।</value></data>
 
@@ -2150,6 +2150,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>माउस आउटपुट</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>उलटें, मोमेंटम, रिस्पॉन्स, त्वरण, झटका</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>सेंसर बार की स्थिति, ऊर्ध्वाधर ऑफ़सेट, स्मूदिंग</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>जब टचपैड की उँगली कीबोर्ड / माउस वर्चुअल कंट्रोलर पर माउस X/Y से मैप हो, तब कर्सर की गति तय करता है। 1.0 डिफ़ॉल्ट है। तेज़ कर्सर के लिए किसी भी अक्ष को बढ़ाएँ, धीमे के लिए घटाएँ। “उलटें” किसी भी अक्ष को पलट देता है।</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>माउस संवेदनशीलता X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>क्षैतिज टचपैड → माउस डेल्टा का गुणक। 1.0 से कम पर कर्सर धीमा होता है। 1.0 से ज़्यादा पर तेज़।</value></data>
@@ -2355,7 +2356,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>कैलिब्रेट हो रहा है… स्थिर रखें</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>कैलिब्रेशन रीसेट करें</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>स्थिर अवस्था का जाइरो बायस और पिछले कैलिब्रेशन का समय हटा देता है। अगला पोलिंग चक्र इस डिवाइस पर 1.5 सेकंड का ऑटो-कैलिब्रेशन फिर चलाता है।</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>लाइव जाइरोस्कोप</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>लाइव एक्सेलेरोमीटर</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>क्षैतिज संवेदनशीलता</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>आउटपुट में जाइरो के क्षैतिज (यॉ + रोल) योगदान को स्केल करता है। 1.0 पर दर वैसी ही रहती है जैसी इंजन देखता है। बड़े मान बढ़ाते हैं, छोटे मान घटाते हैं। डिवाइस स्तर पर लागू होता है, ताकि इस कंट्रोलर की हर जाइरो बाइंडिंग को वही क्षैतिज एहसास मिले।</value></data>
@@ -2375,8 +2375,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>जाइरो</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>तय करें कि इस पैड का मोशन सेंसर माउस और स्टिक आउटपुट को कैसे चलाए। स्थिर अवस्था का ड्रिफ़्ट शून्य करने के लिए समतल सतह पर कैलिब्रेट करें, फिर संवेदनशीलता, स्मूदिंग और सक्रियण के नियम अपनी पसंद से सेट करें।</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>कैलिब्रेशन</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>जाइरोस्कोप और एक्सेलेरोमीटर की लाइव रीडिंग</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>संवेदनशीलता</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>इकाइयाँ, अक्ष उलटें, वास्तविक-दुनिया कैलिब्रेशन</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° प्रति चक्कर</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>रिस्पॉन्स का आकार</value></data>
@@ -2462,11 +2460,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>अतिरिक्त चौड़ा</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>गुणक</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>प्रति स्क्रीन चक्कर डिग्री</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>कैलिब्रेशन रीसेट करें</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>संवेदनशीलता रीसेट करें</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>रिस्पॉन्स का आकार रीसेट करें</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>सक्रियण रीसेट करें</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>मोशन पासथ्रू रीसेट करें</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>स्पेस रीसेट करें</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>पकड़ रीसेट करें</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>क्षैतिज संवेदनशीलता रीसेट करें</value></data>
@@ -2486,8 +2481,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>सक्रियण स्टिक रीसेट करें</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>सक्रियण दिशा रीसेट करें</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>मोशन पासथ्रू</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>जाइरो ट्यूनिंग मोशन पासथ्रू पर लागू करें</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>“जाइरो” के कार्डों की वैकल्पिक ट्यूनिंग (डेडज़ोन, संवेदनशीलता, स्मूदिंग, रिस्पॉन्स वक्र, उलटना) उस मोशन पर चलाता है जो वर्चुअल कंट्रोलर गेम या एम्यूलेटर को बताता है। केवल कैलिब्रेट की हुई रीडिंग भेजने और गेम को अपनी संवेदनशीलता और स्मूदिंग लगाने देने के लिए इसे बंद करें। कैलिब्रेशन का ड्रिफ़्ट सुधार दोनों ही स्थितियों में हमेशा लागू होता है।</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>“ट्यून्ड” “जाइरो” कार्ड की ट्यूनिंग (डेडज़ोन, संवेदनशीलता, स्मूदिंग, रिस्पॉन्स वक्र, उलटना) उस मोशन पर चलाता है जो वर्चुअल कंट्रोलर गेम या एम्यूलेटर को बताता है। “रॉ” केवल कैलिब्रेट की हुई रीडिंग भेजता है और गेम को अपनी संवेदनशीलता और स्मूदिंग लगाने देता है। कैलिब्रेशन का ड्रिफ़्ट सुधार दोनों ही स्थितियों में लागू होता है।</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>रॉ</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>ट्यून्ड</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>गेम कैलिब्रेट किया हुआ मोशन पढ़ता है और अपनी संवेदनशीलता और स्मूदिंग लगाता है।</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>गेम वह मोशन पढ़ता है जिस पर यहाँ तय की गई संवेदनशीलता, स्मूदिंग और वक्र लगे हों।</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>पासथ्रू ट्यूनिंग रीसेट करें</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>संवेदनशीलता</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>हर स्रोत के लिए जाइरो संवेदनशीलता का गुणक। 1.0 = इंजन का डिफ़ॉल्ट (500°/s → पूरा झुकाव)। 1.0 से ऊपर के मान ज़्यादा संवेदनशील होते हैं। 1.0 से नीचे के मान कम संवेदनशील।</value></data>
@@ -2735,8 +2733,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>इस कंट्रोलर में ट्रिगर मोटर नहीं हैं, इसलिए Xbox इम्पल्स ट्रिगर का उपयोग करने वाले गेम का असर महसूस नहीं होगा। इसकी जगह हर ट्रिगर चैनल को उसी तरफ़ की मुख्य मोटर में मिला दें।</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>रंबल का परीक्षण करें</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>मोटर गतिविधि</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>बाईं</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>दाईं</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>जब तक आप इसे बंद नहीं करते, इस डिवाइस पर लगातार बल लगाएँ। किसी भी स्रोत से आने वाला गेम का बल सक्रिय रहने तक इसे ओवरराइड करता है, और गेम के रुकने पर यह फिर चालू हो जाता है।</value></data>
@@ -3256,7 +3252,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>ऑडियो</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR पॉइंटर</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>इस Wii Remote के IR कैमरे से स्क्रीन पर निशाना लगाएँ। इसके लिए डिस्प्ले के ऊपर या नीचे सेंसर बार, या दो इन्फ़्रारेड LED चाहिए। ठीक उसी जगह निशाना लगाने के लिए इसे डिवाइस पेज पर लाइट गन की तरह कैलिब्रेट करें। कैलिब्रेट किया गया रिमोट सेंसर बार की स्थिति और ऊर्ध्वाधर ऑफ़सेट को अनदेखा करता है।</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>पॉइंटर ट्यूनिंग</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>सेंसर बार की स्थिति</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>केंद्र में</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>स्क्रीन के ऊपर</value></data>
@@ -3283,8 +3278,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>स्लॉट के हर IR-सक्षम रिमोट के लिए Wii पॉइंटर मोड को नीचे चुने गए मोड में आगे बढ़ाता है। हर बार चलने पर अगले चेक किए गए मोड पर जाता है। चक्र की स्थिति हर क्रिया की अपनी होती है और ऐप रीस्टार्ट होने पर रीसेट हो जाती है।</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>चुनें कि मैक्रो किन पॉइंटर मोड के बीच बारी-बारी से बदले। हर बार चलने पर अगले चेक किए गए मोड पर जाता है।</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ऑडियो</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>मैक्रो की ध्वनियाँ और मिरर किया गया सिस्टम ऑडियो चुने गए कंट्रोलर के अंतर्निहित स्पीकर से चलते हैं, USB या Bluetooth पर। ऊपर के ड्रॉपडाउन में डिवाइस चुनें। यहाँ की हर सेटिंग उसी के अनुसार चलती है।</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>ध्वनि आउटपुट</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>मैक्रो की ध्वनियाँ और मिरर किया गया सिस्टम ऑडियो “इनपुट स्रोत” में चुने गए डिवाइस के अंतर्निहित स्पीकर से चलते हैं, USB या Bluetooth पर। यहाँ की हर सेटिंग उसी डिवाइस के अनुसार चलती है।</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>मिरर स्रोत, हेडफ़ोन वॉल्यूम, बफ़र, आउटपुट पथ</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>ध्वनियाँ अपने-आप चुने गए कंट्रोलर पर जाती हैं। USB पर पैड के अपने ऑडियो एंडपॉइंट का मिलान हार्डवेयर कंटेनर से किया जाता है। Bluetooth पर ऑडियो Sony HID फ़्रेम में स्ट्रीम होता है।</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>मिरर स्रोत</value></data>
@@ -3347,7 +3341,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>टोन सीमा रीसेट करें</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>सिस्टम का डिफ़ॉल्ट आउटपुट जो भी चलाता है, उसे साथ-साथ इस कंट्रोलर के अंतर्निहित स्पीकर पर भी चलाता है। USB और Bluetooth दोनों पर काम करता है।</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>चुने गए डिवाइस में अंतर्निहित स्पीकर नहीं है। इस पैड की मैक्रो ध्वनियाँ सिस्टम के डिफ़ॉल्ट आउटपुट पर चलती हैं।</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>ध्वनि आउटपुट रीसेट करें</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) का ब्राउज़र DualSense टेस्ट सूट: Sony फ़ीचर-रिपोर्ट की CRC फ़्रेमिंग और उन फ़र्मवेयर टेस्ट कमांड का संदर्भ जिन्हें PadForge वर्चुअल से भौतिक पैड तक आगे भेजता है।</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>गाइड LED चमक: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>स्लॉट के हर सक्षम कंट्रोलर के लिए गाइड या होम बटन LED की चमक सेट करता है। Xbox कंट्रोलर इसे केवल USB पर स्वीकार करते हैं।</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>USB पर Xbox कंट्रोलर, 2015 के Steam Controller, और होम बटन LED वाले Switch कंट्रोलर पर लागू होता है। मैक्रो शुरू होने पर LED फ़्लैश करने और ख़त्म होने पर उसे बहाल करने के लिए ऐसी दो क्रियाएँ साथ में रखें।</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>पॉइंटर मोड रीसेट करें</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>पॉइंटर ट्यूनिंग रीसेट करें</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>सेंसर बार की स्थिति रीसेट करें</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>ऊर्ध्वाधर ऑफ़सेट रीसेट करें</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>स्मूदिंग रीसेट करें</value></data>

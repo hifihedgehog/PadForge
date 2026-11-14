@@ -908,7 +908,6 @@ public class Strings : INotifyPropertyChanged
     public string About_QmkDesc => Get("About_QmkDesc");
     public string About_GestureSign => Get("About_GestureSign");
     public string About_GestureSignDesc => Get("About_GestureSignDesc");
-    public string Pad_Audio_Reset_All => Get("Pad_Audio_Reset_All");
     public string Pad_Audio_Crossfeed => Get("Pad_Audio_Crossfeed");
     public string Pad_Audio_CrossfeedCut => Get("Pad_Audio_CrossfeedCut");
     public string Pad_Audio_CrossfeedCut_Tooltip => Get("Pad_Audio_CrossfeedCut_Tooltip");
@@ -1581,6 +1580,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ForceFeedback_Subtitle => Get("Pad_ForceFeedback_Subtitle");
     public string Pad_Scope_Device => Get("Pad_Scope_Device");
     public string Pad_Scope_Controller => Get("Pad_Scope_Controller");
+    public string Pad_BothSticks_Header => Get("Pad_BothSticks_Header");
     public string Pad_ForceFeedback_RouteHidpp => Get("Pad_ForceFeedback_RouteHidpp");
     public string Pad_ForceFeedback_RouteHidppFeedbackOff => Get("Pad_ForceFeedback_RouteHidppFeedbackOff");
     public string Pad_ForceFeedback_RouteHidppAsleep => Get("Pad_ForceFeedback_RouteHidppAsleep");
@@ -1669,7 +1669,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_VendorRowExamples_Aura => Get("Pad_Lighting_VendorRowExamples_Aura");
     public string Pad_Lighting_VendorRowExamples_MysticLight => Get("Pad_Lighting_VendorRowExamples_MysticLight");
     public string Pad_Lighting_VendorRowExamples_Icue => Get("Pad_Lighting_VendorRowExamples_Icue");
-    public string Pad_Lighting_BaseColor => Get("Pad_Lighting_BaseColor");
     public string Pad_Lighting_GamesWin_Hint => Get("Pad_Lighting_GamesWin_Hint");
     public string Pad_Lighting_Hex => Get("Pad_Lighting_Hex");
     public string Pad_Lighting_HexTooltip => Get("Pad_Lighting_HexTooltip");
@@ -2382,8 +2381,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_TriggerRumbleFold_Tooltip => Get("Pad_TriggerRumbleFold_Tooltip");
     public string Pad_TestRumble => Get("Pad_TestRumble");
     public string Pad_MotorActivity => Get("Pad_MotorActivity");
-    public string Pad_MotorActivity_Left => Get("Pad_MotorActivity_Left");
-    public string Pad_MotorActivity_Right => Get("Pad_MotorActivity_Right");
     public string Pad_ConstantForce_Description => Get("Pad_ConstantForce_Description");
     public string Pad_ConstantForce_Toggle => Get("Pad_ConstantForce_Toggle");
     public string Pad_ConstantForce_Position => Get("Pad_ConstantForce_Position");
@@ -2926,6 +2923,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetTouchpadStickDPadActivationThreshold => Get("Pad_ResetTouchpadStickDPadActivationThreshold");
     public string Pad_Touchpad_Mouse_Header => Get("Pad_Touchpad_Mouse_Header");
     public string Pad_More_TouchpadMouse => Get("Pad_More_TouchpadMouse");
+    public string Pad_More_IrPointer => Get("Pad_More_IrPointer");
     public string Pad_Touchpad_Mouse_Subtitle => Get("Pad_Touchpad_Mouse_Subtitle");
     public string Pad_Touchpad_MouseSensitivityX => Get("Pad_Touchpad_MouseSensitivityX");
     public string Pad_Touchpad_MouseSensitivityX_Tooltip => Get("Pad_Touchpad_MouseSensitivityX_Tooltip");
@@ -3082,7 +3080,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio => Get("Pad_Audio");
     public string Pad_Pointer_Header => Get("Pad_Pointer_Header");
     public string Pad_Pointer_Subtitle => Get("Pad_Pointer_Subtitle");
-    public string Pad_Pointer_TuningTitle => Get("Pad_Pointer_TuningTitle");
     public string Pad_Pointer_SensorBar => Get("Pad_Pointer_SensorBar");
     public string Pad_Pointer_SensorBar_Centered => Get("Pad_Pointer_SensorBar_Centered");
     public string Pad_Pointer_SensorBar_Above => Get("Pad_Pointer_SensorBar_Above");
@@ -3147,15 +3144,12 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_GuideLedBrightness_Format => Get("MacroAction_GuideLedBrightness_Format");
     public string MacroAction_GuideLedBrightness_Tooltip => Get("MacroAction_GuideLedBrightness_Tooltip");
     public string Macro_GuideLedBrightness_Hint => Get("Macro_GuideLedBrightness_Hint");
-    public string Pad_ResetPointerModeCard => Get("Pad_ResetPointerModeCard");
-    public string Pad_ResetPointerTuning => Get("Pad_ResetPointerTuning");
     public string Pad_ResetSensorBarPos => Get("Pad_ResetSensorBarPos");
     public string Pad_ResetSensorBarComp => Get("Pad_ResetSensorBarComp");
     public string Pad_ResetIrSmoothing => Get("Pad_ResetIrSmoothing");
     public string Pad_ResetAudioMirror => Get("Pad_ResetAudioMirror");
     public string Pad_Audio_Header => Get("Pad_Audio_Header");
     public string Pad_Audio_Subtitle => Get("Pad_Audio_Subtitle");
-    public string Pad_Audio_Output_Header => Get("Pad_Audio_Output_Header");
     public string Pad_More_SoundOutput => Get("Pad_More_SoundOutput");
     public string Pad_Audio_Output_Desc => Get("Pad_Audio_Output_Desc");
     public string Pad_Audio_MirrorSource_Label => Get("Pad_Audio_MirrorSource_Label");
@@ -3282,7 +3276,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Shift_DeleteConfirmBase_Format => Get("Pad_Shift_DeleteConfirmBase_Format");
     public string Settings_GyroResetCalibration_Button => Get("Settings_GyroResetCalibration_Button");
     public string Settings_GyroResetCalibration_Tooltip => Get("Settings_GyroResetCalibration_Tooltip");
-    public string Settings_GyroLiveRate_Label => Get("Settings_GyroLiveRate_Label");
     public string Settings_GyroLiveAccel_Label => Get("Settings_GyroLiveAccel_Label");
     public string Settings_GyroSensitivityH => Get("Settings_GyroSensitivityH");
     public string Settings_GyroSensitivityH_Tooltip => Get("Settings_GyroSensitivityH_Tooltip");
@@ -3302,8 +3295,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Gyro_Header => Get("Pad_Gyro_Header");
     public string Pad_Gyro_Subtitle => Get("Pad_Gyro_Subtitle");
     public string Pad_Gyro_Calibration_Header => Get("Pad_Gyro_Calibration_Header");
-    public string Pad_More_GyroCalibration => Get("Pad_More_GyroCalibration");
-    public string Pad_Gyro_Sensitivity_Header => Get("Pad_Gyro_Sensitivity_Header");
     public string Pad_More_GyroSensitivity => Get("Pad_More_GyroSensitivity");
     public string Pad_Gyro_DegPerTurn_Format => Get("Pad_Gyro_DegPerTurn_Format");
     public string Pad_Gyro_Response_Header => Get("Pad_Gyro_Response_Header");
@@ -3387,11 +3378,8 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Gyro_Curve_ExtraWide => Get("Pad_Gyro_Curve_ExtraWide");
     public string Pad_Gyro_Units_Multiplier => Get("Pad_Gyro_Units_Multiplier");
     public string Pad_Gyro_Units_DegPerScreenTurn => Get("Pad_Gyro_Units_DegPerScreenTurn");
-    public string Pad_Gyro_ResetCalibration_All_Tooltip => Get("Pad_Gyro_ResetCalibration_All_Tooltip");
-    public string Pad_Gyro_ResetSensitivity_All_Tooltip => Get("Pad_Gyro_ResetSensitivity_All_Tooltip");
     public string Pad_Gyro_ResetResponse_All_Tooltip => Get("Pad_Gyro_ResetResponse_All_Tooltip");
     public string Pad_Gyro_ResetEngage_All_Tooltip => Get("Pad_Gyro_ResetEngage_All_Tooltip");
-    public string Pad_Gyro_ResetPassthrough_All_Tooltip => Get("Pad_Gyro_ResetPassthrough_All_Tooltip");
     public string Pad_ResetGyroSpace => Get("Pad_ResetGyroSpace");
     public string Pad_ResetMotionGrip => Get("Pad_ResetMotionGrip");
     public string Pad_ResetGyroSensitivityH => Get("Pad_ResetGyroSensitivityH");
@@ -3401,8 +3389,11 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetGyroInvertYaw => Get("Pad_ResetGyroInvertYaw");
     public string Pad_ResetGyroInvertRoll => Get("Pad_ResetGyroInvertRoll");
     public string Pad_Gyro_Passthrough_Header => Get("Pad_Gyro_Passthrough_Header");
-    public string Pad_Gyro_ApplyToPassthrough => Get("Pad_Gyro_ApplyToPassthrough");
     public string Pad_Gyro_ApplyToPassthrough_Tooltip => Get("Pad_Gyro_ApplyToPassthrough_Tooltip");
+    public string Pad_Gyro_Passthrough_Raw => Get("Pad_Gyro_Passthrough_Raw");
+    public string Pad_Gyro_Passthrough_Tuned => Get("Pad_Gyro_Passthrough_Tuned");
+    public string Pad_Gyro_Passthrough_RawLine => Get("Pad_Gyro_Passthrough_RawLine");
+    public string Pad_Gyro_Passthrough_TunedLine => Get("Pad_Gyro_Passthrough_TunedLine");
     public string Pad_ResetGyroApplyToPassthrough => Get("Pad_ResetGyroApplyToPassthrough");
     public string Pad_ResetGyroRealWorldCalibration => Get("Pad_ResetGyroRealWorldCalibration");
     public string Pad_ResetGyroDeadZone => Get("Pad_ResetGyroDeadZone");

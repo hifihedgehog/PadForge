@@ -1102,6 +1102,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Inaayos kung paano ini-scale ng PadForge ang mga force feedback event mula sa laro at kung paano ito niruruta sa mga rumble motor o haptic actuator ng pisikal na controller. Nagdaragdag ang Audio Rumble ng layer na pinapatakbo ng audio ng system sa ibabaw nito.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Device na ito</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Buong controller</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Parehong Stick</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Tumutugtog ang rumble sa {0} bilang mga haptic pulse, na direktang ipinapadala sa device. Ang mas malakas na rumble ay pumipili ng mas malakas na pulse at inuulit ito nang mas mabilis.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Naka-off ang haptic feedback para sa {0} sa Logi Options+, kaya walang tutugtugin hangga't hindi mo ito ibinabalik doon.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Hindi pa sumasagot ang device na ito. Tutugtog ang rumble nito kapag nagising na ito.</value></data>
@@ -1167,7 +1168,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>mga headset, mousepad, at Chroma Link strip</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>mga headset, mousepad, at speaker</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>mga headset</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Pumapalit ang mga laro tuwing sumusulat sila ng ilaw.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Maglagay ng anim-na-digit na hex color (RRGGBB o #RRGGBB) at pindutin ang Enter o mag-click sa ibang lugar para ilapat.</value></data>
@@ -1709,7 +1709,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Bitawan ang Mouse {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>I-toggle ang Touchpad Overlay</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Itakda ang Kulay ng Lightbar</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>I-override ang lightbar ng nakatalagang PlayStation slot sa napiling RGB na kulay. Ang Reactive ay nagpe-fade mula buong intensity hanggang itim sa nakatakdang decay window, saka ibabalik sa mga setting ng card na Lightbar. Pinapanatili ng Sticky ang kulay hanggang tumakbo ang action na Burahin ang Lightbar Override. Mas inuuna pa rin ang mga sulat na galing sa laro kaysa sa override.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>I-override ang lightbar ng nakatalagang PlayStation slot sa napiling RGB na kulay. Ang Reactive ay nagpe-fade mula buong intensity hanggang itim sa nakatakdang decay window, saka ibabalik sa mga setting ng card na Ilaw. Pinapanatili ng Sticky ang kulay hanggang tumakbo ang action na Burahin ang Lightbar Override. Mas inuuna pa rin ang mga sulat na galing sa laro kaysa sa override.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>I-flash ang lightbar {0} (decay {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Hawakan ang lightbar {0} hanggang ma-clear</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Burahin ang Lightbar Override</value></data>
@@ -1717,7 +1717,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Binibitawan ang anumang aktibong lightbar override sa nakatalagang slot. Ipares sa Sticky na action na Itakda ang Kulay ng Lightbar para i-undo ito sa pamamagitan ng ibang macro.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Itakda ang Lightbar Mode</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Itakda ang lightbar mode sa {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Itinatakda ang lightbar mode ng nakatalagang slot sa isang tiyak na value. Nananatili ito tulad ng pag-edit sa card na Lightbar hanggang may ibang action o ang user ang magbago nito.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Itinatakda ang lightbar mode ng nakatalagang slot sa isang tiyak na value. Nananatili ito tulad ng pag-edit sa card na Ilaw hanggang may ibang action o ang user ang magbago nito.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>I-cycle ang mga Lightbar Mode</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>I-cycle sa {0} lightbar mode</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Isinusulong ang lightbar mode ng slot sa mga mode na napili sa ibaba. Bawat fire ay lilipat sa susunod na mode na may check. Kada-action ang posisyon ng cycle at nare-reset ito kapag nag-restart ang app.</value></data>
@@ -1732,7 +1732,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Decay</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Fade</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palette</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Gagamitin ng walang lamang palette ang palette sa card na Lightbar ng slot.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Gagamitin ng walang lamang palette ang palette sa card na Ilaw ng slot.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Piliin kung aling mga lightbar mode ang iikutan ng macro. Bawat fire ay lilipat sa susunod na mode na may check.</value></data>
 
@@ -1962,6 +1962,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Output ng Mouse</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invert, Momentum, Response, Acceleration, fling</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Posisyon ng Sensor Bar, Vertical Offset, Smoothing</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Inaayos ang bilis ng cursor kapag ang daliri sa touchpad ay naka-map sa mouse X/Y sa isang Keyboard / Mouse na virtual controller. Ang 1.0 ang default. Itaas ang alinmang axis para sa mas mabilis na cursor, ibaba para sa mas mabagal. Binabaligtad ng Invert ang alinmang axis.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Sensitivity ng Mouse X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplier sa pahalang na delta ng touchpad → mouse. Kapag mas mababa sa 1.0, bumabagal ang cursor. Kapag mas mataas sa 1.0, bumibilis ito.</value></data>
@@ -2167,7 +2168,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Nagca-calibrate… huwag gumalaw</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>I-reset ang Calibration</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Binubura ang at-rest na gyro bias at ang timestamp ng huling calibration. Sa susunod na polling cycle, muling tatakbo ang 1.5-segundong auto-calibration sa device na ito.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Live na Gyroscope</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Live na Accelerometer</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Pahalang na Sensitivity</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Sinusukat ang pahalang (Yaw + Roll) na ambag ng gyro sa output. Iniiwan ng 1.0 ang rate ayon sa nakikita ng engine. Ang mas mataas na halaga ay nagpapalakas, ang mas mababa ay nagpapahina. Ilapat sa antas ng device para magmana ang bawat gyro binding sa controller na ito ng parehong pahalang na pakiramdam.</value></data>
@@ -2187,8 +2187,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Ayusin kung paano pinapagalaw ng motion sensor ng pad na ito ang output ng mouse at stick. Mag-calibrate sa patag na surface para gawing zero ang drift habang nakapahinga, saka ayusin ang sensitivity, smoothing, at mga patakaran sa engage ayon sa gusto mo.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Live na basa ng gyroscope at accelerometer</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Units, i-invert ang axis, Real-World Calibration</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° bawat ikot</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Paghubog ng Response</value></data>
@@ -2274,11 +2272,8 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Extra Wide</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplier</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Digri kada Ikot ng Screen</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>I-reset ang Calibration</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>I-reset ang Sensitivity</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>I-reset ang Paghubog ng Response</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>I-reset ang Engage</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>I-reset ang Motion Passthrough</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>I-reset ang Space</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>I-reset ang Grip</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>I-reset ang Pahalang na Sensitivity</value></data>
@@ -2298,8 +2293,11 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>I-reset ang Engage Stick</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>I-reset ang Direksyon ng Engage</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Motion Passthrough</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Ilapat ang Gyro Tuning sa Motion Passthrough</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Pinapatakbo ang discretionary na tuning ng mga card ng Gyro (deadzone, sensitivity, smoothing, response curve, invert) sa motion na iniuulat ng virtual controller sa laro o emulator. I-off ito para ipadala lang ang na-calibrate na basa at hayaang ilapat ng laro ang sarili nitong sensitivity at smoothing. Laging nalalapat ang pagwawasto ng calibration drift.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Pinapatakbo ng Tuned ang tuning ng card ng Gyro (deadzone, sensitivity, smoothing, response curve, invert) sa motion na iniuulat ng virtual controller sa laro o emulator. Ipinapadala lang ng Raw ang na-calibrate na basa at hinahayaang ilapat ng laro ang sarili nitong sensitivity at smoothing. Nalalapat ang pagwawasto ng calibration drift sa alinmang pagpipilian.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Raw</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Tuned</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Binabasa ng laro ang na-calibrate na motion at inilalapat ang sarili nitong sensitivity at smoothing.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Binabasa ng laro ang motion gamit ang sensitivity, smoothing at curve na itinakda rito.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>I-reset ang Passthrough Tuning</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplier ng gyro sensitivity kada source. Ang 1.0 = default ng engine (500°/s → buong deflection). Ang mga halagang higit sa 1.0 ay mas sensitibo. Ang mga halagang mas mababa sa 1.0 ay mas hindi sensitibo.</value></data>
@@ -2467,8 +2465,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Walang trigger motor ang controller na ito, kaya hindi mararamdaman ang mga larong gumagamit ng Xbox impulse trigger. Isama na lang ang bawat trigger channel sa pangunahing motor sa parehong panig.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Subukan ang Rumble</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktibidad ng Motor</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Kaliwa</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Kanan</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Maglapat ng tuluy-tuloy na puwersa sa device na ito hanggang i-toggle mo ito off. Ang puwersang ibinibigay ng laro mula sa anumang source ay papalit habang aktibo ito at magpapatuloy kapag huminto ang laro.</value></data>
@@ -2873,7 +2869,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR Pointer</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Ituro ang Wii Remote na ito sa screen gamit ang IR camera nito. Kailangan ng sensor bar, o dalawang infrared LED, sa itaas o ibaba ng display. I-calibrate ito bilang light gun sa pahina ng Devices para maitutok sa eksaktong lugar. Hindi pinapansin ng naka-calibrate na remote ang Posisyon ng Sensor Bar at Vertical Offset.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Pointer Tuning</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Posisyon ng Sensor Bar</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Nasa Gitna</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Sa Itaas ng Screen</value></data>
@@ -2900,8 +2895,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Inuusad ang pointer mode ng Wii sa mga mode na napili sa ibaba para sa bawat remote na may IR sa slot. Bawat fire ay lilipat sa susunod na mode na may check. Per-action ang posisyon ng cycle at nagre-reset kapag nag-restart ang app.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Piliin kung aling mga pointer mode ang dapat i-cycle ng macro. Bawat fire ay uusad sa susunod na mode na may check.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Ang mga tunog ng macro at ang na-mirror na audio ng system ay pinapatugtog sa built-in na speaker ng napiling controller, sa USB o Bluetooth. Piliin ang device sa dropdown sa itaas. Sinusunod ito ng bawat setting dito.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Output ng Tunog</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Ang mga tunog ng macro at ang na-mirror na audio ng system ay pinapatugtog sa built-in na speaker ng device na napili sa ilalim ng Pinapagana ng, sa USB o Bluetooth. Sinusunod ng bawat setting dito ang device na iyon.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Pinagmulan ng Mirror, Volume ng Headphone, buffer, Output Path</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Awtomatikong napupunta ang mga tunog sa napiling controller. Sa USB, tinutugma ang sariling audio endpoint ng pad ayon sa hardware container. Sa Bluetooth, ini-stream ang audio sa mga Sony HID frame.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Pinagmulan ng Mirror</value></data>
@@ -2964,7 +2958,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>I-reset ang Limitasyon ng Tono</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kinokopya sa built-in na speaker ng controller na ito, nang sabay, ang anumang pinapatugtog ng default output ng system. Gumagana sa USB at Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Walang built-in na speaker ang napiling device. Ang mga tunog ng macro para sa pad na ito ay pinapatugtog sa default output ng system.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>I-reset ang Output ng Tunog</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Browser na test suite ng DualSense ni Xuezhou Dai (daidr): reference para sa CRC framing ng Sony feature report at mga firmware test command na ipinapasa ng PadForge mula sa virtual papunta sa pisikal na pad.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3395,8 +3388,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Liwanag ng Guide LED: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Itinatakda ang liwanag ng LED ng Guide o Home button para sa bawat capable na controller sa slot. Sa USB lamang ito tinatanggap ng mga Xbox controller.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Nalalapat sa mga Xbox controller sa USB, sa 2015 Steam Controller, at sa mga Switch controller na may Home button LED. Gumamit ng dalawa sa mga aksyong ito para pakislapin ang LED kapag nagsimula ang macro at ibalik ito kapag natapos.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>I-reset ang Pointer Mode</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>I-reset ang Pointer Tuning</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>I-reset ang Posisyon ng Sensor Bar</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>I-reset ang Vertical Offset</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>I-reset ang Smoothing</value></data>

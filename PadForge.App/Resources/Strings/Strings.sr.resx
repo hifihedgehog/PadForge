@@ -1181,6 +1181,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Подешава како PadForge скалира догађаје повратне силе из игре и како их усмерава на моторе за вибрацију или хаптичке актуаторе физичког контролера. „Вибрација по звуку“ додаје слој који покреће системски звук.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Овај уређај</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Цео контролер</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Обе палице</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Вибрација се репродукује на {0} као хаптички импулси, који се шаљу директно уређају. Јача вибрација бира јачи импулс и брже га понавља.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Хаптичка повратна информација је искључена за {0} у програму Logi Options+, па се ништа не репродукује док је тамо поново не укључите.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Овај уређај још није одговорио. Вибрација ће се репродуковати када се пробуди.</value></data>
@@ -1267,7 +1268,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>матичне плоче, графичке картице и меморију</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>матичне плоче и графичке картице</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>подлоге за миш, слушалица и постоља за слушалице</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Светлосна трака</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Игре преузимају контролу кад год шаљу осветљење.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Унесите шестоцифрену хексадецималну боју (RRGGBB или #RRGGBB) и притисните Enter или кликните ван поља да бисте је применили.</value></data>
@@ -1897,7 +1897,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Отпуштање миша {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Прикажи/сакриј оверлеј тачпеда</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Постави боју светлосне траке</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Замењује боју светлосне траке додељеног PlayStation слота изабраном RGB бојом. „Реактивно“ бледи од пуног интензитета до црне током подешеног времена опадања, а затим враћа контролу подешавањима са картице „Светлосна трака“. „Трајно“ задржава боју док се не покрене радња „Уклони замену светлосне траке“. Подешавања која шаље игра и даље имају предност над заменом.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Замењује боју светлосне траке додељеног PlayStation слота изабраном RGB бојом. „Реактивно“ бледи од пуног интензитета до црне током подешеног времена опадања, а затим враћа контролу подешавањима са картице „Осветљење“. „Трајно“ задржава боју док се не покрене радња „Уклони замену светлосне траке“. Подешавања која шаље игра и даље имају предност над заменом.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Бљесни светлосном траком {0} (опадање {1} мс)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Задржи светлосну траку {0} до уклањања</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Уклони замену светлосне траке</value></data>
@@ -1905,7 +1905,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Уклања сваку активну замену светлосне траке на додељеном слоту. Користите уз трајну радњу „Постави боју светлосне траке“ да бисте је поништили другим макроом.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Постави режим светлосне траке</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Постави режим светлосне траке на {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Поставља режим светлосне траке додељеног слота на одређену вредност. Остаје као измена на картици „Светлосна трака“ док га друга радња или корисник не промене.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Поставља режим светлосне траке додељеног слота на одређену вредност. Остаје као измена на картици „Осветљење“ док га друга радња или корисник не промене.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Смењуј режиме светлосне траке</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Смењуј {0} режима светлосне траке</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Мења режим светлосне траке слота кроз режиме изабране испод. Свако покретање прелази на следећи означени режим. Положај у циклусу се чува за сваку радњу засебно и ресетује се при поновном покретању апликације.</value></data>
@@ -1920,7 +1920,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Опадање</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Бледење</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Палета</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Празна палета користи палету са картице „Светлосна трака“ самог слота.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Празна палета користи палету са картице „Осветљење“ самог слота.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Режим</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Изаберите кроз које режиме светлосне траке макро треба да прелази. Свако покретање прелази на следећи означени режим.</value></data>
 
@@ -2150,6 +2150,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Излаз миша</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Обрни, Инерција, Одзив, Убрзање, замах</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Положај сензорске траке, Вертикални помак, Изглађивање</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Подешава брзину курсора када је прст на тачпеду мапиран на X/Y миша на виртуелном контролеру „Тастатура / миш“. Подразумевано је 1.0. Повећајте било коју осу за бржи курсор, смањите за спорији. „Обрни“ обрће било коју осу.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Осетљивост миша X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Множилац за хоризонтални помак тачпед → миш. Испод 1.0 успорава курсор. Изнад 1.0 га убрзава.</value></data>
@@ -2355,7 +2356,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Калибрација… не померајте</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Ресетуј калибрацију</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Брише одступање жироскопа у мировању и време последње калибрације. Следећи циклус очитавања поново покреће аутоматску калибрацију од 1.5 секунди на овом уређају.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Жироскоп уживо</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Акцелерометар уживо</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Хоризонтална осетљивост</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Скалира хоризонтални (скретање + ваљање) допринос жироскопа излазу. 1.0 оставља брзину онаквом каквом је механизам види. Веће вредности појачавају, мање слабе. Примењује се на нивоу уређаја, па свако повезивање жироскопа на овом контролеру добија исти хоризонтални осећај.</value></data>
@@ -2375,8 +2375,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Жироскоп</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Подесите како сензор покрета овог контролера управља излазом миша и палице. Калибришите на равној површини да бисте поништили клизање у мировању, затим по жељи подесите осетљивост, изглађивање и правила активирања.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Калибрација</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Очитавања жироскопа и акцелерометра уживо</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Осетљивост</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Јединице, обртање оса, Калибрација према стварном свету</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° по окрету</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Обликовање одзива</value></data>
@@ -2462,11 +2460,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Врло широка</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Множилац</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Степени по окрету екрана</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Ресетуј калибрацију</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Ресетуј осетљивост</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Ресетуј обликовање одзива</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Ресетуј активирање</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Ресетуј пропуштање покрета</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Ресетуј простор</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Ресетуј држање</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Ресетуј хоризонталну осетљивост</value></data>
@@ -2486,8 +2481,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Ресетуј палицу за активирање</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Ресетуј смер активирања</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Пропуштање покрета</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Примени подешавања жироскопа на пропуштање покрета</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Примењује опциона подешавања са картица жироскопа (мртва зона, осетљивост, изглађивање, крива одзива, обртање) на покрет који виртуелни контролер пријављује игри или емулатору. Искључите да бисте слали само калибрисано очитавање и препустили игри да примени сопствену осетљивост и изглађивање. Корекција клизања из калибрације се примењује у оба случаја.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>„Подешено“ примењује подешавања са картице жироскопа (мртва зона, осетљивост, изглађивање, крива одзива, обртање) на покрет који виртуелни контролер пријављује игри или емулатору. „Сирово“ шаље само калибрисано очитавање и препушта игри да примени сопствену осетљивост и изглађивање. Корекција клизања из калибрације се примењује у оба случаја.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Сирово</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Подешено</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Игра чита калибрисани покрет и примењује сопствену осетљивост и изглађивање.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Игра чита покрет са осетљивошћу, изглађивањем и кривом подешеним овде.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Ресетуј подешавања пропуштања</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Осетљивост</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Множилац осетљивости жироскопа за појединачни извор. 1.0 = подразумевана вредност механизма (500°/с → пун отклон). Вредности изнад 1.0 су осетљивије. Вредности испод 1.0 су мање осетљиве.</value></data>
@@ -2735,8 +2733,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Овај контролер нема моторе у окидачима, па се игре које користе Xbox импулсне окидаче не би осетиле. Уместо тога пренесите сваки канал окидача на главни мотор са исте стране.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Тестирај вибрацију</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Активност мотора</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Леви</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Десни</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Примењује сталну силу на овај уређај док је не искључите. Сила коју покреће игра, из било ког извора, има предност док је активна, а стална сила се наставља када игра престане.</value></data>
@@ -3256,7 +3252,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>Звук</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR показивач</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Нишаните овим Wii Remote контролером у екран помоћу његове IR камере. Потребна је сензорска трака, или две инфрацрвене LED лампице, изнад или испод екрана. Калибришите га као светлосни пиштољ на страници „Уређаји“ да бисте нишанили тачно у жељено место. Калибрисани даљински управљач занемарује „Положај сензорске траке“ и „Вертикални помак“.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Подешавање показивача</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Положај сензорске траке</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Центрирано</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Изнад екрана</value></data>
@@ -3283,8 +3278,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Мења Wii режим показивача кроз режиме изабране испод за сваки даљински управљач са IR камером на слоту. Свако покретање прелази на следећи означени режим. Положај у циклусу се чува за сваку радњу засебно и ресетује се при поновном покретању апликације.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Изаберите кроз које режиме показивача макро треба да прелази. Свако покретање прелази на следећи означени режим.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Звук</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Звукови макроа и пресликани системски звук репродукују се преко уграђеног звучника изабраног контролера, преко USB или Bluetooth везе. Изаберите уређај у падајућој листи изнад. Свако подешавање овде се односи на њега.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Излаз звука</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Звукови макроа и пресликани системски звук репродукују се преко уграђеног звучника уређаја изабраног под „Улаз са“, преко USB или Bluetooth везе. Свако подешавање овде се односи на тај уређај.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Извор пресликавања, Јачина звука слушалица, бафер, Излазна путања</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Звукови се аутоматски усмеравају на изабрани контролер. Преко USB везе, сопствена аудио крајња тачка контролера проналази се према хардверском контејнеру. Преко Bluetooth везе звук се преноси у Sony HID оквирима.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Извор пресликавања</value></data>
@@ -3347,7 +3341,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Ресетуј границу тона</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Паралелно копира све што подразумевани системски излаз репродукује на уграђени звучник овог контролера. Ради преко USB и Bluetooth везе.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Изабрани уређај нема уграђени звучник. Звукови макроа за овај контролер репродукују се на подразумеваном системском излазу.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Ресетуј излаз звука</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Скуп тестова за DualSense у прегледачу, аутор Xuezhou Dai (daidr): референца за Sony CRC уоквиравање feature извештаја и команде за тестирање фирмвера које PadForge прослеђује са виртуелних на физичке контролере.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Осветљеност Guide LED-а: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Поставља осветљеност LED-а дугмета Guide или Home за сваки подржани контролер на слоту. Xbox контролери то прихватају само преко USB везе.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Примењује се на Xbox контролере преко USB везе, Steam Controller из 2015. и Switch контролере са LED-ом на дугмету Home. Упарите две овакве радње да би LED бљеснуо када макро почне и вратио се када се заврши.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Ресетуј режим показивача</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Ресетуј подешавање показивача</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Ресетуј положај сензорске траке</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Ресетуј вертикални помак</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Ресетуј изглађивање</value></data>

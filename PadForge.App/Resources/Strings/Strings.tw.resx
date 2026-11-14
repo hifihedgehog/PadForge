@@ -734,8 +734,6 @@
   <data name="Menu_Cell_Action" xml:space="preserve"><value>Adeyɛ</value></data>
   <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Source, Threshold, Direction, Consume Trigger Buttons, San yɛ</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Player anaa Wiase</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Benkum</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Nifa</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Hwehwɛ devices</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Ne nyinaa</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Nhyehyɛe</value></data>

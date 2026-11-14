@@ -1181,6 +1181,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Tunes how PadForge scales force feedback events from the game and how it routes them to the physical controller's rumble motors or haptic actuators. Audio Rumble adds a system audio-driven layer on top.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>This device</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Whole controller</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Both Sticks</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Rumble plays on {0} as haptic pulses, sent straight to the device. Stronger rumble picks a stronger pulse and repeats it faster.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Haptic feedback is turned off for {0} in Logi Options+, so it plays nothing until you turn it back on there.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>This device has not answered yet. Its rumble plays once it wakes up.</value></data>
@@ -1268,7 +1269,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboards, graphics cards, and memory</value><comment>Examples that end the route line of the ASUS Aura row ({1} of Pad_Lighting_RouteVendorRow and Pad_Lighting_RouteVendorRowWaiting): the kinds of ASUS devices Armoury Crate lights. Lowercase and plural, a list as it reads in the middle of a sentence.</comment></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboards and graphics cards</value><comment>Examples that end the route line of the MSI Mystic Light row, the same use as Pad_Lighting_VendorRowExamples_Aura.</comment></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads, headsets, and headset stands</value><comment>Examples that end the route line of the Corsair iCUE row, the same use as Pad_Lighting_VendorRowExamples_Aura. Lowercase and plural, a list as it reads in the middle of a sentence.</comment></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Games take over whenever they write lighting.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Enter a six-digit hex color (RRGGBB or #RRGGBB) and press Enter or click away to apply.</value></data>
@@ -1898,7 +1898,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Mouse Release {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Toggle Touchpad Overlay</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Set Lightbar Color</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Override the assigned PlayStation slot's lightbar to a chosen RGB color. Reactive fades from full intensity to black over the configured decay window, then hands back to the Lightbar card's settings. Sticky holds the color until a Clear Lightbar Override action runs. Game-driven writes still take priority over the override.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Override the assigned PlayStation slot's lightbar to a chosen RGB color. Reactive fades from full intensity to black over the configured decay window, then hands back to the Lighting card's settings. Sticky holds the color until a Clear Lightbar Override action runs. Game-driven writes still take priority over the override.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Flash lightbar {0} (decay {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Hold lightbar {0} until cleared</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Clear Lightbar Override</value></data>
@@ -1906,7 +1906,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Releases any active lightbar override on the assigned slot. Pair with a Sticky Set Lightbar Color action to undo it via another macro.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Set Lightbar Mode</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Set lightbar mode to {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Sets the assigned slot's lightbar mode to a specific value. Persists like an edit on the Lightbar card until another action or the user changes it.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Sets the assigned slot's lightbar mode to a specific value. Persists like an edit on the Lighting card until another action or the user changes it.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Cycle Lightbar Modes</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Cycle through {0} lightbar modes</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Advances the slot's lightbar mode through the modes selected below. Each fire moves to the next checked mode. The cycle position is per-action and resets on app restart.</value></data>
@@ -1921,7 +1921,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Decay</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Fade</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palette</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>An empty palette uses the palette on the slot's Lightbar card.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>An empty palette uses the palette on the slot's Lighting card.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Pick which lightbar modes the macro should cycle through. Each fire advances to the next checked mode.</value></data>
 
@@ -2151,6 +2151,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Mouse Output</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invert, Momentum, Response, Acceleration, fling</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Sensor Bar Position, Vertical Offset, Smoothing</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Tunes cursor speed when a touchpad finger is mapped to mouse X/Y on a Keyboard / Mouse virtual controller. 1.0 is the default. Raise either axis for a faster cursor, lower for slower. Invert flips either axis.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Mouse Sensitivity X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplier on horizontal touchpad → mouse delta. Below 1.0 slows the cursor. Above 1.0 speeds it up.</value></data>
@@ -2356,7 +2357,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Calibrating… hold still</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Reset Calibration</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Clears the at-rest gyro bias and the last-calibrated timestamp. The next polling cycle re-runs the 1.5-second auto-calibration on this device.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Live Gyroscope</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Live Accelerometer</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Horizontal Sensitivity</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Scales the horizontal (Yaw + Roll) gyro contribution to the output. 1.0 leaves the rate as the engine sees it. Higher values amplify, lower values attenuate. Apply at the device level so every gyro binding on this controller inherits the same horizontal feel.</value></data>
@@ -2376,8 +2376,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Tune how this pad's motion sensor drives mouse and stick output. Calibrate on a flat surface to zero at-rest drift, then dial in sensitivity, smoothing, and engage rules to taste.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Live gyroscope and accelerometer readings</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Units, invert axes, Real-World Calibration</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° per turn</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Response Shaping</value></data>
@@ -2463,11 +2461,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Extra Wide</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplier</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Degrees per Screen Turn</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Reset Calibration</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Reset Sensitivity</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Reset Response Shaping</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Reset Engage</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Reset Motion Passthrough</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Reset Space</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Reset Grip</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Reset Horizontal Sensitivity</value></data>
@@ -2487,8 +2482,11 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Reset Engage Stick</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Reset Engage Direction</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Motion Passthrough</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Apply Gyro Tuning to Motion Passthrough</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Runs the Gyro cards' discretionary tuning (deadzone, sensitivity, smoothing, response curve, invert) on the motion the virtual controller reports to the game or emulator. Turn it off to send only the calibrated reading and let the game apply its own sensitivity and smoothing. Calibration drift correction always applies either way.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Tuned runs the Gyro card's tuning (deadzone, sensitivity, smoothing, response curve, invert) on the motion the virtual controller reports to the game or emulator. Raw sends only the calibrated reading and lets the game apply its own sensitivity and smoothing. Calibration drift correction applies either way.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Raw</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Tuned</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>The game reads the calibrated motion and applies its own sensitivity and smoothing.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>The game reads the motion with the sensitivity, smoothing and curve set here.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Reset Passthrough Tuning</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Per-source gyro sensitivity multiplier. 1.0 = the engine's default (500°/s → full deflection). Values above 1.0 are more sensitive. Values below 1.0 are less sensitive.</value></data>
@@ -2749,8 +2747,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>This controller has no trigger motors, so games that use Xbox impulse triggers would go unfelt. Fold each trigger channel into the main motor on the same side instead.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Test Rumble</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motor Activity</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Left</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Right</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Apply a continuous force to this device until you toggle off. Game-driven force from any source overrides while it's active and resumes when the game stops.</value></data>
@@ -3270,7 +3266,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR Pointer</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Aim this Wii Remote at the screen with its IR camera. Needs a sensor bar, or two infrared LEDs, above or below the display. Calibrate it as a light gun on the Devices page to aim at the exact spot. A calibrated remote ignores Sensor Bar Position and Vertical Offset.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Pointer Tuning</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Sensor Bar Position</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Centered</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Above the Screen</value></data>
@@ -3297,8 +3292,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Advances the Wii pointer mode through the modes selected below for every IR-capable remote on the slot. Each fire moves to the next checked mode. The cycle position is per-action and resets on app restart.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Pick which pointer modes the macro should cycle through. Each fire advances to the next checked mode.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macro sounds and mirrored system audio play through the selected controller’s built-in speaker, over USB or Bluetooth. Pick the device in the dropdown above. Every setting here follows it.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sound Output</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macro sounds and mirrored system audio play through the built-in speaker of the device picked under Driven by, over USB or Bluetooth. Every setting here follows that device.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Mirror Source, Headphone Volume, buffer, Output Path</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Sounds route to the selected controller automatically. Over USB the pad’s own audio endpoint is matched by hardware container. Over Bluetooth the audio is streamed in Sony HID frames.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Mirror Source</value></data>
@@ -3361,7 +3355,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Reset Tone Limit</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copies whatever the system default output plays to this controller’s built-in speaker, in parallel. Works over USB and Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>The selected device has no built-in speaker. Macro sounds for this pad play on the system default output.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Reset Sound Output</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Browser DualSense test suite by Xuezhou Dai (daidr): reference for the Sony feature-report CRC framing and firmware test commands PadForge forwards from virtual to physical pads.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3821,8 +3814,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide LED brightness: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Sets the Guide or Home button LED brightness for every capable controller on the slot. Xbox controllers accept it over USB only.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Applies to Xbox controllers over USB, the 2015 Steam Controller, and Switch controllers with a Home button LED. Pair two of these actions to flash the LED when a macro starts and restore it when it ends.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Reset Pointer Mode</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Reset Pointer Tuning</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Reset Sensor Bar Position</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Reset Vertical Offset</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Reset Smoothing</value></data>

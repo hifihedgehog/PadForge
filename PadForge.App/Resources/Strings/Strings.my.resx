@@ -1102,6 +1102,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>ဂိမ်းမှ အားပြန်တုံ့ပြန်မှု ဖြစ်ရပ်များကို PadForge က မည်သို့ ချိန်ညှိပြီး ရုပ်ပိုင်းကွန်ထရိုလာ၏ တုန်ခါမှု မော်တာများ သို့မဟုတ် ဟက်ပတစ် လှုပ်ရှားကိရိယာများသို့ မည်သို့ လမ်းကြောင်းပေးသည်ကို ချိန်ညှိသည်။ အသံ တုန်ခါမှုသည် စနစ်အသံဖြင့် မောင်းနှင်သော အလွှာတစ်ခုကို အပေါ်မှ ထပ်ထည့်သည်။</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>ဤစက်ပစ္စည်း</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>ကွန်ထရိုလာ တစ်ခုလုံး</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>စတစ် နှစ်ခုလုံး</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>တုန်ခါမှုကို {0} ပေါ်တွင် ဟက်ပတစ် ပဲလ်စ်များအဖြစ် စက်ပစ္စည်းသို့ တိုက်ရိုက်ပို့၍ ဖွင့်သည်။ တုန်ခါမှု ပြင်းလေ ပဲလ်စ် ပိုပြင်းပြင်းကို ရွေးပြီး ပိုမြန်မြန် ထပ်လုပ်လေ ဖြစ်သည်။</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Logi Options+ တွင် {0} အတွက် ဟက်ပတစ် တုံ့ပြန်မှုကို ပိတ်ထားသဖြင့် ထိုနေရာတွင် ပြန်ဖွင့်သည်အထိ ဘာမျှ မဖွင့်ပါ။</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>ဤစက်ပစ္စည်း မတုံ့ပြန်သေးပါ။ ၎င်း နိုးလာသည်နှင့် ၎င်း၏ တုန်ခါမှု ဖွင့်မည်။</value></data>
@@ -1167,7 +1168,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>နားကြပ်များ၊ မောက်စ်ပက်များနှင့် Chroma Link မီးတန်းများ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>နားကြပ်များ၊ မောက်စ်ပက်များနှင့် စပီကာများ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>နားကြပ်များ</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>အလင်းတန်း</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>ဂိမ်းများက မီးအလင်း ရေးသည့်အခါတိုင်း ထိန်းချုပ်ယူသည်။</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ဂဏန်းခြောက်လုံး hex အရောင် (RRGGBB သို့မဟုတ် #RRGGBB) ကို ထည့်ပြီး အသုံးချရန် Enter နှိပ်ပါ သို့မဟုတ် အခြားနေရာကို နှိပ်ပါ။</value></data>
@@ -1709,7 +1709,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>မောက်စ် လွှတ် {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>တာ့ချ်ပက် အုပ်ထပ်ပြကွက် အဖွင့်အပိတ်</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>အလင်းတန်း အရောင် သတ်မှတ်</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>သတ်မှတ်ထားသော PlayStation ဆလော့၏ အလင်းတန်းကို ရွေးထားသော RGB အရောင်ဖြင့် အစားထိုးသည်။ တုံ့ပြန် မုဒ်သည် သတ်မှတ်ထားသော ပျယ်ချိန်အတွင်း အပြည့်အားမှ အမည်းရောင်သို့ ပျယ်သွားပြီး အလင်းတန်း ကတ်၏ ဆက်တင်များသို့ ပြန်လွှဲပေးသည်။ ကပ်ထား မုဒ်သည် အလင်းတန်း အစားထိုးမှု ရှင်းလင်း လုပ်ဆောင်ချက် လုပ်သည်အထိ အရောင်ကို ထိန်းထားသည်။ ဂိမ်းက ရေးသော အရောင်များသည် အစားထိုးမှုထက် ဦးစားပေးခံရဆဲ ဖြစ်သည်။</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>သတ်မှတ်ထားသော PlayStation ဆလော့၏ အလင်းတန်းကို ရွေးထားသော RGB အရောင်ဖြင့် အစားထိုးသည်။ တုံ့ပြန် မုဒ်သည် သတ်မှတ်ထားသော ပျယ်ချိန်အတွင်း အပြည့်အားမှ အမည်းရောင်သို့ ပျယ်သွားပြီး မီးအလင်း ကတ်၏ ဆက်တင်များသို့ ပြန်လွှဲပေးသည်။ ကပ်ထား မုဒ်သည် အလင်းတန်း အစားထိုးမှု ရှင်းလင်း လုပ်ဆောင်ချက် လုပ်သည်အထိ အရောင်ကို ထိန်းထားသည်။ ဂိမ်းက ရေးသော အရောင်များသည် အစားထိုးမှုထက် ဦးစားပေးခံရဆဲ ဖြစ်သည်။</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>အလင်းတန်း {0} လက်ခနဲ ပြရန် (ပျယ်ချိန် {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>ရှင်းလင်းသည်အထိ အလင်းတန်း {0} ထိန်းထားရန်</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>အလင်းတန်း အစားထိုးမှု ရှင်းလင်း</value></data>
@@ -1717,7 +1717,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>သတ်မှတ်ထားသော ဆလော့ရှိ အသက်ဝင်နေသော အလင်းတန်း အစားထိုးမှုကို လွှတ်ပေးသည်။ အခြားမက်ခရိုမှတစ်ဆင့် ပြန်ဖျက်ရန် ကပ်ထား မုဒ်ရှိ အလင်းတန်း အရောင် သတ်မှတ် လုပ်ဆောင်ချက်နှင့် တွဲသုံးပါ။</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>အလင်းတန်း မုဒ် သတ်မှတ်</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>အလင်းတန်း မုဒ်ကို {0} သို့ သတ်မှတ်ရန်</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>သတ်မှတ်ထားသော ဆလော့၏ အလင်းတန်း မုဒ်ကို တန်ဖိုးတစ်ခုသို့ သတ်မှတ်သည်။ အခြားလုပ်ဆောင်ချက် သို့မဟုတ် အသုံးပြုသူက ပြောင်းသည်အထိ အလင်းတန်း ကတ်တွင် ပြင်ဆင်သကဲ့သို့ ဆက်တည်နေသည်။</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>သတ်မှတ်ထားသော ဆလော့၏ အလင်းတန်း မုဒ်ကို တန်ဖိုးတစ်ခုသို့ သတ်မှတ်သည်။ အခြားလုပ်ဆောင်ချက် သို့မဟုတ် အသုံးပြုသူက ပြောင်းသည်အထိ မီးအလင်း ကတ်တွင် ပြင်ဆင်သကဲ့သို့ ဆက်တည်နေသည်။</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>အလင်းတန်း မုဒ်များ လှည့်ပြောင်း</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>အလင်းတန်း မုဒ် {0} ခုကို လှည့်ပြောင်းရန်</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>ဆလော့၏ အလင်းတန်း မုဒ်ကို အောက်တွင် ရွေးထားသော မုဒ်များအတိုင်း ရှေ့ဆက်ပြောင်းသည်။ အလုပ်လုပ်တိုင်း နောက်ထပ် အမှန်ခြစ်ထားသော မုဒ်သို့ ရွှေ့သည်။ လှည့်ပတ်မှု တည်နေရာသည် လုပ်ဆောင်ချက်တစ်ခုစီအလိုက် ဖြစ်ပြီး အက်ပ် ပြန်စတင်သည့်အခါ အစမှ ပြန်စသည်။</value></data>
@@ -1732,7 +1732,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>ပျယ်ချိန်</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>မှိန်ချိန်</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>အရောင်စု</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>အရောင်စု ဗလာဖြစ်လျှင် ဆလော့၏ အလင်းတန်း ကတ်ပေါ်ရှိ အရောင်အစုကို သုံးသည်။</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>အရောင်စု ဗလာဖြစ်လျှင် ဆလော့၏ မီးအလင်း ကတ်ပေါ်ရှိ အရောင်အစုကို သုံးသည်။</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>မုဒ်</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>မက်ခရိုက လှည့်ပြောင်းမည့် အလင်းတန်း မုဒ်များကို ရွေးပါ။ အလုပ်လုပ်တိုင်း နောက်ထပ် အမှန်ခြစ်ထားသော မုဒ်သို့ ရှေ့ဆက်သည်။</value></data>
 
@@ -1962,6 +1962,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>မောက်စ် အထွက်</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>ပြောင်းပြန်လှန်၊ အရှိန်ဆက်၊ တုံ့ပြန်မှု၊ အရှိန်မြှင့်ခြင်း၊ ပစ်လွှတ်</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>ဆင်ဆာဘား နေရာ၊ ဒေါင်လိုက် အလွဲ၊ ချောမွေ့စေခြင်း</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>ကီးဘုတ် / မောက်စ် ဗာချွယ်ကွန်ထရိုလာပေါ်တွင် တာ့ချ်ပက် လက်ချောင်းကို မောက်စ် X/Y သို့ မက်ပင်းလုပ်ထားသည့်အခါ ကာဆာ အမြန်နှုန်းကို ချိန်ညှိသည်။ 1.0 သည် မူလ ဖြစ်သည်။ ကာဆာ ပိုမြန်စေရန် ဝင်ရိုးတစ်ခုခုကို မြှင့်ပါ၊ ပိုနှေးစေရန် လျှော့ပါ။ ပြောင်းပြန်လှန် သည် ဝင်ရိုးတစ်ခုခုကို ပြောင်းပြန်လှန်သည်။</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>မောက်စ် အာရုံခံနိုင်စွမ်း X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>အလျားလိုက် တာ့ချ်ပက် → မောက်စ် ရွေ့လျားမှုအပေါ် မြှောက်ကိန်း။ 1.0 အောက်ဆိုလျှင် ကာဆာကို နှေးစေသည်။ 1.0 အထက်ဆိုလျှင် မြန်စေသည်။</value></data>
@@ -2167,7 +2168,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>ချိန်ညှိနေသည်… ငြိမ်ငြိမ်ထားပါ</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>ချိန်ညှိခြင်း ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>ငြိမ်နေစဉ် ဂိုင်ရို အလွဲနှင့် နောက်ဆုံး ချိန်ညှိချိန် အချိန်မှတ်တမ်းကို ရှင်းလင်းသည်။ နောက်ထပ် စစ်ဆေးမှု စက်ဝန်းတွင် ဤစက်ပစ္စည်းပေါ်၌ 1.5 စက္ကန့် အလိုအလျောက် ချိန်ညှိခြင်းကို ပြန်လုပ်သည်။</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>တိုက်ရိုက် ဂိုင်ရိုစကုပ်</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>တိုက်ရိုက် အရှိန်တိုင်းကိရိယာ</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>အလျားလိုက် အာရုံခံနိုင်စွမ်း</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>အထွက်သို့ အလျားလိုက် (ဘယ်ညာလှည့်ခြင်း + ဘေးစောင်းခြင်း) ဂိုင်ရို ပံ့ပိုးမှုကို ချဲ့ချုံ့သည်။ 1.0 သည် နှုန်းကို အင်ဂျင် မြင်သည့်အတိုင်း ထားသည်။ တန်ဖိုး မြင့်လျှင် ချဲ့ပြီး နိမ့်လျှင် လျှော့သည်။ ဤကွန်ထရိုလာပေါ်ရှိ ဂိုင်ရို ချိတ်ဆက်မှုတိုင်းက တူညီသော အလျားလိုက် ခံစားမှုကို ရရှိစေရန် စက်ပစ္စည်းအဆင့်တွင် သက်ရောက်သည်။</value></data>
@@ -2187,8 +2187,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ဂိုင်ရို</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>ဤပက်၏ လှုပ်ရှားမှု အာရုံခံကိရိယာက မောက်စ်နှင့် စတစ် အထွက်ကို မောင်းနှင်ပုံကို ချိန်ညှိပါ။ ငြိမ်နေစဉ် လွင့်မှုကို သုညပြုရန် ညီညာသော မျက်နှာပြင်ပေါ်တွင် ချိန်ညှိပြီးနောက် အာရုံခံနိုင်စွမ်း၊ ချောမွေ့စေခြင်းနှင့် ဖွင့်ခြင်း စည်းမျဉ်းများကို စိတ်ကြိုက် ညှိပါ။</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>ချိန်ညှိခြင်း</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>တိုက်ရိုက် ဂိုင်ရိုစကုပ်နှင့် အရှိန်တိုင်းကိရိယာ ဖတ်ချက်များ</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>အာရုံခံနိုင်စွမ်း</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>ယူနစ်၊ ဝင်ရိုး ပြောင်းပြန်လှန်ခြင်း၊ လက်တွေ့ကမ္ဘာ ချိန်ညှိခြင်း</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>တစ်ပတ်လျှင် ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>တုံ့ပြန်မှု ပုံဖော်ခြင်း</value></data>
@@ -2274,11 +2272,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>ပိုကျယ်</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>မြှောက်ကိန်း</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>မျက်နှာပြင် တစ်ပတ်လျှင် ဒီဂရီ</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>ချိန်ညှိခြင်း ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>အာရုံခံနိုင်စွမ်း ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>တုံ့ပြန်မှု ပုံဖော်ခြင်း ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>ဖွင့်ခြင်း ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>လှုပ်ရှားမှု တိုက်ရိုက်ဖြတ်သန်းခြင်း ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>ဝင်ရိုးစနစ် ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>လက်ကိုင် ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>အလျားလိုက် အာရုံခံနိုင်စွမ်း ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
@@ -2298,8 +2293,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>ဖွင့်ရန် စတစ် ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>ဖွင့်ရန် ဦးတည်ချက် ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>လှုပ်ရှားမှု တိုက်ရိုက်ဖြတ်သန်းခြင်း</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>ဂိုင်ရို ချိန်ညှိမှုကို လှုပ်ရှားမှု တိုက်ရိုက်ဖြတ်သန်းခြင်းတွင် သက်ရောက်စေရန်</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ဗာချွယ်ကွန်ထရိုလာက ဂိမ်း သို့မဟုတ် အီမြူလေတာသို့ အစီရင်ခံသော လှုပ်ရှားမှုပေါ်တွင် ဂိုင်ရို ကတ်များ၏ ရွေးချယ်နိုင်သော ချိန်ညှိမှုများ (ဒက်ဇုန်၊ အာရုံခံနိုင်စွမ်း၊ ချောမွေ့စေခြင်း၊ တုံ့ပြန်မှု မျဉ်းကွေး၊ ပြောင်းပြန်လှန်) ကို လုပ်ဆောင်သည်။ ချိန်ညှိထားသော ဖတ်ချက်ကိုသာ ပို့ပြီး ဂိမ်းက ကိုယ်ပိုင် အာရုံခံနိုင်စွမ်းနှင့် ချောမွေ့စေခြင်းကို သုံးစေရန် ပိတ်ပါ။ ချိန်ညှိခြင်း၏ လွင့်မှု ပြင်ဆင်ချက်သည် မည်သို့ပင်ဖြစ်စေ အမြဲ သက်ရောက်သည်။</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ညှိပြီး မုဒ်သည် ဗာချွယ်ကွန်ထရိုလာက ဂိမ်း သို့မဟုတ် အီမြူလေတာသို့ အစီရင်ခံသော လှုပ်ရှားမှုပေါ်တွင် ဂိုင်ရို ကတ်၏ ချိန်ညှိမှုများ (ဒက်ဇုန်၊ အာရုံခံနိုင်စွမ်း၊ ချောမွေ့စေခြင်း၊ တုံ့ပြန်မှု မျဉ်းကွေး၊ ပြောင်းပြန်လှန်) ကို လုပ်ဆောင်သည်။ မူရင်း မုဒ်သည် ချိန်ညှိထားသော ဖတ်ချက်ကိုသာ ပို့ပြီး ဂိမ်းက ကိုယ်ပိုင် အာရုံခံနိုင်စွမ်းနှင့် ချောမွေ့စေခြင်းကို သုံးစေသည်။ ချိန်ညှိခြင်း၏ လွင့်မှု ပြင်ဆင်ချက်သည် မည်သို့ပင်ဖြစ်စေ သက်ရောက်သည်။</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>မူရင်း</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>ညှိပြီး</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>ဂိမ်းသည် ချိန်ညှိထားသော လှုပ်ရှားမှုကို ဖတ်ပြီး ကိုယ်ပိုင် အာရုံခံနိုင်စွမ်းနှင့် ချောမွေ့စေခြင်းကို သုံးသည်။</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>ဂိမ်းသည် ဤနေရာတွင် သတ်မှတ်ထားသော အာရုံခံနိုင်စွမ်း၊ ချောမွေ့စေခြင်းနှင့် မျဉ်းကွေးဖြင့် လှုပ်ရှားမှုကို ဖတ်သည်။</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>တိုက်ရိုက်ဖြတ်သန်းခြင်း ချိန်ညှိမှု ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>အာရုံခံနိုင်စွမ်း</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ရင်းမြစ်အလိုက် ဂိုင်ရို အာရုံခံနိုင်စွမ်း မြှောက်ကိန်း။ 1.0 = အင်ဂျင်၏ မူလ (500°/s → တွန်းရွှေ့မှုပမာဏ အပြည့်)။ 1.0 အထက် တန်ဖိုးများသည် ပိုအာရုံခံသည်။ 1.0 အောက် တန်ဖိုးများသည် လျော့အာရုံခံသည်။</value></data>
@@ -2543,8 +2541,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>ဤကွန်ထရိုလာတွင် ထရီဂါမော်တာများ မရှိသဖြင့် Xbox impulse trigger များကို အသုံးပြုသော ဂိမ်းများ၏ တုန်ခါမှုကို ခံစားရမည် မဟုတ်ပါ။ ထို့ကြောင့် ထရီဂါချန်နယ်တစ်ခုစီကို တစ်ဖက်တည်းရှိ ပင်မမော်တာထဲသို့ ပေါင်းထည့်ပါ။</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>တုန်ခါမှု စမ်းသပ်</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>မော်တာ လှုပ်ရှားမှု</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>ဘယ်</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>ညာ</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>သင်ပိတ်သည်အထိ ဤစက်ပစ္စည်းသို့ စဉ်ဆက်မပြတ်အား သက်ရောက်စေပါ။ မည်သည့်ရင်းမြစ်မှမဆို ဂိမ်းက ထုတ်ပေးသောအားသည် အသက်ဝင်နေစဉ် ဤအားကို အစားထိုးပြီး ဂိမ်းရပ်သွားသောအခါ ဤအား ပြန်စသည်။</value></data>
@@ -3060,7 +3056,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>အသံ</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR ပွိုင်တာ</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>ဤ Wii Remote ကို ၎င်း၏ IR ကင်မရာဖြင့် မျက်နှာပြင်သို့ ချိန်ပါ။ မျက်နှာပြင်၏ အပေါ် သို့မဟုတ် အောက်တွင် ဆင်ဆာဘား သို့မဟုတ် အနီအောက်ရောင်ခြည် LED နှစ်လုံး လိုအပ်သည်။ တိကျသော နေရာကို ချိန်ရန် စက်ပစ္စည်းများ စာမျက်နှာတွင် ၎င်းကို အလင်းသေနတ်အဖြစ် ချိန်ညှိပါ။ ချိန်ညှိထားသော ရီမုတ်သည် ဆင်ဆာဘား နေရာ နှင့် ဒေါင်လိုက် အလွဲ ကို လျစ်လျူရှုသည်။</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>ပွိုင်တာ ညှိခြင်း</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>ဆင်ဆာဘား နေရာ</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>အလယ်</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>မျက်နှာပြင် အပေါ်</value></data>
@@ -3087,8 +3082,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>ဆလော့ပေါ်ရှိ IR သုံးနိုင်သော ရီမုတ်တိုင်းအတွက် Wii ပွိုင်တာ မုဒ်ကို အောက်တွင် ရွေးထားသော မုဒ်များအတိုင်း ရှေ့ဆက်ပြောင်းသည်။ လုပ်ဆောင်တိုင်း နောက်ထပ် အမှန်ခြစ်ထားသော မုဒ်သို့ ရွှေ့သည်။ လှည့်ပတ်နေရာသည် လုပ်ဆောင်ချက်တစ်ခုစီအလိုက် ဖြစ်ပြီး အက်ပ် ပြန်စတင်ချိန်တွင် ပြန်စသည်။</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>မက်ခရိုက လှည့်ပတ်ရမည့် ပွိုင်တာ မုဒ်များကို ရွေးပါ။ လုပ်ဆောင်တိုင်း နောက်ထပ် အမှန်ခြစ်ထားသော မုဒ်သို့ ရှေ့ဆက်သည်။</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>အသံ</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>မက်ခရို အသံများနှင့် ထပ်တူကူးထားသော စနစ်အသံသည် ရွေးထားသော ကွန်ထရိုလာ၏ တပ်ဆင်ပါရှိသော စပီကာမှ USB သို့မဟုတ် Bluetooth ဖြင့် ထွက်သည်။ အပေါ်ရှိ ဆွဲချစာရင်းတွင် စက်ပစ္စည်းကို ရွေးပါ။ ဤနေရာရှိ ဆက်တင်တိုင်းသည် ၎င်းအတိုင်း လိုက်သည်။</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>အသံ အထွက်</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>မက်ခရို အသံများနှင့် ထပ်တူကူးထားသော စနစ်အသံသည် အဝင်ရင်းမြစ် အောက်တွင် ရွေးထားသော စက်ပစ္စည်း၏ တပ်ဆင်ပါရှိသော စပီကာမှ USB သို့မဟုတ် Bluetooth ဖြင့် ထွက်သည်။ ဤနေရာရှိ ဆက်တင်တိုင်းသည် ထိုစက်ပစ္စည်းအတိုင်း လိုက်သည်။</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>ထပ်တူ ရင်းမြစ်၊ နားကြပ် အသံအတိုးအကျယ်၊ ဘဖာ၊ အထွက်လမ်းကြောင်း</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>အသံများကို ရွေးထားသော ကွန်ထရိုလာသို့ အလိုအလျောက် ပို့သည်။ USB တွင် ကွန်ထရိုလာ၏ ကိုယ်ပိုင် အသံ အဆုံးမှတ်ကို ဟာ့ဒ်ဝဲ ကွန်တိန်နာဖြင့် ကိုက်ညှိသည်။ Bluetooth တွင် အသံကို Sony HID ဖရိန်များဖြင့် ထုတ်လွှင့်သည်။</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>ထပ်တူ ရင်းမြစ်</value></data>
@@ -3151,7 +3145,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>အသံ ကန့်သတ်ချက် ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>စနစ်၏ မူလ အထွက်က ဖွင့်သမျှကို ဤကွန်ထရိုလာ၏ တပ်ဆင်ပါရှိသော စပီကာသို့ တစ်ပြိုင်နက် ကူးယူသည်။ USB နှင့် Bluetooth နှစ်မျိုးလုံးတွင် အလုပ်လုပ်သည်။</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>ရွေးထားသော စက်ပစ္စည်းတွင် တပ်ဆင်ပါရှိသော စပီကာ မရှိပါ။ ဤကွန်ထရိုလာအတွက် မက်ခရို အသံများကို စနစ်၏ မူလ အထွက်တွင် ဖွင့်သည်။</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>အသံ အထွက် ပြန်လည်သတ်မှတ်</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) ၏ ဘရောက်ဇာ DualSense စမ်းသပ်ကိရိယာအစုံ: PadForge က ဗာချွယ်မှ ရုပ်ပိုင်းဆိုင်ရာ ကွန်ထရိုလာများသို့ ပို့ပေးသော Sony ဖီချာရီပို့ CRC ဖရိန်ပုံစံ နှင့် ဖမ်းဝဲ စမ်းသပ်အမိန့်များအတွက် ကိုးကားချက်။</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3581,8 +3574,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide LED အလင်းအား- {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>ဆလော့ပေါ်ရှိ စွမ်းရည်ရှိသော ကွန်ထရိုလာတိုင်းအတွက် Guide သို့မဟုတ် Home ခလုတ် LED အလင်းအားကို သတ်မှတ်သည်။ Xbox ကွန်ထရိုလာများသည် USB မှတစ်ဆင့်သာ လက်ခံသည်။</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>USB မှတစ်ဆင့် ချိတ်ထားသော Xbox ကွန်ထရိုလာများ၊ 2015 Steam Controller နှင့် Home ခလုတ် LED ပါသော Switch ကွန်ထရိုလာများတွင် သက်ရောက်သည်။ မက်ခရို စတင်သည့်အခါ LED ကို လင်းစေပြီး ပြီးဆုံးသည့်အခါ ပြန်ထားရန် ဤလုပ်ဆောင်ချက် နှစ်ခုကို တွဲသုံးပါ။</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>ညွှန်ပြမုဒ်ကို ပြန်လည်သတ်မှတ်ရန်</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>ညွှန်ပြ ညှိမှုများကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>အာရုံခံတန်း တည်နေရာကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>ဒေါင်လိုက် အလွဲကို ပြန်လည်သတ်မှတ်ရန်</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>ချောမွေ့စေမှုကို ပြန်လည်သတ်မှတ်ရန်</value></data>

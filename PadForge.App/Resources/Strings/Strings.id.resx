@@ -1181,6 +1181,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Menyetel cara PadForge menskalakan peristiwa force feedback dari game dan cara merutekannya ke motor getaran atau aktuator haptik kontroler fisik. Getaran audio menambahkan lapisan yang digerakkan audio sistem di atasnya.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Perangkat ini</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Seluruh kontroler</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Kedua stik</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Getaran dimainkan di {0} sebagai denyut haptik, dikirim langsung ke perangkat. Getaran yang lebih kuat memilih denyut yang lebih kuat dan mengulangnya lebih cepat.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Umpan balik haptik untuk {0} dimatikan di Logi Options+, sehingga tidak ada yang dimainkan sampai Anda menyalakannya lagi di sana.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Perangkat ini belum menjawab. Getarannya dimainkan setelah perangkat bangun.</value></data>
@@ -1267,7 +1268,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>motherboard, kartu grafis, dan memori</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboard dan kartu grafis</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepad, headset, dan dudukan headset</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Bilah lampu</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Game mengambil alih setiap kali menulis pencahayaan.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Masukkan warna heksa enam digit (RRGGBB atau #RRGGBB), lalu tekan Enter atau klik di tempat lain untuk menerapkannya.</value></data>
@@ -1897,7 +1897,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Lepas mouse {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Alihkan overlay panel sentuh</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Atur warna bilah lampu</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Menimpa bilah lampu slot PlayStation yang ditetapkan dengan warna RGB pilihan. Reaktif memudar dari intensitas penuh ke hitam selama jendela peluruhan yang dikonfigurasi, lalu mengembalikan kendali ke pengaturan kartu Bilah lampu. Lekat menahan warna sampai tindakan Hapus penimpaan bilah lampu berjalan. Penulisan dari game tetap diutamakan di atas penimpaan ini.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Menimpa bilah lampu slot PlayStation yang ditetapkan dengan warna RGB pilihan. Reaktif memudar dari intensitas penuh ke hitam selama jendela peluruhan yang dikonfigurasi, lalu mengembalikan kendali ke pengaturan kartu Pencahayaan. Lekat menahan warna sampai tindakan Hapus penimpaan bilah lampu berjalan. Penulisan dari game tetap diutamakan di atas penimpaan ini.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Kilatkan bilah lampu {0} (peluruhan {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Tahan bilah lampu {0} sampai dihapus</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Hapus penimpaan bilah lampu</value></data>
@@ -1905,7 +1905,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Melepas penimpaan bilah lampu apa pun yang aktif pada slot yang ditetapkan. Pasangkan dengan tindakan Atur warna bilah lampu bermode Lekat untuk membatalkannya lewat makro lain.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Atur mode bilah lampu</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Atur mode bilah lampu ke {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Mengatur mode bilah lampu slot yang ditetapkan ke nilai tertentu. Bertahan seperti perubahan di kartu Bilah lampu sampai tindakan lain atau pengguna mengubahnya.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Mengatur mode bilah lampu slot yang ditetapkan ke nilai tertentu. Bertahan seperti perubahan di kartu Pencahayaan sampai tindakan lain atau pengguna mengubahnya.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Gilir mode bilah lampu</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Bergilir melalui {0} mode bilah lampu</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Memajukan mode bilah lampu slot melalui mode-mode yang dipilih di bawah. Setiap kali terpicu, mode berpindah ke mode tercentang berikutnya. Posisi giliran berlaku per tindakan dan diatur ulang saat aplikasi dimulai ulang.</value></data>
@@ -1920,7 +1920,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Peluruhan</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Pudar</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palet</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Palet kosong memakai palet pada kartu Bilah lampu milik slot itu.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Palet kosong memakai palet pada kartu Pencahayaan milik slot itu.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Pilih mode bilah lampu mana saja yang akan digilir makro. Setiap kali terpicu, makro maju ke mode tercentang berikutnya.</value></data>
 
@@ -2150,6 +2150,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Output mouse</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Balikkan, Momentum, Respons, Akselerasi, lontaran</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Posisi sensor bar, Offset vertikal, Penghalusan</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Menyetel kecepatan kursor saat jari panel sentuh dipetakan ke mouse X/Y pada kontroler virtual Keyboard + mouse. 1.0 adalah default. Naikkan salah satu sumbu untuk kursor yang lebih cepat, turunkan untuk yang lebih lambat. Balikkan membalik salah satu sumbu.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Sensitivitas mouse X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Pengali untuk delta horizontal panel sentuh → mouse. Di bawah 1.0 memperlambat kursor. Di atas 1.0 mempercepatnya.</value></data>
@@ -2355,7 +2356,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Mengalibrasi… jangan bergerak</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Atur ulang kalibrasi</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Menghapus bias giroskop saat diam dan cap waktu kalibrasi terakhir. Siklus polling berikutnya menjalankan ulang kalibrasi otomatis 1.5 detik pada perangkat ini.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Giroskop langsung</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Akselerometer langsung</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Sensitivitas horizontal</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Menskalakan kontribusi giroskop horizontal (yaw + roll) pada output. 1.0 membiarkan laju seperti yang dilihat mesin. Nilai lebih tinggi memperkuat, nilai lebih rendah melemahkan. Diterapkan di tingkat perangkat sehingga setiap ikatan giroskop pada kontroler ini mewarisi rasa horizontal yang sama.</value></data>
@@ -2375,8 +2375,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroskop</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Setel cara sensor gerak gamepad ini menggerakkan output mouse dan stik. Kalibrasikan di permukaan datar untuk menolkan drift saat diam, lalu atur sensitivitas, penghalusan, dan aturan aktivasi sesuai selera.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrasi</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Pembacaan langsung giroskop dan akselerometer</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivitas</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Satuan, balikkan sumbu, Kalibrasi dunia nyata</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° per putaran</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Pembentukan respons</value></data>
@@ -2462,11 +2460,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Ekstra lebar</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Pengali</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Derajat per putaran layar</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Atur ulang kalibrasi</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Atur ulang sensitivitas</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Atur ulang pembentukan respons</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Atur ulang aktivasi</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Atur ulang penerusan gerakan</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Atur ulang ruang</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Atur ulang pegangan</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Atur ulang sensitivitas horizontal</value></data>
@@ -2486,8 +2481,11 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Atur ulang stik aktivasi</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Atur ulang arah aktivasi</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Penerusan gerakan</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Terapkan penyetelan giroskop pada penerusan gerakan</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Menjalankan penyetelan opsional dari kartu Giroskop (zona mati, sensitivitas, penghalusan, kurva respons, pembalikan) pada gerakan yang dilaporkan kontroler virtual ke game atau emulator. Nonaktifkan untuk mengirim hanya pembacaan terkalibrasi dan membiarkan game menerapkan sensitivitas dan penghalusannya sendiri. Koreksi drift dari kalibrasi selalu berlaku dalam kedua keadaan.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Disetel menjalankan penyetelan dari kartu Giroskop (zona mati, sensitivitas, penghalusan, kurva respons, pembalikan) pada gerakan yang dilaporkan kontroler virtual ke game atau emulator. Mentah hanya mengirim pembacaan terkalibrasi dan membiarkan game menerapkan sensitivitas dan penghalusannya sendiri. Koreksi drift dari kalibrasi berlaku dalam kedua keadaan.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Mentah</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Disetel</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Game membaca gerakan terkalibrasi dan menerapkan sensitivitas dan penghalusannya sendiri.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Game membaca gerakan dengan sensitivitas, penghalusan, dan kurva yang diatur di sini.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Atur ulang penyetelan penerusan</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivitas</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Pengali sensitivitas giroskop per sumber. 1.0 = default mesin (500°/s → defleksi penuh). Nilai di atas 1.0 lebih sensitif. Nilai di bawah 1.0 kurang sensitif.</value></data>
@@ -2735,8 +2733,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Kontroler ini tidak memiliki motor pelatuk, sehingga game yang memakai pelatuk impuls Xbox tidak akan terasa. Sebagai gantinya, gabungkan setiap saluran pelatuk ke motor utama di sisi yang sama.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Uji getaran</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktivitas motor</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Kiri</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Kanan</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Menerapkan gaya terus-menerus pada perangkat ini sampai Anda menonaktifkannya. Gaya yang dikendalikan game dari sumber mana pun mengambil alih selama aktif, dan gaya ini berlanjut lagi saat game berhenti.</value></data>
@@ -3256,7 +3252,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Penunjuk IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Arahkan Wii Remote ini ke layar dengan kamera IR-nya. Memerlukan sensor bar, atau dua LED inframerah, di atas atau di bawah layar. Kalibrasikan sebagai light gun di halaman Perangkat untuk membidik titik yang tepat. Remote yang terkalibrasi mengabaikan Posisi sensor bar dan Offset vertikal.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Penyetelan penunjuk</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Posisi sensor bar</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Di tengah</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Di atas layar</value></data>
@@ -3283,8 +3278,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Memajukan mode penunjuk Wii melalui mode-mode yang dipilih di bawah untuk setiap remote berkemampuan IR pada slot. Setiap kali terpicu, mode berpindah ke mode tercentang berikutnya. Posisi giliran berlaku per tindakan dan diatur ulang saat aplikasi dimulai ulang.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Pilih mode penunjuk mana saja yang akan digilir makro. Setiap kali terpicu, makro maju ke mode tercentang berikutnya.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Suara makro dan audio sistem yang dicerminkan diputar melalui speaker bawaan kontroler yang dipilih, lewat USB atau Bluetooth. Pilih perangkat di dropdown di atas. Setiap pengaturan di sini mengikutinya.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Output suara</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Suara makro dan audio sistem yang dicerminkan diputar melalui speaker bawaan perangkat yang dipilih di Input dari, lewat USB atau Bluetooth. Setiap pengaturan di sini mengikuti perangkat itu.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Sumber cerminan, Volume headphone, buffer, Jalur output</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Suara dirutekan ke kontroler yang dipilih secara otomatis. Lewat USB, endpoint audio milik gamepad dicocokkan menurut kontainer perangkat keras. Lewat Bluetooth, audio dialirkan dalam frame HID Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Sumber cerminan</value></data>
@@ -3347,7 +3341,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Atur ulang batas nada</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Menyalin apa pun yang diputar output default sistem ke speaker bawaan kontroler ini, secara paralel. Berfungsi lewat USB dan Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Perangkat yang dipilih tidak memiliki speaker bawaan. Suara makro untuk gamepad ini diputar pada output default sistem.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Atur ulang output suara</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Rangkaian pengujian DualSense berbasis browser karya Xuezhou Dai (daidr): referensi untuk pembingkaian CRC feature report Sony dan perintah uji firmware yang diteruskan PadForge dari gamepad virtual ke gamepad fisik.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Kecerahan LED Guide: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Mengatur kecerahan LED tombol Guide atau Home untuk setiap kontroler yang mendukungnya pada slot. Kontroler Xbox hanya menerimanya lewat USB.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Berlaku untuk kontroler Xbox lewat USB, Steam Controller 2015, dan kontroler Switch yang memiliki LED tombol Home. Pasangkan dua tindakan ini untuk mengedipkan LED saat makro dimulai dan memulihkannya saat makro berakhir.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Atur ulang mode penunjuk</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Atur ulang penyetelan penunjuk</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Atur ulang posisi sensor bar</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Atur ulang offset vertikal</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Atur ulang penghalusan</value></data>

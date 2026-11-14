@@ -1100,6 +1100,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>ഗെയിമിൽ നിന്നുള്ള ഫോഴ്സ് ഫീഡ്ബാക്ക് ഇവന്റുകളെ PadForge എങ്ങനെ സ്കെയിൽ ചെയ്യുന്നുവെന്നും ഫിസിക്കൽ കൺട്രോളറിന്റെ റംബിൾ മോട്ടോറുകളിലേക്കോ ഹാപ്റ്റിക് ആക്ച്വേറ്ററുകളിലേക്കോ എങ്ങനെ റൂട്ട് ചെയ്യുന്നുവെന്നും ക്രമീകരിക്കുന്നു. ഓഡിയോ റംബിൾ അതിനുമേൽ സിസ്റ്റം ഓഡിയോ നിയന്ത്രിത ഒരു ലെയർ ചേർക്കുന്നു.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>ഈ ഉപകരണം</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>കൺട്രോളർ മുഴുവൻ</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>രണ്ട് സ്റ്റിക്കുകളും</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>{0}-ൽ റംബിൾ ഹാപ്റ്റിക് പൾസുകളായി പ്ലേ ചെയ്യുന്നു, ഉപകരണത്തിലേക്ക് നേരിട്ട് അയയ്ക്കുന്നു. ശക്തമായ റംബിൾ ശക്തമായ പൾസ് തിരഞ്ഞെടുക്കുകയും അത് വേഗത്തിൽ ആവർത്തിക്കുകയും ചെയ്യുന്നു.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>{0}-ന് Logi Options+-ൽ ഹാപ്റ്റിക് ഫീഡ്ബാക്ക് ഓഫാണ്, അതിനാൽ അവിടെ വീണ്ടും ഓണാക്കുന്നതുവരെ ഒന്നും പ്ലേ ചെയ്യില്ല.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>ഈ ഉപകരണം ഇതുവരെ പ്രതികരിച്ചിട്ടില്ല. ഉണർന്നാലുടൻ അതിന്റെ റംബിൾ പ്ലേ ചെയ്യും.</value></data>
@@ -1165,7 +1166,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>ഹെഡ്സെറ്റുകൾ, മൗസ്പാഡുകൾ, Chroma Link സ്ട്രിപ്പുകൾ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>ഹെഡ്സെറ്റുകൾ, മൗസ്പാഡുകൾ, സ്പീക്കറുകൾ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ഹെഡ്സെറ്റുകൾ</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>ലൈറ്റ്ബാർ</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>ഗെയിമുകൾ ലൈറ്റിംഗ് എഴുതുമ്പോഴെല്ലാം ഏറ്റെടുക്കും.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ആറ് അക്ക ഹെക്സ് നിറം (RRGGBB അല്ലെങ്കിൽ #RRGGBB) നൽകി Enter അമർത്തുകയോ പുറത്ത് ക്ലിക്ക് ചെയ്യുകയോ ചെയ്ത് പ്രയോഗിക്കുക.</value></data>
@@ -1707,7 +1707,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>മൗസ് വിടൽ {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>ടച്ച്പാഡ് ഓവർലേ ടോഗിൾ ചെയ്യുക</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>ലൈറ്റ്ബാർ നിറം സജ്ജമാക്കുക</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>നിയുക്ത PlayStation സ്ലോട്ടിന്റെ ലൈറ്റ്ബാറിനെ തിരഞ്ഞെടുത്ത RGB നിറത്തിലേക്ക് മറികടക്കുന്നു. റിയാക്ടീവ് പൂർണ്ണ തീവ്രതയിൽ നിന്ന് ക്രമീകരിച്ച ക്ഷയ ജാലകത്തിലൂടെ കറുപ്പിലേക്ക് മങ്ങുകയും പിന്നീട് ലൈറ്റ്ബാർ കാർഡിന്റെ ക്രമീകരണങ്ങളിലേക്ക് തിരികെ നൽകുകയും ചെയ്യുന്നു. ലൈറ്റ്ബാർ ഓവർറൈഡ് മായ്ക്കുക പ്രവർത്തനം പ്രവർത്തിക്കുന്നതുവരെ സ്റ്റിക്കി നിറം നിലനിർത്തുന്നു. ഗെയിം എഴുതുന്ന മൂല്യങ്ങൾക്ക് ഇപ്പോഴും ഓവർറൈഡിനെക്കാൾ മുൻഗണനയുണ്ട്.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>നിയുക്ത PlayStation സ്ലോട്ടിന്റെ ലൈറ്റ്ബാറിനെ തിരഞ്ഞെടുത്ത RGB നിറത്തിലേക്ക് മറികടക്കുന്നു. റിയാക്ടീവ് പൂർണ്ണ തീവ്രതയിൽ നിന്ന് ക്രമീകരിച്ച ക്ഷയ ജാലകത്തിലൂടെ കറുപ്പിലേക്ക് മങ്ങുകയും പിന്നീട് ലൈറ്റിംഗ് കാർഡിന്റെ ക്രമീകരണങ്ങളിലേക്ക് തിരികെ നൽകുകയും ചെയ്യുന്നു. ലൈറ്റ്ബാർ ഓവർറൈഡ് മായ്ക്കുക പ്രവർത്തനം പ്രവർത്തിക്കുന്നതുവരെ സ്റ്റിക്കി നിറം നിലനിർത്തുന്നു. ഗെയിം എഴുതുന്ന മൂല്യങ്ങൾക്ക് ഇപ്പോഴും ഓവർറൈഡിനെക്കാൾ മുൻഗണനയുണ്ട്.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>ലൈറ്റ്ബാർ {0} മിന്നിക്കുക (ക്ഷയം {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>ലൈറ്റ്ബാർ {0} മായ്ക്കുന്നതുവരെ നിലനിർത്തുക</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>ലൈറ്റ്ബാർ ഓവർറൈഡ് മായ്ക്കുക</value></data>
@@ -1715,7 +1715,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>നിയുക്ത സ്ലോട്ടിലെ സജീവമായ ഏതൊരു ലൈറ്റ്ബാർ ഓവർറൈഡും വിടുന്നു. മറ്റൊരു മാക്രോ വഴി അത് ഒഴിവാക്കാൻ ഒരു സ്റ്റിക്കി ലൈറ്റ്ബാർ നിറം സജ്ജമാക്കുക പ്രവർത്തനവുമായി ജോടിയാക്കുക.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>ലൈറ്റ്ബാർ മോഡ് സജ്ജമാക്കുക</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>ലൈറ്റ്ബാർ മോഡ് {0} ആക്കുക</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>നിയുക്ത സ്ലോട്ടിന്റെ ലൈറ്റ്ബാർ മോഡ് ഒരു നിശ്ചിത മൂല്യത്തിലേക്ക് സജ്ജമാക്കുന്നു. മറ്റൊരു പ്രവർത്തനമോ ഉപയോക്താവോ മാറ്റുന്നതുവരെ ലൈറ്റ്ബാർ കാർഡിലെ മാറ്റം പോലെ നിലനിൽക്കുന്നു.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>നിയുക്ത സ്ലോട്ടിന്റെ ലൈറ്റ്ബാർ മോഡ് ഒരു നിശ്ചിത മൂല്യത്തിലേക്ക് സജ്ജമാക്കുന്നു. മറ്റൊരു പ്രവർത്തനമോ ഉപയോക്താവോ മാറ്റുന്നതുവരെ ലൈറ്റിംഗ് കാർഡിലെ മാറ്റം പോലെ നിലനിൽക്കുന്നു.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>ലൈറ്റ്ബാർ മോഡുകൾ മാറിമാറി ഉപയോഗിക്കുക</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} ലൈറ്റ്ബാർ മോഡുകളിലൂടെ മാറിമാറി പോകുക</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>താഴെ തിരഞ്ഞെടുത്ത മോഡുകളിലൂടെ സ്ലോട്ടിന്റെ ലൈറ്റ്ബാർ മോഡ് മുന്നോട്ട് നീക്കുന്നു. ഓരോ പ്രവർത്തനവും അടുത്ത ചെക്ക് ചെയ്ത മോഡിലേക്ക് നീങ്ങുന്നു. ചക്രത്തിലെ സ്ഥാനം ഓരോ പ്രവർത്തനത്തിനും വെവ്വേറെയാണ്, ആപ്പ് പുനരാരംഭിക്കുമ്പോൾ പുനഃസജ്ജമാകും.</value></data>
@@ -1730,7 +1730,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>ക്ഷയം</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>മങ്ങൽ</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>പാലറ്റ്</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>ശൂന്യമായ പാലറ്റ് സ്ലോട്ടിന്റെ ലൈറ്റ്ബാർ കാർഡിലെ പാലറ്റ് ഉപയോഗിക്കുന്നു.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>ശൂന്യമായ പാലറ്റ് സ്ലോട്ടിന്റെ ലൈറ്റിംഗ് കാർഡിലെ പാലറ്റ് ഉപയോഗിക്കുന്നു.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>മോഡ്</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>മാക്രോ ഏതൊക്കെ ലൈറ്റ്ബാർ മോഡുകളിലൂടെ മാറിമാറി പോകണമെന്ന് തിരഞ്ഞെടുക്കുക. ഓരോ പ്രവർത്തനവും അടുത്ത ചെക്ക് ചെയ്ത മോഡിലേക്ക് നീങ്ങുന്നു.</value></data>
 
@@ -1960,6 +1960,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>മൗസ് ഔട്ട്പുട്ട്</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>വിപരീതമാക്കൽ, മൊമെന്റം, പ്രതികരണം, ത്വരണം, ഫ്ലിങ്</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>സെൻസർ ബാർ സ്ഥാനം, ലംബ ഓഫ്സെറ്റ്, സ്മൂത്തിംഗ്</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>കീബോർഡ് / മൗസ് വെർച്വൽ കൺട്രോളറിൽ ടച്ച്പാഡ് വിരൽ മൗസ് X/Y-ലേക്ക് മാപ്പ് ചെയ്യുമ്പോൾ കഴ്സറിന്റെ വേഗത ക്രമീകരിക്കുന്നു. 1.0 ആണ് സ്ഥിരസ്ഥിതി. കഴ്സർ വേഗത്തിലാക്കാൻ ഏതെങ്കിലും ആക്സിസ് കൂട്ടുക, മന്ദഗതിയിലാക്കാൻ കുറയ്ക്കുക. വിപരീതമാക്കുക ഏതെങ്കിലും ആക്സിസിനെ മറിക്കുന്നു.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>മൗസ് സെൻസിറ്റിവിറ്റി X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>തിരശ്ചീന ടച്ച്പാഡ് → മൗസ് ഡെൽറ്റയ്ക്കുള്ള ഗുണകം. 1.0-ൽ താഴെ കഴ്സറിനെ മന്ദഗതിയിലാക്കുന്നു. 1.0-ൽ കൂടുതൽ വേഗത്തിലാക്കുന്നു.</value></data>
@@ -2165,7 +2166,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>കാലിബ്രേറ്റ് ചെയ്യുന്നു… അനങ്ങാതിരിക്കുക</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>കാലിബ്രേഷൻ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>നിശ്ചല ഗൈറോ ബയസും അവസാനം കാലിബ്രേറ്റ് ചെയ്ത സമയവും മായ്ക്കുന്നു. അടുത്ത പോളിംഗ് ചക്രത്തിൽ ഈ ഉപകരണത്തിൽ 1.5 സെക്കൻഡ് ഓട്ടോ-കാലിബ്രേഷൻ വീണ്ടും നടക്കും.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>തത്സമയ ഗൈറോസ്കോപ്പ്</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>തത്സമയ ആക്സിലറോമീറ്റർ</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>തിരശ്ചീന സെൻസിറ്റിവിറ്റി</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>ഔട്ട്പുട്ടിലേക്കുള്ള തിരശ്ചീന (യോ + റോൾ) ഗൈറോ സംഭാവനയെ സ്കെയിൽ ചെയ്യുന്നു. 1.0 എൻജിൻ കാണുന്ന നിരക്ക് അതേപടി നിലനിർത്തുന്നു. ഉയർന്ന മൂല്യങ്ങൾ വർധിപ്പിക്കുന്നു, താഴ്ന്ന മൂല്യങ്ങൾ കുറയ്ക്കുന്നു. ഉപകരണ തലത്തിൽ പ്രയോഗിക്കുന്നു, അതിനാൽ ഈ കൺട്രോളറിലെ എല്ലാ ഗൈറോ ബൈൻഡിംഗുകൾക്കും ഒരേ തിരശ്ചീന അനുഭവം ലഭിക്കും.</value></data>
@@ -2185,8 +2185,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>ഗൈറോ</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>ഈ പാഡിന്റെ മോഷൻ സെൻസർ മൗസ്, സ്റ്റിക്ക് ഔട്ട്പുട്ടിനെ എങ്ങനെ നിയന്ത്രിക്കുന്നു എന്ന് ക്രമീകരിക്കുക. നിശ്ചലാവസ്ഥയിലെ ഡ്രിഫ്റ്റ് പൂജ്യമാക്കാൻ പരന്ന പ്രതലത്തിൽ കാലിബ്രേറ്റ് ചെയ്യുക, തുടർന്ന് സെൻസിറ്റിവിറ്റി, സ്മൂത്തിംഗ്, എൻഗേജ് നിയമങ്ങൾ ഇഷ്ടാനുസരണം ക്രമീകരിക്കുക.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>കാലിബ്രേഷൻ</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>തത്സമയ ഗൈറോസ്കോപ്പ്, ആക്സിലറോമീറ്റർ റീഡിംഗുകൾ</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>സെൻസിറ്റിവിറ്റി</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>യൂണിറ്റുകൾ, ആക്സിസ് വിപരീതമാക്കൽ, യഥാർത്ഥ ലോക കാലിബ്രേഷൻ</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>ഒരു തിരിവിന് ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>പ്രതികരണ രൂപപ്പെടുത്തൽ</value></data>
@@ -2272,11 +2270,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>എക്സ്ട്രാ വൈഡ്</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>ഗുണകം</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>സ്ക്രീൻ തിരിവിന് ഡിഗ്രി</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>കാലിബ്രേഷൻ പുനഃസജ്ജമാക്കുക</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>സെൻസിറ്റിവിറ്റി പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>പ്രതികരണ രൂപപ്പെടുത്തൽ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>എൻഗേജ് പുനഃസജ്ജമാക്കുക</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>മോഷൻ പാസ്ത്രൂ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>സ്പേസ് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>ഗ്രിപ്പ് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>തിരശ്ചീന സെൻസിറ്റിവിറ്റി പുനഃസജ്ജമാക്കുക</value></data>
@@ -2296,8 +2291,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>എൻഗേജ് സ്റ്റിക്ക് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>എൻഗേജ് ദിശ പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>മോഷൻ പാസ്ത്രൂ</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>ഗൈറോ ട്യൂണിംഗ് മോഷൻ പാസ്ത്രൂവിൽ പ്രയോഗിക്കുക</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ഗൈറോ കാർഡുകളിലെ ഐച്ഛിക ട്യൂണിംഗ് (ഡെഡ് സോൺ, സെൻസിറ്റിവിറ്റി, സ്മൂത്തിംഗ്, പ്രതികരണ കർവ്, വിപരീതം) വെർച്വൽ കൺട്രോളർ ഗെയിമിനോ എമുലേറ്ററിനോ റിപ്പോർട്ട് ചെയ്യുന്ന മോഷനിൽ പ്രവർത്തിപ്പിക്കുന്നു. കാലിബ്രേറ്റ് ചെയ്ത റീഡിംഗ് മാത്രം അയച്ച് ഗെയിമിനെ സ്വന്തം സെൻസിറ്റിവിറ്റിയും സ്മൂത്തിംഗും പ്രയോഗിക്കാൻ അനുവദിക്കാൻ ഇത് ഓഫ് ആക്കുക. കാലിബ്രേഷൻ ഡ്രിഫ്റ്റ് തിരുത്തൽ എന്തായാലും എപ്പോഴും പ്രയോഗിക്കും.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ട്യൂൺ ചെയ്തത് ഗൈറോ കാർഡിലെ ട്യൂണിംഗ് (ഡെഡ് സോൺ, സെൻസിറ്റിവിറ്റി, സ്മൂത്തിംഗ്, പ്രതികരണ കർവ്, വിപരീതം) വെർച്വൽ കൺട്രോളർ ഗെയിമിനോ എമുലേറ്ററിനോ റിപ്പോർട്ട് ചെയ്യുന്ന മോഷനിൽ പ്രവർത്തിപ്പിക്കുന്നു. റോ കാലിബ്രേറ്റ് ചെയ്ത റീഡിംഗ് മാത്രം അയച്ച് ഗെയിമിനെ സ്വന്തം സെൻസിറ്റിവിറ്റിയും സ്മൂത്തിംഗും പ്രയോഗിക്കാൻ അനുവദിക്കുന്നു. കാലിബ്രേഷൻ ഡ്രിഫ്റ്റ് തിരുത്തൽ രണ്ടായാലും പ്രയോഗിക്കും.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>റോ</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>ട്യൂൺ ചെയ്തത്</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>ഗെയിം കാലിബ്രേറ്റ് ചെയ്ത മോഷൻ വായിക്കുകയും സ്വന്തം സെൻസിറ്റിവിറ്റിയും സ്മൂത്തിംഗും പ്രയോഗിക്കുകയും ചെയ്യുന്നു.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>ഗെയിം ഇവിടെ സജ്ജമാക്കിയ സെൻസിറ്റിവിറ്റി, സ്മൂത്തിംഗ്, കർവ് എന്നിവയോടെ മോഷൻ വായിക്കുന്നു.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>പാസ്ത്രൂ ട്യൂണിംഗ് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>സെൻസിറ്റിവിറ്റി</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ഉറവിടം തോറുമുള്ള ഗൈറോ സെൻസിറ്റിവിറ്റി ഗുണകം. 1.0 = എൻജിന്റെ സ്ഥിരസ്ഥിതി (500°/s → പൂർണ്ണ വ്യതിയാനം). 1.0-ന് മുകളിലുള്ള മൂല്യങ്ങൾ കൂടുതൽ സെൻസിറ്റീവ് ആണ്. 1.0-ന് താഴെയുള്ളവ കുറവ് സെൻസിറ്റീവ് ആണ്.</value></data>
@@ -2539,8 +2537,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>ഈ കൺട്രോളറിന് ട്രിഗർ മോട്ടോറുകൾ ഇല്ലാത്തതിനാൽ, Xbox ഇംപൾസ് ട്രിഗറുകൾ ഉപയോഗിക്കുന്ന ഗെയിമുകളിൽ അത് അനുഭവപ്പെടില്ല. പകരം ഓരോ ട്രിഗർ ചാനലും അതേ വശത്തെ പ്രധാന മോട്ടോറിൽ ചേർക്കുക.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>റംബിൾ പരീക്ഷിക്കുക</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>മോട്ടോർ പ്രവർത്തനം</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>ഇടത്</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>വലത്</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>നിങ്ങൾ ഓഫ് ചെയ്യുന്നതുവരെ ഈ ഉപകരണത്തിൽ തുടർച്ചയായ ബലം പ്രയോഗിക്കുക. ഏതെങ്കിലും ഉറവിടത്തിൽ നിന്ന് ഗെയിം നൽകുന്ന ബലം ഇത് സജീവമായിരിക്കുമ്പോൾ അതിനെ മറികടക്കുകയും ഗെയിം നിർത്തുമ്പോൾ പുനരാരംഭിക്കുകയും ചെയ്യും.</value></data>
@@ -3030,7 +3026,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>ഓഡിയോ</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR പോയിന്റർ</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>ഈ Wii Remote-നെ അതിന്റെ IR ക്യാമറ ഉപയോഗിച്ച് സ്ക്രീനിലേക്ക് ലക്ഷ്യമാക്കുക. ഡിസ്പ്ലേയ്ക്ക് മുകളിലോ താഴെയോ ഒരു സെൻസർ ബാറോ രണ്ട് ഇൻഫ്രാറെഡ് LED-കളോ വേണം. കൃത്യമായ സ്ഥാനത്തേക്ക് ലക്ഷ്യമിടാൻ ഡിവൈസസ് പേജിൽ ഇതിനെ ലൈറ്റ് ഗൺ ആയി കാലിബ്രേറ്റ് ചെയ്യുക. കാലിബ്രേറ്റ് ചെയ്ത റിമോട്ട് സെൻസർ ബാർ സ്ഥാനവും ലംബ ഓഫ്സെറ്റും അവഗണിക്കും.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>പോയിന്റർ ട്യൂണിംഗ്</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>സെൻസർ ബാർ സ്ഥാനം</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>മധ്യത്തിൽ</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>സ്ക്രീനിന് മുകളിൽ</value></data>
@@ -3057,8 +3052,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>സ്ലോട്ടിലെ IR ശേഷിയുള്ള എല്ലാ റിമോട്ടുകൾക്കുമായി, താഴെ തിരഞ്ഞെടുത്ത മോഡുകളിലൂടെ Wii പോയിന്റർ മോഡ് മുന്നോട്ടു നീക്കുന്നു. ഓരോ പ്രവർത്തനവും ടിക്ക് ചെയ്ത അടുത്ത മോഡിലേക്ക് മാറ്റും. സൈക്കിൾ സ്ഥാനം ഓരോ പ്രവർത്തനത്തിനും പ്രത്യേകമാണ്, ആപ്പ് പുനരാരംഭിക്കുമ്പോൾ പുനഃസജ്ജമാകും.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>മാക്രോ ഏതൊക്കെ പോയിന്റർ മോഡുകളിലൂടെ സൈക്കിൾ ചെയ്യണമെന്ന് തിരഞ്ഞെടുക്കുക. ഓരോ പ്രവർത്തനവും ടിക്ക് ചെയ്ത അടുത്ത മോഡിലേക്ക് നീങ്ങും.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ഓഡിയോ</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>മാക്രോ ശബ്ദങ്ങളും മിറർ ചെയ്ത സിസ്റ്റം ഓഡിയോയും തിരഞ്ഞെടുത്ത കൺട്രോളറിന്റെ ഇൻബിൽറ്റ് സ്പീക്കറിലൂടെ USB വഴിയോ ബ്ലൂടൂത്ത് വഴിയോ പ്ലേ ചെയ്യും. മുകളിലെ ഡ്രോപ്ഡൗണിൽ ഉപകരണം തിരഞ്ഞെടുക്കുക. ഇവിടെയുള്ള എല്ലാ ക്രമീകരണങ്ങളും അതിനെ പിന്തുടരും.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>ശബ്ദ ഔട്ട്പുട്ട്</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>മാക്രോ ശബ്ദങ്ങളും മിറർ ചെയ്ത സിസ്റ്റം ഓഡിയോയും ഇൻപുട്ട് ഉറവിടം എന്നതിന് കീഴിൽ തിരഞ്ഞെടുത്ത ഉപകരണത്തിന്റെ ഇൻബിൽറ്റ് സ്പീക്കറിലൂടെ USB വഴിയോ ബ്ലൂടൂത്ത് വഴിയോ പ്ലേ ചെയ്യും. ഇവിടെയുള്ള എല്ലാ ക്രമീകരണങ്ങളും ആ ഉപകരണത്തെ പിന്തുടരും.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>മിറർ സോഴ്സ്, ഹെഡ്ഫോൺ വോളിയം, ബഫർ, ഔട്ട്പുട്ട് പാത</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>ശബ്ദങ്ങൾ തിരഞ്ഞെടുത്ത കൺട്രോളറിലേക്ക് സ്വയം റൂട്ട് ചെയ്യപ്പെടും. USB വഴി പാഡിന്റെ സ്വന്തം ഓഡിയോ എൻഡ്പോയിന്റ് ഹാർഡ്വെയർ കണ്ടെയ്നർ വഴി കണ്ടെത്തുന്നു. ബ്ലൂടൂത്ത് വഴി ഓഡിയോ Sony HID ഫ്രെയിമുകളായി സ്ട്രീം ചെയ്യുന്നു.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>മിറർ സോഴ്സ്</value></data>
@@ -3121,7 +3115,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>ടോൺ പരിധി പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>സിസ്റ്റം ഡിഫോൾട്ട് ഔട്ട്പുട്ട് പ്ലേ ചെയ്യുന്നതെല്ലാം ഈ കൺട്രോളറിന്റെ ഇൻബിൽറ്റ് സ്പീക്കറിലേക്ക് സമാന്തരമായി പകർത്തുന്നു. USB വഴിയും ബ്ലൂടൂത്ത് വഴിയും പ്രവർത്തിക്കും.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>തിരഞ്ഞെടുത്ത ഉപകരണത്തിന് ഇൻബിൽറ്റ് സ്പീക്കർ ഇല്ല. ഈ പാഡിനുള്ള മാക്രോ ശബ്ദങ്ങൾ സിസ്റ്റം ഡിഫോൾട്ട് ഔട്ട്പുട്ടിൽ പ്ലേ ചെയ്യും.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>ശബ്ദ ഔട്ട്പുട്ട് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>ബ്രൗസർ അടിസ്ഥാനമാക്കിയ DualSense ടെസ്റ്റ് സ്യൂട്ട്, Xuezhou Dai (daidr) നിർമ്മിച്ചത്: Sony ഫീച്ചർ-റിപ്പോർട്ട് CRC ഫ്രെയിമിംഗിനും PadForge വെർച്വൽ പാഡുകളിൽ നിന്ന് ഭൗതിക പാഡുകളിലേക്ക് കൈമാറുന്ന ഫേംവെയർ ടെസ്റ്റ് കമാൻഡുകൾക്കുമുള്ള റഫറൻസ്.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3552,8 +3545,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>ഗൈഡ് LED തെളിച്ചം: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>സ്ലോട്ടിലെ ശേഷിയുള്ള എല്ലാ കൺട്രോളറുകൾക്കും ഗൈഡ് അല്ലെങ്കിൽ ഹോം ബട്ടൺ LED തെളിച്ചം സജ്ജമാക്കുന്നു. Xbox കൺട്രോളറുകൾ ഇത് USB വഴി മാത്രം സ്വീകരിക്കുന്നു.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>USB വഴിയുള്ള Xbox കൺട്രോളറുകൾക്കും 2015 Steam Controller-നും ഹോം ബട്ടൺ LED ഉള്ള Switch കൺട്രോളറുകൾക്കും ബാധകം. ഒരു മാക്രോ തുടങ്ങുമ്പോൾ LED മിന്നിക്കാനും അത് അവസാനിക്കുമ്പോൾ പുനഃസ്ഥാപിക്കാനും ഇത്തരം രണ്ട് പ്രവർത്തനങ്ങൾ ജോടിയാക്കുക.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>പോയിന്റർ മോഡ് പുനഃസജ്ജമാക്കുക</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>പോയിന്റർ ട്യൂണിംഗ് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>സെൻസർ ബാർ സ്ഥാനം പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>ലംബ ഓഫ്സെറ്റ് പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>സ്മൂത്തിംഗ് പുനഃസജ്ജമാക്കുക</value></data>

@@ -126,6 +126,13 @@ namespace PadForge.Controls
         {
             public FoldPartPeer(FoldPart owner) : base(owner) { }
 
+            /// <summary>A line that cannot open offers no way to open it.</summary>
+            public override object GetPattern(PatternInterface patternInterface)
+            {
+                if (patternInterface == PatternInterface.ExpandCollapse && Owner is FoldCard { CanOpen: false }) return null;
+                return base.GetPattern(patternInterface);
+            }
+
             protected override List<AutomationPeer> GetChildrenCore()
             {
                 List<AutomationPeer> children = base.GetChildrenCore();
@@ -163,6 +170,76 @@ namespace PadForge.Controls
 
         public static readonly DependencyProperty ChevronMarginProperty = DependencyProperty.Register(
             nameof(ChevronMargin), typeof(Thickness), typeof(FoldCard), new PropertyMetadata(new Thickness(0, 0, 12, 0)));
+
+        public static readonly DependencyProperty IconGlyphProperty = DependencyProperty.Register(
+            nameof(IconGlyph), typeof(string), typeof(FoldCard), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
+            nameof(Icon), typeof(Geometry), typeof(FoldCard), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty IconStrokedProperty = DependencyProperty.Register(
+            nameof(IconStroked), typeof(bool), typeof(FoldCard), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty IsOnProperty = DependencyProperty.Register(
+            nameof(IsOn), typeof(bool), typeof(FoldCard), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty SwitchProperty = DependencyProperty.Register(
+            nameof(Switch), typeof(object), typeof(FoldCard), new PropertyMetadata(null, OnHeaderActionChanged));
+
+        public static readonly DependencyProperty CanOpenProperty = DependencyProperty.Register(
+            nameof(CanOpen), typeof(bool), typeof(FoldCard), new PropertyMetadata(true));
+
+        /// <summary>Whether the line has settings to open. A feature line
+        /// whose settings show only while the feature is on, or whose one
+        /// setting the device does not offer, is its switch alone until then:
+        /// it shows no chevron and does not open, so it never opens on
+        /// nothing.</summary>
+        public bool CanOpen
+        {
+            get => (bool)GetValue(CanOpenProperty);
+            set => SetValue(CanOpenProperty, value);
+        }
+
+        /// <summary>The line's icon as a glyph of the icon font (Segoe Fluent
+        /// Icons, then Segoe MDL2 Assets), the sections pass of #574.</summary>
+        public string IconGlyph
+        {
+            get => (string)GetValue(IconGlyphProperty);
+            set => SetValue(IconGlyphProperty, value);
+        }
+
+        /// <summary>The line's icon as one of the app's own drawings, where no
+        /// glyph is the part's mark (a steering wheel, the touchpad's stick).</summary>
+        public Geometry Icon
+        {
+            get => (Geometry)GetValue(IconProperty);
+            set => SetValue(IconProperty, value);
+        }
+
+        /// <summary>Whether <see cref="Icon"/> is a line drawing, stroked,
+        /// rather than a shape that is filled.</summary>
+        public bool IconStroked
+        {
+            get => (bool)GetValue(IconStrokedProperty);
+            set => SetValue(IconStrokedProperty, value);
+        }
+
+        /// <summary>Whether the feature the line stands for is on. Its icon
+        /// is ember while it is, steel while it is not, as light means
+        /// something on every page.</summary>
+        public bool IsOn
+        {
+            get => (bool)GetValue(IsOnProperty);
+            set => SetValue(IsOnProperty, value);
+        }
+
+        /// <summary>The feature's own switch, at the end of the line open or
+        /// closed, so the feature turns on and off without opening it.</summary>
+        public object Switch
+        {
+            get => GetValue(SwitchProperty);
+            set => SetValue(SwitchProperty, value);
+        }
 
         /// <summary>The least height of the part's line: 48, or what a
         /// page's list of its own gives its lines.</summary>
@@ -228,11 +305,12 @@ namespace PadForge.Controls
             get
             {
                 var children = base.LogicalChildren;
-                if (HeaderAction == null) return children;
+                if (HeaderAction == null && Switch == null) return children;
                 var list = new System.Collections.ArrayList();
                 if (children != null)
                     while (children.MoveNext()) list.Add(children.Current);
-                list.Add(HeaderAction);
+                if (HeaderAction != null) list.Add(HeaderAction);
+                if (Switch != null) list.Add(Switch);
                 return list.GetEnumerator();
             }
         }
@@ -245,5 +323,17 @@ namespace PadForge.Controls
     /// </summary>
     public sealed class MoreRow : FoldPart
     {
+        public static readonly DependencyProperty IsFootProperty = DependencyProperty.Register(
+            nameof(IsFoot), typeof(bool), typeof(MoreRow), new PropertyMetadata(true));
+
+        /// <summary>Whether the row is the card's foot, its last row: the lift
+        /// under the pointer takes the card's lower corners. A row with the
+        /// card's tray of feature lines under it is not, and its lift is
+        /// square.</summary>
+        public bool IsFoot
+        {
+            get => (bool)GetValue(IsFootProperty);
+            set => SetValue(IsFootProperty, value);
+        }
     }
 }

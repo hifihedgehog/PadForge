@@ -1100,6 +1100,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Nustato, kaip „PadForge“ keičia žaidimo jėgos grįžtamojo ryšio įvykių mastelį ir kaip juos nukreipia į fizinio valdiklio vibracijos variklius ar haptinius vykdiklius. „Garso vibracija“ papildomai prideda sistemos garsu valdomą sluoksnį.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Šis įrenginys</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Visas valdiklis</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Abi svirtelės</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Vibracija atkuriama įrenginyje {0} haptiniais impulsais, siunčiamais tiesiai į įrenginį. Stipresnei vibracijai parenkamas stipresnis impulsas, kartojamas dažniau.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Įrenginio {0} haptinis grįžtamasis ryšys išjungtas programoje „Logi Options+“, todėl niekas neatkuriama, kol vėl jo ten neįjungsite.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Šis įrenginys dar neatsakė. Jo vibracija bus atkurta, kai jis pabus.</value></data>
@@ -1165,7 +1166,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>ausines, pelės kilimėlius ir „Chroma Link“ juostas</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>ausines, pelės kilimėlius ir garsiakalbius</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ausines</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Šviesos juosta</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Žaidimai perima valdymą, kai tik nustato apšvietimą.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Įveskite šešiaženklį šešioliktainį spalvos kodą (RRGGBB arba #RRGGBB) ir paspauskite Enter arba spustelėkite kitur, kad pritaikytumėte.</value></data>
@@ -1707,7 +1707,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Pelės atleidimas {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Rodyti / slėpti jutiklinio skydelio perdangą</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Nustatyti šviesos juostos spalvą</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Pakeičia priskirto „PlayStation“ lizdo šviesos juostos spalvą pasirinkta RGB spalva. „Reaguojantis“ režimas per nustatytą slopimo laiką užgęsta nuo visiško ryškumo iki juodos ir grąžina valdymą kortelės „Šviesos juosta“ nustatymams. „Fiksuotas“ režimas išlaiko spalvą, kol įvykdomas veiksmas „Išvalyti šviesos juostos keitimą“. Žaidimo nustatytos spalvos vis tiek turi pirmenybę prieš šį keitimą.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Pakeičia priskirto „PlayStation“ lizdo šviesos juostos spalvą pasirinkta RGB spalva. „Reaguojantis“ režimas per nustatytą slopimo laiką užgęsta nuo visiško ryškumo iki juodos ir grąžina valdymą kortelės „Apšvietimas“ nustatymams. „Fiksuotas“ režimas išlaiko spalvą, kol įvykdomas veiksmas „Išvalyti šviesos juostos keitimą“. Žaidimo nustatytos spalvos vis tiek turi pirmenybę prieš šį keitimą.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Šviesos juostos blyksnis {0} (slopimas {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Laikyti šviesos juostą {0}, kol bus išvalyta</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Išvalyti šviesos juostos keitimą</value></data>
@@ -1715,7 +1715,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Atšaukia bet kokį aktyvų priskirto lizdo šviesos juostos keitimą. Naudokite kartu su „Fiksuotu“ veiksmu „Nustatyti šviesos juostos spalvą“, kad jį atšauktumėte kita makrokomanda.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Nustatyti šviesos juostos režimą</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Nustatyti šviesos juostos režimą: {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Nustato priskirto lizdo šviesos juostos režimą į konkrečią reikšmę. Išlieka kaip pakeitimas kortelėje „Šviesos juosta“, kol jį pakeis kitas veiksmas ar naudotojas.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Nustato priskirto lizdo šviesos juostos režimą į konkrečią reikšmę. Išlieka kaip pakeitimas kortelėje „Apšvietimas“, kol jį pakeis kitas veiksmas ar naudotojas.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Perjunginėti šviesos juostos režimus</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Perjunginėti šviesos juostos režimus (režimų: {0})</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Perjungia lizdo šviesos juostos režimą per toliau pasirinktus režimus. Kiekvienas suveikimas pereina prie kito pažymėto režimo. Ciklo padėtis saugoma kiekvienam veiksmui atskirai, o paleidus programą iš naujo pradedama nuo pradžių.</value></data>
@@ -1730,7 +1730,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Slopimas</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Blėsimas</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Paletė</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Jei paletė tuščia, naudojama lizdo kortelės „Šviesos juosta“ paletė.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Jei paletė tuščia, naudojama lizdo kortelės „Apšvietimas“ paletė.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Režimas</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Pasirinkite, kuriuos šviesos juostos režimus makrokomanda turi perjunginėti. Kiekvienas suveikimas pereina prie kito pažymėto režimo.</value></data>
 
@@ -1960,6 +1960,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Pelės išvestis</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invertavimas, inercija, atsakas, pagreitis, mestelėjimas</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Jutiklių juostos padėtis, vertikalus poslinkis, glotninimas</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Reguliuoja žymeklio greitį, kai jutiklinio skydelio pirštas priskirtas pelės X/Y virtualiame valdiklyje „Klaviatūra / pelė“. Numatytoji reikšmė – 1.0. Padidinkite bet kurią ašį, kad žymeklis judėtų greičiau, sumažinkite – lėčiau. „Invertuoti“ apverčia bet kurią ašį.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Pelės jautrumas X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Horizontalaus jutiklinio skydelio → pelės poslinkio daugiklis. Mažiau nei 1.0 sulėtina žymeklį. Daugiau nei 1.0 jį pagreitina.</value></data>
@@ -2165,7 +2166,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibruojama… nejudinkite</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Nustatyti kalibravimą iš naujo</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Išvalo giroskopo ramybės būsenos poslinkį ir paskutinio kalibravimo laiko žymą. Kito apklausos ciklo metu šiame įrenginyje vėl vykdomas 1.5 sekundės automatinis kalibravimas.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Giroskopas realiuoju laiku</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Akselerometras realiuoju laiku</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Horizontalus jautrumas</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Keičia horizontalaus (posūkis + posvyris) giroskopo indėlio į išvestį mastelį. 1.0 palieka greitį tokį, kokį mato variklis. Didesnės reikšmės stiprina, mažesnės silpnina. Taikoma įrenginio lygiu, todėl visi šio valdiklio giroskopo priskyrimai paveldi tą patį horizontalų pojūtį.</value></data>
@@ -2185,8 +2185,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroskopas</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Nustatykite, kaip šio pulto judesio jutiklis valdo pelės ir svirtelės išvestį. Kalibruokite ant lygaus paviršiaus, kad pašalintumėte ramybės būsenos dreifą, tada pagal skonį sureguliuokite jautrumą, glotninimą ir įjungimo taisykles.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibravimas</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Giroskopas ir akselerometras realiuoju laiku</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Jautrumas</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Vienetai, ašių invertavimas, realaus pasaulio kalibravimas</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° vienam apsisukimui</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Atsako formavimas</value></data>
@@ -2272,11 +2270,8 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Labai plati</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Daugiklis</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Laipsniai vienam ekrano apsisukimui</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Nustatyti kalibravimą iš naujo</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Nustatyti jautrumą iš naujo</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Nustatyti atsako formavimą iš naujo</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Nustatyti įjungimą iš naujo</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Nustatyti tiesioginį judesio perdavimą iš naujo</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Nustatyti erdvę iš naujo</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Nustatyti laikymo būdą iš naujo</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Nustatyti horizontalų jautrumą iš naujo</value></data>
@@ -2296,8 +2291,11 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Nustatyti įjungimo svirtelę iš naujo</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Nustatyti įjungimo kryptį iš naujo</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Tiesioginis judesio perdavimas</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Taikyti giroskopo nustatymus tiesioginiam judesio perdavimui</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Taiko giroskopo kortelių pasirenkamus nustatymus (nejautros zoną, jautrumą, glotninimą, atsako kreivę, invertavimą) judesiui, kurį virtualus valdiklis praneša žaidimui ar emuliatoriui. Išjunkite, kad būtų siunčiamas tik kalibruotas rodmuo, o jautrumą ir glotninimą taikytų pats žaidimas. Kalibravimo dreifo korekcija taikoma bet kuriuo atveju.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Režimas „Sureguliuotas“ taiko giroskopo kortelės nustatymus (nejautros zoną, jautrumą, glotninimą, atsako kreivę, invertavimą) judesiui, kurį virtualus valdiklis praneša žaidimui ar emuliatoriui. Režimas „Neapdorotas“ siunčia tik kalibruotą rodmenį, o jautrumą ir glotninimą taiko pats žaidimas. Kalibravimo dreifo korekcija taikoma bet kuriuo atveju.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Neapdorotas</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Sureguliuotas</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Žaidimas gauna kalibruotą judesį ir pats taiko savo jautrumą bei glotninimą.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Žaidimas gauna judesį su čia nustatytu jautrumu, glotninimu ir kreive.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Nustatyti tiesioginio perdavimo nustatymus iš naujo</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Jautrumas</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Atskiro šaltinio giroskopo jautrumo daugiklis. 1.0 = variklio numatytoji reikšmė (500°/s → visas nuokrypis). Didesnės nei 1.0 reikšmės jautresnės. Mažesnės nei 1.0 – mažiau jautrios.</value></data>
@@ -2544,8 +2542,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Šis valdiklis neturi gaidukų variklių, todėl žaidimų, naudojančių „Xbox“ impulsinius gaidukus, vibracija nebūtų jaučiama. Vietoj to kiekvieno gaiduko kanalas perkeliamas į tos pačios pusės pagrindinį variklį.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Išbandyti vibraciją</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Variklių veikla</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Kairysis</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Dešinysis</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Šiam įrenginiui taikoma nuolatinė jėga, kol ją išjungsite. Žaidimo valdoma jėga iš bet kurio šaltinio ją pakeičia, kol yra aktyvi, o žaidimui sustojus nuolatinė jėga vėl taikoma.</value></data>
@@ -3060,7 +3056,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Garsas</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR žymeklis</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Taikykite šiuo „Wii Remote“ į ekraną naudodami jo IR kamerą. Reikia jutiklių juostos arba dviejų infraraudonųjų LED virš ar po ekranu. Kad taikytumėte į tikslią vietą, kalibruokite jį kaip šviesos pistoletą puslapyje „Įrenginiai“. Kalibruotas pultelis nepaiso nustatymų „Jutiklių juostos padėtis“ ir „Vertikalus poslinkis“.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Žymeklio derinimas</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Jutiklių juostos padėtis</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Centre</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Virš ekrano</value></data>
@@ -3087,8 +3082,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Visiems lizdo pulteliams su IR perjungia „Wii“ žymeklio režimą per toliau pasirinktus režimus. Kiekvienas suveikimas pereina prie kito pažymėto režimo. Ciklo padėtis saugoma kiekvienam veiksmui atskirai, o paleidus programą iš naujo pradedama nuo pradžių.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Pasirinkite, kuriuos žymeklio režimus makrokomanda turi perjunginėti. Kiekvienas suveikimas pereina prie kito pažymėto režimo.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Garsas</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makrokomandų garsai ir atkartojamas sistemos garsas leidžiami per pasirinkto valdiklio integruotą garsiakalbį per USB arba „Bluetooth“. Įrenginį pasirinkite aukščiau esančiame išskleidžiamajame sąraše. Visi čia esantys nustatymai taikomi jam.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Garso išvestis</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makrokomandų garsai ir atkartojamas sistemos garsas leidžiami per įrenginio, pasirinkto skiltyje „Įvestis iš“, integruotą garsiakalbį per USB arba „Bluetooth“. Visi čia esantys nustatymai taikomi tam įrenginiui.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Atkartojimo šaltinis, ausinių garsumas, buferis, išvesties kelias</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Garsai į pasirinktą valdiklį nukreipiami automatiškai. Per USB pulto garso galinis įrenginys atpažįstamas pagal aparatinės įrangos konteinerį. Per „Bluetooth“ garsas transliuojamas „Sony“ HID kadrais.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Atkartojimo šaltinis</value></data>
@@ -3151,7 +3145,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Nustatyti tono ribą iš naujo</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Lygiagrečiai perduoda viską, ką leidžia numatytoji sistemos išvestis, į šio valdiklio integruotą garsiakalbį. Veikia per USB ir „Bluetooth“.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Pasirinktas įrenginys neturi integruoto garsiakalbio. Šio pulto makrokomandų garsai leidžiami numatytojoje sistemos išvestyje.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Nustatyti garso išvestį iš naujo</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Naršyklėje veikiantis „DualSense“ testavimo rinkinys, autorius Xuezhou Dai (daidr): etalonas „Sony“ funkcijų ataskaitų CRC rėminimui ir programinės aparatinės įrangos bandymo komandoms, kurias „PadForge“ perduoda iš virtualių į fizinius pultus.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3582,8 +3575,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>„Guide“ LED ryškumas: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Nustato „Guide“ arba „Home“ mygtuko LED ryškumą visiems tai palaikantiems lizdo valdikliams. „Xbox“ valdikliai jį priima tik per USB.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Taikoma „Xbox“ valdikliams per USB, 2015 m. „Steam Controller“ ir „Switch“ valdikliams su „Home“ mygtuko LED. Naudokite du tokius veiksmus, kad LED blykstelėtų prasidedant makrokomandai ir būtų atkurtas jai pasibaigus.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Nustatyti žymeklio režimą iš naujo</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Nustatyti žymeklio derinimą iš naujo</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Nustatyti jutiklių juostos padėtį iš naujo</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Nustatyti vertikalų poslinkį iš naujo</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Nustatyti glotninimą iš naujo</value></data>

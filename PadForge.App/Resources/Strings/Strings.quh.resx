@@ -321,7 +321,6 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>K'anchaykuna</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>K'anchaykuna</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Lightbarta ñawpaqman kutichiy</value></data>
   <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>Force feedbackta ñawpaqman kutichiy</value></data>
@@ -592,7 +591,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Giroscopio</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroscopio</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibración</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilidad</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unidadkuna, eje t'ikray, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Pitch t'ikray (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Yaw t'ikray (X)</value></data>
@@ -605,8 +603,6 @@
   <data name="Settings_GyroEngageStickDirection_XPos" xml:space="preserve"><value>Paña (X+)</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Ura (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Hanaq (Y+)</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Calibraciónta ñawpaqman kutichiy</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Sensibilidadta ñawpaqman kutichiy</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Zona muertata ñawpaqman kutichiy</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
@@ -1512,10 +1508,9 @@
   <data name="Menu_NewMenu" xml:space="preserve"><value>Musuq menú</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Kay dispositivo</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Tukuy control</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Iskaynin Palancakuna</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR instalasqa</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR mana instalasqachu</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Lluq'i</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Paña</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Activadorta pichay</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Auto pukllay kachamusqan velocidadta, pedalkunata, cambiokunatapas huk entrada hina asignay.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Pukllaypi telemetría lluqsiyta hap'ichiy, kay PC-man kay puertomanpas apuntachiy.</value></data>

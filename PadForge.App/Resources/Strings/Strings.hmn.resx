@@ -347,7 +347,6 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Teeb</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Teeb</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Kaw</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Rov teeb tsa dua lightbar</value></data>
@@ -588,7 +587,6 @@
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Kev rhiab kab ntsug</value></data>
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Kev rhiab</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Chav ntsuas, ntxeev axis, Kev ntsuas raws tiag</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° rau ib ncig</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Rov qab mus rau neej ntawd (Kaw)</value></data>
@@ -604,8 +602,6 @@
   <data name="Settings_GyroEngageStickDirection_XPos" xml:space="preserve"><value>Sab xis (X+)</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Hauv qab (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Saum toj (Y+)</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Rov teeb tsa calibration dua</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Rov teeb tsa kev rhiab dua</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Rov teeb tsa kev rhiab kab rov tav dua</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Rov teeb tsa kev rhiab kab ntsug dua</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Rov teeb tsa deadzone dua</value></data>
@@ -1437,12 +1433,11 @@
   <data name="Menu_Cell_Icon" xml:space="preserve"><value>Icon</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Lub khoom siv no</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Thoob lub controller</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Ob lub stick</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR nruab lawm</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR tsis tau nruab</value></data>
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR tab tom khiav</value></data>
   <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>SteamVR tab tom khiav, driver txuas lawm</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Sab laug</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Sab xis</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Txoj kev tig ntawm lub taub hau yog kab Head Tracker hauv [Cov khoom siv]. Map yaw ntawm lub taub hau rau ib txoj axis ntawm stick hauv ntu Cov khawm ntawm ib lub controller.</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Cov nqi no yog kab Game Telemetry hauv [Cov khoom siv]. Map lawv hauv ntu Cov khawm ntawm ib lub controller lossis siv lawv los pib macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Ib lub menu qhov chaw, qhov loj thiab qhov pom tseeb teeb tsa rau ntawm lub menu, hauv ntu [Cov macro thiab menu] ntawm ib lub controller.</value></data>

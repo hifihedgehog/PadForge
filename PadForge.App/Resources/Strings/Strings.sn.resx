@@ -544,7 +544,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Mayuniti, kupidigura maaxis, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Pidigura pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Pidigura yaw (X)</value></data>
@@ -561,8 +560,6 @@
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Pasi (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Kumusoro (Y+)</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Mutambi</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Dzorera calibration</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Dzorera sensitivity</value></data>
   <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>Dzorera kupidigura pitch</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Dzorera deadzone</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
@@ -657,8 +654,6 @@
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Chinjanisa mota dzekuruboshwe nekurudyi</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Edza kudedera</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Kushanda kwemota</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Kuruboshwe</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Kurudyi</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>

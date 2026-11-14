@@ -478,9 +478,12 @@ namespace PadForge.Tests
             string pad = RepoText("PadForge.App", "Views", "PadPage.xaml").Replace("\r\n", "\n");
             Assert.Contains("<TextBlock Text=\"{Binding BoundaryCircularityText}\"\n" +
                 "                                                           AutomationProperties.IsOffscreenBehavior=\"FromClip\"", pad);
-            Assert.Contains("<ListBox x:Name=\"SoundPackagesList\" MaxHeight=\"170\"\n" +
-                "                                         AutomationProperties.Name=\"{Binding Pad_Audio_Packages_Header, Source={x:Static strings:Strings.Instance}}\"\n" +
-                "                                         AutomationProperties.IsOffscreenBehavior=\"FromClip\"", pad);
+            // The list moves with its line (the Audio card's tray since the
+            // sections pass), so its attributes are matched apart from how
+            // deep they stand.
+            Assert.Matches("<ListBox x:Name=\"SoundPackagesList\" MaxHeight=\"170\"\\s+" +
+                "AutomationProperties\\.Name=\"\\{Binding Pad_Audio_Packages_Header, Source=\\{x:Static strings:Strings\\.Instance\\}\\}\"\\s+" +
+                "AutomationProperties\\.IsOffscreenBehavior=\"FromClip\"", pad);
         });
 
         /// <summary>The range slider itself takes no focus and is no control

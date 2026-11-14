@@ -543,8 +543,6 @@
   <data name="Settings_GyroEngageStickDirection_XPos" xml:space="preserve"><value>Kumanja (X+)</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Pansi (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Mmwamba (Y+)</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Bwezeretsani calibration</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Bwezeretsani sensitivity</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Bwezeretsani sensitivity yopingasa</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Bwezeretsani sensitivity yoyima</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Bwezeretsani deadzone</value></data>
@@ -850,7 +848,6 @@
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Pamwamba pa sikirini</value></data>
   <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>Pansi pa sikirini</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Mawu</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Kutulutsa mawu</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Gwero la mawu, Voliyumu ya mahedifoni, buffer, Njira yotulutsira</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Voliyumu yaikulu</value></data>
   <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Bwezeretsani voliyumu yaikulu</value></data>
@@ -874,7 +871,6 @@
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Nthawi zonse</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Bwezeretsani ku zokhazikika (100%)</value></data>
   <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Bwezeretsani ku 250 Hz</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Bwezeretsani kutulutsa mawu</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Tumizani kunja…</value></data>
@@ -1364,8 +1360,6 @@
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Kontrola yonse</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR yaikidwa</value></data>
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR ikuyenda</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Kumanzere</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Kumanja</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Chotsani trigger</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Yatsani kutumiza kwa telemetry mu masewera ndipo mulozetse ku PC iyi ndi port iyi.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Malo a mutu ali pa mzere wa Head Tracker pa [Zipangizo]. Ikani kutembenuka kwa mutu pa axis ya stick mu gawo la Mabatani la kontrola.</value></data>

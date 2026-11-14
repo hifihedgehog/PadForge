@@ -703,7 +703,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>mga headset, mousepad, ug Chroma Link nga strip</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>mga headset, mousepad, ug speaker</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>mga headset</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Mopuli ang mga dula matag higayon nga mosulat sila sa suga.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Isulod ang unom ka digit nga hex nga kolor (RRGGBB o #RRGGBB) ug pislita ang Enter o i-click sa gawas aron ipadapat.</value></data>
@@ -1331,6 +1330,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Output sa mouse</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Baliha, Momentum, Response, Pagpaspas, fling</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Posisyon sa sensor bar, Bertikal nga offset, Pagpahapsay</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Sensitivity sa mouse X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplier sa pahigda nga touchpad → mouse delta. Ubos sa 1.0 mohinay ang cursor. Labaw sa 1.0 mopaspas kini.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityY" xml:space="preserve"><value>Sensitivity sa mouse Y</value></data>
@@ -1499,7 +1499,6 @@
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Wala pa gi-calibrate</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Nag-calibrate… ayaw lihoka</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>I-reset ang kalibrasyon</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Live nga gyroscope</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Live nga accelerometer</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Horizontal nga sensitivity</value></data>
   <data name="Settings_GyroSensitivityV" xml:space="preserve"><value>Vertical nga sensitivity</value></data>
@@ -1511,8 +1510,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrasyon</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Live nga pagbasa sa gyroscope ug accelerometer</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Yunit, baliha ang mga axis, Real-World Calibration</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° matag tuyok</value></data>
   <data name="Settings_MotionGrip" xml:space="preserve"><value>Giunsa pagkupti</value></data>
@@ -1551,9 +1548,6 @@
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Grip</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Linear</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplier</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>I-reset ang kalibrasyon</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>I-reset ang sensitivity</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>I-reset ang motion passthrough</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>I-reset ang grip</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>I-reset ang horizontal nga sensitivity</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>I-reset ang vertical nga sensitivity</value></data>
@@ -1724,8 +1718,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Kini nga controller walay mga motor sa trigger, mao nga ang mga dula nga mogamit sa Xbox impulse trigger dili mabati. Isagol hinuon ang matag channel sa trigger ngadto sa nag-unang motor sa samang kilid.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Sulayi ang rumble</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Kalihokan sa motor</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Wala</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Tuo</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Paghatag og padayon nga pwersa niining device hangtod imong i-toggle kini pagpalong. Ang pwersa gikan sa dula, gikan sa bisan unsang tinubdan, mo-override samtang aktibo kini, ug ang makanunayon nga pwersa mobalik kung mohunong ang dula.</value></data>
@@ -2139,8 +2131,7 @@
   <data name="Mapping_GunAimY" xml:space="preserve"><value>Tumong sa pusil Y</value></data>
   <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pusil sa gawas sa screen</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Ang mga tingog sa macro ug ang gisalamin nga audio sa sistema motokar pinaagi sa built-in nga speaker sa napiling controller, pinaagi sa USB o Bluetooth. Pilia ang device sa dropdown sa ibabaw. Ang matag setting dinhi mosunod niini.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Output sa tingog</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Ang mga tingog sa macro ug ang gisalamin nga audio sa sistema motokar pinaagi sa built-in nga speaker sa device nga gipili ubos sa Gipalihok sa, pinaagi sa USB o Bluetooth. Ang matag setting dinhi mosunod nianang device.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Mirror Source, Volume sa headphone, buffer, Agianan sa output</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Default sa sistema</value></data>
   <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(Device nga dili magamit)</value></data>
@@ -2189,7 +2180,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>I-reset ang limitasyon sa tono</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopyahon ang bisan unsa nga ipatokar sa default output sa sistema ngadto sa built-in nga speaker niini nga controller, dungan. Molihok pinaagi sa USB ug Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Walay built-in nga speaker ang napiling device. Ang mga tingog sa macro niini nga pad motokar sa default output sa sistema.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>I-reset ang output sa tingog</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>I-export…</value></data>
@@ -2582,7 +2572,6 @@
   <data name="MacroAction_Type_GuideLedBrightness" xml:space="preserve"><value>Itakda ang kahayag sa Guide LED</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Kahayag sa Guide LED: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Itakda ang kahayag sa LED sa Guide o Home button para sa matag controller sa slot nga makahimo niini. Ang mga Xbox controller modawat niini pinaagi sa USB lamang.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>I-reset ang pointer mode</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>I-reset ang posisyon sa sensor bar</value></data>
   <data name="Pad_Mapping_MotionMode" xml:space="preserve"><value>Mode sa motion</value></data>
   <data name="Pad_Mapping_MotionMode_Tooltip" xml:space="preserve"><value>Giunsa paglihok sa deflection ang virtual nga controller. Ang Katulin motuyok niini, ang Anggulo mohilig niini.</value></data>
@@ -3718,6 +3707,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Menu_Cell_Icon" xml:space="preserve"><value>Icon</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Kini nga device</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Tibuok controller</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Duha ka stick</value></data>
   <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Giunsa pagkupot ang controller</value></data>
   <data name="Extras_StatusHint_GameMods" xml:space="preserve"><value>Ang mga effect sa usa ka mod moabot sa matag controller nga adunay hardware para niini.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>Ang posisyon sa ulo mao ang Head Tracker nga row sa [Mga device]. I-map ang yaw sa ulo ngadto sa axis sa stick sa seksyon nga Mga button sa usa ka controller.</value></data>
@@ -3838,4 +3828,8 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>ug</value></data>
   <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>o</value></data>
   <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>dili</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Hilaw</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Gi-tune</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Basahon sa dula ang na-calibrate nga lihok ug iapply ang kaugalingon niini nga sensitivity ug pagpahapsay.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Basahon sa dula ang lihok uban ang sensitivity, pagpahapsay ug curve nga gibutang dinhi.</value></data>
 </root>

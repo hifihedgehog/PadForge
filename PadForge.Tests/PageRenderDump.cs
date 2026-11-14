@@ -503,11 +503,12 @@ namespace PadForge.Tests
                             new[] { "TabImpulseTriggers", "TabWheel", "WheelRangeRow", "WheelRpmRow", "FalconCard" },
                             new[] { "ForceFeedbackMore", "ImpulseTriggersMore", "BassShakersMore" }),
                         ("motion", 8, new[] { "TabGyro", "TabTouchpad", "GyroCalibrationCard", "GyroSensitivityCard", "GyroEngageCard",
-                                "GyroResponseCard", "GyroSpaceCard", "GyroPassthroughCard" },
-                            new[] { "GyroSimulationCard", "CompassYawCard" },
-                            new[] { "GyroCalibrationMore", "GyroSensitivityMore", "GyroGripCard", "GyroSpaceCard" }),
-                        ("lights", 7, new[] { "TabLighting", "LightbarModeCard", "IndicatorLedsCard", "PeripheralLightingCard", "TabAudio", "AudioChainList" },
-                            new string[0],
+                                "GyroResponseCard", "GyroSpaceCard", "GyroPassthroughCard", "GyroRatesLive", "GyroSensitivityMore" },
+                            new[] { "GyroSimulationCard", "CompassYawCard", "TabPointer" },
+                            new[] { "GyroSensitivityMore", "GyroGripCard", "GyroSpaceCard", "TouchpadMouseMore", "IrPointerMore" }),
+                        ("lights", 7, new[] { "TabLighting", "LightbarModeCard", "IndicatorLedsCard", "PeripheralLightingCard", "TabAudio",
+                                "CrossfeedFoldCard", "ParametricEqFoldCard", "LimiterFoldCard" },
+                            new[] { "GuideLedCard" },
                             new[] { "SoundOutputMore", "CrossfeedFoldCard", "ParametricEqFoldCard", "LimiterFoldCard", "SoundMacrosFoldCard" }),
                     };
                     foreach (var (name, tab, board, more, open) in sections)

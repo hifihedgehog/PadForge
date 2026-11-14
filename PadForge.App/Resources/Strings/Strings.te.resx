@@ -1181,6 +1181,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>గేమ్ నుండి వచ్చే ఫోర్స్ ఫీడ్బ్యాక్ ఈవెంట్లను PadForge ఎలా స్కేల్ చేస్తుందో, వాటిని భౌతిక కంట్రోలర్ రంబుల్ మోటార్లకు లేదా హాప్టిక్ యాక్చువేటర్లకు ఎలా పంపుతుందో సర్దుబాటు చేస్తుంది. ఆడియో రంబుల్ దానిపై సిస్టమ్ ఆడియోతో నడిచే పొరను జోడిస్తుంది.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>ఈ పరికరం</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>మొత్తం కంట్రోలర్</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>రెండు స్టిక్‌లు</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>రంబుల్ {0}పై హాప్టిక్ పల్స్లుగా ప్లే అవుతుంది, నేరుగా పరికరానికి పంపబడుతుంది. బలమైన రంబుల్ బలమైన పల్స్ను ఎంచుకుని దాన్ని వేగంగా పునరావృతం చేస్తుంది.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>{0} కోసం Logi Options+లో హాప్టిక్ ఫీడ్బ్యాక్ ఆఫ్ చేయబడింది, కాబట్టి మీరు అక్కడ మళ్లీ ఆన్ చేసే వరకు ఇది ఏమీ ప్లే చేయదు.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>ఈ పరికరం ఇంకా స్పందించలేదు. అది మేల్కొన్నాక దాని రంబుల్ ప్లే అవుతుంది.</value></data>
@@ -1267,7 +1268,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>మదర్బోర్డులు, గ్రాఫిక్స్ కార్డులు మరియు మెమరీ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>మదర్బోర్డులు మరియు గ్రాఫిక్స్ కార్డులు</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>మౌస్ప్యాడ్లు, హెడ్సెట్లు మరియు హెడ్సెట్ స్టాండ్లు</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>లైట్ బార్</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>గేమ్లు లైటింగ్ రాసినప్పుడల్లా అవి స్వాధీనం చేసుకుంటాయి.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ఆరు అంకెల హెక్స్ రంగును (RRGGBB లేదా #RRGGBB) నమోదు చేసి, వర్తింపజేయడానికి Enter నొక్కండి లేదా వెలుపల క్లిక్ చేయండి.</value></data>
@@ -1897,7 +1897,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>మౌస్ వదులు {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>టచ్ ప్యాడ్ ఓవర్లేను టోగుల్ చేయి</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>లైట్ బార్ రంగును సెట్ చేయి</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>కేటాయించిన PlayStation స్లాట్ లైట్ బార్‌ను ఎంచుకున్న RGB రంగుకు మారుస్తుంది. రియాక్టివ్ పూర్తి తీవ్రత నుండి సెట్ చేసిన క్షీణత విండోలో నలుపుకు మసకబారి, ఆపై లైట్ బార్ కార్డ్ సెట్టింగులకు తిరిగి అప్పగిస్తుంది. స్టిక్కీ లైట్ బార్ ఓవర్‌రైడ్‌ను తొలగించు చర్య నడిచే వరకు రంగును పట్టి ఉంచుతుంది. గేమ్ రాసే విలువలకు ఇప్పటికీ ఓవర్‌రైడ్ కంటే ప్రాధాన్యత ఉంటుంది.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>కేటాయించిన PlayStation స్లాట్ లైట్ బార్‌ను ఎంచుకున్న RGB రంగుకు మారుస్తుంది. రియాక్టివ్ పూర్తి తీవ్రత నుండి సెట్ చేసిన క్షీణత విండోలో నలుపుకు మసకబారి, ఆపై లైటింగ్ కార్డ్ సెట్టింగులకు తిరిగి అప్పగిస్తుంది. స్టిక్కీ లైట్ బార్ ఓవర్‌రైడ్‌ను తొలగించు చర్య నడిచే వరకు రంగును పట్టి ఉంచుతుంది. గేమ్ రాసే విలువలకు ఇప్పటికీ ఓవర్‌రైడ్ కంటే ప్రాధాన్యత ఉంటుంది.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>లైట్ బార్ {0} ఫ్లాష్ చేయి (క్షీణత {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>లైట్ బార్ {0} ను తొలగించే వరకు పట్టి ఉంచు</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>లైట్ బార్ ఓవర్‌రైడ్‌ను తొలగించు</value></data>
@@ -1905,7 +1905,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>కేటాయించిన స్లాట్‌లోని ఏదైనా క్రియాశీల లైట్ బార్ ఓవర్‌రైడ్‌ను విడుదల చేస్తుంది. మరొక మాక్రో ద్వారా దాన్ని రద్దు చేయడానికి స్టిక్కీ లైట్ బార్ రంగును సెట్ చేయి చర్యతో జతచేయండి.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>లైట్ బార్ మోడ్‌ను సెట్ చేయి</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>లైట్ బార్ మోడ్‌ను {0} కు సెట్ చేయి</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>కేటాయించిన స్లాట్ లైట్ బార్ మోడ్‌ను ఒక నిర్దిష్ట విలువకు సెట్ చేస్తుంది. మరొక చర్య లేదా వినియోగదారు మార్చే వరకు, లైట్ బార్ కార్డ్‌లో చేసిన మార్పు లాగా నిలిచి ఉంటుంది.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>కేటాయించిన స్లాట్ లైట్ బార్ మోడ్‌ను ఒక నిర్దిష్ట విలువకు సెట్ చేస్తుంది. మరొక చర్య లేదా వినియోగదారు మార్చే వరకు, లైటింగ్ కార్డ్‌లో చేసిన మార్పు లాగా నిలిచి ఉంటుంది.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>లైట్ బార్ మోడ్‌లను మార్చుతూ తిప్పు</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} లైట్ బార్ మోడ్‌ల గుండా తిప్పు</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>కింద ఎంచుకున్న మోడ్‌ల గుండా స్లాట్ లైట్ బార్ మోడ్‌ను ముందుకు జరుపుతుంది. ప్రతి ఫైర్ తర్వాతి టిక్ చేసిన మోడ్‌కు వెళ్తుంది. తిప్పే స్థానం ప్రతి చర్యకు విడిగా ఉంటుంది మరియు యాప్ పునఃప్రారంభంలో రీసెట్ అవుతుంది.</value></data>
@@ -1920,7 +1920,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>క్షీణత</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>ఫేడ్</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>పాలెట్</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>ఖాళీ పాలెట్ స్లాట్ లైట్ బార్ కార్డ్‌లోని పాలెట్‌ను వాడుతుంది.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>ఖాళీ పాలెట్ స్లాట్ లైటింగ్ కార్డ్‌లోని పాలెట్‌ను వాడుతుంది.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>మోడ్</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>మాక్రో ఏ లైట్ బార్ మోడ్‌ల గుండా తిరగాలో ఎంచుకోండి. ప్రతి ఫైర్ తర్వాతి టిక్ చేసిన మోడ్‌కు వెళ్తుంది.</value></data>
 
@@ -2150,6 +2150,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>మౌస్ అవుట్‌పుట్</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>విలోమం, మొమెంటం, ప్రతిస్పందన, త్వరణం, ఫ్లింగ్</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>సెన్సార్ బార్ స్థానం, నిలువు ఆఫ్సెట్, స్మూతింగ్</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>కీబోర్డ్ / మౌస్ వర్చువల్ కంట్రోలర్లో టచ్ ప్యాడ్ వేలు మౌస్ X/Y కు మ్యాప్ చేయబడినప్పుడు కర్సర్ వేగాన్ని సర్దుబాటు చేస్తుంది. 1.0 డిఫాల్ట్. కర్సర్ వేగంగా కదలాలంటే ఏ అక్షాన్నైనా పెంచండి, నెమ్మదిగా కదలాలంటే తగ్గించండి. విలోమం ఏ అక్షాన్నైనా తిప్పుతుంది.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>మౌస్ సున్నితత్వం X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>క్షితిజ సమాంతర టచ్ ప్యాడ్ → మౌస్ డెల్టాపై గుణకం. 1.0 కంటే తక్కువ కర్సర్ను నెమ్మదిస్తుంది. 1.0 కంటే ఎక్కువ దాన్ని వేగవంతం చేస్తుంది.</value></data>
@@ -2355,7 +2356,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>క్రమాంకనం అవుతోంది… కదలకుండా ఉంచండి</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>క్రమాంకనాన్ని రీసెట్ చేయి</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>విశ్రాంత గైరో బయాస్ను, చివరి క్రమాంకన సమయముద్రను తొలగిస్తుంది. తదుపరి పోలింగ్ చక్రం ఈ పరికరంపై 1.5 సెకన్ల స్వయంచాలక క్రమాంకనాన్ని మళ్లీ నడుపుతుంది.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>ప్రత్యక్ష గైరోస్కోప్</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>ప్రత్యక్ష యాక్సిలరోమీటర్</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>సమాంతర సున్నితత్వం</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>అవుట్పుట్కు క్షితిజ సమాంతర (యా + రోల్) గైరో భాగాన్ని స్కేల్ చేస్తుంది. 1.0 రేటును ఇంజిన్ చూసినట్లే ఉంచుతుంది. ఎక్కువ విలువలు పెంచుతాయి, తక్కువ విలువలు తగ్గిస్తాయి. ఈ కంట్రోలర్లోని ప్రతి గైరో బైండింగ్ ఒకే క్షితిజ సమాంతర అనుభూతిని పొందేలా పరికర స్థాయిలో వర్తిస్తుంది.</value></data>
@@ -2375,8 +2375,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>గైరో</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>ఈ ప్యాడ్ మోషన్ సెన్సార్ మౌస్ మరియు స్టిక్ అవుట్పుట్ను ఎలా నడిపిస్తుందో సర్దుబాటు చేయండి. విశ్రాంత డ్రిఫ్ట్ను సున్నా చేయడానికి చదునైన ఉపరితలంపై క్రమాంకనం చేయండి, తర్వాత సున్నితత్వం, స్మూతింగ్, ఎంగేజ్ నియమాలను మీ ఇష్టానుసారం సెట్ చేయండి.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>క్రమాంకనం</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>గైరోస్కోప్, యాక్సిలరోమీటర్ ప్రత్యక్ష రీడింగ్లు</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>సున్నితత్వం</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>యూనిట్లు, అక్షాల విలోమం, వాస్తవ ప్రపంచ క్రమాంకనం</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>పూర్తి మలుపుకు ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>ప్రతిస్పందన రూపకల్పన</value></data>
@@ -2462,11 +2460,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>అదనపు వెడల్పు</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>గుణకం</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>స్క్రీన్ తిరుగుడుకు డిగ్రీలు</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>క్రమాంకనాన్ని రీసెట్ చేయి</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>సున్నితత్వాన్ని రీసెట్ చేయి</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>ప్రతిస్పందన రూపకల్పనను రీసెట్ చేయి</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>ఎంగేజ్‌ను రీసెట్ చేయి</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>మోషన్ పాస్త్రూను రీసెట్ చేయి</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>స్పేస్‌ను రీసెట్ చేయి</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>గ్రిప్‌ను రీసెట్ చేయి</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>సమాంతర సున్నితత్వాన్ని రీసెట్ చేయి</value></data>
@@ -2486,8 +2481,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>ఎంగేజ్ స్టిక్‌ను రీసెట్ చేయి</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>ఎంగేజ్ దిశను రీసెట్ చేయి</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>మోషన్ పాస్త్రూ</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>మోషన్ పాస్త్రూకు గైరో ట్యూనింగ్ వర్తింపజేయి</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>గైరో కార్డ్ల ఐచ్ఛిక ట్యూనింగ్ను (డెడ్ జోన్, సున్నితత్వం, స్మూతింగ్, ప్రతిస్పందన వక్రరేఖ, విలోమం) వర్చువల్ కంట్రోలర్ గేమ్ లేదా ఎమ్యులేటర్కు నివేదించే మోషన్పై అమలు చేస్తుంది. క్రమాంకనం చేసిన రీడింగ్ను మాత్రమే పంపి, గేమ్ తన సొంత సున్నితత్వం, స్మూతింగ్ను వర్తింపజేయడానికి దీన్ని ఆఫ్ చేయండి. క్రమాంకన డ్రిఫ్ట్ సవరణ రెండు సందర్భాల్లోనూ ఎల్లప్పుడూ వర్తిస్తుంది.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>ట్యూన్ చేసినది గైరో కార్డ్ ట్యూనింగ్‌ను (డెడ్ జోన్, సున్నితత్వం, స్మూతింగ్, ప్రతిస్పందన వక్రరేఖ, విలోమం) వర్చువల్ కంట్రోలర్ గేమ్ లేదా ఎమ్యులేటర్‌కు నివేదించే మోషన్‌పై అమలు చేస్తుంది. ముడి క్రమాంకనం చేసిన రీడింగ్‌ను మాత్రమే పంపి, గేమ్ తన సొంత సున్నితత్వం, స్మూతింగ్‌ను వర్తింపజేసేలా చేస్తుంది. క్రమాంకన డ్రిఫ్ట్ సవరణ రెండు సందర్భాల్లోనూ వర్తిస్తుంది.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>ముడి</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>ట్యూన్ చేసినది</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>గేమ్ క్రమాంకనం చేసిన మోషన్‌ను చదివి, తన సొంత సున్నితత్వం, స్మూతింగ్‌ను వర్తింపజేస్తుంది.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>గేమ్ ఇక్కడ సెట్ చేసిన సున్నితత్వం, స్మూతింగ్, వక్రరేఖతో మోషన్‌ను చదువుతుంది.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>పాస్త్రూ ట్యూనింగ్‌ను రీసెట్ చేయి</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>సున్నితత్వం</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>మూలం-వారీ గైరో సున్నితత్వ గుణకం. 1.0 = ఇంజిన్ డిఫాల్ట్ (500°/s → పూర్తి విక్షేపం). 1.0 కంటే ఎక్కువ విలువలు మరింత సున్నితంగా ఉంటాయి. 1.0 కంటే తక్కువ విలువలు తక్కువ సున్నితంగా ఉంటాయి.</value></data>
@@ -2735,8 +2733,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>ఈ కంట్రోలర్‌కు ట్రిగ్గర్ మోటార్లు లేవు, కాబట్టి Xbox ఇంపల్స్ ట్రిగ్గర్లను వాడే గేమ్‌లలో అనుభూతి ఉండదు. బదులుగా ప్రతి ట్రిగ్గర్ ఛానెల్‌ను అదే వైపు ఉన్న ప్రధాన మోటార్‌లో కలపండి.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>రంబుల్ పరీక్ష</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>మోటార్ కార్యకలాపం</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>ఎడమ</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>కుడి</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>మీరు ఆఫ్ చేసే వరకు ఈ పరికరానికి నిరంతర బలాన్ని వర్తింపజేస్తుంది. ఏ మూలం నుండైనా గేమ్ ఇచ్చే బలం, ఇది యాక్టివ్‌గా ఉన్నప్పుడు దీన్ని భర్తీ చేస్తుంది, గేమ్ ఆగాక ఇది తిరిగి కొనసాగుతుంది.</value></data>
@@ -3256,7 +3252,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>ఆడియో</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR పాయింటర్</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>ఈ Wii Remote ను దాని IR కెమెరాతో స్క్రీన్ వైపు గురి పెట్టండి. డిస్ప్లే పైన లేదా కింద సెన్సార్ బార్ లేదా రెండు ఇన్ఫ్రారెడ్ LEDలు అవసరం. ఖచ్చితమైన స్థానానికి గురి పెట్టడానికి పరికరాల పేజీలో దీనిని లైట్ గన్గా క్రమాంకనం చేయండి. క్రమాంకనం చేసిన రిమోట్ సెన్సార్ బార్ స్థానం, నిలువు ఆఫ్సెట్ను పట్టించుకోదు.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>పాయింటర్ ట్యూనింగ్</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>సెన్సార్ బార్ స్థానం</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>మధ్యలో</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>స్క్రీన్ పైన</value></data>
@@ -3283,8 +3278,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>స్లాట్లోని IR సామర్థ్యం ఉన్న ప్రతి రిమోట్ కోసం Wii పాయింటర్ మోడ్ను కింద ఎంచుకున్న మోడ్ల ద్వారా ముందుకు తీసుకెళ్తుంది. ప్రతి ఫైర్ తదుపరి ఎంచుకున్న మోడ్కు వెళ్తుంది. సైకిల్ స్థానం ప్రతి చర్యకు వేరుగా ఉంటుంది, యాప్ మళ్లీ ప్రారంభించినప్పుడు రీసెట్ అవుతుంది.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>మాక్రో ఏ పాయింటర్ మోడ్ల ద్వారా సైకిల్ కావాలో ఎంచుకోండి. ప్రతి ఫైర్ తదుపరి ఎంచుకున్న మోడ్కు వెళ్తుంది.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>ఆడియో</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>మాక్రో శబ్దాలు, ప్రతిబింబించిన సిస్టమ్ ఆడియో USB లేదా బ్లూటూత్ ద్వారా ఎంచుకున్న కంట్రోలర్ అంతర్నిర్మిత స్పీకర్లో ప్లే అవుతాయి. పైన డ్రాప్డౌన్లో పరికరాన్ని ఎంచుకోండి. ఇక్కడి ప్రతి సెట్టింగ్ దానిని అనుసరిస్తుంది.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>సౌండ్ అవుట్పుట్</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>మాక్రో శబ్దాలు, ప్రతిబింబించిన సిస్టమ్ ఆడియో USB లేదా బ్లూటూత్ ద్వారా ఇన్పుట్ మూలం కింద ఎంచుకున్న పరికరం అంతర్నిర్మిత స్పీకర్లో ప్లే అవుతాయి. ఇక్కడి ప్రతి సెట్టింగ్ ఆ పరికరాన్ని అనుసరిస్తుంది.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>మిర్రర్ మూలం, హెడ్ఫోన్ వాల్యూమ్, బఫర్, అవుట్పుట్ మార్గం</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>శబ్దాలు ఎంచుకున్న కంట్రోలర్కు స్వయంచాలకంగా వెళ్తాయి. USB ద్వారా ప్యాడ్ సొంత ఆడియో ఎండ్పాయింట్ హార్డ్వేర్ కంటైనర్ ద్వారా సరిపోలుతుంది. బ్లూటూత్ ద్వారా ఆడియో Sony HID ఫ్రేమ్లలో స్ట్రీమ్ అవుతుంది.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>మిర్రర్ మూలం</value></data>
@@ -3347,7 +3341,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>టోన్ పరిమితి రీసెట్ చేయి</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>సిస్టమ్ డిఫాల్ట్ అవుట్పుట్ ప్లే చేసే ప్రతిదాన్నీ ఈ కంట్రోలర్ అంతర్నిర్మిత స్పీకర్కు సమాంతరంగా కాపీ చేస్తుంది. USB, బ్లూటూత్ రెండింటిలో పనిచేస్తుంది.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>ఎంచుకున్న పరికరంలో అంతర్నిర్మిత స్పీకర్ లేదు. ఈ ప్యాడ్ మాక్రో శబ్దాలు సిస్టమ్ డిఫాల్ట్ అవుట్పుట్లో ప్లే అవుతాయి.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>సౌండ్ అవుట్పుట్ రీసెట్ చేయి</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) రూపొందించిన బ్రౌజర్ DualSense పరీక్ష సూట్: PadForge వర్చువల్ ప్యాడ్ల నుండి భౌతిక ప్యాడ్లకు ఫార్వర్డ్ చేసే Sony ఫీచర్-రిపోర్ట్ CRC ఫ్రేమింగ్, ఫర్మ్వేర్ టెస్ట్ కమాండ్లకు రెఫరెన్స్.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>గైడ్ LED ప్రకాశం: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>స్లాట్లోని సామర్థ్యం గల ప్రతి కంట్రోలర్కు గైడ్ లేదా హోమ్ బటన్ LED ప్రకాశాన్ని సెట్ చేస్తుంది. Xbox కంట్రోలర్లు దీన్ని USB ద్వారా మాత్రమే అంగీకరిస్తాయి.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>USB ద్వారా Xbox కంట్రోలర్లకు, 2015 Steam Controller కు, హోమ్ బటన్ LED ఉన్న Switch కంట్రోలర్లకు వర్తిస్తుంది. మాక్రో మొదలైనప్పుడు LED ని మెరిపించడానికి, ముగిసినప్పుడు పునరుద్ధరించడానికి ఈ చర్యలు రెండింటిని జతగా ఉపయోగించండి.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>పాయింటర్ మోడ్ రీసెట్ చేయి</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>పాయింటర్ ట్యూనింగ్ రీసెట్ చేయి</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>సెన్సార్ బార్ స్థానం రీసెట్ చేయి</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>నిలువు ఆఫ్సెట్ రీసెట్ చేయి</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>స్మూతింగ్ రీసెట్ చేయి</value></data>

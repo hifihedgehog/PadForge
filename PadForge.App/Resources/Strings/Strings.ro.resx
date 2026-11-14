@@ -1181,6 +1181,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Reglează modul în care PadForge scalează evenimentele force feedback venite de la joc și cum le direcționează către motoarele de vibrație sau actuatoarele haptice ale controlerului fizic. Vibrațiile audio adaugă peste acestea un nivel comandat de sunetul sistemului.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Acest dispozitiv</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Întregul controler</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Ambele stickuri</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Vibrațiile se redau pe {0} ca impulsuri haptice, trimise direct către dispozitiv. O vibrație mai puternică alege un impuls mai puternic și îl repetă mai rapid.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Feedbackul haptic este dezactivat pentru {0} în Logi Options+, așa că nu se redă nimic până când nu îl reactivați acolo.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Acest dispozitiv nu a răspuns încă. Vibrațiile se redau după ce se trezește.</value></data>
@@ -1267,7 +1268,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>plăci de bază, plăci video și memorie</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>plăci de bază și plăci video</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepaduri, căști și suporturi pentru căști</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Bară luminoasă</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Jocurile preiau controlul ori de câte ori scriu iluminarea.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Introduceți o culoare hexazecimală de șase cifre (RRGGBB sau #RRGGBB) și apăsați Enter sau faceți clic în altă parte pentru a o aplica.</value></data>
@@ -1897,7 +1897,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Eliberare mouse {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Comutare suprapunere touchpad</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Setare culoare bară luminoasă</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Înlocuiește culoarea barei luminoase a slotului PlayStation atribuit cu o culoare RGB aleasă. Reactiv se estompează de la intensitate maximă la negru pe durata intervalului de atenuare configurat, apoi revine la setările cardului Bară luminoasă. Persistent păstrează culoarea până când rulează o acțiune Anulare înlocuire bară luminoasă. Scrierile comandate de joc au în continuare prioritate față de înlocuire.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Înlocuiește culoarea barei luminoase a slotului PlayStation atribuit cu o culoare RGB aleasă. Reactiv se estompează de la intensitate maximă la negru pe durata intervalului de atenuare configurat, apoi revine la setările cardului Iluminare. Persistent păstrează culoarea până când rulează o acțiune Anulare înlocuire bară luminoasă. Scrierile comandate de joc au în continuare prioritate față de înlocuire.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Clipire bară luminoasă {0} (atenuare {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Menținere bară luminoasă {0} până la anulare</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Anulare înlocuire bară luminoasă</value></data>
@@ -1905,7 +1905,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Eliberează orice înlocuire activă a barei luminoase pe slotul atribuit. Folosiți-o împreună cu o acțiune Setare culoare bară luminoasă în modul Persistent pentru a o anula printr-o altă macrocomandă.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Setare mod bară luminoasă</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Setare mod bară luminoasă la {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Setează modul barei luminoase a slotului atribuit la o anumită valoare. Rămâne, ca o modificare din cardul Bară luminoasă, până când îl schimbă o altă acțiune sau utilizatorul.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Setează modul barei luminoase a slotului atribuit la o anumită valoare. Rămâne, ca o modificare din cardul Iluminare, până când îl schimbă o altă acțiune sau utilizatorul.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Parcurgere moduri bară luminoasă</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Parcurgere a {0} moduri ale barei luminoase</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Avansează modul barei luminoase a slotului prin modurile selectate mai jos. Fiecare declanșare trece la următorul mod bifat. Poziția în ciclu este proprie fiecărei acțiuni și se resetează la repornirea aplicației.</value></data>
@@ -1920,7 +1920,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Atenuare</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Estompare</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Paletă</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>O paletă goală folosește paleta din cardul Bară luminoasă al slotului.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>O paletă goală folosește paleta din cardul Iluminare al slotului.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mod</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Alegeți modurile barei luminoase pe care macrocomanda le va parcurge. Fiecare declanșare avansează la următorul mod bifat.</value></data>
 
@@ -2150,6 +2150,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Ieșire mouse</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Inversare, Inerție, Răspuns, Accelerație, aruncare</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Poziția barei de senzori, Decalaj vertical, Netezire</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Reglează viteza cursorului când un deget de pe touchpad este mapat pe axele X/Y ale mouse-ului într-un controler virtual Tastatură / mouse. Valoarea implicită este 1.0. Măriți oricare axă pentru un cursor mai rapid sau micșorați-o pentru unul mai lent. Inversare inversează oricare axă.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Sensibilitate mouse X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplicator pentru deplasarea orizontală touchpad → mouse. Sub 1.0 încetinește cursorul. Peste 1.0 îl accelerează.</value></data>
@@ -2355,7 +2356,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Se calibrează… nu mișcați</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Resetare calibrare</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Golește decalajul giroscopului în repaus și marcajul de timp al ultimei calibrări. Următorul ciclu de interogare reia calibrarea automată de 1.5 secunde pe acest dispozitiv.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Giroscop în timp real</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Accelerometru în timp real</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Sensibilitate orizontală</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Scalează contribuția orizontală (girație + ruliu) a giroscopului la ieșire. 1.0 lasă rata așa cum o vede motorul. Valorile mai mari amplifică, cele mai mici atenuează. Se aplică la nivelul dispozitivului, astfel încât toate legăturile giroscopului de pe acest controler moștenesc aceeași senzație orizontală.</value></data>
@@ -2375,8 +2375,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giroscop</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Reglați modul în care senzorul de mișcare al acestui controler comandă ieșirea de mouse și de stick. Calibrați pe o suprafață plană pentru a anula driftul în repaus, apoi ajustați după preferință sensibilitatea, netezirea și regulile de activare.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibrare</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Giroscop și accelerometru în timp real</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilitate</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unități, inversare axe, Calibrare la lumea reală</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° pe rotație</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Modelarea răspunsului</value></data>
@@ -2462,11 +2460,8 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Foarte largă</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplicator</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Grade per tură de ecran</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Resetare calibrare</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Resetare sensibilitate</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Resetare modelare răspuns</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Resetare activare</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Resetare transmitere directă a mișcării</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Resetare spațiu</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Resetare prindere</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Resetare sensibilitate orizontală</value></data>
@@ -2486,8 +2481,11 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Resetare stick de activare</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Resetare direcție de activare</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Transmitere directă a mișcării</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Aplicare reglaje giroscop la transmiterea directă a mișcării</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Aplică reglajele opționale din cardurile Giroscop (zonă moartă, sensibilitate, netezire, curbă de răspuns, inversare) asupra mișcării pe care controlerul virtual o raportează jocului sau emulatorului. Dezactivați opțiunea pentru a trimite doar citirea calibrată și a lăsa jocul să aplice propria sensibilitate și netezire. Corecția driftului prin calibrare se aplică oricum.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Reglat aplică reglajele din cardul Giroscop (zonă moartă, sensibilitate, netezire, curbă de răspuns, inversare) asupra mișcării pe care controlerul virtual o raportează jocului sau emulatorului. Brut trimite doar citirea calibrată și lasă jocul să aplice propria sensibilitate și netezire. Corecția driftului prin calibrare se aplică oricum.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Brut</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Reglat</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Jocul citește mișcarea calibrată și aplică propria sensibilitate și netezire.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Jocul citește mișcarea cu sensibilitatea, netezirea și curba stabilite aici.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Resetare reglaje transmitere directă</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilitate</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicator de sensibilitate a giroscopului pentru fiecare sursă. 1.0 = valoarea implicită a motorului (500°/s → deplasare completă). Valorile peste 1.0 sunt mai sensibile. Valorile sub 1.0 sunt mai puțin sensibile.</value></data>
@@ -2735,8 +2733,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Acest controler nu are motoare în trăgace, așa că vibrațiile jocurilor care folosesc trăgacele cu impuls Xbox nu s-ar simți. Transferați în schimb fiecare canal de trăgaci în motorul principal de pe aceeași parte.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Testare vibrații</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Activitatea motoarelor</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Stâng</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Drept</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Aplică o forță continuă acestui dispozitiv până când o dezactivați. Forța comandată de joc, din orice sursă, are prioritate cât timp este activă, iar forța constantă se reia când jocul se oprește.</value></data>
@@ -3256,7 +3252,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Indicator IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Țintiți ecranul cu acest Wii Remote prin camera sa IR. Necesită o bară de senzori sau două LED-uri infraroșii deasupra sau dedesubtul ecranului. Calibrați-o ca pistol optic pe pagina Dispozitive pentru a ținti exact în punctul dorit. O telecomandă calibrată ignoră Poziția barei de senzori și Decalajul vertical.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Reglare indicator</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Poziția barei de senzori</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Centrată</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Deasupra ecranului</value></data>
@@ -3283,8 +3278,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Avansează modul indicatorului Wii prin modurile selectate mai jos pentru fiecare telecomandă cu IR de pe slot. Fiecare declanșare trece la următorul mod bifat. Poziția în ciclu este proprie fiecărei acțiuni și se resetează la repornirea aplicației.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Alegeți modurile indicatorului pe care macrocomanda le va parcurge. Fiecare declanșare avansează la următorul mod bifat.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Sunetele macrocomenzilor și sunetul de sistem oglindit se redau prin difuzorul integrat al controlerului selectat, prin USB sau Bluetooth. Alegeți dispozitivul din lista derulantă de mai sus. Toate setările de aici se aplică acestuia.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Ieșire sunet</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Sunetele macrocomenzilor și sunetul de sistem oglindit se redau prin difuzorul integrat al dispozitivului ales la Controlat de, prin USB sau Bluetooth. Toate setările de aici se aplică acestui dispozitiv.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Sursă de oglindire, Volum căști, buffer, Cale de ieșire</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Sunetele sunt direcționate automat către controlerul selectat. Prin USB, punctul final audio propriu al controlerului este identificat după containerul hardware. Prin Bluetooth, sunetul este transmis în cadre HID Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Sursă de oglindire</value></data>
@@ -3347,7 +3341,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Resetare limită de ton</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copiază în paralel tot ce redă ieșirea implicită a sistemului în difuzorul integrat al acestui controler. Funcționează prin USB și Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Dispozitivul selectat nu are difuzor integrat. Sunetele macrocomenzilor pentru acest controler se redau pe ieșirea implicită a sistemului.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Resetare ieșire sunet</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Suită de testare DualSense în browser de Xuezhou Dai (daidr): referință pentru încadrarea CRC a rapoartelor de funcții Sony și pentru comenzile de testare a firmware-ului pe care PadForge le transmite de la controlerele virtuale la cele fizice.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Luminozitate LED Guide: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Setează luminozitatea LED-ului butonului Guide sau Home pentru fiecare controler compatibil de pe slot. Controlerele Xbox o acceptă doar prin USB.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Se aplică controlerelor Xbox prin USB, Steam Controller din 2015 și controlerelor Switch cu LED la butonul Home. Combinați două astfel de acțiuni pentru a aprinde intermitent LED-ul la pornirea unei macrocomenzi și a-l restabili la final.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Resetare mod indicator</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Resetare reglare indicator</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Resetare poziție bară de senzori</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Resetare decalaj vertical</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Resetare netezire</value></data>

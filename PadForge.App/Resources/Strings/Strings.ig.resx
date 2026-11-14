@@ -523,7 +523,6 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Elu (Y+)</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Onye egwuregwu</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Ụwa</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Tọgharịa calibration</value></data>
 
   <!-- ═══ Device Object Names (gamepad) ═══ -->
   <data name="DevObj_LeftStickX" xml:space="preserve"><value>Stick aka ekpe X</value></data>
@@ -1315,8 +1314,6 @@
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Onye egwuregwu ma ọ bụ Ụwa</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>A wụnyela SteamVR</value></data>
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR na-agba ọsọ</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Aka ekpe</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Aka nri</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Kpochapụ trigger</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Hazie ọsọ, pedal na gia nke egwuregwu ịnya ụgbọ ala na-eziga, dị ka ntinye ọ bụla.</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Nweta mmetụta trigger na-agbanwe agbanwe na ọkụ site na mod egwuregwu e dere maka DSX.</value></data>

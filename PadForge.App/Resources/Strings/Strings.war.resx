@@ -357,7 +357,6 @@
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Suga</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>mga headset, mga mousepad, ngan mga speaker</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>mga headset</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>I-reset an lightbar</value></data>
   <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>I-reset an force feedback</value></data>
@@ -604,7 +603,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrasyon</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Mga yunit, pagbaliskad, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Baliskara an pitch (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Baliskara an yaw (X)</value></data>
@@ -621,8 +619,6 @@
   <data name="Settings_GyroEngageStickDirection_XPos" xml:space="preserve"><value>Tuo (X+)</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Ubos (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Igbaw (Y+)</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>I-reset an kalibrasyon</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>I-reset an sensitivity</value></data>
   <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>I-reset an baliskara han pitch</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>I-reset an deadzone</value></data>
   <data name="Pad_ResetGyroAcceleration" xml:space="preserve"><value>I-reset an akselerasyon</value></data>
@@ -1374,10 +1370,9 @@
   <data name="Menu_Cell_Action" xml:space="preserve"><value>Aksyon</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Ini nga device</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Bug-os nga controller</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Duha nga stick</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>Naka-install an SteamVR</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>Diri naka-install an SteamVR</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Wala</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Tuo</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Kuhaa an adaptive trigger ngan mga epekto han suga tikang ha mga game mod nga ginsurat para ha DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Buhata an telemetry output ha dula ngan itudlo ini ha ini nga PC ngan port.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>An pose han ulo amo an Head Tracker nga row ha [Mga device]. I-map an yaw han ulo ha usa nga axis han stick ha Buttons nga seksyon han controller.</value></data>

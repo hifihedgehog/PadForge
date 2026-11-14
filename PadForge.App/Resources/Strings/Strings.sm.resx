@@ -1167,10 +1167,9 @@
   <data name="Menu_Cell_Name" xml:space="preserve"><value>Igoa</value></data>
   <data name="Pad_More_Macro" xml:space="preserve"><value>Layer, Puna, Tapulaʻa, Itu, Natia faʻamau e faʻaola ai le macro, Toe fai</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Controller atoa</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Stick uma e lua</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>Ua faʻapipiʻi le SteamVR</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>E leʻi faʻapipiʻiina le SteamVR</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Agavale</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Taumatau</value></data>
   <data name="Extras_PageLine_GameMods" xml:space="preserve"><value>Ave aafiaga o trigger fetuutuunaʻi ma moli mai mod o taʻaloga na tusia mo DSX.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Faʻaola le telemetry output i le taʻaloga ma faʻasino atu i lenei PC ma le port.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>O le tulaga o le ulu o le laina Head Tracker i [Masini]. Faʻafesoʻotaʻi le yaw o le ulu i se axis o le stick i le vaega Buttons a se controller.</value></data>

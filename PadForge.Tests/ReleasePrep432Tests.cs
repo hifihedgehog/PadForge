@@ -130,15 +130,18 @@ namespace PadForge.Tests
         {
             string xaml = System.IO.File.ReadAllText(AuditDelta20260823Tests.FindRepoFile(
                 System.IO.Path.Combine("PadForge.App", "Views", "PadPage.xaml")));
-            int cf = xaml.IndexOf("x:Name=\"CrossfeedFoldCard\"", StringComparison.Ordinal);
-            Assert.True(cf > 0, "crossfeed line not found; re-anchor this lock");
-            // The chain's lines stand in one list under Sound Output (#574),
-            // and the gate is the list's: the nearest one above.
-            int panel = xaml.LastIndexOf("<controls:FoldList x:Name=\"AudioChainList\"", cf, StringComparison.Ordinal);
-            Assert.True(panel > 0, "the chain's list not found; re-anchor this lock");
-            string open = xaml.Substring(panel, cf - panel);
-            Assert.Contains("SelectedDeviceHasDspChain", open);
-            Assert.DoesNotContain("SelectedDeviceHasSpeaker", open);
+            // The chain's three lines stand in the Audio card's tray (the
+            // sections pass of #574), and each line carries the gate on its
+            // own opening tag.
+            foreach (string line in new[] { "CrossfeedFoldCard", "ParametricEqFoldCard", "LimiterFoldCard" })
+            {
+                int at = xaml.IndexOf("x:Name=\"" + line + "\"", StringComparison.Ordinal);
+                Assert.True(at > 0, line + " not found; re-anchor this lock");
+                int start = xaml.LastIndexOf("<controls:FoldCard ", at, StringComparison.Ordinal);
+                string open = xaml.Substring(start, xaml.IndexOf('>', at) - start);
+                Assert.Contains("Visibility=\"{Binding SelectedDeviceHasDspChain, Converter={StaticResource BoolToVisibilityConverter}}\"", open);
+                Assert.DoesNotContain("SelectedDeviceHasSpeaker", open);
+            }
             // Positive control: the speaker gate is still real elsewhere.
             Assert.Contains("SelectedDeviceHasSpeaker", xaml);
         }

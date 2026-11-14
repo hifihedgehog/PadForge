@@ -1150,7 +1150,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Muisknop {0} loslaten</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Touchpad-overlay in-/uitschakelen</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Lightbar-kleur instellen</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Overschrijft de lightbar van het toegewezen PlayStation-slot met een gekozen RGB-kleur. Reactief vervaagt van volle intensiteit naar zwart binnen het ingestelde uitstervenvenster en geeft daarna terug aan de instellingen van de kaart Lightbar. Plakkerig houdt de kleur vast totdat een "Lightbar-overschrijving wissen"-actie hem vrijgeeft. Schrijfacties vanuit het spel blijven voorrang houden.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Overschrijft de lightbar van het toegewezen PlayStation-slot met een gekozen RGB-kleur. Reactief vervaagt van volle intensiteit naar zwart binnen het ingestelde uitstervenvenster en geeft daarna terug aan de instellingen van de kaart Verlichting. Plakkerig houdt de kleur vast totdat een "Lightbar-overschrijving wissen"-actie hem vrijgeeft. Schrijfacties vanuit het spel blijven voorrang houden.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Lightbar {0} laten flitsen (uitsterven in {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Lightbar {0} vasthouden tot wissen</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Lightbar-overschrijving wissen</value></data>
@@ -1158,7 +1158,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Geeft elke actieve lightbar-overschrijving op het toegewezen slot vrij. Combineer met een plakkerige "Lightbar-kleur instellen"-actie om hem via een andere macro ongedaan te maken.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Lightbar-modus instellen</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Lightbar-modus instellen op {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Stelt de lightbar-modus van het toegewezen slot in op een specifieke waarde. Blijft net als een bewerking op de kaart Lightbar bestaan totdat een andere actie of de gebruiker hem wijzigt.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Stelt de lightbar-modus van het toegewezen slot in op een specifieke waarde. Blijft net als een bewerking op de kaart Verlichting bestaan totdat een andere actie of de gebruiker hem wijzigt.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Lightbar-modi doorlopen</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} lightbar-modi doorlopen</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Schakelt de lightbar-modus van het slot door de hieronder geselecteerde modi. Elke activering springt naar de volgende aangevinkte modus. De positie is per actie en wordt gereset bij herstart van de app.</value></data>
@@ -1173,7 +1173,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Uitsterven</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Vervagen</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palet</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Een leeg palet gebruikt het palet op de kaart Lightbar van het slot.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Een leeg palet gebruikt het palet op de kaart Verlichting van het slot.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Kies welke lightbar-modi de macro moet doorlopen. Elke activering springt naar de volgende aangevinkte modus.</value></data>
 
@@ -1354,8 +1354,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Deze controller heeft geen triggermotoren, dus games die Xbox-impulstriggers gebruiken zouden niet voelbaar zijn. In plaats daarvan wordt elk triggerkanaal samengevoegd met de hoofdmotor aan dezelfde kant.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Trillen testen</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoractiviteit</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Links</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Rechts</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Past een continue kracht op dit apparaat toe tot je deze uitschakelt. Door een spel verstuurde kracht heeft voorrang zolang die actief is en wordt hervat zodra het spel stopt.</value></data>
@@ -1755,7 +1753,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibreren… houd stil</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Kalibratie resetten</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Wist de rust-gyro-bias en de tijdstempel van de laatste kalibratie. De volgende polling-cyclus voert de 1.5-seconde automatische kalibratie opnieuw uit op dit apparaat.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Huidige gyroscoop</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Huidige versnellingsmeter</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Horizontale gevoeligheid</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Schaalt de horizontale (Yaw + Roll) gyro-bijdrage. 1.0 laat de snelheid ongewijzigd. Hogere waarden versterken, lagere dempen. Geldt apparaatbreed.</value></data>
@@ -1775,8 +1772,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Stel in hoe de bewegingssensor van deze controller muis- of stickuitvoer aanstuurt. Kalibreer eerst op een vlakke ondergrond om rust-drift te verwijderen, en stem daarna gevoeligheid, smoothing en activatieregels af naar smaak.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibratie</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Live gyroscoop- en versnellingsmeterwaarden</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Eenheden, assen omkeren, Realistische kalibratie</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° per omwenteling</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Responsvorm</value></data>
@@ -1862,11 +1857,8 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Extra breed</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Vermenigvuldiger</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Graden per schermrotatie</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Kalibratie resetten</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Gevoeligheid resetten</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Responsvorm resetten</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Activering resetten</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Bewegingsdoorgifte resetten</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Ruimte resetten</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Greep resetten</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Horizontale gevoeligheid resetten</value></data>
@@ -1886,8 +1878,11 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Activeringsstick resetten</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Activeringsrichting resetten</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Bewegingsdoorgifte</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Gyro-afstemming toepassen op bewegingsdoorgifte</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Past de optionele afstemming van de kaarten onder Gyro (dode zone, gevoeligheid, afvlakking, responscurve, omkering) toe op de beweging die de virtuele controller aan het spel of de emulator doorgeeft. Schakel het uit om alleen de gekalibreerde meting te sturen en het spel zijn eigen gevoeligheid en afvlakking te laten toepassen. De kalibratie-driftcorrectie geldt in beide gevallen.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Afgestemd past de afstemming van de kaart Gyro (dode zone, gevoeligheid, afvlakking, responscurve, omkering) toe op de beweging die de virtuele controller aan het spel of de emulator doorgeeft. Ruw stuurt alleen de gekalibreerde meting en laat het spel zijn eigen gevoeligheid en afvlakking toepassen. De kalibratie-driftcorrectie geldt in beide gevallen.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Ruw</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Afgestemd</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Het spel leest de gekalibreerde beweging en past zijn eigen gevoeligheid en afvlakking toe.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Het spel leest de beweging met de gevoeligheid, afvlakking en curve die hier zijn ingesteld.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Doorgifte-afstemming resetten</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheidsvermenigvuldiger van de gyroscoop per bron. 1.0 = standaard van de engine (500°/s → volledige uitslag). Waarden boven 1.0 zijn gevoeliger. Daaronder minder.</value></data>
@@ -1986,6 +1981,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Regelt hoe PadForge force feedback-gebeurtenissen vanuit het spel schaalt en routeert naar de rumble-motoren of haptische actuatoren van de fysieke controller. Audio-rumble voegt daar een door systeemaudio aangestuurde laag bovenop toe.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Dit apparaat</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Hele controller</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Beide sticks</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Rumble speelt op {0} als haptische pulsen die rechtstreeks naar het apparaat gaan. Sterkere rumble kiest een sterkere puls en herhaalt die sneller.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Haptische feedback staat voor {0} uit in Logi Options+, dus het speelt niets af totdat je het daar weer aanzet.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Dit apparaat heeft nog niet geantwoord. De rumble speelt zodra het wakker wordt.</value></data>
@@ -2070,7 +2066,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>moederborden, videokaarten en geheugen</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>moederborden en videokaarten</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>muismatten, headsets en headsetstandaards</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Games nemen het over zodra ze verlichting schrijven.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Voer een zescijferige hex-kleur in (RRGGBB of #RRGGBB) en druk op Enter of klik elders om toe te passen.</value></data>
@@ -2498,6 +2493,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Touchpad_CustomGesture_NFingers_Format" xml:space="preserve"><value>{0} vingers</value></data>
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Muisuitvoer</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Inverteren, Momentum, Respons, Versnelling, zwiepen</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Positie sensorbalk, Verticale verschuiving, Vloeiend maken</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Past de cursorsnelheid aan wanneer een touchpad-vinger is gekoppeld aan Muis X/Y op een virtuele Toetsenbord / Muis-controller. 1.0 is de standaard. Verhoog een as voor een snellere cursor, verlaag voor een langzamere. Inverteren keert de betreffende as om.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Muisgevoeligheid X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Vermenigvuldiger voor horizontale touchpad → muis-delta. Onder 1.0 vertraagt de cursor, boven 1.0 versnelt hem.</value></data>
@@ -2668,7 +2664,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-aanwijzer</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Richt deze Wii-afstandsbediening met de IR-camera op het scherm. Vereist een sensorbalk of twee infraroodleds boven of onder het scherm. Kalibreer haar op de pagina Apparaten als lichtpistool om precies op de plek te richten. Een gekalibreerde afstandsbediening negeert Positie sensorbalk en Verticale verschuiving.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Aanwijzer afstemmen</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Positie sensorbalk</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Gecentreerd</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Boven het scherm</value></data>
@@ -2695,8 +2690,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Schakelt de Wii-aanwijzermodus door de hieronder aangevinkte modi voor elke IR-remote op het slot. Elke activering springt naar de volgende aangevinkte modus. De positie is per actie en reset bij herstart.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Kies welke aanwijzermodi de macro moet doorlopen. Elke activering springt naar de volgende aangevinkte modus.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macrogeluiden en gespiegelde systeemaudio spelen via de ingebouwde speaker van de geselecteerde controller, via USB of Bluetooth. Kies het apparaat in de lijst hierboven. Alles hier volgt het.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Geluidsuitvoer</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macrogeluiden en gespiegelde systeemaudio spelen via de ingebouwde speaker van het apparaat dat onder Invoer van is gekozen, via USB of Bluetooth. Alles hier volgt dat apparaat.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Spiegelbron, Koptelefoonvolume, buffer, Uitvoerpad</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Geluiden gaan automatisch naar de geselecteerde controller. Via USB wordt het audio-eindpunt van de pad gematcht op hardwarecontainer. Via Bluetooth wordt de audio in Sony-HID-frames gestreamd.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Spiegelbron</value></data>
@@ -2765,7 +2759,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="About_QmkDesc" xml:space="preserve"><value>Позиции клавиш и клавиши базового слоя клавиатур, которые рисует предпросмотр «Клавиатура + мышь», созданы по данным раскладок QMK и форка QMK от Keychron.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>Оценка по угловому отступу, которая работает вместе с сопоставлением облака точек на фигурах, нарисованных одним пальцем. Идея оценки из PointPatternAnalyzer в GestureSign реализована в собственном коде на C#. Использована только как документация.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Geluidsuitvoer herstellen</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Браузерный набор тестов DualSense от Xuezhou Dai (daidr): образец для кадрирования feature-отчетов Sony с CRC и тестовых команд прошивки, которые PadForge пересылает с виртуальных геймпадов на физические.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3565,8 +3558,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="MacroAction_SetChromaColor_Format" xml:space="preserve"><value>Chroma {0} gedurende {1} ms</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Naar laag {0} wisselen</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Springt dit slot naar de gekozen shift-laag. De laag blijft actief tot een volgende wissel, een Latch- of Cycle-activator, of een profielwissel. Base keert terug naar de basislaag. Beperk deze macro hierboven tot een laag zodat dezelfde knop per laag anders springt.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Aanwijzermodus resetten</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Aanwijzerafstemming resetten</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Positie sensorbalk resetten</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Verticale verschuiving resetten</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Vloeiend maken resetten</value></data>

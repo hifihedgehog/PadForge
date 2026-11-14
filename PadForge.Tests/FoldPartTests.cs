@@ -476,11 +476,18 @@ namespace PadForge.Tests
         {
             var styles = XDocument.Parse(RepoText("PadForge.App", "Resources", "ControllerIcons.xaml"));
             var style = Assert.Single(styles.Descendants(),
-                e => e.Name.LocalName == "Style" && (string)e.Attribute("TargetType") == "{x:Type controls:FoldCard}");
+                e => e.Name.LocalName == "Style" && (string)e.Attribute("TargetType") == "{x:Type controls:FoldCard}" && e.Attribute(Xaml + "Key") == null);
             var setter = Assert.Single(style.Elements(), e => e.Name.LocalName == "Setter" && (string)e.Attribute("Property") == "SummaryForeground");
             Assert.Equal("{DynamicResource TextFillColorSecondaryBrush}", (string)setter.Attribute("Value"));
             var value = Assert.Single(style.Descendants(), e => (string)e.Attribute(Xaml + "Name") == "SummaryText");
             Assert.Equal("{TemplateBinding SummaryForeground}", (string)value.Attribute("Foreground"));
+            // A feature line in a part card's tray (the sections pass) is
+            // that style with a template of its own, and its value keeps
+            // the part's color too.
+            var line = Assert.Single(styles.Descendants(), e => e.Name.LocalName == "Style" && (string)e.Attribute(Xaml + "Key") == "PartLine");
+            Assert.Equal("{StaticResource {x:Type controls:FoldCard}}", (string)line.Attribute("BasedOn"));
+            Assert.Equal("{TemplateBinding SummaryForeground}",
+                (string)Assert.Single(line.Descendants(), e => (string)e.Attribute(Xaml + "Name") == "SummaryText").Attribute("Foreground"));
         }
 
         /// <summary>A quiet button has no fill and no edge, and none while

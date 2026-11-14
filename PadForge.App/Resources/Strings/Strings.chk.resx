@@ -653,8 +653,6 @@
   <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Sótuni ekkewe shaker</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR a wor lón ei PC</value></data>
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR a angang</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Peliefefin</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Peliemwán</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kapiini ewe address</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Kútta device</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Meinisin</value></data>

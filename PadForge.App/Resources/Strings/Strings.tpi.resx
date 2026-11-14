@@ -441,7 +441,6 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Ol lait</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Ol lait</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lait</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Of</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Reset lait</value></data>
@@ -746,7 +745,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Jairo</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Jairo</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibresen</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitiviti</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Yunit, tanim eksis i go baksait, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Tanim pitch i go baksait (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Tanim yaw i go baksait (X)</value></data>
@@ -762,9 +760,6 @@
   <data name="Settings_GyroEngageStickDirection_XPos" xml:space="preserve"><value>Raithan (X+)</value></data>
   <data name="Settings_GyroEngageStickDirection_YNeg" xml:space="preserve"><value>Daun (Y-)</value></data>
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Antap (Y+)</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Reset kalibresen</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Reset sensitiviti</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Reset passthrough bilong muv</value></data>
   <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>Reset tanim pitch i go baksait</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Reset deadzone</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Passthrough bilong muv</value></data>
@@ -873,8 +868,6 @@
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Senisim ples bilong lephan na raithan mota</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Traim guria</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Wok bilong mota</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Lephan</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Raithan</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
@@ -1157,8 +1150,7 @@
   <data name="Pad_Pointer_FpsSpeed" xml:space="preserve"><value>Spid bilong FPS</value></data>
   <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>Reset spid bilong FPS</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Nois</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Ol nois bilong makro na nois bilong sistem i kam long spika insait long kontrola yu makim, long USB o Bluetooth. Makim masin long dropdown antap. Olgeta seting hia i bihainim em.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Nois i go aut</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Ol nois bilong makro na nois bilong sistem i kam long spika insait long masin yu makim aninit long Kisim input long, long USB o Bluetooth. Olgeta seting hia i bihainim dispela masin.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Mirror Source, Headphone Volume, buffer, Output Path</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Default bilong sistem</value></data>
   <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(Masin i no stap)</value></data>
@@ -1192,7 +1184,6 @@
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Reset i go long default (100%)</value></data>
   <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Reset i go long 250 Hz</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Masin yu makim i nogat spika insait. Ol nois bilong makro bilong dispela kontrola i pilai long default bilong sistem.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Reset nois i go aut</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Status_ProfileExported_Format" xml:space="preserve"><value>Profail "{0}" i ekspot pinis.</value></data>
@@ -1847,6 +1838,7 @@
   <data name="Menu_Cell_Icon" xml:space="preserve"><value>Aikon</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Dispela masin</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Kontrola olgeta</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Tupela stik</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR i instol pinis</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR i no instol yet</value></data>
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>SteamVR i ran</value></data>
@@ -1950,4 +1942,8 @@
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} long {1} i on</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ol dispela profail yu kisim i gat nupela version long Steam Workshop. Kisim ol gen long Kisim ol profail bilong kisim ol senis.</value></data>
   <data name="Pad_Stick_Speed" xml:space="preserve"><value>Spit</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Nating</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Stretim</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Gem i ritim muv i kalibret pinis na i putim sensitiviti na smoothing bilong em yet.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Gem i ritim muv wantaim sensitiviti, smoothing na kev yu setim hia.</value></data>
 </root>

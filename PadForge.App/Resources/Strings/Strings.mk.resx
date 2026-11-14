@@ -1181,6 +1181,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Подесува како PadForge ги скалира настаните на повратна сила од играта и како ги пренасочува кон моторите за вибрации или хаптичките актуатори на физичкиот контролер. „Вибрации од звук“ додава слој управуван од системскиот звук врз тоа.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Овој уред</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Целиот контролер</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Двете палки</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Вибрациите се репродуцираат на {0} како хаптички импулси, испратени директно до уредот. Посилните вибрации избираат посилен импулс и го повторуваат побрзо.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Хаптичката повратна реакција е исклучена за {0} во Logi Options+, па не се репродуцира ништо додека не ја вклучите повторно таму.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Овој уред сѐ уште не одговорил. Неговите вибрации ќе се репродуцираат штом се разбуди.</value></data>
@@ -1267,7 +1268,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>матични плочи, графички картички и меморија</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>матични плочи и графички картички</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>подлоги за глушец, слушалки и држачи за слушалки</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Светлосна лента</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Игрите го преземаат управувањето секогаш кога запишуваат осветлување.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Внесете шестцифрена хексадецимална боја (RRGGBB или #RRGGBB) и притиснете Enter или кликнете надвор за да ја примените.</value></data>
@@ -1897,7 +1897,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Пуштање на глушецот {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Прикажи/скриј оверлеј на допирна табла</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Постави боја на светлосната лента</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Ја заменува бојата на светлосната лента на доделениот PlayStation-слот со избрана RGB-боја. „Реактивно“ избледува од полн интензитет до црно во текот на поставеното време на опаѓање, а потоа го враќа управувањето на поставките од картичката „Светлосна лента“. „Лепливо“ ја задржува бојата додека не се изврши дејството „Отстрани ја замената на светлосната лента“. Записите од играта и понатаму имаат предност пред замената.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Ја заменува бојата на светлосната лента на доделениот PlayStation-слот со избрана RGB-боја. „Реактивно“ избледува од полн интензитет до црно во текот на поставеното време на опаѓање, а потоа го враќа управувањето на поставките од картичката „Осветлување“. „Лепливо“ ја задржува бојата додека не се изврши дејството „Отстрани ја замената на светлосната лента“. Записите од играта и понатаму имаат предност пред замената.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Трепни ја светлосната лента {0} (опаѓање {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Задржи ја светлосната лента {0} до отстранување</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Отстрани ја замената на светлосната лента</value></data>
@@ -1905,7 +1905,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Ја ослободува секоја активна замена на светлосната лента на доделениот слот. Користете го заедно со лепливото дејство „Постави боја на светлосната лента“ за да ја поништите преку друго макро.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Постави режим на светлосната лента</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Постави го режимот на светлосната лента на {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Го поставува режимот на светлосната лента на доделениот слот на одредена вредност. Останува како измена во картичката „Светлосна лента“ додека друго дејство или корисникот не го промени.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Го поставува режимот на светлосната лента на доделениот слот на одредена вредност. Останува како измена во картичката „Осветлување“ додека друго дејство или корисникот не го промени.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Менувај ги режимите на светлосната лента</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Циклус низ режимите на светлосната лента: {0}</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Го менува режимот на светлосната лента на слотот низ режимите избрани подолу. Секое извршување преминува на следниот штиклиран режим. Позицијата во циклусот е посебна за секое дејство и се ресетира при рестартирање на апликацијата.</value></data>
@@ -1920,7 +1920,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Опаѓање</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Избледување</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Палета</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Празна палета ја користи палетата од картичката „Светлосна лента“ на слотот.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Празна палета ја користи палетата од картичката „Осветлување“ на слотот.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Режим</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Изберете низ кои режими на светлосната лента ќе минува макрото. Секое извршување преминува на следниот штиклиран режим.</value></data>
 
@@ -2150,6 +2150,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Излез како глушец</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>инвертирање, Инерција, Одзив, Забрзување, фрлање</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Позиција на сензорската лента, Вертикално поместување, Измазнување</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Ја подесува брзината на курсорот кога прст на допирната табла е мапиран на X/Y на глушецот на виртуелен контролер Тастатура / глушец. Стандардната вредност е 1.0. Зголемете ја која било оска за побрз курсор, намалете за побавен. „Инвертирај“ ја превртува која било оска.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Осетливост на глушецот X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Множител за хоризонталното поместување допирна табла → глушец. Под 1.0 курсорот се забавува. Над 1.0 се забрзува.</value></data>
@@ -2355,7 +2356,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Се калибрира… не мрдајте</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Ресетирај ја калибрацијата</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Го брише отстапувањето на жироскопот во мирување и времето на последната калибрација. Следниот циклус на читање повторно ја извршува автоматската калибрација од 1.5 секунди на овој уред.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Жироскоп во живо</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Акцелерометар во живо</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Хоризонтална осетливост</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Го скалира хоризонталниот (вртење + навалување) придонес на жироскопот во излезот. 1.0 ја остава брзината како што ја гледа моторот. Повисоките вредности засилуваат, пониските ослабуваат. Се применува на ниво на уредот, па секое поврзување на жироскопот на овој контролер го наследува истото хоризонтално чувство.</value></data>
@@ -2375,8 +2375,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Жироскоп</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Подесете како сензорот за движење на овој контролер управува со излезот на глушецот и палката. Калибрирајте на рамна површина за да го поништите лизгањето во мирување, а потоа подесете ги осетливоста, измазнувањето и правилата за вклучување по ваш вкус.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Калибрација</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Читања во живо од жироскопот и акцелерометарот</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Осетливост</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Единици, инвертирање на оските, Калибрација според реалниот свет</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° по вртење</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Обликување на одзивот</value></data>
@@ -2462,11 +2460,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Екстра широка</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Множител</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Степени по вртење на екранот</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Ресетирај ја калибрацијата</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Ресетирај ја осетливоста</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Ресетирај го обликувањето на одзивот</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Ресетирај го вклучувањето</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Ресетирај го пропуштањето на движењето</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Ресетирај го просторот</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Ресетирај го држењето</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Ресетирај ја хоризонталната осетливост</value></data>
@@ -2486,8 +2481,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Ресетирај ја палката за вклучување</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Ресетирај ја насоката за вклучување</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Пропуштање на движењето</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Примени ги поставките на жироскопот врз пропуштањето на движењето</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Ги применува изборните поставки од картичките за жироскопот (мртва зона, осетливост, измазнување, крива на одзив, инвертирање) врз движењето што виртуелниот контролер го пријавува на играта или емулаторот. Исклучете го за да се испраќа само калибрираното читање, а играта да ги примени сопствената осетливост и измазнување. Корекцијата на лизгањето од калибрацијата секогаш важи во двата случаи.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>„Приспособено“ ги применува поставките од картичката за жироскопот (мртва зона, осетливост, измазнување, крива на одзив, инвертирање) врз движењето што виртуелниот контролер го пријавува на играта или емулаторот. „Необработено“ испраќа само калибрирано читање, а играта ги применува сопствената осетливост и измазнување. Корекцијата на лизгањето од калибрацијата важи во двата случаи.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Необработено</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Приспособено</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Играта го чита калибрираното движење и ги применува сопствената осетливост и измазнување.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Играта го чита движењето со осетливоста, измазнувањето и кривата поставени тука.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Ресетирај ги поставките за пропуштање</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Осетливост</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Множител на осетливоста на жироскопот за секој извор. 1.0 = стандардната вредност на моторот (500°/s → целосен отклон). Вредностите над 1.0 се поосетливи. Вредностите под 1.0 се помалку осетливи.</value></data>
@@ -2735,8 +2733,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Овој контролер нема мотори во тригерите, па вибрациите од игрите што користат импулсни тригери на Xbox не би се чувствувале. Наместо тоа, спојте го секој канал на тригер со главниот мотор на истата страна.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Тестирај вибрации</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Активност на моторите</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Лев</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Десен</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Применува постојана сила на овој уред додека не ја исклучите. Силата што ја управува играта, од кој било извор, има предност додека е активна, а постојаната сила продолжува кога играта ќе престане.</value></data>
@@ -3256,7 +3252,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>Аудио</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-покажувач</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Нишанете со овој Wii Remote кон екранот со неговата IR-камера. Потребна е сензорска лента или две инфрацрвени LED-диоди над или под екранот. Калибрирајте го како светлосен пиштол на страницата Уреди за да нишаните точно. Калибриран Wii Remote ги игнорира „Позиција на сензорската лента“ и „Вертикално поместување“.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Подесување на покажувачот</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Позиција на сензорската лента</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Центрирано</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Над екранот</value></data>
@@ -3283,8 +3278,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Го менува режимот на покажувачот на Wii низ режимите избрани подолу за секој Wii Remote со IR на слотот. Секое извршување преминува на следниот штиклиран режим. Позицијата во циклусот е посебна за секое дејство и се ресетира при рестартирање на апликацијата.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Изберете низ кои режими на покажувачот ќе минува макрото. Секое извршување преминува на следниот штиклиран режим.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Аудио</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Звуците од макроа и пресликаниот системски звук се репродуцираат преку вградениот звучник на избраниот контролер, преку USB или Bluetooth. Изберете го уредот во паѓачкото мени погоре. Секоја поставка тука го следи.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Излез на звук</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Звуците од макроа и пресликаниот системски звук се репродуцираат преку вградениот звучник на уредот избран под „Управувано од“, преку USB или Bluetooth. Секоја поставка тука го следи тој уред.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Извор за пресликување, Јачина на слушалките, бафер, Излезна патека</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Звуците автоматски се насочуваат кон избраниот контролер. Преку USB, аудиокрајната точка на контролерот се пронаоѓа според хардверскиот контејнер. Преку Bluetooth, звукот се емитува во HID-рамки на Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Извор за пресликување</value></data>
@@ -3347,7 +3341,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Ресетирај ја границата на тонот</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Паралелно го копира сѐ што пушта стандардниот системски излез на вградениот звучник на овој контролер. Работи преку USB и Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Избраниот уред нема вграден звучник. Звуците од макроа за овој контролер се пуштаат на стандардниот системски излез.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Ресетирај го излезот на звук</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Пакет за тестирање на DualSense во прелистувач од Xuezhou Dai (daidr): референца за CRC-рамката на Sony feature-извештаите и командите за тестирање на фирмверот што PadForge ги проследува од виртуелните до физичките контролери.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Осветленост на LED-диодата на Guide: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Ја поставува осветленоста на LED-диодата на копчето Guide или Home за секој способен контролер на слотот. Контролерите Xbox ја прифаќаат само преку USB.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Важи за контролерите Xbox преку USB, Steam Controller од 2015 и контролерите Switch со LED-диода на копчето Home. Комбинирајте две вакви дејства за LED-диодата да трепне кога макрото започнува и да се врати кога завршува.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Ресетирај го режимот на покажувачот</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Ресетирај го подесувањето на покажувачот</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Ресетирај ја позицијата на сензорската лента</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Ресетирај го вертикалното поместување</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Ресетирај го измазнувањето</value></data>

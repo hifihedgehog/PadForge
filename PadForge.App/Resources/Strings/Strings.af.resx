@@ -1102,6 +1102,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Stel in hoe PadForge kragterugvoer-gebeure van die speletjie skaal en hoe dit dit na die fisiese controller se vibrasiemotors of haptiese aktueerders roeteer. Oudiovibrasie voeg 'n laag by wat deur stelseloudio aangedryf word.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Hierdie toestel</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Hele controller</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Albei stokkies</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Vibrasie speel op {0} as haptiese pulse, direk na die toestel gestuur. Sterker vibrasie kies 'n sterker puls en herhaal dit vinniger.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Haptiese terugvoer is vir {0} in Logi Options+ afgeskakel, so dit speel niks totdat jy dit daar weer aanskakel nie.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Hierdie toestel het nog nie geantwoord nie. Sy vibrasie speel sodra dit wakker word.</value></data>
@@ -1167,7 +1168,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>headsets, muismatte en Chroma Link-strokies</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>headsets, muismatte en luidsprekers</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headsets</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Ligbalk</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Speletjies neem oor wanneer hulle beligting skryf.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Voer 'n sessyfer-hex-kleur in (RRGGBB of #RRGGBB) en druk Enter of klik weg om toe te pas.</value></data>
@@ -1709,7 +1709,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Muis los {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Wissel raakplaat-overlay</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Stel ligbalkkleur</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Oorheers die toegewysde PlayStation-gleuf se ligbalk met 'n gekose RGB-kleur. Reaktief vervaag van volle intensiteit na swart oor die ingestelde vervalvenster en gee dan terug aan die instellings van die Ligbalk-kaart. Klewerig hou die kleur vas totdat 'n Vee ligbalkoorheersing uit-aksie loop. Skryfhandelinge deur die speletjie behou steeds voorrang bo die oorheersing.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Oorheers die toegewysde PlayStation-gleuf se ligbalk met 'n gekose RGB-kleur. Reaktief vervaag van volle intensiteit na swart oor die ingestelde vervalvenster en gee dan terug aan die instellings van die Beligting-kaart. Klewerig hou die kleur vas totdat 'n Vee ligbalkoorheersing uit-aksie loop. Skryfhandelinge deur die speletjie behou steeds voorrang bo die oorheersing.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Flits ligbalk {0} (verval {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Hou ligbalk {0} tot dit uitgevee word</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Vee ligbalkoorheersing uit</value></data>
@@ -1717,7 +1717,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Gee enige aktiewe ligbalkoorheersing op die toegewysde gleuf vry. Kombineer met 'n klewerige Stel ligbalkkleur-aksie om dit via 'n ander makro ongedaan te maak.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Stel ligbalkmodus</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Stel ligbalkmodus na {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Stel die toegewysde gleuf se ligbalkmodus na 'n spesifieke waarde. Bly bestaan soos 'n wysiging op die Ligbalk-kaart totdat 'n ander aksie of die gebruiker dit verander.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Stel die toegewysde gleuf se ligbalkmodus na 'n spesifieke waarde. Bly bestaan soos 'n wysiging op die Beligting-kaart totdat 'n ander aksie of die gebruiker dit verander.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Wissel deur ligbalkmodusse</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Wissel deur {0} ligbalkmodusse</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Skuif die gleuf se ligbalkmodus deur die modusse wat hieronder gekies is. Elke aktivering gaan na die volgende gemerkte modus. Die siklusposisie is per aksie en word teruggestel wanneer die program herbegin.</value></data>
@@ -1732,7 +1732,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Verval</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Vervaag</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palet</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>'n Leë palet gebruik die palet op die gleuf se Ligbalk-kaart.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>'n Leë palet gebruik die palet op die gleuf se Beligting-kaart.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Kies deur watter ligbalkmodusse die makro moet wissel. Elke aktivering gaan na die volgende gemerkte modus.</value></data>
 
@@ -1962,6 +1962,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Muisuitset</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Keer om, Momentum, Reaksie, Versnelling, gooi</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Sensorbalkposisie, Vertikale verskuiwing, Gladmaak</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Pas wyserspoed aan wanneer 'n raakplaatvinger aan muis X/Y op 'n Sleutelbord / Muis-virtuele controller toegewys is. 1.0 is die verstek. Verhoog 'n as vir 'n vinniger wyser, verlaag vir 'n stadiger een. Keer om draai 'n as om.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Muissensitiwiteit X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Vermenigvuldiger op horisontale raakplaat → muisverskuiwing. Onder 1.0 vertraag die wyser. Bo 1.0 versnel dit.</value></data>
@@ -2167,7 +2168,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibreer tans… hou stil</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Stel kalibrasie terug</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Vee die rus-giro-vooroordeel en die tydstempel van die laaste kalibrasie uit. Die volgende peilsiklus voer die 1.5-sekonde-outokalibrasie op hierdie toestel weer uit.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Lewendige giro</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Lewendige versnellingsmeter</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Horisontale sensitiwiteit</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Skaal die horisontale (gier + rol) giro-bydrae tot die uitset. 1.0 los die tempo soos die enjin dit sien. Hoër waardes versterk, laer waardes demp. Word op toestelvlak toegepas sodat elke giro-binding op hierdie controller dieselfde horisontale gevoel erf.</value></data>
@@ -2187,8 +2187,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giro</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Stel in hoe hierdie controller se bewegingsensor muis- en stokkie-uitset aandryf. Kalibreer op 'n plat oppervlak om rusdrywing na nul te stel, en stel dan sensitiwiteit, gladmaking en aktiveringsreëls na smaak in.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrasie</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Lewendige giro- en versnellingsmeterlesings</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitiwiteit</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Eenhede, keer asse om, Werklikheidskalibrasie</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° per omwenteling</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Reaksievorm</value></data>
@@ -2274,11 +2272,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Ekstra breed</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Vermenigvuldiger</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Grade per skermdraai</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Stel kalibrasie terug</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Stel sensitiwiteit terug</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Stel reaksievorm terug</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Stel aktivering terug</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Stel bewegingsdeurlating terug</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Stel ruimte terug</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Stel greep terug</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Stel horisontale sensitiwiteit terug</value></data>
@@ -2298,8 +2293,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Stel aktiveerstokkie terug</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Stel aktiveerrigting terug</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Bewegingsdeurlating</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Pas giro-instelling toe op bewegingsdeurlating</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Voer die Giro-kaarte se opsionele instelling (dooisone, sensitiwiteit, gladmaking, reaksiekurwe, keer om) uit op die beweging wat die virtuele controller aan die speletjie of emulator rapporteer. Skakel dit af om slegs die gekalibreerde lesing te stuur en die speletjie sy eie sensitiwiteit en gladmaking te laat toepas. Kalibrasie-dryfregstelling geld in elk geval altyd.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Ingestel voer die Giro-kaart se instelling (dooisone, sensitiwiteit, gladmaking, reaksiekurwe, keer om) uit op die beweging wat die virtuele controller aan die speletjie of emulator rapporteer. Rou stuur slegs die gekalibreerde lesing en laat die speletjie sy eie sensitiwiteit en gladmaking toepas. Kalibrasie-dryfregstelling geld in elk geval.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Rou</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Ingestel</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Die speletjie lees die gekalibreerde beweging en pas sy eie sensitiwiteit en gladmaking toe.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Die speletjie lees die beweging met die sensitiwiteit, gladmaking en kurwe wat hier ingestel is.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Stel deurlatinginstelling terug</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitiwiteit</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Giro-sensitiwiteitsvermenigvuldiger per bron. 1.0 = die enjin se verstek (500°/s → volle uitwyking). Waardes bo 1.0 is sensitiewer. Waardes onder 1.0 is minder sensitief.</value></data>
@@ -2503,8 +2501,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Hierdie controller het geen snellermotors nie, so speletjies wat Xbox-impulssnellers gebruik, sou nie gevoel word nie. Vou eerder elke snellerkanaal in die hoofmotor aan dieselfde kant in.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Toets vibrasie</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoraktiwiteit</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Linker</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Regter</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Pas 'n deurlopende krag op hierdie toestel toe totdat jy dit afskakel. Krag wat deur 'n speletjie gestuur word, van enige bron, geniet voorrang terwyl dit aktief is en hervat wanneer die speletjie stop.</value></data>
@@ -2944,7 +2940,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>Oudio</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-wyser</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Rig hierdie Wii Remote met sy IR-kamera op die skerm. Benodig 'n sensorbalk, of twee infrarooi-LED's, bo of onder die skerm. Kalibreer dit as 'n ligroer op die Toestelle-bladsy om op die presiese plek te rig. 'n Gekalibreerde afstandbeheer ignoreer Sensorbalkposisie en Vertikale verskuiwing.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Wyserinstelling</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Sensorbalkposisie</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Gesentreer</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Bo die skerm</value></data>
@@ -2971,8 +2966,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Skuif die Wii-wysermodus deur die modusse hieronder gekies vir elke IR-bekwame afstandbeheer op die gleuf. Elke vuur skuif na die volgende afgemerkte modus. Die siklusposisie is per aksie en stel terug wanneer die program herbegin.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Kies deur watter wysermodusse die makro moet siklus. Elke vuur skuif na die volgende afgemerkte modus.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Oudio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makroklanke en gespieëlde stelseloudio speel deur die gekose controller se ingeboude luidspreker, oor USB of Bluetooth. Kies die toestel in die aftreklys hierbo. Elke instelling hier volg dit.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Klankuitvoer</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makroklanke en gespieëlde stelseloudio speel deur die ingeboude luidspreker van die toestel wat onder Aangedryf deur gekies is, oor USB of Bluetooth. Elke instelling hier volg daardie toestel.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Spieëlbron, Oorfoonvolume, buffer, Uitvoerpad</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Klanke word outomaties na die gekose controller gestuur. Oor USB word die controller se eie oudio-eindpunt volgens hardewarehouer gepas. Oor Bluetooth word die oudio in Sony HID-rame gestroom.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Spieëlbron</value></data>
@@ -3035,7 +3029,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Stel toonlimiet terug</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopieer alles wat die stelselverstekuitvoer speel gelyktydig na hierdie controller se ingeboude luidspreker. Werk oor USB en Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Die gekose toestel het geen ingeboude luidspreker nie. Makroklanke vir hierdie controller speel op die stelselverstekuitvoer.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Stel klankuitvoer terug</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Brauseripõhine DualSense'i testikomplekt, autor Xuezhou Dai (daidr): viide Sony funktsiooniaruannete CRC-raamistusele ja püsivara testikäskudele, mida PadForge edastab virtuaalsetelt mängupultidelt füüsilistele.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3465,8 +3458,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide-LED-helderheid: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Stel die helderheid van die Guide- of Home-knoppie-LED vir elke geskikte controller op die gleuf. Xbox-controllers aanvaar dit net oor USB.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Geld vir Xbox-controllers oor USB, die 2015 Steam Controller en Switch-controllers met ’n Home-knoppie-LED. Kombineer twee van hierdie aksies om die LED te laat flits wanneer ’n makro begin en dit te herstel wanneer dit eindig.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Stel wysermodus terug</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Stel wyserafstemming terug</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Stel sensorbalkposisie terug</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Stel vertikale verskuiwing terug</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Stel gladmaking terug</value></data>

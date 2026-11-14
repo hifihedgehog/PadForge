@@ -1181,6 +1181,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Justerer, hvordan PadForge skalerer force feedback-hændelser fra spillet, og hvordan de sendes videre til den fysiske controllers vibrationsmotorer eller haptiske aktuatorer. Lydvibration tilføjer et lag oveni, der styres af systemlyden.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Denne enhed</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Hele controlleren</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Begge sticks</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Vibration afspilles på {0} som haptiske impulser, der sendes direkte til enheden. Kraftigere vibration vælger en kraftigere impuls og gentager den hurtigere.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Haptisk feedback er slået fra for {0} i Logi Options+, så den afspiller intet, før du slår det til igen der.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Denne enhed har ikke svaret endnu. Dens vibration afspilles, når den vågner.</value></data>
@@ -1267,7 +1268,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>bundkort, grafikkort og hukommelse</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>bundkort og grafikkort</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>musemåtter, headsets og headsetholdere</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lysbjælke</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Spil overtager, når de skriver belysning.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Angiv en sekscifret hexfarve (RRGGBB eller #RRGGBB), og tryk på Enter, eller klik et andet sted for at anvende den.</value></data>
@@ -1897,7 +1897,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Museslip {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Slå touchpad-overlay til/fra</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Angiv lysbjælkefarve</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Tilsidesæt lysbjælken på den tildelte PlayStation-plads med en valgt RGB-farve. Reaktiv toner fra fuld intensitet til sort over det angivne henfaldsvindue og overlader derefter styringen til indstillingerne på kortet Lysbjælke. Fastholdt holder farven, indtil en handling af typen Ryd tilsidesættelse af lysbjælke kører. Det, spil skriver, har stadig forrang over tilsidesættelsen.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Tilsidesæt lysbjælken på den tildelte PlayStation-plads med en valgt RGB-farve. Reaktiv toner fra fuld intensitet til sort over det angivne henfaldsvindue og overlader derefter styringen til indstillingerne på kortet Belysning. Fastholdt holder farven, indtil en handling af typen Ryd tilsidesættelse af lysbjælke kører. Det, spil skriver, har stadig forrang over tilsidesættelsen.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Blink lysbjælke {0} (henfald {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Hold lysbjælke {0}, indtil den ryddes</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Ryd tilsidesættelse af lysbjælke</value></data>
@@ -1905,7 +1905,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Ophæver enhver aktiv tilsidesættelse af lysbjælken på den tildelte plads. Brug sammen med en fastholdt handling af typen Angiv lysbjælkefarve for at fortryde den via en anden makro.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Angiv lysbjælketilstand</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Sæt lysbjælketilstand til {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Sætter lysbjælketilstanden på den tildelte plads til en bestemt værdi. Bevares som en ændring på kortet Lysbjælke, indtil en anden handling eller brugeren ændrer den.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Sætter lysbjælketilstanden på den tildelte plads til en bestemt værdi. Bevares som en ændring på kortet Belysning, indtil en anden handling eller brugeren ændrer den.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Skift mellem lysbjælketilstande</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Skift mellem {0} lysbjælketilstande</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Flytter pladsens lysbjælketilstand videre gennem de tilstande, der er valgt nedenfor. Hver udløsning går til den næste markerede tilstand. Positionen i cyklussen gælder for hver handling og nulstilles, når programmet genstartes.</value></data>
@@ -1920,7 +1920,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Henfald</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Udtoning</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palet</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>En tom palet bruger paletten på pladsens kort Lysbjælke.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>En tom palet bruger paletten på pladsens kort Belysning.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Tilstand</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Vælg, hvilke lysbjælketilstande makroen skal skifte mellem. Hver udløsning går videre til den næste markerede tilstand.</value></data>
 
@@ -2150,6 +2150,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Museoutput</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Inverter, Inerti, Respons, Acceleration, kast</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Sensorbjælkens position, Lodret forskydning, Udjævning</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Justerer markørens hastighed, når en touchpad-finger er tildelt mus X/Y på en virtuel controller af typen Tastatur / mus. 1.0 er standard. Hæv en af akserne for en hurtigere markør, sænk for en langsommere. Inverter vender en af akserne.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Musefølsomhed X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Multiplikator for vandret touchpad → musebevægelse. Under 1.0 gør markøren langsommere. Over 1.0 gør den hurtigere.</value></data>
@@ -2355,7 +2356,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibrerer… hold den stille</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Nulstil kalibrering</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Rydder gyroens hvileforskydning og tidsstemplet for seneste kalibrering. Den næste aflæsningscyklus kører den automatiske kalibrering på 1.5 sekunder igen på denne enhed.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Gyroskop (live)</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Accelerometer (live)</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Vandret følsomhed</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Skalerer gyroens vandrette bidrag (drejning + krængning) til outputtet. 1.0 lader hastigheden være, som motoren ser den. Højere værdier forstærker, lavere værdier dæmper. Anvendes på enhedsniveau, så alle gyrotildelinger på denne controller arver den samme vandrette fornemmelse.</value></data>
@@ -2375,8 +2375,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Juster, hvordan denne controllers bevægelsessensor styrer mus- og stickoutput. Kalibrer på en plan overflade for at fjerne drift i hvile, og finjuster derefter følsomhed, udjævning og aktiveringsregler efter smag.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrering</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Live-aflæsninger af gyroskop og accelerometer</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Følsomhed</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Måleenhed, inverter akser, Kalibrering til virkeligheden</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° pr. omdrejning</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Responsformning</value></data>
@@ -2462,11 +2460,8 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Ekstra bred</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplikator</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Grader pr. skærmomdrejning</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Nulstil kalibrering</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Nulstil følsomhed</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Nulstil responsformning</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Nulstil aktivering</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Nulstil videresendelse af bevægelse</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Nulstil rum</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Nulstil greb</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Nulstil vandret følsomhed</value></data>
@@ -2486,8 +2481,11 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Nulstil aktiveringsstick</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Nulstil aktiveringsretning</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Videresendelse af bevægelse</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Anvend gyrojustering på videresendelse af bevægelse</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Anvender den valgfrie justering fra kortene under Gyro (dødzone, følsomhed, udjævning, responskurve, invertering) på den bevægelse, den virtuelle controller rapporterer til spillet eller emulatoren. Slå det fra for kun at sende den kalibrerede aflæsning og lade spillet anvende sin egen følsomhed og udjævning. Korrektion af drift ved kalibrering gælder altid uanset hvad.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Justeret anvender justeringen fra kortet Gyro (dødzone, følsomhed, udjævning, responskurve, invertering) på den bevægelse, den virtuelle controller rapporterer til spillet eller emulatoren. Rå sender kun den kalibrerede aflæsning og lader spillet anvende sin egen følsomhed og udjævning. Korrektion af drift ved kalibrering gælder uanset hvad.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Rå</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Justeret</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Spillet læser den kalibrerede bevægelse og anvender sin egen følsomhed og udjævning.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Spillet læser bevægelsen med den følsomhed, udjævning og kurve, der er indstillet her.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Nulstil justering af videresendelse</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Følsomhed</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplikator for gyrofølsomhed pr. kilde. 1.0 = motorens standard (500°/s → fuldt udslag). Værdier over 1.0 er mere følsomme. Værdier under 1.0 er mindre følsomme.</value></data>
@@ -2735,8 +2733,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Denne controller har ingen triggermotorer, så spil, der bruger Xbox Impulse Triggers, ville ikke kunne mærkes. Flet i stedet hver triggerkanal ind i hovedmotoren på samme side.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Test vibration</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoraktivitet</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Venstre</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Højre</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Påfør en konstant kraft på denne enhed, indtil du slår det fra. Kraft styret af et spil fra en hvilken som helst kilde tilsidesætter den, mens den er aktiv, og den genoptages, når spillet stopper.</value></data>
@@ -3256,7 +3252,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Lyd</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-markør</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Sigt med denne Wii Remote mod skærmen med dens IR-kamera. Kræver en sensorbjælke eller to infrarøde LED'er over eller under skærmen. Kalibrer den som en lyspistol på siden Enheder for at sigte præcist. En kalibreret remote ignorerer Sensorbjælkens position og Lodret forskydning.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Markørjustering</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Sensorbjælkens position</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Centreret</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Over skærmen</value></data>
@@ -3283,8 +3278,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Flytter Wii-markørtilstanden videre gennem de tilstande, der er valgt nedenfor, for alle remotes med IR på pladsen. Hver udløsning går til den næste markerede tilstand. Positionen i cyklussen gælder for hver handling og nulstilles, når programmet genstartes.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Vælg, hvilke markørtilstande makroen skal skifte mellem. Hver udløsning går videre til den næste markerede tilstand.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Lyd</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makrolyde og spejlet systemlyd afspilles gennem den valgte controllers indbyggede højttaler via USB eller Bluetooth. Vælg enheden i rullelisten ovenfor. Alle indstillinger her følger den.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Lydoutput</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makrolyde og spejlet systemlyd afspilles gennem den indbyggede højttaler i enheden, der er valgt under Styret af, via USB eller Bluetooth. Alle indstillinger her følger den enhed.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Spejlkilde, Lydstyrke i hovedtelefoner, buffer, Outputvej</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Lyde sendes automatisk til den valgte controller. Via USB findes controllerens eget lydslutpunkt ud fra hardwarecontaineren. Via Bluetooth streames lyden i Sony HID-rammer.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Spejlkilde</value></data>
@@ -3347,7 +3341,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Nulstil tonegrænse</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopierer alt, hvad systemets standardoutput afspiller, til denne controllers indbyggede højttaler samtidig. Virker via USB og Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Den valgte enhed har ingen indbygget højttaler. Makrolyde for denne controller afspilles på systemets standardoutput.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Nulstil lydoutput</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Testsuite til DualSense i browseren af Xuezhou Dai (daidr): reference for CRC-indramningen af Sonys feature reports og de firmware-testkommandoer, som PadForge videresender fra virtuelle til fysiske controllere.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Lysstyrke for Guide-LED: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Angiver lysstyrken for LED'en i Guide- eller Home-knappen for alle understøttede controllere på pladsen. Xbox-controllere accepterer det kun via USB.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Gælder Xbox-controllere via USB, Steam Controller fra 2015 og Switch-controllere med LED i Home-knappen. Brug to af disse handlinger sammen for at blinke med LED'en, når en makro starter, og gendanne den, når den slutter.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Nulstil markørtilstand</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Nulstil markørjustering</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Nulstil sensorbjælkens position</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Nulstil lodret forskydning</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Nulstil udjævning</value></data>

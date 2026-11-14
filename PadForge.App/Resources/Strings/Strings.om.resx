@@ -394,7 +394,6 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Ibsaa</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Ibsaa</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Cufaa</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Meeshaa sagalee hordofi</value></data>
@@ -790,7 +789,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Jayiroo</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Jayiroo</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kaalibireeshinii</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Miira</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Safartuu, aksisii garagalchi, Real-World Calibration</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Piichii garagalchi (Y)</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Yaawu garagalchi (X)</value></data>
@@ -814,8 +812,6 @@
   <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Qabannoo</value></data>
   <data name="Pad_Gyro_Curve_Wide" xml:space="preserve"><value>Bal'aa</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Baay'ee bal'aa</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Kaalibireeshinii deebisi</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Miira deebisi</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Qabannoo deebisi</value></data>
   <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>Piichii garagalchuu deebisi</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Deedzoonii deebisi</value></data>
@@ -961,8 +957,6 @@
   <data name="Pad_SwapMotors" xml:space="preserve"><value>Mootora bitaa fi mirgaa wal jijjiiri</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Raafama qori</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Sochii mootoraa</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Bitaa</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Mirgaa</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Humna dhaabbataa fayyadami</value></data>
@@ -1963,6 +1957,7 @@
   <data name="Menu_Cell_Action" xml:space="preserve"><value>Gocha</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Meeshaa kana</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Kontirolaa guutuu</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Sitikii lamaan</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Taphataa ykn Addunyaa</value></data>
   <data name="Pad_Grip_FoldHint" xml:space="preserve"><value>Akkaataa kontirolaan itti qabamu</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR fe'ameera</value></data>

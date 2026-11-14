@@ -321,7 +321,6 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>nā headset</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Pio</value></data>
   <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>Pio</value></data>
@@ -1014,8 +1013,6 @@
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>Ua hoʻokomo ʻia ʻo SteamVR</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>ʻAʻole i hoʻokomo ʻia ʻo SteamVR</value></data>
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>Ke holo nei ʻo SteamVR</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Hema</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>ʻĀkau</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Holoi i ka trigger</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>E hoʻā i ka hoʻopuka telemetry i loko o ka pāʻani a kuhikuhi iā ia i kēia PC a me kēia port.</value></data>
   <data name="Extras_Note_HeadTracking" xml:space="preserve"><value>ʻO ke kūlana o ke poʻo ka lālani Head Tracker ma [Nā hāmeʻa]. E hoʻopili i ka huli ʻākau a hema o ke poʻo i kekahi axis stick ma ka māhele Nā pihi o kekahi controller.</value></data>

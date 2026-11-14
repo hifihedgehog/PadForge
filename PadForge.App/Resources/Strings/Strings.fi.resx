@@ -1181,6 +1181,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Säätää, miten PadForge skaalaa pelin voimapalautetapahtumat ja miten se reitittää ne fyysisen ohjaimen tärinämoottoreille tai haptisille toimilaitteille. Äänitärinä lisää päälle järjestelmän äänen ohjaaman tason.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Tämä laite</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Koko ohjain</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Molemmat sauvat</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Tärinä toistetaan laitteella {0} haptisina pulsseina, jotka lähetetään suoraan laitteeseen. Voimakkaampi tärinä valitsee voimakkaamman pulssin ja toistaa sitä tiheämmin.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Haptinen palaute on poistettu käytöstä laitteelta {0} Logi Options+ -ohjelmassa, joten se ei toista mitään, ennen kuin otat sen siellä uudelleen käyttöön.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Laite ei ole vielä vastannut. Sen tärinä toistetaan, kun se herää.</value></data>
@@ -1267,7 +1268,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>emolevyt, näytönohjaimet ja muistit</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>emolevyt ja näytönohjaimet</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>hiirimatot, kuulokkeet ja kuuloketelineet</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Valopalkki</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Pelit ottavat ohjauksen aina, kun ne kirjoittavat valaistusta.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Kirjoita kuusinumeroinen heksadesimaaliväri (RRGGBB tai #RRGGBB) ja ota se käyttöön painamalla Enteriä tai napsauttamalla muualle.</value></data>
@@ -1897,7 +1897,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Hiiren vapautus {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Näytä/piilota kosketuslevyn peittokuva</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Aseta valopalkin väri</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Ohittaa liitetyn PlayStation-paikan valopalkin valitulla RGB-värillä. Reaktiivinen häivyttyy täydestä voimakkuudesta mustaan määritetyn vaimenemisajan kuluessa ja palauttaa sitten Valopalkki-kortin asetukset. Pysyvä pitää värin, kunnes Poista valopalkin ohitus -toiminto suoritetaan. Pelin ohjaamat kirjoitukset ovat silti ohituksen edellä.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Ohittaa liitetyn PlayStation-paikan valopalkin valitulla RGB-värillä. Reaktiivinen häivyttyy täydestä voimakkuudesta mustaan määritetyn vaimenemisajan kuluessa ja palauttaa sitten Valaistus-kortin asetukset. Pysyvä pitää värin, kunnes Poista valopalkin ohitus -toiminto suoritetaan. Pelin ohjaamat kirjoitukset ovat silti ohituksen edellä.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Välähdytä valopalkkia: {0} (vaimeneminen {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Pidä valopalkki: {0}, kunnes poistetaan</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Poista valopalkin ohitus</value></data>
@@ -1905,7 +1905,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Vapauttaa liitetyn paikan aktiivisen valopalkin ohituksen. Käytä yhdessä pysyvän Aseta valopalkin väri -toiminnon kanssa, jotta voit kumota sen toisella makrolla.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Aseta valopalkin tila</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Aseta valopalkin tilaksi {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Asettaa liitetyn paikan valopalkin tilan tiettyyn arvoon. Säilyy Valopalkki-kortilla tehdyn muutoksen tavoin, kunnes toinen toiminto tai käyttäjä muuttaa sen.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Asettaa liitetyn paikan valopalkin tilan tiettyyn arvoon. Säilyy Valaistus-kortilla tehdyn muutoksen tavoin, kunnes toinen toiminto tai käyttäjä muuttaa sen.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Vaihda valopalkin tiloja kierrossa</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Kierrätä valopalkin tiloja: {0}</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Vaihtaa paikan valopalkin tilaa alla valittujen tilojen läpi. Jokainen laukaisu siirtyy seuraavaan valittuun tilaan. Kierron kohta on toimintokohtainen ja nollautuu, kun sovellus käynnistetään uudelleen.</value></data>
@@ -1920,7 +1920,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Vaimeneminen</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Häivytys</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Paletti</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Tyhjä paletti käyttää paikan Valopalkki-kortin palettia.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Tyhjä paletti käyttää paikan Valaistus-kortin palettia.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Tila</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Valitse valopalkin tilat, joiden läpi makro kiertää. Jokainen laukaisu siirtyy seuraavaan valittuun tilaan.</value></data>
 
@@ -2150,6 +2150,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Hiirilähtö</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Käännä, Inertia, Vaste, Kiihdytys, heitto</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Anturipalkin sijainti, Pystysiirtymä, Tasoitus</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Säätää osoittimen nopeutta, kun kosketuslevyn sormi on määritetty hiiren X/Y-akseleille Näppäimistö / hiiri -virtuaaliohjaimessa. Oletus on 1.0. Nosta kummankin akselin arvoa nopeuttaaksesi osoitinta tai laske hidastaaksesi. Käännä-asetus kääntää kumman tahansa akselin.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Hiiren herkkyys X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Kerroin vaakasuuntaiselle kosketuslevy → hiiri -muutokselle. Alle 1.0 hidastaa osoitinta. Yli 1.0 nopeuttaa sitä.</value></data>
@@ -2355,7 +2356,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibroidaan… pidä paikallaan</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Palauta kalibrointi</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Tyhjentää gyron lepotilan poikkeaman ja viimeisimmän kalibroinnin aikaleiman. Seuraava kyselykierros suorittaa tälle laitteelle uudelleen 1.5 sekunnin automaattisen kalibroinnin.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Gyroskooppi reaaliajassa</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Kiihtyvyysanturi reaaliajassa</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Vaakaherkkyys</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Skaalaa gyron vaakasuuntaisen (kiertymä + kallistus) osuuden lähdössä. 1.0 jättää nopeuden sellaiseksi kuin moottori sen näkee. Suuremmat arvot vahvistavat, pienemmät vaimentavat. Asetetaan laitetasolla, joten jokainen tämän ohjaimen gyrosidonta saa saman vaakatuntuman.</value></data>
@@ -2375,8 +2375,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Säädä, miten tämän ohjaimen liikeanturi ohjaa hiiri- ja sauvalähtöä. Kalibroi tasaisella pinnalla lepotilan ryöminnän nollaamiseksi ja säädä sitten herkkyys, tasoitus ja kytkentäsäännöt mieleisiksesi.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrointi</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Gyron ja kiihtyvyysanturin lukemat reaaliajassa</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Herkkyys</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Yksiköt, kääntö, Todellisen maailman kalibrointi</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° kierrosta kohden</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Vasteen muokkaus</value></data>
@@ -2462,11 +2460,8 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Erittäin leveä</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Kerroin</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Astetta näyttökierrosta kohden</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Palauta kalibrointi</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Palauta herkkyys</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Palauta vasteen muokkaus</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Palauta kytkentä</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Palauta liikkeen läpivienti</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Palauta koordinaatisto</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Palauta ote</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Palauta vaakaherkkyys</value></data>
@@ -2486,8 +2481,11 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Palauta kytkentäsauva</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Palauta kytkentäsuunta</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Liikkeen läpivienti</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Käytä gyron säätöjä liikkeen läpivientiin</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Soveltaa Gyro-korttien valinnaisia säätöjä (kuollut alue, herkkyys, tasoitus, vastekäyrä, kääntö) liikkeeseen, jonka virtuaaliohjain ilmoittaa pelille tai emulaattorille. Poista tämä käytöstä, jos haluat lähettää vain kalibroidun lukeman ja antaa pelin käyttää omaa herkkyyttään ja tasoitustaan. Kalibroinnin ryöminnän korjaus on käytössä joka tapauksessa.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Viritetty soveltaa Gyro-kortin säätöjä (kuollut alue, herkkyys, tasoitus, vastekäyrä, kääntö) liikkeeseen, jonka virtuaaliohjain ilmoittaa pelille tai emulaattorille. Raaka lähettää vain kalibroidun lukeman ja antaa pelin käyttää omaa herkkyyttään ja tasoitustaan. Kalibroinnin ryöminnän korjaus on käytössä kummassakin tapauksessa.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Raaka</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Viritetty</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Peli lukee kalibroidun liikkeen ja käyttää omaa herkkyyttään ja tasoitustaan.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Peli lukee liikkeen tässä asetetulla herkkyydellä, tasoituksella ja käyrällä.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Palauta läpiviennin säädöt</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Herkkyys</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Lähdekohtainen gyron herkkyyskerroin. 1.0 = moottorin oletus (500°/s → täysi poikkeama). Arvot yli 1.0 ovat herkempiä. Arvot alle 1.0 ovat vähemmän herkkiä.</value></data>
@@ -2735,8 +2733,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Tässä ohjaimessa ei ole liipaisinmoottoreita, joten Xboxin impulssiliipaisimia käyttävien pelien tärinä ei tuntuisi. Yhdistä sen sijaan kukin liipaisinkanava saman puolen päämoottoriin.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Testaa tärinää</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Moottorien toiminta</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Vasen</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Oikea</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Käytä jatkuvaa voimaa tähän laitteeseen, kunnes kytket sen pois. Pelin ohjaama voima mistä tahansa lähteestä ohittaa sen niin kauan kuin se on aktiivinen, ja jatkuva voima palaa, kun peli lopettaa.</value></data>
@@ -3256,7 +3252,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Ääni</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-osoitin</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Tähtää tällä Wii Remote -ohjaimella näyttöön sen IR-kameran avulla. Vaatii anturipalkin tai kaksi infrapunavaloa näytön ylä- tai alapuolelle. Kalibroi se valopistoolina Laitteet-sivulla, jotta voit tähdätä tarkkaan kohtaan. Kalibroitu ohjain ohittaa asetukset Anturipalkin sijainti ja Pystysiirtymä.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Osoittimen säätö</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Anturipalkin sijainti</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Keskellä</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Näytön yläpuolella</value></data>
@@ -3283,8 +3278,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Vaihtaa Wii-osoitintilaa alla valittujen tilojen läpi kaikille paikan IR-kykyisille ohjaimille. Jokainen laukaisu siirtyy seuraavaan valittuun tilaan. Kierron kohta on toimintokohtainen ja nollautuu, kun sovellus käynnistetään uudelleen.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Valitse osoitintilat, joiden läpi makro kiertää. Jokainen laukaisu siirtyy seuraavaan valittuun tilaan.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Ääni</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makrojen äänet ja peilattu järjestelmän ääni toistetaan valitun ohjaimen sisäänrakennetusta kaiuttimesta USB- tai Bluetooth-yhteyden kautta. Valitse laite yllä olevasta pudotusvalikosta. Kaikki tämän sivun asetukset koskevat sitä.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Äänilähtö</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makrojen äänet ja peilattu järjestelmän ääni toistetaan Syöttölaite-kohdassa valitun laitteen sisäänrakennetusta kaiuttimesta USB- tai Bluetooth-yhteyden kautta. Kaikki tämän sivun asetukset koskevat kyseistä laitetta.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Peilauslähde, Kuulokkeiden äänenvoimakkuus, puskuri, Lähtöreitti</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Äänet ohjataan valittuun ohjaimeen automaattisesti. USB-yhteydellä ohjaimen oma äänipäätepiste tunnistetaan laitteistosäiliön perusteella. Bluetooth-yhteydellä ääni suoratoistetaan Sonyn HID-kehyksissä.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Peilauslähde</value></data>
@@ -3347,7 +3341,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Palauta sävyraja</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopioi järjestelmän oletuslähdön toistaman äänen samanaikaisesti tämän ohjaimen sisäänrakennettuun kaiuttimeen. Toimii USB- ja Bluetooth-yhteydellä.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Valitussa laitteessa ei ole sisäänrakennettua kaiutinta. Tämän ohjaimen makroäänet toistetaan järjestelmän oletuslähdössä.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Palauta äänilähtö</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Selainpohjainen DualSense-testisarja, tekijä Xuezhou Dai (daidr): viitteenä Sonyn feature-raporttien CRC-kehystykselle ja laiteohjelmiston testikomennoille, jotka PadForge välittää virtuaalisilta ohjaimilta fyysisille.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide-LED-valon kirkkaus: {0} %</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Asettaa Guide- tai Home-painikkeen LED-valon kirkkauden kaikille paikan yhteensopiville ohjaimille. Xbox-ohjaimet hyväksyvät sen vain USB-yhteydellä.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Koskee USB-yhteydellä yhdistettyjä Xbox-ohjaimia, vuoden 2015 Steam Controlleria ja Switch-ohjaimia, joissa on Home-painikkeen LED-valo. Yhdistä kaksi tällaista toimintoa, niin LED-valo välähtää makron alkaessa ja palautuu sen päättyessä.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Palauta osoitintila</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Palauta osoittimen säätö</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Palauta anturipalkin sijainti</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Palauta pystysiirtymä</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Palauta tasoitus</value></data>

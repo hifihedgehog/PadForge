@@ -1102,6 +1102,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Häälestab, kuidas PadForge skaleerib mängu jõutagasiside sündmusi ja kuidas suunab neid füüsilise kontrolleri vibratsioonimootoritele või haptilistele täituritele. Helivibratsioon lisab peale süsteemi helist juhitud kihi.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>See seade</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Kogu kontroller</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Mõlemad kangid</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Vibratsiooni esitatakse seadmel {0} haptiliste impulssidena, mis saadetakse otse seadmele. Tugevama vibratsiooni korral valitakse tugevam impulss ja korratakse seda kiiremini.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Seadme {0} haptiline tagasiside on rakenduses Logi Options+ välja lülitatud, seega ei esitata midagi enne, kui selle seal uuesti sisse lülitate.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>See seade pole veel vastanud. Selle vibratsiooni esitatakse, kui see ärkab.</value></data>
@@ -1167,7 +1168,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>peakomplektid, hiirematid ja Chroma Link-ribad</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>peakomplektid, hiirematid ja kõlarid</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>peakomplektid</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Valgusriba</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Mängud võtavad juhtimise üle alati, kui nad valgustust kirjutavad.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Sisestage kuuekohaline kuueteistkümnendvärv (RRGGBB või #RRGGBB) ja rakendamiseks vajutage Enter või klõpsake mujale.</value></data>
@@ -1709,7 +1709,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Hiirenupu vabastamine {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Lülita puuteplaadi ülekate sisse/välja</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Määra valgusriba värv</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Alistab määratud PlayStation-pesa valgusriba valitud RGB-värviga. Reageeriv hääbub täisintensiivsusest mustaks seadistatud hääbumisaja jooksul ja annab seejärel juhtimise tagasi kaardi Valgusriba sätetele. Kleepuv hoiab värvi, kuni käivitub toiming Tühista valgusriba alistus. Mängu kirjutatud väärtused on alistusest endiselt ülimuslikud.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Alistab määratud PlayStation-pesa valgusriba valitud RGB-värviga. Reageeriv hääbub täisintensiivsusest mustaks seadistatud hääbumisaja jooksul ja annab seejärel juhtimise tagasi kaardi Valgustus sätetele. Kleepuv hoiab värvi, kuni käivitub toiming Tühista valgusriba alistus. Mängu kirjutatud väärtused on alistusest endiselt ülimuslikud.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Välguta valgusriba {0} (hääbumine {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Hoia valgusriba {0} kuni tühistamiseni</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Tühista valgusriba alistus</value></data>
@@ -1717,7 +1717,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Vabastab määratud pesa kõik aktiivsed valgusriba alistused. Kasutage koos kleepuva toiminguga Määra valgusriba värv, et see teise makroga tagasi võtta.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Määra valgusriba režiim</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Määra valgusriba režiimiks {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Määrab määratud pesa valgusriba režiimile kindla väärtuse. Püsib nagu kaardil Valgusriba tehtud muudatus, kuni mõni teine toiming või kasutaja seda muudab.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Määrab määratud pesa valgusriba režiimile kindla väärtuse. Püsib nagu kaardil Valgustus tehtud muudatus, kuni mõni teine toiming või kasutaja seda muudab.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Vaheta valgusriba režiime tsükliliselt</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Vaheta tsükliliselt {0} valgusriba režiimi vahel</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Liigutab pesa valgusriba režiimi läbi allpool valitud režiimide. Iga käivitus liigub järgmisele märgitud režiimile. Tsükli asukoht on toimingupõhine ja lähtestub rakenduse taaskäivitamisel.</value></data>
@@ -1732,7 +1732,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Hääbumine</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Vaibumine</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palett</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Tühi palett kasutab pesa kaardi Valgusriba paletti.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Tühi palett kasutab pesa kaardi Valgustus paletti.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Režiim</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Valige, milliste valgusriba režiimide vahel makro tsükliliselt vahetab. Iga käivitus liigub järgmisele märgitud režiimile.</value></data>
 
@@ -1962,6 +1962,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Hiire väljund</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Ümberpööramine, Inerts, Reageerimine, Kiirendus, viske sätted</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Andurriba asukoht, Vertikaalne nihe, Silumine</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Häälestab kursori kiirust, kui puuteplaadi sõrm on vastendatud klaviatuuri / hiire virtuaalse kontrolleri hiire X/Y-le. Vaikeväärtus on 1.0. Kiirema kursori jaoks suurendage kumbagi telge, aeglasema jaoks vähendage. Ümberpööramine pöörab kumbagi telge.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Hiire tundlikkus X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Kordaja horisontaalsele puuteplaat → hiir muutusele. Alla 1.0 aeglustab kursorit. Üle 1.0 kiirendab seda.</value></data>
@@ -2167,7 +2168,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibreerimine… hoidke paigal</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Lähtesta kalibreerimine</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Tühjendab güroskoobi puhkeoleku nihke ja viimase kalibreerimise ajatempli. Järgmine küsitlustsükkel käivitab selle seadme 1.5-sekundilise automaatkalibreerimise uuesti.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Güroskoop reaalajas</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Kiirendusandur reaalajas</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Horisontaalne tundlikkus</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Skaleerib güroskoobi horisontaalset (pööre + külgkalle) panust väljundisse. 1.0 jätab kiiruse selliseks, nagu mootor seda näeb. Suuremad väärtused võimendavad, väiksemad nõrgendavad. Rakendub seadme tasemel, nii et kõik selle kontrolleri güroskoobi sidumised saavad sama horisontaalse tunnetuse.</value></data>
@@ -2187,8 +2187,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Güroskoop</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Häälestage, kuidas selle mängupuldi liikumisandur juhib hiire ja kangi väljundit. Kalibreerige tasasel pinnal, et nullida puhkeoleku triiv, seejärel seadke tundlikkus, silumine ja rakendumisreeglid oma maitse järgi.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibreerimine</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Güroskoobi ja kiirendusanduri jooksvad näidud</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Tundlikkus</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Ühikud, telgede ümberpööramine, Reaalmaailma kalibreerimine</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° pöörde kohta</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Reageerimise kujundamine</value></data>
@@ -2274,11 +2272,8 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Eriti lai</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Kordaja</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Kraadi ekraanipöörde kohta</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Lähtesta kalibreerimine</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Lähtesta tundlikkus</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Lähtesta reageerimise kujundamine</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Lähtesta rakendumine</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Lähtesta liikumise läbilaskmine</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Lähtesta ruum</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Lähtesta haare</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Lähtesta horisontaalne tundlikkus</value></data>
@@ -2298,8 +2293,11 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Lähtesta rakenduskang</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Lähtesta rakendussuund</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Liikumise läbilaskmine</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Rakenda güroskoobi häälestus liikumise läbilaskmisele</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Rakendab rühma Güroskoop kaartide valikulise häälestuse (surnud tsoon, tundlikkus, silumine, reageerimiskõver, ümberpööramine) liikumisele, mida virtuaalne kontroller mängule või emulaatorile teatab. Lülitage see välja, et saata ainult kalibreeritud näit ja lasta mängul rakendada oma tundlikkust ja silumist. Kalibreerimise triivikorrektsioon rakendub igal juhul.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Häälestatud rakendab kaardi Güroskoop häälestust (surnud tsoon, tundlikkus, silumine, reageerimiskõver, ümberpööramine) liikumisele, mida virtuaalne kontroller mängule või emulaatorile teatab. Toorandmed saadab ainult kalibreeritud näidu ja laseb mängul rakendada oma tundlikkust ja silumist. Kalibreerimise triivikorrektsioon rakendub igal juhul.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Toorandmed</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Häälestatud</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Mäng loeb kalibreeritud liikumist ja rakendab oma tundlikkust ja silumist.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Mäng loeb liikumist siin määratud tundlikkuse, silumise ja kõveraga.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Lähtesta läbilaskmise häälestus</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Tundlikkus</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Allikapõhine güroskoobi tundlikkuse kordaja. 1.0 = mootori vaikeväärtus (500°/s → täielik kõrvalekalle). Väärtused üle 1.0 on tundlikumad. Väärtused alla 1.0 on vähem tundlikud.</value></data>
@@ -2546,8 +2544,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Sellel kontrolleril pole päästikumootoreid, seega jääksid Xboxi impulsspäästikuid kasutavate mängude efektid tundmata. Suunake iga päästikukanal selle asemel sama poole põhimootorisse.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Testi vibratsiooni</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Mootorite tegevus</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Vasak</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Parem</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Rakendab sellele seadmele pidevat jõudu, kuni selle välja lülitate. Mängu juhitud jõud mis tahes allikast alistab selle, kuni see on aktiivne, ja püsijõud jätkub, kui mäng lõpetab.</value></data>
@@ -3066,7 +3062,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Heli</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR-osuti</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Sihtige selle Wii Remote'iga ekraani poole selle IR-kaamera abil. Vajab ekraani kohal või all andurriba või kahte infrapuna-LED-i. Täpselt õigesse kohta sihtimiseks kalibreerige see lehel Seadmed valguspüssina. Kalibreeritud pult eirab sätteid Andurriba asukoht ja Vertikaalne nihe.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Osuti häälestus</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Andurriba asukoht</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Keskel</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Ekraani kohal</value></data>
@@ -3093,8 +3088,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Liigutab Wii osuti režiimi läbi allpool valitud režiimide kõigi pesa IR-võimeliste pultide jaoks. Iga käivitus liigub järgmisele märgitud režiimile. Tsükli asukoht on toimingupõhine ja lähtestub rakenduse taaskäivitamisel.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Valige, milliste osuti režiimide vahel makro tsükliliselt vahetab. Iga käivitus liigub järgmisele märgitud režiimile.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Heli</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makrohelid ja peegeldatud süsteemiheli esitatakse valitud kontrolleri sisseehitatud kõlari kaudu, USB või Bluetoothi kaudu. Valige seade ülalolevast ripploendist. Kõik siinsed sätted järgivad seda.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Heliväljund</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makrohelid ja peegeldatud süsteemiheli esitatakse seadme sisseehitatud kõlari kaudu, mis on valitud kohas Sisend seadmelt, USB või Bluetoothi kaudu. Kõik siinsed sätted järgivad seda seadet.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Peegeldusallikas, Kõrvaklappide helitugevus, puhver, Väljunditee</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Helid suunatakse valitud kontrollerile automaatselt. USB kaudu leitakse mängupuldi enda heli lõpp-punkt riistvarakonteineri järgi. Bluetoothi kaudu voogedastatakse heli Sony HID-kaadrites.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Peegeldusallikas</value></data>
@@ -3157,7 +3151,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Lähtesta tooni piir</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Kopeerib kõik, mida süsteemi vaikeväljund esitab, paralleelselt selle kontrolleri sisseehitatud kõlarisse. Töötab USB ja Bluetoothi kaudu.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Valitud seadmel pole sisseehitatud kõlarit. Selle mängupuldi makrohelid esitatakse süsteemi vaikeväljundis.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Lähtesta heliväljund</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Brauseripõhine DualSense'i testikomplekt, autor Xuezhou Dai (daidr): viide Sony funktsiooniaruannete CRC-raamistusele ja püsivara testikäskudele, mida PadForge edastab virtuaalsetelt mängupultidelt füüsilistele.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3588,8 +3581,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide-LED-i heledus: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Määrab Guide- või Home-nupu LED-i heleduse kõigile selle pesa toetavatele kontrolleritele. Xboxi kontrollerid aktsepteerivad seda ainult USB kaudu.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Kehtib USB kaudu ühendatud Xboxi kontrolleritele, 2015. aasta Steam Controllerile ja Home-nupu LED-iga Switchi kontrolleritele. Kasutage kahte sellist toimingut, et LED-i makro alguses vilgutada ja lõpus taastada.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Lähtesta osuti režiim</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Lähtesta osuti häälestus</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Lähtesta andurriba asukoht</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Lähtesta vertikaalne nihe</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Lähtesta silumine</value></data>

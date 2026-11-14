@@ -26,7 +26,7 @@ namespace PadForge.Search
     /// <para>A setting is a reset button and the row around it, named by the
     /// row's label: a label TextBlock, else the row's first TextBlock bound to
     /// a string, else a switch's words, else the reset's SettingLabel. A card
-    /// is a CardBorder with a CardTitle, or a FoldCard. An action is a button
+    /// is a CardBorder with a CardTitle or a HeroCardTitle, or a FoldCard. An action is a button
     /// whose words are a string, less the shared verbs (Common_*), Reset All
     /// and the Extras pages' Back. Each extra's tile, each section of the
     /// controller page and each part of its Buttons and Macros &amp; Menus is
@@ -45,7 +45,9 @@ namespace PadForge.Search
 
         private static readonly HashSet<string> ResetStyles = new(StringComparer.Ordinal)
             { "ResetButton", "ResetButtonTight", "QuietResetButton", "SettingResetButton" };
-        private static readonly HashSet<string> LabelStyles = new(StringComparer.Ordinal) { "DzLabel", "DzSubLabel", "RowOptionLabel" };
+        // EndsLabel is the label of a row whose switch stands at its end
+        // (SettingRow.Ends, the sections pass of #574).
+        private static readonly HashSet<string> LabelStyles = new(StringComparer.Ordinal) { "DzLabel", "DzSubLabel", "RowOptionLabel", "EndsLabel" };
         private static readonly HashSet<string> Toggles = new(StringComparer.Ordinal) { "CheckBox", "ToggleSwitch", "RadioButton" };
         private static readonly HashSet<string> Inputs = new(StringComparer.Ordinal)
             { "Slider", "ComboBox", "CheckBox", "ToggleButton", "ToggleSwitch", "TextBox", "NumberBox", "RangeSlider", "CurveEditor", "RadioButton" };
@@ -378,8 +380,8 @@ namespace PadForge.Search
             }
 
             /// <summary>The title of a CardBorder: its first CardTitle text,
-            /// or HeroCardTitle text for a stick's and a trigger's card,
-            /// before any card inside it.</summary>
+            /// or HeroCardTitle text for a part's card (a stick's, a
+            /// trigger's, the sections pass's), before any card inside it.</summary>
             private static SearchLabel CardTitleOf(XElement card)
             {
                 foreach (var e in Inside(card))

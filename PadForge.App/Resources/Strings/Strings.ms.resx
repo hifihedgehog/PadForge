@@ -1102,6 +1102,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Melaraskan cara PadForge menskala peristiwa maklum balas daya daripada permainan dan cara ia menghalakannya ke motor getaran atau penggerak haptik pengawal fizikal. Getaran Audio menambah lapisan yang dipacu audio sistem di atasnya.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Peranti ini</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Seluruh pengawal</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Kedua-dua Kayu Bedik</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Getaran dimainkan pada {0} sebagai denyutan haptik, dihantar terus ke peranti. Getaran yang lebih kuat memilih denyutan yang lebih kuat dan mengulanginya dengan lebih laju.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Maklum balas haptik dimatikan untuk {0} dalam Logi Options+, jadi ia tidak memainkan apa-apa sehingga anda menghidupkannya semula di sana.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Peranti ini belum menjawab. Getarannya dimainkan sebaik ia bangun.</value></data>
@@ -1167,7 +1168,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>set kepala, pad tetikus dan jalur Chroma Link</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>set kepala, pad tetikus dan pembesar suara</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>set kepala</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Bar Cahaya</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Permainan mengambil alih apabila ia menulis pencahayaan.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Masukkan warna hex enam digit (RRGGBB atau #RRGGBB) dan tekan Enter atau klik di tempat lain untuk menggunakannya.</value></data>
@@ -1709,7 +1709,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Lepas Tetikus {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Togol Tindihan Pad Sentuh</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Tetapkan Warna Bar Cahaya</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Mengatasi bar cahaya slot PlayStation yang ditetapkan kepada warna RGB pilihan. Reaktif pudar daripada keamatan penuh kepada hitam sepanjang tempoh susutan yang dikonfigurasikan, kemudian menyerahkan semula kepada tetapan kad Bar Cahaya. Melekat menahan warna sehingga tindakan Kosongkan Atasan Bar Cahaya dijalankan. Penulisan oleh permainan masih diutamakan daripada atasan ini.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Mengatasi bar cahaya slot PlayStation yang ditetapkan kepada warna RGB pilihan. Reaktif pudar daripada keamatan penuh kepada hitam sepanjang tempoh susutan yang dikonfigurasikan, kemudian menyerahkan semula kepada tetapan kad Pencahayaan. Melekat menahan warna sehingga tindakan Kosongkan Atasan Bar Cahaya dijalankan. Penulisan oleh permainan masih diutamakan daripada atasan ini.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Kelipkan bar cahaya {0} (susutan {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Tahan bar cahaya {0} sehingga dikosongkan</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Kosongkan Atasan Bar Cahaya</value></data>
@@ -1717,7 +1717,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Melepaskan sebarang atasan bar cahaya yang aktif pada slot yang ditetapkan. Pasangkan dengan tindakan Tetapkan Warna Bar Cahaya Melekat untuk membatalkannya melalui makro lain.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Tetapkan Mod Bar Cahaya</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Tetapkan mod bar cahaya kepada {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Menetapkan mod bar cahaya slot yang ditetapkan kepada nilai tertentu. Kekal seperti suntingan pada kad Bar Cahaya sehingga tindakan lain atau pengguna mengubahnya.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Menetapkan mod bar cahaya slot yang ditetapkan kepada nilai tertentu. Kekal seperti suntingan pada kad Pencahayaan sehingga tindakan lain atau pengguna mengubahnya.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Kitar Mod Bar Cahaya</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Kitar melalui {0} mod bar cahaya</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Memajukan mod bar cahaya slot melalui mod yang dipilih di bawah. Setiap pelaksanaan beralih ke mod bertanda yang seterusnya. Kedudukan kitaran adalah bagi setiap tindakan dan ditetapkan semula apabila aplikasi dimulakan semula.</value></data>
@@ -1732,7 +1732,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Susutan</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Pudar</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palet</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Palet kosong menggunakan palet pada kad Bar Cahaya slot itu.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Palet kosong menggunakan palet pada kad Pencahayaan slot itu.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mod</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Pilih mod bar cahaya yang perlu dikitar oleh makro. Setiap pelaksanaan beralih ke mod bertanda yang seterusnya.</value></data>
 
@@ -1962,6 +1962,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Output tetikus</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Songsang, Momentum, Sambutan, Pecutan, lontaran</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Kedudukan Bar Penderia, Ofset Menegak, Pelicinan</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Melaras kelajuan kursor apabila jari pad sentuh dipetakan ke tetikus X/Y pada pengawal maya Papan kekunci / Tetikus. 1.0 ialah lalai. Naikkan mana-mana paksi untuk kursor lebih laju, turunkan untuk lebih perlahan. Songsangkan membalikkan mana-mana paksi.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Kepekaan tetikus X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Pengganda bagi delta pad sentuh → tetikus mendatar. Di bawah 1.0 memperlahankan kursor. Di atas 1.0 melajukannya.</value></data>
@@ -2167,7 +2168,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Menentukur… kekal diam</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Tetap semula penentukuran</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Mengosongkan pincang giro pegun dan cap masa penentukuran terakhir. Kitaran pengundian seterusnya menjalankan semula penentukuran automatik 1.5 saat pada peranti ini.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Giroskop langsung</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Meter pecutan langsung</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Kepekaan mendatar</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Menskalakan sumbangan giro mendatar (Yaw + Golek) kepada output. 1.0 membiarkan kadar seperti yang dilihat enjin. Nilai lebih tinggi menguatkan, nilai lebih rendah melemahkan. Dikenakan pada peringkat peranti supaya setiap ikatan giro pada pengawal ini mewarisi rasa mendatar yang sama.</value></data>
@@ -2187,8 +2187,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Giro</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Laraskan cara penderia gerakan pad ini menggerakkan output tetikus dan kayu bedik. Tentukur pada permukaan rata untuk menyifarkan hanyutan pegun, kemudian tetapkan kepekaan, pelicinan dan peraturan pelibatan mengikut selera.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Penentukuran</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Bacaan langsung giroskop dan meter pecutan</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Kepekaan</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Unit, songsangkan paksi, Penentukuran dunia sebenar</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° setiap pusingan</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Pembentukan sambutan</value></data>
@@ -2274,11 +2272,8 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Sangat lebar</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Pengganda</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Darjah setiap pusingan skrin</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Tetap semula penentukuran</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Tetap semula kepekaan</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Tetap semula pembentukan sambutan</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Tetap semula pelibatan</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Tetap semula laluan terus gerakan</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Tetap semula ruang</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Tetap semula pegangan</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Tetap semula kepekaan mendatar</value></data>
@@ -2298,8 +2293,11 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Tetap semula kayu bedik pelibatan</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Tetap semula arah pelibatan</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Laluan terus gerakan</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Kenakan penalaan giro pada laluan terus gerakan</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Menjalankan penalaan budi bicara kad Giro (zon mati, kepekaan, pelicinan, lengkung sambutan, songsang) pada gerakan yang dilaporkan pengawal maya kepada permainan atau emulator. Matikan untuk menghantar hanya bacaan yang ditentukur dan biarkan permainan mengenakan kepekaan dan pelicinannya sendiri. Pembetulan hanyutan penentukuran sentiasa dikenakan dalam kedua-dua keadaan.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Ditala menjalankan penalaan kad Giro (zon mati, kepekaan, pelicinan, lengkung sambutan, songsang) pada gerakan yang dilaporkan pengawal maya kepada permainan atau emulator. Mentah menghantar hanya bacaan yang ditentukur dan membiarkan permainan mengenakan kepekaan dan pelicinannya sendiri. Pembetulan hanyutan penentukuran dikenakan dalam kedua-dua keadaan.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Mentah</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Ditala</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Permainan membaca gerakan yang ditentukur dan mengenakan kepekaan serta pelicinannya sendiri.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Permainan membaca gerakan dengan kepekaan, pelicinan dan lengkung yang ditetapkan di sini.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Tetap semula penalaan laluan terus</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Kepekaan</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Pengganda kepekaan giro bagi setiap sumber. 1.0 = lalai enjin (500°/s → pesongan penuh). Nilai di atas 1.0 lebih peka. Nilai di bawah 1.0 kurang peka.</value></data>
@@ -2545,8 +2543,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Pengawal ini tiada motor pencetus, jadi permainan yang menggunakan pencetus impuls Xbox tidak akan terasa. Lipat setiap saluran pencetus ke dalam motor utama di sebelah yang sama.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Uji Getaran</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktiviti Motor</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Kiri</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Kanan</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Gunakan daya berterusan pada peranti ini sehingga anda mematikannya. Daya yang dipacu permainan daripada mana-mana sumber menindih semasa ia aktif dan disambung semula apabila permainan berhenti.</value></data>
@@ -3061,7 +3057,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>Penuding IR</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Halakan Wii Remote ini ke skrin dengan kamera IRnya. Memerlukan bar penderia, atau dua LED inframerah, di atas atau di bawah paparan. Tentukur sebagai pistol cahaya pada halaman Peranti untuk menuding ke tempat yang tepat. Alat kawalan jauh yang telah ditentukur mengabaikan Kedudukan Bar Penderia dan Ofset Menegak.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Penalaan Penuding</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Kedudukan Bar Penderia</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Di Tengah</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Di Atas Skrin</value></data>
@@ -3088,8 +3083,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Memajukan mod penuding Wii melalui mod yang dipilih di bawah untuk setiap alat kawalan jauh berupaya IR pada slot. Setiap pelaksanaan beralih ke mod ditanda yang seterusnya. Kedudukan kitaran adalah bagi setiap tindakan dan ditetapkan semula apabila aplikasi dimulakan semula.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Pilih mod penuding yang patut dikitar oleh makro. Setiap pelaksanaan maju ke mod ditanda yang seterusnya.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Bunyi makro dan audio sistem yang dicerminkan dimainkan melalui pembesar suara terbina dalam pengawal yang dipilih, melalui USB atau Bluetooth. Pilih peranti dalam juntai bawah di atas. Setiap tetapan di sini mengikutinya.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Output Bunyi</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Bunyi makro dan audio sistem yang dicerminkan dimainkan melalui pembesar suara terbina dalam peranti yang dipilih di bawah Didorong oleh, melalui USB atau Bluetooth. Setiap tetapan di sini mengikuti peranti itu.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Sumber Cermin, Kelantangan Fon Kepala, penimbal, Laluan Output</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Bunyi dihalakan ke pengawal yang dipilih secara automatik. Melalui USB, titik akhir audio pad itu sendiri dipadankan mengikut bekas perkakasan. Melalui Bluetooth, audio distrim dalam bingkai Sony HID.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Sumber Cermin</value></data>
@@ -3152,7 +3146,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Tetap Semula Had Nada</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Menyalin apa sahaja yang dimainkan output lalai sistem ke pembesar suara terbina dalam pengawal ini, secara selari. Berfungsi melalui USB dan Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Peranti yang dipilih tiada pembesar suara terbina dalam. Bunyi makro untuk pad ini dimainkan pada output lalai sistem.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Tetap Semula Output Bunyi</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Suite ujian DualSense pelayar oleh Xuezhou Dai (daidr): rujukan untuk pembingkaian CRC laporan ciri Sony dan arahan ujian perisian tegar yang PadForge majukan daripada pad maya ke pad fizikal.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3583,8 +3576,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Kecerahan LED Guide: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Menetapkan kecerahan LED butang Guide atau Home untuk setiap pengawal yang berkebolehan pada slot. Pengawal Xbox menerimanya melalui USB sahaja.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Terpakai pada pengawal Xbox melalui USB, Steam Controller 2015, dan pengawal Switch dengan LED butang Home. Gandingkan dua tindakan ini untuk mengelipkan LED apabila makro bermula dan memulihkannya apabila tamat.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Tetap Semula Mod Penuding</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Tetap Semula Penalaan Penuding</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Tetap Semula Kedudukan Bar Penderia</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Tetap Semula Ofset Menegak</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Tetap Semula Pelicinan</value></data>

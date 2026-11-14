@@ -1181,6 +1181,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Nastavuje, ako PadForge škáluje udalosti silovej spätnej väzby z hry a ako ich smeruje do vibračných motorov alebo haptických aktuátorov fyzického ovládača. Vibrácie podľa zvuku pridávajú navrch vrstvu riadenú systémovým zvukom.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Toto zariadenie</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Celý ovládač</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Obe páčky</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Vibrácie sa prehrávajú na zariadení {0} ako haptické impulzy odosielané priamo do zariadenia. Silnejšie vibrácie zvolia silnejší impulz a opakujú ho rýchlejšie.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Haptická odozva je pre {0} vypnutá v aplikácii Logi Options+, preto sa nič neprehrá, kým ju tam znova nezapnete.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Toto zariadenie ešte neodpovedalo. Jeho vibrácie sa prehrajú, keď sa prebudí.</value></data>
@@ -1267,7 +1268,6 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>základné dosky, grafické karty a pamäte</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>základné dosky a grafické karty</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>podložky pod myš, slúchadlá a stojany na slúchadlá</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Svetelná lišta</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Hry prevezmú kontrolu vždy, keď zapisujú osvetlenie.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Zadajte šesťmiestnu hexadecimálnu farbu (RRGGBB alebo #RRGGBB) a použite ju stlačením klávesu Enter alebo kliknutím mimo poľa.</value></data>
@@ -1897,7 +1897,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Uvoľniť tlačidlo myši {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Prepnúť prekrytie touchpadu</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Nastaviť farbu svetelnej lišty</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Prepíše svetelnú lištu priradeného slotu PlayStation na zvolenú farbu RGB. Reaktívny režim počas nastaveného času doznievania prejde z plnej intenzity do čiernej a potom vráti riadenie nastaveniam na karte Svetelná lišta. Trvalý režim drží farbu, kým sa nespustí akcia Zrušiť prepísanie svetelnej lišty. Zápisy z hry majú stále prednosť pred prepísaním.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Prepíše svetelnú lištu priradeného slotu PlayStation na zvolenú farbu RGB. Reaktívny režim počas nastaveného času doznievania prejde z plnej intenzity do čiernej a potom vráti riadenie nastaveniam na karte Osvetlenie. Trvalý režim drží farbu, kým sa nespustí akcia Zrušiť prepísanie svetelnej lišty. Zápisy z hry majú stále prednosť pred prepísaním.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Bliknúť svetelnou lištou {0} (doznievanie {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Držať svetelnú lištu {0} do zrušenia</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Zrušiť prepísanie svetelnej lišty</value></data>
@@ -1905,7 +1905,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Uvoľní akékoľvek aktívne prepísanie svetelnej lišty na priradenom slote. Kombinujte s trvalou akciou Nastaviť farbu svetelnej lišty, aby ste ju mohli zrušiť iným makrom.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Nastaviť režim svetelnej lišty</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Nastaviť režim svetelnej lišty na {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Nastaví režim svetelnej lišty priradeného slotu na konkrétnu hodnotu. Zachová sa ako úprava na karte Svetelná lišta, kým ho nezmení iná akcia alebo používateľ.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Nastaví režim svetelnej lišty priradeného slotu na konkrétnu hodnotu. Zachová sa ako úprava na karte Osvetlenie, kým ho nezmení iná akcia alebo používateľ.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Striedať režimy svetelnej lišty</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Striedať režimy svetelnej lišty (počet: {0})</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Prepína režim svetelnej lišty slotu cez režimy vybraté nižšie. Každé spustenie prejde na ďalší začiarknutý režim. Pozícia v cykle sa uchováva pre každú akciu zvlášť a po reštarte aplikácie sa resetuje.</value></data>
@@ -1920,7 +1920,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Doznievanie</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Stmievanie</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Paleta</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Prázdna paleta použije paletu slotu z karty Svetelná lišta.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Prázdna paleta použije paletu slotu z karty Osvetlenie.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Režim</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Vyberte, ktoré režimy svetelnej lišty má makro striedať. Každé spustenie prejde na ďalší začiarknutý režim.</value></data>
 
@@ -2150,6 +2150,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Výstup myši</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invertovanie, Zotrvačnosť, Odozva, Zrýchlenie, švihnutie</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Pozícia senzorovej lišty, Zvislý posun, Vyhladzovanie</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Ladí rýchlosť kurzora, keď je prst na touchpade namapovaný na X/Y myši na virtuálnom ovládači Klávesnica / myš. Predvolená hodnota je 1.0. Zvýšením ktorejkoľvek osi kurzor zrýchlite, znížením spomalíte. Invertovanie obráti ktorúkoľvek os.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Citlivosť myši X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Násobiteľ pre vodorovný posun touchpad → myš. Pod 1.0 kurzor spomaľuje. Nad 1.0 ho zrýchľuje.</value></data>
@@ -2355,7 +2356,6 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibruje sa… nehýbte ovládačom</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Resetovať kalibráciu</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Vymaže pokojový posun gyroskopu a časovú značku poslednej kalibrácie. Ďalší cyklus dotazovania znova spustí na tomto zariadení 1.5-sekundovú automatickú kalibráciu.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Gyroskop naživo</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Akcelerometer naživo</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Vodorovná citlivosť</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Škáluje vodorovný príspevok gyroskopu (otáčanie + náklon) do výstupu. 1.0 ponechá rýchlosť tak, ako ju vidí jadro. Vyššie hodnoty zosilňujú, nižšie zoslabujú. Platí na úrovni zariadenia, takže všetky väzby gyroskopu na tomto ovládači majú rovnaký vodorovný pocit.</value></data>
@@ -2375,8 +2375,6 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyroskop</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Nastavte, ako pohybový senzor tohto ovládača riadi výstup myši a páčky. Kalibrujte na rovnom povrchu, aby sa vynuloval drift v pokoji, a potom podľa chuti dolaďte citlivosť, vyhladzovanie a pravidlá aktivácie.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrácia</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Hodnoty gyroskopu a akcelerometra naživo</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Citlivosť</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Jednotky, invertovanie osí, Kalibrácia podľa reálneho sveta</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° na otáčku</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Tvarovanie odozvy</value></data>
@@ -2462,11 +2460,8 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Extra široká</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Násobiteľ</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Stupne na otočenie obrazovky</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Resetovať kalibráciu</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Resetovať citlivosť</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Resetovať tvarovanie odozvy</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Resetovať aktiváciu</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Resetovať prepúšťanie pohybu</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Resetovať priestor</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Resetovať úchop</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Resetovať vodorovnú citlivosť</value></data>
@@ -2486,8 +2481,11 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Resetovať páčku aktivácie</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Resetovať smer aktivácie</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Prepúšťanie pohybu</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Použiť ladenie gyroskopu na prepúšťanie pohybu</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Použije voliteľné ladenie z kariet v skupine Gyroskop (mŕtva zóna, citlivosť, vyhladzovanie, krivka odozvy, invertovanie) na pohyb, ktorý virtuálny ovládač hlási hre alebo emulátoru. Ak ho vypnete, odošle sa iba kalibrovaná hodnota a hra použije vlastnú citlivosť a vyhladzovanie. Korekcia driftu z kalibrácie platí v oboch prípadoch.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Režim Upravené použije ladenie z karty Gyroskop (mŕtva zóna, citlivosť, vyhladzovanie, krivka odozvy, invertovanie) na pohyb, ktorý virtuálny ovládač hlási hre alebo emulátoru. Režim Surové odošle iba kalibrovanú hodnotu a hra použije vlastnú citlivosť a vyhladzovanie. Korekcia driftu z kalibrácie platí v oboch prípadoch.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Surové</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Upravené</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Hra číta kalibrovaný pohyb a použije vlastnú citlivosť a vyhladzovanie.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Hra číta pohyb s citlivosťou, vyhladzovaním a krivkou nastavenými tu.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Resetovať ladenie prepúšťania</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Citlivosť</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Násobiteľ citlivosti gyroskopu pre každý zdroj. 1.0 = predvolená hodnota jadra (500°/s → plné vychýlenie). Hodnoty nad 1.0 sú citlivejšie. Hodnoty pod 1.0 sú menej citlivé.</value></data>
@@ -2735,8 +2733,6 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Tento ovládač nemá motory v spúšťach, takže vibrácie hier, ktoré používajú impulzné spúšte Xbox, by neboli cítiť. Namiesto toho presmeruje každý kanál spúšte do hlavného motora na tej istej strane.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Otestovať vibrácie</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Aktivita motorov</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Ľavý</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Pravý</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Pôsobí na toto zariadenie nepretržitou silou, kým ju nevypnete. Sila riadená hrou z akéhokoľvek zdroja má počas svojho pôsobenia prednosť a po skončení hry sa táto sila obnoví.</value></data>
@@ -3256,7 +3252,6 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Zvuk</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR ukazovateľ</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Mierte týmto Wii Remote na obrazovku pomocou jeho IR kamery. Vyžaduje senzorovú lištu alebo dve infračervené LED nad alebo pod displejom. Ak chcete mieriť presne, kalibrujte ho ako svetelnú pištoľ na stránke Zariadenia. Kalibrovaný ovládač ignoruje Pozíciu senzorovej lišty a Zvislý posun.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Ladenie ukazovateľa</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Pozícia senzorovej lišty</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>V strede</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Nad obrazovkou</value></data>
@@ -3283,8 +3278,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Prepína režim ukazovateľa Wii cez režimy vybraté nižšie pre každý ovládač s IR v slote. Každé spustenie prejde na ďalší začiarknutý režim. Pozícia v cykle sa uchováva pre každú akciu zvlášť a po reštarte aplikácie sa resetuje.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Vyberte, ktoré režimy ukazovateľa má makro striedať. Každé spustenie prejde na ďalší začiarknutý režim.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Zvuk</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Zvuky makier a zrkadlený systémový zvuk sa prehrávajú cez vstavaný reproduktor vybratého ovládača, cez USB alebo Bluetooth. Zariadenie vyberte v rozbaľovacom zozname vyššie. Všetky nastavenia tu sa riadia ním.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Výstup zvuku</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Zvuky makier a zrkadlený systémový zvuk sa prehrávajú cez vstavaný reproduktor zariadenia vybratého v položke Vstup zo zariadenia, cez USB alebo Bluetooth. Všetky nastavenia tu sa riadia týmto zariadením.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Zdroj zrkadlenia, Hlasitosť slúchadiel, vyrovnávacia pamäť, Výstupná cesta</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Zvuky sa automaticky smerujú do vybratého ovládača. Cez USB sa vlastné zvukové zariadenie ovládača priradí podľa hardvérového kontajnera. Cez Bluetooth sa zvuk streamuje v rámcoch Sony HID.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Zdroj zrkadlenia</value></data>
@@ -3347,7 +3341,6 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Resetovať limit tónov</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Súbežne kopíruje všetko, čo prehráva predvolený systémový výstup, do vstavaného reproduktora tohto ovládača. Funguje cez USB aj Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Vybraté zariadenie nemá vstavaný reproduktor. Zvuky makier pre tento ovládač sa prehrávajú na predvolenom systémovom výstupe.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Resetovať výstup zvuku</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Testovacia sada DualSense v prehliadači od autora Xuezhou Dai (daidr): referencia pre rámcovanie CRC v hláseniach funkcií Sony a pre testovacie príkazy firmvéru, ktoré PadForge preposiela z virtuálnych do fyzických ovládačov.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Jas LED tlačidla Guide: {0} %</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Nastaví jas LED tlačidla Guide alebo Home pre každý podporovaný ovládač v slote. Ovládače Xbox ho prijímajú iba cez USB.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Platí pre ovládače Xbox cez USB, Steam Controller z roku 2015 a ovládače Switch s LED tlačidla Home. Skombinujte dve takéto akcie, aby LED pri spustení makra blikla a pri jeho skončení sa obnovila.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Resetovať režim ukazovateľa</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Resetovať ladenie ukazovateľa</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Resetovať pozíciu senzorovej lišty</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Resetovať zvislý posun</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Resetovať vyhladzovanie</value></data>

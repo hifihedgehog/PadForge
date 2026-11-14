@@ -420,7 +420,6 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Jiro</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Jiro</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Maty</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Averina ny lightbar</value></data>
@@ -945,7 +944,6 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyroscope</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyroscope</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Singa, fivadihan'ny axe, Real-World Calibration</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° isaky ny fihodinana</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Avadika ny pitch (Y)</value></data>
@@ -963,8 +961,6 @@
   <data name="Settings_GyroEngageStickDirection_YPos" xml:space="preserve"><value>Ambony (Y+)</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Mpilalao</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Tontolo</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Averina ny calibration</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Averina ny sensibilité</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Averina ny sensibilité mitsivalana</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Averina ny sensibilité mitsangana</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Averina ny deadzone</value></data>
@@ -1333,7 +1329,6 @@
   <data name="Pad_ResetPointerMode" xml:space="preserve"><value>Avereno ny fomban'ny tondro</value></data>
   <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>Avereno ny hafainganana FPS</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Feo</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Fivoahan'ny feo</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Loharanon'ny dika, feon'ny écouteur, buffer, Output Path</value></data>
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Par défaut an'ny rafitra</value></data>
   <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(Fitaovana tsy misy)</value></data>
@@ -1362,7 +1357,6 @@
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Avereno amin'ny par défaut (100%)</value></data>
   <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Avereno ho 250 Hz</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Tsy manana haut-parleur ny fitaovana voafidy. Ny feo macro ho an'ity contrôleur ity dia mivoaka amin'ny fivoahana par défaut an'ny rafitra.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Avereno ny fivoahan'ny feo</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
   <data name="Profiles_Export" xml:space="preserve"><value>Avoahy…</value></data>
@@ -2089,13 +2083,12 @@
   <data name="Menu_Cell_Icon" xml:space="preserve"><value>Kisary</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Ity fitaovana ity</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Contrôleur manontolo</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Stick roa</value></data>
   <data name="Pad_GyroSpace_FoldHint" xml:space="preserve"><value>Local, Mpilalao na Tontolo</value></data>
   <data name="Pad_Socd_FoldTitle" xml:space="preserve"><value>SOCD</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>Voapetraka ny SteamVR</value></data>
   <data name="Pad_SteamVr_Running" xml:space="preserve"><value>Mandeha ny SteamVR</value></data>
   <data name="Pad_SteamVr_DriverConnected" xml:space="preserve"><value>Mandeha ny SteamVR, mifandray ny pilote</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Havia</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Havanana</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Fafao ny mpanetsika</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Tendreo toy ny fidirana hafa rehetra ny hafainganana, ny pedal ary ny vitesy alefan'ny lalao fiara.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Alefaso ao amin'ny lalao ny fandefasana télémétrie ary tondroy amin'ity PC ity sy ity port ity.</value></data>

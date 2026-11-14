@@ -1102,6 +1102,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>PadForge ойыннан келетін күштік кері байланыс оқиғаларын қалай масштабтайтынын және оларды физикалық контроллердің діріл моторларына немесе хаптикалық жетектеріне қалай бағыттайтынын баптайды. «Дыбыстық діріл» үстіне жүйелік дыбыспен басқарылатын қабат қосады.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Осы құрылғы</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Бүкіл контроллер</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Екі стик</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Діріл {0} құрылғысында хаптикалық импульстер ретінде ойнатылады, олар құрылғыға тікелей жіберіледі. Діріл күштірек болса, күштірек импульс таңдалып, жиірек қайталанады.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Logi Options+ ішінде {0} үшін хаптикалық кері байланыс өшірілген, сондықтан оны сол жерде қайта қоспайынша ештеңе ойнатылмайды.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Бұл құрылғы әлі жауап бермеді. Ол оянғанда оның дірілі ойнатылады.</value></data>
@@ -1167,7 +1168,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Chroma" xml:space="preserve"><value>гарнитуралар, тінтуір кілемшелері және Chroma Link жолақтары</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>гарнитуралар, тінтуір кілемшелері және динамиктер</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>гарнитуралар</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Жарық жолағы</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Ойындар жарықтандыруды жазған сайын басқаруды өзіне алады.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Алты таңбалы hex түсті енгізіңіз (RRGGBB немесе #RRGGBB) және қолдану үшін Enter басыңыз немесе басқа жерді басыңыз.</value></data>
@@ -1709,7 +1709,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Тінтуірді жіберу: {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Сенсорлық тақта оверлейін қосу/өшіру</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Жарық жолағының түсін орнату</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Тағайындалған PlayStation ұяшығының жарық жолағын таңдалған RGB түсіне ауыстырады. «Реактивті» режимі бапталған сөну уақытында толық қарқындылықтан қараға дейін сөніп, басқаруды «Жарық жолағы» карточкасының параметрлеріне қайтарады. «Жабысқақ» режимі «Жарық жолағын қайта анықтауды тазалау» әрекеті орындалғанша түсті ұстап тұрады. Ойын басқаратын жазулар бәрібір қайта анықтаудан басым болады.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Тағайындалған PlayStation ұяшығының жарық жолағын таңдалған RGB түсіне ауыстырады. «Реактивті» режимі бапталған сөну уақытында толық қарқындылықтан қараға дейін сөніп, басқаруды «Жарықтандыру» карточкасының параметрлеріне қайтарады. «Жабысқақ» режимі «Жарық жолағын қайта анықтауды тазалау» әрекеті орындалғанша түсті ұстап тұрады. Ойын басқаратын жазулар бәрібір қайта анықтаудан басым болады.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Жарық жолағын жыпылықтату: {0} (сөну {1} мс)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Тазаланғанша жарық жолағын ұстау: {0}</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Жарық жолағын қайта анықтауды тазалау</value></data>
@@ -1717,7 +1717,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Тағайындалған ұяшықтағы жарық жолағын кез келген белсенді қайта анықтауды босатады. Оны басқа макрос арқылы болдырмау үшін «Жабысқақ» режиміндегі «Жарық жолағының түсін орнату» әрекетімен бірге пайдаланыңыз.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Жарық жолағының режимін орнату</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Жарық жолағының режимі: {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Тағайындалған ұяшықтың жарық жолағы режимін белгілі бір мәнге орнатады. Басқа әрекет немесе пайдаланушы өзгерткенше «Жарық жолағы» карточкасындағы өзгеріс сияқты сақталады.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Тағайындалған ұяшықтың жарық жолағы режимін белгілі бір мәнге орнатады. Басқа әрекет немесе пайдаланушы өзгерткенше «Жарықтандыру» карточкасындағы өзгеріс сияқты сақталады.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Жарық жолағы режимдерін кезектеу</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>{0} жарық жолағы режимін кезектеу</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Ұяшықтың жарық жолағы режимін төменде таңдалған режимдер бойынша ауыстырады. Әр іске қосылу келесі белгіленген режимге өтеді. Цикл орны әр әрекет үшін бөлек және қолданба қайта іске қосылғанда басынан басталады.</value></data>
@@ -1732,7 +1732,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Сөну</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Бәсеңдеу</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Палитра</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Палитра бос болса, ұяшықтың «Жарық жолағы» карточкасындағы палитра пайдаланылады.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Палитра бос болса, ұяшықтың «Жарықтандыру» карточкасындағы палитра пайдаланылады.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Режим</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Макрос қай жарық жолағы режимдерін кезектейтінін таңдаңыз. Әр іске қосылу келесі белгіленген режимге өтеді.</value></data>
 
@@ -1962,6 +1962,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Тінтуір шығысы</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Төңкеру, Инерция, Жауап, Үдеу, лақтыру</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Сенсор жолағының орны, Тік ығысу, Тегістеу</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Сенсорлық тақта саусағы «Пернетақта / тінтуір» виртуалды контроллеріндегі тінтуір X/Y осіне тағайындалғанда меңзер жылдамдығын баптайды. Әдепкі мән 1.0. Меңзерді жылдамдату үшін кез келген осьті көтеріңіз, баяулату үшін төмендетіңіз. «Төңкеру» кез келген осьті кері бағыттайды.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Тінтуір сезімталдығы X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Көлденең сенсорлық тақта → тінтуір ығысуының көбейткіші. 1.0 мәнінен төмен меңзерді баяулатады. 1.0 мәнінен жоғары жылдамдатады.</value></data>
@@ -2167,7 +2168,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Калибрленуде… қозғалтпаңыз</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Калибрлеуді қалпына келтіру</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Тыныштықтағы гироскоп ауытқуын және соңғы калибрлеу уақыт белгісін тазалайды. Келесі сұрау циклі осы құрылғыда 1.5 секундтық автоматты калибрлеуді қайта орындайды.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Гироскоп (нақты уақыт)</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Акселерометр (нақты уақыт)</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Көлденең сезімталдық</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Гироскоптың көлденең (бұрылу + қисаю) үлесін шығысқа қатысты масштабтайды. 1.0 жылдамдықты қозғалтқыш көргендей қалдырады. Жоғарырақ мәндер күшейтеді, төменірек мәндер әлсіретеді. Бұл контроллердегі әр гироскоп байланысы бірдей көлденең сезімді алуы үшін құрылғы деңгейінде қолданылады.</value></data>
@@ -2187,8 +2187,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Гироскоп</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Осы геймпадтың қозғалыс сенсоры тінтуір мен стик шығысын қалай басқаратынын баптаңыз. Тыныштықтағы ауытқуды нөлдеу үшін тегіс бетте калибрлеңіз, содан кейін сезімталдықты, тегістеуді және қосу ережелерін қалауыңызша реттеңіз.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Калибрлеу</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Гироскоп пен акселерометрдің ағымдағы мәндері</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Сезімталдық</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Бірліктер, осьтерді төңкеру, Нақты әлемге калибрлеу</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>Бір айналымға ≈ {0}°</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Жауапты пішіндеу</value></data>
@@ -2274,11 +2272,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Аса кең</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Көбейткіш</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Экран айналымына градус</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Калибрлеуді қалпына келтіру</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Сезімталдықты қалпына келтіру</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Жауапты пішіндеуді қалпына келтіру</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Қосуды қалпына келтіру</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Қозғалысты тікелей өткізуді қалпына келтіру</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Кеңістікті қалпына келтіру</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Ұстау тәсілін қалпына келтіру</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Көлденең сезімталдықты қалпына келтіру</value></data>
@@ -2298,8 +2293,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Қосатын стикті қалпына келтіру</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Қосу бағытын қалпына келтіру</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Қозғалысты тікелей өткізу</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Гироскоп баптауларын қозғалысты тікелей өткізуге қолдану</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>«Гироскоп» карточкаларындағы қосымша баптауларды (өлі аймақ, сезімталдық, тегістеу, жауап қисығы, төңкеру) виртуалды контроллер ойынға не эмуляторға хабарлайтын қозғалысқа қолданады. Тек калибрленген көрсеткішті жіберіп, ойынның өз сезімталдығы мен тегістеуін қолдануына мүмкіндік беру үшін мұны өшіріңіз. Калибрлеу ауытқуын түзету кез келген жағдайда әрқашан қолданылады.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>«Бапталған» режимі «Гироскоп» карточкасындағы баптауды (өлі аймақ, сезімталдық, тегістеу, жауап қисығы, төңкеру) виртуалды контроллер ойынға не эмуляторға хабарлайтын қозғалысқа қолданады. «Өңделмеген» режимі тек калибрленген көрсеткішті жіберіп, ойынның өз сезімталдығы мен тегістеуін қолдануына мүмкіндік береді. Калибрлеу ауытқуын түзету кез келген жағдайда қолданылады.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Өңделмеген</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Бапталған</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Ойын калибрленген қозғалысты оқып, өзінің сезімталдығы мен тегістеуін қолданады.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Ойын қозғалысты осында бапталған сезімталдықпен, тегістеумен және қисықпен оқиды.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Тікелей өткізу баптауларын қалпына келтіру</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Сезімталдық</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Әр көз үшін гироскоп сезімталдығының көбейткіші. 1.0 = қозғалтқыштың әдепкі мәні (500°/с → толық ауытқу). 1.0 мәнінен жоғары мәндер сезімталырақ. 1.0 мәнінен төмен мәндердің сезімталдығы азырақ.</value></data>
@@ -2546,8 +2544,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Бұл контроллерде триггер моторлары жоқ, сондықтан Xbox импульстік триггерлерін пайдаланатын ойындардың дірілі сезілмейді. Оның орнына әр триггер арнасын сол жақтағы негізгі моторға қосыңыз.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Дірілді сынау</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Мотор белсенділігі</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Сол</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Оң</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Өшіргенше осы құрылғыға үздіксіз күш беріңіз. Кез келген көзден келетін, ойын басқаратын күш белсенді кезде басымдыққа ие болады, ал ойын тоқтағанда бұл күш қайта жалғасады.</value></data>
@@ -3062,7 +3058,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>Дыбыс</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR меңзер</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Бұл Wii Remote пультін IR камерасы арқылы экранға бағыттаңыз. Дисплейдің үстінде не астында сенсор жолағы немесе екі инфрақызыл LED шамы қажет. Дәл нүктеге көздеу үшін оны «Құрылғылар» бетінде жарық тапаншасы ретінде калибрлеңіз. Калибрленген пульт «Сенсор жолағының орны» мен «Тік ығысу» параметрлерін елемейді.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Меңзерді баптау</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Сенсор жолағының орны</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Ортада</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Экранның үстінде</value></data>
@@ -3089,8 +3084,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Ұяшықтағы IR қолдайтын әр пульт үшін Wii меңзер режимін төменде таңдалған режимдер бойынша ауыстырады. Әр іске қосылу келесі белгіленген режимге өтеді. Цикл орны әр әрекет үшін бөлек және қолданба қайта іске қосылғанда басынан басталады.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Макрос қай меңзер режимдерін кезектейтінін таңдаңыз. Әр іске қосылу келесі белгіленген режимге өтеді.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Дыбыс</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Макрос дыбыстары мен көшірмеленген жүйелік дыбыс таңдалған контроллердің кірістірілген динамигі арқылы USB немесе Bluetooth арқылы ойнатылады. Құрылғыны жоғарыдағы ашылмалы тізімнен таңдаңыз. Мұндағы барлық параметрлер соған қатысты.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Дыбыс шығысы</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Макрос дыбыстары мен көшірмеленген жүйелік дыбыс «Енгізу көзі» астында таңдалған құрылғының кірістірілген динамигі арқылы USB немесе Bluetooth арқылы ойнатылады. Мұндағы барлық параметрлер сол құрылғыға қатысты.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Көшірме көзі, Құлаққап дыбыс деңгейі, буфер, Шығыс жолы</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Дыбыстар таңдалған контроллерге автоматты түрде бағытталады. USB арқылы геймпадтың өз дыбыс құрылғысы аппараттық контейнер бойынша анықталады. Bluetooth арқылы дыбыс Sony HID кадрларында таратылады.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Көшірме көзі</value></data>
@@ -3153,7 +3147,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Тон шегін қалпына келтіру</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Жүйенің әдепкі шығысы ойнатқан кез келген дыбысты осы контроллердің кірістірілген динамигіне қатар көшіреді. USB және Bluetooth арқылы жұмыс істейді.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Таңдалған құрылғыда кірістірілген динамик жоқ. Бұл геймпадтың макрос дыбыстары жүйенің әдепкі шығысында ойнатылады.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Дыбыс шығысын қалпына келтіру</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai (daidr) жасаған браузерлік DualSense сынақ жинағы: PadForge виртуалды геймпадтардан физикалық геймпадтарға жіберетін Sony feature-report CRC кадрлау және микробағдарлама сынақ командаларының эталоны.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3584,8 +3577,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide LED жарықтығы: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Ұяшықтағы барлық қолдайтын контроллерлер үшін Guide немесе Home түймесінің LED жарықтығын орнатады. Xbox контроллерлері оны тек USB арқылы қабылдайды.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>USB арқылы қосылған Xbox контроллерлеріне, 2015 жылғы Steam Controller контроллеріне және Home түймесінде LED шамы бар Switch контроллерлеріне қолданылады. Макрос басталғанда LED шамын жарқылдатып, аяқталғанда қалпына келтіру үшін осындай екі әрекетті бірге пайдаланыңыз.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Меңзер режимін қалпына келтіру</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Меңзер баптауларын қалпына келтіру</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Сенсор жолағының орнын қалпына келтіру</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Тік ығысуды қалпына келтіру</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Тегістеуді қалпына келтіру</value></data>

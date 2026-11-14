@@ -1181,6 +1181,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Nosaka, kā PadForge mērogo spēles spēka atgriezeniskās saites notikumus un kā tos novirza uz fiziskā kontrollera vibrācijas motoriem vai haptiskajiem izpildmehānismiem. „Audio vibrācija” pievieno virsū sistēmas audio vadītu slāni.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Šī ierīce</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Viss kontrolleris</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>Abas sviras</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Vibrācija tiek atskaņota ierīcē {0} kā haptiski impulsi, kas tiek sūtīti tieši uz ierīci. Spēcīgākai vibrācijai tiek izvēlēts spēcīgāks impulss, un tas atkārtojas biežāk.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Ierīcei {0} lietotnē Logi Options+ ir izslēgta haptiskā atgriezeniskā saite, tāpēc tā neko neatskaņo, līdz to tur atkal ieslēgsiet.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Šī ierīce vēl nav atbildējusi. Tās vibrācija tiks atskaņota, tiklīdz tā pamodīsies.</value></data>
@@ -1267,7 +1268,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>mātesplates, videokartes un atmiņu</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>mātesplates un videokartes</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>peles paliktņus, austiņas un austiņu statīvus</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Gaismas josla</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Spēles pārņem vadību ikreiz, kad tās raksta apgaismojumu.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Ievadiet sešciparu heksadecimālu krāsu (RRGGBB vai #RRGGBB) un nospiediet Enter vai noklikšķiniet citur, lai to lietotu.</value></data>
@@ -1897,7 +1897,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Peles atlaišana {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Pārslēgt skārienpaliktņa pārklājumu</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Iestatīt gaismas joslas krāsu</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Aizstāj piešķirtā PlayStation slota gaismas joslas krāsu ar izvēlētu RGB krāsu. Režīmā „Reaģējošs” krāsa konfigurētajā izdzišanas laikā pāriet no pilnas intensitātes uz melnu, pēc tam vadība atgriežas kartītes „Gaismas josla” iestatījumiem. Režīmā „Noturīgs” krāsa tiek noturēta, līdz tiek izpildīta darbība „Notīrīt gaismas joslas aizstāšanu”. Spēles ieraksti joprojām ir prioritāri pār aizstāšanu.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Aizstāj piešķirtā PlayStation slota gaismas joslas krāsu ar izvēlētu RGB krāsu. Režīmā „Reaģējošs” krāsa konfigurētajā izdzišanas laikā pāriet no pilnas intensitātes uz melnu, pēc tam vadība atgriežas kartītes „Apgaismojums” iestatījumiem. Režīmā „Noturīgs” krāsa tiek noturēta, līdz tiek izpildīta darbība „Notīrīt gaismas joslas aizstāšanu”. Spēles ieraksti joprojām ir prioritāri pār aizstāšanu.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Uzzibsnīt gaismas joslā {0} (izdzišana {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Noturēt gaismas joslā {0}, līdz tiek notīrīts</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Notīrīt gaismas joslas aizstāšanu</value></data>
@@ -1905,7 +1905,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Atceļ jebkuru aktīvu gaismas joslas aizstāšanu piešķirtajā slotā. Izmantojiet kopā ar noturīgu darbību „Iestatīt gaismas joslas krāsu”, lai to atsauktu ar citu makrosu.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Iestatīt gaismas joslas režīmu</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Iestatīt gaismas joslas režīmu: {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Iestata piešķirtā slota gaismas joslas režīmu uz konkrētu vērtību. Saglabājas tāpat kā izmaiņas kartītē „Gaismas josla”, līdz to maina cita darbība vai lietotājs.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Iestata piešķirtā slota gaismas joslas režīmu uz konkrētu vērtību. Saglabājas tāpat kā izmaiņas kartītē „Apgaismojums”, līdz to maina cita darbība vai lietotājs.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Cikliski pārslēgt gaismas joslas režīmus</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Cikliski pārslēgt gaismas joslas režīmus: {0}</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Pārslēdz slota gaismas joslas režīmu pa tālāk atlasītajiem režīmiem. Katra izpilde pāriet uz nākamo atzīmēto režīmu. Cikla pozīcija katrai darbībai ir sava un tiek atiestatīta, restartējot lietotni.</value></data>
@@ -1920,7 +1920,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Izdzišana</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Izbalēšana</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Palete</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Ja palete ir tukša, tiek izmantota palete slota kartītē „Gaismas josla”.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Ja palete ir tukša, tiek izmantota palete slota kartītē „Apgaismojums”.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Režīms</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Izvēlieties, kurus gaismas joslas režīmus makrosam pārslēgt pēc kārtas. Katra izpilde pāriet uz nākamo atzīmēto režīmu.</value></data>
 
@@ -2150,6 +2150,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Peles izvade</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Invertēšana, inerce, reakcija, paātrinājums, metiens</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Sensoru joslas pozīcija, vertikālā nobīde, izlīdzināšana</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Regulē kursora ātrumu, ja skārienpaliktņa pirksts ir piesaistīts peles X/Y virtuālajā kontrollerī „Tastatūra / pele”. Noklusējums ir 1.0. Palieliniet jebkuru asi ātrākam kursoram, samaziniet lēnākam. „Invertēt” apgriež jebkuru asi.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Peles jutība X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Reizinātājs horizontālajai skārienpaliktņa → peles nobīdei. Zem 1.0 kursors palēninās. Virs 1.0 tas paātrinās.</value></data>
@@ -2355,7 +2356,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Notiek kalibrēšana… turiet nekustīgi</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Atiestatīt kalibrēšanu</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Notīra žiroskopa miera stāvokļa nobīdi un pēdējās kalibrēšanas laikspiedolu. Nākamajā aptaujas ciklā šai ierīcei atkārtoti tiek veikta 1.5 sekundes ilga automātiskā kalibrēšana.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Žiroskops reāllaikā</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Akselerometrs reāllaikā</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Horizontālā jutība</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Mērogo žiroskopa horizontālo (pagrieziens + sānsvere) ieguldījumu izvadē. 1.0 atstāj ātrumu tādu, kādu to redz dzinējs. Lielākas vērtības pastiprina, mazākas vājina. Tiek piemērots ierīces līmenī, lai visas šī kontrollera žiroskopa piesaistes mantotu vienādu horizontālo sajūtu.</value></data>
@@ -2375,8 +2375,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Žiroskops</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Regulējiet, kā šīs spēļu pults kustību sensors vada peles un sviras izvadi. Kalibrējiet uz līdzenas virsmas, lai novērstu miera stāvokļa dreifu, pēc tam pēc saviem ieskatiem iestatiet jutību, izlīdzināšanu un aktivizēšanas noteikumus.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibrēšana</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Žiroskopa un akselerometra rādījumi reāllaikā</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Jutība</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Mērvienības, asu invertēšana, reālās pasaules kalibrēšana</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° uz apgriezienu</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Reakcijas veidošana</value></data>
@@ -2462,11 +2460,8 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Īpaši plata</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Reizinātājs</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Grādi uz ekrāna apgriezienu</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Atiestatīt kalibrēšanu</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Atiestatīt jutību</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Atiestatīt reakcijas veidošanu</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Atiestatīt aktivizēšanu</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Atiestatīt kustības tiešo pārsūtīšanu</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Atiestatīt telpu</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Atiestatīt satvērienu</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Atiestatīt horizontālo jutību</value></data>
@@ -2486,8 +2481,11 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Atiestatīt aktivizēšanas sviru</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Atiestatīt aktivizēšanas virzienu</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Kustības tiešā pārsūtīšana</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Piemērot žiroskopa regulējumu kustības tiešajai pārsūtīšanai</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Piemēro žiroskopa kartīšu izvēles regulējumu (nejutības zona, jutība, izlīdzināšana, reakcijas līkne, invertēšana) kustībai, ko virtuālais kontrolleris ziņo spēlei vai emulatoram. Izslēdziet to, lai sūtītu tikai kalibrēto rādījumu un ļautu spēlei piemērot savu jutību un izlīdzināšanu. Kalibrēšanas dreifa korekcija tiek piemērota jebkurā gadījumā.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Režīms „Pielāgots” piemēro žiroskopa kartītes regulējumu (nejutības zona, jutība, izlīdzināšana, reakcijas līkne, invertēšana) kustībai, ko virtuālais kontrolleris ziņo spēlei vai emulatoram. Režīms „Neapstrādāts” sūta tikai kalibrēto rādījumu un ļauj spēlei piemērot savu jutību un izlīdzināšanu. Kalibrēšanas dreifa korekcija tiek piemērota jebkurā gadījumā.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Neapstrādāts</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Pielāgots</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Spēle nolasa kalibrēto kustību un piemēro savu jutību un izlīdzināšanu.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Spēle nolasa kustību ar šeit iestatīto jutību, izlīdzināšanu un līkni.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Atiestatīt tiešās pārsūtīšanas regulējumu</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Jutība</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Katra avota žiroskopa jutības reizinātājs. 1.0 = dzinēja noklusējums (500°/s → pilna novirze). Vērtības virs 1.0 ir jutīgākas. Vērtības zem 1.0 ir mazāk jutīgas.</value></data>
@@ -2735,8 +2733,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Šim kontrollerim nav mēlīšu motoru, tāpēc spēles, kas izmanto Xbox impulsa mēlītes, nebūtu jūtamas. Tā vietā pārnesiet katru mēlītes kanālu uz tās pašas puses galveno motoru.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Pārbaudīt vibrāciju</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoru darbība</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Kreisais</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Labais</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Piemēro šai ierīcei nepārtrauktu spēku, līdz to izslēdzat. Spēles radīts spēks no jebkura avota to aizstāj, kamēr ir aktīvs, un pastāvīgais spēks atsākas, kad spēle beidz.</value></data>
@@ -3256,7 +3252,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR rādītājs</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Tēmējiet ar šo Wii Remote uz ekrānu, izmantojot tā IR kameru. Nepieciešama sensoru josla vai divas infrasarkanās LED virs vai zem displeja. Lai tēmētu precīzi, kalibrējiet to kā gaismas pistoli lapā „Ierīces”. Kalibrēta pults ignorē iestatījumus „Sensoru joslas pozīcija” un „Vertikālā nobīde”.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Rādītāja regulēšana</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Sensoru joslas pozīcija</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Centrā</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Virs ekrāna</value></data>
@@ -3283,8 +3278,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Pārslēdz Wii rādītāja režīmu pa tālāk atlasītajiem režīmiem katrai slota pultij ar IR atbalstu. Katra izpilde pāriet uz nākamo atzīmēto režīmu. Cikla pozīcija katrai darbībai ir sava un tiek atiestatīta, restartējot lietotni.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Izvēlieties, kurus rādītāja režīmus makrosam pārslēgt pēc kārtas. Katra izpilde pāriet uz nākamo atzīmēto režīmu.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makrosu skaņas un dublētais sistēmas audio tiek atskaņots caur atlasītā kontrollera iebūvēto skaļruni, izmantojot USB vai Bluetooth. Izvēlieties ierīci iepriekš redzamajā nolaižamajā sarakstā. Visi šeit esošie iestatījumi attiecas uz to.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Skaņas izvade</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makrosu skaņas un dublētais sistēmas audio tiek atskaņots caur iebūvēto skaļruni ierīcei, kas izvēlēta sadaļā „Ievade no”, izmantojot USB vai Bluetooth. Visi šeit esošie iestatījumi attiecas uz šo ierīci.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Dublēšanas avots, austiņu skaļums, buferis, izvades ceļš</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Skaņas automātiski tiek novirzītas uz atlasīto kontrolleri. Ar USB spēļu pults audio galapunkts tiek atrasts pēc aparatūras konteinera. Ar Bluetooth audio tiek straumēts Sony HID kadros.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Dublēšanas avots</value></data>
@@ -3347,7 +3341,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Atiestatīt toņu robežu</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Paralēli kopē visu, ko atskaņo sistēmas noklusējuma izvade, uz šī kontrollera iebūvēto skaļruni. Darbojas ar USB un Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Atlasītajai ierīcei nav iebūvēta skaļruņa. Šīs spēļu pults makrosu skaņas tiek atskaņotas sistēmas noklusējuma izvadē.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Atiestatīt skaņas izvadi</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Pārlūkprogrammas DualSense testu komplekts, autors Xuezhou Dai (daidr): atsauce Sony feature-report CRC kadrēšanai un aparātprogrammatūras testa komandām, ko PadForge pārsūta no virtuālajām uz fiziskajām spēļu pultīm.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide LED spilgtums: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Iestata Guide vai Home pogas LED spilgtumu katram slota kontrollerim, kas to atbalsta. Xbox kontrolleri to pieņem tikai ar USB.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Attiecas uz Xbox kontrolleriem ar USB, 2015. gada Steam Controller un Switch kontrolleriem ar Home pogas LED. Izmantojiet divas šādas darbības, lai uzzibsnītu LED makrosa sākumā un atjaunotu to beigās.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Atiestatīt rādītāja režīmu</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Atiestatīt rādītāja regulēšanu</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Atiestatīt sensoru joslas pozīciju</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Atiestatīt vertikālo nobīdi</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Atiestatīt izlīdzināšanu</value></data>

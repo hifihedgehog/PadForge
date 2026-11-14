@@ -455,14 +455,11 @@
   <data name="Pad_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Gyro</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Calibration</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Diyuniti, go fetoša di-axis, Tekanyetšo ya lefase la nnete</value></data>
   <data name="Settings_GyroAimEngageMode_Hold" xml:space="preserve"><value>Swara</value></data>
   <data name="Settings_GyroAimEngageMode_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Settings_GyroEngageStickSide_Right" xml:space="preserve"><value>Stick ya lagoja</value></data>
   <data name="Settings_GyroEngageStickSide_Left" xml:space="preserve"><value>Stick ya lanngele</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Bušetša calibration</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Bušetša sensitivity</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Bušetša deadzone</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Lebelo la mause X</value></data>
@@ -1188,8 +1185,6 @@
   <data name="Pad_RumbleAudio_CheckShakers" xml:space="preserve"><value>Lekola dišikinyi</value></data>
   <data name="Pad_SteamVr_Installed" xml:space="preserve"><value>SteamVR e tsentšwe</value></data>
   <data name="Pad_SteamVr_NotInstalled" xml:space="preserve"><value>SteamVR ga e a tsenywa</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Lanngele</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Lagoja</value></data>
   <data name="Macro_ClearTrigger" xml:space="preserve"><value>Hlakola trigger</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mapa lebelo, dipedala le digia tšeo papadi ya go otlela e di romelago, go swana le tsenyo efe goba efe.</value></data>
   <data name="Extras_StatusHint_GameTelemetry" xml:space="preserve"><value>Bula go romela telemetry ka papading gomme o e lebiše go PC ye le port ye.</value></data>

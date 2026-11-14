@@ -1181,6 +1181,7 @@
   <data name="Pad_ForceFeedback_Subtitle" xml:space="preserve"><value>Настройва как PadForge мащабира събитията на силовата обратна връзка от играта и как ги насочва към моторите за вибрация или хаптичните актуатори на физическия контролер. „Вибрация от звука“ добавя отгоре слой, управляван от системния звук.</value></data>
   <data name="Pad_Scope_Device" xml:space="preserve"><value>Това устройство</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Целият контролер</value></data>
+  <data name="Pad_BothSticks_Header" xml:space="preserve"><value>И двата стика</value></data>
   <data name="Pad_ForceFeedback_RouteHidpp" xml:space="preserve"><value>Вибрацията се възпроизвежда на {0} като хаптични импулси, изпращани директно към устройството. При по-силна вибрация се избира по-силен импулс, който се повтаря по-бързо.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppFeedbackOff" xml:space="preserve"><value>Хаптичната обратна връзка за {0} е изключена в Logi Options+, затова нищо не се възпроизвежда, докато не я включите отново там.</value></data>
   <data name="Pad_ForceFeedback_RouteHidppAsleep" xml:space="preserve"><value>Това устройство все още не е отговорило. Вибрацията му ще се възпроизведе, след като се събуди.</value></data>
@@ -1267,7 +1268,6 @@
   <data name="Pad_Lighting_VendorRowExamples_Aura" xml:space="preserve"><value>дънни платки, видеокарти и памет</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>дънни платки и видеокарти</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>подложки за мишка, слушалки и стойки за слушалки</value></data>
-  <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Светлинна лента</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Игрите поемат управлението, когато зададат осветление.</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Въведете шестнадесетичен цвят от шест цифри (RRGGBB или #RRGGBB) и натиснете Enter или щракнете другаде, за да го приложите.</value></data>
@@ -1897,7 +1897,7 @@
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Отпускане на мишката {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Превключване на наслагването с тъчпад</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Задаване на цвят на светлинната лента</value></data>
-  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Задава избран RGB цвят на светлинната лента на назначения PlayStation слот. „Реактивно“ затихва от пълна интензивност до черно за зададеното време на затихване и след това връща управлението на настройките от картата „Светлинна лента“. „Залепващо“ задържа цвета, докато не се изпълни действие „Изчистване на замяната на светлинната лента“. Цветовете, зададени от играта, все още имат предимство пред замяната.</value></data>
+  <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Задава избран RGB цвят на светлинната лента на назначения PlayStation слот. „Реактивно“ затихва от пълна интензивност до черно за зададеното време на затихване и след това връща управлението на настройките от картата „Осветление“. „Залепващо“ задържа цвета, докато не се изпълни действие „Изчистване на замяната на светлинната лента“. Цветовете, зададени от играта, все още имат предимство пред замяната.</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Проблясване на светлинната лента {0} (затихване {1} мс)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Задържане на светлинната лента {0} до изчистване</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Изчистване на замяната на светлинната лента</value></data>
@@ -1905,7 +1905,7 @@
   <data name="MacroAction_LightbarColorClear_Tooltip" xml:space="preserve"><value>Освобождава всяка активна замяна на светлинната лента на назначения слот. Използвайте заедно със залепващо действие „Задаване на цвят на светлинната лента“, за да я отмените чрез друг макрос.</value></data>
   <data name="MacroAction_Type_LightbarModeSet" xml:space="preserve"><value>Задаване на режим на светлинната лента</value></data>
   <data name="MacroAction_LightbarModeSet_Format" xml:space="preserve"><value>Задаване на режима на светлинната лента на {0}</value></data>
-  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Задава конкретен режим на светлинната лента на назначения слот. Запазва се като промяна в картата „Светлинна лента“, докато друго действие или потребителят не го промени.</value></data>
+  <data name="MacroAction_LightbarModeSet_Tooltip" xml:space="preserve"><value>Задава конкретен режим на светлинната лента на назначения слот. Запазва се като промяна в картата „Осветление“, докато друго действие или потребителят не го промени.</value></data>
   <data name="MacroAction_Type_LightbarModeCycle" xml:space="preserve"><value>Цикъл на режимите на светлинната лента</value></data>
   <data name="MacroAction_LightbarModeCycle_Format" xml:space="preserve"><value>Цикъл през {0} режима на светлинната лента</value></data>
   <data name="MacroAction_LightbarModeCycle_Tooltip" xml:space="preserve"><value>Превключва режима на светлинната лента на слота през избраните по-долу режими. Всяко задействане преминава към следващия отметнат режим. Позицията в цикъла е отделна за всяко действие и се нулира при рестартиране на приложението.</value></data>
@@ -1920,7 +1920,7 @@
   <data name="Macro_LightbarDecay_Label" xml:space="preserve"><value>Затихване</value></data>
   <data name="Macro_LightbarFade_Label" xml:space="preserve"><value>Избледняване</value></data>
   <data name="Macro_LightbarPalette_Label" xml:space="preserve"><value>Палитра</value></data>
-  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Празната палитра използва палитрата от картата „Светлинна лента“ на слота.</value></data>
+  <data name="Macro_LightbarPalette_Empty" xml:space="preserve"><value>Празната палитра използва палитрата от картата „Осветление“ на слота.</value></data>
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Режим</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Изберете през кои режими на светлинната лента да преминава макросът. Всяко задействане преминава към следващия отметнат режим.</value></data>
 
@@ -2150,6 +2150,7 @@
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Изход като мишка</value></data>
   <data name="Pad_More_TouchpadMouse" xml:space="preserve"><value>Обръщане, Инерция, Реакция, Ускорение, хвърляне</value></data>
+  <data name="Pad_More_IrPointer" xml:space="preserve"><value>Позиция на сензорната лента, Вертикално отместване, Изглаждане</value></data>
   <data name="Pad_Touchpad_Mouse_Subtitle" xml:space="preserve"><value>Настройва скоростта на курсора, когато пръст на тъчпада е съпоставен към мишка X/Y на виртуален контролер „Клавиатура / мишка“. Стойността по подразбиране е 1.0. Увеличете която и да е ос за по-бърз курсор или я намалете за по-бавен. „Обръщане“ обръща която и да е ос.</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX" xml:space="preserve"><value>Чувствителност на мишката X</value></data>
   <data name="Pad_Touchpad_MouseSensitivityX_Tooltip" xml:space="preserve"><value>Множител за хоризонталното преместване тъчпад → мишка. Под 1.0 забавя курсора. Над 1.0 го ускорява.</value></data>
@@ -2355,7 +2356,6 @@
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Калибриране… не мърдайте</value></data>
   <data name="Settings_GyroResetCalibration_Button" xml:space="preserve"><value>Нулиране на калибрирането</value></data>
   <data name="Settings_GyroResetCalibration_Tooltip" xml:space="preserve"><value>Изчиства отместването на жироскопа в покой и времето на последното калибриране. Следващият цикъл на запитване изпълнява отново автоматичното калибриране от 1.5 секунди на това устройство.</value></data>
-  <data name="Settings_GyroLiveRate_Label" xml:space="preserve"><value>Жироскоп в реално време</value></data>
   <data name="Settings_GyroLiveAccel_Label" xml:space="preserve"><value>Акселерометър в реално време</value></data>
   <data name="Settings_GyroSensitivityH" xml:space="preserve"><value>Хоризонтална чувствителност</value></data>
   <data name="Settings_GyroSensitivityH_Tooltip" xml:space="preserve"><value>Мащабира хоризонталния (завъртане + крен) принос на жироскопа към изхода. 1.0 оставя скоростта такава, каквато я вижда двигателят. По-високите стойности усилват, по-ниските отслабват. Прилага се на ниво устройство, така че всяко съпоставяне на жироскопа на този контролер получава едно и също хоризонтално усещане.</value></data>
@@ -2375,8 +2375,6 @@
   <data name="Pad_Gyro_Header" xml:space="preserve"><value>Жироскоп</value></data>
   <data name="Pad_Gyro_Subtitle" xml:space="preserve"><value>Настройте как сензорът за движение на този контролер управлява изхода на мишката и стика. Калибрирайте на равна повърхност, за да нулирате дрифта в покой, след това настройте чувствителността, изглаждането и правилата за активиране по свой вкус.</value></data>
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Калибриране</value></data>
-  <data name="Pad_More_GyroCalibration" xml:space="preserve"><value>Текущи показания на жироскопа и акселерометъра</value></data>
-  <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Чувствителност</value></data>
   <data name="Pad_More_GyroSensitivity" xml:space="preserve"><value>Единици, обръщане на осите, Калибриране спрямо реалния свят</value></data>
   <data name="Pad_Gyro_DegPerTurn_Format" xml:space="preserve"><value>≈ {0}° на оборот</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Оформяне на реакцията</value></data>
@@ -2462,11 +2460,8 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Много широка</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Множител</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Градуси за пълен оборот</value></data>
-  <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Нулиране на калибрирането</value></data>
-  <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Нулиране на чувствителността</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Нулиране на оформянето на реакцията</value></data>
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Нулиране на активирането</value></data>
-  <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Нулиране на директното предаване на движението</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Нулиране на пространството</value></data>
   <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Нулиране на хвата</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Нулиране на хоризонталната чувствителност</value></data>
@@ -2486,8 +2481,11 @@
   <data name="Pad_ResetGyroEngageStickSide" xml:space="preserve"><value>Нулиране на стика за активиране</value></data>
   <data name="Pad_ResetGyroEngageStickDirection" xml:space="preserve"><value>Нулиране на посоката за активиране</value></data>
   <data name="Pad_Gyro_Passthrough_Header" xml:space="preserve"><value>Директно предаване на движението</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough" xml:space="preserve"><value>Прилагане на настройките на жироскопа към директното предаване на движението</value></data>
-  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>Прилага незадължителните настройки от картите в групата „Жироскоп“ (мъртва зона, чувствителност, изглаждане, крива на реакция, обръщане) към движението, което виртуалният контролер отчита на играта или емулатора. Изключете го, за да се изпраща само калибрираното показание и играта да приложи собствената си чувствителност и изглаждане. Корекцията на дрифта от калибрирането се прилага и в двата случая.</value></data>
+  <data name="Pad_Gyro_ApplyToPassthrough_Tooltip" xml:space="preserve"><value>„Настроено“ прилага настройките от картата „Жироскоп“ (мъртва зона, чувствителност, изглаждане, крива на реакция, обръщане) към движението, което виртуалният контролер отчита на играта или емулатора. „Необработено“ изпраща само калибрираното показание и оставя играта да приложи собствената си чувствителност и изглаждане. Корекцията на дрифта от калибрирането се прилага и в двата случая.</value></data>
+  <data name="Pad_Gyro_Passthrough_Raw" xml:space="preserve"><value>Необработено</value></data>
+  <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Настроено</value></data>
+  <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Играта чете калибрираното движение и прилага собствената си чувствителност и изглаждане.</value></data>
+  <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Играта чете движението с чувствителността, изглаждането и кривата, зададени тук.</value></data>
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Нулиране на настройките за директно предаване</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Чувствителност</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Множител на чувствителността на жироскопа за всеки източник. 1.0 = стойността по подразбиране на двигателя (500°/с → пълно отклонение). Стойностите над 1.0 са по-чувствителни. Стойностите под 1.0 са по-малко чувствителни.</value></data>
@@ -2735,8 +2733,6 @@
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Този контролер няма мотори в спусъците, затова ефектите на игрите, които използват импулсните спусъци на Xbox, няма да се усещат. Вместо това пренасочете канала на всеки спусък към основния мотор от същата страна.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Тест на вибрацията</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Активност на моторите</value></data>
-  <data name="Pad_MotorActivity_Left" xml:space="preserve"><value>Ляв</value></data>
-  <data name="Pad_MotorActivity_Right" xml:space="preserve"><value>Десен</value></data>
 
   <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Прилага постоянна сила към това устройство, докато не я изключите. Силата, управлявана от играта, от какъвто и да е източник, има предимство, докато е активна, а постоянната сила се възобновява, когато играта спре.</value></data>
@@ -3256,7 +3252,6 @@
   <data name="Pad_Audio" xml:space="preserve"><value>Аудио</value></data>
   <data name="Pad_Pointer_Header" xml:space="preserve"><value>IR показалец</value></data>
   <data name="Pad_Pointer_Subtitle" xml:space="preserve"><value>Насочвайте този Wii Remote към екрана с неговата IR камера. Нужна е сензорна лента или два инфрачервени LED над или под екрана. Калибрирайте го като светлинен пистолет на страницата „Устройства“, за да се прицелва в точното място. Калибрираното дистанционно пренебрегва „Позиция на сензорната лента“ и „Вертикално отместване“.</value></data>
-  <data name="Pad_Pointer_TuningTitle" xml:space="preserve"><value>Настройка на показалеца</value></data>
   <data name="Pad_Pointer_SensorBar" xml:space="preserve"><value>Позиция на сензорната лента</value></data>
   <data name="Pad_Pointer_SensorBar_Centered" xml:space="preserve"><value>Центрирана</value></data>
   <data name="Pad_Pointer_SensorBar_Above" xml:space="preserve"><value>Над екрана</value></data>
@@ -3283,8 +3278,7 @@
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Превключва режима на показалеца на Wii през избраните по-долу режими за всяко дистанционно с IR в слота. Всяко задействане преминава към следващия отметнат режим. Позицията в цикъла е отделна за всяко действие и се нулира при рестартиране на приложението.</value></data>
   <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Изберете през кои режими на показалеца да преминава макросът. Всяко задействане преминава към следващия отметнат режим.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Аудио</value></data>
-  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Звуците от макроси и дублираният системен звук се възпроизвеждат през вградения високоговорител на избрания контролер, чрез USB или Bluetooth. Изберете устройството от падащия списък по-горе. Всички настройки тук се отнасят за него.</value></data>
-  <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Изход на звука</value></data>
+  <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Звуците от макроси и дублираният системен звук се възпроизвеждат през вградения високоговорител на устройството, избрано под „Управлява се от“, чрез USB или Bluetooth. Всички настройки тук се отнасят за това устройство.</value></data>
   <data name="Pad_More_SoundOutput" xml:space="preserve"><value>Източник за дублиране, Сила на звука на слушалките, буфер, Изходен път</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Звуците се насочват автоматично към избрания контролер. При USB собствената аудио крайна точка на контролера се открива по хардуерния контейнер. При Bluetooth звукът се предава в HID кадри на Sony.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Източник за дублиране</value></data>
@@ -3347,7 +3341,6 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Нулиране на границата на тона</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Копира паралелно всичко, което възпроизвежда изходното устройство по подразбиране на системата, към вградения високоговорител на този контролер. Работи чрез USB и Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Избраното устройство няма вграден високоговорител. Звуците от макроси за този контролер се възпроизвеждат на изходното устройство по подразбиране на системата.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Нулиране на изхода на звука</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Набор от тестове за DualSense в браузъра от Xuezhou Dai (daidr): референция за CRC рамкирането на отчетите за функции на Sony и тестовите команди на фърмуера, които PadForge препраща от виртуалните към физическите контролери.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -3807,8 +3800,6 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Яркост на LED на бутона Guide: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Задава яркостта на LED на бутона Guide или Home за всеки поддържащ контролер в слота. Контролерите Xbox я приемат само чрез USB.</value></data>
   <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Прилага се за контролери Xbox чрез USB, Steam Controller от 2015 г. и контролери Switch с LED на бутона Home. Използвайте две такива действия, за да мигне LED при стартиране на макрос и да се възстанови при края му.</value></data>
-  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Нулиране на режима на показалеца</value></data>
-  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Нулиране на настройката на показалеца</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Нулиране на позицията на сензорната лента</value></data>
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Нулиране на вертикалното отместване</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Нулиране на изглаждането</value></data>

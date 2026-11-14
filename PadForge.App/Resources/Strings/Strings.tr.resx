@@ -2715,13 +2715,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>En düşük aralık Y (aşağı)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>En yüksek aralık Y (yukarı)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X ekseni</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Her iki eksen</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y ekseni</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Aralık</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti ölü bölge</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Nokta eklemek için çift tıklayın. Kaldırmak için sağ tıklayın. Ayarlamak için sürükleyin.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>eğri düzenleyici</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Tetik ekseni</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Motor başına kazanç, tetik titreşimi, Direksiyon açısı titreşimi, Sabit kuvvet</value></data>

@@ -955,9 +955,10 @@ namespace PadForge.Tests
         /// band of the widths the ring's shape is worked out for, in the
         /// ember color, over the pictures and under the view switch. It
         /// takes no clicks, never draws past the picture, and is not
-        /// mirrored in a right-to-left language. Under it lies the hover
-        /// ring, the line alone in the Buttons board's fainter ember. All
-        /// three parts start hidden.</summary>
+        /// mirrored in a right-to-left language. Both parts start hidden.
+        /// There is no second ring for the control under the pointer: each
+        /// picture lights that control itself, and a ring beside that light
+        /// was clutter (owner, 2026-11-14).</summary>
         [Fact]
         public void ThePageDrawsOneRingOverThePicture()
         {
@@ -978,7 +979,7 @@ namespace PadForge.Tests
             Assert.True(order.IndexOf("TouchSensors") < order.IndexOf("PickRingLayer"));
             Assert.True(order.IndexOf("PickRingLayer") < order.IndexOf("ViewModeToggle"));
 
-            Assert.Equal(new[] { "HoverRing", "PickRingBand", "PickRing" }, layer.Elements().Select(Name));
+            Assert.Equal(new[] { "PickRingBand", "PickRing" }, layer.Elements().Select(Name));
             var band = Named(page, "PickRingBand");
             var ring = Named(page, "PickRing");
             foreach (var part in new[] { band, ring })
@@ -993,19 +994,10 @@ namespace PadForge.Tests
             Assert.Equal("0.28", (string)band.Attribute("Opacity"));
             Assert.Null(ring.Attribute("Opacity"));
 
-            var hover = Named(page, "HoverRing");
-            Assert.Equal("Border", hover.Name.LocalName);
-            Assert.Equal("Collapsed", (string)hover.Attribute("Visibility"));
-            Assert.Equal("{DynamicResource EmberHoverRingBrush}", (string)hover.Attribute("BorderBrush"));
-            Assert.Equal(PicturePick.LineWidth.ToString(System.Globalization.CultureInfo.InvariantCulture), (string)hover.Attribute("BorderThickness"));
-            Assert.Null(hover.Attribute("Background"));
-            Assert.Null(hover.Attribute("Opacity"));
-            // The board's rgba(255, 138, 87, 0.6) on dark, and the deeper
-            // ember at the same strength on light.
-            Assert.Contains("<SolidColorBrush x:Key=\"EmberHoverRingBrush\" Color=\"#99FF8A57\"/>",
-                ExtrasPageTests.RepoText("PadForge.App", "App.xaml"));
-            Assert.Contains("SetBrush(\"EmberHoverRingBrush\", dark ? Color.FromArgb(0x99, 0xFF, 0x8A, 0x57) : Color.FromArgb(0x99, 0xC2, 0x4A, 0x12));",
-                ExtrasPageTests.RepoText("PadForge.App", "Common", "EmberTheme.cs"));
+            // No hover ring, and no brush kept for one.
+            Assert.DoesNotContain(page.Descendants(), e => Name(e) == "HoverRing");
+            Assert.DoesNotContain("EmberHoverRingBrush", ExtrasPageTests.RepoText("PadForge.App", "App.xaml"));
+            Assert.DoesNotContain("EmberHoverRingBrush", ExtrasPageTests.RepoText("PadForge.App", "Common", "EmberTheme.cs"));
         }
 
         /// <summary>The ring is placed again whenever the control may be
@@ -1015,38 +1007,32 @@ namespace PadForge.Tests
         /// settled, once for all the requests made before that. It shows
         /// in the picture's view only, a ring around several parts is
         /// round, and with no control to ring both its parts are hidden.
-        /// The hover ring is placed in the same pass, on the control a
-        /// picture says is under the pointer, by the row a click there
-        /// picks.</summary>
+        /// While a control records, the picture marks it with its own
+        /// flash and the ring is hidden, so it is placed again when a
+        /// recording starts and when it ends.</summary>
         [Fact]
         public void TheRingFollowsThePick_TheViewAndThePicture()
         {
             string code = CodeBehind();
-            Assert.Matches(@"else if \(e\.PropertyName == nameof\(PadViewModel\.PickedRow\)\)\s*\{[^}]*QueuePickRingSync\(\);\s*\}", code);
+            Assert.Matches(@"else if \(e\.PropertyName == nameof\(PadViewModel\.PickedRow\)\s*\|\| e\.PropertyName == nameof\(PadViewModel\.CurrentRecordingTarget\)\)\s*\{[^}]*QueuePickRingSync\(\);\s*\}", code);
             Assert.Matches(@"ResubscribeSelectedDeviceInfo\(\);\s*// Another slot has another pick, or none\.\s*QueuePickRingSync\(\);", code);
             Assert.Matches(@"SyncTabVisibility\(\);\s*BindActiveModelView\(\);[^}]*QueuePickRingSync\(\);\s*\}", code);
             Assert.Contains("private void PictureHost_SizeChanged(object sender, SizeChangedEventArgs e) => QueuePickRingSync();", code);
             Assert.Contains("private void OnPickBoundsChanged(object sender, EventArgs e) => QueuePickRingSync();", code);
-            Assert.Matches(@"foreach \(var picture in PicturesWithPick\(\)\)\s*\{\s*picture\.PickBoundsChanged \+= OnPickBoundsChanged;\s*picture\.HoverTargetChanged \+= OnHoverTargetChanged;\s*\}", code);
+            Assert.Matches(@"foreach \(var picture in PicturesWithPick\(\)\)\s*picture\.PickBoundsChanged \+= OnPickBoundsChanged;", code);
 
             Assert.Matches(@"private void QueuePickRingSync\(\)\s*\{\s*if \(_pickRingQueued\) return;\s*_pickRingQueued = true;\s*Dispatcher\.BeginInvoke\(System\.Windows\.Threading\.DispatcherPriority\.Loaded, new Action\(\(\) =>\s*\{\s*_pickRingQueued = false;\s*SyncPickRing\(\);\s*\}\)\);\s*\}", code);
 
-            Assert.Contains("if (DataContext is PadViewModel vm && vm.IsButtonsPictureView)", code);
-            Assert.Contains("place = RingAround(vm.PickedTargets());", code);
+            // In the picture's view, and with no control recording.
+            Assert.Matches(@"if \(DataContext is PadViewModel vm && vm\.IsButtonsPictureView && string\.IsNullOrEmpty\(vm\.CurrentRecordingTarget\)\)\s*place = RingAround\(vm\.PickedTargets\(\)\);", code);
             Assert.Contains("foreach (string target in targets)", code);
             Assert.Contains("if (parts > 1) round = true;", code);
             Assert.Matches(@"return at is Rect control\s*\? PicturePick\.Place\(control, round, new Size\(PickRingLayer\.ActualWidth, PickRingLayer\.ActualHeight\)\)\s*: default;", code);
             Assert.Matches(@"if \(place\.Line\.Width > 0\)\s*\{\s*PutPickRing\(PickRing, place\.Line, place\.LineRadius\);\s*PutPickRing\(PickRingBand, place\.Band, place\.BandRadius\);\s*\}\s*else\s*\{\s*PickRing\.Visibility = Visibility\.Collapsed;\s*PickRingBand\.Visibility = Visibility\.Collapsed;\s*\}", code);
-            // The hover ring: the row a click there picks, ringed as a pick
-            // is, and hidden on the picked control or where that is drawn.
-            Assert.Matches(@"string under = _hoverTarget == null \? null : MappingTargetOf\(vm, _hoverTarget\);\s*if \(under != null\) hover = RingAround\(vm\.HoveredTargets\(under\)\);", code);
-            Assert.Matches(@"if \(hover\.Line\.Width > 0 && hover\.Line != place\.Line\) PutPickRing\(HoverRing, hover\.Line, hover\.LineRadius\);\s*else HoverRing\.Visibility = Visibility\.Collapsed;", code);
+            // Nothing rings the control under the pointer.
+            Assert.DoesNotContain("HoverRing", code);
+            Assert.DoesNotContain("_hoverTarget", code);
             Assert.Contains("targetName = MappingTargetOf(vm, targetName);", code);
-            // A leave from a picture the pointer has already left for another
-            // changes nothing, and a hover that changed nothing is not placed
-            // again.
-            Assert.Matches(@"if \(_hoverSource == null \|\| !ReferenceEquals\(sender, _hoverSource\)\) return;", code);
-            Assert.Matches(@"if \(ReferenceEquals\(sender, _hoverSource\) && string\.Equals\(target, _hoverTarget, StringComparison\.Ordinal\)\) return;", code);
             // A picture that is not set to show is not asked, and the
             // answer is mapped to where the ring is drawn.
             Assert.Contains("if (view.Visibility != Visibility.Visible) continue;", code);
@@ -1062,46 +1048,43 @@ namespace PadForge.Tests
             raised.Clear();
             vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
             Assert.Contains(nameof(PadViewModel.PickedRow), raised);
+
+            // A recording says so when it starts and when it ends, and the
+            // control that records is the picked one, so the ring comes back
+            // on it once the recording is over.
+            raised.Clear();
+            vm.CurrentRecordingTarget = "ButtonA";
+            Assert.Contains(nameof(PadViewModel.CurrentRecordingTarget), raised);
+            Assert.Equal("ButtonA", vm.PickedTarget);
+            raised.Clear();
+            vm.CurrentRecordingTarget = null;
+            Assert.Contains(nameof(PadViewModel.CurrentRecordingTarget), raised);
+            Assert.Equal("ButtonA", vm.PickedTarget);
         }
 
-        // ── the ring under the pointer ─────────────────────────────────
+        // ── the control under the pointer ──────────────────────────────
 
-        /// <summary>A control under the pointer is ringed as a pick is: a
-        /// stick or a D-pad as the whole control, from any of its rows or
-        /// directions. The picked control takes no hover ring, and a name
-        /// with no row takes none. With nothing picked, as the picture
-        /// opens, every control takes the hover ring.</summary>
+        /// <summary>The control under the pointer takes no ring. Every
+        /// picture lights it itself, as it did before the ring: the models
+        /// warm the part, the schematic, the keyboard and mouse, the MIDI
+        /// board and the touch sensors draw it in their hover color, and
+        /// the VR hands warm the element. So no picture says which control
+        /// the pointer is on, and the view model has no hovered control to
+        /// name.</summary>
         [Fact]
-        public void AHoverRingsTheControlUnderThePointer_UnlessItIsThePickedOne()
+        public void TheControlUnderThePointer_TakesNoRing_AndEachPictureLightsIt()
         {
-            var vm = new PadViewModel(0);
-            vm.ApplyMappingPickerFilter();
-            Assert.Empty(vm.PickedTargets());
-            Assert.Equal(new[] { "ButtonA" }, vm.HoveredTargets("ButtonA"));
-            vm.PickedTarget = "ButtonA";
-            Assert.Equal(new[] { "ButtonA" }, vm.PickedTargets());
-            Assert.Equal(new[] { "ButtonB" }, vm.HoveredTargets("ButtonB"));
-            Assert.Empty(vm.HoveredTargets("ButtonA"));
-            Assert.Equal(new[] { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" }.OrderBy(t => t, StringComparer.Ordinal),
-                vm.HoveredTargets("DPadLeft").OrderBy(t => t, StringComparer.Ordinal));
-            Assert.Equal(new[] { "LeftThumbAxisX", "LeftThumbAxisY", "LeftThumbButton" },
-                vm.HoveredTargets("LeftThumbAxisYNeg").OrderBy(t => t, StringComparer.Ordinal));
-            Assert.Empty(vm.HoveredTargets("NoSuchControl"));
-            Assert.Empty(vm.HoveredTargets(null));
-
-            // A stick picked: none of its rows takes the hover ring, and the
-            // other stick does.
-            vm.PickedTarget = "LeftThumbButton";
-            Assert.Empty(vm.HoveredTargets("LeftThumbAxisXNeg"));
-            Assert.Empty(vm.HoveredTargets("LeftThumbButton"));
-            Assert.Equal(new[] { "RightThumbAxisX", "RightThumbAxisY", "RightThumbButton" },
-                vm.HoveredTargets("RightThumbAxisX").OrderBy(t => t, StringComparer.Ordinal));
-
-            // With nothing picked, which only the list allows, any control
-            // takes it.
-            vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
-            vm.PickedTarget = null;
-            Assert.Equal(new[] { "ButtonA" }, vm.HoveredTargets("ButtonA"));
+            Assert.Null(typeof(IPictureWithPick).GetEvent("HoverTargetChanged"));
+            Assert.Null(typeof(PadViewModel).GetMethod("HoveredTargets", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public));
+            static string Code(string file) => ExtrasPageTests.RepoText("PadForge.App", "Views", file);
+            foreach (string file in new[] { "ControllerModelView.xaml.cs", "ControllerModel2DView.xaml.cs", "ControllerSchematicView.xaml.cs",
+                "KBMPreviewView.xaml.cs", "MidiPreviewView.xaml.cs", "TouchSensorStrip.cs", "VRPreviewView.xaml.cs", "PicturePick.cs" })
+                Assert.DoesNotContain("HoverTargetChanged", Code(file));
+            Assert.Contains("ApplyHoverHighlight(kv.Key);", Code("ControllerModelView.xaml.cs"));
+            Assert.Contains("_hoverTarget = null;", Code("ControllerModel2DView.xaml.cs"));
+            foreach (string file in new[] { "ControllerSchematicView.xaml.cs", "KBMPreviewView.xaml.cs", "MidiPreviewView.xaml.cs", "TouchSensorStrip.cs" })
+                Assert.Contains("HoverBrush", Code(file));
+            Assert.Contains("if (!isMulti) { _hoverTarget = el.Target; return; }", Code("VRPreviewView.xaml.cs"));
         }
 
         private static void Pointer(UIElement part, RoutedEvent what)
@@ -1124,47 +1107,38 @@ namespace PadForge.Tests
         }
 
         /// <summary>Points at each part of a picture, clicks it and leaves
-        /// it, as the pointer would, and checks that a part a click records
-        /// said that control while the pointer was on it, and none after.
-        /// The events carry no position: a part reads the pointer's, which
-        /// is the same for the three. Returns how many parts a click
-        /// records.</summary>
-        private static int PointAtEachPart(UserControl view)
+        /// it, as the pointer would. The events carry no position: a part
+        /// reads the pointer's, which is the same for the three. Returns
+        /// how many parts a click records, each by a name.</summary>
+        private static int ClickEachPart(UserControl view)
         {
-            var picture = (IPictureWithPick)view;
-            var said = new List<string>();
             string clicked = null;
-            picture.HoverTargetChanged += (s, target) => said.Add(target);
             view.GetType().GetEvent("ControllerElementRecordRequested")!
                 .AddEventHandler(view, new EventHandler<string>((s, target) => clicked = target));
             int recorded = 0;
             foreach (var part in PartsOf(view))
             {
-                said.Clear();
                 clicked = null;
                 Pointer(part, UIElement.MouseEnterEvent);
                 Pointer(part, UIElement.MouseMoveEvent);
-                string hovered = said.LastOrDefault();
                 part.RaiseEvent(new System.Windows.Input.MouseButtonEventArgs(System.Windows.Input.Mouse.PrimaryDevice, 0,
                     System.Windows.Input.MouseButton.Left) { RoutedEvent = UIElement.MouseLeftButtonDownEvent });
                 Pointer(part, UIElement.MouseLeaveEvent);
                 if (clicked == null) continue;
                 recorded++;
-                Assert.Equal(clicked, hovered);
-                Assert.Null(said.Last());
+                Assert.NotEqual(string.Empty, clicked);
             }
             return recorded;
         }
 
-        /// <summary>A picture says which control is under the pointer by the
-        /// name a click there records, and says none when the pointer leaves
-        /// (#574). Every part of the keyboard and mouse, the touch sensors'
-        /// capsules and the VR hands that a click records does. The 3D and
-        /// 2D models, the schematic and the MIDI board, which the test host
-        /// cannot draw, say it from the hover code each has, by the name
-        /// their click uses.</summary>
+        /// <summary>A click on a part of a picture records that control,
+        /// with the pointer moved over it first and off it after, as a
+        /// hand does: every key and mouse control, each touch sensor's
+        /// capsule and each element of the VR hands. The 3D and 2D models,
+        /// the schematic and the MIDI board, which the test host cannot
+        /// draw, record by the names their click code has.</summary>
         [Fact]
-        public void APictureSaysTheControlUnderThePointer_AsAClickNamesIt()
+        public void AClickOnAPartOfAPicture_RecordsItsControl()
         {
             RunSta(() =>
             {
@@ -1172,7 +1146,7 @@ namespace PadForge.Tests
                 kbm.Resources["TelemetryFontFamily"] = new FontFamily("Consolas");
                 kbm.Bind(new PadViewModel(0) { OutputType = VirtualControllerType.KeyboardMouse });
                 Lay(kbm, 975, 726);
-                Assert.True(PointAtEachPart(kbm) > 100, "the keys and the mouse's controls");
+                Assert.True(ClickEachPart(kbm) > 100, "the keys and the mouse's controls");
                 kbm.Unbind();
 
                 var vm = new PadViewModel(0) { OutputType = VirtualControllerType.Extended };
@@ -1184,7 +1158,7 @@ namespace PadForge.Tests
                 Lay(strip, 600, 40);
                 int capsules = ((StackPanel)strip.Content).Children.Count;
                 Assert.True(capsules > 0);
-                Assert.Equal(capsules, PointAtEachPart(strip));
+                Assert.Equal(capsules, ClickEachPart(strip));
                 attach.Invoke(strip, new object[] { null });
 
                 var hands = new VRPreviewView();
@@ -1192,40 +1166,25 @@ namespace PadForge.Tests
                 Lay(hands, 975, 726);
                 // One hit area for each element the hands draw.
                 var elements = (Array)typeof(VRPreviewView).GetField("Elements", BindingFlags.NonPublic | BindingFlags.Static)!.GetValue(null)!;
-                Assert.Equal(elements.Length, PointAtEachPart(hands));
+                Assert.Equal(elements.Length, ClickEachPart(hands));
             });
 
             static string Code(string file) => ExtrasPageTests.RepoText("PadForge.App", "Views", file);
-            int Leaves(string code) => System.Text.RegularExpressions.Regex.Matches(code, @"HoverTargetChanged\?\.Invoke\(this, null\);").Count;
 
             string model = Code("ControllerModelView.xaml.cs");
-            Assert.Matches(@"ShowHoverQuadrant\(quadrant\);\s*ModelViewPort\.Cursor = Cursors\.Hand;\s*HoverTargetChanged\?\.Invoke\(this, quadrant\);\s*return;", model);
-            Assert.Matches(@"ApplyHoverHighlight\(kv\.Key\);\s*ModelViewPort\.Cursor = Cursors\.Hand;\s*HoverTargetChanged\?\.Invoke\(this, kv\.Value\);\s*return;", model);
-            Assert.Matches(@"ModelViewPort\.Cursor = Cursors\.Arrow;\s*HoverTargetChanged\?\.Invoke\(this, null\);\s*\}", model);
             Assert.Contains("ControllerElementRecordRequested?.Invoke(this, stickAxis);", model);
             Assert.Contains("ControllerElementRecordRequested?.Invoke(this, kv.Value);", model);
 
             string flat = Code("ControllerModel2DView.xaml.cs");
-            Assert.Contains("HoverTargetChanged?.Invoke(this, ClickTargetAt(rect, target, e.GetPosition(rect)));", flat);
             Assert.Contains("ControllerElementRecordRequested?.Invoke(this, ClickTargetAt(rect, target, e.GetPosition(rect)));", flat);
-            Assert.Matches(@"_dirty = true; // Next render frame restores proper state\s*HoverTargetChanged\?\.Invoke\(this, null\);", flat);
-            Assert.Equal(1, Leaves(flat));
 
             string schematic = Code("ControllerSchematicView.xaml.cs");
             foreach (string named in new[] { "StickTarget(e.GetPosition(outer))", "$\"RawAxis{axisIdx}\"", "PovTarget(e.GetPosition(outer))", "$\"RawBtn{index}\"" })
-            {
-                Assert.Contains("HoverTargetChanged?.Invoke(this, " + named + ");", schematic);
                 Assert.Contains("ControllerElementRecordRequested?.Invoke(this, " + named + ");", schematic);
-            }
-            Assert.Equal(4, Leaves(schematic));
 
             string midi = Code("MidiPreviewView.xaml.cs");
             foreach (string named in new[] { "$\"MidiCC{index}\"", "$\"MidiNote{noteIndex}\"" })
-            {
-                Assert.Contains("HoverTargetChanged?.Invoke(this, " + named + ");", midi);
                 Assert.Contains("ControllerElementRecordRequested?.Invoke(this, " + named + ");", midi);
-            }
-            Assert.Equal(2, Leaves(midi));
         }
     }
 }

@@ -1673,11 +1673,9 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Intervalu mínimu Y (baxu)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Intervalu máximu Y (riba)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Eixu X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Tudu dôs eixu</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Eixu Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Intervalu</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zona morta</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Eixu di gatilhu</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ganhu pa motor, vibrason di gatilhu, vibrason di ángulu di volanti, forsa konstanti</value></data>

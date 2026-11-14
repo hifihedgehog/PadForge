@@ -2715,13 +2715,11 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Phạm vi tối thiểu Y (xuống)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Phạm vi tối đa Y (lên)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Trục X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Cả hai trục</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Trục Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Phạm vi</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Chống vùng chết</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Nhấp đúp để thêm điểm. Nhấp chuột phải để xóa. Kéo để điều chỉnh.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>trình chỉnh đường cong</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Trục cò</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Độ lợi từng mô-tơ, rung cò, Rung theo góc lái, Lực không đổi</value></data>

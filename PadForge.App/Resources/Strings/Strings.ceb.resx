@@ -1704,11 +1704,9 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Min range Y (ubos)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Max range Y (taas)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Axis X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Duha ka axis</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axis Y</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>I-double-click aron magdugang og punto. I-right-click aron tangtangon. I-drag aron i-adjust.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>curve editor</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axis sa trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Wala nga motor</value></data>

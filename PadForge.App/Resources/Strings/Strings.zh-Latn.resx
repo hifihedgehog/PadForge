@@ -2525,13 +2525,11 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Zuìxiǎo fànwéi Y (xià)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Zuìdà fànwéi Y (shàng)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X zhóu</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Liǎng zhóu</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y zhóu</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Fànwéi</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Fǎn sǐqū</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Shuāngjī tiānjiā diǎn. Yòujiàn dānjī shānchú. Tuōdòng tiáozhěng.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>qūxiàn biānjíqì</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Bānjī zhóu</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gè mǎdá zēngyì, bānjī zhèndòng, Zhuǎnxiàng jiǎodù zhèndòng, Hénglì</value></data>

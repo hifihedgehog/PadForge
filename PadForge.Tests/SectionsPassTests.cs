@@ -395,6 +395,71 @@ namespace PadForge.Tests
 
         // ── Motion Passthrough and the cards' resets ───────────────────
 
+        /// <summary>A part body with no least width set stands its two parts
+        /// side by side whenever both fit: the settings at their width, the
+        /// gap, and the live view at the width it asks for. One short of
+        /// that, the live view goes under the settings. A stick's card is
+        /// such a body: its live view is an instrument of a fixed size and
+        /// its settings column is sized for the language, so no one number
+        /// is right for both.</summary>
+        [Fact]
+        public void APartBodyWithNoLeastWidth_StandsItsPartsSideBySideWheneverBothFit()
+        {
+            Assert.Equal(708, PartBodyPanel.LeastSideBySide(double.NaN, 360, 22, 326));
+            Assert.Equal(900, PartBodyPanel.LeastSideBySide(900, 360, 22, 326));
+            Sta(() =>
+            {
+                var settings = new Border { Height = 132 };
+                var live = new Border { Width = 326, Height = 300, HorizontalAlignment = HorizontalAlignment.Left };
+                var body = new PartBodyPanel { SideBySideWidth = double.NaN, SettingsWidth = 360, Gap = 22, StackGap = 16 };
+                body.Children.Add(settings);
+                body.Children.Add(live);
+                body.Measure(new Size(708, double.PositiveInfinity));
+                body.Arrange(new Rect(0, 0, 708, body.DesiredSize.Height));
+                Assert.True(body.IsSideBySide);
+                Assert.Equal(300, body.DesiredSize.Height);
+                Assert.Equal(new Rect(0, 0, 360, 300), LayoutInformation.GetLayoutSlot(settings));
+                Assert.Equal(382, LayoutInformation.GetLayoutSlot(live).X);
+
+                body.Measure(new Size(707, double.PositiveInfinity));
+                body.Arrange(new Rect(0, 0, 707, body.DesiredSize.Height));
+                Assert.False(body.IsSideBySide);
+                Assert.Equal(132 + 16 + 300, body.DesiredSize.Height);
+                Assert.Equal(new Rect(0, 148, 707, 300), LayoutInformation.GetLayoutSlot(live));
+            });
+        }
+
+        /// <summary>A legend tag of the 3D and 2D pictures lights while its
+        /// control's output is on, an ember edge and name, in the frame the
+        /// picture lights the control. It is the tag's one light: a press
+        /// used to flash the tag blue for 250 ms while a dot beside it
+        /// showed the output, and the flash went out with the button still
+        /// held (owner, 2026-11-14). The 3D view reads a Nintendo row's raw
+        /// name as its anchor does, so that slot's tags light too. The 2D
+        /// view's timer did the flash and the dot and nothing else, and is
+        /// gone.</summary>
+        [Fact]
+        public void ALegendTag_LightsWhileItsControlsOutputIsOn()
+        {
+            foreach (string view in new[] { "ControllerModelView", "ControllerModel2DView" })
+            {
+                string tags = ExtrasPageTests.RepoText("PadForge.App", "Views", view + ".Annotations.cs");
+                Assert.DoesNotContain("FlashUntil", tags);
+                Assert.DoesNotContain("EmberDot", tags);
+                Assert.DoesNotContain("IsInputActive", tags);
+                Assert.Contains("LightChip(chip, ChipOutputOn(chip.Row.TargetSettingName));", tags);
+                // A tag made while its control is held is lit at once.
+                Assert.Contains("LightChip(chip, ChipOutputOn(row.TargetSettingName));", tags);
+                Assert.Contains("chip.Border.SetResourceReference(Border.BorderBrushProperty, on ? \"EmberBrush\" : \"SteelLineSoftBrush\");", tags);
+                Assert.Contains("chip.Text.SetResourceReference(TextBlock.ForegroundProperty, on ? \"EmberBrush\" : \"TextFillColorSecondaryBrush\");", tags);
+                string code = ExtrasPageTests.RepoText("PadForge.App", "Views", view + ".xaml.cs");
+                Assert.Matches(@"private void OnRendering\(object sender, EventArgs e\)\s*\{[\s\S]*?UpdateAnnotationChipLights\(\);\s*\}", code);
+            }
+            string model = ExtrasPageTests.RepoText("PadForge.App", "Views", "ControllerModelView.Annotations.cs");
+            Assert.Matches(@"private bool ChipOutputOn\(string target\)\s*\{[\s\S]*?Models2D\.NintendoPreviewMap\.ToPreview\(target, _vm\?\.ProfileId\);[\s\S]*?return GetButtonState\(target\);", model);
+            Assert.DoesNotContain("DispatcherTimer", ExtrasPageTests.RepoText("PadForge.App", "Views", "ControllerModel2DView.Annotations.cs"));
+        }
+
         /// <summary>A line of gray text under a row starts where the row's
         /// control does, as the boards draw it: past its section's label,
         /// the label's width and the room after it. Those are what the game

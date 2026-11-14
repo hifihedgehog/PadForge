@@ -2715,13 +2715,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Мін. дыяпазон Y (уніз)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Макс. дыяпазон Y (уверх)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Вось X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Абедзве восі</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Вось Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Дыяпазон</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Антымёртвая зона</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Двайны клік дадае кропку. Правы клік выдаляе. Перацягвайце, каб наладзіць.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>рэдактар крывой</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Вось курка</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Узмацненне матораў, вібрацыя куркоў, Вібрацыя па куце руля, Пастаянная сіла</value></data>

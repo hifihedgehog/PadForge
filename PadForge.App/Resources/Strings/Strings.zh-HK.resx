@@ -2715,13 +2715,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>最小範圍 Y（下）</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>最大範圍 Y（上）</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X 軸</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>兩軸</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y 軸</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>範圍</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>反死區</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>按兩下可新增控制點。按右鍵可移除。拖曳可調整。</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>曲線編輯器</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>扳機軸</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>各馬達增益、扳機震動、轉向角度震動、恆定力</value></data>

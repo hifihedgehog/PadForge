@@ -2501,13 +2501,11 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Firxa minima Y (isfel)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Firxa massima Y (fuq)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Assi X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Iż-żewġ assi</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Assi Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Firxa</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-żona mejta</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Agħfas darbtejn biex iżżid punt. Ikklikkja bil-lemin biex tneħħi. Kaxkar biex taġġusta.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>editur tal-kurva</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Assi tat-trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain għal kull mutur, rumble tat-triggers, Rumble tal-angolu tat-tmun, Forza kostanti</value></data>

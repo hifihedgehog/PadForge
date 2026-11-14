@@ -2715,13 +2715,11 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Min. rozsah Y (dole)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Max. rozsah Y (nahoře)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Osa X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Obě osy</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Osa Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Rozsah</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-mrtvá zóna</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dvojklikem přidáte bod. Pravým tlačítkem ho odeberete. Tažením ho upravíte.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>editor křivky</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Osa spouště</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Zesílení motorů, vibrace spouští, Vibrace podle úhlu řízení, Stálá síla</value></data>

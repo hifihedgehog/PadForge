@@ -2507,13 +2507,11 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Masafa ya Chini Y (Chini)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Masafa ya Juu Y (Juu)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Mhimili wa X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Mihimili Yote Miwili</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Mhimili wa Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Masafa</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Bofya mara mbili kuongeza nukta. Bofya kulia kuondoa. Buruta kurekebisha.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>kihariri cha mkunjo</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Mhimili wa Kichochezi</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain ya kila motor, mtetemo wa kichochezi, Mtetemo wa Pembe ya Usukani, Nguvu ya Kudumu</value></data>

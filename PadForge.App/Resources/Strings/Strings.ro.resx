@@ -2715,13 +2715,11 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Interval min. Y (jos)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Interval max. Y (sus)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Axa X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Ambele axe</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axa Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Interval</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zonă moartă</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dublu clic pentru a adăuga un punct. Clic dreapta pentru a-l elimina. Trageți pentru a ajusta.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>editor de curbă</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axa trăgaciului</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Amplificare per motor, vibrații trăgace, Vibrații după unghiul de virare, Forță constantă</value></data>

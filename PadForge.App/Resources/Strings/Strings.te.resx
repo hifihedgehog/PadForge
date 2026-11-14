@@ -2715,13 +2715,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>కనిష్ఠ పరిధి Y (కిందికి)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>గరిష్ఠ పరిధి Y (పైకి)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X అక్షం</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>రెండు అక్షాలు</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y అక్షం</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>పరిధి</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>యాంటీ-డెడ్ జోన్</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>పాయింట్ జోడించడానికి డబుల్ క్లిక్ చేయండి. తొలగించడానికి రైట్ క్లిక్ చేయండి. సర్దుబాటుకు లాగండి.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>కర్వ్ ఎడిటర్</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>ట్రిగ్గర్ అక్షం</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ఒక్కో మోటార్ గెయిన్, ట్రిగ్గర్ రంబుల్, స్టీరింగ్ యాంగిల్ రంబుల్, స్థిర బలం</value></data>

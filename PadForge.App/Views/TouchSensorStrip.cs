@@ -35,11 +35,6 @@ namespace PadForge.Views
         /// <summary>Raised when the capsules were made again (#574).</summary>
         public event EventHandler PickBoundsChanged;
 
-        /// <summary>Raised with the control under the pointer, by the name a
-        /// click on it records, and with null when the pointer leaves it
-        /// (#574).</summary>
-        public event EventHandler<string> HoverTargetChanged;
-
         private static SolidColorBrush Frozen(byte a, byte r, byte g, byte b)
         {
             var brush = new SolidColorBrush(Color.FromArgb(a, r, g, b));
@@ -196,8 +191,8 @@ namespace PadForge.Views
                 AutomationProperties.SetAutomationId(capsule, "TouchSensor_" + role);
                 AutomationProperties.SetName(capsule, label);
                 string r = role;
-                capsule.MouseEnter += (s, e) => { _hovered.Add(r); Paint(r); HoverTargetChanged?.Invoke(this, r); };
-                capsule.MouseLeave += (s, e) => { _hovered.Remove(r); Paint(r); HoverTargetChanged?.Invoke(this, null); };
+                capsule.MouseEnter += (s, e) => { _hovered.Add(r); Paint(r); };
+                capsule.MouseLeave += (s, e) => { _hovered.Remove(r); Paint(r); };
                 capsule.MouseLeftButtonDown += (s, e) =>
                 {
                     ControllerElementRecordRequested?.Invoke(this, r);

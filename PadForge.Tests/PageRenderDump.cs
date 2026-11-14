@@ -178,13 +178,10 @@ namespace PadForge.Tests
                     void Ring(string file)
                     {
                         var ring = (Border)page.FindName("PickRing");
-                        var hover = (Border)page.FindName("HoverRing");
                         var layer = (Canvas)page.FindName("PickRingLayer");
                         string at = ring.Visibility == Visibility.Visible
                             ? FormattableString.Invariant($"at {Canvas.GetLeft(ring):0.#},{Canvas.GetTop(ring):0.#} size {ring.Width:0.#}x{ring.Height:0.#} radius {ring.CornerRadius.TopLeft:0.#} in a layer {layer.ActualWidth:0.#}x{layer.ActualHeight:0.#}")
                             : "none";
-                        if (hover.Visibility == Visibility.Visible)
-                            at += FormattableString.Invariant($", hover at {Canvas.GetLeft(hover):0.#},{Canvas.GetTop(hover):0.#} size {hover.Width:0.#}x{hover.Height:0.#}");
                         File.AppendAllText(Path.Combine(dir, "rings.txt"), file + ": " + at + Environment.NewLine);
                     }
 
@@ -363,21 +360,12 @@ namespace PadForge.Tests
                                 Picture(flat, () => vm.PickedTarget = target);
                                 Ring(flat);
                             }
-                            // The pointer on a control beside the picked one:
-                            // its own fainter line, as the board's hover. On
-                            // the picked control it draws nothing more.
-                            var hoverAt = typeof(PadPage).GetMethod("OnHoverTargetChanged", BindingFlags.NonPublic | BindingFlags.Instance)!;
-                            vm.PickedTarget = "ButtonA";
-                            foreach (string under in new[] { "ButtonB", "ButtonA" })
-                            {
-                                string hovered = file.Replace(".png", "-2d-hover-" + under.ToLowerInvariant() + ".png");
-                                Picture(hovered, () => hoverAt.Invoke(page, new object[] { model2D, under }));
-                                Ring(hovered);
-                            }
-                            hoverAt.Invoke(page, new object[] { model2D, null });
-                            // A recording on the 2D model.
+                            // A recording on the 2D model: the picture's own
+                            // flash marks the control, and the ring is away
+                            // until the recording ends.
                             string flatListening = file.Replace(".png", "-2d-recording-buttona.png");
                             Picture(flatListening, () => vm.CurrentRecordingTarget = "ButtonA");
+                            Ring(flatListening);
                             vm.CurrentRecordingTarget = null;
                             model2D.Unbind();
                             model2D.Visibility = Visibility.Collapsed;

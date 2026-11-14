@@ -853,13 +853,11 @@
   <data name="Pad_SensitivityX" xml:space="preserve"><value>Sensitiviti X</value></data>
   <data name="Pad_SensitivityY" xml:space="preserve"><value>Sensitiviti Y</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Eksis X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Tupela eksis</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Eksis Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Renj</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Klik tupela taim bilong putim nupela poin. Klik long raithan baten bilong rausim. Pulim bilong senisim.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>kev edita</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Eksis bilong triga</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Strong bilong wanwan mota, guria bilong triga, Steering Angle Rumble, Constant Force</value></data>

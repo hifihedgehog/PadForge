@@ -26,11 +26,6 @@ namespace PadForge.Views
         /// control may be drawn elsewhere (#574).</summary>
         public event EventHandler PickBoundsChanged;
 
-        /// <summary>Raised with the control under the pointer, by the name a
-        /// click on it records, and with null when the pointer leaves it
-        /// (#574).</summary>
-        public event EventHandler<string> HoverTargetChanged;
-
         // Control -> where the art draws it, in the canvas's pixels: the
         // outline the layout traced for it where it has one, its box
         // otherwise. The page rings the picked control there (#574).
@@ -774,6 +769,7 @@ namespace PadForge.Views
             UpdateTriggers();
             UpdateSticks();
             UpdateTouchpadPreview();
+            UpdateAnnotationChipLights();
         }
 
         private void UpdateButtons()
@@ -944,8 +940,6 @@ namespace PadForge.Views
         {
             if (sender is Rectangle rect && rect.Tag is string target)
             {
-                // The page rings the control a click here records (#574).
-                HoverTargetChanged?.Invoke(this, ClickTargetAt(rect, target, e.GetPosition(rect)));
                 _elementTypes.TryGetValue(target, out var elemType);
 
                 // Sticks are always visible — skip hover ghost
@@ -1012,7 +1006,6 @@ namespace PadForge.Views
             }
             _hoverTarget = null;
             _dirty = true; // Next render frame restores proper state
-            HoverTargetChanged?.Invoke(this, null);
         }
 
         private void StickHitArea_MouseMove(object sender, MouseEventArgs e)

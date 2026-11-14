@@ -2524,13 +2524,11 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Min. diapazonas Y (apačia)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Maks. diapazonas Y (viršus)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X ašis</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Abi ašys</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y ašis</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Diapazonas</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Nejautros zonos kompensacija</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dukart spustelėkite, kad pridėtumėte tašką. Spustelėkite dešiniuoju pelės mygtuku, kad pašalintumėte. Vilkite, kad pakoreguotumėte.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>kreivės redaktorius</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Gaiduko ašis</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Variklių stiprinimas, gaidukų vibracija, vibracija pagal vairo kampą, pastovi jėga</value></data>

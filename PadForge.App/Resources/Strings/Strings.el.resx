@@ -2715,13 +2715,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Ελάχ. εύρος Y (κάτω)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Μέγ. εύρος Y (πάνω)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Άξονας X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Και οι δύο άξονες</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Άξονας Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Εύρος</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Αντι-νεκρή ζώνη</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Διπλό κλικ για προσθήκη σημείου. Δεξί κλικ για αφαίρεση. Σύρετε για προσαρμογή.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>επεξεργαστής καμπύλης</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Άξονας σκανδάλης</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ενίσχυση ανά κινητήρα, δόνηση σκανδαλών, Δόνηση γωνίας τιμονιού, Σταθερή δύναμη</value></data>

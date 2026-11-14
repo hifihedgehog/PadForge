@@ -2526,13 +2526,11 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Intervalo mín. Y (baixo)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Intervalo máx. Y (cima)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Eixo X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Ambos os eixos</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Eixo Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Intervalo</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zona morta</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Faça duplo clique para adicionar um ponto. Clique com o botão direito para remover. Arraste para ajustar.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>editor de curvas</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Eixo do gatilho</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ganho por motor, vibração dos gatilhos, Vibração por ângulo de direção, Força constante</value></data>

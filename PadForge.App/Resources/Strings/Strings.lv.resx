@@ -2715,13 +2715,11 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Min. diapazons Y (lejup)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Maks. diapazons Y (augšup)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X ass</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Abas asis</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y ass</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Diapazons</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Nejutības zonas kompensācija</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Veiciet dubultklikšķi, lai pievienotu punktu. Noklikšķiniet ar peles labo pogu, lai noņemtu. Velciet, lai pielāgotu.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>līknes redaktors</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Mēlītes ass</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Motoru pastiprinājums, mēlīšu vibrācija, stūrēšanas leņķa vibrācija, pastāvīgs spēks</value></data>

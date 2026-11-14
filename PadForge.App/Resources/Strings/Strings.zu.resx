@@ -1395,13 +1395,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Ibanga elincane Y (Phansi)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Ibanga elikhulu Y (Phezulu)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>I-eksisi X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Ama-eksisi womabili</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>I-eksisi Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Ibanga</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Okuphikisa indawo efile</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Chofoza kabili ukuze wengeze iphoyinti. Chofoza kwesokudla ukuze ususe. Hudula ukuze ulungise.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>isihleli sejika</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>I-eksisi yethrigha</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Amandla emoto ngayinye, ukudlidliza kwamathrigha, Ukudlidliza kwe-engeli yokushayela, Amandla angaguquki</value></data>

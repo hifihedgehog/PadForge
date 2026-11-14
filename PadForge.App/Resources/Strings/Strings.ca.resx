@@ -2524,13 +2524,11 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Rang mínim Y (avall)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Rang màxim Y (amunt)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Eix X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Tots dos eixos</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Eix Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Rang</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Antizona morta</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Fes doble clic per afegir un punt. Fes clic amb el botó dret per eliminar-lo. Arrossega per ajustar.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>editor de corba</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Eix del gallet</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Guany per motor, vibració dels gallets i per angle de direcció, força constant</value></data>

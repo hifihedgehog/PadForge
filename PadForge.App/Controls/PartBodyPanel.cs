@@ -15,6 +15,12 @@ namespace PadForge.Controls
     /// settings across the card's width. The first child is the settings
     /// and the second the live view. With no live view, or a collapsed
     /// one, the settings have the whole width.
+    ///
+    /// <para>A body whose <see cref="SideBySideWidth"/> is NaN stands the
+    /// two side by side whenever both fit: the settings at
+    /// <see cref="SettingsWidth"/> and the live view at the width it asks
+    /// for. A stick's card is one: its live view is an instrument of a
+    /// fixed size, and its settings column is sized for the language.</para>
     /// </summary>
     public sealed class PartBodyPanel : Panel
     {
@@ -35,7 +41,7 @@ namespace PadForge.Controls
             new FrameworkPropertyMetadata(10.0, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>The least width at which the live view stands beside
-        /// the settings.</summary>
+        /// the settings. NaN: whenever both fit at their own widths.</summary>
         public double SideBySideWidth
         {
             get => (double)GetValue(SideBySideWidthProperty);
@@ -80,6 +86,16 @@ namespace PadForge.Controls
             return (true, settings, Math.Max(0, width - gap - settings));
         }
 
+        /// <summary>The least width for the two side by side: the one set,
+        /// or with none set (NaN) the settings' width, the gap and the
+        /// width the live view asks for.</summary>
+        internal static double LeastSideBySide(double sideBySideWidth, double settingsWidth, double gap, double liveAsks)
+            => double.IsNaN(sideBySideWidth) ? settingsWidth + gap + liveAsks : sideBySideWidth;
+
+        // The least width the last measure decided by, which the arrange
+        // decides by too.
+        private double _least = double.PositiveInfinity;
+
         private (UIElement Settings, UIElement Live) Parts()
         {
             UIElement settings = null, live = null;
@@ -104,7 +120,14 @@ namespace PadForge.Controls
                 settings.Measure(availableSize);
                 return settings.DesiredSize;
             }
-            var (side, settingsWidth, liveWidth) = Widths(availableSize.Width, SideBySideWidth, SettingsWidth, Gap);
+            double liveAsks = 0;
+            if (double.IsNaN(SideBySideWidth))
+            {
+                live.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                liveAsks = live.DesiredSize.Width;
+            }
+            _least = LeastSideBySide(SideBySideWidth, SettingsWidth, Gap, liveAsks);
+            var (side, settingsWidth, liveWidth) = Widths(availableSize.Width, _least, SettingsWidth, Gap);
             IsSideBySide = side;
             settings.Measure(new Size(settingsWidth, double.PositiveInfinity));
             live.Measure(new Size(liveWidth, double.PositiveInfinity));
@@ -126,7 +149,7 @@ namespace PadForge.Controls
                 settings.Arrange(new Rect(finalSize));
                 return finalSize;
             }
-            var (side, settingsWidth, liveWidth) = Widths(finalSize.Width, SideBySideWidth, SettingsWidth, Gap);
+            var (side, settingsWidth, liveWidth) = Widths(finalSize.Width, _least, SettingsWidth, Gap);
             if (side)
             {
                 settings.Arrange(new Rect(0, 0, settingsWidth, finalSize.Height));

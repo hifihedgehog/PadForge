@@ -2519,13 +2519,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>کەمترین مەودای Y (خوارەوە)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>زۆرترین مەودای Y (سەرەوە)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>تەوەری X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>هەردوو تەوەر</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>تەوەری Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>مەودا</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>دژە-ناوچەی مردوو</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>دووجار کلیک بکە بۆ زیادکردنی خاڵ. کلیکی ڕاست بۆ لابردن. ڕایبکێشە بۆ ڕێکخستن.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>دەستکاریکەری چەماوە</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>تەوەری تریگەر</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>هێزی هەر مۆتۆرێک، لەرزینی تریگەر، لەرزینی گۆشەی سوکان، هێزی بەردەوام</value></data>

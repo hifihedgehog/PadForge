@@ -2521,13 +2521,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>අවම පරාසය Y (පහළ)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>උපරිම පරාසය Y (ඉහළ)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X අක්ෂය</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>අක්ෂ දෙකම</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y අක්ෂය</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>පරාසය</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>ප්‍රති-ඩෙඩ්සෝන්</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ලක්ෂ්‍යයක් එක් කිරීමට දෙවරක් ක්ලික් කරන්න. ඉවත් කිරීමට දකුණු-ක්ලික් කරන්න. සීරුමාරු කිරීමට අදින්න.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>වක්‍ර සංස්කාරකය</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>ට්‍රිගර අක්ෂය</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>එක් එක් මෝටරයේ ලාභය, ට්‍රිගර කම්පනය, සුක්කානම් කෝණ කම්පනය, නියත බලය</value></data>

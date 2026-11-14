@@ -300,20 +300,6 @@ namespace PadForge.ViewModels
         /// picture holds. The picture rings what they draw.</summary>
         internal IReadOnlyList<string> PickedTargets() => TargetsOfControl(PickedRow);
 
-        /// <summary>The targets of the control under the picture's pointer
-        /// (#574), which the page rings as the Buttons board draws a hover:
-        /// every row's of that control, as a pick's ring has them. None for
-        /// a target with no row, and none for the picked control, which has
-        /// its own ring.</summary>
-        internal IReadOnlyList<string> HoveredTargets(string hovered)
-        {
-            var row = RowOfTarget(hovered);
-            var picked = PickedRow;
-            if (row == null || ReferenceEquals(row, picked) || (picked != null && SameControl(row, picked)))
-                return Array.Empty<string>();
-            return TargetsOfControl(row);
-        }
-
         /// <summary>The targets of the control a row is part of: the row's
         /// own, or a D-pad's or a stick's every row. None for no row.</summary>
         private IReadOnlyList<string> TargetsOfControl(MappingItem row)

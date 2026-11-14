@@ -923,13 +923,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Ìwọ̀n tó kéré jù Y (Ìsàlẹ̀)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Ìwọ̀n tó pọ̀ jù Y (Òkè)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Ákísì X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Ákísì méjèèjì</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Ákísì Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Ìwọ̀n</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Tẹ lẹ́ẹ̀mejì láti fi ojú àmì kún un. Tẹ bọ́tìnnì ọ̀tún láti yọ ọ́ kúrò. Fà á láti ṣàtúnṣe.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>olóòtú ìtẹ̀</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Ákísì tírígà</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Agbára mọ́tò kọ̀ọ̀kan, ìmìtìtì tírígà, Steering Angle Rumble, Constant Force</value></data>

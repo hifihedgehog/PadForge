@@ -606,7 +606,6 @@
   <data name="Pad_SensitivityX" xml:space="preserve"><value>Sensibilidad X</value></data>
   <data name="Pad_SensitivityY" xml:space="preserve"><value>Sensibilidad Y</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Eje X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Mokõive eje</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Eje Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Rango</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti zona muerta</value></data>

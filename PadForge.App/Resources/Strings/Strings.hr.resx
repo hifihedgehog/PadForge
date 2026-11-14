@@ -2526,13 +2526,11 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Najmanji raspon Y (dolje)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Najveći raspon Y (gore)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Os X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Obje osi</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Os Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Raspon</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-mrtva zona</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dvaput kliknite da biste dodali točku. Kliknite desnom tipkom miša da biste je uklonili. Povucite da biste je prilagodili.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>uređivač krivulje</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Os okidača</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Pojačanje po motoru, vibracija okidača, Vibracija prema kutu upravljanja, Stalna sila</value></data>

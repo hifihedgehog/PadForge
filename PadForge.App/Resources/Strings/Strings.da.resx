@@ -2715,13 +2715,11 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Min. område Y (ned)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Maks. område Y (op)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X-akse</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Begge akser</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y-akse</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Område</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-dødzone</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dobbeltklik for at tilføje et punkt. Højreklik for at fjerne. Træk for at justere.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>kurveeditor</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Triggerakse</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Motorforstærkning, triggervibration, Vibration efter styrevinkel, Konstant kraft</value></data>

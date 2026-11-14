@@ -2715,13 +2715,11 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Najmanjši obseg Y (dol)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Največji obseg Y (gor)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Os X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Obe osi</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Os Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Obseg</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Izravnava mrtvega območja</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dvokliknite, da dodate točko. Kliknite z desno tipko miške, da jo odstranite. Povlecite, da jo prilagodite.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>urejevalnik krivulje</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Os sprožilca</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ojačitev po motorju, vibriranje sprožilcev, Vibriranje glede na kot krmiljenja, Stalna sila</value></data>

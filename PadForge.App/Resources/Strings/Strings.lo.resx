@@ -2519,13 +2519,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>ຂອບເຂດຕ່ຳສຸດ Y (ລົງ)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>ຂອບເຂດສູງສຸດ Y (ຂຶ້ນ)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>ແກນ X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>ທັງສອງແກນ</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>ແກນ Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>ຂອບເຂດ</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>ແອນຕີເດດໂຊນ</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ຄລິກສອງເທື່ອເພື່ອເພີ່ມຈຸດ. ຄລິກຂວາເພື່ອລຶບ. ລາກເພື່ອປັບ.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>ຕົວແກ້ໄຂເສັ້ນໂຄ້ງ</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>ແກນທຣິກເກີ</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ຄວາມແຮງແຕ່ລະມໍເຕີ, ການສັ່ນຂອງທຣິກເກີ, ການສັ່ນຕາມມຸມພວງມາໄລ, ແຮງຄົງທີ່</value></data>

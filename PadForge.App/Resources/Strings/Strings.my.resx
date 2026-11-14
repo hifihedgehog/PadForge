@@ -2523,13 +2523,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>အနည်းဆုံး အပိုင်းအခြား Y (အောက်)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>အများဆုံး အပိုင်းအခြား Y (အပေါ်)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X ဝင်ရိုး</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>ဝင်ရိုး နှစ်ခုလုံး</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y ဝင်ရိုး</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>အပိုင်းအခြား</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>အန်တီဒက်ဇုန်</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>အမှတ်ထည့်ရန် နှစ်ချက်နှိပ်ပါ။ ဖယ်ရှားရန် ညာကလစ်နှိပ်ပါ။ ချိန်ညှိရန် ဆွဲပါ။</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>မျဉ်းကွေး တည်းဖြတ်ကိရိယာ</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>ထရီဂါ ဝင်ရိုး</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>မော်တာအလိုက် ပြင်းအား၊ ထရီဂါ တုန်ခါမှု၊ စတီယာရင်ထောင့် တုန်ခါမှု၊ စဉ်ဆက်မပြတ်အား</value></data>

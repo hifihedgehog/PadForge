@@ -2715,13 +2715,11 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Lágmarkssvið Y (niður)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Hámarkssvið Y (upp)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X-ás</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Báðir ásar</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y-ás</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Svið</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Mótvægi við dautt svæði</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Tvísmelltu til að bæta við punkti. Hægrismelltu til að fjarlægja. Dragðu til að stilla.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>ferilritill</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Gikkás</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Styrkur hvors mótors, gikkjatitringur, Titringur eftir stýrishorni, Stöðugur kraftur</value></data>

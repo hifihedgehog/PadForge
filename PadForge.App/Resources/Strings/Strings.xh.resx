@@ -839,11 +839,9 @@
   <data name="Pad_SensitivityX" xml:space="preserve"><value>Uvakalelo X</value></data>
   <data name="Pad_SensitivityY" xml:space="preserve"><value>Uvakalelo Y</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>I-axis X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Ii-axis zombini</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>I-axis Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Uluhlu</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>I-anti-deadzone</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>I-axis ye-trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Imoto yasekhohlo</value></data>

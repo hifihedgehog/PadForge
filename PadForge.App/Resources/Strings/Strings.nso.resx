@@ -531,7 +531,6 @@
   <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axis ya trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motoro wa lanngele</value></data>

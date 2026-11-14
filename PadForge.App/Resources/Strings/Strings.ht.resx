@@ -2181,13 +2181,11 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Plaj min Y (anba)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Plaj max Y (anwo)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Aks X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Toulède aks</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Aks Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Plaj</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zòn mò</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Klike de fwa pou ajoute yon pwen. Klike adwat pou retire l. Trennen pou ajiste.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>editè koub</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Aks gachèt</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Fòs pa motè, vibrasyon gachèt, Vibrasyon selon ang direksyon, Fòs konstan</value></data>

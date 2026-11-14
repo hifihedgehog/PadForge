@@ -2526,13 +2526,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Доод муж Y (доош)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Дээд муж Y (дээш)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X тэнхлэг</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Хоёр тэнхлэг</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y тэнхлэг</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Муж</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Үхсэн бүсийн нөхөлт</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Цэг нэмэхийн тулд давхар товшино уу. Хасахын тулд баруун товчоор дарна уу. Тохируулахын тулд чирнэ үү.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>муруй засварлагч</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Гохны тэнхлэг</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Мотор бүрийн өсгөлт, гохны чичиргээ, Жолооны өнцгийн чичиргээ, Тогтмол хүч</value></data>

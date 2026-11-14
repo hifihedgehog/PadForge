@@ -24,11 +24,6 @@ namespace PadForge.Views
         /// again (#574).</summary>
         public event EventHandler PickBoundsChanged;
 
-        /// <summary>Raised with the control under the pointer, by the name a
-        /// click on it records, and with null when the pointer leaves it
-        /// (#574).</summary>
-        public event EventHandler<string> HoverTargetChanged;
-
         private PadViewModel _vm;
 
         // Input mode (issue #128): the same control reused on the Devices
@@ -436,14 +431,12 @@ namespace PadForge.Views
             {
                 bg.MouseEnter += (s, e) =>
                 {
-                    HoverTargetChanged?.Invoke(this, $"MidiCC{index}");
                     if (_flashTarget != null) return;
                     bg.Stroke = HoverBrush;
                     bg.StrokeThickness = 2;
                 };
                 bg.MouseLeave += (s, e) =>
                 {
-                    HoverTargetChanged?.Invoke(this, null);
                     if (_flashTarget != null) return;
                     bg.Stroke = DimBrush;
                     bg.StrokeThickness = 1;
@@ -575,14 +568,12 @@ namespace PadForge.Views
             {
                 rect.MouseEnter += (s, e) =>
                 {
-                    HoverTargetChanged?.Invoke(this, $"MidiNote{noteIndex}");
                     if (_flashTarget != null) return;
                     rect.Stroke = HoverBrush;
                     rect.StrokeThickness = 2;
                 };
                 rect.MouseLeave += (s, e) =>
                 {
-                    HoverTargetChanged?.Invoke(this, null);
                     if (_flashTarget != null) return;
                     rect.Stroke = KeyBorderBrush;
                     rect.StrokeThickness = 1;

@@ -2715,13 +2715,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Мин. диапазон Y (вниз)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Макс. диапазон Y (вверх)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Ось X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Обе оси</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Ось Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Диапазон</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Антимертвая зона</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Дважды щелкните, чтобы добавить точку. Щелкните правой кнопкой, чтобы убрать. Перетащите, чтобы изменить.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>редактор кривой</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Ось триггера</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Усиление по моторам, вибрация триггеров, Вибрация по углу руления, Постоянное усилие</value></data>

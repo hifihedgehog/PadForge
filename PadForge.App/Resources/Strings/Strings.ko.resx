@@ -1344,13 +1344,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>최소 범위 Y (아래)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>최대 범위 Y (위)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X 축</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>양쪽 축</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y 축</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>범위</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>안티 데드존</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>더블 클릭으로 점 추가. 우클릭으로 제거. 드래그로 조정.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>곡선 편집기</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>트리거 축</value></data>
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>모터별 게인, 트리거 진동, 조향 각도 진동, 상시 포스</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>전체 게인</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>왼쪽 모터</value></data>

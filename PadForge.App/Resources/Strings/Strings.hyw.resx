@@ -2517,13 +2517,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Նուազագոյն միջակայք Y (վար)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Առաւելագոյն միջակայք Y (վեր)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X առանցք</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Երկու առանցքներ</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y առանցք</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Միջակայք</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Հակամեռեալ գօտի</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Կրկնակի սեղմեցէք՝ կէտ աւելցնելու համար։ Աջ սեղմում՝ ջնջելու համար։ Քաշեցէք՝ կարգաւորելու համար։</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>կորի խմբագրիչ</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Ձգանի առանցք</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Մոթորներու ուժգնութիւն, ձգաններու թրթռում, Ղեկի անկիւնի թրթռում, Մնայուն ուժ</value></data>

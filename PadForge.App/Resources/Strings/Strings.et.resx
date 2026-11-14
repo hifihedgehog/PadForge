@@ -2526,13 +2526,11 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Vahemiku miinimum Y (alla)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Vahemiku maksimum Y (üles)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X-telg</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Mõlemad teljed</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y-telg</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Vahemik</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Surnud tsooni kompensatsioon</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Punkti lisamiseks topeltklõpsake. Eemaldamiseks paremklõpsake. Reguleerimiseks lohistage.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>kõvera redaktor</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Päästikutelg</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Mootorite võimendus, päästikuvibratsioon, Roolinurga vibratsioon, Püsijõud</value></data>

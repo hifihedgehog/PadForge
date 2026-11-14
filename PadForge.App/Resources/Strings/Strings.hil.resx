@@ -679,7 +679,6 @@
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->
   <data name="Pad_SensitivityCurves" xml:space="preserve"><value>Mga curve sang sensitivity</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axis sang trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Wala nga motor</value></data>

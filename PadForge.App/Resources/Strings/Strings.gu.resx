@@ -2523,13 +2523,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>ન્યૂનતમ શ્રેણી Y (નીચે)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>મહત્તમ શ્રેણી Y (ઉપર)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X અક્ષ</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>બંને અક્ષ</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y અક્ષ</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>શ્રેણી</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>એન્ટી-ડેડઝોન</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>બિંદુ ઉમેરવા ડબલ-ક્લિક કરો. દૂર કરવા જમણું ક્લિક કરો. ગોઠવવા ખેંચો.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>કર્વ એડિટર</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>ટ્રિગર અક્ષ</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>દરેક મોટરનો ગેઇન, ટ્રિગર રમ્બલ, સ્ટીયરિંગ એંગલ રમ્બલ, સતત ફોર્સ</value></data>

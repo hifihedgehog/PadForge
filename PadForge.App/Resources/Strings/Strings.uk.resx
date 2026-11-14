@@ -2526,13 +2526,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Мін. діапазон Y (вниз)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Макс. діапазон Y (вгору)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Вісь X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Обидві осі</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Вісь Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Діапазон</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Антимертва зона</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Двічі клацніть, щоб додати точку. Клацніть правою кнопкою, щоб вилучити. Перетягуйте, щоб змінити.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>редактор кривої</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Вісь тригера</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Сила моторів, вібрація тригерів, вібрація за кутом керма, постійна сила</value></data>

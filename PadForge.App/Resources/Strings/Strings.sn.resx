@@ -642,7 +642,6 @@
   <data name="Pad_SensitivityX" xml:space="preserve"><value>Sensitivity X</value></data>
   <data name="Pad_SensitivityY" xml:space="preserve"><value>Sensitivity Y</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Axis X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Axis dzese</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axis Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>

@@ -2715,13 +2715,11 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Min. område Y (ned)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Maks. område Y (opp)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X-akse</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Begge akser</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y-akse</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Område</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-dødsone</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dobbeltklikk for å legge til et punkt. Høyreklikk for å fjerne. Dra for å justere.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>kurveeditor</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Avtrekkerakse</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Motorstyrke, avtrekkervibrasjon, Vibrasjon etter styrevinkel, Konstant kraft</value></data>

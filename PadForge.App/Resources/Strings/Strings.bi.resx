@@ -824,11 +824,9 @@
   <data name="Pad_SensitivityX" xml:space="preserve"><value>Sensitiviti X</value></data>
   <data name="Pad_SensitivityY" xml:space="preserve"><value>Sensitiviti Y</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Aksis X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Tufala aksis</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Aksis Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Renj</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-dedzon</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Aksis blong triga</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Lef mota</value></data>

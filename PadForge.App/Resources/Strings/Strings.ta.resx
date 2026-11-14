@@ -2715,13 +2715,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>குறைந்தபட்ச வீச்சு Y (கீழ்)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>அதிகபட்ச வீச்சு Y (மேல்)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X அச்சு</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>இரு அச்சுகள்</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y அச்சு</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>வீச்சு</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>ஆன்டி-டெட்ஜோன்</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>புள்ளியைச் சேர்க்க இருமுறை கிளிக் செய்யவும். அகற்ற வலது கிளிக் செய்யவும். சரிசெய்ய இழுக்கவும்.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>வளைவு திருத்தி</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>டிரிகர் அச்சு</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ஒவ்வொரு மோட்டாருக்கும் வலிமை, டிரிகர் அதிர்வு, ஸ்டீயரிங் கோண அதிர்வு, நிலையான ஃபோர்ஸ்</value></data>

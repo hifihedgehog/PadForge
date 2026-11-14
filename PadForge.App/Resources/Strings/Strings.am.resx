@@ -2519,13 +2519,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>ዝቅተኛ ክልል Y (ታች)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>ከፍተኛ ክልል Y (ላይ)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X ዘንግ</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>ሁለቱም ዘንጎች</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y ዘንግ</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>ክልል</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>ፀረ-የሞተ ቀጠና</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ነጥብ ለመጨመር ሁለቴ ጠቅ አድርግ። ለማስወገድ በቀኝ ጠቅ አድርግ። ለማስተካከል ጎትት።</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>የኩርባ አርታዒ</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>የትሪገር ዘንግ</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>የእያንዳንዱ ሞተር ማጉላት፣ የትሪገር ንዝረት፣ የመሪ ማዕዘን ንዝረት፣ ቋሚ ኃይል</value></data>

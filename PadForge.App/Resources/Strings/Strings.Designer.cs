@@ -2365,13 +2365,11 @@ public class Strings : INotifyPropertyChanged
     public string Pad_MinRangeYDown => Get("Pad_MinRangeYDown");
     public string Pad_MaxRangeYUp => Get("Pad_MaxRangeYUp");
     public string Pad_XAxis => Get("Pad_XAxis");
-    public string Pad_BothAxes => Get("Pad_BothAxes");
     public string Pad_YAxis => Get("Pad_YAxis");
     public string Pad_Range => Get("Pad_Range");
     public string Pad_AntiDeadZone => Get("Pad_AntiDeadZone");
     public string Pad_SensitivityCurveHintShort => Get("Pad_SensitivityCurveHintShort");
     public string Common_CurveEditor => Get("Common_CurveEditor");
-    public string Pad_TriggerAxis => Get("Pad_TriggerAxis");
     public string Pad_More_ForceFeedback => Get("Pad_More_ForceFeedback");
     public string Pad_OverallGain => Get("Pad_OverallGain");
     public string Pad_LeftMotorLabel => Get("Pad_LeftMotorLabel");

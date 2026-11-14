@@ -2715,13 +2715,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>সর্বনিম্ন পরিসর Y (নিচ)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>সর্বোচ্চ পরিসর Y (উপর)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X অক্ষ</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>উভয় অক্ষ</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y অক্ষ</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>পরিসর</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>অ্যান্টি-ডেডজোন</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>বিন্দু যোগ করতে ডাবল-ক্লিক করুন। সরাতে রাইট-ক্লিক করুন। ঠিক করতে টানুন।</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>কার্ভ এডিটর</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>ট্রিগার অক্ষ</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>মোটর অনুযায়ী গেইন, ট্রিগার রাম্বল, স্টিয়ারিং কোণের রাম্বল, স্থির ফোর্স</value></data>

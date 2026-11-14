@@ -2526,13 +2526,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Ең аз ауқым Y (төмен)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Ең үлкен ауқым Y (жоғары)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X осі</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Екі ось</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y осі</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Ауқым</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Анти-өлі аймақ</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Нүкте қосу үшін екі рет басыңыз. Жою үшін тінтуірдің оң жақ түймесін басыңыз. Реттеу үшін сүйреңіз.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>қисық өңдегіші</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Триггер осі</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Әр мотор үшін күшейту, триггер дірілі, Рөл бұрышы дірілі, Тұрақты күш</value></data>

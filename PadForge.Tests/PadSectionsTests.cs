@@ -1149,38 +1149,41 @@ namespace PadForge.Tests
             var ranges = scroll.Descendants().Where(e => e.Name.LocalName == "RangeSlider").ToList();
             Assert.Contains(ranges, r => r.Attributes().Any(a => a.Name.LocalName == "SettingRow.Fills" && a.Value == "True") && r.Attribute("Width") == null);
 
-            // The stick card, as the Sticks board of the world-class pass
-            // draws it: a title row, its three parts (the settings, the
-            // curve, the live view) on one line while the card is wide
-            // (ThreePartPanelTests), then More.
+            // The stick card: a title row, its body as every part card's
+            // (the settings, then the live view beside them while both fit
+            // at their own widths), then More. The curve for each axis is
+            // under More, each with its own axis's live dot, and none for
+            // both axes stands up front: it repeated the two and showed the
+            // X axis alone (owner, 2026-11-14).
             var more = Assert.Single(page.Descendants(), e => Id(e) == "Pad_More_Stick");
             var card = more.Parent!;
             Assert.Equal("StackPanel", card.Name.LocalName);
             Assert.Equal("{StaticResource CardBorder}", (string)card.Parent!.Attribute("Style"));
-            Assert.Equal(new[] { "DockPanel", "ThreePartPanel", "MoreRow" }, card.Elements().Select(e => e.Name.LocalName));
+            Assert.Equal(new[] { "DockPanel", "PartBodyPanel", "MoreRow" }, card.Elements().Select(e => e.Name.LocalName));
             var line = card.Elements().ElementAt(1);
             Assert.Equal("22", (string)line.Attribute("Gap"));
-            Assert.Equal(new[] { "StackPanel", "StackPanel", "Border" }, line.Elements().Select(e => e.Name.LocalName));
+            Assert.Equal("NaN", (string)line.Attribute("SideBySideWidth"));
+            Assert.Equal("{DynamicResource FirstRowSettingsMost}", (string)line.Attribute("SettingsWidth"));
+            Assert.Equal(new[] { "StackPanel", "Border" }, line.Elements().Select(e => e.Name.LocalName));
             var left = line.Elements().ElementAt(0);
-            var curve = line.Elements().ElementAt(1);
-            var view = line.Elements().ElementAt(2);
-            string Flex(XElement e, string name) => (string)e.Attributes().FirstOrDefault(a => a.Name.LocalName == "FlexLinePanel." + name);
-            // The settings: a column that grows by 60 and no more, so a
-            // reset stands beside its control.
-            Assert.Equal("{DynamicResource FirstRowSettingsBasis}", Flex(left, "Basis"));
+            var view = line.Elements().ElementAt(1);
+            // The settings: a column sized for the language, so a reset
+            // stands beside its control.
             Assert.Equal("{DynamicResource FirstRowSettingsMost}", (string)left.Attribute("MaxWidth"));
             Assert.Equal(new[] { "SettingRow", "SettingRow", "SettingRow", "SettingRow" }, left.Elements().Select(e => e.Name.LocalName));
             Assert.All(left.Elements(), r => Assert.Equal("{StaticResource DzFirstLabel}", (string)r.Elements().First().Attribute("Style")));
             Assert.Contains(left.Descendants(), e => Id(e) == "StickDeadZoneBothSlider");
             Assert.Contains(left.Descendants(), e => Id(e) == "SensitivityBothCombo");
             Assert.Contains(left.Descendants(), e => (string)e.Attribute("Click") == "CalibrateCenter_Click");
-            // The curve takes the room that is left, and the live view
-            // keeps its own width at the line's end.
-            Assert.Equal("330", Flex(curve, "Basis"));
-            Assert.Equal("720", (string)curve.Attribute("MaxWidth"));
-            Assert.Contains(curve.Descendants(), e => Id(e) == "SensitivityBothChart");
-            Assert.Null(Flex(view, "Basis"));
-            Assert.DoesNotContain(left.Descendants().Concat(view.Descendants()), e => e.Name.LocalName == "CurveEditor");
+            // The live view keeps its own width, after the settings.
+            Assert.Equal("Left", (string)view.Attribute("HorizontalAlignment"));
+            Assert.DoesNotContain(line.Descendants(), e => e.Name.LocalName == "CurveEditor");
+            Assert.DoesNotContain(page.Descendants(), e => Id(e) == "SensitivityBothChart");
+            Assert.DoesNotContain("Pad_BothAxes", PageText());
+            var curves = more.Descendants().Where(e => e.Name.LocalName == "CurveEditor").ToList();
+            Assert.Equal(new[] { "{Binding SensitivityCurveX, Mode=TwoWay}", "{Binding SensitivityCurveY, Mode=TwoWay}" },
+                curves.Select(c => (string)c.Attribute("CurveString")));
+            Assert.Equal(new[] { "{Binding LiveInputX}", "{Binding LiveInputY}" }, curves.Select(c => (string)c.Attribute("LiveInput")));
             Assert.DoesNotContain("ChartSize=\"96\"", PageText());
             // The label column is the language's: the three numbers are
             // English's, and the page sets them when it is shown.
@@ -1266,6 +1269,7 @@ namespace PadForge.Tests
             var triggerLine = triggerCard.Elements().ElementAt(1);
             Assert.Equal(new[] { "StackPanel", "StackPanel" }, triggerLine.Elements().Select(e => e.Name.LocalName));
             var triggerRows = triggerLine.Elements().First();
+            string Flex(XElement e, string name) => (string)e.Attributes().FirstOrDefault(a => a.Name.LocalName == "FlexLinePanel." + name);
             Assert.Equal("{DynamicResource FirstRowSettingsBasis}", Flex(triggerRows, "Basis"));
             Assert.Equal(new[] { "SettingRow", "SettingRow", "SettingRow" }, triggerRows.Elements().Select(e => e.Name.LocalName));
             // The range's row reads its two ends beside the slider and has
@@ -1283,6 +1287,12 @@ namespace PadForge.Tests
             var chart = Assert.Single(triggers.Descendants(), e => e.Name.LocalName == "CurveEditor");
             Assert.Equal("{Binding Pad_SensitivityCurveHintShort, Source={x:Static strings:Strings.Instance}}",
                 (string)chart.ElementsAfterSelf().First().Attribute("Text"));
+            // The chart is captioned by the setting it draws, in the row's
+            // own word. A caption that named the axis never said the chart
+            // was the sensitivity (owner, 2026-11-14).
+            Assert.Equal("{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}",
+                (string)chart.ElementsBeforeSelf().Last(e => e.Name.LocalName == "TextBlock").Attribute("Text"));
+            Assert.DoesNotContain("Pad_TriggerAxis", PageText());
         }
 
         /// <summary>A part card, as the boards of the sections pass draw it

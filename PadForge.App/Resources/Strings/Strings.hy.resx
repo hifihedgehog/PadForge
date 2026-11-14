@@ -2515,13 +2515,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Նվազագույն միջակայք Y (ներքև)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Առավելագույն միջակայք Y (վերև)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X առանցք</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Երկու առանցքները</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y առանցք</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Միջակայք</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Հակամեռյալ գոտի</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Կրկնակի կտտացրեք՝ կետ ավելացնելու համար։ Աջ կտտացրեք՝ հեռացնելու համար։ Քաշեք՝ կարգավորելու համար։</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>կորի խմբագրիչ</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Ձգանի առանցք</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Շարժիչների ուժեղացում, ձգանների թրթռոց, ղեկի անկյան թրթռոց, հաստատուն ուժ</value></data>

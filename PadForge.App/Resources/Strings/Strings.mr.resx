@@ -2523,13 +2523,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>किमान श्रेणी Y (खाली)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>कमाल श्रेणी Y (वर)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X अक्ष</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>दोन्ही अक्ष</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y अक्ष</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>श्रेणी</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>अँटी-डेडझोन</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>बिंदू जोडण्यासाठी डबल-क्लिक करा. काढण्यासाठी राइट-क्लिक करा. समायोजित करण्यासाठी ड्रॅग करा.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>वक्र संपादक</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>ट्रिगर अक्ष</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>प्रति मोटर गेन, ट्रिगर कंपन, स्टीअरिंग कोन कंपन, स्थिर फोर्स</value></data>

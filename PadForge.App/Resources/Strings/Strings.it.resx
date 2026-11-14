@@ -1336,13 +1336,11 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Range min Y (Giù)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Range max Y (Su)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Asse X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Entrambi gli assi</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Asse Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zona morta</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Doppio clic per aggiungere un punto. Clic destro per rimuovere. Trascina per regolare.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>editor di curve</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Asse grilletto</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Guadagno per motore, vibrazione grilletti, Vibrazione angolo di sterzata, Forza costante</value></data>

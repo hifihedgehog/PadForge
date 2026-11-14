@@ -942,13 +942,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Daangaa xiqqaa Y (gadi)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Daangaa guddaa Y (ol)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Aksisii X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Aksisii lamaanuu</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Aksisii Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Daangaa</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deedzoonii</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Tuqaa dabaluuf lamuu cuqaasi. Haquuf mirgaan cuqaasi. Sirreessuuf harkisi.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>gulaalaa kurfii</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Aksisii tiriigarii</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Cimina mootoraa, raafama tiriigarii, Steering Angle Rumble, Humna dhaabbataa</value></data>

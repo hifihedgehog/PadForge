@@ -2521,13 +2521,11 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Heina min. Y (behera)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Heina max. Y (gora)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X ardatza</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Bi ardatzak</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y ardatza</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Heina</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Gune hilaren konpentsazioa</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Egin klik bikoitza puntu bat gehitzeko. Eskuineko klik kentzeko. Arrastatu doitzeko.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>kurba-editorea</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Katuaren ardatza</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Motor bakoitzaren irabazia, katuen bibrazioa, Gidatze-angeluaren bibrazioa, Indar konstantea</value></data>

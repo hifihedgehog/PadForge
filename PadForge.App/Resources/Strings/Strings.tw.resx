@@ -348,7 +348,6 @@
 
   <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->
   <data name="Pad_XAxis" xml:space="preserve"><value>Axis X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Axis mmienu nyinaa</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axis Y</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->

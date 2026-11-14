@@ -2519,13 +2519,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>കുറഞ്ഞ പരിധി Y (താഴെ)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>കൂടിയ പരിധി Y (മുകളിൽ)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X ആക്സിസ്</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>രണ്ട് ആക്സിസുകളും</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y ആക്സിസ്</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>പരിധി</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>ആന്റി-ഡെഡ് സോൺ</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>പോയിന്റ് ചേർക്കാൻ ഡബിൾ-ക്ലിക്ക് ചെയ്യുക. നീക്കം ചെയ്യാൻ റൈറ്റ്-ക്ലിക്ക് ചെയ്യുക. ക്രമീകരിക്കാൻ വലിച്ചിടുക.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>കർവ് എഡിറ്റർ</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>ട്രിഗർ ആക്സിസ്</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ഓരോ മോട്ടോറിന്റെയും ഗെയിൻ, ട്രിഗർ റംബിൾ, സ്റ്റിയറിംഗ് ആംഗിൾ റംബിൾ, സ്ഥിര ബലം</value></data>

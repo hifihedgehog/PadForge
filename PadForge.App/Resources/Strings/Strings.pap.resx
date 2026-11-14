@@ -1421,11 +1421,9 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Rango mínimo Y (abou)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Rango máksimo Y (ariba)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Eje X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Tur dos eje</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Eje Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Rango</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zona morto</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Eje di trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Fortalesa pa motor, vibrashon di trigger, Vibrashon di stür, Forsa konstante</value></data>

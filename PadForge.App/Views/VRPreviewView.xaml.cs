@@ -48,11 +48,6 @@ namespace PadForge.Views
         /// picture has no control to ring.</summary>
         public event EventHandler PickBoundsChanged;
 
-        /// <summary>Raised with the control under the pointer, by the name a
-        /// click on it records, and with null when the pointer leaves it
-        /// (#574).</summary>
-        public event EventHandler<string> HoverTargetChanged;
-
         // Base art size; every element position below is in these pixels.
         private const double ArtW = 975, ArtH = 726;
 
@@ -303,13 +298,11 @@ namespace PadForge.Views
             hit.MouseMove += (s, e) =>
             {
                 _paintedValid = false;
-                // The page rings the control a click here records (#574).
-                string target = isMulti ? RegionTargetAt(el.Target, e.GetPosition(hit), el.W, el.H) : el.Target;
-                HoverTargetChanged?.Invoke(this, target);
                 if (!isMulti) { _hoverTarget = el.Target; return; }
                 // Multi-target elements skip the whole-element hover warm:
                 // the region highlight IS the hover affordance ("Sticks are
                 // always visible - skip hover ghost" in the reference).
+                string target = RegionTargetAt(el.Target, e.GetPosition(hit), el.W, el.H);
                 hit.ToolTip = DisplayName(target, Strings.Instance);
                 // While the flash owns this element's highlight, hover must
                 // not fight it for the clip (the reference re-applies the
@@ -323,7 +316,6 @@ namespace PadForge.Views
             };
             hit.MouseLeave += (s, e) =>
             {
-                HoverTargetChanged?.Invoke(this, null);
                 if (_hoverTarget == el.Target) _hoverTarget = null;
                 if (isMulti && !FlashOwnsRegion(el.Target)
                     && _regionHighlights.TryGetValue(el.Target, out var hl))

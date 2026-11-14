@@ -24,11 +24,6 @@ namespace PadForge.Views
         /// <summary>Raised when the controls were laid out again (#574).</summary>
         public event EventHandler PickBoundsChanged;
 
-        /// <summary>Raised with the control under the pointer, by the name a
-        /// click on it records, and with null when the pointer leaves it
-        /// (#574).</summary>
-        public event EventHandler<string> HoverTargetChanged;
-
         private PadViewModel _vm;
         private bool _dirty;
         private bool _layoutBuilt;
@@ -391,8 +386,6 @@ namespace PadForge.Views
             // Hover: show direction arrow for hovered quadrant
             outer.MouseMove += (s, e) =>
             {
-                // The page rings the control a click here records (#574).
-                HoverTargetChanged?.Invoke(this, StickTarget(e.GetPosition(outer)));
                 if (_flashTarget != null) return; // don't override active flash
                 var pos = e.GetPosition(outer);
                 double hx = pos.X - StickSize / 2, hy = pos.Y - StickSize / 2;
@@ -410,7 +403,6 @@ namespace PadForge.Views
             };
             outer.MouseLeave += (s, e) =>
             {
-                HoverTargetChanged?.Invoke(this, null);
                 if (_flashTarget != null) return;
                 dirArrow.Visibility = Visibility.Collapsed;
                 outer.SetResourceReference(Shape.StrokeProperty, DimKey);
@@ -477,14 +469,12 @@ namespace PadForge.Views
             // Hover highlight
             bg.MouseEnter += (s, e) =>
             {
-                HoverTargetChanged?.Invoke(this, $"RawAxis{axisIdx}");
                 if (_flashTarget != null) return;
                 bg.Stroke = HoverBrush;
                 bg.StrokeThickness = 2.5;
             };
             bg.MouseLeave += (s, e) =>
             {
-                HoverTargetChanged?.Invoke(this, null);
                 if (_flashTarget != null) return;
                 bg.SetResourceReference(Shape.StrokeProperty, DimKey);
                 bg.StrokeThickness = 1;
@@ -594,8 +584,6 @@ namespace PadForge.Views
             outer.Cursor = Cursors.Hand;
             outer.MouseMove += (s, e) =>
             {
-                // The page rings the control a click here records (#574).
-                HoverTargetChanged?.Invoke(this, PovTarget(e.GetPosition(outer)));
                 if (_flashTarget != null) return;
                 var pos = e.GetPosition(outer);
                 double hx = pos.X - PovSize / 2, hy = pos.Y - PovSize / 2;
@@ -612,7 +600,6 @@ namespace PadForge.Views
             };
             outer.MouseLeave += (s, e) =>
             {
-                HoverTargetChanged?.Invoke(this, null);
                 if (_flashTarget != null) return;
                 arrow.Visibility = Visibility.Collapsed;
                 outer.SetResourceReference(Shape.StrokeProperty, DimKey);
@@ -671,14 +658,12 @@ namespace PadForge.Views
 
             circle.MouseEnter += (s, e) =>
             {
-                HoverTargetChanged?.Invoke(this, $"RawBtn{index}");
                 if (_flashTarget != null) return;
                 circle.Stroke = HoverBrush;
                 circle.StrokeThickness = 2.5;
             };
             circle.MouseLeave += (s, e) =>
             {
-                HoverTargetChanged?.Invoke(this, null);
                 if (_flashTarget != null) return;
                 circle.SetResourceReference(Shape.StrokeProperty, DimKey);
                 circle.StrokeThickness = 1.5;

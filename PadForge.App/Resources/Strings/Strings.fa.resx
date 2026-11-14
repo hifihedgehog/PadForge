@@ -2715,13 +2715,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>کمینه محدوده Y (پایین)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>بیشینه محدوده Y (بالا)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>محور X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>هر دو محور</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>محور Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>محدوده</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>ضد ناحیه مرده</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>برای افزودن نقطه دوبار کلیک کنید. برای حذف، راست‌کلیک کنید. برای تنظیم، بکشید.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>ویرایشگر منحنی</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>محور ماشه</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>بهره هر موتور، لرزش ماشه، لرزش زاویه هدایت، نیروی ثابت</value></data>

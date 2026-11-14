@@ -2524,13 +2524,11 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Amrediad Isaf Y (I Lawr)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Amrediad Uchaf Y (I Fyny)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Echelin X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Y ddwy echelin</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Echelin Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Amrediad</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Gwrth-barth marw</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Cliciwch ddwywaith i ychwanegu pwynt. De-gliciwch i dynnu. Llusgwch i addasu.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>golygydd cromlin</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Echelin Sbardun</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Ennill pob modur, dirgryniad sbardun, Dirgryniad Ongl Llywio, Grym Cyson</value></data>

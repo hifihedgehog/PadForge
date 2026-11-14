@@ -693,11 +693,9 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Rango mín. Y (Uray)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Rango máx. Y (Hanaq)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X eje</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Iskaynin eje</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y eje</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Rango</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti zona muerta</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Gatillo eje</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Sapa motor kallpa, gatillo vibración, Steering Angle Rumble, Constant Force</value></data>

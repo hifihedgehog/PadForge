@@ -107,13 +107,9 @@ namespace PadForge.Views
             Strings.CultureChanged += RewordComposedLines;
             DataContextChanged += OnDataContextChanged;
             // Each picture says when a control it draws has moved, and the
-            // ring on the picked control moves with it (#574). It says which
-            // control is under the pointer too, which takes a ring of its own.
+            // ring on the picked control moves with it (#574).
             foreach (var picture in PicturesWithPick())
-            {
                 picture.PickBoundsChanged += OnPickBoundsChanged;
-                picture.HoverTargetChanged += OnHoverTargetChanged;
-            }
         }
 
         /// <summary>Hands the header the view model that knows each slot's
@@ -188,11 +184,6 @@ namespace PadForge.Views
 
         private bool _pickRingQueued;
 
-        // The control under the pointer on a picture, by the name a click on
-        // it records, and the picture that reported it. Null with none.
-        private string _hoverTarget;
-        private object _hoverSource;
-
         /// <summary>The pictures that can say where a control is drawn. The
         /// touch sensors' capsules come first: they lie over the model, and
         /// a capsule is what was clicked.</summary>
@@ -208,27 +199,6 @@ namespace PadForge.Views
         }
 
         private void OnPickBoundsChanged(object sender, EventArgs e) => QueuePickRingSync();
-
-        /// <summary>A picture says which control is under the pointer, or
-        /// that none is. A leave from a picture the pointer has already left
-        /// for another changes nothing, whichever of the two is heard
-        /// first.</summary>
-        private void OnHoverTargetChanged(object sender, string target)
-        {
-            if (target == null)
-            {
-                if (_hoverSource == null || !ReferenceEquals(sender, _hoverSource)) return;
-                _hoverSource = null;
-                _hoverTarget = null;
-            }
-            else
-            {
-                if (ReferenceEquals(sender, _hoverSource) && string.Equals(target, _hoverTarget, StringComparison.Ordinal)) return;
-                _hoverSource = sender;
-                _hoverTarget = target;
-            }
-            QueuePickRingSync();
-        }
 
         private void PictureHost_SizeChanged(object sender, SizeChangedEventArgs e) => QueuePickRingSync();
 
@@ -248,20 +218,17 @@ namespace PadForge.Views
         }
 
         /// <summary>Puts the ring on the picked control, or takes it away:
-        /// with nothing picked, in the list, or on a picture that does not
-        /// draw the control. A control under the pointer takes the ring's
-        /// line alone, the Buttons board's hover, unless it is the picked
-        /// control or is drawn where that is.</summary>
+        /// with nothing picked, in the list, on a picture that does not draw
+        /// the control, or while a control records, which the picture marks
+        /// with its own flash. The control under the pointer takes no ring,
+        /// since every picture lights it itself. One mark for one state: a
+        /// ring beside the picture's own light was clutter (owner,
+        /// 2026-11-14).</summary>
         private void SyncPickRing()
         {
             var place = default(PickRingPlacement);
-            var hover = default(PickRingPlacement);
-            if (DataContext is PadViewModel vm && vm.IsButtonsPictureView)
-            {
+            if (DataContext is PadViewModel vm && vm.IsButtonsPictureView && string.IsNullOrEmpty(vm.CurrentRecordingTarget))
                 place = RingAround(vm.PickedTargets());
-                string under = _hoverTarget == null ? null : MappingTargetOf(vm, _hoverTarget);
-                if (under != null) hover = RingAround(vm.HoveredTargets(under));
-            }
             if (place.Line.Width > 0)
             {
                 PutPickRing(PickRing, place.Line, place.LineRadius);
@@ -272,8 +239,6 @@ namespace PadForge.Views
                 PickRing.Visibility = Visibility.Collapsed;
                 PickRingBand.Visibility = Visibility.Collapsed;
             }
-            if (hover.Line.Width > 0 && hover.Line != place.Line) PutPickRing(HoverRing, hover.Line, hover.LineRadius);
-            else HoverRing.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>The ring around the controls targets name, on the
@@ -3844,10 +3809,12 @@ namespace PadForge.Views
             {
                 SyncPickedRowSelection();
             }
-            else if (e.PropertyName == nameof(PadViewModel.PickedRow))
+            else if (e.PropertyName == nameof(PadViewModel.PickedRow)
+                     || e.PropertyName == nameof(PadViewModel.CurrentRecordingTarget))
             {
-                // The pick, the view or the rows changed: the ring goes to
-                // the picked control, or goes away with it.
+                // The pick, the view or the rows changed, or a recording
+                // started or ended: the ring goes to the picked control, or
+                // goes away with it or while it records.
                 QueuePickRingSync();
             }
             else if (e.PropertyName == nameof(PadViewModel.RumbleAudioTabVisible)

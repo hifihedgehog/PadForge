@@ -1002,11 +1002,9 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Awhe iti rawa Y (Raro)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Awhe nui rawa Y (Runga)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Tuaka X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Tuaka e rua</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Tuaka Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Awhe</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Tuaka trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Te kaha o ia mōta, te wiri trigger, Steering Angle Rumble, Constant Force</value></data>

@@ -85,7 +85,7 @@ namespace PadForge.Tests
         public static readonly (string Id, string StateKey, string Hint, string[] UpFront, string[] UnderMore)[] MoreRows =
         {
             ("Pad_More_Stick", "{Binding MoreStateKey}", "Pad_More_Stick",
-                new[] { "{Binding DeadZoneBoth, Mode=TwoWay}", "PresetNameBoth", "SensitivityCurveBoth", "CalibrateCenter_Click", "ResetStickSensitivityCommand" },
+                new[] { "{Binding DeadZoneBoth, Mode=TwoWay}", "PresetNameBoth", "ResetSensitivityBothCommand", "CalibrateCenter_Click", "ResetStickSensitivityCommand" },
                 new[] { "CenterOffsetX", "{Binding DeadZoneShapeIndex, Mode=TwoWay", "{Binding DeadZoneX, Mode=TwoWay}", "AntiDeadZoneY", "{Binding Linear, Mode=TwoWay}", "MomentumGlide",
                         "PresetNameX", "PresetNameY", "CalibrateBoundaryCommand", "MaxRangeYNeg", "Pad_Steering_Header" }),
             // A trigger's typed range and raw values (the world-class pass).
@@ -302,7 +302,7 @@ namespace PadForge.Tests
                 var columns = row.ElementsBeforeSelf().LastOrDefault();
                 bool ofAStickOrATrigger = want.Id is "Pad_More_Stick" or "Pad_More_Trigger";
                 if (ofAStickOrATrigger)
-                    Assert.Equal(want.Id == "Pad_More_Stick" ? "ThreePartPanel" : "FlexLinePanel", columns.Name.LocalName);
+                    Assert.Equal(want.Id == "Pad_More_Stick" ? "PartBodyPanel" : "FlexLinePanel", columns.Name.LocalName);
                 string before = ofAStickOrATrigger
                     ? string.Concat(columns.Elements().Where(e => e.Name.LocalName == "StackPanel").Select(e => e.ToString()))
                     : string.Concat(row.ElementsBeforeSelf().Select(e => e.ToString()));

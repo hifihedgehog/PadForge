@@ -22,13 +22,6 @@ namespace PadForge.Views
         /// the picture kept its size: its drawing was built again, or its
         /// camera moved.</summary>
         event EventHandler PickBoundsChanged;
-
-        /// <summary>Raised with the control under the pointer, by the name
-        /// a click on it records, and with null when the pointer leaves it,
-        /// so the page can ring it as the Buttons board draws a hover. A
-        /// picture may say the same control again as the pointer moves over
-        /// it.</summary>
-        event EventHandler<string> HoverTargetChanged;
     }
 
     /// <summary>Where the ring on a picked control goes: a line around the

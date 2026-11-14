@@ -2715,13 +2715,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>न्यूनतम दायरा Y (तल)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>अधिकतम दायरा Y (माथि)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X अक्ष</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>दुवै अक्ष</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y अक्ष</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>दायरा</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>एन्टि-डेडजोन</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>बिन्दु थप्न डबल-क्लिक गर्नुहोस्। हटाउन दायाँ-क्लिक गर्नुहोस्। मिलाउन तान्नुहोस्।</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>कर्भ सम्पादक</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>ट्रिगर अक्ष</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>प्रत्येक मोटरको गेन, ट्रिगर कम्पन, स्टेयरिङ कोण कम्पन, स्थिर बल</value></data>

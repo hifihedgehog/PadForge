@@ -2520,13 +2520,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>ಕನಿಷ್ಠ ವ್ಯಾಪ್ತಿ Y (ಕೆಳಗೆ)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>ಗರಿಷ್ಠ ವ್ಯಾಪ್ತಿ Y (ಮೇಲೆ)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X ಅಕ್ಷ</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>ಎರಡೂ ಅಕ್ಷಗಳು</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y ಅಕ್ಷ</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>ವ್ಯಾಪ್ತಿ</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>ಆಂಟಿ-ಡೆಡ್ ಜೋನ್</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ಬಿಂದು ಸೇರಿಸಲು ಡಬಲ್-ಕ್ಲಿಕ್ ಮಾಡಿ. ತೆಗೆಯಲು ರೈಟ್-ಕ್ಲಿಕ್ ಮಾಡಿ. ಹೊಂದಿಸಲು ಎಳೆಯಿರಿ.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>ವಕ್ರರೇಖೆ ಸಂಪಾದಕ</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>ಟ್ರಿಗರ್ ಅಕ್ಷ</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ಪ್ರತಿ ಮೋಟಾರ್‌ಗೆ ಗೇನ್, ಟ್ರಿಗರ್ ಕಂಪನ, ಸ್ಟೀರಿಂಗ್ ಕೋನ ಕಂಪನ, ಸ್ಥಿರ ಬಲ</value></data>

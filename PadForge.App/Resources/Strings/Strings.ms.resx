@@ -2525,13 +2525,11 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Julat Min Y (Bawah)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Julat Maks Y (Atas)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Paksi X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Kedua-dua Paksi</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Paksi Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Julat</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-Zon Mati</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Klik dua kali untuk menambah titik. Klik kanan untuk membuang. Seret untuk melaras.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>penyunting lengkung</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Paksi Pencetus</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gandaan setiap motor, getaran pencetus, Getaran Sudut Stereng, Daya Malar</value></data>

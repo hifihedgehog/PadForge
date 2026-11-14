@@ -44,11 +44,11 @@ namespace PadForge.Tests
             => string.Join("\n", body.Split('\n')
                 .Where(l => !l.TrimStart().StartsWith("//", StringComparison.Ordinal)));
 
-        /// <summary>The 2D annotation chip's output ember. Without an arm the
-        /// chip renders, its controller sprite lights on press, and the ember
-        /// beside it stays dark.</summary>
+        /// <summary>The 2D annotation chip's light. Without an arm the chip
+        /// renders, its controller sprite lights on press, and the chip
+        /// stays dark.</summary>
         [Fact]
-        public void AnnotationOutputDots_CoverEveryExtraOutput()
+        public void AnnotationChipLights_CoverEveryExtraOutput()
         {
             string src = Read("PadForge.App/Views/ControllerModel2DView.Annotations.cs");
             int at = src.IndexOf("GetAnnotationButtonState", StringComparison.Ordinal);

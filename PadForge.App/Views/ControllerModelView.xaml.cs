@@ -37,11 +37,6 @@ namespace PadForge.Views
         /// moved or changed size (#574).</summary>
         public event EventHandler PickBoundsChanged;
 
-        /// <summary>Raised with the control under the pointer, by the name a
-        /// click on it records, and with null when the pointer leaves it
-        /// (#574).</summary>
-        public event EventHandler<string> HoverTargetChanged;
-
         // Control -> its shape, read once for each model: its points, and
         // the triangles of the rest of the model that can stand in front of
         // them. The ring on the picked control is the box of its points in
@@ -619,6 +614,7 @@ namespace PadForge.Views
                 ref _triggerAngleRight);
             UpdateTouchpadPreview3D();
             UpdateAnnotationLevelBars();
+            UpdateAnnotationChipLights();
         }
 
         // ─────────────────────────────────────────────
@@ -1415,7 +1411,6 @@ namespace PadForge.Views
                     // Show a hover quadrant wedge
                     ShowHoverQuadrant(quadrant);
                     ModelViewPort.Cursor = Cursors.Hand;
-                    HoverTargetChanged?.Invoke(this, quadrant);
                     return;
                 }
 
@@ -1429,7 +1424,6 @@ namespace PadForge.Views
                         _hoverGroup = kv.Key;
                         ApplyHoverHighlight(kv.Key);
                         ModelViewPort.Cursor = Cursors.Hand;
-                        HoverTargetChanged?.Invoke(this, kv.Value);
                         return;
                     }
                 }
@@ -1574,7 +1568,6 @@ namespace PadForge.Views
                 _hoverQuadrant = null;
             }
             ModelViewPort.Cursor = Cursors.Arrow;
-            HoverTargetChanged?.Invoke(this, null);
         }
 
         /// <summary>Resolves a hit on a quadrant surface to the direction

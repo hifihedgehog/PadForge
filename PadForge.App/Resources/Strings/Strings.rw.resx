@@ -937,12 +937,10 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Intera ntoya Y (hasi)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Intera nini Y (hejuru)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Umurongo X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Imirongo yombi</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Umurongo Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Intera</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Kanda kabiri kugira ngo wongereho akadomo. Kanda iburyo kugira ngo ugakureho. Kurura kugira ngo uhindure.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>muhinduzi w'umurongo uhetamye</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Umurongo wa trigger</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Moteri y'ibumoso</value></data>

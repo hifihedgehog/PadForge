@@ -2523,13 +2523,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>ជួរអប្បបរមា Y (ក្រោម)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>ជួរអតិបរមា Y (លើ)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>អ័ក្ស X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>អ័ក្សទាំងពីរ</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>អ័ក្ស Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>ជួរ</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>តំបន់ប្រឆាំងតំបន់ងាប់</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ចុចពីរដងដើម្បីបន្ថែមចំណុច។ ចុចស្ដាំដើម្បីលុប។ អូសដើម្បីកែតម្រូវ។</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>កម្មវិធីកែខ្សែកោង</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>អ័ក្សទ្រីហ្គឺ</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>កម្លាំងម៉ូទ័រនីមួយៗ, ការញ័រទ្រីហ្គឺ, ការញ័រតាមមុំចង្កូត, កម្លាំងថេរ</value></data>

@@ -2526,13 +2526,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>მინ. დიაპაზონი Y (ქვემოთ)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>მაქს. დიაპაზონი Y (ზემოთ)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>ღერძი X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>ორივე ღერძი</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>ღერძი Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>დიაპაზონი</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>ანტი-მკვდარი ზონა</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ორჯერ დააწკაპუნეთ წერტილის დასამატებლად. მარჯვენა დაწკაპუნებით წაშალეთ. გადაათრიეთ რეგულირებისთვის.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>მრუდის რედაქტორი</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>ტრიგერის ღერძი</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>ძრავის გაძლიერება, ტრიგერის ვიბრაცია, საჭის კუთხის ვიბრაცია, მუდმივი ძალა</value></data>

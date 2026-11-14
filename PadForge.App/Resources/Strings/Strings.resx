@@ -2729,13 +2729,11 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Min Range Y (Down)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Max Range Y (Up)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X Axis</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Both Axes</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y Axis</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-Deadzone</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Double-click to add point. Right-click to remove. Drag to adjust.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>curve editor</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Trigger Axis</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Per-motor gain, trigger rumble, Steering Angle Rumble, Constant Force</value></data>

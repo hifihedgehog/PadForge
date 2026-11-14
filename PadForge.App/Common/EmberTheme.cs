@@ -165,7 +165,6 @@ namespace PadForge.Common
             // The ring on a control of the picture under the pointer (#574):
             // the boards' ember at 60 percent, and on light the deeper ember
             // at 60 percent.
-            SetBrush("EmberHoverRingBrush", dark ? Color.FromArgb(0x99, 0xFF, 0x8A, 0x57) : Color.FromArgb(0x99, 0xC2, 0x4A, 0x12));
             // An input pill of a macro's trigger: its edge and its words.
             SetBrush("InputChipEdgeBrush", dark ? Color.FromRgb(0x33, 0x50, 0x6A) : Color.FromRgb(0x9D, 0xBB, 0xD2));
             SetBrush("InputChipTextBrush", dark ? Color.FromRgb(0xCF, 0xE6, 0xF5) : Color.FromRgb(0x1D, 0x4B, 0x6B));

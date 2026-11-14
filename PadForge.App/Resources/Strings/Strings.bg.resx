@@ -2715,13 +2715,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Мин. обхват Y (долу)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Макс. обхват Y (горе)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Ос X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>И двете оси</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Ос Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Обхват</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Анти-мъртва зона</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Щракнете двукратно, за да добавите точка. Щракнете с десния бутон, за да я премахнете. Плъзнете, за да я настроите.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>редактор на крива</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Ос на спусъка</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Усилване по мотори, вибрация на спусъците, Вибрация според ъгъла на завиване, Постоянна сила</value></data>

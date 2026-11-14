@@ -2715,13 +2715,11 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Minomfång Y (ned)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Maxomfång Y (upp)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X-axel</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Båda axlarna</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y-axel</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Omfång</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-dödzon</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dubbelklicka för att lägga till en punkt. Högerklicka för att ta bort. Dra för att justera.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>kurvredigerare</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Avtryckaraxel</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Motorförstärkning, avtryckarvibration, Vibration efter styrvinkel, Konstant kraft</value></data>

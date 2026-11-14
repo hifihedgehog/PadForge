@@ -2514,13 +2514,11 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Diapazoni min. Y (poshtë)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Diapazoni maks. Y (lart)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Boshti X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Të dy boshtet</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Boshti Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Diapazoni</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-zona e vdekur</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Kliko dy herë për të shtuar një pikë. Kliko djathtas për ta hequr. Zvarrit për ta rregulluar.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>redaktues kurbe</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Boshti i këmbëzës</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Forca për çdo motor, dridhja e këmbëzave, Dridhja e këndit të drejtimit, Forca konstante</value></data>

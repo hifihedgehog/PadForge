@@ -3541,16 +3541,15 @@
 
                         <!-- The ring on the picked control (#574), as the
                              boards draw it: an ember line around the
-                             control with a soft band outside the line.
-                             Another control under the pointer takes the
-                             line alone in a fainter ember, the Buttons
-                             board's hover. The page places both where the
-                             picture says the control is drawn (SyncPickRing).
-                             They take no clicks, and never draw past the
+                             control with a soft band outside the line. The
+                             page places it where the picture says the
+                             control is drawn (SyncPickRing), and hides it
+                             while a control records: the picture's flash
+                             marks that one. The control under the pointer
+                             takes no ring, since the picture lights it. It
+                             takes no clicks, and never draws past the
                              picture. -->
                         <Canvas x:Name="PickRingLayer" FlowDirection="LeftToRight" IsHitTestVisible="False" ClipToBounds="True">
-                            <Border x:Name="HoverRing" Visibility="Collapsed"
-                                    BorderBrush="{DynamicResource EmberHoverRingBrush}" BorderThickness="2"/>
                             <Border x:Name="PickRingBand" Visibility="Collapsed" Opacity="0.28"
                                     BorderBrush="{DynamicResource EmberBrush}" BorderThickness="4"/>
                             <Border x:Name="PickRing" Visibility="Collapsed"
@@ -5180,18 +5179,16 @@
                                                 Text="{Binding DeadZoneY, Mode=OneWay, StringFormat={}{0:0}%}"/></TextBlock>
                                     </DockPanel>
 
-                                    <!-- The card's body, as the board draws it: the settings in a column
-                                         of their own, the curve beside them and the live view at the end,
-                                         on one line while the card is wide. The settings' column grows by
-                                         60 and no more, so each row's reset stands beside its control,
-                                         and the curve takes the room that is left. Where the three do not
-                                         fit one line, the live view stands beside the other two and the
-                                         curve goes under the settings, and in a narrow card the three
-                                         stand one under the other (ThreePartPanel). -->
-                                    <controls:ThreePartPanel Gap="22" LineGap="16" Margin="0,6,8,6">
-                                        <StackPanel controls:FlexLinePanel.Basis="{DynamicResource FirstRowSettingsBasis}"
-                                                    MaxWidth="{DynamicResource FirstRowSettingsMost}">
-                                            <!-- Up front (#574): one deadzone and one sensitivity curve for the stick. Each sets its X and
+                                    <!-- The card's body, as every part card's: the settings, then the live
+                                         view beside them while both fit and under them where they do not.
+                                         The settings' column is sized for the language, so each row's reset
+                                         stands beside its control. A curve for each axis, with its own live
+                                         dot, is under More: a curve for both axes up front only repeated
+                                         them, and showed the X axis alone. -->
+                                    <controls:PartBodyPanel SideBySideWidth="NaN" SettingsWidth="{DynamicResource FirstRowSettingsMost}"
+                                                            Gap="22" StackGap="16" Margin="0,6,8,6">
+                                        <StackPanel MaxWidth="{DynamicResource FirstRowSettingsMost}">
+                                            <!-- Up front (#574): one deadzone and one sensitivity preset for the stick. Each sets its X and
                                                  its Y setting together. The settings for one axis, and everything else, are under More. -->
                                             <controls:SettingRow Grow="True" MinHeight="44">
                                                 <TextBlock Text="{Binding Pad_Sticks_Section_DeadZone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzFirstLabel}"/>
@@ -5256,28 +5253,10 @@
                                             </Button>
                                             </controls:SettingRow>
                                         </StackPanel>
-                                        <!-- The curve for both axes, at the width the card leaves it. -->
-                                        <StackPanel controls:FlexLinePanel.Basis="330" MaxWidth="720">
-                                            <TextBlock Text="{Binding Pad_BothAxes, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
-                                                       TextAlignment="Center"
-                                                       FontFamily="{StaticResource TelemetryFontFamily}"
-                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                       FontSize="11" Margin="0,0,0,6"/>
-                                            <controls:CurveEditor
-                                                AutomationProperties.AutomationId="SensitivityBothChart"
-                                                CurveString="{Binding SensitivityCurveBoth, Mode=TwoWay}"
-                                                DeadZone="{Binding DeadZoneBoth}"
-                                                MaxRange="{Binding MaxRangeX}"
-                                                MaxRangeNeg="{Binding MaxRangeXNeg}"
-                                                LiveInput="{Binding LiveInputX}"
-                                                IsSigned="True" IsFullWidth="True" ChartHeight="150"
-                                                Margin="0,0,0,6"/>
-                                            <TextBlock Text="{Binding Pad_SensitivityCurveHint, Source={x:Static strings:Strings.Instance}}"
-                                                       Style="{StaticResource CardDescription}"/>
-                                        </StackPanel>
-                                        <!-- Live preview (right): inset instrument panel (#175
-                                             iteration 21, matching the trigger instrument). -->
-                                        <Border VerticalAlignment="Top"
+                                        <!-- Live preview: inset instrument panel (#175 iteration 21,
+                                             matching the trigger instrument), at its own width after
+                                             the settings. -->
+                                        <Border VerticalAlignment="Top" HorizontalAlignment="Left"
                                                 Background="{DynamicResource ControlFillColorDefaultBrush}"
                                                 BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
                                                 BorderThickness="1" CornerRadius="8" Padding="12">
@@ -5555,7 +5534,7 @@
 
                                         </StackPanel>
                                         </Border>
-                                    </controls:ThreePartPanel>
+                                    </controls:PartBodyPanel>
                                     <!-- More (#574): the settings fewer people change, opened in place. Each stick remembers
                                          its own. The row follows the card's two columns, so it runs the card's width. Open, it
                                          holds two columns of groups, or one where the card is narrow, then a curve for each axis,
@@ -6387,10 +6366,13 @@
                                         </StackPanel>
                                         <StackPanel controls:FlexLinePanel.Basis="380" controls:FlexLinePanel.Grow="2">
                                             <!-- Full-width forge canvas (#175 competitor item 4):
-                                                 the trigger curve at card width under the sensitivity
+                                                 the trigger curve at card width beside the sensitivity
                                                  controls. Caption keeps the mono-10-tertiary
-                                                 instrument idiom. -->
-                                            <TextBlock Text="{Binding Pad_TriggerAxis, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                                                 instrument idiom, and names the chart by the setting
+                                                 it draws, the row's own word: a chart captioned by its
+                                                 axis never said it was the sensitivity (owner,
+                                                 2026-11-14). -->
+                                            <TextBlock Text="{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
                                                        HorizontalAlignment="Stretch" TextAlignment="Center"
                                                        FontFamily="{StaticResource TelemetryFontFamily}"
                                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"

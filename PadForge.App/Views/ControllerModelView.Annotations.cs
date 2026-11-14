@@ -2,12 +2,13 @@
 //
 // A 2D Canvas sibling of the HelixViewport3D carries one chip per mapped
 // ButtonMap-backed row (steel chip at the canvas edge, 1px cold leader
-// line to the control's projected anchor) plus two slim trigger level
-// bars (cold raw beside ember out). Off by default, session-only state.
+// line to the control's projected anchor, the chip lit ember while its
+// control's output is on) plus two slim trigger level bars (cold raw
+// beside ember out). Off by default, session-only state.
 //
 // Rules baked in: no storyboards, no Effects, all live state is plain
 // brush/property swaps. Re-projection is timer-driven (150 ms), never
-// per-frame; only bar heights update at render rate.
+// per-frame. Bar heights and chip lights update at render rate.
 
 using System;
 using System.Collections.Generic;
@@ -130,11 +131,8 @@ namespace PadForge.Views
             public Border Border;
             public TextBlock Text;
             public Line Leader;
-            public Ellipse EmberDot;
-            /// <summary>MinValue = no flash pending; MaxValue = static cold
-            /// (reduced motion) held until the row goes inactive; anything
-            /// else = transient flash expiry.</summary>
-            public DateTime FlashUntil = DateTime.MinValue;
+            /// <summary>Whether the tag is lit: its control's output is on.</summary>
+            public bool Lit;
             public Point Projected;
             public bool LeftColumn;
             public bool Visible;
@@ -240,18 +238,7 @@ namespace PadForge.Views
             if (!_annotationsEnabled)
                 return;
 
-            // Runs on the UI thread: InputService drives IsInputActive from
-            // its 30 Hz DispatcherTimer (InputService.cs UpdateMappingLiveValues).
-            if (e.PropertyName == nameof(MappingItem.IsInputActive))
-            {
-                if (sender is MappingItem row)
-                {
-                    var chip = FindAnnotationChip(row);
-                    if (chip != null)
-                        ApplyChipActivityState(chip);
-                }
-            }
-            else if (e.PropertyName == nameof(MappingItem.SourceDescriptor)
+            if (e.PropertyName == nameof(MappingItem.SourceDescriptor)
                   || e.PropertyName == nameof(MappingItem.IsMapped)
                   || e.PropertyName == nameof(MappingItem.HasAnySource))
             {
@@ -711,21 +698,8 @@ namespace PadForge.Views
             };
             leader.SetResourceReference(Shape.StrokeProperty, "ColdBrush");
 
-            // Ember output dot, not a DropShadowEffect glow: dozens of chips
-            // re-evaluated at 150 ms on the Atom Z8350 floor, and Effects are
-            // never animated in this repo.
-            var dot = new Ellipse
-            {
-                Width = 6,
-                Height = 6,
-                IsHitTestVisible = false,
-                Visibility = Visibility.Collapsed,
-            };
-            dot.SetResourceReference(Shape.FillProperty, "EmberBrush");
-
             AnnotationCanvas.Children.Add(leader);
             AnnotationCanvas.Children.Add(border);
-            AnnotationCanvas.Children.Add(dot);
 
             var chip = new AnnotationChip
             {
@@ -734,10 +708,8 @@ namespace PadForge.Views
                 Border = border,
                 Text = text,
                 Leader = leader,
-                EmberDot = dot,
             };
-            if (row.IsInputActive)
-                ApplyChipActivityState(chip);
+            LightChip(chip, ChipOutputOn(row.TargetSettingName));
             return chip;
         }
 
@@ -861,10 +833,7 @@ namespace PadForge.Views
                 chip.Border.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
                 chip.Leader.Visibility = chip.Border.Visibility;
                 if (!visible)
-                {
-                    chip.EmberDot.Visibility = Visibility.Collapsed;
                     continue;
-                }
 
                 chip.Projected = p.Value;
                 // Side by projected position, not model X, so the split stays
@@ -938,16 +907,12 @@ namespace PadForge.Views
                     chip.Border.ClearValue(Canvas.RightProperty);
                     Canvas.SetLeft(chip.Border, AnnotationEdgeMargin);
                     nearEdgeX = AnnotationEdgeMargin + chipWidth;
-                    chip.EmberDot.ClearValue(Canvas.RightProperty);
-                    Canvas.SetLeft(chip.EmberDot, AnnotationEdgeMargin - 3);
                 }
                 else
                 {
                     chip.Border.ClearValue(Canvas.LeftProperty);
                     Canvas.SetRight(chip.Border, AnnotationEdgeMargin);
                     nearEdgeX = w - AnnotationEdgeMargin - chipWidth;
-                    chip.EmberDot.ClearValue(Canvas.LeftProperty);
-                    Canvas.SetRight(chip.EmberDot, AnnotationEdgeMargin - 3);
                 }
 
                 double midY = y[i] + AnnotationChipHeight / 2;
@@ -955,7 +920,6 @@ namespace PadForge.Views
                 chip.Leader.Y1 = chip.Projected.Y;
                 chip.Leader.X2 = nearEdgeX;
                 chip.Leader.Y2 = midY;
-                Canvas.SetTop(chip.EmberDot, midY - 3);
             }
         }
 
@@ -963,8 +927,8 @@ namespace PadForge.Views
         //  Live state (tick + render hooks)
         // ─────────────────────────────────────────────
 
-        /// <summary>150 ms tick: re-project, evaluate ember dots, revert
-        /// expired flashes. The timer is the PRIMARY re-projection trigger.
+        /// <summary>150 ms tick: re-project. The timer is the PRIMARY
+        /// re-projection trigger.
         /// Wheel zoom, pan and yaw/pitch write cam.Position / rotation
         /// angles directly and bypass Helix's CameraController, so
         /// CameraChanged may never fire.</summary>
@@ -980,47 +944,48 @@ namespace PadForge.Views
 
             if (!_annotationDragHidden)
                 ReprojectAnnotations();
+        }
 
-            var now = DateTime.UtcNow;
+        /// <summary>Lights each tag while its control's output is on, in the
+        /// frame the picture lights the control: an ember edge and name, and
+        /// steel otherwise. One light for one state: a press used to flash
+        /// the tag blue for 250 ms while a dot beside it showed the output,
+        /// and the flash went out with the button still held (owner,
+        /// 2026-11-14). A tag's brushes change only when its state does.</summary>
+        private void UpdateAnnotationChipLights()
+        {
+            if (!_annotationsEnabled || _vm == null)
+                return;
             foreach (var chip in _annotationChips)
-            {
-                if (chip.FlashUntil != DateTime.MinValue
-                    && chip.FlashUntil != DateTime.MaxValue
-                    && now >= chip.FlashUntil)
-                    RevertChipFlash(chip);
-
-                // Ember output dot: virtual-output state on the VM, same
-                // shape as GetButtonState (every ButtonMap key is a button).
-                bool outputOn = chip.Visible && GetButtonState(chip.Row.TargetSettingName);
-                chip.EmberDot.Visibility = outputOn ? Visibility.Visible : Visibility.Collapsed;
-            }
+                LightChip(chip, ChipOutputOn(chip.Row.TargetSettingName));
         }
 
-        /// <summary>Cold flash on row activity. Motion on: 250 ms transient
-        /// reverted by the tick. Motion off (ClientAreaAnimation false): the
-        /// cold border tracks IsInputActive statically. No storyboard, no
-        /// Effect.</summary>
-        private void ApplyChipActivityState(AnnotationChip chip)
+        private static void LightChip(AnnotationChip chip, bool on)
         {
-            if (chip.Row.IsInputActive)
-            {
-                chip.Border.SetResourceReference(Border.BorderBrushProperty, "ColdBrush");
-                chip.Text.SetResourceReference(TextBlock.ForegroundProperty, "ColdBrush");
-                chip.FlashUntil = SystemParameters.ClientAreaAnimation
-                    ? DateTime.UtcNow + TimeSpan.FromMilliseconds(250)
-                    : DateTime.MaxValue;
-            }
-            else
-            {
-                RevertChipFlash(chip);
-            }
+            if (chip.Lit == on)
+                return;
+            chip.Lit = on;
+            chip.Border.SetResourceReference(Border.BorderBrushProperty, on ? "EmberBrush" : "SteelLineSoftBrush");
+            chip.Text.SetResourceReference(TextBlock.ForegroundProperty, on ? "EmberBrush" : "TextFillColorSecondaryBrush");
         }
 
-        private void RevertChipFlash(AnnotationChip chip)
+        /// <summary>Whether a tag's control is on at the virtual
+        /// controller's output: a button's state on the view model. A
+        /// stick's axes and a trigger are never lit, and a trigger has its
+        /// level bars. A Nintendo row's raw name (RawBtn0) is read as the
+        /// control it is drawn as, as its anchor is: unread, every tag of
+        /// that slot stayed dark, as the 2D view's did before it read them.</summary>
+        private bool ChipOutputOn(string target)
         {
-            chip.Border.SetResourceReference(Border.BorderBrushProperty, "SteelLineSoftBrush");
-            chip.Text.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorSecondaryBrush");
-            chip.FlashUntil = DateTime.MinValue;
+            if (target == null)
+                return false;
+            if (target.StartsWith("Raw", StringComparison.Ordinal))
+            {
+                target = Models2D.NintendoPreviewMap.ToPreview(target, _vm?.ProfileId);
+                if (target == null)
+                    return false;
+            }
+            return GetButtonState(target);
         }
 
         /// <summary>Bar heights only; positions move on re-projection.

@@ -1058,7 +1058,6 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Elanelana kely indrindra Y (Ambany)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Elanelana lehibe indrindra Y (Ambony)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>Axe X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Axe roa</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Axe Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Elanelana</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-deadzone</value></data>

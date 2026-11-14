@@ -2715,13 +2715,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>ช่วงต่ำสุด Y (ลง)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>ช่วงสูงสุด Y (ขึ้น)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>แกน X</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>ทั้งสองแกน</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>แกน Y</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>ช่วง</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>แอนตี้เดดโซน</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ดับเบิลคลิกเพื่อเพิ่มจุด คลิกขวาเพื่อนำออก ลากเพื่อปรับ</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>ตัวแก้ไขเส้นโค้ง</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>แกนทริกเกอร์</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>เกนรายมอเตอร์ การสั่นทริกเกอร์ การสั่นตามมุมการบังคับเลี้ยว แรงคงที่</value></data>

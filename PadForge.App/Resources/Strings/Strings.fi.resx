@@ -2715,13 +2715,11 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Vaihteluvälin minimi Y (alas)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Vaihteluvälin maksimi Y (ylös)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X-akseli</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Molemmat akselit</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y-akseli</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Vaihteluväli</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Kuolleen alueen kompensointi</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Lisää piste kaksoisnapsauttamalla. Poista napsauttamalla hiiren oikeaa painiketta. Säädä vetämällä.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>käyräeditori</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Liipaisinakseli</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Moottorivahvistus, liipaisintärinä, Ohjauskulman tärinä, Jatkuva voima</value></data>

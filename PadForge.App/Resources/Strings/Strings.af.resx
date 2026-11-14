@@ -2483,13 +2483,11 @@
   <data name="Pad_MinRangeYDown" xml:space="preserve"><value>Min reeks Y (af)</value></data>
   <data name="Pad_MaxRangeYUp" xml:space="preserve"><value>Maks reeks Y (op)</value></data>
   <data name="Pad_XAxis" xml:space="preserve"><value>X-as</value></data>
-  <data name="Pad_BothAxes" xml:space="preserve"><value>Albei asse</value></data>
   <data name="Pad_YAxis" xml:space="preserve"><value>Y-as</value></data>
   <data name="Pad_Range" xml:space="preserve"><value>Reeks</value></data>
   <data name="Pad_AntiDeadZone" xml:space="preserve"><value>Anti-dooisone</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dubbelklik om 'n punt by te voeg. Regsklik om te verwyder. Sleep om aan te pas.</value></data>
   <data name="Common_CurveEditor" xml:space="preserve"><value>kurwe-redigeerder</value></data>
-  <data name="Pad_TriggerAxis" xml:space="preserve"><value>Snellerias</value></data>
 
   <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Versterking per motor, snellervibrasie, Stuurhoekvibrasie, Konstante krag</value></data>

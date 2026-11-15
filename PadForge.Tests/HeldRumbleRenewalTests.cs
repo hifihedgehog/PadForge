@@ -8,10 +8,10 @@ namespace PadForge.Tests;
 /// <summary>
 /// #572: SDL ends a rumble 0xFFFF ms after the call that set it
 /// (SDL_MAX_RUMBLE_DURATION_MS, SDL_sysjoystick.h:250, stopped by the update
-/// loop at SDL_joystick.c:3084-3087), while PadForge holds a level until it
+/// loop at SDL_joystick.c:3087-3090), while PadForge holds a level until it
 /// changes. The SDL wrapper asks again for a held level before then. A call
 /// that repeats the level SDL holds only moves the end time
-/// (SDL_joystick.c:2295-2298), so the device itself gets nothing new.
+/// (SDL_joystick.c:2298-2301), so the device itself gets nothing new.
 /// </summary>
 public sealed class HeldRumbleRenewalTests(ITestOutputHelper output)
 {

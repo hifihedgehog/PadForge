@@ -2376,12 +2376,12 @@ namespace PadForge.Engine
         //  SDL caps the duration of one rumble call at 0xFFFF ms
         //  (SDL_MAX_RUMBLE_DURATION_MS, SDL_sysjoystick.h:250), and its
         //  update loop stops the motors once that time runs out
-        //  (SDL_joystick.c:3084-3087, the trigger motors at :3097-3100).
+        //  (SDL_joystick.c:3087-3090, the trigger motors at :3100-3103).
         //  PadForge holds a level until it changes, as XInput does, so a
         //  call made with uint.MaxValue is held here and renewed before the
         //  cap (RenewHeldRumble, #572). A call that repeats the level SDL
         //  holds only moves the end time and never reaches the driver
-        //  (SDL_joystick.c:2295-2298, :2341-2343, and SDL_gamepad.c:4540
+        //  (SDL_joystick.c:2298-2301, :2344-2346, and SDL_gamepad.c:4540
         //  for the trigger motors), so a renewal sends the device nothing.
         // ─────────────────────────────────────────────
 

@@ -63,7 +63,7 @@ namespace PadForge.Common.Input
         /// itself (PsMoveDirectService / the DS3 service's navigation
         /// profile) and feeds SDL VIRTUAL joysticks, which are exempt: the
         /// virtual backend never calls SDL_ShouldIgnoreJoystick
-        /// (SDL_joystick.c:3853). On Windows its callers are the DirectInput,
+        /// (SDL_joystick.c:3856). On Windows its callers are the DirectInput,
         /// XInput, GameInput and HIDAPI backends and the fork's Bluetooth
         /// LE, RFCOMM, serial, DJI network and iCade drivers
         /// (hifihedgehog/SDL#33).
@@ -2569,7 +2569,7 @@ namespace PadForge.Common.Input
                             // An Xbox One+ pad's motors take the raw report
                             // (XboxImpulseHidWriter), never SDL's rumble, so SDL
                             // holds no level for it and skips the stop below as
-                            // a repeat (SDL_joystick.c:2295-2298). The pad would
+                            // a repeat (SDL_joystick.c:2298-2301). The pad would
                             // keep the last level for the long pulse the report
                             // asks for, the 0xFF, 0x00, 0xEB tail that xpadneo's
                             // rumble.c also sends. Like Step 2's final zero for an

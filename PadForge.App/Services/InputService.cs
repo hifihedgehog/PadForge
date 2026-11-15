@@ -18765,7 +18765,7 @@ namespace PadForge.Services
                                     return;
                                 }
                                 // SDL's record of a level would be resent every
-                                // 2 s (SDL_joystick.c:3089-3094) over whatever the
+                                // 2 s (SDL_joystick.c:3092-3097) over whatever the
                                 // raw writer holds, so SDL stops and the raw
                                 // report takes the level.
                                 Buzz(0, 0);

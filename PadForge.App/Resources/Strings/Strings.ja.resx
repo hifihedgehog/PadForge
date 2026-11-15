@@ -302,6 +302,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>このデバイスが接続されると開始します。</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>これらのデバイスのどれかが接続されると開始します。</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>未接続</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>カード</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>詳細</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>コンパクト</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>自動</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>カードがウィンドウに収まる間は詳細表示、はみ出す場合はコンパクト表示</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>入力を送信中</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>バッテリー {0}、低下</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>バッテリー {0}、充電中</value></data>
@@ -841,6 +847,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>すべてリセット</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>すべてクリア</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>ソース</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>ゲームに見える入力</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0}台が未接続</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>未接続のデバイスごとに列を表示</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>クリックしてから、{0}を操作するこのデバイスの入力を押してください</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>デバイスを横にスクロール</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>デバイス</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>モード</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>上</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>下</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>修飾</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>トリムスティック</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>出力</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>値</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>オプション</value></data>
@@ -869,7 +887,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>最大</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>アキュムレーターの上限値。1 = 最大正。</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>ランプ</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>プライマリモード</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>アタック</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>対応するキーを押している間にフル偏向へ達するまでの秒数。0 = 即時。</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>リリース</value></data>
@@ -1270,7 +1287,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>{0} 用に設定</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>使用中</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} のその他の操作</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} を削除しますか？</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>プロファイルと、その自動切り替えルールが削除されます。この操作は元に戻せません。</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>プロファイルが削除されます。この操作は元に戻せません。</value></data>
@@ -3346,9 +3362,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>ノートやスライダーをクリックし、割り当てる入力を押してください。</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>「すべてマッピング」は A と B のタッチ出力をスキップします。割り当てるには、A または B の周りのリングをクリックしてください。</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} の入力を待っています。お使いのデバイスで入力を押してください。</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0} の入力元</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>その他のオプション</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>オプションを閉じる</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>フェイスボタン</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>ショルダーボタン</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>システムボタン</value></data>
@@ -4585,7 +4598,6 @@
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>増加入力</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>減少入力</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>修飾入力</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>ソースの種類</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>低レベルの色</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>中レベルの色</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>高レベルの色</value></data>

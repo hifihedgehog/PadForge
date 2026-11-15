@@ -34,8 +34,16 @@ namespace PadForge.Search
     ///
     /// <para>Left out on purpose: what a list of the user's own things draws
     /// (an item template whose root is no card), every keyed template but the
-    /// mapping row's three, and the controller page's Macros &amp; Menus,
+    /// open mapping row's, and the controller page's Macros &amp; Menus,
     /// which edits the picked macro or menu.</para>
+    ///
+    /// <para>The open mapping row is read as the page builds it for the
+    /// row's first source: its template, and each part of it that a template
+    /// of its own draws, in its place and on the data the part gives that
+    /// template. So the entries stand in the order their elements do, and a
+    /// rule under a part is read through the part's data, as WPF reads it.
+    /// The added sources' lines are the user's own and are not read: they
+    /// repeat the first source's.</para>
     /// </summary>
     internal static class SearchIndexBuilder
     {
@@ -47,12 +55,22 @@ namespace PadForge.Search
             { "ResetButton", "ResetButtonTight", "QuietResetButton", "SettingResetButton" };
         // EndsLabel is the label of a row whose switch stands at its end
         // (SettingRow.Ends, the sections pass of #574).
-        private static readonly HashSet<string> LabelStyles = new(StringComparer.Ordinal) { "DzLabel", "DzSubLabel", "RowOptionLabel", "EndsLabel" };
+        private static readonly HashSet<string> LabelStyles = new(StringComparer.Ordinal) { "DzLabel", "DzSubLabel", "RowOptionLabel", "EndsLabel", "LineLabel" };
+        // Words on a source's line that are no label to land on. A switch's
+        // name shows in a narrow box only, and the head over the sources
+        // says the same word: the switch's own words are its label. A key's
+        // short name ("Up") stands for a setting its reset names in full
+        // ("Up Input"): the reset's label is the entry's.
+        private static readonly HashSet<string> PassedOverLabels = new(StringComparer.Ordinal) { "LineSwitchName", "LineKeyLabel" };
         private static readonly HashSet<string> Toggles = new(StringComparer.Ordinal) { "CheckBox", "ToggleSwitch", "RadioButton" };
         private static readonly HashSet<string> Inputs = new(StringComparer.Ordinal)
             { "Slider", "ComboBox", "CheckBox", "ToggleButton", "ToggleSwitch", "TextBox", "NumberBox", "RangeSlider", "CurveEditor", "RadioButton" };
-        private static readonly HashSet<string> RowTemplates = new(StringComparer.Ordinal)
-            { "MappingRowOptions", "MappingRowDeadzone", "MappingRowSource" };
+        /// <summary>The open mapping row's template, on the row.</summary>
+        internal const string RowTemplate = "MappingRowPanel";
+        /// <summary>The templates that draw a part of the open row. Each is
+        /// read where a ContentControl of the row shows it.</summary>
+        private static readonly HashSet<string> RowPartTemplates = new(StringComparer.Ordinal)
+            { "SourceLine", "SourceModeSettings", "SourceDials" };
         // Property elements whose content is part of the page. Every other
         // property element (styles, templates, triggers, columns, tooltips) is
         // read only for its reset buttons.
@@ -122,6 +140,7 @@ namespace PadForge.Search
             private readonly List<(SearchPage, int, ResetOutcome)> _resets;
             private readonly XDocument _doc;
             private readonly HashSet<string> _extraKeys;
+            private readonly Dictionary<string, XElement> _rowParts = new(StringComparer.Ordinal);
             private int _order;
 
             public PageWalk(SearchPage page, IReadOnlyDictionary<string, int> tabOfGroupName, List<SearchEntry> entries,
@@ -134,6 +153,18 @@ namespace PadForge.Search
                 _doc = doc;
                 _extraKeys = new HashSet<string>(doc.Descendants().Where(e => e.Name.LocalName == "ExtraTile")
                     .Select(e => (string)e.Attribute("Key")).Where(k => !string.IsNullOrEmpty(k)), StringComparer.Ordinal);
+                if (page == SearchPage.Pad)
+                    foreach (var template in doc.Descendants().Where(e => e.Name.LocalName == "DataTemplate"))
+                        if ((string)template.Attribute(Xaml + "Key") is { } key && RowPartTemplates.Contains(key))
+                            _rowParts[key] = template;
+            }
+
+            /// <summary>The template a ContentControl of the open row shows
+            /// its content with, when it is one of the row's parts.</summary>
+            private XElement RowPartOf(XElement e)
+            {
+                var m = StyleKey.Match(Attr(e, "ContentTemplate") ?? string.Empty);
+                return m.Success && _rowParts.TryGetValue(m.Groups[1].Value, out var template) ? template : null;
             }
 
             public void Run() => Walk(_doc.Root, new Ctx());
@@ -247,9 +278,11 @@ namespace PadForge.Search
                         foreach (var r in e.Elements())
                         {
                             string key = (string)r.Attribute(Xaml + "Key");
-                            if (!ctx.LeftOut && Local(r) == "DataTemplate" && key != null && RowTemplates.Contains(key) && _page == SearchPage.Pad)
+                            if (!ctx.LeftOut && Local(r) == "DataTemplate" && key == RowTemplate && _page == SearchPage.Pad)
                                 foreach (var c in Kids(r))
                                     Walk(c, new Ctx { Section = 0, Tab = ViewModels.PadViewModel.MappingsTabIndex, RowOptions = true, InTemplate = true });
+                            else if (Local(r) == "DataTemplate" && key != null && _rowParts.ContainsKey(key))
+                                continue; // read in its place in the open row
                             else
                                 Walk(r, ctx with { LeftOut = true });
                         }
@@ -291,6 +324,22 @@ namespace PadForge.Search
                 }
 
                 ctx = Enter(e, ctx);
+
+                // A part of the open row that a template of its own draws:
+                // the template is read here, on the content the part gives
+                // it, which is that template's data.
+                if (ctx.RowOptions && local == "ContentControl" && RowPartOf(e) is { } part)
+                {
+                    var content = Binding.Parse(Attr(e, "Content"));
+                    var inPart = ctx;
+                    if (!ctx.DataUnread)
+                    {
+                        if (content == null || content.Elsewhere) inPart = ctx with { DataUnread = true };
+                        else if (!string.IsNullOrEmpty(content.Path) && content.Path != ".") inPart = ctx with { DataPath = OnData(ctx, content.Path) };
+                    }
+                    foreach (var c in Kids(part)) Walk(c, inPart);
+                    return;
+                }
 
                 if (IsCard(e))
                 {
@@ -438,7 +487,7 @@ namespace PadForge.Search
                     if (Local(k) == "TextBlock" && StyleOf(k) is { } s && LabelStyles.Contains(s) && TextLabel(k, false) is { } styled)
                         return (styled, SearchLabelSource.Text, s == "DzSubLabel");
                 foreach (var k in kids)
-                    if (Local(k) == "TextBlock" && TextLabel(k, false) is { } text)
+                    if (Local(k) == "TextBlock" && !(StyleOf(k) is { } passed && PassedOverLabels.Contains(passed)) && TextLabel(k, false) is { } text)
                         return (text, SearchLabelSource.Text, false);
                 foreach (var k in kids)
                     if (Toggles.Contains(Local(k)) && KeyIn(Attr(k, "Content")) is { } toggle)

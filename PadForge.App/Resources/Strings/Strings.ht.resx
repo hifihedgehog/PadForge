@@ -292,6 +292,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Li demare lè aparèy sa a konekte.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Li demare lè youn nan aparèy sa yo konekte.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Pa konekte</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Kat</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Detaye</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Konpak</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Oto</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Detaye pandan kat yo antre nan fenèt la, konpak depi yo ta depase li</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Ap voye antre kounye a</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Batri {0}, ba</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Batri {0}, ap chaje</value></data>
@@ -338,9 +344,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Klike sou yon nòt oswa yon bouton glisan, epi peze antre ki dwe kontwole l la.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Bouton Asiyen tout la sote sòti manyen A ak B yo. Klike sou sèk ki antoure A oswa B pou asiyen youn.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Ap tann {0}. Peze antre a sou aparèy ou a.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, kontwole pa</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Plis opsyon</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Mwens opsyon</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Bouton prensipal</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Bouton zepòl</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Bouton sistèm</value></data>
@@ -1249,6 +1252,18 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Reyinisyalize tout</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Efase tout</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Sous</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Jwèt yo wè</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} pa konekte</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Montre yon kolòn pou chak aparèy ki pa konekte</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Klike, apre sa peze antre ki sou aparèy sa a ki dwe kontwole {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Fè aparèy yo defile sou kote</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Aparèy</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Mòd</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Anwo</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Anba</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifikatè</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Joystick ajisteman</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Sòti</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valè</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opsyon</value></data>
@@ -1268,7 +1283,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Min</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Ranp</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Mòd prensipal</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Atak</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Kantite segonn pou rive nan deplasman total pandan touch ki koresponn lan kenbe. 0 = imedyat.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Lage</value></data>
@@ -2126,7 +2140,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Mete pou {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Aktif</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Plis pou {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Efase {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Pwofil la ak règ chanjman otomatik li retire. Ou pa ka anile sa.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Pwofil la retire. Ou pa ka anile sa.</value></data>
@@ -3681,7 +3694,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Antre pou monte</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Antre pou desann</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Antre modifikatè</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Tip sous</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Koulè nivo ba</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Koulè nivo mwayen</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Koulè nivo wo</value></data>

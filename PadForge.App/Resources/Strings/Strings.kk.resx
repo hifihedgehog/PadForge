@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Ол осы құрылғы қосылғанда іске қосылады.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Ол осы құрылғылардың бірі қосылғанда іске қосылады.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Қосылмаған</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Карталар</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Толық</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Шағын</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Авто</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Карталар терезеге сыйғанша толық, сыймай қалса шағын</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Қазір кіріс жіберуде</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Батарея {0}, төмен</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Батарея {0}, зарядталуда</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Нотаны немесе жүгірткіні басыңыз да, оны басқаруға тиіс кірісті басыңыз немесе қозғаңыз.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>«Барлығын тағайындау» A және B жанасу шығыстарын өткізіп жібереді. Біреуін тағайындау үшін A немесе B түймесінің айналасындағы сақинаны басыңыз.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} үшін күтілуде. Құрылғыңыздағы кірісті басыңыз.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, енгізу көзі</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Көбірек параметр</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Азырақ параметр</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Негізгі түйме</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Иық түймесі</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Жүйе түймесі</value></data>
@@ -1401,6 +1404,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>Барлығын қалпына келтіру</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Барлығын тазалау</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Көз</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Ойындар көретіні</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} қосылмаған</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Қосылмаған әр құрылғыға жеке баған көрсету</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Басыңыз, содан кейін {0} басқаратын осы құрылғыдағы енгізуді басыңыз</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Құрылғыларды бүйірге жылжыту</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Құрылғы</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Режим</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Жоғары</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Төмен</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Модификатор</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Триммер сілтегіші</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Шығыс</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Мән</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Опциялар</value></data>
@@ -1429,7 +1444,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Ең көп</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Жинақтағыштың жоғарғы шегі. 1 = толық оң мән.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Біркелкі өсу</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Негізгі режим</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Өсу</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Сәйкес перне ұсталып тұрғанда толық ауытқуға жету үшін қажет секундтар. 0 = лезде.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Жіберу</value></data>
@@ -2460,7 +2474,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>{0} үшін орнатылған</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Белсенді</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} үшін қосымша</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} жою керек пе?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Профиль және оның автоматты ауыстыру ережесі жойылады. Мұны болдырмау мүмкін емес.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Профиль жойылады. Мұны болдырмау мүмкін емес.</value></data>
@@ -4402,7 +4415,6 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Жоғары кіріс</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Төмен кіріс</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Түрлендіргіш кіріс</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Көз түрі</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Төмен түс</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Орта түс</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Жоғары түс</value></data>

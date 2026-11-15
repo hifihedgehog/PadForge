@@ -302,6 +302,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Er startet, wenn dieses Gerät verbunden wird.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Er startet, wenn eines dieser Geräte verbunden wird.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Nicht verbunden</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Karten</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Detailliert</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Kompakt</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Auto</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Detailliert, solange die Karten ins Fenster passen, kompakt, sobald sie darüber hinausragen würden</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Sendet gerade Eingaben</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Akku {0}, niedrig</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Akku {0}, wird geladen</value></data>
@@ -841,6 +847,18 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Alles zurücksetzen</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Alles leeren</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Quelle</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Spiele sehen</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} nicht verbunden</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Für jedes nicht verbundene Gerät eine eigene Spalte anzeigen</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Klicken, dann die Eingabe an diesem Gerät drücken, die {0} steuern soll</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Geräte seitlich scrollen</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Gerät</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Modus</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Hoch</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Runter</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifikator</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Trimmstick</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Ausgabe</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Wert</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0} %</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Optionen</value></data>
@@ -869,7 +887,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Obere Grenze des Akkumulators. 1 = voll positiv.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampe</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Primärer Modus</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Anstieg</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Sekunden bis zur vollen Auslenkung, während die passende Taste gehalten wird. 0 = sofort.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Abfall</value></data>
@@ -1270,7 +1287,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Festgelegt für {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Aktiv</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Mehr für {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} löschen?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Das Profil und seine Auto-Wechsel-Regel werden entfernt. Das kann nicht rückgängig gemacht werden.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Das Profil wird entfernt. Das kann nicht rückgängig gemacht werden.</value></data>
@@ -3346,9 +3362,6 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Klicken Sie auf einen Regler oder eine Note und drücken Sie dann die Eingabe, die sie steuern soll.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>„Alle zuordnen“ überspringt die Touch-Ausgaben von A und B. Klicken Sie auf den Ring um A oder B, um eine davon zuzuordnen.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Warte auf Eingabe für {0}. Drücken Sie die Eingabe auf Ihrem Gerät.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, gesteuert von</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Mehr Optionen</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Weniger Optionen</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Aktionstaste</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Schultertaste</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Systemtaste</value></data>
@@ -4585,7 +4598,6 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Aufwärtseingabe</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Abwärtseingabe</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Modifikatoreingabe</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Quelltyp</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Farbe für niedrigen Pegel</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Farbe für mittleren Pegel</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Farbe für hohen Pegel</value></data>

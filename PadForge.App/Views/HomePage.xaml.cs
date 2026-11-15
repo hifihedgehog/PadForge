@@ -21,6 +21,7 @@ namespace PadForge.Views
         public HomePage()
         {
             InitializeComponent();
+            WireCardsFit();
             Loaded += (_, _) => WireDragHandlers();
             // The Add Controller tile shares the slot WrapPanel through a
             // CompositeCollection (#175 phase 2 item 3), and its

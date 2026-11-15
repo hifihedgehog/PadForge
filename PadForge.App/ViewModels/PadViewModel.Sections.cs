@@ -168,6 +168,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(ButtonsViewIndex));
             OnPropertyChanged(nameof(IsButtonsPictureView));
             OnPropertyChanged(nameof(IsButtonsListView));
+            OnPropertyChanged(nameof(ShowRowValue));
             OnPropertyChanged(nameof(ShowOutputGroup));
             OnPropertyChanged(nameof(PictureIsCardFoot));
             OnPropertyChanged(nameof(ShowMidiCard));
@@ -466,24 +467,6 @@ namespace PadForge.ViewModels
         /// under it (the sections pass).</summary>
         public bool PictureIsCardFoot => !ShowPictureBar && !ShowKbmFoot && !ShowOutputGroup;
 
-        private bool _isPickedOptionsOpen;
-
-        /// <summary>Whether the bar shows the current row's options under
-        /// itself. It holds from one pick to the next. Session only, never
-        /// saved.</summary>
-        public bool IsPickedOptionsOpen
-        {
-            get => _isPickedOptionsOpen;
-            set
-            {
-                if (!SetProperty(ref _isPickedOptionsOpen, value)) return;
-                OnPropertyChanged(nameof(ShowPickedOptions));
-            }
-        }
-
-        /// <summary>The current row's options show under the bar.</summary>
-        public bool ShowPickedOptions => ShowPictureBar && _isPickedOptionsOpen;
-
         /// <summary>The picked row may be another: after a pick, a change
         /// of view, or rows built again.</summary>
         private void RaisePickedChanged()
@@ -493,7 +476,6 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(PickedName));
             OnPropertyChanged(nameof(PickedKind));
             OnPropertyChanged(nameof(ShowPictureBar));
-            OnPropertyChanged(nameof(ShowPickedOptions));
             OnPropertyChanged(nameof(PictureIsCardFoot));
         }
 

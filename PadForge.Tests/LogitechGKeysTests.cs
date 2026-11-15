@@ -469,14 +469,13 @@ namespace PadForge.Tests
         [Fact]
         public void TheTypeHasAGlyphAndAName()
         {
+            // The glyph, the key and the name are one file's three tables.
             string glyph = RepoFile("PadForge.App", "Common", "DeviceTypeGlyph.cs");
-            Assert.Contains("InputDeviceType.LogitechGKeys", glyph);
-
-            string svc = RepoFile("PadForge.App", "Services", "InputService.cs");
-            Assert.Contains("InputDeviceType.LogitechGKeys => \"LogitechGKeys\"", svc);
-
-            string row = RepoFile("PadForge.App", "ViewModels", "DeviceRowViewModel.cs");
-            Assert.Contains("\"LogitechGKeys\" => Strings.Instance.DeviceType_LogitechGKeys", row);
+            Assert.Contains("InputDeviceType.LogitechGKeys => \"\\uE765\"", glyph);
+            Assert.Contains("InputDeviceType.LogitechGKeys => \"LogitechGKeys\"", glyph);
+            Assert.Contains("\"LogitechGKeys\" => s.DeviceType_LogitechGKeys", glyph);
+            Assert.Equal("LogitechGKeys", PadForge.Common.DeviceTypeGlyph.KeyFor(PadForge.Engine.InputDeviceType.LogitechGKeys));
+            Assert.Equal(PadForge.Resources.Strings.Strings.Instance.DeviceType_LogitechGKeys, PadForge.Common.DeviceTypeGlyph.NameFor("LogitechGKeys"));
         }
 
         [Fact]

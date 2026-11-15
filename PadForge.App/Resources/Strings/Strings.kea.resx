@@ -243,6 +243,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>E ta kumesa kantu es dispozitivu konekta.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>E ta kumesa kantu un di es dispozitivus konekta.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Ka konektadu</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Kartons</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Detaliadu</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Kompaktu</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Automátiku</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Detaliadu enkuantu kartons ta kabe na janela, kompaktu ora ki es ta pasaba di el</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Ta manda entrada gosi</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Bateria {0}, baxu</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Bateria {0}, ta karega</value></data>
@@ -288,9 +294,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Klika na un nota ô na un slider, dipôs karga un botãu/eixu na bu dispozitivu pa kontrola-l.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Mapia tudu ta salta saídas di toki di A i B. Klika na anel di A ô B pa mapia un.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Ta spera pa {0}. Karga un botãu na bu dispozitivu.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, entrada di</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Más opson</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Menus opson</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Botãu frontal</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Botãu di ombru</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Botãu di sistema</value></data>
@@ -806,6 +809,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>Ripoi tudu</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Limpa tudu</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Fonti</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Jogus ta odja</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} ka konektadu</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Mostra un kolona pa kada dispozitivu ki ka sta konektadu</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Klika, dipos karga na entrada di es dispozitivu ki debe kontrola {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Rola dispozitivus pa ladu</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Dispozitivu</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Modu</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Riba</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Baxu</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifikador</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Alavanka di ajusti</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Saída</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valor</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opson</value></data>
@@ -833,7 +848,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Máx</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Limiti superior di akumulador. 1 = totalmenti pozitivu.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampa</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Modu prinsipal</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Atáki</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Sigundus pa txiga diflekson total timenti tékla korespondenti sta sigurado. 0 = instantániu.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Solta</value></data>
@@ -2655,7 +2669,6 @@
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Perfil</value></data>
   <data name="ResetLabel_OutputChannel" xml:space="preserve"><value>Kanal di saída</value></data>
   <data name="ResetLabel_Formula" xml:space="preserve"><value>Fórmula</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Tipu di fonti</value></data>
   <data name="ResetLabel_PositionX" xml:space="preserve"><value>Pozison na ekran X</value></data>
   <data name="ResetLabel_PositionY" xml:space="preserve"><value>Pozison na ekran Y</value></data>
   <data name="Status_InstallerExitCode_Format" xml:space="preserve"><value>Instalador sai ku kódigu {0}.</value></data>
@@ -3027,7 +3040,6 @@
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Revison</value></data>
   <data name="Profiles_AutoSwitchTitle" xml:space="preserve"><value>Trokason otomátiku</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Más pa {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Sustitui konfigurason guardadu na "{0}" ku kel atual? Si nómi i si jogus ta fika.</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Sustitui</value></data>
   <data name="GetProfiles_Title" xml:space="preserve"><value>Obten perfis</value></data>

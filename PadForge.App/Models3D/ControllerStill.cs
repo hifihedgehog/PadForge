@@ -78,7 +78,48 @@ namespace PadForge.Models3D
             var bitmap = new RenderTargetBitmap(DrawWidth, DrawHeight, 96, 96, PixelFormats.Pbgra32);
             bitmap.Render(viewport);
             bitmap.Freeze();
+
+            // Where each control is drawn, as the page's view finds it:
+            // the model's place, then the camera, then the viewport.
+            Matrix3D toScreen = placement;
+            toScreen.Append(HelixToolkit.Wpf.Viewport3DHelper.GetTotalTransform(viewport));
+            s_marks.Add(bitmap, ReadMarks(model, toScreen));
             return bitmap;
+        }
+
+        /// <summary>Where each control is drawn in a still this class
+        /// drew, in the still's pixels: the buttons the page's view lights,
+        /// the two triggers and the two sticks' caps. A control the body
+        /// hides has no mark. Nothing for a picture this class did not
+        /// draw.</summary>
+        internal static System.Collections.Generic.IReadOnlyList<Common.StillMark> MarksOf(BitmapSource still)
+            => still != null && s_marks.TryGetValue(still, out var marks) ? marks : Common.StillMarks.None;
+
+        /// <summary>The marks of each still, kept for as long as the still
+        /// is.</summary>
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<BitmapSource, Common.StillMark[]> s_marks = new();
+
+        private static Common.StillMark[] ReadMarks(ControllerModelBase model, Matrix3D toScreen)
+        {
+            var marks = new System.Collections.Generic.List<Common.StillMark>();
+            void Add(string role, System.Collections.Generic.IReadOnlyList<Model3DGroup> parts)
+            {
+                if (parts == null || parts.Count == 0) return;
+                var shape = ControllerModelPickBox.Read(model.model3DGroup, parts, model.DefaultMaterials);
+                if (ControllerModelPickBox.TryGetBox(shape, toScreen, out Rect box))
+                    marks.Add(new Common.StillMark(role, box));
+            }
+            void AddPart(string role, Model3DGroup part)
+            {
+                if (part != null) Add(role, new[] { part });
+            }
+            foreach (var (role, parts) in model.ButtonMap)
+                if (Common.StillMarks.Reads(role)) Add(role, parts);
+            AddPart(Common.StillMarks.LeftTrigger, model.LeftShoulderTrigger);
+            AddPart(Common.StillMarks.RightTrigger, model.RightShoulderTrigger);
+            AddPart(Common.StillMarks.LeftStick, model.LeftThumb);
+            AddPart(Common.StillMarks.RightStick, model.RightThumb);
+            return marks.ToArray();
         }
 
         /// <summary>The head light's gray: 0.35 of white, as the page's

@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Энэ төхөөрөмж холбогдоход эхэлнэ.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Эдгээр төхөөрөмжийн аль нэг нь холбогдоход эхэлнэ.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Холбогдоогүй</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Картууд</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Дэлгэрэнгүй</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Нягт</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Автомат</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Картууд цонхонд багтаж байхад дэлгэрэнгүй, цонхноос хэтрэх үед нягт</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Одоо оролт илгээж байна</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Батерей {0}, бага</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Батерей {0}, цэнэглэж байна</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Нот эсвэл гулсуур дээр дараад, түүнийг удирдах оролтыг төхөөрөмж дээрээ дарна уу.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>«Бүгдийг оноох» нь A ба B товчны хүрэлтийн гаралтуудыг алгасна. Аль нэгийг нь оноохын тулд A эсвэл B товчийг тойрсон цагираг дээр дарна уу.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} удирдлагад оролт хүлээж байна. Төхөөрөмж дээрээ оролтоо дарна уу.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, оролтын эх үүсвэр</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Бусад сонголт</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Бусад сонголтыг нуух</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Нүүрэн талын товч</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Мөрний товч</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Системийн товч</value></data>
@@ -1401,6 +1404,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>Бүгдийг дахин тохируулах</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Бүгдийг цэвэрлэх</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Эх үүсвэр</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Тоглоомд харагдана</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} холбогдоогүй</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Холбогдоогүй төхөөрөмж бүрд тусдаа багана харуулах</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Энд дараад, {0} удирдлагыг хөдөлгөх оролтыг энэ төхөөрөмж дээр дарна уу</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Төхөөрөмжүүдийг хажуу тийш гүйлгэх</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Төхөөрөмж</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Горим</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Дээш</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Доош</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Өөрчлөгч</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Нарийн тохируулгын стик</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Гаралт</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Утга</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Сонголтууд</value></data>
@@ -1429,7 +1444,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Дээд</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Хуримтлуулагчийн дээд хязгаар. 1 = бүтэн эерэг.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Аажим шилжилт</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Гол горим</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Өсөлт</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Харгалзах товчлуурыг дарж барих үед бүтэн хазайлтад хүрэх секунд. 0 = агшин зуурын.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Суллалт</value></data>
@@ -2460,7 +2474,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Тохируулсан тоглоом: {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Идэвхтэй</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} профайлын бусад үйлдэл</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} устгах уу?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Профайл болон түүний автомат сэлгэлтийн дүрэм устгагдана. Үүнийг буцаах боломжгүй.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Профайл устгагдана. Үүнийг буцаах боломжгүй.</value></data>
@@ -4390,7 +4403,6 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Дээш оролт</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Доош оролт</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Модификатор оролт</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Эх үүсвэрийн төрөл</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Бага утгын өнгө</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Дунд утгын өнгө</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Өндөр утгын өнгө</value></data>

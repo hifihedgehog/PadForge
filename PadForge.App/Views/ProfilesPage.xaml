@@ -58,6 +58,181 @@
         <!-- A starter profile's tile: the band's fill inside the card's
              hairline with corners of 12, lifting one step under the pointer.
              The whole tile is one button. -->
+        <!-- One controller of a profile, on the profile's card (the approved
+             "keep the frame" canvas): its picture as its own page shows it,
+             on a stage like a Home card's, and under the picture the type's
+             symbol, the type's name and the controller's number. The picture
+             is as tall as the row of pictures says. On the active profile's
+             card the stage is lit and opens the controller's page. A stored
+             profile's controllers are not on the PC, so theirs is a picture
+             and nothing more. A controller looks the same in every language,
+             so the picture never mirrors. -->
+        <DataTemplate x:Key="ProfileStill" DataType="{x:Type vm:ProfileController}">
+            <StackPanel>
+                <Grid Height="{Binding (controls:StillRowPanel.StillHeight), RelativeSource={RelativeSource Self}}">
+                    <Border x:Name="Stage" CornerRadius="10" BorderThickness="1" ClipToBounds="True"
+                            Background="{DynamicResource SteelGroundBrush}"
+                            BorderBrush="{DynamicResource SteelPaneLineBrush}">
+                        <Grid>
+                            <!-- The light on the stage's floor, on the
+                                 active profile's card. -->
+                            <Border x:Name="FloorLight" IsHitTestVisible="False" Visibility="Collapsed">
+                                <Border.Background>
+                                    <RadialGradientBrush Center="0.5,1.12" GradientOrigin="0.5,1.12" RadiusX="0.8" RadiusY="0.62">
+                                        <GradientStop Color="#8CFF6B2C" Offset="0"/>
+                                        <GradientStop Color="#00FF6B2C" Offset="0.72"/>
+                                    </RadialGradientBrush>
+                                </Border.Background>
+                            </Border>
+                            <!-- A soft cool light behind the picture, so a
+                                 dark controller stands out on the dark
+                                 stage. -->
+                            <Border IsHitTestVisible="False">
+                                <Border.Background>
+                                    <RadialGradientBrush Center="0.5,0.4" GradientOrigin="0.5,0.4" RadiusX="0.58" RadiusY="0.62">
+                                        <GradientStop Color="#2996AACD" Offset="0"/>
+                                        <GradientStop Color="#0096AACD" Offset="0.72"/>
+                                    </RadialGradientBrush>
+                                </Border.Background>
+                            </Border>
+                            <Grid Margin="8,6,8,6" FlowDirection="LeftToRight" controls:Appear.When="{Binding Picture}">
+                                <controls:DecorativeImage Source="{Binding Picture}" Stretch="Uniform"
+                                                          RenderOptions.BitmapScalingMode="HighQuality"/>
+                                <!-- A type with no picture of its own shows
+                                     its symbol. -->
+                                <Viewbox MaxWidth="64" MaxHeight="64" Margin="6"
+                                         Visibility="{Binding HasPicture, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
+                                    <Grid Width="64" Height="64">
+                                        <Path FlowDirection="LeftToRight" Stretch="Uniform"
+                                              Data="{Binding TypeGeometry, Mode=OneWay}"
+                                              Fill="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        <controls:GlyphText Text="{Binding TypeGlyph, Mode=OneWay}" FontFamily="Segoe MDL2 Assets" FontSize="56"
+                                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                            Visibility="{Binding TypeGlyph, Converter={StaticResource StringToVisibility}}"/>
+                                    </Grid>
+                                </Viewbox>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <!-- What opens the controller's page: a clear button over
+                         the stage, there only on the active profile's card. -->
+                    <controls:ClickBorder x:Name="Open" CornerRadius="10" Background="Transparent" Cursor="Hand" Visibility="Collapsed"
+                                          KeyboardNavigation.TabIndex="1" Click="ProfileStill_Click"
+                                          AutomationProperties.AutomationId="Profiles_Still"
+                                          ToolTip="{Binding Dashboard_SlotCard_Configure, Source={x:Static strings:Strings.Instance}}"
+                                          ToolTipService.InitialShowDelay="600"
+                                          AutomationProperties.Name="{Binding SpokenName, Mode=OneWay, TargetNullValue='', FallbackValue=''}"/>
+                </Grid>
+                <!-- The type's symbol on its square, the type's name, which
+                     trims, and the number, which does not. -->
+                <DockPanel Margin="0,6,0,0" HorizontalAlignment="Center">
+                    <Border x:Name="Tile" DockPanel.Dock="Left" Width="20" Height="20" CornerRadius="6" VerticalAlignment="Center"
+                            Background="{DynamicResource SteelLiftBrush}" TextElement.Foreground="{DynamicResource SubRowTextBrush}">
+                        <Grid>
+                            <Path FlowDirection="LeftToRight" Width="12" Height="12" Stretch="Uniform"
+                                  Data="{Binding TypeGeometry, Mode=OneWay}"
+                                  Fill="{Binding (TextElement.Foreground), ElementName=Tile}"/>
+                            <controls:GlyphText Text="{Binding TypeGlyph, Mode=OneWay}" FontFamily="Segoe MDL2 Assets" FontSize="11"
+                                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                Visibility="{Binding TypeGlyph, Converter={StaticResource StringToVisibility}}"/>
+                        </Grid>
+                    </Border>
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding Number}" Margin="5,0,0,0" VerticalAlignment="Center"
+                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    <TextBlock Text="{Binding TypeName}" Margin="7,0,0,0" FontSize="13" VerticalAlignment="Center"
+                               TextTrimming="CharacterEllipsis"
+                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                </DockPanel>
+            </StackPanel>
+            <DataTemplate.Triggers>
+                <!-- The active profile's controllers are the ones on the PC
+                     now: their stage is lit, their tile is ember, and the
+                     stage opens the controller's page. -->
+                <DataTrigger Binding="{Binding DataContext.IsActive, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True">
+                    <Setter TargetName="Stage" Property="BorderBrush" Value="{DynamicResource EmberRingSoftBrush}"/>
+                    <Setter TargetName="FloorLight" Property="Visibility" Value="Visible"/>
+                    <Setter TargetName="Open" Property="Visibility" Value="Visible"/>
+                    <Setter TargetName="Tile" Property="Background" Value="{DynamicResource EmberBrush}"/>
+                    <Setter TargetName="Tile" Property="TextElement.Foreground" Value="{DynamicResource EmberInkBrush}"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <!-- A fold that is a card's one row (the approved "keep the frame"
+             canvas): what it holds in words at its start, and its value and
+             the chevron at its end. It opens in place: its setting stands
+             where the words and the value stood, with the setting's own
+             name where the words were, so nothing is written twice and
+             nothing moves. The row is one button, and the open setting lies
+             over it, so a click beside the setting still closes the row.
+             The card's title stands over the row, so the row draws no title
+             of its own, and the title is still the row's name for a screen
+             reader. The chevron points along the row closed and down open,
+             and is pinned left-to-right like every drawing in the app. -->
+        <Style x:Key="CardFoldRow" TargetType="{x:Type controls:FoldCard}" BasedOn="{StaticResource {x:Type controls:FoldCard}}">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HeaderMinHeight" Value="36"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type controls:FoldCard}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <!-- The chevron's room: 14 before it, its 10
+                                     and 10 after it. -->
+                                <ColumnDefinition Width="34"/>
+                            </Grid.ColumnDefinitions>
+                            <ToggleButton x:Name="HeaderSite" Grid.ColumnSpan="2" Style="{StaticResource FoldHeaderToggle}"
+                                          MinHeight="{TemplateBinding HeaderMinHeight}" Padding="{TemplateBinding Padding}"
+                                          IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                          ToolTip="{TemplateBinding Description}"
+                                          AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='', FallbackValue=''}"
+                                          AutomationProperties.HelpText="{TemplateBinding Hint}"
+                                          AutomationProperties.ItemStatus="{TemplateBinding Summary}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="34"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock x:Name="HintText" Text="{TemplateBinding Hint}"
+                                               FontFamily="{StaticResource BodyFontFamily}" FontSize="14" TextWrapping="Wrap"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="SummaryText" Grid.Column="1" Text="{TemplateBinding Summary}"
+                                               FontFamily="{StaticResource BodyFontFamily}" FontSize="14" Margin="12,0,0,0"
+                                               Foreground="{TemplateBinding SummaryForeground}"
+                                               VerticalAlignment="Center"/>
+                                    <Path x:Name="Chevron" Grid.Column="2" FlowDirection="LeftToRight" Data="M 3,1 L 7,5 L 3,9"
+                                          Width="10" Height="10" Margin="14,0,10,0"
+                                          Stroke="{DynamicResource TextFillColorSecondaryBrush}" StrokeThickness="1.4"
+                                          StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                                          RenderTransformOrigin="0.5,0.5" VerticalAlignment="Center"/>
+                                </Grid>
+                            </ToggleButton>
+                            <Border x:Name="ExpandSite" Visibility="Collapsed" VerticalAlignment="Center">
+                                <ContentPresenter/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="True">
+                                <Setter TargetName="ExpandSite" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="HintText" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="SummaryText" Property="Visibility" Value="Collapsed"/>
+                                <Setter TargetName="Chevron" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="90"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="StarterTile" TargetType="Button">
             <Setter Property="Background" Value="{DynamicResource SteelBandBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}"/>
@@ -133,14 +308,14 @@
             </controls:FlexLinePanel>
 
             <!-- The cards and the drop tile share one grid of equal columns
-                 at least 300 wide. The tile rides the same panel as the cards
-                 through a CompositeCollection, whose CollectionContainer sits
-                 outside the visual tree, so the code-behind hands it
-                 ProfileItems. The tile takes what is left of its row, so no
-                 column of the cards' line stands empty, and alone on a line
-                 it is a band as tall as its words. The host is the drop zone
-                 for profile files and carries the cold dashed cue while a
-                 file is dragged over. -->
+                 at least 470 wide, the room a card needs for its name and a
+                 controller's picture. The tile rides the same panel as the
+                 cards through a CompositeCollection, whose CollectionContainer
+                 sits outside the visual tree, so the code-behind hands it
+                 ProfileItems. The tile is a card's size: as wide as one, as
+                 tall as the cards of its line, and a card's height alone on
+                 a line. The host is the drop zone for profile files and
+                 carries the cold dashed cue while a file is dragged over. -->
             <Grid x:Name="ProfileGridHost" Margin="0,20,0,0" AllowDrop="True"
                   DragEnter="ProfileList_DragEnter"
                   DragOver="ProfileList_DragOver"
@@ -157,7 +332,7 @@
                                  wears the stroke), the download icon and the
                                  words. A click opens Get Profiles on Import a
                                  File, as the board links it. -->
-                            <Grid controls:TileGridPanel.TakesRest="True"
+                            <Grid MinHeight="190"
                                   AutomationProperties.Name="{Binding Profiles_DropTile, Source={x:Static strings:Strings.Instance}}">
                                 <controls:ClickBorder x:Name="DropTile" CornerRadius="12" Cursor="Hand" Click="DropTile_Click"
                                                       AutomationProperties.AutomationId="Profiles_DropTile"
@@ -193,7 +368,7 @@
                     </ItemsControl.ItemsSource>
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <controls:TileGridPanel MinItemWidth="300" Gap="16"/>
+                            <controls:TileGridPanel MinItemWidth="470" Gap="16"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.Resources>
@@ -241,144 +416,165 @@
                                         </Border.Background>
                                     </Border>
 
-                                    <Grid x:Name="CardRows" Margin="18,16,12,12">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
+                                    <!-- The card's parts, as the board draws them: at
+                                         the start the name, the game line and
+                                         at the foot Active or Load. Then a
+                                         picture of each controller in the
+                                         profile, the count of those the row has
+                                         no room for, and More at the end's
+                                         foot. The keyboard goes through them in
+                                         that order, whatever order the panel
+                                         needs them in to give each its side. -->
+                                    <DockPanel x:Name="CardRows" Margin="20,18,12,14" KeyboardNavigation.TabNavigation="Local">
+                                        <ui:Button TabIndex="2" DockPanel.Dock="Right" VerticalAlignment="Bottom" Margin="6,0,0,0"
+                                                   Style="{StaticResource CardIconButton}" Click="CardMore_Click"
+                                                   AutomationProperties.AutomationId="Profiles_More"
+                                                   ToolTip="{Binding Common_More, Source={x:Static strings:Strings.Instance}}">
+                                            <AutomationProperties.Name>
+                                                <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                                    <Binding Path="Name"/>
+                                                    <Binding Path="Profiles_CardMore_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                                </MultiBinding>
+                                            </AutomationProperties.Name>
+                                            <Path FlowDirection="LeftToRight" Width="16" Height="4" Stretch="Uniform"
+                                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                                                  Data="M0,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M7,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M14,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0"/>
+                                            <ui:Button.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Tag="Edit" Click="ProfileMenu_Click" AutomationProperties.AutomationId="Profiles_Menu_Edit"
+                                                              Header="{Binding Profiles_Edit, Source={x:Static strings:Strings.Instance}}"
+                                                              Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                    <MenuItem Tag="SaveAs" Click="ProfileMenu_Click" AutomationProperties.AutomationId="Profiles_Menu_SaveAs"
+                                                              Header="{Binding Profiles_SaveAs, Source={x:Static strings:Strings.Instance}}"
+                                                              Visibility="{Binding ShowsSaveAs, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                    <MenuItem Tag="SaveHere" Click="ProfileMenu_Click" AutomationProperties.AutomationId="Profiles_Menu_SaveHere"
+                                                              Header="{Binding Profiles_SaveHere, Source={x:Static strings:Strings.Instance}}"
+                                                              Visibility="{Binding ShowsSaveHere, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                    <MenuItem Tag="Export" Click="ProfileMenu_Click" AutomationProperties.AutomationId="Profiles_Menu_Export"
+                                                              Header="{Binding Profiles_Export, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <Separator Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                    <MenuItem Tag="Delete" Click="ProfileMenu_Click" AutomationProperties.AutomationId="Profiles_Menu_Delete"
+                                                              Header="{Binding Common_Delete, Source={x:Static strings:Strings.Instance}}"
+                                                              Foreground="{DynamicResource DangerInkBrush}"
+                                                              Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                </ContextMenu>
+                                            </ui:Button.ContextMenu>
+                                        </ui:Button>
 
-                                        <!-- The name, and Built-in on Default. -->
-                                        <DockPanel Margin="0,0,6,0">
-                                            <Border DockPanel.Dock="Right" Style="{StaticResource SmallTag}" Margin="10,0,0,0"
-                                                    Visibility="{Binding IsDefault, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Text="{Binding Profiles_BuiltIn, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                                           LineHeight="15.95" LineStackingStrategy="BlockLineHeight"/>
-                                            </Border>
-                                            <TextBlock Text="{Binding Name}" Style="{StaticResource HeroCardTitle}" TextTrimming="CharacterEllipsis"
-                                                       ToolTip="{Binding Name}" LineHeight="26.1" LineStackingStrategy="BlockLineHeight"/>
-                                        </DockPanel>
+                                        <!-- How many controllers the row of pictures
+                                             left out, at the pictures' middle. -->
+                                        <TextBlock x:Name="MoreControllers" DockPanel.Dock="Right" Margin="8,0,0,26" VerticalAlignment="Center"
+                                                   FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding (controls:StillRowPanel.HiddenCount), ElementName=CardStills}" Value="0">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                                    <Binding Path="(controls:StillRowPanel.HiddenCount)" ElementName="CardStills"/>
+                                                    <Binding Path="Common_MoreCount_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
 
-                                        <!-- The game line: No game set, or the games
-                                             that load the profile, two names and the
-                                             count of the rest in a cell of its own
-                                             that is never cut short. The tooltip
-                                             lists every game. -->
-                                        <TextBlock Grid.Row="1" Margin="0,8,0,0" FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                   LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
-                                                   Text="{Binding Profiles_Card_NoGame, Source={x:Static strings:Strings.Instance}}"
-                                                   Visibility="{Binding HasExecutables, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
-                                        <Grid Grid.Row="1" Margin="0,8,0,0" HorizontalAlignment="Left" ToolTip="{Binding Executables}"
-                                              Visibility="{Binding HasExecutables, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="{Binding GameLead}" FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                       LineHeight="18.85" LineStackingStrategy="BlockLineHeight"/>
-                                            <TextBlock Grid.Column="1" Text="{Binding GameNames}" FontSize="13" TextTrimming="CharacterEllipsis"
-                                                       LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
-                                                       FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"/>
-                                            <TextBlock Grid.Column="2" Text="{Binding GameExtra}" FontSize="13" Margin="4,0,0,0"
-                                                       LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
-                                                       FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
-                                                       Visibility="{Binding GameExtra, Converter={StaticResource StringToVisibility}}"/>
-                                            <TextBlock Grid.Column="3" Text="{Binding GameTail}" FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                       LineHeight="18.85" LineStackingStrategy="BlockLineHeight"/>
-                                        </Grid>
+                                        <!-- A picture of each controller in the
+                                             profile, side by side: as many as the
+                                             card has room for beside the name. -->
+                                        <ItemsControl x:Name="CardStills" DockPanel.Dock="Right" Margin="18,0,0,0" VerticalAlignment="Top"
+                                                      Focusable="False" ItemsSource="{Binding Controllers}"
+                                                      ItemTemplate="{StaticResource ProfileStill}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <controls:StillRowPanel Reserve="170"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ItemsControl>
 
-                                        <!-- A chip for each controller type, with how
-                                             many of the profile's controllers are of
-                                             it, or No Controllers. -->
-                                        <StackPanel Grid.Row="2" Margin="0,8,0,0">
-                                            <ItemsControl ItemsSource="{Binding TypeChips}">
-                                                <ItemsControl.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <controls:FlexLinePanel Gap="6" LineGap="6"/>
-                                                    </ItemsPanelTemplate>
-                                                </ItemsControl.ItemsPanel>
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Border Style="{StaticResource TypeChip}" ToolTip="{Binding TypeName}"
-                                                                AutomationProperties.Name="{Binding SpokenName, TargetNullValue='', FallbackValue=''}">
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <Grid Width="14" Height="14" VerticalAlignment="Center">
-                                                                    <Path FlowDirection="LeftToRight" Width="13" Height="13" Stretch="Uniform"
-                                                                          Data="{Binding TypeGeometry, Mode=OneWay}"
-                                                                          Fill="{DynamicResource SubRowTextBrush}"/>
-                                                                    <controls:GlyphText Text="{Binding TypeGlyph, Mode=OneWay}" FontFamily="Segoe MDL2 Assets" FontSize="13"
-                                                                                        Foreground="{DynamicResource SubRowTextBrush}"
-                                                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                                                        Visibility="{Binding TypeGlyph, Converter={StaticResource StringToVisibility}}"/>
-                                                                </Grid>
-                                                                <TextBlock Text="{Binding Count}" Margin="6,0,0,0" VerticalAlignment="Center"/>
-                                                            </StackPanel>
-                                                        </Border>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                            <Border Style="{StaticResource TypeChip}" Padding="9,0" HorizontalAlignment="Left"
+                                        <Grid KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.TabIndex="0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <!-- The name, and Built-in on Default right
+                                                 after it. The line is only as wide as the
+                                                 two, and the name trims when the card has
+                                                 no room for it whole. -->
+                                            <DockPanel HorizontalAlignment="Left">
+                                                <Border DockPanel.Dock="Right" Style="{StaticResource SmallTag}" Margin="10,0,0,0"
+                                                        Visibility="{Binding IsDefault, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <TextBlock Text="{Binding Profiles_BuiltIn, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                                               LineHeight="15.95" LineStackingStrategy="BlockLineHeight"/>
+                                                </Border>
+                                                <TextBlock Text="{Binding Name}" Style="{StaticResource HeroCardTitle}" TextTrimming="CharacterEllipsis"
+                                                           ToolTip="{Binding Name}" LineHeight="26.1" LineStackingStrategy="BlockLineHeight"/>
+                                            </DockPanel>
+
+                                            <!-- The game line: No game set, or the games
+                                                 that load the profile, two names and the
+                                                 count of the rest in a cell of its own
+                                                 that is never cut short. The tooltip
+                                                 lists every game. -->
+                                            <TextBlock Grid.Row="1" Margin="0,6,0,0" FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                       LineHeight="18.85" LineStackingStrategy="BlockLineHeight" TextTrimming="CharacterEllipsis"
+                                                       Text="{Binding Profiles_Card_NoGame, Source={x:Static strings:Strings.Instance}}"
+                                                       Visibility="{Binding HasExecutables, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                                            <Grid Grid.Row="1" Margin="0,6,0,0" HorizontalAlignment="Left" ToolTip="{Binding Executables}"
+                                                  Visibility="{Binding HasExecutables, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding GameLead}" FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                           LineHeight="18.85" LineStackingStrategy="BlockLineHeight"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding GameNames}" FontSize="13" TextTrimming="CharacterEllipsis"
+                                                           LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
+                                                           FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"/>
+                                                <TextBlock Grid.Column="2" Text="{Binding GameExtra}" FontSize="13" Margin="4,0,0,0"
+                                                           LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
+                                                           FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
+                                                           Visibility="{Binding GameExtra, Converter={StaticResource StringToVisibility}}"/>
+                                                <TextBlock Grid.Column="3" Text="{Binding GameTail}" FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                           LineHeight="18.85" LineStackingStrategy="BlockLineHeight"/>
+                                            </Grid>
+
+                                            <!-- A profile with no controllers says so,
+                                                 where the pictures of one that has
+                                                 them stand at the card's end. -->
+                                            <Border Grid.Row="2" Style="{StaticResource TypeChip}" Padding="9,0" Margin="0,8,0,0" HorizontalAlignment="Left"
                                                     Visibility="{Binding HasNoSlots, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Text="{Binding Profiles_NoSlots, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
                                             </Border>
-                                        </StackPanel>
 
-                                        <!-- The foot: Active with the flame on the
-                                             active card, Load on the others, and More
-                                             at the end. -->
-                                        <DockPanel KeyboardNavigation.TabNavigation="Local" Grid.Row="4" Margin="0,18,0,0" MinHeight="32" LastChildFill="False">
-                                            <ui:Button TabIndex="1" DockPanel.Dock="Right" Style="{StaticResource CardIconButton}" Click="CardMore_Click"
-                                                       AutomationProperties.AutomationId="Profiles_More"
-                                                       ToolTip="{Binding Common_More, Source={x:Static strings:Strings.Instance}}">
-                                                <AutomationProperties.Name>
-                                                    <MultiBinding Converter="{StaticResource FormatTextConverter}">
-                                                        <Binding Path="Name"/>
-                                                        <Binding Path="Profiles_CardMore_Format" Source="{x:Static strings:Strings.Instance}"/>
-                                                    </MultiBinding>
-                                                </AutomationProperties.Name>
-                                                <Path FlowDirection="LeftToRight" Width="16" Height="4" Stretch="Uniform"
-                                                      Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
-                                                      Data="M0,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M7,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M14,2 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0"/>
-                                                <ui:Button.ContextMenu>
-                                                    <ContextMenu>
-                                                        <MenuItem Tag="Edit" Click="ProfileMenu_Click" AutomationProperties.AutomationId="Profiles_Menu_Edit"
-                                                                  Header="{Binding Profiles_Edit, Source={x:Static strings:Strings.Instance}}"
-                                                                  Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                                        <MenuItem Tag="SaveAs" Click="ProfileMenu_Click" AutomationProperties.AutomationId="Profiles_Menu_SaveAs"
-                                                                  Header="{Binding Profiles_SaveAs, Source={x:Static strings:Strings.Instance}}"
-                                                                  Visibility="{Binding ShowsSaveAs, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                                        <MenuItem Tag="SaveHere" Click="ProfileMenu_Click" AutomationProperties.AutomationId="Profiles_Menu_SaveHere"
-                                                                  Header="{Binding Profiles_SaveHere, Source={x:Static strings:Strings.Instance}}"
-                                                                  Visibility="{Binding ShowsSaveHere, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                                        <MenuItem Tag="Export" Click="ProfileMenu_Click" AutomationProperties.AutomationId="Profiles_Menu_Export"
-                                                                  Header="{Binding Profiles_Export, Source={x:Static strings:Strings.Instance}}"/>
-                                                        <Separator Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                                        <MenuItem Tag="Delete" Click="ProfileMenu_Click" AutomationProperties.AutomationId="Profiles_Menu_Delete"
-                                                                  Header="{Binding Common_Delete, Source={x:Static strings:Strings.Instance}}"
-                                                                  Foreground="{DynamicResource DangerInkBrush}"
-                                                                  Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                                    </ContextMenu>
-                                                </ui:Button.ContextMenu>
-                                            </ui:Button>
-                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
-                                                        Visibility="{Binding IsActive, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <Path FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}" Width="16" Height="16"
-                                                      Stretch="Uniform" Fill="{DynamicResource EmberBrush}" VerticalAlignment="Center"/>
-                                                <TextBlock Text="{Binding Profiles_Active, Source={x:Static strings:Strings.Instance}}" Margin="8,0,0,0"
-                                                           FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource EmberHotBrush}"
-                                                           VerticalAlignment="Center"/>
-                                            </StackPanel>
-                                            <ui:Button TabIndex="0" Padding="14,0" MinHeight="32" VerticalAlignment="Center"
-                                                       Content="{Binding Profiles_Load, Source={x:Static strings:Strings.Instance}}"
-                                                       Command="{Binding DataContext.LoadProfileCommand, ElementName=ProfileListBox}"
-                                                       CommandParameter="{Binding}" AutomationProperties.AutomationId="Profiles_Load"
-                                                       Visibility="{Binding ShowsLoad, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                        </DockPanel>
-                                    </Grid>
+                                            <!-- The foot: Active with the flame on the
+                                                 active card, Load on the others. -->
+                                            <Grid Grid.Row="4" Margin="0,14,0,0" MinHeight="32">
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                                            Visibility="{Binding IsActive, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <Path FlowDirection="LeftToRight" Data="{StaticResource FlameOuterGeometry}" Width="16" Height="16"
+                                                          Stretch="Uniform" Fill="{DynamicResource EmberBrush}" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding Profiles_Active, Source={x:Static strings:Strings.Instance}}" Margin="8,0,0,0"
+                                                               FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource EmberHotBrush}"
+                                                               VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                                <ui:Button TabIndex="0" Padding="14,0" MinHeight="32" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                                           Content="{Binding Profiles_Load, Source={x:Static strings:Strings.Instance}}"
+                                                           Command="{Binding DataContext.LoadProfileCommand, ElementName=ProfileListBox}"
+                                                           CommandParameter="{Binding}" AutomationProperties.AutomationId="Profiles_Load"
+                                                           Visibility="{Binding ShowsLoad, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            </Grid>
+                                        </Grid>
+                                    </DockPanel>
                                 </Grid>
                             </Border>
                         </DataTemplate>
@@ -456,15 +652,20 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <!-- ═══ Automatic Switching ═══
-                 One line: the title, and under it what is in front now, then
-                 the setting with its switch and its reset at the card's end.
-                 The card has the one setting, so its reset is the row's. -->
-            <Border x:Name="AutoSwitchCard" Style="{StaticResource CardBorder}" Padding="20,16,14,16" Margin="0,24,0,0">
-                <controls:FlexLinePanel Gap="14" LineGap="10">
-                    <StackPanel controls:FlexLinePanel.Basis="320" controls:FlexLinePanel.Grow="1" VerticalAlignment="Center">
+            <!-- ═══ Automatic Switching, Shortcuts, External Control ═══
+                 The three ways a profile loads by itself, a card each, side
+                 by side while the page has room for three and under one
+                 another as it narrows. The cards of a line are as tall as
+                 the tallest of them. -->
+            <controls:TileGridPanel x:Name="WaysRow" Margin="0,28,0,0" MinItemWidth="300" Gap="16" FillRows="True">
+                <!-- Automatic Switching: the title, under it what is in front
+                     now, then the setting with its switch and its reset at
+                     the line's end. The card has the one setting, so its
+                     reset is the row's. -->
+                <Border x:Name="AutoSwitchCard" Style="{StaticResource CardBorder}" Padding="20,16,12,16" Margin="0">
+                    <StackPanel>
                         <TextBlock Text="{Binding Profiles_AutoSwitchTitle, Source={x:Static strings:Strings.Instance}}"
-                                   Style="{StaticResource CardTitle}" FontSize="15" HorizontalAlignment="Left"
+                                   Style="{StaticResource CardTitle}" HorizontalAlignment="Left"
                                    AutomationProperties.HeadingLevel="Level2"/>
                         <!-- What is in front now: a cold dot, lit, then the
                              program's file in the code face and whether a
@@ -484,230 +685,252 @@
                                        LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" AutomationProperties.AutomationId="Profiles_InFront"><Run Text="{Binding ForegroundLead, Mode=OneWay}"/><Run Text="{Binding ForegroundExeName, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"/><Run Text="{Binding ForegroundTail, Mode=OneWay}"/></TextBlock>
                         </Grid>
+                        <Grid Margin="0,12,0,0" MinHeight="36">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Profiles_AutoSwitch, Source={x:Static strings:Strings.Instance}}"
+                                       FontSize="14" Margin="0,0,10,0" VerticalAlignment="Center" TextWrapping="Wrap"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            <CheckBox Grid.Column="1" Style="{StaticResource SwitchCheckBox}" IsChecked="{Binding EnableAutoProfileSwitching}" VerticalAlignment="Center"
+                                      Content="{Binding Profiles_AutoSwitch, Source={x:Static strings:Strings.Instance}}"
+                                      AutomationProperties.AutomationId="Profiles_AutoSwitch"/>
+                            <controls:SettingResetButton Grid.Column="2" Margin="10,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="EnableAutoProfileSwitching"
+                                                         SettingLabel="{Binding Profiles_AutoSwitch, Source={x:Static strings:Strings.Instance}}"
+                                                         AutomationProperties.AutomationId="Reset_SettingsViewModel_EnableAutoProfileSwitching_75"/>
+                        </Grid>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="{Binding Profiles_AutoSwitch, Source={x:Static strings:Strings.Instance}}"
-                                   FontSize="14" Margin="0,0,14,0" VerticalAlignment="Center"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-                        <CheckBox Style="{StaticResource SwitchCheckBox}" IsChecked="{Binding EnableAutoProfileSwitching}" VerticalAlignment="Center"
-                                  Content="{Binding Profiles_AutoSwitch, Source={x:Static strings:Strings.Instance}}"
-                                  AutomationProperties.AutomationId="Profiles_AutoSwitch"/>
-                        <controls:SettingResetButton Margin="14,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="EnableAutoProfileSwitching"
-                                                     SettingLabel="{Binding Profiles_AutoSwitch, Source={x:Static strings:Strings.Instance}}"
-                                                     AutomationProperties.AutomationId="Reset_SettingsViewModel_EnableAutoProfileSwitching_75"/>
-                    </StackPanel>
-                </controls:FlexLinePanel>
-            </Border>
+                </Border>
 
-            <!-- ═══ Shortcuts ═══ -->
-            <Border x:Name="ShortcutsCard" Style="{StaticResource CardBorder}" Padding="20,16,14,14" Margin="0,12,0,0">
-                <StackPanel>
-                    <DockPanel LastChildFill="False">
-                        <TextBlock Text="{Binding Profiles_Shortcuts, Source={x:Static strings:Strings.Instance}}"
-                                   Style="{StaticResource CardTitle}" FontSize="15" AutomationProperties.HeadingLevel="Level2"
-                                   ToolTip="{Binding Profiles_ShortcutsDescription, Source={x:Static strings:Strings.Instance}}"/>
-                        <ui:Button Style="{StaticResource ResetAllButton}" Command="{Binding ResetShortcutsCommand}"
-                                   Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}"
-                                   AutomationProperties.AutomationId="Profiles_ResetShortcuts">
-                            <ui:Button.ToolTip>
-                                <MultiBinding Converter="{StaticResource FormatTextConverter}">
-                                    <Binding Path="Profiles_Shortcuts" Source="{x:Static strings:Strings.Instance}"/>
-                                    <Binding Path="Pad_ResetSection_Format" Source="{x:Static strings:Strings.Instance}"/>
-                                </MultiBinding>
-                            </ui:Button.ToolTip>
+                <!-- Shortcuts -->
+                <Border x:Name="ShortcutsCard" Style="{StaticResource CardBorder}" Padding="20,16,12,16" Margin="0">
+                    <StackPanel>
+                        <DockPanel LastChildFill="False">
+                            <TextBlock Text="{Binding Profiles_Shortcuts, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource CardTitle}" AutomationProperties.HeadingLevel="Level2"
+                                       ToolTip="{Binding Profiles_ShortcutsDescription, Source={x:Static strings:Strings.Instance}}"/>
+                            <ui:Button Style="{StaticResource ResetAllButton}" Command="{Binding ResetShortcutsCommand}"
+                                       Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}"
+                                       AutomationProperties.AutomationId="Profiles_ResetShortcuts">
+                                <ui:Button.ToolTip>
+                                    <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                        <Binding Path="Profiles_Shortcuts" Source="{x:Static strings:Strings.Instance}"/>
+                                        <Binding Path="Pad_ResetSection_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                    </MultiBinding>
+                                </ui:Button.ToolTip>
+                            </ui:Button>
+                        </DockPanel>
+
+                        <!-- The rows stand 4 under the title's line and draw
+                             Add Shortcut 5 up, which with a row's 5 over and
+                             under its controls of 34 gives the board's 10 over
+                             a row and 8 under the last. -->
+                        <ItemsControl ItemsSource="{Binding ProfileShortcuts}" Margin="0,4,0,-5">
+                            <!-- Out of the screen-reader tree while empty, as the Devices page's
+                                 slot badges are: an empty list draws nothing and has no size,
+                                 so collapsing it changes nothing on screen. -->
+                            <ItemsControl.Style>
+                                <Style TargetType="ItemsControl" BasedOn="{StaticResource {x:Type ItemsControl}}">
+                                    <Setter Property="Focusable" Value="False"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="HasItems" Value="False">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ItemsControl.Style>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <!-- A shortcut reads as a sentence: [action] when
+                                         [buttons] on [device]. The buttons are a key
+                                         each, with Record and Clear after them, as
+                                         every input of the program has. Each picker's
+                                         reset stands right after it, and Delete at the
+                                         row's end. The parts wrap on a narrow window,
+                                         every part as tall as its line. Its lines
+                                         are 40 apart and it keeps 2 over and under
+                                         itself, so the lines of one shortcut stand
+                                         closer (6 between their controls) than two
+                                         shortcuts do (10), and a wrapped list still
+                                         reads one shortcut at a time. -->
+                                    <controls:FlexLinePanel x:Name="ShortcutLine" Margin="0,2" Gap="14" LineGap="0" MinLineHeight="40" EndsApart="True">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <ComboBox ItemsSource="{Binding SwitchModes}" SelectedValue="{Binding SwitchMode}" SelectedValuePath="Mode"
+                                                      MinHeight="34" MinWidth="200" MaxWidth="280" VerticalAlignment="Center"
+                                                      AutomationProperties.AutomationId="Shortcut_Mode"
+                                                      AutomationProperties.Name="{Binding Macro_RepeatMode, Source={x:Static strings:Strings.Instance}}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding DisplayName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding DisplayName}"/>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                            <controls:SettingResetButton Margin="4,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="SwitchMode"
+                                                                         SettingLabel="{Binding Macro_RepeatMode, Source={x:Static strings:Strings.Instance}}"
+                                                                         AutomationProperties.AutomationId="Reset_ProfileShortcutViewModel_SwitchMode_808"/>
+                                        </StackPanel>
+                                        <!-- The profile, for Specific Profile only. -->
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                                                    Visibility="{Binding IsSpecificMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <ComboBox ItemsSource="{Binding ProfileChoices}" SelectedValue="{Binding TargetProfileId}" SelectedValuePath="ProfileId"
+                                                      DisplayMemberPath="DisplayName" DropDownOpened="ProfileChoices_DropDownOpened"
+                                                      MinHeight="34" MinWidth="160" MaxWidth="240" VerticalAlignment="Center"
+                                                      AutomationProperties.AutomationId="Shortcut_Profile"
+                                                      AutomationProperties.Name="{Binding ResetLabel_Profile, Source={x:Static strings:Strings.Instance}}"/>
+                                            <controls:SettingResetButton Margin="4,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="TargetProfileId"
+                                                                         SettingLabel="{Binding ResetLabel_Profile, Source={x:Static strings:Strings.Instance}}"
+                                                                         AutomationProperties.AutomationId="Reset_ProfileShortcutViewModel_TargetProfileId_826"/>
+                                        </StackPanel>
+                                        <!-- when, the recorded buttons as keys with a
+                                             plus between two, then Record and Clear. A
+                                             long combination wraps inside its own
+                                             width. What stands after the keys says
+                                             None while there are none, and counts the
+                                             seconds down while it records. -->
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Style="{StaticResource ShortcutWord}" Text="{Binding Profiles_Shortcut_When, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ItemsControl ItemsSource="{Binding ComboParts}" MaxWidth="420" Focusable="False" VerticalAlignment="Center"
+                                                          ToolTip="{Binding ButtonComboDisplay}" AutomationProperties.AutomationId="Shortcut_Combo"
+                                                          AutomationProperties.Name="{Binding ButtonComboDisplay, TargetNullValue='', FallbackValue=''}">
+                                                <!-- A wrap panel is as wide as its widest line, so
+                                                     Record stands right after the keys. A flex
+                                                     line would take all 420. -->
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel x:Name="Key" Orientation="Horizontal" Margin="6,2,0,2">
+                                                            <TextBlock x:Name="Plus" Text="+" Style="{StaticResource ShortcutWord}" Margin="0,0,6,0"/>
+                                                            <Border Style="{StaticResource ShortcutKey}">
+                                                                <TextBlock VerticalAlignment="Center"><Run Text="{Binding Name, Mode=OneWay}"/><Run Text="{Binding DeviceTail, Mode=OneWay}" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/></TextBlock>
+                                                            </Border>
+                                                        </StackPanel>
+                                                        <DataTemplate.Triggers>
+                                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                                                <Setter TargetName="Plus" Property="Visibility" Value="Collapsed"/>
+                                                                <Setter TargetName="Key" Property="Margin" Value="0,2,0,2"/>
+                                                            </DataTrigger>
+                                                        </DataTemplate.Triggers>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <TextBlock x:Name="ComboNote" Text="{Binding ComboNote}" FontSize="13" VerticalAlignment="Center"
+                                                       Visibility="{Binding ComboNote, Converter={StaticResource StringToVisibility}}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                        <Setter Property="Margin" Value="0"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsRecording}" Value="True">
+                                                                <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding HasCombo}" Value="True">
+                                                                <Setter Property="Margin" Value="8,0,0,0"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <ui:Button Style="{StaticResource RecordButton}" MinHeight="32" Content="{Binding LearnButtonIcon}"
+                                                       Click="ShortcutLearn_Click" AutomationProperties.AutomationId="Shortcut_Record"
+                                                       AutomationProperties.Name="{Binding LearnButtonText, TargetNullValue='', FallbackValue=''}"/>
+                                            <ui:Button Style="{StaticResource CardIconButton}" Margin="6,0,0,0"
+                                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}" Command="{Binding ClearCommand}"
+                                                       AutomationProperties.AutomationId="Shortcut_Clear"
+                                                       AutomationProperties.Name="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"
+                                                       ToolTip="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}">
+                                                <controls:DecorativeStrokeIcon Data="{StaticResource CloseLineGeometry}" Size="16" StrokeWidth="1.8"/>
+                                            </ui:Button>
+                                        </StackPanel>
+                                        <!-- on, the device. -->
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Style="{StaticResource ShortcutWord}" Text="{Binding Profiles_Shortcut_On, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBox ItemsSource="{Binding DeviceChoices}" SelectedValue="{Binding TriggerDeviceGuid}" SelectedValuePath="DeviceGuid"
+                                                      DisplayMemberPath="DisplayName" DropDownOpened="DeviceChoices_DropDownOpened"
+                                                      MinHeight="34" MinWidth="200" MaxWidth="280" VerticalAlignment="Center"
+                                                      AutomationProperties.AutomationId="Shortcut_Device"
+                                                      AutomationProperties.Name="{Binding Pad_ScopeDevice, Source={x:Static strings:Strings.Instance}}"/>
+                                            <controls:SettingResetButton Margin="4,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="TriggerDeviceGuid"
+                                                                         SettingLabel="{Binding Pad_ScopeDevice, Source={x:Static strings:Strings.Instance}}"
+                                                                         AutomationProperties.AutomationId="Reset_ProfileShortcutViewModel_TriggerDeviceGuid_835"/>
+                                        </StackPanel>
+                                        <ui:Button controls:FlexLinePanel.AtEnd="True" Style="{StaticResource QuietTextButton}" MinHeight="32" Padding="10,0"
+                                                   VerticalAlignment="Center" Content="{Binding Common_Delete, Source={x:Static strings:Strings.Instance}}"
+                                                   Command="{Binding DeleteCommand}" AutomationProperties.AutomationId="Shortcut_Delete"/>
+                                    </controls:FlexLinePanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Add Shortcut, 8 in from the rows' start as the board
+                             draws it. -->
+                        <ui:Button Style="{StaticResource QuietTextButton}" Margin="0,8,0,0" Padding="8,0" HorizontalAlignment="Left"
+                                   Click="AddShortcut_Click" AutomationProperties.AutomationId="Profiles_AddShortcut"
+                                   AutomationProperties.Name="{Binding Profiles_AddShortcut, Source={x:Static strings:Strings.Instance}}">
+                            <StackPanel Orientation="Horizontal">
+                                <Path FlowDirection="LeftToRight" Data="M 7,3 L 7,11 M 3,7 L 11,7" Width="14" Height="14" Margin="0,0,8,0"
+                                      Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
+                                      StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding Profiles_AddShortcut, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                            </StackPanel>
                         </ui:Button>
-                    </DockPanel>
+                    </StackPanel>
+                </Border>
 
-                    <!-- The rows stand 4 under the title's line and draw
-                         Add Shortcut 5 up, which with a row's 5 over and
-                         under its controls of 34 gives the board's 10 over
-                         a row and 8 under the last. -->
-                    <ItemsControl ItemsSource="{Binding ProfileShortcuts}" Margin="0,4,0,-5">
-                        <!-- Out of the screen-reader tree while empty, as the Devices page's
-                             slot badges are: an empty list draws nothing and has no size,
-                             so collapsing it changes nothing on screen. -->
-                        <ItemsControl.Style>
-                            <Style TargetType="ItemsControl" BasedOn="{StaticResource {x:Type ItemsControl}}">
-                                <Setter Property="Focusable" Value="False"/>
-                                <Style.Triggers>
-                                    <Trigger Property="HasItems" Value="False">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ItemsControl.Style>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <!-- A shortcut reads as a sentence: [action] when
-                                     [buttons] on [device]. The buttons are a key
-                                     each, with Record and Clear after them, as
-                                     every input of the program has. Each picker's
-                                     reset stands right after it, and Delete at the
-                                     row's end. The parts wrap on a narrow window,
-                                     every part as tall as its line. Its lines
-                                     are 40 apart and it keeps 2 over and under
-                                     itself, so the lines of one shortcut stand
-                                     closer (6 between their controls) than two
-                                     shortcuts do (10), and a wrapped list still
-                                     reads one shortcut at a time. -->
-                                <controls:FlexLinePanel x:Name="ShortcutLine" Margin="0,2" Gap="14" LineGap="0" MinLineHeight="40" EndsApart="True">
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <ComboBox ItemsSource="{Binding SwitchModes}" SelectedValue="{Binding SwitchMode}" SelectedValuePath="Mode"
-                                                  MinHeight="34" MinWidth="200" MaxWidth="280" VerticalAlignment="Center"
-                                                  AutomationProperties.AutomationId="Shortcut_Mode"
-                                                  AutomationProperties.Name="{Binding Macro_RepeatMode, Source={x:Static strings:Strings.Instance}}">
-                                            <ComboBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding DisplayName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding DisplayName}"/>
-                                                </DataTemplate>
-                                            </ComboBox.ItemTemplate>
-                                        </ComboBox>
-                                        <controls:SettingResetButton Margin="4,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="SwitchMode"
-                                                                     SettingLabel="{Binding Macro_RepeatMode, Source={x:Static strings:Strings.Instance}}"
-                                                                     AutomationProperties.AutomationId="Reset_ProfileShortcutViewModel_SwitchMode_808"/>
-                                    </StackPanel>
-                                    <!-- The profile, for Specific Profile only. -->
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
-                                                Visibility="{Binding IsSpecificMode, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <ComboBox ItemsSource="{Binding ProfileChoices}" SelectedValue="{Binding TargetProfileId}" SelectedValuePath="ProfileId"
-                                                  DisplayMemberPath="DisplayName" DropDownOpened="ProfileChoices_DropDownOpened"
-                                                  MinHeight="34" MinWidth="160" MaxWidth="240" VerticalAlignment="Center"
-                                                  AutomationProperties.AutomationId="Shortcut_Profile"
-                                                  AutomationProperties.Name="{Binding ResetLabel_Profile, Source={x:Static strings:Strings.Instance}}"/>
-                                        <controls:SettingResetButton Margin="4,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="TargetProfileId"
-                                                                     SettingLabel="{Binding ResetLabel_Profile, Source={x:Static strings:Strings.Instance}}"
-                                                                     AutomationProperties.AutomationId="Reset_ProfileShortcutViewModel_TargetProfileId_826"/>
-                                    </StackPanel>
-                                    <!-- when, the recorded buttons as keys with a
-                                         plus between two, then Record and Clear. A
-                                         long combination wraps inside its own
-                                         width. What stands after the keys says
-                                         None while there are none, and counts the
-                                         seconds down while it records. -->
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock Style="{StaticResource ShortcutWord}" Text="{Binding Profiles_Shortcut_When, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ItemsControl ItemsSource="{Binding ComboParts}" MaxWidth="420" Focusable="False" VerticalAlignment="Center"
-                                                      ToolTip="{Binding ButtonComboDisplay}" AutomationProperties.AutomationId="Shortcut_Combo"
-                                                      AutomationProperties.Name="{Binding ButtonComboDisplay, TargetNullValue='', FallbackValue=''}">
-                                            <!-- A wrap panel is as wide as its widest line, so
-                                                 Record stands right after the keys. A flex
-                                                 line would take all 420. -->
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <WrapPanel/>
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel x:Name="Key" Orientation="Horizontal" Margin="6,2,0,2">
-                                                        <TextBlock x:Name="Plus" Text="+" Style="{StaticResource ShortcutWord}" Margin="0,0,6,0"/>
-                                                        <Border Style="{StaticResource ShortcutKey}">
-                                                            <TextBlock VerticalAlignment="Center"><Run Text="{Binding Name, Mode=OneWay}"/><Run Text="{Binding DeviceTail, Mode=OneWay}" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/></TextBlock>
-                                                        </Border>
-                                                    </StackPanel>
-                                                    <DataTemplate.Triggers>
-                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
-                                                            <Setter TargetName="Plus" Property="Visibility" Value="Collapsed"/>
-                                                            <Setter TargetName="Key" Property="Margin" Value="0,2,0,2"/>
-                                                        </DataTrigger>
-                                                    </DataTemplate.Triggers>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                        <TextBlock x:Name="ComboNote" Text="{Binding ComboNote}" FontSize="13" VerticalAlignment="Center"
-                                                   Visibility="{Binding ComboNote, Converter={StaticResource StringToVisibility}}">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                                    <Setter Property="Margin" Value="0"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsRecording}" Value="True">
-                                                            <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding HasCombo}" Value="True">
-                                                            <Setter Property="Margin" Value="8,0,0,0"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                        <ui:Button Style="{StaticResource RecordButton}" MinHeight="32" Content="{Binding LearnButtonIcon}"
-                                                   Click="ShortcutLearn_Click" AutomationProperties.AutomationId="Shortcut_Record"
-                                                   AutomationProperties.Name="{Binding LearnButtonText, TargetNullValue='', FallbackValue=''}"/>
-                                        <ui:Button Style="{StaticResource CardIconButton}" Margin="6,0,0,0"
-                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}" Command="{Binding ClearCommand}"
-                                                   AutomationProperties.AutomationId="Shortcut_Clear"
-                                                   AutomationProperties.Name="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"
-                                                   ToolTip="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}">
-                                            <controls:DecorativeStrokeIcon Data="{StaticResource CloseLineGeometry}" Size="16" StrokeWidth="1.8"/>
-                                        </ui:Button>
-                                    </StackPanel>
-                                    <!-- on, the device. -->
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock Style="{StaticResource ShortcutWord}" Text="{Binding Profiles_Shortcut_On, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBox ItemsSource="{Binding DeviceChoices}" SelectedValue="{Binding TriggerDeviceGuid}" SelectedValuePath="DeviceGuid"
-                                                  DisplayMemberPath="DisplayName" DropDownOpened="DeviceChoices_DropDownOpened"
-                                                  MinHeight="34" MinWidth="200" MaxWidth="280" VerticalAlignment="Center"
-                                                  AutomationProperties.AutomationId="Shortcut_Device"
-                                                  AutomationProperties.Name="{Binding Pad_ScopeDevice, Source={x:Static strings:Strings.Instance}}"/>
-                                        <controls:SettingResetButton Margin="4,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="TriggerDeviceGuid"
-                                                                     SettingLabel="{Binding Pad_ScopeDevice, Source={x:Static strings:Strings.Instance}}"
-                                                                     AutomationProperties.AutomationId="Reset_ProfileShortcutViewModel_TriggerDeviceGuid_835"/>
-                                    </StackPanel>
-                                    <ui:Button controls:FlexLinePanel.AtEnd="True" Style="{StaticResource QuietTextButton}" MinHeight="32" Padding="10,0"
-                                               VerticalAlignment="Center" Content="{Binding Common_Delete, Source={x:Static strings:Strings.Instance}}"
-                                               Command="{Binding DeleteCommand}" AutomationProperties.AutomationId="Shortcut_Delete"/>
-                                </controls:FlexLinePanel>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-
-                    <!-- Add Shortcut, 8 in from the rows' start as the board
-                         draws it. -->
-                    <ui:Button Style="{StaticResource QuietTextButton}" Margin="0,8,0,0" Padding="8,0" HorizontalAlignment="Left"
-                               Click="AddShortcut_Click" AutomationProperties.AutomationId="Profiles_AddShortcut"
-                               AutomationProperties.Name="{Binding Profiles_AddShortcut, Source={x:Static strings:Strings.Instance}}">
-                        <StackPanel Orientation="Horizontal">
-                            <Path FlowDirection="LeftToRight" Data="M 7,3 L 7,11 M 3,7 L 11,7" Width="14" Height="14" Margin="0,0,8,0"
-                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
-                                  StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding Profiles_AddShortcut, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </ui:Button>
-                </StackPanel>
-            </Border>
-
-            <!-- ═══ External Control ═══
-                 The third way a profile can activate, beside the shortcut
-                 combo and the program in front (#366). A launcher or script
-                 activates profiles through a named pipe. Rarely used, so it
-                 folds to one line with its value beside its title. It holds
-                 one setting, whose row has the reset, so its head has no
-                 Reset All: the board draws none. -->
-            <controls:FoldList Margin="0,12,0,0" Gap="0">
-                <controls:FoldCard x:Name="ExternalControlFold" StateKey="Profiles.ExternalControl" HeaderMinHeight="52"
-                                   Header="{Binding Profiles_ExternalControlTitle, Source={x:Static strings:Strings.Instance}}"
-                                   Hint="{Binding Profiles_ExternalControl, Source={x:Static strings:Strings.Instance}}"
-                                   Description="{Binding Profiles_ExternalControlTooltip, Source={x:Static strings:Strings.Instance}}">
-                    <controls:FoldCard.Summary>
-                        <MultiBinding Converter="{StaticResource OnOffTextConverter}">
-                            <Binding Path="EnableExternalControl"/>
-                            <Binding Path="Common_On" Source="{x:Static strings:Strings.Instance}"/>
-                            <Binding Path="Common_Off" Source="{x:Static strings:Strings.Instance}"/>
-                        </MultiBinding>
-                    </controls:FoldCard.Summary>
-                    <controls:SettingRow MinHeight="44">
-                        <TextBlock Style="{StaticResource DzLabel}" Text="{Binding Profiles_ExternalControl, Source={x:Static strings:Strings.Instance}}"/>
-                        <CheckBox Style="{StaticResource SwitchCheckBox}" IsChecked="{Binding EnableExternalControl}" VerticalAlignment="Center"
-                                  Content="{Binding Profiles_ExternalControl, Source={x:Static strings:Strings.Instance}}"
-                                  ToolTip="{Binding Profiles_ExternalControlTooltip, Source={x:Static strings:Strings.Instance}}"
-                                  AutomationProperties.AutomationId="Profiles_ExternalControl"/>
-                        <controls:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableExternalControl"
-                                                     SettingLabel="{Binding Profiles_ExternalControl, Source={x:Static strings:Strings.Instance}}"
-                                                     AutomationProperties.AutomationId="Reset_SettingsViewModel_EnableExternalControl_133"/>
-                    </controls:SettingRow>
-                </controls:FoldCard>
-            </controls:FoldList>
+                <!-- External Control: the third way a profile can activate,
+                     beside the shortcut combo and the program in front
+                     (#366). A launcher or script activates profiles through
+                     a named pipe. Rarely used, so under the card's title it
+                     folds to one row, what it allows in words and its value
+                     at the row's end. It holds one setting, whose row has
+                     the reset, so the card has no Reset All: the board draws
+                     none. -->
+                <Border x:Name="ExternalControlCard" Style="{StaticResource CardBorder}" Padding="20,16,12,16" Margin="0">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Profiles_ExternalControlTitle, Source={x:Static strings:Strings.Instance}}"
+                                   Style="{StaticResource CardTitle}" HorizontalAlignment="Left"
+                                   AutomationProperties.HeadingLevel="Level2"/>
+                        <controls:FoldCard x:Name="ExternalControlFold" Style="{StaticResource CardFoldRow}" Margin="0,12,0,0"
+                                           StateKey="Profiles.ExternalControl"
+                                           Header="{Binding Profiles_ExternalControlTitle, Source={x:Static strings:Strings.Instance}}"
+                                           Hint="{Binding Profiles_ExternalControl, Source={x:Static strings:Strings.Instance}}"
+                                           Description="{Binding Profiles_ExternalControlTooltip, Source={x:Static strings:Strings.Instance}}">
+                            <controls:FoldCard.Summary>
+                                <MultiBinding Converter="{StaticResource OnOffTextConverter}">
+                                    <Binding Path="EnableExternalControl"/>
+                                    <Binding Path="Common_On" Source="{x:Static strings:Strings.Instance}"/>
+                                    <Binding Path="Common_Off" Source="{x:Static strings:Strings.Instance}"/>
+                                </MultiBinding>
+                            </controls:FoldCard.Summary>
+                            <!-- The setting, laid out as the row is: its
+                                 name where the row's words were, then its
+                                 switch and its reset. -->
+                            <Grid MinHeight="36">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Profiles_ExternalControl, Source={x:Static strings:Strings.Instance}}"
+                                           FontSize="14" Margin="0,0,10,0" VerticalAlignment="Center" TextWrapping="Wrap"
+                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                <CheckBox Grid.Column="1" Style="{StaticResource SwitchCheckBox}" IsChecked="{Binding EnableExternalControl}" VerticalAlignment="Center"
+                                          Content="{Binding Profiles_ExternalControl, Source={x:Static strings:Strings.Instance}}"
+                                          ToolTip="{Binding Profiles_ExternalControlTooltip, Source={x:Static strings:Strings.Instance}}"
+                                          AutomationProperties.AutomationId="Profiles_ExternalControl"/>
+                                <controls:SettingResetButton Grid.Column="2" Margin="10,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="EnableExternalControl"
+                                                             SettingLabel="{Binding Profiles_ExternalControl, Source={x:Static strings:Strings.Instance}}"
+                                                             AutomationProperties.AutomationId="Reset_SettingsViewModel_EnableExternalControl_133"/>
+                            </Grid>
+                        </controls:FoldCard>
+                    </StackPanel>
+                </Border>
+            </controls:TileGridPanel>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

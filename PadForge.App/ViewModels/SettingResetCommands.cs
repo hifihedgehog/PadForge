@@ -741,9 +741,9 @@ namespace PadForge.ViewModels
 
         internal static bool CanResetSetting(string name) => name is
             nameof(Kind) or
-            nameof(Invert) or
-            nameof(HalfAxis) or
-            nameof(Bidirectional) or
+            nameof(LineInvert) or
+            nameof(LineHalf) or
+            nameof(LineBidirectional) or
             nameof(InvertOutput) or
             nameof(ParamRate) or
             nameof(ParamSticky) or
@@ -767,17 +767,17 @@ namespace PadForge.ViewModels
                     Kind = "Direct";
                     break;
                 }
-                case nameof(Invert):
+                case nameof(LineInvert):
                 {
                     Invert = false;
                     break;
                 }
-                case nameof(HalfAxis):
+                case nameof(LineHalf):
                 {
                     HalfAxis = false;
                     break;
                 }
-                case nameof(Bidirectional):
+                case nameof(LineBidirectional):
                 {
                     Bidirectional = false;
                     break;
@@ -863,9 +863,9 @@ namespace PadForge.ViewModels
         internal static bool CanResetSetting(string name) => name is
             nameof(CombineMode) or
             nameof(CombineExpression) or
-            nameof(IsInverted) or
-            nameof(IsHalfAxis) or
-            nameof(IsBidirectional) or
+            nameof(LineInvert) or
+            nameof(LineHalf) or
+            nameof(LineBidirectional) or
             nameof(InvertOutput) or
             nameof(NoInherit) or
             nameof(MotionResponse) or
@@ -918,17 +918,17 @@ namespace PadForge.ViewModels
                     CombineExpression = "";
                     break;
                 }
-                case nameof(IsInverted):
+                case nameof(LineInvert):
                 {
                     IsInverted = false;
                     break;
                 }
-                case nameof(IsHalfAxis):
+                case nameof(LineHalf):
                 {
                     IsHalfAxis = false;
                     break;
                 }
-                case nameof(IsBidirectional):
+                case nameof(LineBidirectional):
                 {
                     IsBidirectional = false;
                     break;

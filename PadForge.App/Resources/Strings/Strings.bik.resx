@@ -1201,9 +1201,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Mag-click nin sarong nota o sarong slider, dangan pindota an input na dapat magpalakaw kaiyan.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Dai kaiba sa "I-map an gabos" an mga output nin dutdot kan A asin B. Mag-click sa singsing sa palibot kan A o B tanganing i-map an saro.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Naghahalat sa {0}. Pindota an input sa saimong device.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, pinapalakaw kan</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Mas dakol na opsyon</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Mas dikit na opsyon</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Button sa atubangan</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Bumper</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Button kan sistema</value></data>
@@ -1273,7 +1270,6 @@
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Rebisyon</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Dagdag para sa {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Salidahan</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Ibagsak digdi an sarong profile file</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>kun</value></data>
@@ -1330,4 +1326,17 @@
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Mga andam nang profile para sa sarong bilog na genre. Pumili nin saro, magtao nin ano man na controller, asin magkawat.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} sa {1} an bukas</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Igwa nin mas bagong bersyon sa Steam Workshop an mga in-import na profile na ini. I-import giraray sinda hale sa Kumua nin mga profile tanganing makua an mga pagbabago.</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Hiling kan mga game</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>Dai konektado: {0}</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Ipahiling an sarong column para sa kada device na dai konektado</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Mag-click, dangan pindota an input sa device na ini na dapat magpalakaw sa {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>I-scroll pa-gilid an mga device</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Device</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Itaas</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Ibaba</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifier</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stick pang-ayos</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Output</value></data>
 </root>

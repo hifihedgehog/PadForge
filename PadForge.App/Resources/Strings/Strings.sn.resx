@@ -1384,7 +1384,6 @@
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Shanduro</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Zvimwe zve{0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Chengetedza gadziriro iripo pano</value></data>
   <data name="GetProfiles_Title" xml:space="preserve"><value>Wana mapurofaira</value></data>
   <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Kuchengetedza kunowedzera purofaira yakajairika yaunogona kugadzirisa.</value></data>
@@ -1435,4 +1434,16 @@
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} pa{1} zvakabatidzwa</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Mapurofaira aya akapinzwa ane shanduro itsva paSteam Workshop. Apinze zvakare kubva muWana mapurofaira kuti uwane shanduko.</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Mamapping</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Mitambo inoona</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>Midziyo isina kubatanidzwa: {0}</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Ratidza koramu yemudziyo wega wega usina kubatanidzwa</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Dzvanya, wobva wadzvanya chinopinza pamudziyo uyu chinofanira kudzora {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Fambisa midziyo kudivi</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Mudziyo</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Modhi</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Kumusoro</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Pasi</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Chishandura</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Sitiki yekugadzirisa</value></data>
 </root>

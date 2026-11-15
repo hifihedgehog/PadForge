@@ -632,6 +632,9 @@ namespace PadForge
                 if (e.PropertyName == nameof(SettingsViewModel.Use2DControllerView))
                     _inputService?.RefreshPictures();
             };
+            // A profile's card shows its controllers' pictures. Cards that
+            // have other controllers to show are given theirs.
+            _viewModel.Settings.ProfileControllersChanged += (_, _) => _inputService?.RefreshProfilePictures();
 
             // Persist DSU / head tracking / Remote Link / web controller /
             // overlay settings on change (Dashboard VM). This list must cover
@@ -692,7 +695,8 @@ namespace PadForge
                      or nameof(DashboardViewModel.EnableProfileOverlay)
                      or nameof(DashboardViewModel.HeadTrackingLastSources)
                      or nameof(DashboardViewModel.OverlaysLastShown)
-                     or nameof(DashboardViewModel.ScreenOverlaysLastOn))
+                     or nameof(DashboardViewModel.ScreenOverlaysLastOn)
+                     or nameof(DashboardViewModel.HomeCards))
                     _settingsService.MarkDirty();
             };
 
@@ -2191,6 +2195,68 @@ namespace PadForge
                     padVm.CurrentRecordingTarget = targetName;
             };
 
+            // A click on a cell of the mappings list records for the cell's
+            // row, listening to the cell's device alone. On a tag it records
+            // that input again. Beside the tags it records another input: the
+            // row's first when the row has none, else a new source that joins
+            // the row only once an input lands, so a recording that is
+            // canceled or runs out leaves nothing behind. A click on a cell
+            // of a row that is recording stops the recording.
+            PadPageView.ListCellRecordRequested += (s, cell) =>
+            {
+                var padVm = _viewModel.SelectedPad;
+                var row = cell.Row;
+                if (padVm == null || row == null) return;
+                _negChainCompletedMapping = null;
+                if (_recorderService.IsRecording && row.IsRowRecording)
+                {
+                    _recorderService.CancelRecording();
+                    padVm.CurrentRecordingTarget = null;
+                    _pendingNegMapping = null;
+                    _savedPosDescriptor = null;
+                    if (_kindRecordMapping != null)
+                    {
+                        _kindRecordMapping.IsRecording = false;
+                        _kindRecordMapping = null;
+                        _kindRecordStage = KindRecStage.None;
+                    }
+                    return;
+                }
+                _recorderService.ListenOnly = cell.Device;
+                try
+                {
+                    if (cell.Tag != null)
+                    {
+                        var holder = cell.Tag.Line?.ModeHolder;
+                        switch (cell.Tag.Key)
+                        {
+                            case MappingSourceItem.ParamRecordTarget.Up: holder?.RecordParamUpCommand.Execute(null); break;
+                            case MappingSourceItem.ParamRecordTarget.Down: holder?.RecordParamDownCommand.Execute(null); break;
+                            case MappingSourceItem.ParamRecordTarget.Modifier: holder?.RecordParamModifierCommand.Execute(null); break;
+                            default: cell.Tag.Line?.LineRecordCommand.Execute(null); break;
+                        }
+                    }
+                    else if (!row.HasAnySource)
+                    {
+                        row.ToggleRecordCommand.Execute(null);
+                    }
+                    else
+                    {
+                        // The same convention the row's own Record follows on
+                        // a Y axis, so the two agree on which way is up.
+                        bool isYAxis = row.HasNegDirection
+                            && (row.TargetSettingName.Contains("AxisY")
+                                || row.TargetLabel.EndsWith(" Y", StringComparison.Ordinal)
+                                || row.TargetSettingName == Engine.Data.MappingSetMigrator.MotionPitchTarget);
+                        var extra = new MappingSourceItem { Kind = "Direct", DeadZone = row.MappingDeadZone };
+                        _recorderService.StartRecordingExtraSource(row, extra, padVm.PadIndex, negRecording: isYAxis);
+                    }
+                }
+                finally { _recorderService.ListenOnly = Guid.Empty; }
+                if (_recorderService.IsRecording && string.IsNullOrEmpty(padVm.CurrentRecordingTarget))
+                    padVm.CurrentRecordingTarget = row.TargetSettingName;
+            };
+
             // Wire Map All events for each pad.
             foreach (var pad in _viewModel.Pads)
             {
@@ -2417,6 +2483,10 @@ namespace PadForge
             {
                 NavigateToSlot(slotIndex);
             };
+
+            // A controller's picture on the active profile's card opens
+            // that controller's page, as its Home card does.
+            ProfilesPageView.ControllerOpenRequested += (s, slotIndex) => NavigateToSlot(slotIndex);
 
             // Window events.
             Loaded += OnLoaded;
@@ -6677,6 +6747,8 @@ namespace PadForge
             // Notify InputService which pages are visible (for optimization).
             _inputService.IsDevicesPageVisible = tag == "Devices";
             _inputService.IsPadPageVisible = isPad;
+            _inputService.IsHomePageVisible = tag == "Home";
+            _inputService.IsProfilesPageVisible = tag == "Profiles";
         }
 
         /// <summary>Binds the controller page to a controller: navigation's
@@ -6733,7 +6805,7 @@ namespace PadForge
                 Executables = InputService.FormatExePaths(exePaths),
                 ExecutablePaths = exePaths,
             };
-            SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes);
+            SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes, profile.SlotProfileIds, profile.SlotModel3DAppearances);
             _viewModel.Settings.ProfileItems.Add(listItem);
             _settingsService.MarkDirty();
             _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileCreatedEmpty_Format, name);
@@ -6755,7 +6827,7 @@ namespace PadForge
                 Executables = InputService.FormatExePaths(exePaths),
                 ExecutablePaths = exePaths,
             };
-            SettingsService.UpdateTopologyCounts(listItem, snapshot.SlotCreated, snapshot.SlotControllerTypes);
+            SettingsService.UpdateTopologyCounts(listItem, snapshot.SlotCreated, snapshot.SlotControllerTypes, snapshot.SlotProfileIds, snapshot.SlotModel3DAppearances);
             _viewModel.Settings.ProfileItems.Add(listItem);
             _settingsService.MarkDirty();
             _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileCreated_Format, name);
@@ -6811,7 +6883,7 @@ namespace PadForge
             if (!confirmed) return;
             var stored = _inputService.SaveCurrentSetupInto(selected.Id);
             if (stored == null) return;
-            SettingsService.UpdateTopologyCounts(selected, stored.SlotCreated, stored.SlotControllerTypes);
+            SettingsService.UpdateTopologyCounts(selected, stored.SlotCreated, stored.SlotControllerTypes, stored.SlotProfileIds, stored.SlotModel3DAppearances);
             _settingsService.MarkDirty();
             _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileSetupSaved_Format, selected.Name);
         }
@@ -6961,7 +7033,7 @@ namespace PadForge
                 Executables = InputService.FormatExePaths(profile.ExecutableNames ?? string.Empty),
                 ExecutablePaths = profile.ExecutableNames ?? string.Empty,
             };
-            SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes);
+            SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes, profile.SlotProfileIds, profile.SlotModel3DAppearances);
             _viewModel.Settings.ProfileItems.Add(listItem);
             _settingsService.MarkDirty();
             return new Views.ProfileFileResult(
@@ -7107,7 +7179,7 @@ namespace PadForge
                 Executables = InputService.FormatExePaths(profile.ExecutableNames ?? string.Empty),
                 ExecutablePaths = profile.ExecutableNames ?? string.Empty,
             };
-            SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes);
+            SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes, profile.SlotProfileIds, profile.SlotModel3DAppearances);
             _viewModel.Settings.ProfileItems.Add(listItem);
             _settingsService.MarkDirty();
 
@@ -7405,8 +7477,35 @@ namespace PadForge
                 };
                 msi.StopRecordingRequested += (s, e) =>
                     _recorderService.CancelRecording();
+                // Record on an added source whose mode reads keys takes them
+                // in turn, Up and then Down, or the modifier: the sequence the
+                // first source's Record runs, here for this source. The
+                // completion handler advances it by the row and the source the
+                // key landed on, so it needs no word of which source began it.
+                msi.StartKeysRecordingRequested += (s, e) =>
+                {
+                    if (_kindRecordMapping != null && !ReferenceEquals(_kindRecordMapping, mapping))
+                        _kindRecordMapping.IsRecording = false;
+                    _kindRecordMapping = mapping;
+                    _kindRecordStage = msi.UsesUpDownKeys ? KindRecStage.Up : KindRecStage.None;
+                    _recorderService.StartRecordingExtraSourceParam(mapping, msi, capturedPad.PadIndex,
+                        msi.UsesUpDownKeys ? RecorderService.ParamTarget.Up : RecorderService.ParamTarget.Modifier);
+                    if (!_recorderService.IsRecording)
+                    {
+                        _kindRecordMapping = null;
+                        _kindRecordStage = KindRecStage.None;
+                    }
+                };
                 msi.StartParamRecordingRequested += (s, e) =>
                 {
+                    // One key alone ends a sequence that was waiting for its
+                    // next key, or its completion would run on to that key.
+                    if (_kindRecordMapping != null)
+                    {
+                        _kindRecordMapping.IsRecording = false;
+                        _kindRecordMapping = null;
+                        _kindRecordStage = KindRecStage.None;
+                    }
                     var t = e.Target switch
                     {
                         MappingSourceItem.ParamRecordTarget.Up       => RecorderService.ParamTarget.Up,

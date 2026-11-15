@@ -1773,9 +1773,6 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Pona note moko to curseur moko, sima finá entrée oyo ekotambwisa yango.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Bouton Map All etikaka ba sortie ya kosimba ya A na B pembeni. Pona anneau oyo ezingi A to B mpo na kotia assignation na yango.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Tozali kozela {0}. Finá entrée na appareil na yo.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, etambwisami na</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Ba option mosusu</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Ba option moke</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Bouton ya action</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Bouton ya lipeka</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Bouton ya système</value></data>
@@ -1847,7 +1844,6 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Révision</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Mingi mpo na {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Kozongisa bobongisi oyo ebombami na « {0} » na oyo ya sikoyo? Nkombo na yango mpe masano na yango ekotikala.</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Kozongisa</value></data>
   <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>Profil « {0} » ezali sikoyo na bobongisi ya sikoyo.</value></data>
@@ -1908,4 +1904,22 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} na {1} efungwami</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ba profil oyo ekotisami ezali na ba version ya sika na Steam Workshop. Kotisa yango lisusu uta na Kozwa ba profil mpo na kozwa ba mbongwana.</value></data>
   <data name="Pad_Stick_Speed" xml:space="preserve"><value>Mbangu</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Ba carte</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Mobimba</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Moke</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Auto</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Mobimba soki ba carte ekoki na fenêtre, moke soki ekoleka yango</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Masano emonaka</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} ekangisami te</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Lakisa colonne moko mpo na appareil nyonso oyo ekangisami te</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Kanda, na sima fina input ya appareil oyo esengeli kotambwisa {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Kotambwisa ba appareil na ngambo</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Appareil</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Likolo</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Nse</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modificateur</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stick ya bobongisi</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Sortie</value></data>
 </root>

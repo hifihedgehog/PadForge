@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Jis pasileidžia, kai prisijungia šis įrenginys.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Jis pasileidžia, kai prisijungia vienas iš šių įrenginių.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Neprijungta</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Kortelės</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Išsamios</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Kompaktiškos</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Automatiškai</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Išsamios, kol kortelės telpa lange, kompaktiškos, kai išeitų už jo ribų</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Siunčiama įvestis</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Akumuliatorius {0}, žemas</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Akumuliatorius {0}, kraunamas</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Spustelėkite natą arba slankiklį, tada paspauskite įvestį, kuri jį valdys.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>„Priskirti viską“ praleidžia A ir B prisilietimo išvestis. Spustelėkite žiedą aplink A arba B, kad priskirtumėte vieną iš jų.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Laukiama įvesties: {0}. Paspauskite įvestį savo įrenginyje.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, įvestis iš</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Daugiau parinkčių</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Mažiau parinkčių</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Priekinis mygtukas</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Peties mygtukas</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Sistemos mygtukas</value></data>
@@ -1399,6 +1402,18 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Nustatyti viską iš naujo</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Išvalyti viską</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Šaltinis</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Ką mato žaidimai</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} neprijungta</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Rodyti stulpelį kiekvienam neprijungtam įrenginiui</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Spustelėkite, tada paspauskite šio įrenginio įvestį, kuri turi valdyti: {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Slinkti įrenginius į šonus</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Įrenginys</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Režimas</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Aukštyn</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Žemyn</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifikatorius</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Koregavimo svirtelė</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Išvestis</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Reikšmė</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0} %</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Parinktys</value></data>
@@ -1427,7 +1442,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Maks.</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Viršutinė kaupiklio riba. 1 = visiškai teigiama.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Laipsniškas</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Pagrindinis režimas</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Kilimas</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Sekundės, per kurias pasiekiamas visas nuokrypis laikant atitinkamą klavišą. 0 = iš karto.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Atleidimas</value></data>
@@ -2458,7 +2472,6 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Nustatytas žaidimui: {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Aktyvus</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Daugiau parinkčių: {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Ištrinti {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Profilis ir jo automatinio perjungimo taisyklė pašalinami. Šio veiksmo negalima atšaukti.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Profilis pašalinamas. Šio veiksmo negalima atšaukti.</value></data>
@@ -4402,7 +4415,6 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Įvestis „Aukštyn“</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Įvestis „Žemyn“</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Modifikatoriaus įvestis</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Šaltinio tipas</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Tylaus garso spalva</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Vidutinio garso spalva</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Garsaus garso spalva</value></data>

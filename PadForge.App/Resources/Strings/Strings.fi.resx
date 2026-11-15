@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Se käynnistyy, kun tämä laite yhdistetään.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Se käynnistyy, kun jokin näistä laitteista yhdistetään.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Ei yhdistetty</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Kortit</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Tarkka</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Tiivis</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Automaattinen</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Tarkka, kun kortit mahtuvat ikkunaan, tiivis, kun ne ylittäisivät sen</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Lähettää syötettä nyt</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Akku {0}, vähissä</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Akku {0}, latautuu</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Napsauta nuottia tai liukusäädintä kuvassa ja paina sitten laitteesi painiketta tai liikuta akselia, jonka haluat määrittää sille.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Määritä kaikki -painike ohittaa A:n ja B:n kosketuslähdöt. Sido kosketuslähtö napsauttamalla A:n tai B:n ympärillä olevaa rengasta.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Kuunnellaan kohdetta {0}. Paina syötettä laitteellasi.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, ohjaava syöte</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Lisää asetuksia</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Vähemmän asetuksia</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Etupainike</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Olkapainike</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Järjestelmäpainike</value></data>
@@ -1588,6 +1591,18 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Palauta kaikki</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Tyhjennä kaikki</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Lähde</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Pelit näkevät</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} ei yhdistetty</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Näytä sarake jokaiselle laitteelle, jota ei ole yhdistetty</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Napsauta ja paina sitten tämän laitteen tuloa, jonka pitää ohjata kohdetta {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Vieritä laitteita sivusuunnassa</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Laite</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Tila</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Ylös</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Alas</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Muunnin</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Hienosäätötatti</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Ulostulo</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Arvo</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0} %</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Valinnat</value></data>
@@ -1616,7 +1631,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Maks</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Kertymän yläraja. 1 = täysi positiivinen.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Ramppi</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Ensisijainen tila</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Nousu</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Sekunnit täyteen poikkeamaan, kun vastaavaa näppäintä pidetään painettuna. 0 = välitön.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Vapautus</value></data>
@@ -2649,7 +2663,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Asetettu pelille {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Aktiivinen</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Lisää profiilille {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Poistetaanko {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Profiili ja sen automaattivaihdon sääntö poistetaan. Tätä ei voi perua.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Profiili poistetaan. Tätä ei voi perua.</value></data>
@@ -4636,7 +4649,6 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Ylös-syöte</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Alas-syöte</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Muokkaussyöte</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Lähteen tyyppi</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Matalan kaistan väri</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Keskikaistan väri</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Korkean kaistan väri</value></data>

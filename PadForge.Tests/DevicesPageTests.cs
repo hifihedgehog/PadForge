@@ -164,14 +164,18 @@ namespace PadForge.Tests
             => Assert.Equal(expected, DevicesViewModel.FilterOf(typeKey));
 
         /// <summary>The cases above are every key PopulateDeviceRow writes,
-        /// so a key added there needs its segment here.</summary>
+        /// so a key added there needs its segment here. The keys are one
+        /// table's, which a row on the Devices page and a column of the
+        /// Mappings list both read.</summary>
         [Fact]
         public void EveryTypeKeyThePopulatorWrites_HasACase()
         {
             string input = RepoText("PadForge.App", "Services", "InputService.cs");
-            int at = input.IndexOf("row.DeviceTypeKey = ud.CapType switch", StringComparison.Ordinal);
+            Assert.Contains("row.DeviceTypeKey = Common.DeviceTypeGlyph.KeyFor(ud.CapType);", input);
+            string table = RepoText("PadForge.App", "Common", "DeviceTypeGlyph.cs");
+            int at = table.IndexOf("internal static string KeyFor(int capType) => capType switch", StringComparison.Ordinal);
             Assert.True(at > 0);
-            string body = input.Substring(at, input.IndexOf("};", at, StringComparison.Ordinal) - at);
+            string body = table.Substring(at, table.IndexOf("};", at, StringComparison.Ordinal) - at);
             var keys = System.Text.RegularExpressions.Regex.Matches(body, "=> \"(\\w+)\"").Select(m => m.Groups[1].Value).ToList();
             Assert.True(keys.Count > 20, keys.Count + " keys");
             Assert.Equal(Segments.Keys.OrderBy(k => k, StringComparer.Ordinal), keys.OrderBy(k => k, StringComparer.Ordinal));

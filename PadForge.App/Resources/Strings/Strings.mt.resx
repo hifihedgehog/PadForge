@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Jibda meta dan l-apparat jitqabbad.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Jibda meta wieħed minn dawn l-apparati jitqabbad.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Mhux imqabbad</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Karti</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Dettaljat</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Kompatt</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Awtomatiku</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Dettaljat sakemm il-karti jidħlu fit-tieqa, kompatt malli jaqbżu minnha</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Qed jibgħat input issa</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Batterija {0}, baxxa</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Batterija {0}, qed tiċċarġja</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Ikklikkja nota jew slider, imbagħad agħfas l-input li għandu jmexxih.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“Immappja kollox” jaqbeż l-outputs tal-mess ta' A u B. Ikklikkja ċ-ċirku madwar A jew B biex tassenja wieħed minnhom.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Qed nisimgħu għal {0}. Agħfas l-input fuq l-apparat tiegħek.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, input minn</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Aktar għażliet</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Inqas għażliet</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Buttuna tal-wiċċ</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Buttuna tal-ispalla</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Buttuna tas-sistema</value></data>
@@ -1400,6 +1403,18 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Irrisettja kollox</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Ħassar kollox</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Sors</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Dak li jaraw il-logħob</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} mhux imqabbdin</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Uri kolonna għal kull apparat li mhux imqabbad</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Ikklikkja, imbagħad agħfas l-input fuq dan l-apparat li għandu jmexxi {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Dawwar l-apparati lejn il-ġnub</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Apparat</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Modalità</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Il-fuq</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Isfel</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifikatur</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stick tat-trim</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Output</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valur</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Għażliet</value></data>
@@ -1428,7 +1443,6 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Il-konfini ta' fuq tal-akkumulatur. 1 = pożittiv sħiħ.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampa</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Modalità primarja</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Attakk</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Is-sekondi biex tintlaħaq devjazzjoni sħiħa waqt li t-tast korrispondenti jinżamm. 0 = istantanju.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Rilaxx</value></data>
@@ -2435,7 +2449,6 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Issettjat għal {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Attiv</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Aktar għal {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Tħassar {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Il-profil u r-regola tiegħu tal-bdil awtomatiku jitneħħew. Dan ma jistax jiġi mreġġa' lura.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Il-profil jitneħħa. Dan ma jistax jiġi mreġġa' lura.</value></data>
@@ -4338,7 +4351,6 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Input 'il fuq</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Input 'l isfel</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Input modifikatur</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Tip ta' sors</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Kulur baxx</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Kulur tan-nofs</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Kulur għoli</value></data>

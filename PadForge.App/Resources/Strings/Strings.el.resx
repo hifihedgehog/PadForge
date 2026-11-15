@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Ξεκινά όταν συνδεθεί αυτή η συσκευή.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Ξεκινά όταν συνδεθεί μία από αυτές τις συσκευές.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Μη συνδεδεμένη</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Κάρτες</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Αναλυτικές</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Συμπαγείς</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Αυτόματα</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Αναλυτικές όσο οι κάρτες χωρούν στο παράθυρο, συμπαγείς μόλις θα το ξεπερνούσαν</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Στέλνει είσοδο τώρα</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Μπαταρία {0}, χαμηλή</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Μπαταρία {0}, φορτίζει</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Κάντε κλικ σε μια νότα ή σε ένα ρυθμιστικό και πατήστε την είσοδο που θα το ελέγχει.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Η «Αντιστοίχιση όλων» παραλείπει τις εξόδους επαφής των A και B. Κάντε κλικ στον δακτύλιο γύρω από το A ή το B για να αντιστοιχίσετε μία.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Αναμονή για {0}. Πατήστε την είσοδο στη συσκευή σας.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, είσοδος από</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Περισσότερες επιλογές</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Λιγότερες επιλογές</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Κουμπί πρόσοψης</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Κουμπί ώμου</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Κουμπί συστήματος</value></data>
@@ -1588,6 +1591,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>Επαναφορά όλων</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Εκκαθάριση όλων</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Πηγή</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Τι βλέπουν τα παιχνίδια</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} μη συνδεδεμένες</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Εμφάνιση στήλης για κάθε συσκευή που δεν είναι συνδεδεμένη</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Κάντε κλικ και μετά πατήστε την είσοδο αυτής της συσκευής που θα οδηγεί το στοιχείο {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Οριζόντια κύλιση των συσκευών</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Συσκευή</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Λειτουργία</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Πάνω</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Κάτω</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Τροποποιητής</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Μοχλός λεπτομερούς ρύθμισης</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Έξοδος</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Τιμή</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Επιλογές</value></data>
@@ -1616,7 +1631,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Μέγ.</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Άνω όριο του συσσωρευτή. 1 = πλήρως θετικό.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Ράμπα</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Κύρια λειτουργία</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Άνοδος</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Δευτερόλεπτα μέχρι την πλήρη απόκλιση όσο κρατιέται το αντίστοιχο πλήκτρο. 0 = ακαριαία.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Απελευθέρωση</value></data>
@@ -2649,7 +2663,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Ορισμένο για {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Ενεργό</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Περισσότερα για {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Διαγραφή του {0};</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Το προφίλ και ο κανόνας αυτόματης εναλλαγής του αφαιρούνται. Αυτό δεν μπορεί να αναιρεθεί.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Το προφίλ αφαιρείται. Αυτό δεν μπορεί να αναιρεθεί.</value></data>
@@ -4636,7 +4649,6 @@
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Είσοδος Πάνω</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Είσοδος Κάτω</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Είσοδος τροποποιητή</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Τύπος πηγής</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Χρώμα χαμηλής ζώνης</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Χρώμα μεσαίας ζώνης</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Χρώμα υψηλής ζώνης</value></data>

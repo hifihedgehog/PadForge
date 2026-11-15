@@ -138,9 +138,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Huk notata utaq huk sliderta ñit'iy, chaymantataq chayta kamachinan entradata ñit'iy.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Map All nisqaqa A, B botonkunapa llamiy lluqsiyninkunata mana asignanchu. Hukninta asignanaykipaq, A utaq B botónpa muyunta ñit'iy.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0}paq suyachkan. Dispositivoykipi entradata ñit'iy.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, kamachiqnin</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Astawan opcionkuna</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Aswan pisi opcionkuna</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Uya botón</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Rikra botón</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Sistema botón</value></data>
@@ -1539,7 +1536,6 @@
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Revisión</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} nisqapaq astawan</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>“{0}” nisqapi waqaychasqa configuraciónta kunan kaqwan tikrachiychu? Sutin, pukllayninkunapas qhipakunqa.</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Tikrachiy</value></data>
   <data name="GetProfiles_Title" xml:space="preserve"><value>Perfilkunata tariy</value></data>
@@ -1594,4 +1590,17 @@
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} / {1} hap'isqa</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Kay importasqa perfilkunaqa Steam Workshop nisqapi musuq versionniyuqmi. Perfilkunata tariy nisqamanta watiqmanta importay tikraykunata hap'inaykipaq.</value></data>
   <data name="Pad_Stick_Speed" xml:space="preserve"><value>Utqaylla</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Pukllaykunaq rikusqan</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} mana conectasqa</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Sapa mana conectasqa dispositivopaq huk columnata rikuchiy</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Clic ruway, chantá kay dispositivopi {0} kamachinan inputta ñit'iy</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Dispositivokunata waqtanman kuyuchiy</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Dispositivo</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Modo</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Hanaqman</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Uraman</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modificador</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Allichana palanca</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Lluqsiq</value></data>
 </root>

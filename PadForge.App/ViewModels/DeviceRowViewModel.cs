@@ -488,38 +488,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Localized device type description for display, derived from DeviceTypeKey.</summary>
-        public string DeviceType => DeviceTypeKey switch
-        {
-            "Gamepad" => Strings.Instance.DeviceType_Gamepad,
-            "Joystick" => Strings.Instance.DeviceType_Joystick,
-            "Wheel" => Strings.Instance.DeviceType_Wheel,
-            "FlightStick" => Strings.Instance.DeviceType_FlightStick,
-            "FirstPerson" => Strings.Instance.DeviceType_FirstPerson,
-            "Supplemental" => Strings.Instance.DeviceType_Supplemental,
-            "Mouse" => Strings.Instance.DeviceType_Mouse,
-            "Keyboard" => Strings.Instance.DeviceType_Keyboard,
-            "Touchpad" => Strings.Instance.DeviceType_Touchpad,
-            "Tablet" => Strings.Instance.DeviceType_Tablet,
-            "Midi" => Strings.Instance.DeviceType_Midi,
-            "Nfc" => Strings.Instance.DeviceType_Nfc,
-            "Microphone" => Strings.Instance.DeviceType_Microphone,
-            "ConsumerControl" => Strings.Instance.DeviceType_ConsumerControl,
-            "HeadsetMotion" => Strings.Instance.DeviceType_HeadsetMotion,
-            "HandheldButtons" => Strings.Instance.DeviceType_HandheldButtons,
-            "SystemMotion" => Strings.Instance.DeviceType_SystemMotion,
-            "HeadTracker" => Strings.Instance.DeviceType_HeadTracker,
-            "VrController" => Strings.Instance.DeviceType_VrController,
-            "LogitechGKeys" => Strings.Instance.DeviceType_LogitechGKeys,
-            "AnalogKeyboard" => Strings.Instance.DeviceType_AnalogKeyboard,
-            "WebMenus" => Strings.Instance.DeviceType_WebMenus,
-            "PeripheralHaptics" => Strings.Instance.DeviceType_PeripheralHaptics,
-            "PeripheralLighting" => Strings.Instance.DeviceType_PeripheralLighting,
-            "KeyboardScreenKeys" => Strings.Instance.DeviceType_KeyboardScreenKeys,
-            "NovintFalcon" => Strings.Instance.DeviceType_NovintFalcon,
-            "GameTelemetry" => Strings.Instance.DeviceType_GameTelemetry,
-            "TwitchChat" => Strings.Instance.DeviceType_TwitchChat,
-            _ => Strings.Instance.DeviceType_Device
-        };
+        public string DeviceType => Common.DeviceTypeGlyph.NameFor(DeviceTypeKey);
 
         private bool _hasRumble;
 

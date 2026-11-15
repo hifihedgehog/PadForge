@@ -155,9 +155,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Tẹ nóòtì kan tàbí slider kan nínú àwòrán, lẹ́yìn náà tẹ ohun tí yóò darí rẹ̀ lórí ẹ̀rọ rẹ.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“Map All” kò kan àwọn ìjáde ìfọwọ́kàn A àti B. Tẹ òrùka tó yí A tàbí B ká láti so ọ̀kan pọ̀.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Ń gbà sílẹ̀ fún {0}. Tẹ ohun náà lórí ẹ̀rọ rẹ.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, orísun rẹ̀</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Àwọn àṣàyàn síi</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Àwọn àṣàyàn díẹ̀</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Bọ́tìnnì ojú</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Bọ́tìnnì èjìká</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Bọ́tìnnì ètò</value></data>
@@ -423,6 +420,18 @@
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Ṣẹ̀dà láti...</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Tún gbogbo rẹ̀ tò</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Orísun</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Ohun tí àwọn eré ń rí</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>Ẹ̀rọ {0} kò sopọ̀</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Fi òpó kan hàn fún ẹ̀rọ kọ̀ọ̀kan tí kò sopọ̀</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Tẹ ibí, lẹ́yìn náà tẹ ìfiwọlé lórí ẹ̀rọ yìí tí yóò darí {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Yí àwọn ẹ̀rọ sí ẹ̀gbẹ́</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Ẹ̀rọ</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Ipò</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Sókè</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Sísàlẹ̀</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Ayípadà</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Ọ̀pá àtúnṣe</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Ìjáde</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Iye</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Àwọn àṣàyàn</value></data>
@@ -1967,7 +1976,6 @@
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Àtúnyẹ̀wò</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Síi fún {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>Profaili “{0}” ti ní ètò lọ́wọ́lọ́wọ́ báyìí.</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Ju fáìlì profaili kan síbí</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>nígbà tí</value></data>
@@ -2028,4 +2036,5 @@
   <data name="Profiles_Starters" xml:space="preserve"><value>Àwọn profaili ìbẹ̀rẹ̀</value></data>
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Àwọn profaili tí a ti pèsè sílẹ̀ fún gbogbo irú eré kan. Yan ọ̀kan, yan ẹ̀rọ ìdarí èyíkéyìí, kí o sì ṣeré.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} nínú {1} ló tàn</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
 </root>

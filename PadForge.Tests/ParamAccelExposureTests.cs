@@ -164,8 +164,11 @@ namespace PadForge.Tests
         [Fact]
         public void HydrationAndRebuildCarryIt_AndTheNetNoLongerDoes()
         {
+            // A row's first source is loaded by the row, in one place,
+            // for a load and for Remove on the first source alike.
             string input = Read("PadForge.App", "Services", "InputService.cs");
-            Assert.Contains("mapping.ParamAccel = primary.ParamAccel;", input);
+            Assert.Contains("mapping.LoadFirstSource(primarySrc, ResolveDeviceLabel);", input);
+            Assert.Contains("ParamAccel = source.ParamAccel;", Read("PadForge.App", "ViewModels", "MappingItem.List.cs"));
 
             string settings = Read("PadForge.App", "Services", "SettingsService.cs");
             Assert.Contains("ParamAccel = mapping.ParamAccel,", settings);
@@ -175,13 +178,13 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void BothEditorsOfferTheControlGatedOnTheContinuousFamily()
+        public void TheSourcesLineOffersTheControlGatedOnTheContinuousFamily()
         {
             string xaml = Read("PadForge.App", "Views", "PadPage.xaml");
 
-            // Keyed on the reset buttons, exactly one per row: the binding
-            // string appears twice per row (Slider + TextBox), so keying on
-            // it found one row's pair and never reached the second editor.
+            // Keyed on the reset button: the binding string appears twice
+            // (Slider + TextBox). One line draws every source, a row's
+            // first one and an added one, so the control is written once.
             var resets = new System.Collections.Generic.List<int>();
             for (int i = xaml.IndexOf("ResetParamAccelCommand", StringComparison.Ordinal);
                  i >= 0;
@@ -189,7 +192,7 @@ namespace PadForge.Tests
             {
                 resets.Add(i);
             }
-            Assert.Equal(2, resets.Count);
+            Assert.Single(resets);
 
             foreach (int site in resets)
             {

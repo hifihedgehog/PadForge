@@ -142,8 +142,10 @@ namespace PadForge.Tests
             // lines live deep inside service methods that need a running slot
             // to drive, so their presence is pinned textually and their
             // behavior by the round-trip tests above.
+            // A row's first source is loaded by the row, in one place.
             string input = Read("PadForge.App", "Services", "InputService.cs");
-            Assert.Contains("mapping.InvertOutput = primary.InvertOutput;", input);
+            Assert.Contains("mapping.LoadFirstSource(primarySrc, ResolveDeviceLabel);", input);
+            Assert.Contains("InvertOutput = source.InvertOutput;", Read("PadForge.App", "ViewModels", "MappingItem.List.cs"));
 
             string settings = Read("PadForge.App", "Services", "SettingsService.cs");
             Assert.Contains("InvertOutput = mapping.InvertOutput,", settings);
@@ -211,34 +213,47 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void BothEditorsOfferTheCheckboxGatedOnApplicability()
+        public void TheSourcesLineOffersTheSwitchGatedOnApplicability()
         {
-            // Two sites, deliberately: the row's own source and a source
-            // added to the row (which is also where a bipolar row's neg leg
-            // hydrates). A switch without the gate would show on every
-            // source and silently do nothing on most of them. Each is a
-            // switch in an option row (#574). The row's own has the gate on
-            // its row, just before the switch. An added source's row stands
-            // in a tile that shows while two things hold: the source reads
-            // its descriptor, and Invert is spoken for.
+            // One site: the line that draws every source, a row's first
+            // one and one added to the row (which is also where a bipolar
+            // row's neg leg hydrates). A switch without the gate would show
+            // on every source and silently do nothing on most of them. The
+            // switch stands in a group that shows while Invert is spoken
+            // for, and the group among the source's dials, which show while
+            // the source reads its own input: a mode that reads keys leaves
+            // the input unread.
             string xaml = Read("PadForge.App", "Views", "PadPage.xaml");
 
-            int first = xaml.IndexOf("Binding InvertOutput,", StringComparison.Ordinal);
-            int second = xaml.IndexOf("Binding InvertOutput,", first + 1, StringComparison.Ordinal);
-            Assert.True(first > 0 && second > first, "expected the switch in BOTH editors");
-            Assert.Equal(-1, xaml.IndexOf("Binding InvertOutput,", second + 1, StringComparison.Ordinal));
+            int at = xaml.IndexOf("Binding InvertOutput,", StringComparison.Ordinal);
+            Assert.True(at > 0, "the switch is gone");
+            Assert.Equal(-1, xaml.IndexOf("Binding InvertOutput,", at + 1, StringComparison.Ordinal));
 
-            int from = Math.Max(0, first - 600);
-            Assert.Contains("IsInvertOutputApplicable", xaml.Substring(from, first - from));
+            // The group's gate is the nearest group's before the switch,
+            // with no group closed in between.
+            const string group = "<StackPanel Style=\"{StaticResource LineGroup}\"";
+            int open = xaml.LastIndexOf(group, at, StringComparison.Ordinal);
+            Assert.True(open > 0);
+            string tag = xaml.Substring(open, xaml.IndexOf('>', open) - open);
+            Assert.Contains("Visibility=\"{Binding IsInvertOutputApplicable, Converter={StaticResource BoolToVisibilityConverter}}\"", tag);
+            Assert.DoesNotContain("</StackPanel>", xaml.Substring(open, at - open));
 
-            // The tile's conditions are the nearest ones before the switch,
-            // with no tile closed in between.
-            int tile = xaml.LastIndexOf("<MultiDataTrigger.Conditions>", second, StringComparison.Ordinal);
-            Assert.True(tile > first, "an added source's Invert Output stands in no gated tile");
-            string gate = xaml.Substring(tile, xaml.IndexOf("</MultiDataTrigger.Conditions>", tile, StringComparison.Ordinal) - tile);
-            Assert.Contains("<Condition Binding=\"{Binding IsKindDescriptorless}\" Value=\"False\"/>", gate);
-            Assert.Contains("<Condition Binding=\"{Binding IsInvertOutputApplicable}\" Value=\"True\"/>", gate);
-            Assert.DoesNotContain("</Border>", xaml.Substring(tile, second - tile));
+            // The dials' gate is their template's first panel's.
+            int dials = xaml.LastIndexOf("<DataTemplate x:Key=\"SourceDials\">", at, StringComparison.Ordinal);
+            Assert.True(dials > 0, "the switch stands outside the source's dials");
+            Assert.DoesNotContain("</DataTemplate>", xaml.Substring(dials, at - dials));
+            int panel = xaml.IndexOf("<controls:FlexLinePanel", dials, StringComparison.Ordinal);
+            Assert.True(panel > dials && panel < open);
+            Assert.Contains("Visibility=\"{Binding IsLineKeyMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}\"",
+                xaml.Substring(panel, xaml.IndexOf('>', panel) - panel));
+
+            // A source reads keys while its mode has no input of its own,
+            // whether it is the row's first source or an added one.
+            var added = new MappingSourceItem { Kind = "Incremental" };
+            Assert.True(added.IsKindDescriptorless);
+            Assert.True(((IMappingSourceLine)added).IsLineKeyMode);
+            added.Kind = "Direct";
+            Assert.False(((IMappingSourceLine)added).IsLineKeyMode);
         }
     }
 }

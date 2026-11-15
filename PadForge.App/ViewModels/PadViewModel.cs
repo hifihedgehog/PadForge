@@ -92,6 +92,8 @@ namespace PadForge.ViewModels
             // The pipeline chips cache which rows own them. Hooked before
             // the first RebuildMappings so the first rows flag them too.
             Mappings.CollectionChanged += OnMappingsChangedForPipelineChips;
+            // The list's columns follow the rows and the devices.
+            InitList();
             // The Sound Macros fold reads the macros and their steps.
             Macros.CollectionChanged += OnMacrosChangedForSoundList;
             // Bass Shakers rows (#236): the four fixed voice items exist
@@ -286,6 +288,7 @@ namespace PadForge.ViewModels
                     // slot's (#574).
                     OnPropertyChanged(nameof(ShowKbmFoot));
                     OnPropertyChanged(nameof(ShowPickedValue));
+                    OnPropertyChanged(nameof(ShowRowValue));
                     OnPropertyChanged(nameof(ShowVrFoot));
                     OnPropertyChanged(nameof(FirstSectionName));
                     OnPropertyChanged(nameof(PictureHintText));
@@ -1219,7 +1222,11 @@ namespace PadForge.ViewModels
 
             /// <summary>Has the spoken battery read again: the language
             /// changed.</summary>
-            internal void RaiseWords() => OnPropertyChanged(nameof(BatterySpoken));
+            internal void RaiseWords()
+            {
+                OnPropertyChanged(nameof(BatterySpoken));
+                OnPropertyChanged(nameof(TypeName));
+            }
 
             /// <summary>Sets every battery fact from one reading:
             /// <paramref name="lowAt"/> is the level Settings names.</summary>
@@ -1256,6 +1263,24 @@ namespace PadForge.ViewModels
                 get => _typeGlyph;
                 set => SetProperty(ref _typeGlyph, string.IsNullOrEmpty(value) ? "\uE7FC" : value);
             }
+
+            private string _typeKey = string.Empty;
+
+            /// <summary>The kind of device, as the Devices page keys it
+            /// ("Gamepad", "Wheel"). The list's head names it under the
+            /// device (<see cref="TypeName"/>).</summary>
+            public string TypeKey
+            {
+                get => _typeKey;
+                set
+                {
+                    if (SetProperty(ref _typeKey, value ?? string.Empty)) OnPropertyChanged(nameof(TypeName));
+                }
+            }
+
+            /// <summary>The kind of device in words: "Gamepad", "Wheel",
+            /// "Keyboard".</summary>
+            public string TypeName => Common.DeviceTypeGlyph.NameFor(_typeKey);
 
             public string Name
             {
@@ -6786,9 +6811,17 @@ namespace PadForge.ViewModels
 
         /// <summary>Selected appearance id for a model family, or null when
         /// unset (the model's default applies).</summary>
-        public string GetModelAppearance(string family)
+        public string GetModelAppearance(string family) => ModelAppearanceIn(_model3DAppearances, family);
+
+        /// <summary>The finish chosen for a family of art in a controller's
+        /// stored finishes ("family=finish,family=finish"), or null when
+        /// they name none for it. A profile's card reads a stored
+        /// controller's finish with it, as the controller's page reads its
+        /// own.</summary>
+        internal static string ModelAppearanceIn(string appearances, string family)
         {
-            foreach (var pair in _model3DAppearances.Split(',', StringSplitOptions.RemoveEmptyEntries))
+            if (string.IsNullOrEmpty(appearances) || family == null) return null;
+            foreach (var pair in appearances.Split(',', StringSplitOptions.RemoveEmptyEntries))
             {
                 int eq = pair.IndexOf('=');
                 if (eq > 0 && pair.AsSpan(0, eq).Trim().SequenceEqual(family))
@@ -8480,6 +8513,12 @@ namespace PadForge.ViewModels
             set
             {
                 if (!SetProperty(ref _currentRecordingTarget, value)) return;
+                // The row that records flashes in the list, whichever of its
+                // sources the input will land on.
+                foreach (var row in Mappings)
+                    row.IsRecordTarget = !string.IsNullOrEmpty(value)
+                        && (string.Equals(row.TargetSettingName, value, StringComparison.OrdinalIgnoreCase)
+                            || string.Equals(row.NegSettingName, value, StringComparison.OrdinalIgnoreCase));
                 // The bar under the picture follows what is being recorded,
                 // and the line there says so (#574). A recording that starts
                 // ends any word on why the last one could not.

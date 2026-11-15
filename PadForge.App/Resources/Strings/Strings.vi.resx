@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Nó khởi động khi thiết bị này kết nối.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Nó khởi động khi một trong các thiết bị này kết nối.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Chưa kết nối</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Thẻ</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Chi tiết</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Gọn</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Tự động</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Chi tiết khi các thẻ vừa với cửa sổ, gọn khi chúng sẽ vượt ra ngoài cửa sổ</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Đang gửi đầu vào</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Pin {0}, yếu</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Pin {0}, đang sạc</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Nhấp vào một nốt hoặc một thanh trượt rồi nhấn đầu vào sẽ điều khiển nó.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Nút Ánh xạ tất cả bỏ qua các đầu ra chạm của A và B. Nhấp vào vòng quanh A hoặc B để gán đầu ra chạm của nút đó.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Đang chờ {0}. Hãy nhấn đầu vào trên thiết bị của bạn.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>Nguồn đầu vào của {0}</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Thêm tùy chọn</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Ít tùy chọn hơn</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Nút mặt</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Nút vai</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Nút hệ thống</value></data>
@@ -1588,6 +1591,18 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_ResetAll" xml:space="preserve"><value>Đặt lại tất cả</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Xóa tất cả</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Nguồn</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Game nhìn thấy</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} chưa kết nối</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Hiện một cột cho mỗi thiết bị chưa kết nối</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Nhấp, rồi nhấn đầu vào trên thiết bị này sẽ điều khiển {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Cuộn các thiết bị sang ngang</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Thiết bị</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Chế độ</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Lên</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Xuống</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Phím bổ trợ</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Cần tinh chỉnh</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Đầu ra</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Giá trị</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Tùy chọn</value></data>
@@ -1616,7 +1631,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Tối đa</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Giới hạn trên của bộ tích lũy. 1 = dương tối đa.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Dốc</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Chế độ chính</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Thời gian tăng</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Số giây để đạt độ lệch tối đa khi phím tương ứng được giữ. 0 = tức thì.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Thời gian thả</value></data>
@@ -2649,7 +2663,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Đặt cho {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Đang dùng</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Thêm cho {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Xóa {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Hồ sơ và quy tắc tự động chuyển của nó sẽ bị gỡ. Không thể hoàn tác.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Hồ sơ sẽ bị gỡ. Không thể hoàn tác.</value></data>
@@ -4636,7 +4649,6 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Đầu vào Lên</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Đầu vào Xuống</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Đầu vào bổ trợ</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Loại nguồn</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Màu thấp</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Màu trung</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Màu cao</value></data>

@@ -44,5 +44,81 @@ namespace PadForge.Common
             InputDeviceType.TwitchChat => "\uE8F2",         // ChatBubbles (#555; verified in live segmdl2.ttf and SegoeIcons.ttf)
             _ => "\uE7FC"                                // Game
         };
+
+        /// <summary>The key of a CapType's kind of device, which the kind's
+        /// name is looked up by (<see cref="NameFor"/>). "Device" for a
+        /// type with no kind of its own.</summary>
+        internal static string KeyFor(int capType) => capType switch
+        {
+            InputDeviceType.Gamepad => "Gamepad",
+            InputDeviceType.Joystick => "Joystick",
+            InputDeviceType.Driving => "Wheel",
+            InputDeviceType.Flight => "FlightStick",
+            InputDeviceType.FirstPerson => "FirstPerson",
+            InputDeviceType.Supplemental => "Supplemental",
+            InputDeviceType.Mouse => "Mouse",
+            InputDeviceType.Keyboard => "Keyboard",
+            InputDeviceType.Touchpad => "Touchpad",
+            InputDeviceType.Tablet => "Tablet",
+            InputDeviceType.Midi => "Midi",
+            InputDeviceType.Nfc => "Nfc",
+            InputDeviceType.Microphone => "Microphone",
+            InputDeviceType.ConsumerControl => "ConsumerControl",
+            InputDeviceType.HeadsetMotion => "HeadsetMotion",
+            InputDeviceType.HandheldButtons => "HandheldButtons",
+            InputDeviceType.SystemMotion => "SystemMotion",
+            InputDeviceType.HeadTracker => "HeadTracker",
+            InputDeviceType.VrController => "VrController",
+            InputDeviceType.LogitechGKeys => "LogitechGKeys",
+            InputDeviceType.AnalogKeyboard => "AnalogKeyboard",
+            InputDeviceType.WebMenus => "WebMenus",
+            InputDeviceType.PeripheralLighting => "PeripheralLighting",
+            InputDeviceType.PeripheralHaptics => "PeripheralHaptics",
+            InputDeviceType.KeyboardScreenKeys => "KeyboardScreenKeys",
+            InputDeviceType.NovintFalcon => "NovintFalcon",
+            InputDeviceType.GameTelemetry => "GameTelemetry",
+            InputDeviceType.TwitchChat => "TwitchChat",
+            _ => "Device"
+        };
+
+        /// <summary>The name of a kind of device in the language in use:
+        /// "Gamepad", "Wheel", "Keyboard". "Device" for a key that names no
+        /// kind.</summary>
+        internal static string NameFor(string key)
+        {
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            return key switch
+            {
+                "Gamepad" => s.DeviceType_Gamepad,
+                "Joystick" => s.DeviceType_Joystick,
+                "Wheel" => s.DeviceType_Wheel,
+                "FlightStick" => s.DeviceType_FlightStick,
+                "FirstPerson" => s.DeviceType_FirstPerson,
+                "Supplemental" => s.DeviceType_Supplemental,
+                "Mouse" => s.DeviceType_Mouse,
+                "Keyboard" => s.DeviceType_Keyboard,
+                "Touchpad" => s.DeviceType_Touchpad,
+                "Tablet" => s.DeviceType_Tablet,
+                "Midi" => s.DeviceType_Midi,
+                "Nfc" => s.DeviceType_Nfc,
+                "Microphone" => s.DeviceType_Microphone,
+                "ConsumerControl" => s.DeviceType_ConsumerControl,
+                "HeadsetMotion" => s.DeviceType_HeadsetMotion,
+                "HandheldButtons" => s.DeviceType_HandheldButtons,
+                "SystemMotion" => s.DeviceType_SystemMotion,
+                "HeadTracker" => s.DeviceType_HeadTracker,
+                "VrController" => s.DeviceType_VrController,
+                "LogitechGKeys" => s.DeviceType_LogitechGKeys,
+                "AnalogKeyboard" => s.DeviceType_AnalogKeyboard,
+                "WebMenus" => s.DeviceType_WebMenus,
+                "PeripheralHaptics" => s.DeviceType_PeripheralHaptics,
+                "PeripheralLighting" => s.DeviceType_PeripheralLighting,
+                "KeyboardScreenKeys" => s.DeviceType_KeyboardScreenKeys,
+                "NovintFalcon" => s.DeviceType_NovintFalcon,
+                "GameTelemetry" => s.DeviceType_GameTelemetry,
+                "TwitchChat" => s.DeviceType_TwitchChat,
+                _ => s.DeviceType_Device
+            };
+        }
     }
 }

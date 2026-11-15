@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>ಈ ಸಾಧನ ಸಂಪರ್ಕಗೊಂಡಾಗ ಇದು ಪ್ರಾರಂಭವಾಗುತ್ತದೆ.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>ಈ ಸಾಧನಗಳಲ್ಲಿ ಒಂದು ಸಂಪರ್ಕಗೊಂಡಾಗ ಇದು ಪ್ರಾರಂಭವಾಗುತ್ತದೆ.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>ಸಂಪರ್ಕವಿಲ್ಲ</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>ಕಾರ್ಡ್‌ಗಳು</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>ವಿವರವಾದ</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>ಸಂಕ್ಷಿಪ್ತ</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>ಸ್ವಯಂ</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>ಕಾರ್ಡ್‌ಗಳು ವಿಂಡೋಗೆ ಹೊಂದುವವರೆಗೆ ವಿವರವಾಗಿ, ವಿಂಡೋ ಮೀರಿ ಹೋಗುವಾಗ ಸಂಕ್ಷಿಪ್ತವಾಗಿ</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>ಈಗ ಇನ್‌ಪುಟ್ ಕಳುಹಿಸುತ್ತಿದೆ</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>ಬ್ಯಾಟರಿ {0}, ಕಡಿಮೆ</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>ಬ್ಯಾಟರಿ {0}, ಚಾರ್ಜ್ ಆಗುತ್ತಿದೆ</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>ನೋಟ್ ಅಥವಾ ಸ್ಲೈಡರ್ ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ, ನಂತರ ಅದನ್ನು ನಿಯೋಜಿಸಲು ಇನ್‌ಪುಟ್ ಅನ್ನು ಒತ್ತಿ.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>"ಎಲ್ಲವನ್ನೂ ಮ್ಯಾಪ್ ಮಾಡಿ" A ಮತ್ತು B ಸ್ಪರ್ಶ ಔಟ್‌ಪುಟ್‌ಗಳನ್ನು ಬಿಟ್ಟುಬಿಡುತ್ತದೆ. ಒಂದನ್ನು ಮ್ಯಾಪ್ ಮಾಡಲು A ಅಥವಾ B ಸುತ್ತಲಿನ ಉಂಗುರವನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} ಗಾಗಿ ಕಾಯುತ್ತಿದೆ. ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿ ಇನ್‌ಪುಟ್ ಒತ್ತಿ.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, ಇನ್‌ಪುಟ್ ಮೂಲ</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>ಇನ್ನಷ್ಟು ಆಯ್ಕೆಗಳು</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>ಕಡಿಮೆ ಆಯ್ಕೆಗಳು</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>ಫೇಸ್ ಬಟನ್</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>ಬಂಪರ್ ಬಟನ್</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>ಸಿಸ್ಟಮ್ ಬಟನ್</value></data>
@@ -1396,6 +1399,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>ಎಲ್ಲವನ್ನೂ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>ಎಲ್ಲವನ್ನೂ ತೆರವುಗೊಳಿಸಿ</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>ಮೂಲ</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>ಗೇಮ್‌ಗಳಿಗೆ ಕಾಣುವುದು</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} ಸಂಪರ್ಕವಿಲ್ಲ</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>ಸಂಪರ್ಕವಿಲ್ಲದ ಪ್ರತಿ ಸಾಧನಕ್ಕೂ ಒಂದು ಕಾಲಮ್ ತೋರಿಸಿ</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>ಕ್ಲಿಕ್ ಮಾಡಿ, ನಂತರ {0} ಅನ್ನು ಚಲಾಯಿಸಬೇಕಾದ ಈ ಸಾಧನದ ಇನ್‌ಪುಟ್ ಒತ್ತಿ</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>ಸಾಧನಗಳನ್ನು ಅಡ್ಡವಾಗಿ ಸ್ಕ್ರಾಲ್ ಮಾಡಿ</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>ಸಾಧನ</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>ಮೋಡ್</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>ಮೇಲೆ</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>ಕೆಳಗೆ</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>ಮಾರ್ಪಡಕ</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>ಟ್ರಿಮ್ ಸ್ಟಿಕ್</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>ಔಟ್‌ಪುಟ್</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>ಮೌಲ್ಯ</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>ಆಯ್ಕೆಗಳು</value></data>
@@ -1424,7 +1439,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>ಗರಿಷ್ಠ</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>ಸಂಚಯಕದ ಮೇಲಿನ ಮಿತಿ. 1 = ಪೂರ್ಣ ಧನಾತ್ಮಕ.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>ರ್ಯಾಂಪ್</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>ಪ್ರಾಥಮಿಕ ಮೋಡ್</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>ಆರಂಭ</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>ಸಂಬಂಧಿತ ಕೀಯನ್ನು ಒತ್ತಿ ಹಿಡಿದಿರುವಾಗ ಪೂರ್ಣ ವಿಚಲನೆ ತಲುಪಲು ಬೇಕಾದ ಸೆಕೆಂಡುಗಳು. 0 = ತತ್ಕ್ಷಣ.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>ಬಿಡುಗಡೆ</value></data>
@@ -2454,7 +2468,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>{0} ಗಾಗಿ ಹೊಂದಿಸಲಾಗಿದೆ</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>ಸಕ್ರಿಯ</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} ಗಾಗಿ ಇನ್ನಷ್ಟು</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} ಅಳಿಸಬೇಕೇ?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>ಪ್ರೊಫೈಲ್ ಮತ್ತು ಅದರ ಸ್ವಯಂ ಬದಲಾವಣೆ ನಿಯಮ ತೆಗೆದುಹಾಕಲಾಗುತ್ತದೆ. ಇದನ್ನು ರದ್ದುಮಾಡಲಾಗದು.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>ಪ್ರೊಫೈಲ್ ತೆಗೆದುಹಾಕಲಾಗುತ್ತದೆ. ಇದನ್ನು ರದ್ದುಮಾಡಲಾಗದು.</value></data>
@@ -4388,7 +4401,6 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>ಮೇಲಿನ ಇನ್‌ಪುಟ್</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>ಕೆಳಗಿನ ಇನ್‌ಪುಟ್</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>ಮಾರ್ಪಡಕ ಇನ್‌ಪುಟ್</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>ಮೂಲ ವಿಧ</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>ಕಡಿಮೆ ಬಣ್ಣ</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>ಮಧ್ಯಮ ಬಣ್ಣ</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>ಹೆಚ್ಚು ಬಣ್ಣ</value></data>

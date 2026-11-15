@@ -26,6 +26,33 @@ namespace PadForge.Views
         /// </summary>
         public event EventHandler<string> ControllerElementRecordRequested;
 
+        /// <summary>What a click on a cell of the mappings list asks for.</summary>
+        public sealed class ListCellRecordArgs : EventArgs
+        {
+            public ListCellRecordArgs(MappingItem row, RowTag tag, Guid device)
+            {
+                Row = row;
+                Tag = tag;
+                Device = device;
+            }
+
+            /// <summary>The row the cell is in.</summary>
+            public MappingItem Row { get; }
+
+            /// <summary>The tag that was clicked, whose input is recorded
+            /// again, or null for a click beside the tags, which records
+            /// another input.</summary>
+            public RowTag Tag { get; }
+
+            /// <summary>The device of the cell's column, the one to listen
+            /// to. Empty for the column of sources that name no device.</summary>
+            public Guid Device { get; }
+        }
+
+        /// <summary>Raised when the user clicks a cell of the mappings list
+        /// to record for its row from the cell's device.</summary>
+        public event EventHandler<ListCellRecordArgs> ListCellRecordRequested;
+
         /// <summary>Raised by the header's power button (#574) with the
         /// slot's index and the state to give it, as the flame on the
         /// slot's Home card raises its own.</summary>
@@ -1642,9 +1669,14 @@ namespace PadForge.Views
         /// <summary>The folded height last measured.</summary>
         private double _foldedOutputMeasured = double.NaN;
 
-        /// <summary>The bar's height with its blocks on one line, last
-        /// measured.</summary>
-        private double _barMeasured = double.NaN;
+        /// <summary>The bar's height with one plain source, before the page
+        /// has measured one: its head, the box's head, one source's line,
+        /// Add Source and the output's line, with their insets. The picture
+        /// is sized from it until a plain row shows and is measured.</summary>
+        internal const double PictureBarBaseHeight = 251;
+
+        /// <summary>The bar's height with one plain source, last measured.</summary>
+        private double _barMeasured = PictureBarBaseHeight;
 
         /// <summary>The bar's height while its blocks stand on one line,
         /// with its margins: the bar of a control with one row, as the
@@ -1657,8 +1689,21 @@ namespace PadForge.Views
         {
             if (PictureBar == null || PictureBar.Visibility != Visibility.Visible || PictureBar.ActualHeight <= 0) return double.NaN;
             if (PickedBlocks == null || PickedBlocks.Items.Count != 1) return double.NaN;
+            // The bar holds the row's lines, and grows with its sources. Its
+            // height with one plain source is the one the picture is sized
+            // from, so adding a source never resizes the picture.
+            if (DataContext is not PadViewModel { PickedRow: { } row } || !IsPlainOneSource(row)) return double.NaN;
             return PictureBar.ActualHeight + PictureBar.Margin.Top + PictureBar.Margin.Bottom;
         }
+
+        /// <summary>Whether a row is one source read through its own input
+        /// with nothing under it: the bar is at its least height then.</summary>
+        internal static bool IsPlainOneSource(MappingItem row)
+            => row != null && row.ExtraSources.Count == 0 && row.IsPrimaryDirect
+               && !row.IsDeadZoneApplicable && !row.ShouldShowCustomExpression && !row.IsMotionAxisRow
+               && !row.IsInvertOutputApplicable && !row.IsGyroSource && !row.IsGyroLeanSource
+               && !row.IsParamAccelApplicable && !row.IsMouseCursorSource && !row.IsIrPointerSource
+               && !row.IsMouseMotionSource && !row.ShouldShowEmptyDirectionHint;
 
         /// <summary>The folded height, or the bar's one-line height, to
         /// size the picture from. The rules below hold for both, with the
@@ -1699,6 +1744,8 @@ namespace PadForge.Views
         private void SyncPickedRowSelection()
         {
             if (DataContext is not PadViewModel vm || MappingDataGrid == null) return;
+            // A cell's click records and leaves its row as it is.
+            if (_keepPickedRowClosed && vm.IsButtonsListView) return;
             var row = vm.RowOfTarget(vm.PickedTarget);
             if (row == null || !MappingDataGrid.Items.Contains(row)) return;
             // A row in a folded group is on no page. Its group opens, so
@@ -1767,6 +1814,9 @@ namespace PadForge.Views
         {
             SyncButtonsLayout();
             SyncPickedRowSelection();
+            // The list's head comes back with the list, and stands over the
+            // rows once the table has been laid out again.
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded, new Action(SyncListHeadInset));
         }
 
         /// <summary>Lays Buttons out for its view. The picture's view is a
@@ -1909,27 +1959,110 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  The bar under the picture (#574). A stick's or the D-pad's
-        //  rows stand in it side by side, and the one whose controls
-        //  last had the focus is the current row: the bar's value, Add
-        //  Source and options are that row's.
+        //  The bar under the picture (keep16). A stick's or the D-pad's
+        //  rows are named in its head, and the chosen one is the current
+        //  row: its lines show under the head.
         // ─────────────────────────────────────────────
 
-        /// <summary>The keyboard's focus came into one of the bar's blocks,
-        /// by Tab or by a click on one of its controls: its row is the
+        /// <summary>A click on a row's name in the bar's head makes it the
         /// bar's current row. Rows of one control are already under the
         /// picture together, so the pick changes no rows.</summary>
-        private void PickedBlock_GotFocus(object sender, KeyboardFocusChangedEventArgs e)
+        private void PickedRow_Click(object sender, RoutedEventArgs e)
         {
             if ((sender as FrameworkElement)?.DataContext is MappingItem row && DataContext is PadViewModel vm)
                 vm.PickedTarget = row.TargetSettingName;
         }
 
-        /// <summary>Add Source in the bar opens the current row's options,
-        /// where the new source shows. The button's command adds it.</summary>
-        private void PickedAddSource_Click(object sender, RoutedEventArgs e)
+        /// <summary>The cross at the bar's end lets go of the picked
+        /// control, as a click on the bare picture and Escape do.</summary>
+        private void PickedLetGo_Click(object sender, RoutedEventArgs e) => LetGoOfThePick();
+
+        // ─────────────────────────────────────────────
+        //  The list's cells (keep16). A click on a cell records for its
+        //  row from the cell's device. The row stays closed.
+        // ─────────────────────────────────────────────
+
+        private RowCell _listCellDown;
+        private bool _keepPickedRowClosed;
+
+        private void ListCell_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+            => _listCellDown = (sender as FrameworkElement)?.DataContext as RowCell;
+
+        /// <summary>A click that began and ended on one cell records for
+        /// the cell's row: on a tag, that input again, and beside the tags,
+        /// another input. The fold's cell and a cell of a device that is not
+        /// connected record nothing, and neither does a row that cannot
+        /// record.</summary>
+        private void ListCell_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (DataContext is PadViewModel vm) vm.IsPickedOptionsOpen = true;
+            var down = _listCellDown;
+            _listCellDown = null;
+            if ((sender as FrameworkElement)?.DataContext is not RowCell cell || !ReferenceEquals(cell, down)) return;
+            if (!CellRecords(cell)) return;
+            e.Handled = true;
+            Guid device = cell.Column.Device?.InstanceGuid ?? Guid.Empty;
+            var tag = TagAt(e.OriginalSource as DependencyObject, sender as DependencyObject);
+            // Recording makes the row the picked one. From a cell the row
+            // stays as it is, closed or open, so a run of clicks down a
+            // column never moves the rows under the pointer.
+            _keepPickedRowClosed = true;
+            try { ListCellRecordRequested?.Invoke(this, new ListCellRecordArgs(cell.Row, tag, device)); }
+            finally { _keepPickedRowClosed = false; }
+        }
+
+        /// <summary>Whether a click on a cell records: a cell of a device
+        /// that is connected, or of the sources that name no device, in a
+        /// row that can record.</summary>
+        internal static bool CellRecords(RowCell cell)
+            => cell != null && cell.Row != null && cell.Row.IsRecordable
+               && !cell.Column.IsFold && !cell.Column.IsAway;
+
+        /// <summary>The tag a click landed on, or null for a click beside
+        /// the tags: the first element from the click up to the cell whose
+        /// data is a tag.</summary>
+        private static RowTag TagAt(DependencyObject source, DependencyObject cell)
+        {
+            for (var at = source; at != null && !ReferenceEquals(at, cell); at = ParentOf(at))
+                if (at is FrameworkElement { DataContext: RowTag tag }) return tag;
+            return null;
+        }
+
+        /// <summary>Whether an element is inside a cell of the list.</summary>
+        private static bool IsInsideListCell(DependencyObject element, DependencyObject within)
+        {
+            for (var at = element; at != null && !ReferenceEquals(at, within); at = ParentOf(at))
+                if (at is FrameworkElement { DataContext: RowCell }) return true;
+            return false;
+        }
+
+        /// <summary>The head's cells changed width: the list is told how
+        /// much room a row has for its cells, which decides whether the
+        /// devices that are not connected fold and whether the cells
+        /// scroll.</summary>
+        private void ListHeadCells_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.WidthChanged && DataContext is PadViewModel vm) vm.SetListCellsWidth(e.NewSize.Width);
+        }
+
+        /// <summary>The head ends where the rows end: the table's scroll
+        /// bar takes room at the rows' right, so the head leaves the same
+        /// room and its columns stand over the rows' own.</summary>
+        private void MappingDataGrid_SizeChanged(object sender, SizeChangedEventArgs e) => SyncListHeadInset();
+
+        private void MappingDataGrid_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (e.ViewportWidthChange != 0 || e.ExtentWidthChange != 0) SyncListHeadInset();
+        }
+
+        private void SyncListHeadInset()
+        {
+            if (ListHead == null || MappingDataGrid == null) return;
+            var scroll = FindDescendant<ScrollViewer>(MappingDataGrid);
+            double inset = scroll == null || scroll.ViewportWidth <= 0 ? 0
+                : Math.Max(0, scroll.ActualWidth - scroll.ViewportWidth);
+            if (Math.Abs(ListHead.Padding.Right - inset) > 0.5) ListHead.Padding = new Thickness(0, 0, inset, 0);
+            if (ListCellsScroll != null && Math.Abs(ListCellsScroll.Margin.Right - (9 + inset)) > 0.5)
+                ListCellsScroll.Margin = new Thickness(17, 0, 9 + inset, 2);
         }
 
         /// <summary>The header's More button, and the list's, opens its menu
@@ -6109,6 +6242,9 @@ namespace PadForge.Views
             // The line's own buttons act on the row and leave it closed
             // (#574). The chevron opens it by its own handler.
             if (IsInsideButton(e.OriginalSource as DependencyObject, row)) return;
+            // A cell records (ListCell_MouseLeftButtonUp), and the fold's
+            // cell and an away device's do nothing: none opens the row.
+            if (IsInsideListCell(e.OriginalSource as DependencyObject, row)) return;
             MappingDataGrid.SelectedItem = mi;
         }
 

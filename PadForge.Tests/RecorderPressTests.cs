@@ -171,4 +171,99 @@ namespace PadForge.Tests
             Assert.False(menu.HostRecording);
         }
     }
+
+    /// <summary>
+    /// A click on a cell of the mappings list records from the cell's
+    /// device alone, so the input lands under the column that was clicked
+    /// (RecorderService.ListenOnly). An input on another device of the
+    /// controller is not taken. The recording that starts takes the
+    /// device, and the next one listens to every device again.
+    /// </summary>
+    [Collection("SettingsManagerStatics")]
+    public class RecorderListenOnlyTests
+    {
+        private static readonly MethodInfo PollTick = typeof(RecorderService)
+            .GetMethod("PollTick", BindingFlags.Instance | BindingFlags.NonPublic);
+
+        private static UserDevice Device(string name)
+        {
+            var state = new CustomInputState();
+            Array.Fill(state.Axis, 32768);
+            return new UserDevice
+            {
+                InstanceGuid = Guid.NewGuid(), ProductName = name, IsOnline = true,
+                CapType = InputDeviceType.Joystick, InputState = state,
+            };
+        }
+
+        [Fact]
+        public void ARecordingFromACellListensToItsDeviceAlone()
+        {
+            var devices = SettingsManager.UserDevices;
+            var settings = SettingsManager.UserSettings;
+            SettingsManager.UserDevices = new DeviceCollection();
+            SettingsManager.UserSettings = new SettingsCollection();
+            RecorderService recorder = null;
+            try
+            {
+                UserDevice first = Device("First"), second = Device("Second");
+                lock (SettingsManager.UserDevices.SyncRoot)
+                {
+                    SettingsManager.UserDevices.Items.Add(first);
+                    SettingsManager.UserDevices.Items.Add(second);
+                }
+                var vm = new MainViewModel();
+                var pad = vm.Pads[0];
+                pad.MappedDevices.Add(new PadViewModel.MappedDeviceInfo { InstanceGuid = first.InstanceGuid, Name = "First", IsOnline = true });
+                pad.MappedDevices.Add(new PadViewModel.MappedDeviceInfo { InstanceGuid = second.InstanceGuid, Name = "Second", IsOnline = true });
+                recorder = new RecorderService(vm);
+                var row = System.Linq.Enumerable.Single(pad.Mappings, m => m.TargetSettingName == "ButtonA");
+                void Tick() => PollTick.Invoke(recorder, new object[] { null, EventArgs.Empty });
+                static Guid On(MappingSourceItem source) => Guid.TryParse(source.DeviceGuid, out Guid id) ? id : Guid.Empty;
+
+                // From the second device's cell.
+                var source = new MappingSourceItem { Kind = "Direct" };
+                recorder.ListenOnly = second.InstanceGuid;
+                recorder.StartRecordingExtraSource(row, source, 0);
+                Assert.True(recorder.IsRecording);
+                // The recording took the device, and the next one is told none.
+                Assert.Equal(Guid.Empty, recorder.ListenOnly);
+                // An input on the first device is not taken.
+                first.InputState.Buttons[3] = true;
+                Tick();
+                Assert.True(recorder.IsRecording);
+                Assert.Equal(string.Empty, source.Descriptor ?? string.Empty);
+                // One on the second lands, with its device.
+                second.InputState.Buttons[5] = true;
+                Tick();
+                Assert.False(recorder.IsRecording);
+                Assert.Equal(("Button 5", second.InstanceGuid), (source.Descriptor, On(source)));
+
+                // The next recording listens to every device again.
+                first.InputState.Buttons[3] = false;
+                second.InputState.Buttons[5] = false;
+                var next = new MappingSourceItem { Kind = "Direct" };
+                recorder.StartRecordingExtraSource(row, next, 0);
+                Assert.True(recorder.IsRecording);
+                first.InputState.Buttons[3] = true;
+                Tick();
+                Assert.False(recorder.IsRecording);
+                Assert.Equal(("Button 3", first.InstanceGuid), (next.Descriptor, On(next)));
+
+                // A device the controller does not have: there is nothing
+                // to listen to, the recording does not start, and the next
+                // one is told none.
+                recorder.ListenOnly = Guid.NewGuid();
+                recorder.StartRecordingExtraSource(row, new MappingSourceItem { Kind = "Direct" }, 0);
+                Assert.False(recorder.IsRecording);
+                Assert.Equal(Guid.Empty, recorder.ListenOnly);
+            }
+            finally
+            {
+                if (recorder != null && recorder.IsRecording) recorder.CancelRecording();
+                SettingsManager.UserDevices = devices;
+                SettingsManager.UserSettings = settings;
+            }
+        }
+    }
 }

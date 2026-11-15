@@ -663,7 +663,6 @@
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Sókkun</value></data>
   <data name="Devices_Detail_Link" xml:space="preserve"><value>Riri</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Battery</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Isoni ewe setup iei ikei</value></data>
   <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Kopwe siwili ewe setup mi isoon lón “{0}” ngeni ewe setup iei? Itan me an kewe urumwot repwe nómottiw.</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Siwiliti</value></data>
@@ -708,4 +707,16 @@
   <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Esor mettóch epwe tori ewe port tori ka isoni.</value></data>
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Live: {0} me lein {1}</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ekkeei profile mi import a wor minefen version won ewe Steam Workshop. Import pwal seni Angei profile pwe kopwe angei ekkewe siwil.</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Kaat</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Unusén</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Kúkkún</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Auto</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Unusén lupwen ekkewe kaat ra nóm lón ewe window, kúkkún lupwen repwe pwúkú seni</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Device</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Wóón</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Fán</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Siwil</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stick ren kúkkún siwil</value></data>
 </root>

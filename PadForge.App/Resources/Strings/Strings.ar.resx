@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>تبدأ عند اتصال هذا الجهاز.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>تبدأ عند اتصال أحد هذه الأجهزة.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>غير متصل</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>البطاقات</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>مفصلة</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>مضغوطة</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>تلقائي</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>مفصلة ما دامت البطاقات تتسع في النافذة، ومضغوطة عندما تتجاوزها</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>يرسل إدخالا الآن</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>البطارية {0}، منخفضة</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>البطارية {0}، قيد الشحن</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>انقر على نغمة أو شريط تمرير ثم اضغط الإدخال الذي يجب أن يشغّله.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>يتخطى «تعيين الكل» مخرجات اللمس للزرين A وB. انقر على الحلقة حول A أو B لربط أحدها.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>جارٍ التسجيل لـ {0}. اضغط الإدخال على جهازك.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}، يتحكم به</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>خيارات أكثر</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>خيارات أقل</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>زر أمامي</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>زر الكتف</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>زر النظام</value></data>
@@ -1401,6 +1404,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>إعادة ضبط الكل</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>مسح الكل</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>المصدر</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>ما تراه الألعاب</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} غير متصلة</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>إظهار عمود لكل جهاز غير متصل</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>انقر، ثم اضغط على المدخل في هذا الجهاز الذي يجب أن يتحكم في {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>تمرير الأجهزة أفقيا</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>الجهاز</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>الوضع</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>أعلى</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>أسفل</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>مفتاح تعديل</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>عصا الضبط الدقيق</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>المخرج</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>القيمة</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>الخيارات</value></data>
@@ -1429,7 +1444,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>الأقصى</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>الحد الأقصى للقيمة التراكمية. 1 = الموجب الكامل.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>تصاعد</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>الوضع الأساسي</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>الهجوم</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>عدد الثواني لبلوغ الانحراف الكامل ما دام المفتاح المطابق مضغوطا. 0 = فوري.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>التحرير</value></data>
@@ -2459,7 +2473,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>مضبوط على {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>نشط</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>المزيد من خيارات {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>حذف {0}؟</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>يُزال ملف التعريف وقاعدة التبديل التلقائي الخاصة به. لا يمكن التراجع عن ذلك.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>يُزال ملف التعريف. لا يمكن التراجع عن ذلك.</value></data>
@@ -4408,7 +4421,6 @@
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>مدخل أعلى</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>مدخل أسفل</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>مدخل التعديل</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>نوع المصدر</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>اللون المنخفض</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>اللون المتوسط</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>اللون المرتفع</value></data>

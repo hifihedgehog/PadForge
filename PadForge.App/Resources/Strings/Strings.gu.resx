@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>આ ઉપકરણ કનેક્ટ થાય ત્યારે તે શરૂ થાય છે.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>આમાંનું કોઈ ઉપકરણ કનેક્ટ થાય ત્યારે તે શરૂ થાય છે.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>કનેક્ટ થયેલ નથી</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>કાર્ડ</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>વિગતવાર</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>સંક્ષિપ્ત</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>આપોઆપ</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>કાર્ડ વિન્ડોમાં સમાય ત્યાં સુધી વિગતવાર, તેની બહાર જાય ત્યારે સંક્ષિપ્ત</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>હમણાં ઇનપુટ મોકલે છે</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>બેટરી {0}, ઓછી</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>બેટરી {0}, ચાર્જ થઈ રહી છે</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>નોટ અથવા સ્લાઇડર પર ક્લિક કરો, પછી તેને ચલાવવા માટેનું ઇનપુટ દબાવો.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“બધા મેપ કરો” A અને B ના ટચ આઉટપુટ છોડી દે છે. એકને મેપ કરવા A અથવા B ની આસપાસના રિંગ પર ક્લિક કરો.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} માટે ઇનપુટની રાહ જોવાઈ રહી છે. તમારા ઉપકરણ પર ઇનપુટ દબાવો.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, ઇનપુટ સ્રોત</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>વધુ વિકલ્પો</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>ઓછા વિકલ્પો</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>ફેસ બટન</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>શોલ્ડર બટન</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>સિસ્ટમ બટન</value></data>
@@ -1398,6 +1401,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>બધું રીસેટ કરો</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>બધું સાફ કરો</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>સ્રોત</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>ગેમ જુએ છે</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} કનેક્ટ થયેલ નથી</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>કનેક્ટ ન થયેલ દરેક ઉપકરણ માટે એક કૉલમ બતાવો</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>ક્લિક કરો, પછી આ ઉપકરણનું જે ઇનપુટ {0} ચલાવે તે દબાવો</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>ઉપકરણોને આડા સ્ક્રોલ કરો</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>ઉપકરણ</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>મોડ</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>ઉપર</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>નીચે</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>મોડિફાયર</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>ટ્રિમ સ્ટિક</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>આઉટપુટ</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>મૂલ્ય</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>વિકલ્પો</value></data>
@@ -1426,7 +1441,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>મહત્તમ</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>સંચયકની ઉપલી મર્યાદા. 1 = પૂર્ણ ધન.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>રેમ્પ</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>મુખ્ય મોડ</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>અટેક</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>મેળ ખાતી કી પકડેલી હોય ત્યારે પૂરા ઝુકાવ સુધી પહોંચવાની સેકન્ડ. 0 = તરત.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>રિલીઝ</value></data>
@@ -2457,7 +2471,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>{0} માટે સેટ</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>સક્રિય</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} માટે વધુ</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} કાઢી નાખવું?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>પ્રોફાઇલ અને તેનો ઑટો સ્વિચ નિયમ દૂર થાય છે. આ પાછું લાવી શકાતું નથી.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>પ્રોફાઇલ દૂર થાય છે. આ પાછું લાવી શકાતું નથી.</value></data>
@@ -4397,7 +4410,6 @@
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>ઉપર ઇનપુટ</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>નીચે ઇનપુટ</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>મૉડિફાયર ઇનપુટ</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>સ્રોત પ્રકાર</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>નીચો રંગ</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>મધ્યમ રંગ</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>ઊંચો રંગ</value></data>

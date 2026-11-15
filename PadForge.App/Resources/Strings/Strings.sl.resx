@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Zažene se, ko se ta naprava poveže.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Zažene se, ko se poveže ena od teh naprav.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Ni povezano</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Kartice</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Podrobne</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Strnjene</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Samodejno</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Podrobne, dokler se kartice prilegajo oknu, strnjene, ko bi segle čez njegov rob</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Zdaj pošilja vnos</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Baterija {0}, nizka</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Baterija {0}, polni se</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Kliknite noto ali drsnik, nato pritisnite vnos, ki naj ga upravlja.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>„Preslikaj vse“ preskoči izhoda dotika gumbov A in B. Če želite povezati enega, kliknite obroč okoli A ali B.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Poslušanje za {0}. Pritisnite vnos na svoji napravi.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, vhod iz</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Več možnosti</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Manj možnosti</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Akcijski gumb</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Ramenski gumb</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Sistemski gumb</value></data>
@@ -1588,6 +1591,18 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Ponastavi vse</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Počisti vse</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Vir</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Igre vidijo</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} ni povezanih</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Pokaži stolpec za vsako napravo, ki ni povezana</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Kliknite, nato pritisnite vhod na tej napravi, ki naj upravlja {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Premikaj naprave vodoravno</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Naprava</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Način</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Gor</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Dol</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Spremenilnik</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Palčka za natančno nastavitev</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Izhod</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Vrednost</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0} %</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Možnosti</value></data>
@@ -1616,7 +1631,6 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Maks</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Zgornja meja akumulatorja. 1 = popolnoma pozitivno.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampa</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Primarni način</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Napad</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Sekunde do polnega odklona, dokler je ustrezna tipka pridržana. 0 = takoj.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Sprostitev</value></data>
@@ -2649,7 +2663,6 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Nastavljeno za {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Aktiven</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Več za {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Želite izbrisati {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Profil in njegovo pravilo samodejnega preklopa se odstranita. Tega ni mogoče razveljaviti.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Profil se odstrani. Tega ni mogoče razveljaviti.</value></data>
@@ -4636,7 +4649,6 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Vnos gor</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Vnos dol</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Vnos modifikatorja</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Vrsta vira</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Nizka barva</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Srednja barva</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Visoka barva</value></data>

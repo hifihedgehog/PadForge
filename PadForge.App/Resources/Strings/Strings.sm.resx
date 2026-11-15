@@ -1195,7 +1195,6 @@
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Toe iloiloga</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Isi mea mo {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Sui</value></data>
   <data name="GetProfiles_Title" xml:space="preserve"><value>Aumai Profile</value></data>
   <data name="GetProfiles_Starters" xml:space="preserve"><value>Amataga</value></data>
@@ -1243,4 +1242,15 @@
   <data name="Profiles_Starters" xml:space="preserve"><value>Starter profile</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} o le {1} ola</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>O nei profile na faʻaulufale mai e iai ni lomiga fou i le Steam Workshop. Toe faʻaulufale mai Aumai Profile e maua ai suiga.</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Vaʻaia e taʻaloga</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} e lē fesoʻotaʻi</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Faʻaali se koluma mo masini taʻitasi e lē fesoʻotaʻi</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Kiliki, ona oomi lea o le mea i lenei masini e tatau ona faʻagaoioia le {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Faʻaseʻe masini i autafa</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Masini</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Faiga</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>I luga</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>I lalo</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Faʻasuiga</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Laʻau faʻalelei</value></data>
 </root>

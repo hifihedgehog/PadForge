@@ -682,27 +682,31 @@ namespace PadForge.Tests
             return d.FullName;
         }
 
-        /// <summary>The four Up and Down dropdowns bind the key list: the
-        /// pair of an added source, which its Incremental and its Ramp
-        /// kind share, and the pair among the row's own options. The two
-        /// modifier dropdowns keep the full list. Each reaches the row
-        /// through the root of the options' template (#574): the list's
-        /// open row and the bar under the picture both show them, and only
-        /// the list has a table row above them.</summary>
+        /// <summary>The Up and the Down dropdown bind the key list, and the
+        /// modifier's keeps the full list. They are written once, on the
+        /// line of a mode's settings that every source shows, a row's
+        /// first one and an added one, and that Incremental and Ramp share.
+        /// Each reaches its list through the source's row: the list's open
+        /// row and the bar under the picture both show them, and only the
+        /// list has a table row above them.</summary>
         [Fact]
-        public void TheFourUpAndDownDropdownsBindTheKeyList()
+        public void TheUpAndDownDropdownsBindTheKeyList()
         {
             string xaml = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Views", "PadPage.xaml"));
             Assert.DoesNotContain("AncestorType={x:Type DataGridRow}", xaml);
+            Assert.DoesNotContain("ElementName=RowOptionsRoot", xaml);
             var bindings = Regex.Matches(xaml,
-                    @"ItemsSource=""\{Binding DataContext\.(\w+),\s*ElementName=RowOptionsRoot\}""\s*SelectedItem=""\{Binding (Param\w+InputChoice),")
+                    @"ItemsSource=""\{Binding Row\.(\w+)\}""\s*SelectedItem=""\{Binding (Param\w+InputChoice),")
                 .Select(m => (List: m.Groups[1].Value, Field: m.Groups[2].Value))
                 .ToList();
 
-            Assert.Equal(6, bindings.Count);
-            Assert.Equal(2, bindings.Count(b => b.Field == "ParamUpInputChoice"));
-            Assert.Equal(2, bindings.Count(b => b.Field == "ParamDownInputChoice"));
-            Assert.Equal(2, bindings.Count(b => b.Field == "ParamModifierInputChoice"));
+            Assert.Equal(new[] { "ParamUpInputChoice", "ParamDownInputChoice", "ParamModifierInputChoice" }, bindings.Select(b => b.Field));
+            // A source's row is the row it belongs to, and the row itself for its first source.
+            var row = new MappingItem("A", "ButtonA", MappingCategory.Buttons);
+            Assert.Same(row, ((IMappingSourceLine)row).Row);
+            var added = new MappingSourceItem { ParentMappingItem = row };
+            Assert.Same(row, ((IMappingSourceLine)added).Row);
+            Assert.Same(row, ((IMappingSourceLine)row.PrimaryKindSource).Row);
             foreach (var b in bindings)
                 Assert.Equal(b.Field == "ParamModifierInputChoice"
                     ? nameof(MappingItem.ParamInputsView)

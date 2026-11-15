@@ -157,9 +157,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Tsindrio nota na slider, avy eo tsindrio ny fampidirana tokony hitantana azy.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Mandingana ny fivoahana kasika an'ny A sy B ny bokotra "Map All". Tsindrio ny faribolana manodidina ny A na B raha hanendry ny iray amin'izy ireo.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Mandrakitra {0}. Tsindrio ny fampidirana amin'ny fitaovanao.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, entin'ny</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Safidy bebe kokoa</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Safidy vitsy kokoa</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Bokotra anoloana</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Bumper</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Bokotra rafitra</value></data>
@@ -541,6 +538,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>Averina daholo</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Fafao daholo</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Loharano</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Hitan'ny lalao</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} tsy mifandray</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Asehoy tsanganana iray isaky ny fitaovana tsy mifandray</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Kitiho, avy eo tsindrio amin'ity fitaovana ity ny fidirana tokony hampihetsika ny {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Afindrao mankavia sy mankavanana ny fitaovana</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Fitaovana</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Fomba</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Miakatra</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Midina</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Mpanova</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Tsorakazo fanitsiana</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Fivoahana</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Sanda</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Safidy</value></data>
@@ -554,7 +563,6 @@
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>Avadika rehefa tazomina</value></data>
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Hafainganana</value></data>
   <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Hafainganan'ny fandehanana amin'ny ventiny isaky ny segondra. 0.5 = elanelana manontolo ao anatin'ny 2 s; 2 = elanelana manontolo ao anatin'ny 0.5 s.</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Fomba fototra</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Segondra ilaina hahatongavana amin'ny deflection feno raha mbola tazomina ilay bokotra fitendry mifanaraka. 0 = avy hatrany.</value></data>
   <data name="Pad_Mapping_Ramp_Release_Tooltip" xml:space="preserve"><value>Segondra ilaina hiverenana any afovoany aorian'ny fandefasana. 0 = avy hatrany.</value></data>
   <data name="Pad_Mapping_Ramp_Reverse_Tooltip" xml:space="preserve"><value>Hafainganan'ny fiverenan'ny axe any afovoany rehefa tsindrianao ny bokotra fitendry mifanohitra alohan'ny hilaminany. 1 = tsy misy fanafainganana.</value></data>
@@ -2121,7 +2129,6 @@
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Révision</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Fanampiny ho an'ny {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Hosoloina ny fandrindrana ankehitriny ve ny fandrindrana voatahiry ao amin'ny "{0}"? Tsy miova ny anarany sy ny lalaony.</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Soloy</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Apetraho eto ny rakitra profil</value></data>
@@ -2183,4 +2190,5 @@
   <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>na</value></data>
   <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>tsy</value></data>
   <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>raha?</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
 </root>

@@ -159,9 +159,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Kanda ku nota cyangwa kuri slider, hanyuma ukande icyinjizwa kigomba kuyikoresha.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Buto "Huza byose" isimbuka ibisohoka byo gukoraho bya A na B. Kanda ku ruziga ruzengurutse A cyangwa B kugira ngo uhuze kimwe muri byo.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Dutegereje {0}. Kanda icyinjizwa ku gikoresho cyawe.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, iyoborwa na</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Amahitamo menshi</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Amahitamo make</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Buto nyamukuru</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Buto yo ku rutugu</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Buto ya sisitemu</value></data>
@@ -478,6 +475,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>Gusubiza byose uko byari biri</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Siba byose</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Inkomoko</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Imikino ibona</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>Bitacometse: {0}</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Erekana inkingi kuri buri gikoresho kitacometse</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Kanda, hanyuma ukoreshe kuri iki gikoresho icyinjiza kigomba kuyobora {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Nyereza ibikoresho iburyo n'ibumoso</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Igikoresho</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Uburyo</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Hejuru</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Hasi</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Igihindura</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Inkoni yo kunoza</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Ibisohoka</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Agaciro</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Amahitamo</value></data>
@@ -488,7 +497,6 @@
   <data name="Pad_Mapping_Kind_Toggle" xml:space="preserve"><value>Fungura/funga</value></data>
   <data name="Pad_Mapping_Kind_RapidTrigger" xml:space="preserve"><value>Rapid trigger</value></data>
   <data name="Pad_Mapping_RapidTrigger_Distance" xml:space="preserve"><value>Intera</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Uburyo bw'ibanze</value></data>
   <data name="Pad_Mapping_AddSource" xml:space="preserve"><value>Ongeraho inkomoko</value></data>
   <data name="Pad_Mapping_RemoveSource_Tooltip" xml:space="preserve"><value>Kuraho iyi nkomoko</value></data>
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -1814,7 +1822,6 @@
   <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>Ufunguka kuri {0}</value></data>
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Washyiriweho {0}</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Ibindi kuri {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Shyira hano dosiye y'umwirondoro</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>igihe</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>kuri</value></data>
@@ -1881,4 +1888,5 @@
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} kuri {1} bifunguye</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Iyi myirondoro yinjijwe ifite verisiyo nshya kuri Steam Workshop. Yongere winjize uhereye kuri Shaka imyirondoro kugira ngo ubone impinduka.</value></data>
   <data name="Pad_Stick_Speed" xml:space="preserve"><value>Umuvuduko</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
 </root>

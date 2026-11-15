@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>यो यन्त्र जोडिँदा यो सुरु हुन्छ।</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>यीमध्ये कुनै एक यन्त्र जोडिँदा यो सुरु हुन्छ।</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>जोडिएको छैन</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>कार्डहरू</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>विस्तृत</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>सघन</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>स्वचालित</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>कार्डहरू विन्डोमा अटाउँदासम्म विस्तृत, विन्डोभन्दा बाहिर जान थालेपछि सघन</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>अहिले इनपुट पठाउँदै</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>ब्याट्री {0}, कम</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>ब्याट्री {0}, चार्ज हुँदै</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>नोट वा स्लाइडरमा क्लिक गर्नुहोस्, त्यसपछि त्यसलाई चलाउने इनपुट थिच्नुहोस्।</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“सबै म्याप गर्नुहोस्” ले A र B का स्पर्श आउटपुटहरू छोड्छ। तीमध्ये एउटा जोड्न A वा B वरिपरिको घेरामा क्लिक गर्नुहोस्।</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} को प्रतीक्षा हुँदैछ। आफ्नो यन्त्रमा इनपुट थिच्नुहोस्।</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0} को इनपुट स्रोत</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>थप विकल्पहरू</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>कम विकल्पहरू</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>फेस बटन</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>सोल्डर बटन</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>प्रणाली बटन</value></data>
@@ -1588,6 +1591,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>सबै रिसेट गर्नुहोस्</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>सबै खाली गर्नुहोस्</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>स्रोत</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>खेलहरूले देख्ने</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>जोडिएको छैन: {0}</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>जोडिएको नभएको प्रत्येक यन्त्रका लागि छुट्टै स्तम्भ देखाउनुहोस्</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>क्लिक गर्नुहोस्, त्यसपछि {0} चलाउने यस यन्त्रको इनपुट थिच्नुहोस्</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>यन्त्रहरूलाई तेर्सो स्क्रोल गर्नुहोस्</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>यन्त्र</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>मोड</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>माथि</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>तल</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>मोडिफायर</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>सूक्ष्म समायोजन स्टिक</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>आउटपुट</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>मान</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>विकल्पहरू</value></data>
@@ -1616,7 +1631,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>अधिकतम</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>एक्युमुलेटरको माथिल्लो सीमा। 1 = पूर्ण धनात्मक।</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>र्याम्प</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>प्राथमिक मोड</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>एट्याक</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>मिल्दो कुञ्जी थिचिराख्दा पूर्ण विचलनमा पुग्न लाग्ने सेकेन्ड। 0 = तुरुन्तै।</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>रिलिज</value></data>
@@ -2649,7 +2663,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>{0} का लागि सेट</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>सक्रिय</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} का लागि थप</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} मेटाउने?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>प्रोफाइल र यसको स्वतः बदलाव नियम हटाइन्छन्। यो पूर्ववत् गर्न सकिँदैन।</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>प्रोफाइल हटाइन्छ। यो पूर्ववत् गर्न सकिँदैन।</value></data>
@@ -4636,7 +4649,6 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>माथिको इनपुट</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>तलको इनपुट</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>मोडिफायर इनपुट</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>स्रोतको प्रकार</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>न्यून रङ</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>मध्य रङ</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>उच्च रङ</value></data>

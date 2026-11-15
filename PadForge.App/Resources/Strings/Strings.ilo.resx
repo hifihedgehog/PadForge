@@ -339,6 +339,18 @@
   <data name="Common_Reset_DeadZone" xml:space="preserve"><value>I-reset ti deadzone</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>I-reset amin</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Taudan</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Makita dagiti ay-ayam</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} a saan a nakakonekta</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Ipakita ti kolum para iti tunggal device a saan a nakakonekta</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>I-click, sa ipindot ti input iti daytoy a device a mangtignay iti {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>I-scroll a pasikigan dagiti device</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Device</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Ngato</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Baba</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifier</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stick ti panangpino</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Output</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Baliktaden</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Kagudua</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. -->
@@ -1178,9 +1190,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>I-click ti maysa a nota wenno slider, sa ipindot ti input a mangpaandar iti dayta.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Saan a mairaman iti "Map All" dagiti output ti sagid iti A ken B. I-click ti sirkulo iti aglawlaw ti A wenno B tapno i-map ti maysa kadakuada.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Agur-uray iti {0}. Ipindot ti input iti devicem.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, pinaandar ti</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Ad-adu pay a pagpilian</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Basbassit a pagpilian</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Butones iti sango</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Butones iti abaga</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Butones ti sistema</value></data>
@@ -1254,7 +1263,6 @@
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Rebision</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Ad-adu pay para iti {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Idulin ditoy ti agdama a setup</value></data>
   <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Sukatan ti setup a naidulin iti "{0}" iti agdama? Agtalinaed ti nagan ken dagiti ay-ayamna.</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Sukatan</value></data>
@@ -1321,4 +1329,5 @@
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Nakasagana a profile para iti intero a genre. Agpili iti maysa, isaad ti aniaman a controller, ket agay-ayam.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} iti {1} ti nakasindi</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Dagitoy a naiyalis a profile ket addaan kadagiti baro a bersion iti Steam Workshop. Iyalis manen dagitoy manipud iti Mangala kadagiti profile tapno maala dagiti panagbaliw.</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
 </root>

@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Uruchomi się, gdy to urządzenie się połączy.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Uruchomi się, gdy połączy się jedno z tych urządzeń.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Niepołączone</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Karty</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Szczegółowe</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Kompaktowe</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Auto</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Szczegółowe, dopóki karty mieszczą się w oknie, kompaktowe, gdy by z niego wystawały</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Wysyła wejście teraz</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Bateria {0}, niski poziom</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Bateria {0}, ładowanie</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Kliknij nutę lub suwak, a potem naciśnij przycisk lub porusz osią na swoim urządzeniu, aby przypisać wybrany element.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>„Mapuj wszystko” pomija wyjścia dotyku A i B. Kliknij pierścień wokół A lub B, aby przypisać to wyjście.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Nasłuchiwanie: {0}. Naciśnij odpowiednie wejście na urządzeniu.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}: sterowanie przez</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Więcej opcji</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Mniej opcji</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Przycisk czołowy</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Bumper</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Przycisk systemowy</value></data>
@@ -1588,6 +1591,18 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Resetuj wszystko</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Wyczyść wszystko</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Źródło</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Gry widzą</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} niepołączone</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Pokaż kolumnę dla każdego niepołączonego urządzenia</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Kliknij, a potem naciśnij wejście tego urządzenia, które ma sterować: {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Przewiń urządzenia w poziomie</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Urządzenie</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Tryb</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>W górę</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>W dół</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modyfikator</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Drążek korekty</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Wyjście</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Wartość</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opcje</value></data>
@@ -1616,7 +1631,6 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Maks.</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Górna granica akumulatora. 1 = pełna wartość dodatnia.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampa</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Tryb główny</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Atak</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Liczba sekund do osiągnięcia pełnego wychylenia, gdy przytrzymany jest odpowiedni klawisz. 0 = natychmiast.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Zwolnienie</value></data>
@@ -2649,7 +2663,6 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Ustawiony dla {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Aktywny</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Więcej dla {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Usunąć {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Profil i jego reguła automatycznego przełączania zostaną usunięte. Tej operacji nie można cofnąć.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Profil zostanie usunięty. Tej operacji nie można cofnąć.</value></data>
@@ -4636,7 +4649,6 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Wejście W górę</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Wejście W dół</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Wejście modyfikatora</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Typ źródła</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Kolor niskiego poziomu</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Kolor średniego poziomu</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Kolor wysokiego poziomu</value></data>

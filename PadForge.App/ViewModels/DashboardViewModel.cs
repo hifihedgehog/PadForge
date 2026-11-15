@@ -2083,6 +2083,57 @@ namespace PadForge.ViewModels
         {
             base.OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(StateWord)));
             base.OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(nameof(WaitHint)));
+            ReadFirstDevice();
+        }
+
+        private PadViewModel.MappedDeviceInfo _firstDevice;
+        private string _firstDeviceNote = string.Empty;
+
+        /// <summary>The one device a compact card names: the first that
+        /// is connected, or the first when none is. Null with no device
+        /// mapped.</summary>
+        public PadViewModel.MappedDeviceInfo FirstDevice
+        {
+            get => _firstDevice;
+            private set => SetProperty(ref _firstDevice, value);
+        }
+
+        /// <summary>What a compact card says after that device's name:
+        /// that it is not connected, or how many more devices there are,
+        /// or nothing.</summary>
+        public string FirstDeviceNote
+        {
+            get => _firstDeviceNote;
+            private set => SetProperty(ref _firstDeviceNote, value);
+        }
+
+        /// <summary>Reads the device a compact card names and the note
+        /// after it, from the mapped devices as they are now.</summary>
+        internal void ReadFirstDevice()
+        {
+            var (first, note) = FirstDeviceOf(_mappedDevices);
+            FirstDevice = first;
+            FirstDeviceNote = note;
+        }
+
+        /// <summary>The device a compact card names among these, and its
+        /// note.</summary>
+        internal static (PadViewModel.MappedDeviceInfo First, string Note) FirstDeviceOf(
+            IReadOnlyList<PadViewModel.MappedDeviceInfo> devices)
+        {
+            PadViewModel.MappedDeviceInfo first = null;
+            int count = devices?.Count ?? 0;
+            for (int i = 0; i < count; i++)
+            {
+                var device = devices[i];
+                if (first == null || (!first.IsOnline && device.IsOnline)) first = device;
+            }
+            if (first == null) return (null, string.Empty);
+            var strings = PadForge.Resources.Strings.Strings.Instance;
+            if (!first.IsOnline) return (first, strings.Home_Device_NotConnected);
+            return (first, count > 1
+                ? string.Format(System.Globalization.CultureInfo.CurrentCulture, strings.Common_MoreCount_Format, count - 1)
+                : string.Empty);
         }
 
         private string _pictureProfile;
@@ -2120,7 +2171,8 @@ namespace PadForge.ViewModels
         /// <paramref name="coming"/> says a still is being made, so there
         /// is no picture yet and there will be one.</summary>
         internal void SetPicture(string profileId, VirtualControllerType type, string finishes, bool still,
-            System.Windows.Media.ImageSource picture, System.Windows.Media.ImageSource gray, bool coming = false)
+            System.Windows.Media.ImageSource picture, System.Windows.Media.ImageSource gray, bool coming = false,
+            IReadOnlyList<PadForge.Common.StillMark> marks = null)
         {
             _pictureMade = true;
             _pictureProfile = profileId;
@@ -2132,12 +2184,54 @@ namespace PadForge.ViewModels
             _picture = picture;
             _pictureGray = gray;
             _pictureComing = coming && picture == null;
+            marks = picture == null || marks == null ? PadForge.Common.StillMarks.None : marks;
+            if (!ReferenceEquals(marks, _pictureMarks))
+            {
+                // The marks first, each at rest, then the picture they are
+                // for: the card never draws one picture's marks on another.
+                _pictureMarks = marks;
+                _heldLevels = marks.Count == 0 ? Array.Empty<byte>() : new byte[marks.Count];
+                OnPropertyChanged(nameof(HeldLevels));
+                OnPropertyChanged(nameof(PictureMarks));
+            }
             if (changed)
             {
                 OnPropertyChanged(nameof(Picture));
                 OnPropertyChanged(nameof(PictureGray));
             }
             if (had != HasPicture) OnPropertyChanged(nameof(HasPicture));
+        }
+
+        private IReadOnlyList<PadForge.Common.StillMark> _pictureMarks = PadForge.Common.StillMarks.None;
+        private byte[] _heldLevels = Array.Empty<byte>();
+
+        /// <summary>Where each control is drawn on the picture, in parts
+        /// of its width and height.</summary>
+        public IReadOnlyList<PadForge.Common.StillMark> PictureMarks => _pictureMarks;
+
+        /// <summary>How far each of those controls is held now, in the
+        /// marks' order and in steps (StillMarks.Steps): the picture is
+        /// live, and a held button lights on it as it does on the
+        /// controller's page. A new list each time a step changes.</summary>
+        public byte[] HeldLevels => _heldLevels;
+
+        /// <summary>Reads what is held on the controller now. It tells
+        /// the card only when a step changed.</summary>
+        internal void ReadHeld(PadViewModel pad)
+        {
+            var marks = _pictureMarks;
+            int count = marks.Count;
+            if (count == 0 || count != _heldLevels.Length) return;
+            Span<byte> now = count <= 128 ? stackalloc byte[count] : new byte[count];
+            bool changed = false;
+            for (int i = 0; i < count; i++)
+            {
+                now[i] = PadForge.Common.StillMarks.Step(PadForge.Common.StillMarks.Level(pad, marks[i].Role));
+                changed |= now[i] != _heldLevels[i];
+            }
+            if (!changed) return;
+            _heldLevels = now.ToArray();
+            OnPropertyChanged(nameof(HeldLevels));
         }
 
         /// <summary>Has the picture asked for again at the next refresh: a

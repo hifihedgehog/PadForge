@@ -81,6 +81,8 @@ namespace PadForge.ViewModels
             // Adding/removing a secondary can gate InvertOnHold in the primary
             // dropdown on or off (#111 audit C).
             EnforcePrimaryKindGate();
+            // The list's cells and the marks on the sources' lines follow.
+            OnSourcesChangedForList();
 
             // Clear() raises Reset with no OldItems, which would skip the
             // per-item unsubscribes below, so the hooked items are kept in
@@ -181,7 +183,19 @@ namespace PadForge.ViewModels
             if (e.PropertyName == nameof(MappingSourceItem.Descriptor)
                 || e.PropertyName == nameof(MappingSourceItem.Kind))
                 RaiseMotionRowNote();
+            if (ChangesTheList(e.PropertyName)) OnSourcesChangedForList();
         }
+
+        /// <summary>Whether a change of a source changes what the list
+        /// draws for it: its input, its device, its mode, its direction or
+        /// one of its keys.</summary>
+        private static bool ChangesTheList(string property) => property is
+            nameof(MappingSourceItem.Descriptor) or nameof(MappingSourceItem.DeviceGuid)
+            or nameof(MappingSourceItem.DeviceLabel) or nameof(MappingSourceItem.SelectedInput)
+            or nameof(MappingSourceItem.Kind) or nameof(MappingSourceItem.Invert)
+            or nameof(MappingSourceItem.ParamUp) or nameof(MappingSourceItem.ParamDown)
+            or nameof(MappingSourceItem.ParamModifier) or nameof(MappingSourceItem.ParamUpDeviceGuid)
+            or nameof(MappingSourceItem.ParamDownDeviceGuid) or nameof(MappingSourceItem.ParamModifierDeviceGuid);
 
         /// <summary>Re-syncs a single extra source's
         /// <see cref="MappingSourceItem.SelectedInput"/> to match its
@@ -404,6 +418,9 @@ namespace PadForge.ViewModels
             if (PrimaryKindSource?.IsRapidTriggerKind == true && !IsRapidTriggerOffered)
                 PrimaryKindSource.Kind = "Direct";
             OnPropertyChanged(nameof(PrimaryKindOptions));
+            // The first source's Mode picker reads the list through its
+            // mode holder.
+            PrimaryKindSource?.RaiseModeChoices();
         }
 
         private void OnPrimaryKindSourcePropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -446,6 +463,7 @@ namespace PadForge.ViewModels
             {
                 OnPropertyChanged(nameof(HasAnySource));
             }
+            if (ChangesTheList(e.PropertyName)) OnSourcesChangedForList();
         }
 
         /// <summary>Hydrates the reused <see cref="PrimaryKindSource"/> from a stored
@@ -800,8 +818,11 @@ namespace PadForge.ViewModels
             // a live language switch, so the dropdowns kept the old language
             // (owner report 2026-07-16, found alongside the Menus-tab twin).
             OnPropertyChanged(nameof(PrimaryKindOptions));
+            PrimaryKindSource?.RaiseModeChoices();
             foreach (var src in ExtraSources)
                 src.RefreshCulture();
+            // The words in the list's cells are the language's too.
+            MarkListDirty();
         }
 
         // ─────────────────────────────────────────────
@@ -2417,31 +2438,7 @@ namespace PadForge.ViewModels
 
             if (ExtraSources == null) return hit;
 
-            // Match the engine's pair rule: two numeric sources on the same
-            // device with opposite inversion.
-            int negPairIdx = -1;
-            bool foldsPair = IsBipolarAxisTarget
-                || ((TargetSettingName?.StartsWith("RawAxis", StringComparison.Ordinal) ?? false)
-                    && Category != MappingCategory.Triggers);
-            if (foldsPair && !(IsCustomCombine && SuppressBipolarPair)
-                && primaryExists && !primaryIsModifier && ExtraSources.Count > 0)
-            {
-                PadForge.Engine.Common.Mapping.SourceCoercion.StripLegacyPrefix(
-                    _sourceDescriptor, out bool primaryInvert, out _);
-                string primaryGuid = PrimarySourceDeviceGuid;
-                if (!IsPrimaryDescriptor)
-                {
-                    primaryGuid = PrimaryKindSource?.DeviceGuid;
-                    primaryInvert = PrimaryKindSource?.Invert ?? false;
-                }
-                var first = ExtraSources[0];
-                if (first != null
-                    && !string.Equals(first.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal)
-                    && string.Equals(first.DeviceGuid ?? "", primaryGuid ?? "",
-                        StringComparison.OrdinalIgnoreCase)
-                    && first.Invert != primaryInvert)
-                    negPairIdx = 0;
-            }
+            int negPairIdx = FoldedPairIndex(primaryExists, primaryIsModifier);
 
             for (int i = 0; i < ExtraSources.Count; i++)
             {
@@ -2454,6 +2451,37 @@ namespace PadForge.ViewModels
                 count++;
             }
             return hit;
+        }
+
+        /// <summary>The index in <see cref="ExtraSources"/> of the source
+        /// that shares the first source's slot, or -1. The engine's pair
+        /// rule: on a row with two directions, two numeric sources on the
+        /// same device with opposite inversion are one slot. Only the first
+        /// added source can pair, and never while a Custom row keeps both
+        /// positions.</summary>
+        private int FoldedPairIndex(bool primaryExists, bool primaryIsModifier)
+        {
+            bool foldsPair = IsBipolarAxisTarget
+                || ((TargetSettingName?.StartsWith("RawAxis", StringComparison.Ordinal) ?? false)
+                    && Category != MappingCategory.Triggers);
+            if (!foldsPair || (IsCustomCombine && SuppressBipolarPair)
+                || !primaryExists || primaryIsModifier || ExtraSources.Count == 0)
+                return -1;
+            PadForge.Engine.Common.Mapping.SourceCoercion.StripLegacyPrefix(
+                _sourceDescriptor, out bool primaryInvert, out _);
+            string primaryGuid = PrimarySourceDeviceGuid;
+            if (!IsPrimaryDescriptor)
+            {
+                primaryGuid = PrimaryKindSource?.DeviceGuid;
+                primaryInvert = PrimaryKindSource?.Invert ?? false;
+            }
+            var first = ExtraSources[0];
+            return first != null
+                && !string.Equals(first.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal)
+                && string.Equals(first.DeviceGuid ?? "", primaryGuid ?? "",
+                    StringComparison.OrdinalIgnoreCase)
+                && first.Invert != primaryInvert
+                    ? 0 : -1;
         }
 
         /// <summary>How many letters a Custom formula may reference on this
@@ -2505,6 +2533,8 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(VariableCTooltip));
             OnPropertyChanged(nameof(VariableDTooltip));
             OnPropertyChanged(nameof(CombineExpressionStatus));
+            // The letters beside the sources' lines are the same positions.
+            RefreshLineLetters();
         }
 
         /// <summary>True when the expression is valid but references

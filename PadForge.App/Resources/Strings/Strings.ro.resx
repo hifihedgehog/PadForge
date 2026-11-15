@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Pornește când se conectează acest dispozitiv.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Pornește când se conectează unul dintre aceste dispozitive.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Neconectat</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Carduri</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Detaliat</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Compact</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Automat</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Detaliat cât timp cardurile încap în fereastră, compact când le-ar depăși limita</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Trimite intrare acum</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Baterie {0}, scăzută</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Baterie {0}, se încarcă</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Faceți clic pe o notă sau pe un glisor, apoi apăsați intrarea care să-l comande.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Mapare completă omite ieșirile de atingere ale butoanelor A și B. Faceți clic pe inelul din jurul lui A sau B pentru a lega una dintre ele.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Se așteaptă {0}. Apăsați intrarea de pe dispozitiv.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, controlat de</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Mai multe opțiuni</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Mai puține opțiuni</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Buton frontal</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Buton de umăr</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Buton de sistem</value></data>
@@ -1588,6 +1591,18 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Resetare totală</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Golire totală</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Sursă</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Ce văd jocurile</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} neconectate</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Afișează o coloană pentru fiecare dispozitiv neconectat</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Faceți clic, apoi apăsați intrarea de pe acest dispozitiv care să controleze {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Derulați dispozitivele lateral</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Dispozitiv</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Mod</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Sus</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Jos</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modificator</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Joystick de ajustare</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Ieșire</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valoare</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opțiuni</value></data>
@@ -1616,7 +1631,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Limita superioară a acumulatorului. 1 = complet pozitiv.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampă</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Mod principal</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Atac</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Secunde până la deplasarea completă cât timp tasta corespunzătoare este ținută apăsată. 0 = instantaneu.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Eliberare</value></data>
@@ -2649,7 +2663,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Setat pentru {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Activ</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Mai multe pentru {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Ștergeți {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Profilul și regula sa de comutare automată sunt eliminate. Acțiunea nu poate fi anulată.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Profilul este eliminat. Acțiunea nu poate fi anulată.</value></data>
@@ -4636,7 +4649,6 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Intrare Sus</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Intrare Jos</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Intrare modificator</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Tip sursă</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Culoare joasă</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Culoare medie</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Culoare înaltă</value></data>

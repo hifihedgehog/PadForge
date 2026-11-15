@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Spustí se, až se toto zařízení připojí.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Spustí se, až se připojí jedno z těchto zařízení.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Nepřipojeno</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Karty</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Podrobné</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Kompaktní</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Automaticky</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Podrobné, dokud se karty vejdou do okna, kompaktní, jakmile by přesáhly jeho okraj</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Odesílá vstup</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Baterie {0}, slabá</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Baterie {0}, nabíjí se</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Klikněte na notu nebo posuvník a poté stiskněte vstup, který ho má ovládat.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Tlačítko Namapovat vše přeskočí dotykové výstupy tlačítek A a B. Jeden z nich navážete kliknutím na kroužek kolem A nebo B.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Čekání na vstup pro {0}. Stiskněte vstup na svém zařízení.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, vstup ze zařízení</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Další možnosti</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Méně možností</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Čelní tlačítko</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Ramenní tlačítko</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Systémové tlačítko</value></data>
@@ -1588,6 +1591,18 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Resetovat vše</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Vymazat vše</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Zdroj</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Hry vidí</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} nepřipojeno</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Zobrazit sloupec pro každé nepřipojené zařízení</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Klikněte a poté stiskněte vstup na tomto zařízení, který má ovládat: {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Posouvat zařízení do stran</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Zařízení</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Režim</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Nahoru</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Dolů</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifikátor</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Páčka pro doladění</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Výstup</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Hodnota</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0} %</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Možnosti</value></data>
@@ -1616,7 +1631,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Horní mez akumulované hodnoty. 1 = plná kladná hodnota.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampa</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Primární režim</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Náběh</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Počet sekund do dosažení plné výchylky při držení příslušné klávesy. 0 = okamžitě.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Uvolnění</value></data>
@@ -2649,7 +2663,6 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Nastaveno pro {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Aktivní</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Další možnosti pro {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Odstranit {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Profil a jeho pravidlo automatického přepínání budou odebrány. Tuto akci nelze vrátit zpět.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Profil bude odebrán. Tuto akci nelze vrátit zpět.</value></data>
@@ -4636,7 +4649,6 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Vstup Nahoru</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Vstup Dolů</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Vstup modifikátoru</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Typ zdroje</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Barva nízkého pásma</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Barva středního pásma</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Barva vysokého pásma</value></data>

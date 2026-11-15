@@ -184,9 +184,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Kilikim wan not o wan slaeda, afta presem baton o muvum stik long divaes blong yu we bae i kontrolem hem.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Map All i no rekodem ol aotput blong taj long A mo B. Kilikim ring raon long A o B blong mapim wan.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>I stap wet blong rekodem {0}. Presem baten long divaes blong yu.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, input i kam long</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Moa seting</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Sam seting nomo</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Baton long fes</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Baton long solda</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Baton blong sistem</value></data>
@@ -1690,7 +1687,6 @@
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Fomwea</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Revisen</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Moa blong {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="GetProfiles_Title" xml:space="preserve"><value>Kasem ol Profael</value></data>
   <data name="GetProfiles_Starters" xml:space="preserve"><value>Stat</value></data>
   <data name="GetProfiles_SaveHint" xml:space="preserve"><value>Taem yu sevem, i putum wan profael nomo we yu save jenisim.</value></data>
@@ -1754,4 +1750,22 @@
   <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Tiun</value></data>
   <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Gem i ridim muvmen we i kalibreit finis, mo i putum sensitiviti mo smuting blong hem wan.</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Gem i ridim muvmen wetem sensitiviti, smuting mo kev we yu setem long kad ia.</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Ol kad</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Fulwan</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Smol</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Oto</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Fulwan taem ol kad oli fitim windo, smol taem oli save pas aot long windo</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Ol gem oli luk</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} oli no konek</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Soem wan kolum blong evri divaes we i no konek</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Klik, ale presem input long divaes ia we bambae i muvum {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Skrol ol divaes i go long saed</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Divaes</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Mod</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Antap</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Daon</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifaea</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stik blong stretem</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Autput</value></data>
 </root>

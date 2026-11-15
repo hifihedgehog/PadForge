@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Այն սկսվում է, երբ այս սարքը միանում է։</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Այն սկսվում է, երբ այս սարքերից մեկը միանում է։</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Միացված չէ</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Քարտեր</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Մանրամասն</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Սեղմ</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Ավտո</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Մանրամասն, քանի դեռ քարտերը տեղավորվում են պատուհանում, և սեղմ, երբ դրանից դուրս կգան</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Մուտք է ուղարկվում հիմա</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Մարտկոց {0}, ցածր</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Մարտկոց {0}, լիցքավորվում է</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Սեղմեք նոտայի կամ սլայդերի վրա, ապա սեղմեք ձեր սարքի այն մուտքը, որը պետք է այն կառավարի։</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>«Կապակցել բոլորը» կոճակը բաց է թողնում A և B հպման ելքերը։ Սեղմեք A-ի կամ B-ի շուրջ գտնվող օղակի վրա՝ դրանցից մեկը կապակցելու համար։</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Սպասվում է մուտք {0}-ի համար։ Սեղմեք մուտքը ձեր սարքի վրա։</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, ազդանշանի աղբյուր</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Ավելի շատ ընտրանքներ</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Ավելի քիչ ընտրանքներ</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Դիմային կոճակ</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Ուսային կոճակ</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Համակարգային կոճակ</value></data>
@@ -1401,6 +1404,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>Վերականգնել բոլորը</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Մաքրել բոլորը</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Աղբյուր</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Խաղերը տեսնում են</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} միացված չէ</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Ցույց տալ սյունակ յուրաքանչյուր չմիացված սարքի համար</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Սեղմեք, ապա գործարկեք այս սարքի այն մուտքը, որը պետք է կառավարի հետևյալը՝ {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Ոլորել սարքերը կողքերին</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Սարք</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Ռեժիմ</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Վեր</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Վար</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Փոփոխիչ</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Ճշգրտման ձող</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Ելք</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Արժեք</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Ընտրանքներ</value></data>
@@ -1429,7 +1444,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Առավ.</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Կուտակիչի վերին սահմանը։ 1 = լրիվ դրական։</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Աճ</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Հիմնական ռեժիմ</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Թռիչք</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Վայրկյանները լրիվ շեղմանը հասնելու համար, մինչև համապատասխան ստեղնը պահված է։ 0 = ակնթարթորեն։</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Բաց թողնել</value></data>
@@ -2449,7 +2463,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Սահմանված է {0}-ի համար</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Ակտիվ</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Ավելին՝ {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}՝ {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Ջնջե՞լ {0}-ը</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Պրոֆիլը և նրա ավտոմատ փոխարկման կանոնը հեռացվում են։ Սա հնարավոր չէ չեղարկել։</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Պրոֆիլը հեռացվում է։ Սա հնարավոր չէ չեղարկել։</value></data>
@@ -4367,7 +4380,6 @@
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Վերև մուտք</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Ներքև մուտք</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Փոփոխիչի մուտք</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Աղբյուրի տեսակ</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Ցածր գույն</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Միջին գույն</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Բարձր գույն</value></data>

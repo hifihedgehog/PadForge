@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>এই ডিভাইস সংযুক্ত হলে এটি চালু হয়।</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>এই ডিভাইসগুলোর একটি সংযুক্ত হলে এটি চালু হয়।</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>সংযুক্ত নয়</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>কার্ড</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>বিস্তারিত</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>সংক্ষিপ্ত</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>স্বয়ংক্রিয়</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>কার্ডগুলো উইন্ডোতে ধরলে বিস্তারিত, উইন্ডো ছাড়িয়ে গেলে সংক্ষিপ্ত</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>এখন ইনপুট পাঠাচ্ছে</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>ব্যাটারি {0}, কম</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>ব্যাটারি {0}, চার্জ হচ্ছে</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>একটি নোট বা স্লাইডারে ক্লিক করুন, তারপর যে বোতাম চাপলে বা অক্ষ নাড়ালে সেটি চলবে, তা আপনার ডিভাইসে চাপুন বা নাড়ান।</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“সব ম্যাপ করুন” A ও B-এর স্পর্শ আউটপুট বাদ দেয়। একটি ম্যাপ করতে A বা B-এর চারপাশের রিংয়ে ক্লিক করুন।</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0}-এর জন্য অপেক্ষা করা হচ্ছে। আপনার ডিভাইসে ইনপুটটি চাপুন।</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}-এর ইনপুটের উৎস</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>আরও বিকল্প</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>কম বিকল্প</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>ফেস বোতাম</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>শোল্ডার বোতাম</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>সিস্টেম বোতাম</value></data>
@@ -1588,6 +1591,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>সব রিসেট করুন</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>সব সাফ করুন</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>উৎস</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>গেম যা দেখে</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0}টি সংযুক্ত নয়</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>সংযুক্ত নয় এমন প্রতিটি ডিভাইসের জন্য আলাদা কলাম দেখান</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>ক্লিক করুন, তারপর এই ডিভাইসের যে ইনপুট {0} চালাবে সেটি চাপুন</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>ডিভাইসগুলো পাশে সরান</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>ডিভাইস</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>মোড</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>ঊর্ধ্বমুখী</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>নিম্নমুখী</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>মডিফায়ার</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>ট্রিম স্টিক</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>আউটপুট</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>মান</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>বিকল্প</value></data>
@@ -1616,7 +1631,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>সর্বোচ্চ</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>সঞ্চিত মানের ঊর্ধ্বসীমা। 1 = পূর্ণ ধনাত্মক।</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>ক্রমবৃদ্ধি</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>প্রাথমিক মোড</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>অ্যাটাক</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>সংশ্লিষ্ট কী ধরে রাখা অবস্থায় পূর্ণ বিক্ষেপে পৌঁছাতে যত সেকেন্ড লাগে। 0 = তাৎক্ষণিক।</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>রিলিজ</value></data>
@@ -2649,7 +2663,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>ঠিক করা আছে: {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>সক্রিয়</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} সম্পর্কে আরও</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} মুছবেন?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>প্রোফাইল ও এর স্বয়ংক্রিয় বদলের নিয়ম সরানো হবে। এটি ফেরানো যাবে না।</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>প্রোফাইলটি সরানো হবে। এটি ফেরানো যাবে না।</value></data>
@@ -4636,7 +4649,6 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>উপরের ইনপুট</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>নিচের ইনপুট</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>মডিফায়ার ইনপুট</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>উৎসের ধরন</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>নিম্ন রং</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>মাঝারি রং</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>উচ্চ রং</value></data>

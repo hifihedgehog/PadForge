@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Niset kur lidhet kjo pajisje.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Niset kur lidhet një nga këto pajisje.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>E palidhur</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Kartat</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Të detajuara</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Kompakte</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Auto</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Të detajuara sa kohë që kartat ngjajnë në dritare, kompakte kur do ta tejkalonin</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Po dërgon hyrje tani</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Bateria {0}, e ulët</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Bateria {0}, po ngarkohet</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Kliko një notë ose një rrëshqitës, pastaj shtyp hyrjen që duhet ta drejtojë.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>„Hartëzo të gjitha“ i anashkalon daljet e prekjes për A dhe B. Kliko unazën rreth A ose B për të lidhur njërën.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Po regjistron {0}. Shtyp hyrjen në pajisjen tënde.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, drejtuar nga</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Më shumë opsione</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Më pak opsione</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Buton ballor</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Buton supi</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Buton sistemi</value></data>
@@ -1400,6 +1403,18 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ResetAll" xml:space="preserve"><value>Rivendos të gjitha</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Pastro të gjitha</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Burimi</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Çfarë shohin lojërat</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} të palidhura</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Shfaq një kolonë për çdo pajisje që nuk është e lidhur</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Kliko, pastaj shtyp hyrjen në këtë pajisje që duhet të drejtojë {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Lëviz pajisjet anash</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Pajisje</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Mënyra</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Lart</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Poshtë</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifikues</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Leva e rregullimit</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Dalja</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Vlera</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opsione</value></data>
@@ -1428,7 +1443,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Maks</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Kufiri i sipërm i akumulatorit. 1 = plotësisht pozitiv.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampë</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Mënyra kryesore</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Ngjitja</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Sekondat për të arritur devijimin e plotë për sa kohë mbahet tasti përkatës. 0 = çast.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Lëshimi</value></data>
@@ -2448,7 +2462,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Caktuar për {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Aktiv</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Më shumë për {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Të fshihet {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Profili dhe rregulli i tij i ndërrimit automatik hiqen. Kjo nuk mund të zhbëhet.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Profili hiqet. Kjo nuk mund të zhbëhet.</value></data>
@@ -4353,7 +4366,6 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Hyrja lart</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Hyrja poshtë</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Hyrja modifikuese</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Lloji i burimit</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Ngjyra e ulët</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Ngjyra e mesme</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Ngjyra e lartë</value></data>

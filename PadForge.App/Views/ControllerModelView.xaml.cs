@@ -674,6 +674,18 @@ namespace PadForge.Views
         private static readonly Dictionary<string, Func<PadViewModel, bool>> ButtonReaderByName =
             System.Linq.Enumerable.ToDictionary(ButtonReaders, r => r.Name, r => r.Read, StringComparer.Ordinal);
 
+        /// <summary>Whether a role is one of the buttons this view reads,
+        /// and whether that button is held on a controller now. A Home
+        /// card's picture lights what this view lights, from this table.
+        /// With no controller it answers only whether the role is read.</summary>
+        internal static bool TryReadButton(PadViewModel vm, string role, out bool held)
+        {
+            held = false;
+            if (role == null || !ButtonReaderByName.TryGetValue(role, out var read)) return false;
+            held = vm != null && read(vm);
+            return true;
+        }
+
         private void HighlightButtons()
         {
             // The hovered TARGET is owned by the hover highlight while the

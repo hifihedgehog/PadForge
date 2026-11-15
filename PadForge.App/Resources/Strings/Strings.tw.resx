@@ -737,7 +737,6 @@
   <data name="Devices_Filter_All" xml:space="preserve"><value>Ne nyinaa</value></data>
   <data name="Devices_SettingsCard" xml:space="preserve"><value>Nhyehyɛe</value></data>
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Axis, button ne sensor biara</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Sesa</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>sɛ</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>wɔ</value></data>
@@ -782,4 +781,15 @@
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} wɔ {1} mu abue</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Profiles a wɔde aba yi wɔ nea ɛyɛ foforo wɔ Steam Workshop so. San fa wɔn bra bio fi Nya Profiles mu na nsakrae no nka ho.</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Nhyehyɛeɛ</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Agodie hu</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} nni nkitahodi</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Kyerɛ kɔlɔm ma device biara a ɛnni nkitahodi</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Mia so, na afei mia input a ɛwɔ device yi so a ɛsɛ sɛ ɛkanyan {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Twe device ahorow no kɔ nkyɛn</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Device</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Ɔkwan</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Soro</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Fam</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Nsesaeɛ</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stick nsiesie ketewa</value></data>
 </root>

@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>ဤစက်ပစ္စည်း ချိတ်ဆက်သည့်အခါ ၎င်း စတင်သည်။</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>ဤစက်ပစ္စည်းများထဲမှ တစ်ခု ချိတ်ဆက်သည့်အခါ ၎င်း စတင်သည်။</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>ချိတ်ဆက်မထားပါ</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>ကတ်များ</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>အသေးစိတ်</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>ကျစ်လျစ်</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>အလိုအလျောက်</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>ကတ်များ ဝင်းဒိုးထဲ ဆံ့နေစဉ် အသေးစိတ်၊ ဝင်းဒိုးကို ကျော်လွန်မည်ဆိုလျှင် ကျစ်လျစ်</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>ယခု အဝင် ပို့နေသည်</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>ဘက်ထရီ {0}၊ နည်းနေသည်</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>ဘက်ထရီ {0}၊ အားသွင်းနေသည်</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>နုတ်တစ်ခု သို့မဟုတ် ဆလိုက်ဒါတစ်ခုကို နှိပ်ပြီး ၎င်းကို မောင်းနှင်မည့် ထည့်သွင်းမှုကို နှိပ်ပါ။</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“အားလုံး မက်ပင်းလုပ်ရန်” သည် A နှင့် B ထိတွေ့ အထွက်များကို ကျော်သွားသည်။ တစ်ခုကို ချိတ်ဆက်ရန် A သို့မဟုတ် B ပတ်လည်ရှိ ကွင်းကို နှိပ်ပါ။</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} အတွက် မှတ်တမ်းတင်နေသည်။ သင့်စက်ပစ္စည်းပေါ်ရှိ ထည့်သွင်းမှုကို နှိပ်ပါ။</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0} ၏ အဝင်ရင်းမြစ်</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>ရွေးချယ်စရာ ပိုပြရန်</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>ရွေးချယ်စရာ လျှော့ပြရန်</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>မျက်နှာစာခလုတ်</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>ပခုံးခလုတ်</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>စနစ်ခလုတ်</value></data>
@@ -1401,6 +1404,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>အားလုံး ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>အားလုံး ရှင်းလင်း</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>ရင်းမြစ်</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>ဂိမ်းများ မြင်သည်</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} ခု ချိတ်ဆက်မထားပါ</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>ချိတ်ဆက်မထားသော စက်ပစ္စည်းတစ်ခုစီအတွက် ကော်လံတစ်ခုစီ ပြရန်</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>နှိပ်ပြီးနောက် {0} ကို မောင်းနှင်မည့် ဤစက်ပစ္စည်းပေါ်ရှိ အဝင်ကို နှိပ်ပါ</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>စက်ပစ္စည်းများကို ဘေးတိုက် လှိမ့်ရန်</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>စက်ပစ္စည်း</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>မုဒ်</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>အပေါ်</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>အောက်</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>မွမ်းမံကီး</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>ချိန်ညှိ စတစ်</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>အထွက်</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>တန်ဖိုး</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>ရွေးချယ်စရာများ</value></data>
@@ -1429,7 +1444,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>အမြင့်ဆုံး</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>စုဆောင်းတန်ဖိုး၏ အထက်ဆုံးကန့်သတ်ချက်။ 1 = အပေါင်းဘက် အပြည့်။</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>တဖြည်းဖြည်းပြောင်း</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>အဓိကမုဒ်</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>တက်ချိန်</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>သက်ဆိုင်ရာ ကီးကို ဖိထားစဉ် တွန်းရွှေ့မှုပမာဏ အပြည့်သို့ ရောက်ရန် စက္ကန့်။ 0 = ချက်ချင်း။</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>ပြန်ကျချိန်</value></data>
@@ -2457,7 +2471,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>{0} အတွက် သတ်မှတ်ထားသည်</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>အသုံးပြုနေသည်</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} အတွက် နောက်ထပ်</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} ကို ဖျက်မလား။</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>ပရိုဖိုင်နှင့် ၎င်း၏ အလိုအလျောက်ပြောင်းသည့် စည်းမျဉ်းကို ဖယ်ရှားမည်။ ၎င်းကို ပြန်ပြင်၍ မရပါ။</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>ပရိုဖိုင်ကို ဖယ်ရှားမည်။ ၎င်းကို ပြန်ပြင်၍ မရပါ။</value></data>
@@ -4397,7 +4410,6 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>အပေါ် အဝင်</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>အောက် အဝင်</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>မွမ်းမံ အဝင်</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>ရင်းမြစ် အမျိုးအစား</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>အနိမ့် အရောင်</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>အလယ် အရောင်</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>အမြင့် အရောင်</value></data>

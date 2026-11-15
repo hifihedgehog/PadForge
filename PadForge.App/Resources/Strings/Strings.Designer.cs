@@ -399,6 +399,12 @@ public class Strings : INotifyPropertyChanged
     public string Home_Card_StartsWhenThis => Get("Home_Card_StartsWhenThis");
     public string Home_Card_StartsWhenOne => Get("Home_Card_StartsWhenOne");
     public string Home_Device_NotConnected => Get("Home_Device_NotConnected");
+    public string Home_Cards => Get("Home_Cards");
+    public string Home_Cards_Detailed => Get("Home_Cards_Detailed");
+    public string Home_Cards_Compact => Get("Home_Cards_Compact");
+    public string Home_Cards_Auto => Get("Home_Cards_Auto");
+    public string Home_Cards_Auto_Tooltip => Get("Home_Cards_Auto_Tooltip");
+    public string Common_MoreCount_Format => Get("Common_MoreCount_Format");
     public string Home_Device_Sending => Get("Home_Device_Sending");
     public string Home_Battery_Low_Format => Get("Home_Battery_Low_Format");
     public string Home_Battery_Charging_Format => Get("Home_Battery_Charging_Format");
@@ -445,9 +451,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_PictureHint_Midi => Get("Pad_PictureHint_Midi");
     public string Pad_Vr_MapAllSkipsTouch => Get("Pad_Vr_MapAllSkipsTouch");
     public string Pad_Listening_Format => Get("Pad_Listening_Format");
-    public string Pad_DrivenBy_Format => Get("Pad_DrivenBy_Format");
-    public string Pad_MoreOptions => Get("Pad_MoreOptions");
-    public string Pad_FewerOptions => Get("Pad_FewerOptions");
     public string Pad_Kind_FaceButton => Get("Pad_Kind_FaceButton");
     public string Pad_Kind_ShoulderButton => Get("Pad_Kind_ShoulderButton");
     public string Pad_Kind_SystemButton => Get("Pad_Kind_SystemButton");
@@ -2148,6 +2151,18 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_HeadphoneVolumeDown_Tooltip => Get("MacroAction_HeadphoneVolumeDown_Tooltip");
     public string Pad_ClearAll => Get("Pad_ClearAll");
     public string Pad_HeaderSource => Get("Pad_HeaderSource");
+    public string Pad_List_GamesSee => Get("Pad_List_GamesSee");
+    public string Pad_List_NotConnected_Format => Get("Pad_List_NotConnected_Format");
+    public string Pad_List_ShowNotConnected_Tooltip => Get("Pad_List_ShowNotConnected_Tooltip");
+    public string Pad_List_Cell_Tooltip => Get("Pad_List_Cell_Tooltip");
+    public string Pad_List_Scroll => Get("Pad_List_Scroll");
+    public string Pad_Row_Device => Get("Pad_Row_Device");
+    public string Pad_Row_Mode => Get("Pad_Row_Mode");
+    public string Pad_Row_Up => Get("Pad_Row_Up");
+    public string Pad_Row_Down => Get("Pad_Row_Down");
+    public string Pad_Row_Modifier => Get("Pad_Row_Modifier");
+    public string Pad_Row_TrimStick => Get("Pad_Row_TrimStick");
+    public string Pad_Picked_Row => Get("Pad_Picked_Row");
     public string Pad_HeaderValue => Get("Pad_HeaderValue");
     public string Pad_Value_Percent_Format => Get("Pad_Value_Percent_Format");
     public string Pad_HeaderOptions => Get("Pad_HeaderOptions");
@@ -2175,7 +2190,6 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Mapping_Max => Get("Pad_Mapping_Max");
     public string Pad_Mapping_Max_Tooltip => Get("Pad_Mapping_Max_Tooltip");
     public string Pad_Mapping_Kind_Ramped => Get("Pad_Mapping_Kind_Ramped");
-    public string Pad_Mapping_PrimaryMode => Get("Pad_Mapping_PrimaryMode");
     public string Pad_Mapping_Ramp_Attack => Get("Pad_Mapping_Ramp_Attack");
     public string Pad_Mapping_Ramp_Attack_Tooltip => Get("Pad_Mapping_Ramp_Attack_Tooltip");
     public string Pad_Mapping_Ramp_Release => Get("Pad_Mapping_Ramp_Release");
@@ -3692,7 +3706,6 @@ public class Strings : INotifyPropertyChanged
     public string Profiles_Card_SetFor_Format => Get("Profiles_Card_SetFor_Format");
     public string Profiles_Active => Get("Profiles_Active");
     public string Profiles_CardMore_Format => Get("Profiles_CardMore_Format");
-    public string Profiles_TypeCount_Format => Get("Profiles_TypeCount_Format");
     public string Profiles_DeleteConfirmTitle_Format => Get("Profiles_DeleteConfirmTitle_Format");
     public string Profiles_DeleteConfirmGames => Get("Profiles_DeleteConfirmGames");
     public string Profiles_DeleteConfirmNoGames => Get("Profiles_DeleteConfirmNoGames");
@@ -4455,7 +4468,6 @@ public class Strings : INotifyPropertyChanged
     public string ResetLabel_UpInput => Get("ResetLabel_UpInput");
     public string ResetLabel_DownInput => Get("ResetLabel_DownInput");
     public string ResetLabel_ModifierInput => Get("ResetLabel_ModifierInput");
-    public string ResetLabel_SourceType => Get("ResetLabel_SourceType");
     public string ResetLabel_LowColor => Get("ResetLabel_LowColor");
     public string ResetLabel_MidColor => Get("ResetLabel_MidColor");
     public string ResetLabel_HighColor => Get("ResetLabel_HighColor");

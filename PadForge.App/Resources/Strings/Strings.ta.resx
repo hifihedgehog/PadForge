@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>இந்தச் சாதனம் இணையும்போது இது தொடங்கும்.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>இந்தச் சாதனங்களில் ஒன்று இணையும்போது இது தொடங்கும்.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>இணைக்கப்படவில்லை</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>அட்டைகள்</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>விரிவானது</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>சுருக்கமானது</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>தானியங்கி</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>அட்டைகள் சாளரத்தில் பொருந்தும் வரை விரிவாகவும், சாளரத்தைத் தாண்டிவிடும் நிலையில் சுருக்கமாகவும் காட்டும்</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>இப்போது உள்ளீட்டை அனுப்புகிறது</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>பேட்டரி {0}, குறைவு</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>பேட்டரி {0}, சார்ஜ் ஆகிறது</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>ஒரு நோட்டை அல்லது ஸ்லைடரைக் கிளிக் செய்து, அதை இயக்க வேண்டிய உள்ளீட்டை அழுத்தவும்.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>அனைத்தையும் மேப் செய் என்பது A மற்றும் B தொடு வெளியீடுகளைத் தவிர்க்கும். ஒன்றைப் பிணைக்க, A அல்லது B-ஐச் சுற்றியுள்ள வளையத்தைக் கிளிக் செய்யவும்.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0}-க்காகக் கேட்கிறது. உங்கள் சாதனத்தில் உள்ளீட்டை அழுத்தவும்.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, உள்ளீட்டு மூலம்</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>மேலும் விருப்பங்கள்</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>குறைவான விருப்பங்கள்</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>முகப்புப் பொத்தான்</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>ஷோல்டர் பொத்தான்</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>சிஸ்டம் பொத்தான்</value></data>
@@ -1588,6 +1591,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>அனைத்தையும் மீட்டமை</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>அனைத்தையும் அழி</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>மூலம்</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>கேம்கள் காண்பது</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} இணைக்கப்படவில்லை</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>இணைக்கப்படாத ஒவ்வொரு சாதனத்துக்கும் ஒரு நெடுவரிசையைக் காட்டு</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>சொடுக்கவும், பிறகு {0} ஐ இயக்க வேண்டிய இந்தச் சாதனத்தின் உள்ளீட்டை அழுத்தவும்</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>சாதனங்களைப் பக்கவாட்டில் உருட்டு</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>சாதனம்</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>பயன்முறை</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>மேலே</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>கீழே</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>மாற்றி</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>டிரிம் ஸ்டிக்</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>வெளியீடு</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>மதிப்பு</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>விருப்பங்கள்</value></data>
@@ -1616,7 +1631,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>அதிகபட்சம்</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>திரட்டியின் மேல் எல்லை. 1 = முழு நேர்மறை.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>ரேம்ப்</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>முதன்மைப் பயன்முறை</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>ஏற்றம்</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>பொருந்தும் விசை பிடிக்கப்பட்டிருக்கும்போது முழு விலகலை அடைய ஆகும் வினாடிகள். 0 = உடனடி.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>விடுவிப்பு</value></data>
@@ -2649,7 +2663,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>{0}-க்கு அமைக்கப்பட்டது</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>செயலில்</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0}-க்கான கூடுதல் விருப்பங்கள்</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0}-ஐ நீக்கவா?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>சுயவிவரமும் அதன் தானியங்கி மாற்ற விதியும் நீக்கப்படும். இதைத் திரும்பப் பெற முடியாது.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>சுயவிவரம் நீக்கப்படும். இதைத் திரும்பப் பெற முடியாது.</value></data>
@@ -4636,7 +4649,6 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>மேல் உள்ளீடு</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>கீழ் உள்ளீடு</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>மாற்றி உள்ளீடு</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>மூல வகை</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>குறைவு நிறம்</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>நடுத்தர நிறம்</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>அதிக நிறம்</value></data>

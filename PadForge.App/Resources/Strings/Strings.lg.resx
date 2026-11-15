@@ -215,6 +215,18 @@
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Nyiga okugezesa motor ya kkono</value></data>
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Nyiga okugezesa motor ya ddyo</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Ensibuko</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Emizannyo kye giraba</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} tebiyungiddwa</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Laga empagi ya buli kyuma ekitayungiddwa</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Nyiga wano, oluvannyuma nyiga ekiyingizibwa ku kyuma kino ekirina okufuga {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Seetula ebyuma ku mabbali</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Ekyuma</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Enkola</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Waggulu</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Wansi</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Ekikyusa</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Omuggo ogw'okutereeza</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Ekifuluma</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Omuwendo</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. -->
@@ -750,7 +762,6 @@
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Nnamba ya serial</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Enkyusa</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Zzaawo</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>nga</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>ku</value></data>

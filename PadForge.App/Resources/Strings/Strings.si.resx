@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>මෙම උපාංගය සම්බන්ධ වන විට එය ආරම්භ වේ.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>මෙම උපාංගවලින් එකක් සම්බන්ධ වන විට එය ආරම්භ වේ.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>සම්බන්ධ වී නැත</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>කාඩ්පත්</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>සවිස්තරාත්මක</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>සංයුක්ත</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>ස්වයංක්‍රීය</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>කාඩ්පත් කවුළුවට ගැළපෙන තුරු සවිස්තරාත්මක, ඒවා කවුළුව ඉක්මවා යන විට සංයුක්ත</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>දැන් ආදානය යවමින්</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>බැටරිය {0}, අඩුයි</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>බැටරිය {0}, ආරෝපණය වෙමින්</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>ස්වරයක් හෝ ස්ලයිඩරයක් ක්ලික් කර, එය මෙහෙයවිය යුතු ආදානය ඔබන්න.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“සියල්ල සිතියම්ගත කරන්න” A සහ B ස්පර්ශ ප්‍රතිදාන මඟ හරියි. එකක් බැඳීමට A හෝ B වටා ඇති වළල්ල ක්ලික් කරන්න.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} පටිගත කරමින්. ඔබේ උපාංගයේ ආදානය ඔබන්න.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0} සඳහා ආදාන මූලාශ්‍රය</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>තවත් විකල්ප</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>අඩු විකල්ප</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>මුහුණත බොත්තම</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>උරහිස් බොත්තම</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>පද්ධති බොත්තම</value></data>
@@ -1400,6 +1403,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>සියල්ල යළි සකසන්න</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>සියල්ල හිස් කරන්න</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>මූලාශ්‍රය</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>ක්‍රීඩා දකින්නේ</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>සම්බන්ධ වී නැත: {0}</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>සම්බන්ධ වී නැති සෑම උපාංගයක් සඳහාම තීරුවක් පෙන්වන්න</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>ක්ලික් කර, {0} පාලනය කළ යුතු මෙම උපාංගයේ ආදානය ඔබන්න</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>උපාංග පැත්තට අනුචලනය කරන්න</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>උපාංගය</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>ප්‍රකාරය</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>ඉහළ</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>පහළ</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>විකරණකය</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>සියුම් සීරුමාරු ස්ටික්</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>ප්‍රතිදානය</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>අගය</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>විකල්ප</value></data>
@@ -1428,7 +1443,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>උපරිම</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>සමුච්චායකයේ ඉහළ සීමාව. 1 = සම්පූර්ණ ධන.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>රැම්ප්</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>ප්‍රාථමික ප්‍රකාරය</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>නැගීම</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>ගැළපෙන යතුර ඔබාගෙන සිටින අතරතුර සම්පූර්ණ අපගමනයට ළඟා වීමට ගතවන තත්පර. 0 = ක්ෂණික.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>මුදා හැරීම</value></data>
@@ -2455,7 +2469,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>{0} සඳහා සකසා ඇත</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>සක්‍රිය</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} සඳහා තවත්</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} මකන්නද?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>පැතිකඩ සහ එහි ස්වයංක්‍රීය මාරු කිරීමේ නීතිය ඉවත් කෙරේ. මෙය අහෝසි කළ නොහැක.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>පැතිකඩ ඉවත් කෙරේ. මෙය අහෝසි කළ නොහැක.</value></data>
@@ -4363,7 +4376,6 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>ඉහළ ආදානය</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>පහළ ආදානය</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>විකරණ ආදානය</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>මූලාශ්‍ර වර්ගය</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>අඩු වර්ණය</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>මධ්‍ය වර්ණය</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>ඉහළ වර්ණය</value></data>

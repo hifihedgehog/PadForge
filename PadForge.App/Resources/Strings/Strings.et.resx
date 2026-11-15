@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>See käivitub, kui see seade ühendatakse.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>See käivitub, kui üks neist seadmetest ühendatakse.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Pole ühendatud</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Kaardid</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Üksikasjalik</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Kompaktne</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Auto</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Üksikasjalik, kuni kaardid mahuvad aknasse, kompaktne, kui nad sellest välja ulatuksid</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Saadab sisendit</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Aku {0}, tühjenemas</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Aku {0}, laeb</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Klõpsake noodil või liuguril ja vajutage seejärel sisendit, mis seda juhtima peab.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>„Vastenda kõik“ jätab A ja B puuteväljundid vahele. Ühe sidumiseks klõpsake A või B ümber oleval ringil.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Ootan sisendit: {0}. Vajutage seadmel sisendit.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, mida juhib</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Rohkem valikuid</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Vähem valikuid</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Esikülje nupp</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Õlanupp</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Süsteeminupp</value></data>
@@ -1401,6 +1404,18 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Lähtesta kõik</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Tühjenda kõik</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Allikas</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Mängud näevad</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} pole ühendatud</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Näita veergu iga seadme kohta, mis pole ühendatud</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Klõpsa ja vajuta sellel seadmel sisendit, mis peab juhtima: {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Keri seadmeid külgsuunas</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Seade</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Režiim</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Üles</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Alla</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifikaator</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Trimmipulk</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Väljund</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Väärtus</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Valikud</value></data>
@@ -1429,7 +1444,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Akumulaatori ülempiir. 1 = täielik positiivne.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Ramp</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Põhirežiim</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Tõus</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Sekundid täieliku kõrvalekalde saavutamiseni, kui vastavat klahvi hoitakse all. 0 = kohe.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Vabastus</value></data>
@@ -2460,7 +2474,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Määratud mängule {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Aktiivne</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Veel profiili {0} kohta</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Kas kustutada {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Profiil ja selle automaatse vahetamise reegel eemaldatakse. Seda ei saa tagasi võtta.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Profiil eemaldatakse. Seda ei saa tagasi võtta.</value></data>
@@ -4405,7 +4418,6 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Üles-sisend</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Alla-sisend</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Modifikaatori sisend</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Allika tüüp</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Madal värv</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Keskmine värv</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Kõrge värv</value></data>

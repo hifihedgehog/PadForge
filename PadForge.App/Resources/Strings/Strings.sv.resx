@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Den startar när den här enheten ansluts.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Den startar när en av de här enheterna ansluts.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Inte ansluten</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Kort</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Detaljerad</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Kompakt</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Auto</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Detaljerade så länge korten ryms i fönstret, kompakta när de skulle gå utanför det</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Skickar inmatning nu</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Batteri {0}, lågt</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Batteri {0}, laddas</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Klicka på en not eller ett reglage och tryck sedan på den inmatning som ska styra det.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Mappa alla hoppar över beröringsutmatningarna för A och B. Klicka på ringen runt A eller B för att binda en av dem.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Lyssnar efter {0}. Tryck på inmatningen på enheten.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, styrs av</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Fler alternativ</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Färre alternativ</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Frontknapp</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Kantknapp</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Systemknapp</value></data>
@@ -1588,6 +1591,18 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_ResetAll" xml:space="preserve"><value>Återställ alla</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Rensa alla</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Källa</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Spel ser</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} inte anslutna</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Visa en kolumn för varje enhet som inte är ansluten</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Klicka och tryck sedan på den ingång på den här enheten som ska styra {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Rulla enheterna i sidled</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Enhet</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Läge</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Upp</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Ned</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifierare</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Trimspak</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Utgång</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Värde</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0} %</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Alternativ</value></data>
@@ -1616,7 +1631,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Ackumulatorns övre gräns. 1 = fullt positivt.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Ramp</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Primärt läge</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Attack</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Sekunder för att nå fullt utslag medan motsvarande tangent hålls ned. 0 = omedelbart.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Släpp</value></data>
@@ -2649,7 +2663,6 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Inställd för {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Aktiv</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Mer för {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Radera {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Profilen och dess regel för automatiskt byte tas bort. Det går inte att ångra.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Profilen tas bort. Det går inte att ångra.</value></data>
@@ -4636,7 +4649,6 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Inmatning för upp</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Inmatning för ned</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Modifierarinmatning</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Källtyp</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Låg färg</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Mellanfärg</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Hög färg</value></data>

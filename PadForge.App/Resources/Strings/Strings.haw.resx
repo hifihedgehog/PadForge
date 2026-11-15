@@ -160,9 +160,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Kaomi i kekahi hua mele a i ʻole kekahi slider ma ke kiʻi, a laila kaomi i ka hoʻokomo ma kāu hāmeʻa nāna e hoʻokele iā ia.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>ʻAʻole hoʻopaʻa ʻo Map All i nā huapuka hoʻopā o A a me B. Kaomi i ke apo a puni ka pihi A a i ʻole B e hoʻopaʻa i kona huapuka hoʻopā.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Ke hoʻolohe nei no {0}. Kaomi i ka hoʻokomo ma kāu hāmeʻa.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, hoʻokele ʻia e</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Nā koho hou aku</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Nā koho emi iho</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Pihi alo</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Pihi poʻohiwi</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Pihi ʻōnaehana</value></data>
@@ -1040,7 +1037,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Hoʻonohonoho ʻia no {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>ʻEleu</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Hou aku no {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Mālama i ka hoʻonohonoho o kēia manawa ma ʻaneʻi</value></data>
   <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>E pani i ka hoʻonohonoho i mālama ʻia ma “{0}” me ka mea o kēia manawa? Noho mau kona inoa a me kāna mau pāʻani.</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Hoʻololi</value></data>
@@ -1105,4 +1101,17 @@
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Nā profile mākaukau no kekahi ʻano pāʻani holoʻokoʻa. E koho i hoʻokahi, hāʻawi i kekahi controller, a pāʻani.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} o {1} i hoʻā ʻia</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>He mau mana hou o kēia mau profile i lawe ʻia mai ma ka Steam Workshop. E lawe hou mai iā lākou mai Kiʻi i nā profile e loaʻa ai nā hoʻololi.</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>ʻIke nā pāʻani</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} ʻaʻole i hoʻopili ʻia</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Hōʻike i kolamu no kēlā me kēia hāmeʻa ʻaʻole i hoʻopili ʻia</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Paʻi, a laila kaomi i ka hoʻokomo ma kēia hāmeʻa nāna e hoʻokele iā {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Holo i nā hāmeʻa i ka ʻaoʻao</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Hāmeʻa</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>ʻano</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Luna</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Lalo</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Mea hoʻololi</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Lāʻau hoʻoponopono</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Hoʻopuka</value></data>
 </root>

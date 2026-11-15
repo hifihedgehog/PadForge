@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Bu cihaz bağlandığında başlar.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Bu cihazlardan biri bağlandığında başlar.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Bağlı değil</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Kartlar</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Ayrıntılı</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Kompakt</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Otomatik</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Kartlar pencereye sığdığı sürece ayrıntılı, pencereyi aşacaksa kompakt</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Şu an giriş gönderiyor</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Pil {0}, düşük</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Pil {0}, şarj oluyor</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Bir notaya veya kaydırıcıya tıklayın, ardından onu yönetecek girişe basın veya hareket ettirin.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Tümünü eşle düğmesi A ve B temas çıkışlarını atlar. Birini atamak için A veya B'nin çevresindeki halkaya tıklayın.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} için giriş bekleniyor. Cihazınızda girişe basın.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0} için giriş kaynağı</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Daha fazla seçenek</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Daha az seçenek</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Yüz düğmesi</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Omuz düğmesi</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Sistem düğmesi</value></data>
@@ -1588,6 +1591,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>Tümünü sıfırla</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Tümünü temizle</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Kaynak</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Oyunların gördüğü</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} bağlı değil</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Bağlı olmayan her cihaz için bir sütun göster</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Tıklayın, ardından bu cihazda {0} öğesini sürecek girişe basın</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Cihazları yatay kaydır</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Cihaz</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Mod</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Yukarı</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Aşağı</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Değiştirici</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>İnce ayar çubuğu</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Çıkış</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Değer</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>%{0}</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Seçenekler</value></data>
@@ -1616,7 +1631,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Maks</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Biriktiricinin üst sınırı. 1 = tam pozitif.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampa</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Birincil mod</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Atak</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>İlgili tuş basılı tutulurken tam itmeye ulaşma süresi (saniye). 0 = anında.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Bırakma</value></data>
@@ -2649,7 +2663,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Şunun için ayarlı: {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Etkin</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} için daha fazlası</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} silinsin mi?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Profil ve otomatik geçiş kuralı kaldırılır. Bu geri alınamaz.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Profil kaldırılır. Bu geri alınamaz.</value></data>
@@ -4636,7 +4649,6 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Yukarı girişi</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Aşağı girişi</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Değiştirici girişi</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Kaynak türü</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Düşük rengi</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Orta rengi</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Yüksek rengi</value></data>

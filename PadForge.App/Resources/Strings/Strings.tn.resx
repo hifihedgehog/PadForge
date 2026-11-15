@@ -307,6 +307,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>Busetsa tsotlhe</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Phimola tsotlhe</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Motswedi</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Metshameko e bona</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} ga di a golagangwa</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Bontsha kholomo ya sedirisiwa sengwe le sengwe se se sa golagangwang</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Tobetsa, morago o tobetse tsenyo ya sedirisiwa se e e tshwanetseng go laola {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Tsamaisa didirisiwa ka fa thoko</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Sedirisiwa</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Mokgwa</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Godimo</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Tlase</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Sefetoli</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Molamu wa thulaganyo</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Ntsho</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Boleng</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Dikgetho</value></data>
@@ -1082,7 +1094,6 @@
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Tlhabololo</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Go le go oketsegileng ka {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>A o batla go emisetsa thulaganyo e e bolokilweng mo go "{0}" ka ya jaanong? Leina la yone le metshameko ya yone di a sala.</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Emisetsa</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>fa</value></data>

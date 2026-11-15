@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>S'inicia quan es connecta aquest dispositiu.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>S'inicia quan es connecta un d'aquests dispositius.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>No connectat</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Targetes</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Detallades</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Compactes</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Auto</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Detallades mentre les targetes càpiguen a la finestra, compactes quan la sobrepassarien</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Enviant entrada ara</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Bateria {0}, baixa</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Bateria {0}, en càrrega</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Fes clic en una nota o en un control lliscant i prem el botó o mou l'eix que l'hagi d'accionar.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Assigna-ho tot omet les sortides de contacte dels botons A i B. Fes clic a l'anell que envolta A o B per vincular-ne una.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>S'està esperant {0}. Prem l'entrada al dispositiu.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, s'acciona amb</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Més opcions</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Menys opcions</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Botó frontal</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Botó superior</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Botó de sistema</value></data>
@@ -1399,6 +1402,18 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Restableix-ho tot</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Esborra-ho tot</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Font</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Què veuen els jocs</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} no connectats</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Mostra una columna per a cada dispositiu que no està connectat</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Fes clic i prem l'entrada d'aquest dispositiu que ha de controlar {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Desplaça els dispositius cap als costats</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Dispositiu</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Amunt</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Avall</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modificador</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Palanca d'ajust</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Sortida</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Valor</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0} %</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opcions</value></data>
@@ -1427,7 +1442,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Màx.</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Límit superior de l'acumulador. 1 = positiu complet.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampa</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Mode principal</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Atac</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Segons per arribar a la desviació completa mentre es manté premuda la tecla corresponent. 0 = instantani.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Alliberament</value></data>
@@ -2458,7 +2472,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Assignat a {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Actiu</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Més per a {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Vols suprimir {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>S'eliminen el perfil i la seva regla de canvi automàtic. Això no es pot desfer.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>S'elimina el perfil. Això no es pot desfer.</value></data>
@@ -4407,7 +4420,6 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Entrada d'amunt</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Entrada d'avall</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Entrada modificadora</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Tipus de font</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Color baix</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Color mitjà</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Color alt</value></data>

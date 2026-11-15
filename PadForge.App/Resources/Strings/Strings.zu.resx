@@ -223,6 +223,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Siqala lapho le divayisi ixhuma.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Siqala lapho enye yalezi divayisi ixhuma.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Akuxhunyiwe</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Amakhadi</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Okuningiliziwe</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Okuncane</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Okuzenzakalelayo</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Okuningiliziwe uma amakhadi engena ewindini, okuncane uma engadlula kulo</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Kuthumela okokufaka manje</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Ibhethri {0}, liphansi</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Ibhethri {0}, liyashaja</value></data>
@@ -255,9 +261,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Chofoza inothi noma i-slider, bese ucindezela okokufaka okufanele kuyilawule.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Inkinobho ethi Mepha konke yeqa okukhiphayo kokuthinta kuka-A no-B. Chofoza indandatho ezungeze u-A noma u-B ukuze umephe okukodwa.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Ilalele {0}. Cindezela okokufaka edivayisini yakho.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>Umthombo ka-{0}</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Izinketho eziningi</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Izinketho ezimbalwa</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Inkinobho yangaphambili</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Inkinobho yehlombe</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Inkinobho yesistimu</value></data>
@@ -720,6 +723,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>Setha kabusha konke</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Sula konke</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Umthombo</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Imidlalo ibona</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>Akuxhunyiwe: {0}</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Bonisa ikholomu yedivayisi ngayinye engaxhunyiwe</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Chofoza, bese ucindezela okokufaka kule divayisi okufanele kulawule {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Skrolela amadivayisi eceleni</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Idivayisi</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Imodi</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Phezulu</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Phansi</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Isiguquli</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Induku yokulungisa kancane</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Okukhiphayo</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Inani</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Izinketho</value></data>
@@ -1335,7 +1350,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Isethelwe ku-{0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Iyasebenza</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Okuningi ku-{0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Susa {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Iphrofayela nomthetho wayo wokushintsha okuzenzakalelayo kuyasuswa. Lokhu akukwazi ukuhlehliswa.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Iphrofayela iyasuswa. Lokhu akukwazi ukuhlehliswa.</value></data>

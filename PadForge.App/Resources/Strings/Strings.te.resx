@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>ఈ పరికరం కనెక్ట్ అయినప్పుడు ఇది ప్రారంభమవుతుంది.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>ఈ పరికరాలలో ఒకటి కనెక్ట్ అయినప్పుడు ఇది ప్రారంభమవుతుంది.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>కనెక్ట్ కాలేదు</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>కార్డ్‌లు</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>వివరంగా</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>సంక్షిప్తం</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>ఆటో</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>కార్డ్‌లు విండోలో పట్టినంత వరకు వివరంగా, విండో దాటిపోయేలా ఉంటే సంక్షిప్తంగా</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>ఇప్పుడు ఇన్పుట్ పంపుతోంది</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>బ్యాటరీ {0}, తక్కువ</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>బ్యాటరీ {0}, ఛార్జ్ అవుతోంది</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>ఒక నోట్ లేదా స్లైడర్‌పై క్లిక్ చేసి, దాన్ని నడిపించాల్సిన ఇన్‌పుట్‌ను నొక్కండి.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“అన్నీ మ్యాప్ చేయి” A మరియు B టచ్ అవుట్పుట్లను దాటవేస్తుంది. ఒకదాన్ని బైండ్ చేయడానికి A లేదా B చుట్టూ ఉన్న రింగ్పై క్లిక్ చేయండి.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} కోసం వింటోంది. మీ పరికరంలోని ఇన్‌పుట్‌ను నొక్కండి.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0} ఇన్పుట్ మూలం</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>మరిన్ని ఎంపికలు</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>తక్కువ ఎంపికలు</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>ఫేస్ బటన్</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>షోల్డర్ బటన్</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>సిస్టమ్ బటన్</value></data>
@@ -1588,6 +1591,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>అన్నీ రీసెట్ చేయి</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>అన్నీ తీసివేయి</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>మూలం</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>గేమ్‌లు చూసేవి</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} కనెక్ట్ కాలేదు</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>కనెక్ట్ కాని ప్రతి పరికరానికి ఒక నిలువు వరుసను చూపించు</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>క్లిక్ చేసి, ఆపై {0}ను నడిపించాల్సిన ఈ పరికరంలోని ఇన్పుట్‌ను నొక్కండి</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>పరికరాలను పక్కకు స్క్రోల్ చేయండి</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>పరికరం</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>మోడ్</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>పైకి</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>క్రిందికి</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>మాడిఫైయర్</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>ట్రిమ్ స్టిక్</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>అవుట్‌పుట్</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>విలువ</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>ఎంపికలు</value></data>
@@ -1616,7 +1631,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>గరిష్ఠం</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>అక్యుములేటర్ గరిష్ఠ పరిమితి. 1 = పూర్తి ధనాత్మకం.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>ర్యాంప్</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>ప్రాథమిక మోడ్</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>అటాక్</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>సంబంధిత కీ నొక్కి ఉన్నప్పుడు పూర్తి విక్షేపానికి చేరే సెకన్లు. 0 = తక్షణం.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>రిలీజ్</value></data>
@@ -2649,7 +2663,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>{0} కోసం సెట్ చేయబడింది</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>క్రియాశీలం</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} కోసం మరిన్ని</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} తొలగించాలా?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>ప్రొఫైల్, దాని ఆటో స్విచ్ నియమం తొలగించబడతాయి. దీన్ని రద్దు చేయలేరు.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>ప్రొఫైల్ తొలగించబడుతుంది. దీన్ని రద్దు చేయలేరు.</value></data>
@@ -4636,7 +4649,6 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>పైకి ఇన్పుట్</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>కిందికి ఇన్పుట్</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>మాడిఫైయర్ ఇన్పుట్</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>మూల రకం</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>తక్కువ రంగు</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>మధ్య రంగు</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>ఎక్కువ రంగు</value></data>

@@ -64,12 +64,21 @@ namespace PadForge.Tests
         public void Home_KeepsTheDashboardsIds_AndNamesItsNewParts()
         {
             string page = Home();
-            foreach (string kept in new[]
+            // A card's parts are written twice, once for each size of a
+            // card, under the same ids: a detailed card and a compact one
+            // are the same controller.
+            foreach (string twice in new[]
             {
                 "AutomationProperties.AutomationId=\"Dash_SlotTypeChip\"",
                 "AutomationProperties.AutomationId=\"Dash_SlotTitle\"",
                 "AutomationProperties.AutomationId=\"Dash_DeleteSlot\"",
                 "AutomationProperties.AutomationId=\"Dash_StageChips\"",
+                "AutomationProperties.AutomationId=\"Dash_SlotStage\"",
+                "AutomationProperties.AutomationId=\"Dash_SlotPower\"",
+            })
+                Assert.Equal(2, Count(page, twice));
+            foreach (string kept in new[]
+            {
                 "<Border x:Name=\"EngineCard\"",
                 "<ItemsControl x:Name=\"SlotsItemsControl\"",
                 "<controls:ClickBorder x:Name=\"AddControllerCard\"",
@@ -84,6 +93,11 @@ namespace PadForge.Tests
                 "AutomationProperties.AutomationId=\"HomeOfferDismiss\"",
                 "AutomationProperties.AutomationId=\"Home_ExtrasLink\"",
                 "AutomationProperties.AutomationId=\"Home_OpenExtras\"",
+                // The size of the cards.
+                "<StackPanel x:Name=\"CardsChoice\"",
+                "AutomationProperties.AutomationId=\"Home_Cards_Detailed\"",
+                "AutomationProperties.AutomationId=\"Home_Cards_Compact\"",
+                "AutomationProperties.AutomationId=\"Home_Cards_Auto\"",
                 // The first page's parts.
                 "<StackPanel x:Name=\"FirstRunPanel\"",
                 "AutomationProperties.AutomationId=\"Home_FirstRun_Device\"",
@@ -275,15 +289,13 @@ namespace PadForge.Tests
         public void AControllersCard_IsHeadedByItsTypeAndNumber_WithThePresetUnderIt()
         {
             string page = Home();
-            int template = At(page, "<DataTemplate DataType=\"{x:Type vm:SlotSummary}\">");
-            int templateEnd = page.IndexOf("</DataTemplate>", template, StringComparison.Ordinal);
-            string card = page.Substring(template, templateEnd - template);
+            string card = Block(page, "<DataTemplate x:Key=\"SlotCardDetailed\">", "</DataTemplate>");
             int headAt = At(card, "<!-- The head: [type tile] name #N over the");
             int bodyAt = At(card, "<!-- The body: the controller's picture on its");
             Assert.True(headAt < bodyAt);
             string head = card.Substring(headAt, bodyAt - headAt);
             int chip = At(head, "Click=\"TypeChip_Click\" Tag=\"{Binding PadIndex}\"");
-            int name = At(head, "<Setter Property=\"Text\" Value=\"{Binding ControllerType_Xbox, Source={x:Static strings:Strings.Instance}}\"/>");
+            int name = At(head, "<TextBlock Style=\"{StaticResource SlotTypeName}\" FontSize=\"18\"");
             int number = At(head, "<TextBlock Text=\"{Binding TypeInstanceLabel, StringFormat={}#{0}}\"");
             int preset = At(head, "<controls:MarqueeLabel Text=\"{Binding PresetName}\"");
             int pill = At(head, "IsOn=\"{Binding IsEnabled}\" Click=\"PowerToggle_Click\" Tag=\"{Binding PadIndex}\">");
@@ -293,9 +305,15 @@ namespace PadForge.Tests
             At(head, "<Grid Margin=\"18,16,12,0\">");
             // The tile is 34 with the type's symbol at 20, the name 18 in
             // the display face.
+            At(head, "Style=\"{StaticResource SlotTypeTile}\"");
             At(head, "Width=\"34\" Height=\"34\" VerticalAlignment=\"Center\"");
             At(head, "<Path FlowDirection=\"LeftToRight\" Width=\"20\" Height=\"20\" Stretch=\"Uniform\"");
-            At(head, "<TextBlock FontFamily=\"{StaticResource DisplayFontFamily}\" FontSize=\"18\" FontWeight=\"SemiBold\"");
+            // The name is the type's, one of seven, and a cold
+            // controller's is quiet: the style both sizes of a card take.
+            string typeName = Block(page, "<Style x:Key=\"SlotTypeName\" TargetType=\"TextBlock\">", "</Style>");
+            At(typeName, "<Setter Property=\"FontFamily\" Value=\"{StaticResource DisplayFontFamily}\"/>");
+            At(typeName, "<Setter Property=\"FontWeight\" Value=\"SemiBold\"/>");
+            At(typeName, "<Setter Property=\"Text\" Value=\"{Binding ControllerType_Xbox, Source={x:Static strings:Strings.Instance}}\"/>");
             foreach (var (type, key) in new[]
             {
                 ("PlayStation", "ControllerType_PlayStation"), ("Nintendo", "ControllerType_Nintendo"),
@@ -304,13 +322,21 @@ namespace PadForge.Tests
             })
             {
                 Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding OutputType\\}\" Value=\"" + type + "\">\\s*"
-                    + "<Setter Property=\"Text\" Value=\"\\{Binding " + key + ", Source=\\{x:Static strings:Strings.Instance\\}\\}\"/>"), head);
+                    + "<Setter Property=\"Text\" Value=\"\\{Binding " + key + ", Source=\\{x:Static strings:Strings.Instance\\}\\}\"/>"), typeName);
                 // The output type has a member of that name, so the trigger can match.
                 Assert.True(Enum.IsDefined(typeof(VirtualControllerType), type), type + " is not an output type");
             }
             Assert.Equal(7, Enum.GetValues(typeof(VirtualControllerType)).Length);
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding Heat\\}\" Value=\"Cold\">\\s*"
+                + "<Setter Property=\"Foreground\" Value=\"\\{DynamicResource SubRowTextBrush\\}\"/>"), typeName);
             Assert.DoesNotContain("Dashboard_Slot,", page);
             Assert.DoesNotContain("{Binding SlotNumber}", page);
+            // The tile's square is ember with dark ink, and steel on a cold card.
+            string tile = Block(page, "<Style x:Key=\"SlotTypeTile\" TargetType=\"Button\">", "</Style>");
+            At(tile, "<Setter Property=\"Background\" Value=\"{DynamicResource EmberBrush}\"/>");
+            At(tile, "<Border Background=\"{TemplateBinding Background}\" CornerRadius=\"9\">");
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding Heat\\}\" Value=\"Cold\">\\s*"
+                + "<Setter Property=\"Background\" Value=\"\\{DynamicResource SteelLiftBrush\\}\"/>"), tile);
 
             // The state pill is the switch: a toggle named Enabled whose
             // words are the state, said again when the state changes.
@@ -318,19 +344,34 @@ namespace PadForge.Tests
             At(head, "AutomationProperties.Name=\"{Binding Common_Enabled, Source={x:Static strings:Strings.Instance}}\"");
             At(head, "AutomationProperties.HelpText=\"{Binding StateWord, Mode=OneWay, TargetNullValue='', FallbackValue=''}\"");
             At(head, "ToolTip=\"{Binding Home_Card_Power, Source={x:Static strings:Strings.Instance}}\"");
+            At(head, "<Path FlowDirection=\"LeftToRight\" Style=\"{StaticResource SlotFlame}\" Width=\"11.5\" Height=\"11.5\" VerticalAlignment=\"Center\"/>");
             At(head, "<TextBlock common:LiveText.Polite=\"True\" Text=\"{Binding StateWord}\" Margin=\"7,0,0,0\"");
+            // The flame: the outline alone while cold, ember while it
+            // forges, gold while it waits, and flashing while it starts.
+            string flame = Block(page, "<Style x:Key=\"SlotFlame\" TargetType=\"Path\">", "</Style>");
+            At(flame, "<Setter Property=\"Data\" Value=\"{StaticResource FlameOuterGeometry}\"/>");
+            At(flame, "<Setter Property=\"Fill\" Value=\"Transparent\"/>");
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding Heat\\}\" Value=\"Forging\">\\s*"
+                + "<Setter Property=\"Fill\" Value=\"\\{DynamicResource EmberBrush\\}\"/>"), flame);
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding Heat\\}\" Value=\"Waiting\">\\s*"
+                + "<Setter Property=\"Fill\" Value=\"\\{DynamicResource WaitBrush\\}\"/>"), flame);
+            At(flame, "<Condition Binding=\"{Binding IsInitializing}\" Value=\"True\"/>");
+            At(flame, "<Condition Binding=\"{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}\" Value=\"True\"/>");
             // Delete is always there, in the head's last column, and one click.
             At(head, "<ui:Button Grid.Column=\"3\" Style=\"{StaticResource CardCloseButton}\" Margin=\"4,0,0,0\"");
             At(head, "AutomationProperties.Name=\"{Binding Main_DeleteVC, Source={x:Static strings:Strings.Instance}}\"");
-            Assert.Equal(1, Count(page, "DeleteSlot_Click"));
+            Assert.Equal(2, Count(page, "DeleteSlot_Click"));
             Assert.DoesNotContain("Property=\"Opacity\" Value=\"0\"", head);
 
             // The card says its heat in its edge and its light, and tells
             // what is inside it whether it is live.
-            string edge = card.Substring(0, headAt);
-            At(edge, "<Border CornerRadius=\"12\" BorderThickness=\"1\"");
-            At(edge, "Tag=\"{Binding PadIndex}\"");
-            At(edge, "Loaded=\"SlotCard_Loaded\"");
+            string top = card.Substring(0, headAt);
+            At(top, "<Border Style=\"{StaticResource SlotCardEdge}\"");
+            At(top, "Tag=\"{Binding PadIndex}\"");
+            At(top, "Loaded=\"SlotCard_Loaded\"");
+            string edge = Block(page, "<Style x:Key=\"SlotCardEdge\" TargetType=\"Border\">", "</Style>");
+            At(edge, "<Setter Property=\"CornerRadius\" Value=\"12\"/>");
+            At(edge, "<Setter Property=\"BorderThickness\" Value=\"1\"/>");
             Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding Heat\\}\" Value=\"Forging\">\\s*"
                 + "<Setter Property=\"BorderBrush\" Value=\"\\{DynamicResource EmberRingBrush\\}\"/>\\s*"
                 + "<Setter Property=\"controls:Heat.IsLive\" Value=\"True\"/>"), edge);
@@ -340,8 +381,11 @@ namespace PadForge.Tests
             // The light is the card's own child, so a dragged card takes it
             // along and a hidden one hides it. Its margin takes it out to
             // the card's outline.
-            At(edge, "<controls:Halo Grid.RowSpan=\"2\" Margin=\"-1\" CornerRadius=\"12\" Radius=\"42.5\" Strength=\"0.085\" Rim=\"0.18\"");
-            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding Heat\\}\" Value=\"Forging\">\\s*<Setter Property=\"IsLit\" Value=\"True\"/>"), edge);
+            At(top, "<controls:Halo Grid.RowSpan=\"2\" Style=\"{StaticResource SlotCardHalo}\"/>");
+            string halo = Block(page, "<Style x:Key=\"SlotCardHalo\" TargetType=\"controls:Halo\">", "</Style>");
+            foreach (var (property, value) in new[] { ("Margin", "-1"), ("CornerRadius", "12"), ("Radius", "42.5"), ("Strength", "0.085"), ("Rim", "0.18") })
+                At(halo, "<Setter Property=\"" + property + "\" Value=\"" + value + "\"/>");
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding Heat\\}\" Value=\"Forging\">\\s*<Setter Property=\"IsLit\" Value=\"True\"/>"), halo);
             Assert.DoesNotContain("Property=\"Opacity\" Value=\"0.72\"", card);
 
             // The body: the stage, then the devices.
@@ -352,16 +396,34 @@ namespace PadForge.Tests
             Assert.True(stage < driven);
             string picture = under.Substring(stage, driven - stage);
             // The stage opens the page for the keyboard and a screen reader.
+            At(picture, "Style=\"{StaticResource SlotStageEdge}\"");
             At(picture, "Click=\"OpenSlot_Click\" Tag=\"{Binding PadIndex}\"");
             At(picture, "AutomationProperties.Name=\"{Binding Dashboard_SlotCard_Configure, Source={x:Static strings:Strings.Instance}}\"");
             At(picture, "AutomationProperties.AutomationId=\"Dash_SlotStage\">");
-            // Gray under, the colors over, by the heat.
-            int gray = At(picture, "<controls:DecorativeImage Source=\"{Binding PictureGray}\" Stretch=\"Uniform\"");
-            int color = At(picture, "<controls:DecorativeImage Source=\"{Binding Picture}\" Stretch=\"Uniform\"");
-            Assert.True(gray < color);
+            // Gray under, the colors over, and over them the light of what
+            // is held. The floor's light is the stage's own, by the heat.
+            int gray = At(picture, "<controls:DecorativeImage Source=\"{Binding PictureGray}\" Style=\"{StaticResource SlotPictureGray}\"/>");
+            int color = At(picture, "<controls:DecorativeImage Source=\"{Binding Picture}\" Style=\"{StaticResource SlotPictureColor}\"/>");
+            int glow = At(picture, "<controls:HeldGlow Style=\"{StaticResource CardHeldGlow}\"/>");
+            Assert.True(gray < color && color < glow);
             At(picture, "Visibility=\"{Binding HasPicture, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}\">");
-            Assert.Equal(4, Count(picture, "<DataTrigger Binding=\"{Binding Heat}\" Value=\"Waiting\">"));
-            Assert.Equal(4, Count(picture, "<DataTrigger Binding=\"{Binding Heat}\" Value=\"Forging\">"));
+            Assert.Equal(1, Count(picture, "<DataTrigger Binding=\"{Binding Heat}\" Value=\"Waiting\">"));
+            Assert.Equal(1, Count(picture, "<DataTrigger Binding=\"{Binding Heat}\" Value=\"Forging\">"));
+            // The stage's edge, the picture's box and the picture's colors
+            // each follow the heat, in the styles both sizes of a card take.
+            foreach (string style in new[]
+            {
+                "<Style x:Key=\"SlotStageEdge\" TargetType=\"Border\">", "<Style x:Key=\"SlotPictureBox\" TargetType=\"Grid\">",
+                "<Style x:Key=\"SlotPictureColor\" TargetType=\"Image\" BasedOn=\"{StaticResource SlotPictureGray}\">",
+            })
+            {
+                string by = Block(page, style, "</Style>");
+                Assert.Equal(1, Count(by, "<DataTrigger Binding=\"{Binding Heat}\" Value=\"Waiting\">"));
+                Assert.Equal(1, Count(by, "<DataTrigger Binding=\"{Binding Heat}\" Value=\"Forging\">"));
+            }
+            string pictureGray = Block(page, "<Style x:Key=\"SlotPictureGray\" TargetType=\"Image\">", "</Style>");
+            At(pictureGray, "<Setter Property=\"Stretch\" Value=\"Uniform\"/>");
+            At(pictureGray, "<Setter Property=\"RenderOptions.BitmapScalingMode\" Value=\"HighQuality\"/>");
 
             string devices = under.Substring(driven);
             At(devices, "Text=\"{Binding Pad_DrivenBy, Source={x:Static strings:Strings.Instance}}\"/>");
@@ -391,12 +453,153 @@ namespace PadForge.Tests
                 At(devices, run);
 
             // The cards stand two across at the board's width and share
-            // the grid with the Add Controller tile.
-            At(page, "<controls:TileGridPanel MinItemWidth=\"470\" Gap=\"16\" FillRows=\"True\"/>");
-            At(page, "<controls:ClickBorder x:Name=\"AddControllerCard\"\r\n                                    MinHeight=\"132\" CornerRadius=\"12\"");
+            // the grid with the Add Controller tile. The grid's least
+            // width is the page's own number for the cards' size.
+            At(page, "<controls:TileGridPanel Gap=\"{x:Static views:HomePage.CardGap}\" FillRows=\"True\">");
+            At(page, "<Setter Property=\"MinItemWidth\" Value=\"{x:Static views:HomePage.DetailedCardMinWidth}\"/>");
+            Assert.Equal(470, PadForge.Views.HomePage.DetailedCardMinWidth);
+            Assert.Equal(16, PadForge.Views.HomePage.CardGap);
+            At(page, "<controls:ClickBorder x:Name=\"AddControllerCard\"\r\n                                    MinHeight=\"{x:Static views:HomePage.AddTileMinHeight}\" CornerRadius=\"12\"");
+            Assert.Equal(132, PadForge.Views.HomePage.AddTileMinHeight);
             // The heading says how many there are.
             At(page, "<TextBlock x:Name=\"ControllersHeading\" Style=\"{StaticResource PageSectionTitle}\"");
             At(page, "<TextBlock x:Name=\"ControllersCount\" Text=\"{Binding ControllerCount, Mode=OneWay}\"");
+        }
+
+        /// <summary>A part of the page's markup: from the one place its
+        /// opening stands to the first closing after it.</summary>
+        private static string Block(string page, string opening, string closing)
+        {
+            int at = At(page, opening);
+            return page.Substring(at, page.IndexOf(closing, at, StringComparison.Ordinal) - at);
+        }
+
+        /// <summary>A compact card, as its board draws it: the picture in a
+        /// strip across the top, then the type tile with the name, the
+        /// number and the preset, the state as the flame alone in a round
+        /// button, the one device the card names with its note, and the
+        /// stage icons with Delete at their end. It is the same card as a
+        /// detailed one: the same edge, light, tile, name, flame and
+        /// picture, and the same clicks.</summary>
+        [Fact]
+        public void ACompactCard_ShowsThePictureTheFlameOneDeviceAndTheStageIcons()
+        {
+            string page = Home();
+            string card = Block(page, "<DataTemplate x:Key=\"SlotCardCompact\">", "</DataTemplate>");
+            // The same card.
+            int root = At(card, "<Border Style=\"{StaticResource SlotCardEdge}\"");
+            At(card, "Loaded=\"SlotCard_Loaded\">");
+            At(card, "<controls:Halo Grid.RowSpan=\"2\" Style=\"{StaticResource SlotCardHalo}\"/>");
+            // The strip: 104 tall, the card's top corners, a hairline under it.
+            int strip = At(card, "<controls:ClickBorder Height=\"104\" CornerRadius=\"11,11,0,0\" BorderThickness=\"0,0,0,1\"");
+            At(card, "Click=\"OpenSlot_Click\" Tag=\"{Binding PadIndex}\"");
+            int gray = At(card, "<controls:DecorativeImage Source=\"{Binding PictureGray}\" Style=\"{StaticResource SlotPictureGray}\"/>");
+            int color = At(card, "<controls:DecorativeImage Source=\"{Binding Picture}\" Style=\"{StaticResource SlotPictureColor}\"/>");
+            int glow = At(card, "<controls:HeldGlow Style=\"{StaticResource CardHeldGlow}\"/>");
+            // The head.
+            int body = At(card, "<StackPanel Grid.Row=\"1\" Margin=\"14,12,8,8\">");
+            int tile = At(card, "Style=\"{StaticResource SlotTypeTileCompact}\"");
+            At(card, "Width=\"30\" Height=\"30\" VerticalAlignment=\"Center\"");
+            At(card, "<Path FlowDirection=\"LeftToRight\" Width=\"17\" Height=\"17\" Stretch=\"Uniform\"");
+            int name = At(card, "<TextBlock Style=\"{StaticResource SlotTypeName}\" FontSize=\"16\"");
+            int number = At(card, "<TextBlock Text=\"{Binding TypeInstanceLabel, StringFormat={}#{0}}\"");
+            int preset = At(card, "<controls:MarqueeLabel Text=\"{Binding PresetName}\"");
+            // The state: the flame alone. Its word is its tooltip, and what a
+            // screen reader reads after its name.
+            int state = At(card, "<controls:StateToggleButton Grid.Column=\"2\" Style=\"{StaticResource StateRound}\" Margin=\"0,0,6,0\"");
+            At(card, "AutomationProperties.Name=\"{Binding Common_Enabled, Source={x:Static strings:Strings.Instance}}\"");
+            At(card, "AutomationProperties.HelpText=\"{Binding StateWord, Mode=OneWay, TargetNullValue='', FallbackValue=''}\"");
+            At(card, "ToolTip=\"{Binding StateWord, Mode=OneWay}\"");
+            At(card, "IsOn=\"{Binding IsEnabled}\" Click=\"PowerToggle_Click\" Tag=\"{Binding PadIndex}\">");
+            At(card, "<Path FlowDirection=\"LeftToRight\" Style=\"{StaticResource SlotFlame}\" Width=\"12.5\" Height=\"12.5\"");
+            Assert.DoesNotContain("Text=\"{Binding StateWord}\"", card);
+            string round = Block(page, "<Style x:Key=\"StateRound\" TargetType=\"Button\" BasedOn=\"{StaticResource StatePill}\">", "</Style>");
+            At(round, "<Setter Property=\"Width\" Value=\"32\"/>");
+            At(round, "<Setter Property=\"Padding\" Value=\"0\"/>");
+            // The one device: its light, its kind, its name and the note.
+            int light = At(card, "<ContentPresenter Content=\"{Binding FirstDevice}\" ContentTemplate=\"{StaticResource DeviceLight}\"/>");
+            int kind = At(card, "Text=\"{Binding FirstDevice.TypeGlyph, FallbackValue=&#xE7FC;, TargetNullValue=&#xE7FC;}\"");
+            int device = At(card, "<TextBlock Grid.Column=\"2\" Margin=\"6,0,6,0\" DataContext=\"{Binding FirstDevice}\"");
+            At(card, "Text=\"{Binding Name}\" Style=\"{StaticResource DeviceNameText}\"/>");
+            int note = At(card, "Text=\"{Binding FirstDeviceNote}\"");
+            // With none mapped the card says so, where the device would stand.
+            Assert.Equal(1, Count(card, "Visibility=\"{Binding HasMappedDevices, Converter={StaticResource BoolToVisibilityConverter}}\">"));
+            int none = At(card, "Text=\"{Binding Mapping_NoDeviceMapped, Source={x:Static strings:Strings.Instance}}\"");
+            At(card, "Visibility=\"{Binding HasMappedDevices, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}\"/>");
+            // The foot: the stage icons, and Delete at their end.
+            int delete = At(card, "<ui:Button DockPanel.Dock=\"Right\" Style=\"{StaticResource CardCloseButton}\" Width=\"28\" Height=\"28\"");
+            At(card, "Click=\"DeleteSlot_Click\" Tag=\"{Binding PadIndex}\">");
+            int icons = At(card, "<ItemsControl ItemsSource=\"{Binding StageLedger}\" Focusable=\"False\" VerticalAlignment=\"Center\"");
+            At(card, "ItemTemplate=\"{StaticResource StageChipTemplate}\"");
+            Assert.True(root < strip && strip < gray && gray < color && color < glow && glow < body && body < tile && tile < name
+                && name < number && number < preset && preset < state && state < light && light < kind && kind < device
+                && device < note && note < none && none < delete && delete < icons, "the compact card is out of order");
+            // A compact card writes no word that a detailed one does not:
+            // the devices' count and the waiting line are a detailed card's.
+            Assert.DoesNotContain("Pad_DrivenBy", card);
+            Assert.DoesNotContain("WaitHint", card);
+            // The tile's corners are 8 on the smaller square, and it is the same tile.
+            string small = Block(page, "<Style x:Key=\"SlotTypeTileCompact\" TargetType=\"Button\" BasedOn=\"{StaticResource SlotTypeTile}\">", "</Style>");
+            At(small, "<Border Background=\"{TemplateBinding Background}\" CornerRadius=\"8\">");
+
+            // The card on the page is the one of the size the page shows,
+            // and the grid's least width goes with it.
+            string chosen = Block(page, "<DataTemplate DataType=\"{x:Type vm:SlotSummary}\">", "</DataTemplate>");
+            At(chosen, "<ContentPresenter Content=\"{Binding}\">");
+            At(chosen, "<Setter Property=\"ContentTemplate\" Value=\"{StaticResource SlotCardDetailed}\"/>");
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding DataContext\\.IsCardsCompact, RelativeSource=\\{RelativeSource AncestorType=ItemsControl\\}\\}\" Value=\"True\">\\s*"
+                + "<Setter Property=\"ContentTemplate\" Value=\"\\{StaticResource SlotCardCompact\\}\"/>"), chosen);
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding IsCardsCompact\\}\" Value=\"True\">\\s*"
+                + "<Setter Property=\"MinItemWidth\" Value=\"\\{x:Static views:HomePage\\.CompactCardMinWidth\\}\"/>"), page);
+            Assert.Equal(300, PadForge.Views.HomePage.CompactCardMinWidth);
+        }
+
+        /// <summary>Cards, at the end of the Controllers heading's line: one
+        /// choice of three, Detailed, Compact and Auto. A segment shows the
+        /// page's choice and sets it, and Auto says in its tooltip what it
+        /// does. The choice is kept with the program's settings.</summary>
+        [Fact]
+        public void TheCardsChoice_IsThreeSegmentsAtTheHeadingsEnd()
+        {
+            string page = Home();
+            int heading = At(page, "<TextBlock x:Name=\"ControllersHeading\"");
+            int choice = At(page, "<StackPanel x:Name=\"CardsChoice\" controls:FlexLinePanel.AtEnd=\"True\" Orientation=\"Horizontal\" VerticalAlignment=\"Center\">");
+            int list = At(page, "<ItemsControl x:Name=\"SlotsItemsControl\"");
+            Assert.True(heading < choice && choice < list);
+            At(page, "<controls:FlexLinePanel Margin=\"0,28,0,12\" Gap=\"10\" LineGap=\"8\" EndsApart=\"True\">");
+            string part = page.Substring(choice, list - choice);
+            At(part, "<TextBlock x:Name=\"CardsLabel\"");
+            At(part, "Text=\"{Binding Home_Cards, Source={x:Static strings:Strings.Instance}}\"/>");
+            At(part, "<Border x:Name=\"CardsSegments\" Style=\"{StaticResource SegmentTrack}\"");
+            At(part, "AutomationProperties.Name=\"{Binding Home_Cards, Source={x:Static strings:Strings.Instance}}\">");
+            int last = -1;
+            foreach (string size in new[] { "Detailed", "Compact", "Auto" })
+            {
+                int at = At(part, "<RadioButton GroupName=\"HomeCards\" Style=\"{StaticResource SegmentRadio}\" Tag=\"" + size + "\" Checked=\"Cards_Checked\"");
+                Assert.True(at > last, size + " is out of order");
+                last = at;
+                At(part, "IsChecked=\"{Binding HomeCards, Mode=OneWay, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=" + size + "}\"");
+                At(part, "<TextBlock Text=\"{Binding Home_Cards_" + size + ", Source={x:Static strings:Strings.Instance}}\"/>");
+                Assert.True(Enum.IsDefined(typeof(HomeCardSize), size), size + " is not a size");
+            }
+            Assert.Equal(3, Enum.GetValues(typeof(HomeCardSize)).Length);
+            At(part, "ToolTip=\"{Binding Home_Cards_Auto_Tooltip, Source={x:Static strings:Strings.Instance}}\"");
+            var s = Strings.Instance;
+            Assert.Equal("Cards", s.Home_Cards);
+            Assert.Equal(new[] { "Detailed", "Compact", "Auto" }, new[] { s.Home_Cards_Detailed, s.Home_Cards_Compact, s.Home_Cards_Auto });
+            Assert.Equal("Detailed while the cards fit the window, compact once they would run past it", s.Home_Cards_Auto_Tooltip);
+
+            // A click on a segment sets the page's choice.
+            string code = ExtrasPageTests.RepoText("PadForge.App", "Views", "HomePage.Cards.cs");
+            At(code, "private void Cards_Checked(object sender, RoutedEventArgs e)");
+            At(code, "&& Enum.TryParse(name, out HomeCardSize size))");
+            At(code, "vm.HomeCards = size;");
+            // Kept with the settings: read, written, and a change marks the file.
+            string settings = ExtrasPageTests.RepoText("PadForge.App", "Services", "SettingsService.cs");
+            At(settings, "_mainVm.Dashboard.HomeCards = HomeCardSizes.FromStored(appSettings.HomeCards);");
+            At(settings, "HomeCards = (int)_mainVm.Dashboard.HomeCards,");
+            At(settings, "public int HomeCards { get; set; }");
+            At(WindowCode(), "or nameof(DashboardViewModel.HomeCards))");
         }
 
         /// <summary>One device's row on a controller's card: a light that
@@ -408,18 +611,28 @@ namespace PadForge.Tests
         public void ADevicesRow_ShowsItsLightItsLinkAndItsBatteryAsAMeter()
         {
             string page = Home();
-            int rowAt = At(page, "<DataTemplate x:Key=\"DrivenByRow\">");
-            string row = page.Substring(rowAt, page.IndexOf("</DataTemplate>", rowAt, StringComparison.Ordinal) - rowAt);
-            At(row, "<controls:Halo CornerRadius=\"3\" Radius=\"10\" Strength=\"0.45\" IsLit=\"{Binding IsSending}\"");
-            At(row, "<Ellipse Width=\"6\" Height=\"6\" StrokeThickness=\"1\">");
+            string row = Block(page, "<DataTemplate x:Key=\"DrivenByRow\">", "</DataTemplate>");
+            // The light is one template, which a compact card's device takes too.
+            At(row, "<ContentPresenter Content=\"{Binding}\" ContentTemplate=\"{StaticResource DeviceLight}\"/>");
+            string light = Block(page, "<DataTemplate x:Key=\"DeviceLight\">", "</DataTemplate>");
+            At(light, "<controls:Halo CornerRadius=\"3\" Radius=\"10\" Strength=\"0.45\" IsLit=\"{Binding IsSending}\"");
+            At(light, "<Ellipse Width=\"6\" Height=\"6\" StrokeThickness=\"1\">");
             Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding IsSending\\}\" Value=\"True\">\\s*"
-                + "<Setter Property=\"Fill\" Value=\"\\{DynamicResource EmberBrush\\}\"/>"), row);
+                + "<Setter Property=\"Fill\" Value=\"\\{DynamicResource EmberBrush\\}\"/>"), light);
             Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding IsSending\\}\" Value=\"True\">\\s*"
-                + "<Setter Property=\"ToolTip\" Value=\"\\{Binding Home_Device_Sending, Source=\\{x:Static strings:Strings.Instance\\}\\}\"/>"), row);
+                + "<Setter Property=\"ToolTip\" Value=\"\\{Binding Home_Device_Sending, Source=\\{x:Static strings:Strings.Instance\\}\\}\"/>"), light);
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding IsOnline\\}\" Value=\"False\">\\s*"
+                + "<Setter Property=\"Fill\" Value=\"Transparent\"/>"), light);
             // The clear box the pointer finds is ten wider than the light,
             // and its margins give the ten back.
-            At(row, "<Border Width=\"16\" Margin=\"-5,0,-5,0\" Background=\"Transparent\">");
-            At(row, "<TextBlock Grid.Column=\"1\" Text=\"{Binding Name}\" Margin=\"6,0,6,0\" FontSize=\"13\"");
+            At(light, "<Border Width=\"16\" Margin=\"-5,0,-5,0\" Background=\"Transparent\">");
+            // The name, quiet for a device that is not connected.
+            At(row, "<TextBlock Grid.Column=\"1\" Text=\"{Binding Name}\" Margin=\"6,0,6,0\" Style=\"{StaticResource DeviceNameText}\"/>");
+            string named = Block(page, "<Style x:Key=\"DeviceNameText\" TargetType=\"TextBlock\">", "</Style>");
+            At(named, "<Setter Property=\"FontSize\" Value=\"13\"/>");
+            At(named, "<Setter Property=\"TextTrimming\" Value=\"CharacterEllipsis\"/>");
+            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding IsOnline\\}\" Value=\"False\">\\s*"
+                + "<Setter Property=\"Foreground\" Value=\"\\{DynamicResource QuietGlyphBrush\\}\"/>"), named);
             int link = At(row, "<controls:DecorativeStrokeIcon Data=\"{StaticResource BluetoothLineGeometry}\" Size=\"13\" StrokeWidth=\"2\"");
             int meter = At(row, "<controls:BatteryMeter Margin=\"6,0,0,0\" Percent=\"{Binding BatteryPercent}\"");
             int percent = At(row, "<TextBlock Text=\"{Binding BatteryText}\" MinWidth=\"34\" Margin=\"6,0,0,0\" TextAlignment=\"Right\"");

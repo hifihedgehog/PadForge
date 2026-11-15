@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>ይህ መሣሪያ ሲገናኝ ይጀምራል።</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>ከእነዚህ መሣሪያዎች አንዱ ሲገናኝ ይጀምራል።</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>አልተገናኘም</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>ካርዶች</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>የተሟላ</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>የታመቀ</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>አውቶማቲክ</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>ካርዶቹ በመስኮቱ ውስጥ እስከሚበቁ ድረስ የተሟላ፣ ከመስኮቱ ሊያልፉ ሲሉ የታመቀ</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>አሁን ግብዓት እየላከ ነው</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>ባትሪ {0}፣ ዝቅተኛ</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>ባትሪ {0}፣ በመሙላት ላይ</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>በምስሉ ላይ ኖታ ወይም ተንሸራታች ጠቅ አድርግና ከዚያ ሊያንቀሳቅሰው የሚገባውን ግብዓት ተጫን።</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>«ሁሉንም አዛምድ» የA እና የB ንክኪ ውጤቶችን ይዘልላል። አንዱን ለማያያዝ በA ወይም በB ዙሪያ ያለውን ቀለበት ጠቅ አድርግ።</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>ለ{0} ግብዓት በመጠበቅ ላይ። በመሣሪያህ ላይ ግብዓቱን ተጫን።</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}፣ የሚያንቀሳቅሰው</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>ተጨማሪ አማራጮች</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>ያነሱ አማራጮች</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>የፊት አዝራር</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>የትከሻ አዝራር</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>የስርዓት አዝራር</value></data>
@@ -1400,6 +1403,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>ሁሉንም ዳግም አስጀምር</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>ሁሉንም አጽዳ</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>ምንጭ</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>ጨዋታዎች የሚያዩት</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} አልተገናኙም</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>ላልተገናኘ እያንዳንዱ መሣሪያ የራሱን አምድ አሳይ</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>ጠቅ አድርግ፣ ከዚያ ለ{0} ምንጭ የሚሆነውን በዚህ መሣሪያ ላይ ያለውን ግብዓት ተጫን</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>መሣሪያዎቹን ወደ ጎን ሸብልል</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>መሣሪያ</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>ሁነታ</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>ላይ</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>ታች</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>መቀየሪያ</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>የማስተካከያ ዱላ</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>ውፅዓት</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>እሴት</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>አማራጮች</value></data>
@@ -1428,7 +1443,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>ከፍተኛ</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>የአከማቹ ከፍተኛ ወሰን። 1 = ሙሉ አዎንታዊ።</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>ማሳደጊያ</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>ዋና ሁነታ</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>መነሳት</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>ተዛማጁ ቁልፍ ሲያዝ ሙሉ ማፈንገጥ ላይ ለመድረስ የሚወስደው ሰከንዶች። 0 = ወዲያውኑ።</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>መልቀቅ</value></data>
@@ -2453,7 +2467,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>ለ{0} ተዘጋጅቷል</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>ንቁ</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>ለ{0} ተጨማሪ</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} ይሰረዝ?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>መገለጫው እና የራስ-ሰር መቀያየር ደንቡ ይወገዳሉ። ይህ ሊቀለበስ አይችልም።</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>መገለጫው ይወገዳል። ይህ ሊቀለበስ አይችልም።</value></data>
@@ -4370,7 +4383,6 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>የላይ ግብዓት</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>የታች ግብዓት</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>የማሻሻያ ግብዓት</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>የምንጭ ዓይነት</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>ዝቅተኛ ቀለም</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>መካከለኛ ቀለም</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>ከፍተኛ ቀለም</value></data>

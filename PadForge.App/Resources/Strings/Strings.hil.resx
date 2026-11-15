@@ -1542,9 +1542,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Mag-click sang nota ukon slider, dayon pinduta ang input nga magapadalagan sini.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Ginalaktawan sang Map All ang mga output sang paghikap sa A kag B. I-click ang lingin sa palibot sang A ukon B para i-map ang isa sa ila.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Ginahulat ang input para sa {0}. Pinduta ang input sa imo device.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, ginapadalagan sang</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Mas madamo nga pilian</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Mas diutay nga pilian</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Button sa atubangan</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Button sa abaga</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Button sang sistema</value></data>
@@ -1626,7 +1623,6 @@
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Rebisyon</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Dugang pa para sa {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Tipigi Diri ang Karon nga Setup</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Ilisan</value></data>
   <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>Ang profile nga "{0}" may ara na sang karon nga setup.</value></data>
@@ -1685,4 +1681,22 @@
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ining mga gin-import nga profile may mas bag-o nga bersyon sa Steam Workshop. I-import sila liwat halin sa Magkuha sang mga Profile para makuha ang mga pagbag-o.</value></data>
   <data name="Pad_Stick_Speed" xml:space="preserve"><value>Kadasigon</value></data>
   <data name="Pad_More_IrPointer" xml:space="preserve"><value>Posisyon sang sensor bar, Vertical Offset, Smoothing</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Mga kard</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Detalyado</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Kompakto</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Awto</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Detalyado samtang nagakasya ang mga kard sa window, kompakto kon maglapaw na sila sini</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Ginakita sang mga hampang</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>Wala nakakonekta: {0}</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Ipakita ang kolum para sa kada device nga wala nakakonekta</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>I-click, dayon pindota ang input sa sini nga device nga magapahulag sa {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>I-scroll pakilid ang mga device</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Device</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Moda</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Pataas</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Pababa</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifier</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stick pang-adjust</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Output</value></data>
 </root>

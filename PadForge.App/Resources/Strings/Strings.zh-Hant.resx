@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>此裝置連接時它就會啟動。</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>這些裝置其中之一連接時它就會啟動。</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>未連接</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>卡片</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>詳細</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>精簡</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>自動</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>卡片能放進視窗時顯示詳細卡片，放不下時改為精簡卡片</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>正在傳送輸入</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>電量 {0}，偏低</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>電量 {0}，充電中</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>按一下音符或滑桿，再按下要用來驅動它的輸入。</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>「全部對應」會略過 A 和 B 的觸碰輸出。按一下 A 或 B 周圍的圓環即可繫結其中一個。</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>正在偵聽 {0}。請按下裝置上的輸入。</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0} 的輸入來源</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>更多選項</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>較少選項</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>正面按鈕</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>肩鍵</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>系統按鈕</value></data>
@@ -1588,6 +1591,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>全部重設</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>全部清除</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>來源</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>遊戲看到的</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} 個未連接</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>為每個未連接的裝置顯示一欄</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>點一下，然後按下此裝置上要驅動 {0} 的輸入</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>左右捲動裝置</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>裝置</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>模式</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>上</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>下</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>修飾鍵</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>微調搖桿</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>輸出</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>數值</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>選項</value></data>
@@ -1616,7 +1631,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>最大值</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>累加器的上限。1 = 完全正值。</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>漸變</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>主要模式</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>上升</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>按住對應按鍵時，達到完全偏轉所需的秒數。0 = 立即。</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>回復</value></data>
@@ -2649,7 +2663,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>設定給 {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>使用中</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} 的更多選項</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}：{1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>要刪除 {0} 嗎？</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>設定檔和它的自動切換規則都會被移除。此動作無法復原。</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>設定檔會被移除。此動作無法復原。</value></data>
@@ -4636,7 +4649,6 @@
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>上方向輸入</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>下方向輸入</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>修飾輸入</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>來源類型</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>低值顏色</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>中值顏色</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>高值顏色</value></data>

@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Hún ræsist þegar þetta tæki tengist.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Hún ræsist þegar eitt þessara tækja tengist.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Ekki tengt</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Spjöld</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Ítarleg</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Þétt</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Sjálfvirkt</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Ítarleg á meðan spjöldin passa í gluggann, þétt þegar þau færu út fyrir hann</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Sendir inntak núna</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Rafhlaða {0}, lág</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Rafhlaða {0}, í hleðslu</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Smelltu á nótu eða sleða og ýttu á inntakið sem á að stjórna því.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>„Varpa öllu“ sleppir snertiúttökum A og B. Smelltu á hringinn utan um A eða B til að tengja annað þeirra.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Hlustar eftir {0}. Ýttu á inntakið á tækinu þínu.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, inntak frá</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Fleiri valkostir</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Færri valkostir</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Aðalhnappur</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Axlarhnappur</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Kerfishnappur</value></data>
@@ -1588,6 +1591,18 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Endurstilla allt</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Hreinsa allt</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Uppspretta</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Leikir sjá</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} ekki tengd</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Sýna dálk fyrir hvert tæki sem er ekki tengt</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Smelltu og ýttu síðan á inntakið á þessu tæki sem á að stjórna {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Fletta tækjunum til hliðar</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Tæki</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Hamur</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Upp</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Niður</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Breytitakki</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Fínstillingarstöng</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Úttak</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Gildi</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Valkostir</value></data>
@@ -1616,7 +1631,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Hám.</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Efri mörk safngildisins. 1 = fullt jákvætt.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampur</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Aðalhamur</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Ris</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Sekúndur þar til fullu útslagi er náð á meðan samsvarandi lykli er haldið inni. 0 = strax.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Losun</value></data>
@@ -2649,7 +2663,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Valið fyrir {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Virkt</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Meira fyrir {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Eyða {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Sniðið og sjálfvirka skiptireglan þess eru fjarlægð. Ekki er hægt að afturkalla þetta.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Sniðið er fjarlægt. Ekki er hægt að afturkalla þetta.</value></data>
@@ -4636,7 +4649,6 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Inntak upp</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Inntak niður</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Breytiinntak</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Gerð uppsprettu</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Litur við lágt</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Litur við miðlungs</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Litur við hátt</value></data>

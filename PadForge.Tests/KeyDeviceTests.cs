@@ -1537,55 +1537,36 @@ namespace PadForge.Tests
             Assert.False(row.PrimaryKindSource.IsKeyInvertShown);
             Assert.False(row.PrimaryKindSource.ToDomain().Invert);
 
-            // The checkbox is the source's own Invert, shown by that flag
-            // alone: once in the primary's rows, whose DataContext is the
-            // row's PrimaryKindSource, and once in the row of an extra
-            // source, and nowhere else. Each is a row of its own (#574), a
-            // label and a switch, and the flag shows the whole row. The
-            // primary's stands under Primary Mode, before the Ramp settings,
-            // so it is inside the primary's rows. An extra source's stands
-            // under its Source Type.
+            // The switch is the source's own Invert, shown by that flag
+            // alone. It is written once, among the settings of a source's
+            // mode, and every source shows those through the one that
+            // holds its mode: the row's PrimaryKindSource for its first
+            // source, and an added source itself. It is a group of its own,
+            // a label and a switch, and the flag shows the whole group.
             string xaml = RepoText("PadForge.App", "Views", "PadPage.xaml");
             const string shownBy = "Visibility=\"{Binding IsKeyInvertShown, Converter={StaticResource BoolToVisibilityConverter}}\"";
-            const string holder = "<StackPanel DataContext=\"{Binding PrimaryKindSource}\" x:Name=\"PrimaryModeRows\">";
-            int strip = xaml.IndexOf(holder, StringComparison.Ordinal);
-            int stripEnd = strip < 0 ? -1 : xaml.IndexOf(
-                "Visibility=\"{Binding IsRampedKind, Converter={StaticResource BoolToVisibilityConverter}}\"", strip, StringComparison.Ordinal);
-            int extras = xaml.IndexOf("<ItemsControl controls:TileGridPanel.FullRow=\"True\" ItemsSource=\"{Binding ExtraSources}\">", StringComparison.Ordinal);
-            Assert.True(strip > 0 && stripEnd > strip && extras > stripEnd, "the primary's rows or the extra sources' list were not found");
-            int inPrimary = xaml.IndexOf(shownBy, strip, StringComparison.Ordinal);
-            Assert.True(inPrimary > 0 && inPrimary < stripEnd, "no switch for a primary key source's saved Invert");
-            int inExtra = xaml.IndexOf(shownBy, stripEnd, StringComparison.Ordinal);
-            Assert.True(inExtra > extras, "no switch for an extra key source's saved Invert");
-            Assert.Equal(-1, xaml.IndexOf(shownBy, inExtra + 1, StringComparison.Ordinal));
-            Assert.Equal(inPrimary, xaml.IndexOf(shownBy, StringComparison.Ordinal));
+            int settings = xaml.IndexOf("<DataTemplate x:Key=\"SourceModeSettings\">", StringComparison.Ordinal);
+            int settingsEnd = settings < 0 ? -1 : xaml.IndexOf("</DataTemplate>", settings, StringComparison.Ordinal);
+            Assert.True(settings > 0 && settingsEnd > settings, "the settings of a source's mode were not found");
+            int shown = xaml.IndexOf(shownBy, StringComparison.Ordinal);
+            Assert.True(shown > settings && shown < settingsEnd, "no switch for a key source's saved Invert");
+            Assert.Equal(-1, xaml.IndexOf(shownBy, shown + 1, StringComparison.Ordinal));
+            Assert.Equal(1, xaml.Split("<ContentControl Content=\"{Binding ModeHolder}\" ContentTemplate=\"{StaticResource SourceModeSettings}\"").Length - 1);
+            Assert.Same(row.PrimaryKindSource, ((IMappingSourceLine)row).ModeHolder);
+            Assert.Same(extra, ((IMappingSourceLine)extra).ModeHolder);
 
             const string content = "Content=\"{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}\"";
             const string bound = "IsChecked=\"{Binding Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}\"";
 
-            // The primary's: the row the flag shows, and the switch in it.
-            int rowOpen = xaml.LastIndexOf("<controls:FlexLinePanel Style=\"{DynamicResource RowOptionLine}\"", inPrimary, StringComparison.Ordinal);
-            int rowClose = xaml.IndexOf("</controls:FlexLinePanel>", inPrimary, StringComparison.Ordinal);
-            Assert.True(rowOpen > strip && rowClose > inPrimary, "the flag is not on an option row");
-            Assert.DoesNotContain("</controls:FlexLinePanel>", xaml[rowOpen..inPrimary]);
-            string optionRow = xaml[rowOpen..rowClose];
-            int boxOpen = optionRow.IndexOf("<CheckBox", StringComparison.Ordinal);
-            Assert.True(boxOpen > 0 && optionRow.IndexOf("<CheckBox", boxOpen + 1, StringComparison.Ordinal) < 0, "one switch in the row");
-            string primaryBox = optionRow[boxOpen..optionRow.IndexOf("/>", boxOpen, StringComparison.Ordinal)];
-            Assert.Contains("Style=\"{StaticResource SwitchCheckBox}\"", primaryBox);
-            Assert.Contains(content, primaryBox);
-            Assert.Contains(bound, primaryBox);
-            Assert.DoesNotContain("IsEnabled", primaryBox);
-
-            // An extra source's: the row the flag shows, and the switch in it.
-            int extraOpen = xaml.LastIndexOf("<controls:FlexLinePanel Style=\"{DynamicResource RowOptionLine}\"", inExtra, StringComparison.Ordinal);
-            int extraClose = xaml.IndexOf("</controls:FlexLinePanel>", inExtra, StringComparison.Ordinal);
-            Assert.True(extraOpen > extras && extraClose > inExtra, "the flag is not on an option row of the extra source");
-            Assert.DoesNotContain("</controls:FlexLinePanel>", xaml[extraOpen..inExtra]);
-            string extraRow = xaml[extraOpen..extraClose];
-            int open = extraRow.IndexOf("<CheckBox", StringComparison.Ordinal);
-            Assert.True(open > 0 && extraRow.IndexOf("<CheckBox", open + 1, StringComparison.Ordinal) < 0, "one switch in the row");
-            string box = extraRow[open..extraRow.IndexOf("/>", open, StringComparison.Ordinal)];
+            // The group the flag shows, and the switch in it.
+            int groupOpen = xaml.LastIndexOf("<StackPanel Style=\"{StaticResource LineGroup}\"", shown, StringComparison.Ordinal);
+            int groupClose = xaml.IndexOf("</StackPanel>", shown, StringComparison.Ordinal);
+            Assert.True(groupOpen > settings && groupClose > shown, "the flag is not on a group");
+            Assert.DoesNotContain("</StackPanel>", xaml[groupOpen..shown]);
+            string group = xaml[groupOpen..groupClose];
+            int boxOpen = group.IndexOf("<CheckBox", StringComparison.Ordinal);
+            Assert.True(boxOpen > 0 && group.IndexOf("<CheckBox", boxOpen + 1, StringComparison.Ordinal) < 0, "one switch in the group");
+            string box = group[boxOpen..group.IndexOf("/>", boxOpen, StringComparison.Ordinal)];
             Assert.Contains("Style=\"{StaticResource SwitchCheckBox}\"", box);
             Assert.Contains(content, box);
             Assert.Contains(bound, box);

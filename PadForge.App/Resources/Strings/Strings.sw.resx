@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Huanza kifaa hiki kinapounganishwa.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Huanza kimojawapo cha vifaa hivi kinapounganishwa.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Haijaunganishwa</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Kadi</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Kamili</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Fupi</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Otomatiki</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Kamili kadi zinapotosha dirishani, fupi zitakapozidi dirisha</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Inatuma ingizo sasa</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Betri {0}, chini</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Betri {0}, inachaji</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Bofya noti au kitelezi kisha bonyeza kitufe kwenye kifaa chako kitakachokiendesha.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Ramani Zote huruka matokeo ya mguso ya A na B. Bofya pete inayozunguka A au B ili kuunganisha mojawapo.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Inasikiliza {0}. Bonyeza ingizo kwenye kifaa chako.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, huendeshwa na</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Chaguo Zaidi</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Chaguo Chache</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Kitufe cha uso</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Kitufe cha bega</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Kitufe cha mfumo</value></data>
@@ -1398,6 +1401,18 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Weka Upya Vyote</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Futa Vyote</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Chanzo</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Michezo huona</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} haijaunganishwa</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Onyesha safu kwa kila kifaa ambacho hakijaunganishwa</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Bofya, kisha bonyeza ingizo la kifaa hiki litakaloendesha {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Sogeza vifaa kando</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Kifaa</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Hali</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Juu</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Chini</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Kirekebishi</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Kijiti cha marekebisho</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Towe</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Thamani</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Chaguo</value></data>
@@ -1426,7 +1441,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Kima cha Juu</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Kikomo cha juu cha kikusanyaji. 1 = chanya kamili.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Kupanda</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Hali Kuu</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Mwanzo</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Sekunde za kufikia mkengeuko kamili wakati kitufe husika kimeshikiliwa. 0 = papo hapo.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Achilia</value></data>
@@ -2441,7 +2455,6 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Umewekwa kwa {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Unatumika</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Zaidi kwa {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Futa {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Wasifu na kanuni yake ya kubadilisha kiotomatiki huondolewa. Hili haliwezi kutenduliwa.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Wasifu huondolewa. Hili haliwezi kutenduliwa.</value></data>
@@ -4345,7 +4358,6 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Ingizo la Juu</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Ingizo la Chini</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Ingizo la Kirekebishi</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Aina ya Chanzo</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Rangi ya Chini</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Rangi ya Kati</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Rangi ya Juu</value></data>

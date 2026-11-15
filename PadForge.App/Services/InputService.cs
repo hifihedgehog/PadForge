@@ -431,6 +431,10 @@ namespace PadForge.Services
         /// </summary>
         public bool IsPadPageVisible { get; set; }
 
+        /// <summary>Whether Home is the page shown. While it is, the UI
+        /// timer tells each card's picture what is held on its controller.</summary>
+        public bool IsHomePageVisible { get; set; } = true;
+
         /// <summary>
         /// Optional reference to the settings service for triggering saves
         /// when cached data (e.g. HidHide instance IDs) is updated.
@@ -3292,6 +3296,15 @@ namespace PadForge.Services
                 finally { padVm.SuppressSettingsDirty = false; }
             }
 
+            // Home's cards: what is held on each controller now, for the
+            // card's picture. Only while Home shows.
+            if (IsHomePageVisible && !skipPadVmMirrors)
+            {
+                foreach (var slot in _mainVm.Dashboard.SlotSummaries)
+                    if (slot.PadIndex >= 0 && slot.PadIndex < _mainVm.Pads.Count)
+                        slot.ReadHeld(_mainVm.Pads[slot.PadIndex]);
+            }
+
             // ── gravity low-pass for Player/World Space gyro ──
             UpdateGravityEstimates();
 
@@ -3960,35 +3973,75 @@ namespace PadForge.Services
         /// card's stage and the Devices page's panel.</summary>
         private bool PicturesAreStills => !(_mainVm.Settings?.Use2DControllerView ?? false);
 
-        /// <summary>Gives a card its picture. While the controller page
-        /// shows the 3D view, that is a still of the 3D model: the one made
-        /// already, or none for the moment it takes to make one, which is
-        /// then made on a thread of its own. A model that cannot be drawn
-        /// leaves the card its 2D art, as the 2D view does.</summary>
-        private void SetSlotPicture(SlotSummary slot, PadViewModel padVm, bool still)
+        /// <summary>The picture of a controller of a preset and a type, in
+        /// the finish <paramref name="finishOf"/> answers for a family of
+        /// art. While the controller page shows the 3D view, that is a
+        /// still of the 3D model: the one made already, or none for the
+        /// moment it takes to make one (Coming), which is then made on a
+        /// thread of its own. A model that cannot be drawn leaves the 2D
+        /// art, as the 2D view does. One rule for a Home card's stage and
+        /// a profile's card.</summary>
+        private (System.Windows.Media.ImageSource Color, System.Windows.Media.ImageSource Gray, IReadOnlyList<StillMark> Marks, bool Coming) PictureOf(
+            string profile, VirtualControllerType type, Func<string, string> finishOf, bool still)
         {
-            string profile = padVm.ProfileId, finishes = padVm.Model3DAppearances;
-            var type = padVm.OutputType;
             if (still)
             {
-                var (family, finish) = StagePictures.StillFor(profile, type, padVm.GetModelAppearance);
+                var (family, finish) = StagePictures.StillFor(profile, type, finishOf);
                 if (family != null)
                 {
                     if (!StagePictures.TryGetStill(family, finish, out var color, out var gray))
                     {
                         WantStill(family, finish);
-                        slot.SetPicture(profile, type, finishes, still, null, null, coming: true);
-                        return;
+                        return (null, null, StillMarks.None, true);
                     }
-                    if (color != null)
-                    {
-                        slot.SetPicture(profile, type, finishes, still, color, gray);
-                        return;
-                    }
+                    if (color != null) return (color, gray, StagePictures.StillMarksOf(family, finish), false);
                 }
             }
-            string art = StagePictures.PathFor(profile, type, padVm.GetModelAppearance);
-            slot.SetPicture(profile, type, finishes, still, StagePictures.Color(art), StagePictures.Gray(art));
+            string art = StagePictures.PathFor(profile, type, finishOf);
+            return (StagePictures.Color(art), StagePictures.Gray(art), StagePictures.ArtMarks(art), false);
+        }
+
+        /// <summary>Gives a Home card its picture, and where each control
+        /// is drawn on it.</summary>
+        private void SetSlotPicture(SlotSummary slot, PadViewModel padVm, bool still)
+        {
+            var picture = PictureOf(padVm.ProfileId, padVm.OutputType, padVm.GetModelAppearance, still);
+            slot.SetPicture(padVm.ProfileId, padVm.OutputType, padVm.Model3DAppearances, still,
+                picture.Color, picture.Gray, picture.Coming, picture.Marks);
+        }
+
+        /// <summary>Whether Profiles is the page shown. The page shown asks
+        /// for its cards' pictures: the active profile's controllers as
+        /// they are now, since a preset or a finish chosen on a
+        /// controller's page changes its picture, and then every card's.</summary>
+        public bool IsProfilesPageVisible
+        {
+            get => _isProfilesPageVisible;
+            set
+            {
+                _isProfilesPageVisible = value;
+                if (!value) return;
+                RefreshActiveProfileTopology();
+                RefreshProfilePictures();
+            }
+        }
+
+        private bool _isProfilesPageVisible;
+
+        /// <summary>Gives every profile's card the pictures of its
+        /// controllers, while the Profiles page shows. A still that has to
+        /// be made is asked for, and the cards are given their pictures
+        /// again when it is there.</summary>
+        internal void RefreshProfilePictures()
+        {
+            if (!_isProfilesPageVisible) return;
+            bool still = PicturesAreStills;
+            foreach (var item in _mainVm.Settings.ProfileItems)
+                foreach (var controller in item.Controllers)
+                {
+                    var picture = PictureOf(controller.PresetId, controller.Type, controller.FinishOf, still);
+                    controller.SetPicture(picture.Color, picture.Coming);
+                }
         }
 
         private readonly List<(string Family, string Finish)> _stillsWanted = new();
@@ -4029,17 +4082,18 @@ namespace PadForge.Services
             PostNextStill();
         }
 
-        /// <summary>Gives every Home card and the Devices page's panel
-        /// its picture again, now: a still that was waited for has been
-        /// made, or the controller page went from the 3D view to the 2D one
-        /// or back. Neither waits for a refresh, since no timer runs one
-        /// while the engine is stopped.</summary>
+        /// <summary>Gives every Home card, the Devices page's panel and
+        /// the Profiles page's cards their pictures again, now: a still
+        /// that was waited for has been made, or the controller page went
+        /// from the 3D view to the 2D one or back. None waits for a
+        /// refresh, since no timer runs one while the engine is stopped.</summary>
         internal void RefreshPictures()
         {
             foreach (var slot in _mainVm.Dashboard.SlotSummaries) slot.ForgetPicture();
             RefreshSlotSummaryProperties();
             _mainVm.Devices.ForgetPicture();
             UpdateSelectedDevicePicture();
+            RefreshProfilePictures();
         }
 
         /// <summary>Gives the Devices page's panel the selected device's
@@ -4174,6 +4228,7 @@ namespace PadForge.Services
                             mapped.CapType == InputDeviceType.Gamepad, nowMs);
                 }
 
+                slot.ReadFirstDevice();
                 slot.MappedDeviceCount = mappedCount;
                 slot.ConnectedDeviceCount = connectedCount;
                 slot.IsVirtualControllerConnected = _inputManager?.IsVirtualControllerConnected(padIndex) ?? false;
@@ -6493,6 +6548,7 @@ namespace PadForge.Services
                     mapping.CurrentValueText = LiveValueString(axisValue);
                     mapping.CurrentPercentText = LivePercentString(LivePercentOf(axisValue, false, false, target, outputType));
                     mapping.IsInputActive = Math.Abs(axisValue) > 1500;
+                    mapping.LiveSign = Math.Sign(axisValue);
                     mapping.LiveLevel = Math.Abs(axisValue) / 32767.0;
                     continue;
                 }
@@ -6537,6 +6593,7 @@ namespace PadForge.Services
                         : isMidiCc
                             ? Math.Abs(combined.Value - 64) > 2
                             : Math.Abs(combined.Value) > 1500;
+                    mapping.LiveSign = Math.Sign(combined.Value);
                     mapping.LiveLevel = LiveLevelOf(combined.Value, mapping.IsTargetDiscrete,
                         mapping.IsTouchpadAxisTarget, target, outputType);
                     continue;
@@ -6563,6 +6620,8 @@ namespace PadForge.Services
                 mapping.CurrentPercentText = LivePercentString(mapping.IsInputActive ? 100 : 0);
             }
 
+            UpdateListTagLevels(padVm, padIndex);
+
             // ── Pipeline heat chips (#175 item 10): recompute from this
             //    tick's rowfire flags on the same lane. The engaged shift
             //    layer comes from the same engine poll the shift-layer
@@ -6576,6 +6635,49 @@ namespace PadForge.Services
             }
             padVm.RefreshPipelineChips(engagedMask);
         }
+
+        /// <summary>The live level of each input the mappings list draws a
+        /// level for: an axis or a slider of a connected device, read from
+        /// that device's own state. An input that rests in the middle of
+        /// its range (<see cref="InputManager.AxisRestsAtZero"/> says which
+        /// do not) stands at one half at rest and reads from -100 to 100. Any
+        /// other reads from 0 to 100.</summary>
+        private void UpdateListTagLevels(PadViewModel padVm, int padIndex)
+        {
+            padVm.FlushList();
+            foreach (var mapping in padVm.Mappings)
+            {
+                var tags = mapping.LiveTags;
+                for (int i = 0; i < tags.Count; i++)
+                {
+                    var tag = tags[i];
+                    UserDevice device = Guid.TryParse(tag.DeviceGuid, out Guid id) ? FindUserDevice(id) : null;
+                    var state = device != null && device.IsOnline ? device.InputState : null;
+                    if (!tag.CenterKnown && device != null)
+                    {
+                        tag.IsCentered = !InputManager.AxisRestsAtZero(tag.Descriptor, device);
+                        tag.CenterKnown = true;
+                    }
+                    bool centered = tag.IsCentered;
+                    if (state == null)
+                    {
+                        tag.Level = centered ? 0.5 : 0;
+                        tag.LevelText = string.Empty;
+                        continue;
+                    }
+                    string canonical = PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(tag.Descriptor) ?? tag.Descriptor;
+                    double share = Math.Clamp(ReadMappedValue(state, canonical, tag.DeviceGuid, padIndex) / 65535.0, 0, 1);
+                    tag.Level = share;
+                    tag.LevelText = LivePercentString(ListTagPercent(share, centered));
+                }
+            }
+        }
+
+        /// <summary>The percent a level in the list reads: a centered
+        /// input's distance from the middle, signed, and any other input's
+        /// share of its range.</summary>
+        internal static int ListTagPercent(double share, bool centered)
+            => (int)Math.Round(centered ? (share - 0.5) * 200 : share * 100);
 
         /// <summary>A row's live value as a share of its full scale, 0 to
         /// 1, for the value meter beside the row (#574). A touchpad
@@ -7959,55 +8061,17 @@ namespace PadForge.Services
                 bool primaryIsKind = primarySrc != null
                     && !PadForge.Engine.Common.Mapping.SourceEvaluator.IsDescriptorKind(primarySrc.Kind);
 
-                if (primarySrc != null && !primaryIsKind)
+                // The row takes its first source, or empties it for none
+                // (MappingItem.LoadFirstSource). Every field is set either
+                // way, so nothing of the row loaded before stays: a deadzone
+                // left behind showed a stale number and the next save could
+                // write it back onto the row (round 34).
+                mapping.LoadFirstSource(primarySrc, ResolveDeviceLabel);
+                if (primarySrc != null && !primaryIsKind
+                    && !string.IsNullOrEmpty(primarySrc.DeviceGuid)
+                    && Guid.TryParse(primarySrc.DeviceGuid, out var primaryGuid))
                 {
-                    var primary = primarySrc;
-                    string encoded = ReencodePrefixForLegacy(
-                        primary.Descriptor, primary.Invert, primary.HalfAxis);
-                    mapping.LoadDescriptor(encoded);
-                    // Unconditional, like every sibling on this block. The
-                    // conditional form left the PREVIOUS row's deadzone in
-                    // the ViewModel whenever this row's primary carried 0
-                    // (the inherit value), so the grid showed a stale number
-                    // and the next save could write it back onto the row. 50
-                    // is the engine's neutral sentinel: SourceCoercion treats
-                    // 0 and 50 alike as "use the global threshold"
-                    // (round 34).
-                    mapping.MappingDeadZone = primary.DeadZone > 0 ? primary.DeadZone : 50;
-                    mapping.IsBidirectional = primary.Bidirectional;
-                    mapping.InvertOutput = primary.InvertOutput;
-                    mapping.ParamAccel = primary.ParamAccel;
-                    mapping.GyroSensitivity = primary.GyroSensitivity > 0 ? primary.GyroSensitivity : 1.0;
-                    mapping.MouseCursorSensitivity = primary.MouseCursorSensitivity > 0 ? primary.MouseCursorSensitivity : 1.0;
-                    mapping.IrPointerSensitivity = primary.IrPointerSensitivity > 0 ? primary.IrPointerSensitivity : 1.0;
-                    mapping.Sensitivity = primary.Sensitivity > 0 ? primary.Sensitivity : 1.0;
-                    mapping.PrimarySourceDeviceGuid = primary.DeviceGuid ?? "";
-                    mapping.PrimarySourceDeviceLabel = ResolveDeviceLabel(primary.DeviceGuid);
-                    mapping.LoadPrimaryKind(primary); // Direct, Toggle or Rapid Trigger: the holder keeps the kind and the distance
-
-                    if (!string.IsNullOrEmpty(primary.DeviceGuid)
-                        && Guid.TryParse(primary.DeviceGuid, out var primaryGuid))
-                    {
-                        primaryUd = FindUserDevice(primaryGuid);
-                    }
-                }
-                else
-                {
-                    // No row (unmapped), or a stateful primary kind whose descriptor
-                    // is unused. Clear the descriptor primary and load the kind (null
-                    // for the unmapped case) into PrimaryKindSource.
-                    mapping.LoadDescriptor("");
-                    mapping.PrimarySourceDeviceGuid = "";
-                    mapping.PrimarySourceDeviceLabel = "";
-                    mapping.MappingDeadZone = 50;
-                    mapping.IsBidirectional = false;
-                    mapping.InvertOutput = false;
-                    mapping.ParamAccel = 0;
-                    mapping.GyroSensitivity = 1.0;
-                    mapping.MouseCursorSensitivity = 1.0;
-                    mapping.IrPointerSensitivity = 1.0;
-                    mapping.Sensitivity = 1.0;
-                    mapping.LoadPrimaryKind(primaryIsKind ? primarySrc : null);
+                    primaryUd = FindUserDevice(primaryGuid);
                 }
 
                 MappingDisplayResolver.ResolveDisplayText(mapping, primaryUd);
@@ -8083,27 +8147,6 @@ namespace PadForge.Services
             {
                 SuppressMappingEditPush = false;
             }
-        }
-
-        /// <summary>
-        /// Re-encodes a clean descriptor + Invert/HalfAxis flags back into
-        /// the legacy "I"/"H"/"IH" prefix form that the existing
-        /// MappingItem.LoadDescriptor / Step 3 parser expect. The new
-        /// schema stores Invert and HalfAxis as separate per-source bool
-        /// flags, but the UI's MappingItem still consumes the prefix-
-        /// encoded form for back-compat.
-        /// </summary>
-        private static string ReencodePrefixForLegacy(string descriptor, bool invert, bool halfAxis)
-        {
-            if (string.IsNullOrEmpty(descriptor)) return "";
-            string prefix = (invert, halfAxis) switch
-            {
-                (true,  true)  => "IH",
-                (true,  false) => "I",
-                (false, true)  => "H",
-                _              => "",
-            };
-            return prefix + descriptor;
         }
 
         /// <summary>
@@ -16906,38 +16949,7 @@ namespace PadForge.Services
             row.BatteryCharging = seedCharging;
 
             // Set internal device type key (DeviceType display is computed from this).
-            row.DeviceTypeKey = ud.CapType switch
-            {
-                InputDeviceType.Gamepad => "Gamepad",
-                InputDeviceType.Joystick => "Joystick",
-                InputDeviceType.Driving => "Wheel",
-                InputDeviceType.Flight => "FlightStick",
-                InputDeviceType.FirstPerson => "FirstPerson",
-                InputDeviceType.Supplemental => "Supplemental",
-                InputDeviceType.Mouse => "Mouse",
-                InputDeviceType.Keyboard => "Keyboard",
-                InputDeviceType.Touchpad => "Touchpad",
-                InputDeviceType.Tablet => "Tablet",
-                InputDeviceType.Midi => "Midi",
-                InputDeviceType.Nfc => "Nfc",
-                InputDeviceType.Microphone => "Microphone",
-                InputDeviceType.ConsumerControl => "ConsumerControl",
-                InputDeviceType.HeadsetMotion => "HeadsetMotion",
-                InputDeviceType.HandheldButtons => "HandheldButtons",
-                InputDeviceType.SystemMotion => "SystemMotion",
-                InputDeviceType.HeadTracker => "HeadTracker",
-                InputDeviceType.VrController => "VrController",
-                InputDeviceType.LogitechGKeys => "LogitechGKeys",
-                InputDeviceType.AnalogKeyboard => "AnalogKeyboard",
-                InputDeviceType.WebMenus => "WebMenus",
-                InputDeviceType.PeripheralLighting => "PeripheralLighting",
-                InputDeviceType.PeripheralHaptics => "PeripheralHaptics",
-                InputDeviceType.KeyboardScreenKeys => "KeyboardScreenKeys",
-                InputDeviceType.NovintFalcon => "NovintFalcon",
-                InputDeviceType.GameTelemetry => "GameTelemetry",
-                InputDeviceType.TwitchChat => "TwitchChat",
-                _ => "Device"
-            };
+            row.DeviceTypeKey = Common.DeviceTypeGlyph.KeyFor(ud.CapType);
             // The list row's kind (#574), the glyph Home's offer draws.
             row.KindGlyph = Common.DeviceTypeGlyph.For(ud.CapType);
             // Vendor daemon notice (#343): the sweep scans on its cadence;
@@ -17954,6 +17966,9 @@ namespace PadForge.Services
                             // Device-class glyph (#175): the roster icon
                             // matches the device type, not a blanket gamepad.
                             TypeGlyph = DeviceTypeGlyph.For(ud?.CapType ?? 0),
+                            // The kind in words, under the device's name in
+                            // the mappings list's head.
+                            TypeKey = DeviceTypeGlyph.KeyFor(ud?.CapType ?? 0),
                             // Transport (#175 competitor item 9): shared
                             // classifier (classic {00001124}/BTHENUM, BLE
                             // {00001812}, fork BLE Switch 2 by VID/PID plus
@@ -18104,6 +18119,7 @@ namespace PadForge.Services
                     collection[i].InstanceGuid = newItems[i].InstanceGuid;
                     collection[i].IsOnline = newItems[i].IsOnline;
                     collection[i].TypeGlyph = newItems[i].TypeGlyph;
+                    collection[i].TypeKey = newItems[i].TypeKey;
                     collection[i].TransportGlyph = newItems[i].TransportGlyph;
                 }
                 else
@@ -21963,8 +21979,8 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Refreshes the type chips on the active profile's card so the
-        /// Profiles page reflects slot create/delete/type changes immediately.
+        /// Gives the active profile's card its controllers as they are now, so
+        /// the Profiles page reflects slot create/delete/type changes immediately.
         /// </summary>
         private void RefreshActiveProfileTopology()
         {
@@ -21977,7 +21993,9 @@ namespace PadForge.Services
             {
                 if ((string.IsNullOrEmpty(activeId) && item.IsDefault) || item.Id == activeId)
                 {
-                    SettingsService.UpdateTopologyCounts(item, slotCreated, slotTypes);
+                    SettingsService.UpdateTopologyCounts(item, slotCreated, slotTypes,
+                        _mainVm.Pads.Select(pad => pad.ProfileId).ToArray(),
+                        _mainVm.Pads.Select(pad => pad.Model3DAppearances).ToArray());
                     break;
                 }
             }

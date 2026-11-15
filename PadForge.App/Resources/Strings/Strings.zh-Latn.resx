@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Cǐ shèbèi liánjiē hòu, tā jiù huì qǐdòng.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Zhèxiē shèbèi zhōng rènyì yí gè liánjiē hòu, tā jiù huì qǐdòng.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Wèi liánjiē</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Kǎpiàn</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Xiángxì</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Jǐncòu</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Zìdòng</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Kǎpiàn néng fàngjìn chuāngkǒu shí wéi xiángxì, chāochū chuāngkǒu shí biàn wéi jǐncòu</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Zhèngzài fāsòng shūrù</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Diànliàng {0}, dī</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Diànliàng {0}, chōngdiàn zhōng</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Diǎnjī yī gè yīnfú huò huákuài, ránhòu ànxià yào qūdòng tā de shūrù.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“Quánbù yìngshè” huì tiàoguò A hé B de chùmō shūchū. Diǎnjī A huò B zhōuwéi de yuánhuán, jí kě bǎngdìng qí chùmō shūchū.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Zhèngzài lùzhì {0}. Qǐng zài shèbèi shàng ànxià shūrù.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0} de shūrù láiyuán</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Gèngduō xuǎnxiàng</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Shōuqǐ xuǎnxiàng</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Zhèngmiàn ànniǔ</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Jiānjiàn</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Xìtǒng ànniǔ</value></data>
@@ -1400,6 +1403,18 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Quánbù chóngzhì</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Quánbù qīngchú</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Láiyuán</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Yóuxì suǒ jiàn</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} gè shèbèi wèi liánjiē</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Wèi měi gè wèi liánjiē de shèbèi gè xiǎnshì yī liè</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Diǎnjī hòu, zài cǐ shèbèi shàng ànxià yòng yú qūdòng {0} de shūrù</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Héngxiàng gǔndòng shèbèi</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Shèbèi</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Móshì</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Shàng</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Xià</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Xiūshìjiàn</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Wēitiáo yáogǎn</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Shūchū</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Shùzhí</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Xuǎnxiàng</value></data>
@@ -1428,7 +1443,6 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Zuìdà</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Lěijiāqì shàngxiàn. 1 = wánquán zhèngzhí.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Jiànbiàn</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Zhǔ móshì</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Shàngshēng</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Ànzhù duìyìng de jiàn shí dádào wánquán piānzhuǎn de miǎoshù. 0 = lìjí.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Xiàjiàng</value></data>
@@ -2459,7 +2473,6 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Yǐ wèi {0} shèzhì</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Shǐyòng zhōng</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} de gèngduō xuǎnxiàng</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Shānchú {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Pèizhì wénjiàn jí qí zìdòng qiēhuàn guīzé jiāng bèi yíchú. Cǐ cāozuò wúfǎ chèxiāo.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Pèizhì wénjiàn jiāng bèi yíchú. Cǐ cāozuò wúfǎ chèxiāo.</value></data>
@@ -4343,7 +4356,6 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Zēngjiā shūrù</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Jiǎnshǎo shūrù</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Xiūshì shūrù</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Lái yuán lèixíng</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Dī diànpíng yánsè</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Zhōng diànpíng yánsè</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Gāo diànpíng yánsè</value></data>

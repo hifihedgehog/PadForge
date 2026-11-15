@@ -113,9 +113,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Cofa inowuthi okanye i-slider, uze ucinezele igalelo elifanele ukuyiqhuba.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Iqhosha elithi "Map All" litsiba iziphumo zokuchukumisa ze-A ne-B. Cofa isangqa esijikeleze i-A okanye i-B ukuze umephe esinye.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Kulindelwe {0}. Cinezela igalelo kwisixhobo sakho.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, umthombo</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Iinketho ezingakumbi</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Iinketho ezimbalwa</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Iqhosha lobuso</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Iqhosha legxalaba</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Iqhosha lenkqubo</value></data>
@@ -395,6 +392,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>Seta kwakhona konke</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Susa konke</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Umthombo</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Imidlalo ibona</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>Azixhunywanga: {0}</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Bonisa ikholamu kwisixhobo ngasinye esingaxhunywanga</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Cofa, emva koko ucofe igalelo kwesi sixhobo elifanele ukuqhuba {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Skrolela izixhobo ecaleni</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Isixhobo</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Imowudi</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Phezulu</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Ezantsi</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Isiguquli</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Intonga yolungelelaniso</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Isiphumo</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Ixabiso</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Iinketho</value></data>
@@ -1781,7 +1790,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Isetelwe u {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Iyasebenza</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Okungakumbi ku {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Buyisela endaweni yolungiselelo olugcinwe ku "{0}" olwangoku? Igama layo nemidlalo yayo ziyahlala.</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Buyisela endaweni</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Lahla ifayile yeprofayile apha</value></data>

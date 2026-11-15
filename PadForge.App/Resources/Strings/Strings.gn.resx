@@ -140,9 +140,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Eikutu peteĩ nota térã deslizador ta'angápe, upéi ejopy ne mba'e'okápe pe omongu'étava chupe.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Map All nomoingéi A ha B toque ñesẽ. Peteĩ rembojoaju hag̃ua, eikutu A térã B jerére oĩva círculo.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Oha'arõ {0}. Ejopy votõ ne mba'e'okápe.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, omboguata</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Hetave jeporavorã</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Mbovyve jeporavorã</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Votõ tenondegua</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Bumper votõ</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Sistema votõ</value></data>
@@ -1183,7 +1180,6 @@
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Número de serie</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Revisión</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Emyengovia</value></data>
   <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>Perfil "{0}" oguereko ko'ág̃a ñemboheko ag̃agua.</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>ojejopývo</value></data>
@@ -1248,4 +1244,10 @@
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Perfil oñembosako'íva peteĩ género tuichakuépe g̃uarã. Eiporavo peteĩ, emoĩ oimeraẽ mando ha ehungá.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} {1} apytégui oñemyendy</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Ko'ã perfil ojegueru oguereko versión ipyahuvéva Steam Workshoppe. Egueru jey Ehupyty perfilkuéragui ehupyty hag̃ua umi ñemoambue.</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Ñembosarái ohecha</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} mba'e'oka ndojoajúiva</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Ehechauka peteĩ columna opaite mba'e'oka ndojoajúivape g̃uarã</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Eikutu, upéi ejopy ko mba'e'okápe pe input omboguatátava {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Embosyryry mba'e'oka kuéra yke gotyo</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Ñesẽha</value></data>
 </root>

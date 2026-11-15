@@ -146,9 +146,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Nyem ib lub note los yog ib lub slider hauv daim duab, ces nias lub khawm los yog txav tus pas ntawm koj lub khoom siv uas yuav tswj nws.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Khawm Map All hla cov output rau kev kov A thiab B. Nyem lub voj uas puag ncig A los yog B kom teeb tsa ib qho.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Tab tom tos {0}. Nias lub khawm ntawm koj lub khoom siv.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, tswj los ntawm</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Kev xaiv ntxiv</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Kev xaiv tsawg dua</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Khawm tseem ceeb</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Khawm xub pwg</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Khawm system</value></data>
@@ -1462,7 +1459,6 @@
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Tsab kho</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Ntxiv rau {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Khaws qhov teeb tsa tam sim no rau ntawm no</value></data>
   <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Hloov qhov teeb tsa uas khaws cia hauv “{0}” nrog qhov tam sim no? Nws lub npe thiab nws cov game tseem nyob.</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Hloov</value></data>
@@ -1533,4 +1529,17 @@
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} ntawm {1} qhib</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Cov profile uas tau import no muaj version tshiab dua hauv Steam Workshop. Import lawv dua los ntawm Tau cov profile kom tau cov kev hloov.</value></data>
   <data name="Pad_Stick_Speed" xml:space="preserve"><value>Kev ceev</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Cov game pom</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} tsis tau txuas</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Qhia ib kab ntsug rau txhua yam khoom siv uas tsis tau txuas</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Nyem, ces nias lub input ntawm yam khoom siv no uas yuav tswj {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Txav cov khoom siv mus rau sab laug thiab sab xis</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Khoom siv</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Hom</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Nce</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Nqis</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Tus hloov</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stick kho me ntsis</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Qhov tso tawm</value></data>
 </root>

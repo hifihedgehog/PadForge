@@ -2099,12 +2099,19 @@ namespace PadForge.ViewModels
             }
             OnPropertyChanged(nameof(NoProfileHasExecutables));
             RaiseForegroundText();
+            ProfileControllersChanged?.Invoke(this, EventArgs.Empty);
         }
+
+        /// <summary>Raised when the profiles' cards have other controllers
+        /// to show: a profile more or fewer, or other controllers in one.
+        /// The one who makes the cards' pictures listens.</summary>
+        public event EventHandler ProfileControllersChanged;
 
         /// <summary>Edit mutates rows in place (Executables raises
         /// HasExecutables), so per-row changes feed the aggregate too.</summary>
         private void ProfileItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == nameof(ProfileListItem.Controllers)) ProfileControllersChanged?.Invoke(this, EventArgs.Empty);
             if (e.PropertyName != nameof(ProfileListItem.HasExecutables)) return;
             OnPropertyChanged(nameof(NoProfileHasExecutables));
             RaiseForegroundText();
@@ -2365,25 +2372,45 @@ namespace PadForge.ViewModels
         /// <summary>What Loads for or Set for puts after the names.</summary>
         public string GameTail { get; private set; } = string.Empty;
 
-        /// <summary>One chip per controller type, in the order of the profile's
-        /// slots, each with how many slots are of that type.</summary>
-        public IReadOnlyList<ProfileTypeChip> TypeChips { get; private set; } = Array.Empty<ProfileTypeChip>();
+        /// <summary>The profile's controllers, in the order of its slots:
+        /// its card shows a picture of each (the approved "keep the frame"
+        /// canvas).</summary>
+        public IReadOnlyList<ProfileController> Controllers { get; private set; } = Array.Empty<ProfileController>();
 
         /// <summary>The profile has no controllers: its card shows the No
         /// Controllers chip. An item never given a topology has none, as
         /// Reset to Defaults adds Default.</summary>
-        public bool HasNoSlots => TypeChips.Count == 0;
+        public bool HasNoSlots => Controllers.Count == 0;
 
         private bool[] _slotCreated;
         private int[] _slotTypes;
+        private string[] _slotPresets;
+        private string[] _slotFinishes;
 
-        /// <summary>The profile's slots, which the type chips count.</summary>
-        internal void SetTopology(bool[] slotCreated, int[] slotControllerTypes)
+        /// <summary>The profile's slots: which exist, each one's type, its
+        /// preset and the finishes chosen for its picture.</summary>
+        internal void SetTopology(bool[] slotCreated, int[] slotControllerTypes,
+            string[] slotProfileIds = null, string[] slotModel3DAppearances = null)
         {
+            // The same slots again leave the card as it is: its pictures
+            // stay, and a screen reader hears of no change.
+            if (_slotCreated != null && Same(_slotCreated, slotCreated) && Same(_slotTypes, slotControllerTypes)
+                && Same(_slotPresets, slotProfileIds) && Same(_slotFinishes, slotModel3DAppearances))
+                return;
             _slotCreated = (bool[])slotCreated?.Clone();
             _slotTypes = (int[])slotControllerTypes?.Clone();
-            TypeChips = ProfileTypeChip.Build(_slotCreated, _slotTypes);
-            OnPropertyChanged(nameof(TypeChips));
+            _slotPresets = (string[])slotProfileIds?.Clone();
+            _slotFinishes = (string[])slotModel3DAppearances?.Clone();
+            RaiseControllers();
+        }
+
+        private static bool Same<T>(T[] kept, T[] given)
+            => kept == null ? given == null : given != null && kept.AsSpan().SequenceEqual(given);
+
+        private void RaiseControllers()
+        {
+            Controllers = ProfileController.Build(_slotCreated, _slotTypes, _slotPresets, _slotFinishes);
+            OnPropertyChanged(nameof(Controllers));
             OnPropertyChanged(nameof(HasNoSlots));
         }
 
@@ -2409,35 +2436,39 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Re-raises this item's culture-dependent text: the game
-        /// line's words and the chips' type names. A language switch changes
-        /// them with nothing else to announce it. The owning ViewModel calls
-        /// this for every item from OnCultureChanged.</summary>
+        /// line's words and the controllers' type names. A language switch
+        /// changes them with nothing else to announce it. The owning
+        /// ViewModel calls this for every item from OnCultureChanged.</summary>
         internal void RaiseCultureDependentText()
         {
-            TypeChips = ProfileTypeChip.Build(_slotCreated, _slotTypes);
-            OnPropertyChanged(nameof(TypeChips));
-            OnPropertyChanged(nameof(HasNoSlots));
+            RaiseControllers();
             RaiseGameLine();
         }
     }
 
-    /// <summary>A controller type on a profile's card, with how many of the
-    /// profile's slots are of it (#574). The icon is the type's own symbol
-    /// from SlotTypeIconMap, as Home's cards and the sidebar's pills draw
-    /// it.</summary>
-    public sealed class ProfileTypeChip
+    /// <summary>One controller of a profile, on the profile's card (the
+    /// approved "keep the frame" canvas): its picture as its own page shows
+    /// it, and under the picture its type's symbol, the type's name and its
+    /// number among the profile's controllers of that type. The symbol is
+    /// the type's own from SlotTypeIconMap, as Home's cards and the
+    /// sidebar's pills draw it.</summary>
+    public sealed class ProfileController : ObservableObject
     {
-        internal ProfileTypeChip(Engine.VirtualControllerType type, int count)
+        internal ProfileController(int slot, Engine.VirtualControllerType type, int number, string presetId, string finishes)
         {
+            Slot = slot;
             Type = type;
-            Count = count;
-            TypeName = NameOf(type);
-            SpokenName = string.Format(Strings.Instance.Profiles_TypeCount_Format, TypeName, count);
+            TypeName = SlotTypeIconMap.NameFor(type);
+            Number = "#" + number.ToString(System.Globalization.CultureInfo.CurrentCulture);
+            PresetId = presetId ?? string.Empty;
+            Finishes = finishes ?? string.Empty;
         }
 
-        public Engine.VirtualControllerType Type { get; }
+        /// <summary>The slot the controller is in, which is its page's
+        /// place among the controllers when its profile is the active one.</summary>
+        public int Slot { get; }
 
-        public int Count { get; }
+        public Engine.VirtualControllerType Type { get; }
 
         /// <summary>The type's vector symbol, or null for the types drawn with a glyph.</summary>
         public System.Windows.Media.Geometry TypeGeometry => SlotTypeIconMap.GeometryFor(Type);
@@ -2445,20 +2476,65 @@ namespace PadForge.ViewModels
         /// <summary>The type's glyph, or empty for the types drawn with a vector symbol.</summary>
         public string TypeGlyph => SlotTypeIconMap.GlyphFor(Type);
 
-        /// <summary>The type's name, the chip's tooltip.</summary>
         public string TypeName { get; }
 
-        /// <summary>What a screen reader reads for the chip: the type and its count.</summary>
-        public string SpokenName { get; }
+        /// <summary>The controller's number among its type, as Home's card
+        /// writes it: "#1".</summary>
+        public string Number { get; }
 
-        /// <summary>The chips of a topology: created slots only, each type at its
-        /// first slot. A created slot with no type entry, or a value outside the
-        /// enum, counts as Xbox, as the old counter did. No slots, or no array,
-        /// gives no chips.</summary>
-        internal static IReadOnlyList<ProfileTypeChip> Build(bool[] slotCreated, int[] slotControllerTypes)
+        /// <summary>What a screen reader reads for the picture: the type
+        /// and the number.</summary>
+        public string SpokenName => TypeName + " " + Number;
+
+        /// <summary>The picture is an item of the card's row of pictures,
+        /// and a screen reader reads an item by its ToString()
+        /// (ItemAutomationPeer.GetNameCore). Without this it read the
+        /// first text the picture shows, the number alone.</summary>
+        public override string ToString() => SpokenName;
+
+        /// <summary>The preset the controller presents itself as.</summary>
+        internal string PresetId { get; }
+
+        /// <summary>The finishes chosen for the controller's picture, as
+        /// its page stores them.</summary>
+        internal string Finishes { get; }
+
+        /// <summary>The finish chosen for a family of art, or null.</summary>
+        internal string FinishOf(string family) => PadViewModel.ModelAppearanceIn(Finishes, family);
+
+        private System.Windows.Media.ImageSource _picture;
+        private bool _pictureComing;
+
+        /// <summary>The controller's picture. Null for a type with no
+        /// picture, whose place shows the type's symbol, and while a still
+        /// of the 3D model is being made.</summary>
+        public System.Windows.Media.ImageSource Picture => _picture;
+
+        /// <summary>Whether there is a picture or one is about to be: while
+        /// a still is made the place is empty, and the type's symbol does
+        /// not stand in for a moment.</summary>
+        public bool HasPicture => _picture != null || _pictureComing;
+
+        internal void SetPicture(System.Windows.Media.ImageSource picture, bool coming)
         {
-            if (slotCreated == null) return Array.Empty<ProfileTypeChip>();
-            var order = new List<Engine.VirtualControllerType>();
+            bool had = HasPicture;
+            bool changed = !ReferenceEquals(picture, _picture);
+            _picture = picture;
+            _pictureComing = coming && picture == null;
+            if (changed) OnPropertyChanged(nameof(Picture));
+            if (had != HasPicture) OnPropertyChanged(nameof(HasPicture));
+        }
+
+        /// <summary>The controllers of a topology: the created slots, in
+        /// their order, each numbered among its type. A created slot with
+        /// no type entry, or a value outside the enum, is an Xbox
+        /// controller, as the engine makes it. No slots, or no array, gives
+        /// none.</summary>
+        internal static IReadOnlyList<ProfileController> Build(bool[] slotCreated, int[] slotControllerTypes,
+            string[] slotProfileIds = null, string[] slotModel3DAppearances = null)
+        {
+            if (slotCreated == null) return Array.Empty<ProfileController>();
+            var made = new List<ProfileController>();
             var counts = new Dictionary<Engine.VirtualControllerType, int>();
             for (int i = 0; i < slotCreated.Length; i++)
             {
@@ -2467,16 +2543,12 @@ namespace PadForge.ViewModels
                 var type = Enum.IsDefined(typeof(Engine.VirtualControllerType), raw)
                     ? (Engine.VirtualControllerType)raw
                     : Engine.VirtualControllerType.Xbox;
-                if (counts.TryGetValue(type, out int n)) counts[type] = n + 1;
-                else
-                {
-                    counts[type] = 1;
-                    order.Add(type);
-                }
+                counts[type] = counts.TryGetValue(type, out int n) ? n + 1 : 1;
+                made.Add(new ProfileController(i, type, counts[type],
+                    slotProfileIds != null && i < slotProfileIds.Length ? slotProfileIds[i] : null,
+                    slotModel3DAppearances != null && i < slotModel3DAppearances.Length ? slotModel3DAppearances[i] : null));
             }
-            return order.Select(t => new ProfileTypeChip(t, counts[t])).ToArray();
+            return made.Count == 0 ? Array.Empty<ProfileController>() : made.ToArray();
         }
-
-        private static string NameOf(Engine.VirtualControllerType type) => SlotTypeIconMap.NameFor(type);
     }
 }

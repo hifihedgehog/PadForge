@@ -284,6 +284,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>E ta kuminsá ora e aparato aki konektá.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>E ta kuminsá ora un di e aparatonan aki konektá.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>No konektá</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Karchinan</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Detayá</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Kompakto</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Outomátiko</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Detayá miéntras ku e karchinan ta kabe den e bentana, kompakto ora nan lo pasa e bentana</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Ta manda entrada awor</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Bateria {0}, abou</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Bateria {0}, ta karga</value></data>
@@ -315,9 +321,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Klek riba un nota òf un slider, despues primi e botòn/eje riba bo aparato ku mester manej'é.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>E botòn Asigná tur ta salta e salidanan di toke di A i B. Klek riba e sírkulo rònt di A òf B pa asigná un di nan.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Ta warda {0}. Primi e botòn/eje riba bo aparato.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, input di</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Mas opshon</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Ménos opshon</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Botòn dilanti</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Botòn di skouder</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Botòn di sistema</value></data>
@@ -824,6 +827,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>Reset tur</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Limpia tur</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Fuente</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Wieganan ta mira</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} no konektá</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Mustra un kolumna pa kada aparato ku no ta konektá</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Klik, despues primi e input riba e aparato aki ku mester manehá {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Skrol e aparatonan pa banda</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Aparato</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Modo</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Ariba</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Abou</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifikadó</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stik di ahuste</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Salida</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Balor</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opshonnan</value></data>
@@ -839,7 +854,6 @@
   <data name="Pad_Mapping_Rate" xml:space="preserve"><value>Velosidat</value></data>
   <data name="Pad_Mapping_Rate_Tooltip" xml:space="preserve"><value>Velosidat den unidat pa sekònde. 0.5 = rango kompleto den 2 s. 2 = rango kompleto den 0.5 s.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Rampa</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Modo prinsipal</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Atake</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Sekònde pa yega na desviashon kompleto miéntras bo tene e tekla primí. 0 = mesora.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Larga</value></data>
@@ -2690,7 +2704,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Poné pa {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Aktivo</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Mas pa {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Remplasá e konfigurashon wardá den "{0}" ku esun aktual? Su nòmber i su wega ta keda.</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Remplasá</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Laga un archivo di perfil kai aki</value></data>

@@ -88,6 +88,8 @@ namespace PadForge.Tests
                 "Dragging a device row onto a controller in the sidebar assigns it. The Used By chips in the device's panel assign it from the keyboard."),
             ("PadForge.App/Views/PadPage.xaml", XamlA11yAudit.MouseOnly, "Border|ConstantForcePadBorder",
                 "The X and Y sliders and boxes beside the pad set the same force."),
+            ("PadForge.App/Views/PadPage.xaml", XamlA11yAudit.MouseOnly, "Border|Cell",
+                "A click on a cell of the Mappings list records that column's device for the row. The open row's Record on that device's line, and Add Source for a device with no line, do the same from the keyboard."),
             ("PadForge.App/Views/PadPage.xaml", XamlA11yAudit.MouseOnly, "Grid|ControllerModelHost",
                 "A click on the picture that lands on no control lets go of the picked control. Escape does the same from the keyboard, and the listening line's Stop ends a recording first."),
             ("PadForge.App/Views/ProfilesPage.xaml", XamlA11yAudit.MouseOnly, "Border|ProfileCard",

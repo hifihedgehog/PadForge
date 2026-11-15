@@ -607,12 +607,12 @@ namespace PadForge.Tests
 
             string svc = ExtrasPageTests.RepoText("PadForge.App", "Services", "InputService.cs");
             // One rule for a still or the 2D art, which the Devices page's
-            // panel reads as well.
+            // panel and the Profiles page's cards read as well.
             At(svc, "private bool PicturesAreStills => !(_mainVm.Settings?.Use2DControllerView ?? false);");
-            Assert.Equal(2, Count(svc, "bool still = PicturesAreStills;"));
+            Assert.Equal(3, Count(svc, "bool still = PicturesAreStills;"));
             At(svc, "if (!slot.PictureIsFor(padVm.ProfileId, padVm.OutputType, padVm.Model3DAppearances, still))");
-            At(svc, "string art = StagePictures.PathFor(profile, type, padVm.GetModelAppearance);");
-            At(svc, "slot.SetPicture(profile, type, finishes, still, StagePictures.Color(art), StagePictures.Gray(art));");
+            At(svc, "string art = StagePictures.PathFor(profile, type, finishOf);");
+            At(svc, "return (StagePictures.Color(art), StagePictures.Gray(art), StagePictures.ArtMarks(art), false);");
         }
 
         // ── the still of the 3D model ──────────────────────────────────
@@ -830,23 +830,30 @@ namespace PadForge.Tests
         /// <summary>The service's side: a card of a controller whose page
         /// shows the 3D view takes the still that is made, or waits with an
         /// empty stage for the one being made, and one whose model cannot
-        /// be drawn takes the 2D art. One still is made at a time, the
-        /// first when the interface is idle, and every card asks again
+        /// be drawn takes the 2D art. The rule is one, for a Home card and
+        /// for a controller on a profile's card, and it answers where the
+        /// picture's controls are drawn too. One still is made at a time,
+        /// the first when the interface is idle, and every card asks again
         /// when one is done.</summary>
         [Fact]
         public void TheServiceGivesACardTheStill_OrWaitsForIt_OrTheArt()
         {
             string svc = ExtrasPageTests.RepoText("PadForge.App", "Services", "InputService.cs");
-            int at = At(svc, "private void SetSlotPicture(SlotSummary slot, PadViewModel padVm, bool still)");
+            int at = At(svc, "string profile, VirtualControllerType type, Func<string, string> finishOf, bool still)");
             string body = svc.Substring(at, svc.IndexOf("\n        }", at, StringComparison.Ordinal) - at);
-            int ask = At(body, "var (family, finish) = StagePictures.StillFor(profile, type, padVm.GetModelAppearance);");
-            int waiting = At(body, "slot.SetPicture(profile, type, finishes, still, null, null, coming: true);");
-            int made = At(body, "slot.SetPicture(profile, type, finishes, still, color, gray);");
-            int art = At(body, "slot.SetPicture(profile, type, finishes, still, StagePictures.Color(art), StagePictures.Gray(art));");
+            int ask = At(body, "var (family, finish) = StagePictures.StillFor(profile, type, finishOf);");
+            int waiting = At(body, "return (null, null, StillMarks.None, true);");
+            int made = At(body, "if (color != null) return (color, gray, StagePictures.StillMarksOf(family, finish), false);");
+            int art = At(body, "return (StagePictures.Color(art), StagePictures.Gray(art), StagePictures.ArtMarks(art), false);");
             Assert.True(ask < waiting && waiting < made && made < art);
             At(body, "if (!StagePictures.TryGetStill(family, finish, out var color, out var gray))");
             At(body, "WantStill(family, finish);");
-            At(body, "if (color != null)");
+            // Its two callers: a Home card, which keeps the marks, and a
+            // profile's card.
+            At(svc, "var picture = PictureOf(padVm.ProfileId, padVm.OutputType, padVm.GetModelAppearance, still);");
+            At(svc, "picture.Color, picture.Gray, picture.Coming, picture.Marks);");
+            At(svc, "var picture = PictureOf(controller.PresetId, controller.Type, controller.FinishOf, still);");
+            At(svc, "controller.SetPicture(picture.Color, picture.Coming);");
             At(svc, "Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(MakeNextStill));");
             At(svc, "StagePictures.MakeStillOnAWorker(family, finish, Dispatcher.CurrentDispatcher, StillMade);");
             int done = At(svc, "private void StillMade()");
@@ -860,6 +867,7 @@ namespace PadForge.Tests
             string pictures = svc.Substring(again, svc.IndexOf("\n        }", again, StringComparison.Ordinal) - again);
             Assert.True(At(pictures, "foreach (var slot in _mainVm.Dashboard.SlotSummaries) slot.ForgetPicture();")
                 < At(pictures, "RefreshSlotSummaryProperties();"));
+            At(pictures, "RefreshProfilePictures();");
             At(svc, "if (_stillPosted || _stillsWanted.Count == 0) return;");
             At(svc, "if (!_stillsWanted.Contains((family, finish))) _stillsWanted.Add((family, finish));");
         }
@@ -930,11 +938,15 @@ namespace PadForge.Tests
             At(appear, "FillBehavior = FillBehavior.Stop,");
 
             // Home's stage: the picture's holder fades in with the picture,
-            // over a soft light that is always there.
+            // over a soft light that is always there. A detailed card and a
+            // compact one take the fade from the one style of the holder.
             string home = ExtrasPageTests.RepoText("PadForge.App", "Views", "HomePage.xaml");
-            At(home, "<Grid Margin=\"10,8,10,8\" FlowDirection=\"LeftToRight\"\r\n                                                  controls:Appear.When=\"{Binding Picture}\">");
+            At(home, "<Setter Property=\"controls:Appear.When\" Value=\"{Binding Picture}\"/>");
+            At(home, "<Grid Margin=\"10,8,10,8\" FlowDirection=\"LeftToRight\" Style=\"{StaticResource SlotPictureBox}\">");
+            At(home, "<Grid Margin=\"0,4,0,0\" FlowDirection=\"LeftToRight\" Style=\"{StaticResource SlotPictureBox}\">");
             At(home, "<RadialGradientBrush Center=\"0.5,0.4\" GradientOrigin=\"0.5,0.4\" RadiusX=\"0.58\" RadiusY=\"0.62\">");
-            At(home, "<GradientStop Color=\"#2996AACD\" Offset=\"0\"/>");
+            At(home, "<RadialGradientBrush Center=\"0.5,0.45\" GradientOrigin=\"0.5,0.45\" RadiusX=\"0.34\" RadiusY=\"0.62\">");
+            Assert.Equal(2, Count(home, "<GradientStop Color=\"#2996AACD\" Offset=\"0\"/>"));
         });
 
         // ── live or not ────────────────────────────────────────────────

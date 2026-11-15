@@ -103,21 +103,23 @@ namespace PadForge.Tests
                 vm.ProfileItems.Add(wheel);
                 var page = new ProfilesPage { DataContext = vm };
 
-                // The board's page: 1176 wide with gutters of 36, so three
-                // columns of the cards' grid and four starter tiles.
+                // The board's page: 1176 wide with gutters of 36, so two
+                // columns of the cards' grid and four starter tiles. Two
+                // cards fill a line, and the drop tile starts the next one
+                // at a card's size: a column wide and the board's 190 tall.
                 Lay(page, 1176);
-                double inner = 1176 - 72, column = (inner - 32) / 3;
+                double inner = 1176 - 72, column = (inner - 16) / 2;
                 var cards = Descendants<Border>(page).Where(b => b.Name == "ProfileCard").ToList();
                 Assert.Equal(2, cards.Count);
                 var drop = (FrameworkElement)page.FindName("DropTile");
                 Assert.Equal(36, On(page, cards[0]).X, 3);
                 Assert.Equal(column, cards[0].ActualWidth, 3);
                 Assert.Equal(36 + column + 16, On(page, cards[1]).X, 3);
-                Assert.Equal(36 + 2 * (column + 16), On(page, drop).X, 3);
+                Assert.Equal(On(page, cards[0]).Y, On(page, cards[1]).Y, 3);
+                Assert.Equal(36, On(page, drop).X, 3);
                 Assert.Equal(column, drop.ActualWidth, 3);
-                // The drop tile is as tall as the cards beside it.
-                Assert.Equal(cards[0].ActualHeight, drop.ActualHeight, 3);
-                Assert.Equal(On(page, cards[0]).Y, On(page, drop).Y, 3);
+                Assert.Equal(On(page, cards[0]).Bottom + 16, On(page, drop).Y, 3);
+                Assert.Equal(190, drop.ActualHeight, 3);
 
                 // The active card's light is on and its wash shows. The other
                 // card has neither.
@@ -143,26 +145,30 @@ namespace PadForge.Tests
                 Assert.All(four, r => Assert.Equal(four[0].Y, r.Y, 3));
                 Assert.Equal(new[] { 36.0, 36 + tile + 12, 36 + 2 * (tile + 12), 36 + 3 * (tile + 12) }, four.Select(r => Math.Round(r.X, 3)));
 
-                // One profile: the drop tile runs on to the row's end.
+                // One profile: the drop tile stands beside its card, as
+                // the board draws it, as wide and as tall as the card.
                 vm.ProfileItems.Remove(wheel);
                 Lay(page, 1176);
+                var only = Descendants<Border>(page).Single(b => b.Name == "ProfileCard");
                 Assert.Equal(36 + column + 16, On(page, drop).X, 3);
-                Assert.Equal(2 * column + 16, drop.ActualWidth, 3);
+                Assert.Equal(column, drop.ActualWidth, 3);
+                Assert.Equal(On(page, only).Y, On(page, drop).Y, 3);
+                Assert.Equal(only.ActualHeight, drop.ActualHeight, 3);
                 vm.ProfileItems.Add(wheel);
 
-                // The window's own 1100: the page is 836 wide, two cards fill
-                // their line, the drop tile is a band under them as tall as
-                // its words, and the starter tiles stand two and two.
+                // The window's own 1100: the page is 836 wide, which is one
+                // column of cards. The cards stand one under the other, the
+                // drop tile under them at a card's size, and the starter
+                // tiles two and two.
                 Lay(page, 836);
                 inner = 836 - 72;
                 cards = Descendants<Border>(page).Where(b => b.Name == "ProfileCard").ToList();
-                Assert.Equal((inner - 16) / 2, cards[0].ActualWidth, 3);
-                Assert.Equal(On(page, cards[0]).Y, On(page, cards[1]).Y, 3);
+                Assert.Equal(inner, cards[0].ActualWidth, 3);
+                Assert.Equal(On(page, cards[0]).Bottom + 16, On(page, cards[1]).Y, 3);
                 Assert.Equal(36, On(page, drop).X, 3);
                 Assert.Equal(inner, drop.ActualWidth, 3);
-                Assert.Equal(On(page, cards[0]).Bottom + 16, On(page, drop).Y, 3);
-                Assert.True(drop.ActualHeight < cards[0].ActualHeight - 30,
-                    "the band is " + drop.ActualHeight + " tall beside cards of " + cards[0].ActualHeight);
+                Assert.Equal(On(page, cards[1]).Bottom + 16, On(page, drop).Y, 3);
+                Assert.Equal(190, drop.ActualHeight, 3);
                 var two = Tiles();
                 Assert.All(two, r => Assert.Equal((inner - 12) / 2, r.Width, 3));
                 Assert.Equal(two[0].Y, two[1].Y, 3);

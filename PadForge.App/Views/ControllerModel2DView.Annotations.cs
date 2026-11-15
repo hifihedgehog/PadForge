@@ -37,9 +37,8 @@ namespace PadForge.Views
         //  Annotation constants (identical to the 3D view)
         // ─────────────────────────────────────────────
 
-        private const double AnnotationChipHeight = 20;   // CH
-        private const double AnnotationChipGap = 6;       // G
-        private const double AnnotationEdgeMargin = 8;    // M
+        private const double AnnotationChipHeight = LegendColumn.ChipHeight;
+        private const double AnnotationEdgeMargin = LegendColumn.EdgeMargin;
         private const int AnnotationDetailMaxRows = 12;   // wiring rows before the +N tail
 
         // ─────────────────────────────────────────────
@@ -763,9 +762,17 @@ namespace PadForge.Views
             LayoutAnnotationColumn(rightColumn, leftSide: false, w, h);
         }
 
-        /// <summary>Two-pass slot assignment: downward greedy from the sorted
-        /// anchors, then an upward overflow fix. No overlaps, minimal
-        /// displacement (same algorithm as the 3D view).</summary>
+        /// <summary>How far down the buttons in the picture's corners
+        /// reach: this view's own at the right, and the page's view switch
+        /// at the left, which stands in the same band. Nothing before the
+        /// view is laid out.</summary>
+        private double CornerBottom()
+            => CornerTools.ActualHeight > 0 ? CornerTools.Margin.Top + CornerTools.ActualHeight : 0;
+
+        /// <summary>Places a column's chips, each beside its control where
+        /// it can stand, clear of the chips around it and of the buttons in
+        /// the picture's corner (<see cref="LegendColumn.Tops"/>), and
+        /// draws each chip's leader to its control.</summary>
         private void LayoutAnnotationColumn(List<AnnotationChip> chips, bool leftSide, double w, double h)
         {
             if (chips.Count == 0)
@@ -773,22 +780,10 @@ namespace PadForge.Views
 
             chips.Sort((a, b) => a.Translated.Y.CompareTo(b.Translated.Y));
 
-            var y = new double[chips.Count];
-            double prevBottom = AnnotationEdgeMargin - AnnotationChipGap;
-            for (int i = 0; i < chips.Count; i++)
-            {
-                y[i] = Math.Max(chips[i].Translated.Y - AnnotationChipHeight / 2,
-                                prevBottom + AnnotationChipGap);
-                prevBottom = y[i] + AnnotationChipHeight;
-            }
-
-            if (y[^1] + AnnotationChipHeight > h - AnnotationEdgeMargin)
-            {
-                y[^1] = h - AnnotationEdgeMargin - AnnotationChipHeight;
-                for (int i = chips.Count - 2; i >= 0; i--)
-                    y[i] = Math.Min(y[i], y[i + 1] - AnnotationChipHeight - AnnotationChipGap);
-                y[0] = Math.Max(y[0], AnnotationEdgeMargin);
-            }
+            var anchors = new double[chips.Count];
+            for (int i = 0; i < anchors.Length; i++)
+                anchors[i] = chips[i].Translated.Y;
+            double[] y = LegendColumn.Tops(anchors, h, CornerBottom());
 
             var measureBounds = new Size(double.PositiveInfinity, double.PositiveInfinity);
             for (int i = 0; i < chips.Count; i++)

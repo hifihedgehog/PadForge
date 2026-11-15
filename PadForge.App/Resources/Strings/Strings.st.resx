@@ -299,6 +299,18 @@
   <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopitsa ho tswa ho...</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Hlakola tsohle</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Mohlodi</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Dipapadi di bona</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} ha di a hokahanngwa</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Bontsha kholomo bakeng sa sesebediswa ka seng se sa hokahanngwang</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Tobetsa, ebe o hatella kenyo ya sesebediswa sena e tla laola {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Tsamaisa disebediswa ka thoko</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Sesebediswa</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Mokgwa</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Hodimo</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Tlase</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Sefetoli</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Molamu wa tokiso</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Tlhahiso</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Boleng</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Dikgetho</value></data>
@@ -1081,7 +1093,6 @@
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Nomoro ya serial</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Ntlafatso</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Nkela setup e bolokilweng ho “{0}” sebaka ka ya jwale? Lebitso la yona le dipapadi tsa yona di a sala.</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Nkela sebaka</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>ha</value></data>

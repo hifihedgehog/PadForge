@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Запускается при подключении этого устройства.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Запускается при подключении одного из этих устройств.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Не подключено</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Карточки</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Подробные</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Компактные</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Авто</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Подробные, пока карточки помещаются в окне, и компактные, когда не поместились бы</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Передает ввод сейчас</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Заряд {0}, низкий</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Заряд {0}, идет зарядка</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Щелкните ноту или ползунок, затем нажмите кнопку или сдвиньте ось на контроллере, чтобы назначить управление.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>«Назначить все» пропускает выходы прикосновения A и B. Щелкните кольцо вокруг A или B, чтобы назначить соответствующий выход.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Ожидание ввода для {0}. Нажмите кнопку на контроллере.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, источник ввода</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Больше параметров</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Меньше параметров</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Лицевая кнопка</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Бампер</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Системная кнопка</value></data>
@@ -1588,6 +1591,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>Сбросить все</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Очистить все</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Источник</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Что видят игры</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>Не подключено: {0}</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Показать отдельный столбец для каждого неподключенного устройства</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Щелкните, затем задействуйте вход этого устройства, который будет управлять элементом «{0}»</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Прокрутка устройств по горизонтали</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Устройство</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Режим</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Вверх</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Вниз</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Модификатор</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Стик подстройки</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Выход</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Значение</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0} %</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Параметры</value></data>
@@ -1616,7 +1631,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Макс.</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Верхняя граница накопителя. 1 = полный плюс.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Нарастание</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Основной режим</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Атака</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>За сколько секунд достигается полное отклонение, пока удерживается соответствующая клавиша. 0 = мгновенно.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Отпускание</value></data>
@@ -2649,7 +2663,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Задан для {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Активен</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Дополнительно для {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Удалить {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Профиль и его правило автопереключения будут удалены. Это нельзя отменить.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Профиль будет удален. Это нельзя отменить.</value></data>
@@ -4636,7 +4649,6 @@
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Ввод «Вверх»</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Ввод «Вниз»</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Ввод модификатора</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Тип источника</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Цвет низкого уровня</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Цвет среднего уровня</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Цвет высокого уровня</value></data>

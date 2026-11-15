@@ -2689,6 +2689,7 @@ namespace PadForge.Services
 
             vm.Use2DControllerView = appSettings.Use2DControllerView;
             vm.LegacyDriverCleanupOffered = appSettings.LegacyDriverCleanupOffered;
+            _mainVm.Dashboard.HomeCards = HomeCardSizes.FromStored(appSettings.HomeCards);
 
             // Which cards are opened further (#574). A reset to defaults
             // comes through here with an empty list and folds them all back.
@@ -4285,7 +4286,8 @@ namespace PadForge.Services
             };
             var slotTypes = Enumerable.Range(0, SettingsManager.SlotCreated.Length)
                 .Select(i => i < _mainVm.Pads.Count ? (int)_mainVm.Pads[i].OutputType : 0).ToArray();
-            UpdateTopologyCounts(defaultItem, SettingsManager.SlotCreated, slotTypes);
+            UpdateTopologyCounts(defaultItem, SettingsManager.SlotCreated, slotTypes,
+                _mainVm.Pads.Select(pad => pad.ProfileId).ToArray(), _mainVm.Pads.Select(pad => pad.Model3DAppearances).ToArray());
             _mainVm.Settings.ProfileItems.Add(defaultItem);
 
             if (profiles != null)
@@ -4346,7 +4348,7 @@ namespace PadForge.Services
                         Executables = InputService.FormatExePaths(p.ExecutableNames),
                         ExecutablePaths = p.ExecutableNames,
                     };
-                    UpdateTopologyCounts(item, p.SlotCreated, p.SlotControllerTypes);
+                    UpdateTopologyCounts(item, p.SlotCreated, p.SlotControllerTypes, p.SlotProfileIds, p.SlotModel3DAppearances);
                     _mainVm.Settings.ProfileItems.Add(item);
                 }
                 // Record it; do NOT rely on MarkDirty here. Both callers
@@ -4683,13 +4685,13 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Gives a profile's card its type chips (#574): one chip per
-        /// controller type, counted from the profile's slots by
-        /// ProfileTypeChip.Build.
+        /// Gives a profile's card its controllers: one for each of the
+        /// profile's slots, with its type, its preset and the finishes
+        /// chosen for its picture (ProfileController.Build).
         /// </summary>
         internal static void UpdateTopologyCounts(ViewModels.ProfileListItem item,
-            bool[] slotCreated, int[] slotControllerTypes)
-            => item.SetTopology(slotCreated, slotControllerTypes);
+            bool[] slotCreated, int[] slotControllerTypes, string[] slotProfileIds, string[] slotModel3DAppearances)
+            => item.SetTopology(slotCreated, slotControllerTypes, slotProfileIds, slotModel3DAppearances);
 
         /// <summary>
 
@@ -5180,6 +5182,7 @@ namespace PadForge.Services
                 MainWindowState = vm.MainWindowState,
                 MainWindowFullScreen = vm.MainWindowFullScreen,
                 Use2DControllerView = vm.Use2DControllerView,
+                HomeCards = (int)_mainVm.Dashboard.HomeCards,
                 LegacyDriverCleanupOffered = vm.LegacyDriverCleanupOffered,
                 OpenCards = CardFoldState.Snapshot(),
                 HeadTrackingLastSources = _mainVm.Dashboard.HeadTrackingLastSources,
@@ -7458,6 +7461,12 @@ namespace PadForge.Services
 
         [XmlElement]
         public bool Use2DControllerView { get; set; }
+
+        /// <summary>The size of Home's controller cards: 0 follows the
+        /// window (Auto), 1 is detailed and 2 is compact
+        /// (<see cref="ViewModels.HomeCardSize"/>).</summary>
+        [XmlElement]
+        public int HomeCards { get; set; }
 
         /// <summary>
         /// True after the v3 first-run cleanup wizard has been shown to the

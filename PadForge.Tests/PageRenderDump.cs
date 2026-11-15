@@ -376,7 +376,6 @@ namespace PadForge.Tests
                             // each kind of that, the trim settings and the
                             // formula, and the list's open row.
                             vm.PickedTarget = "LeftTrigger";
-                            vm.IsPickedOptionsOpen = true;
                             var row = vm.PickedRow;
                             var toOptions = (ScrollViewer)page.FindName("ButtonsScroll");
                             // The options stand under the picture and the
@@ -409,7 +408,6 @@ namespace PadForge.Tests
                             Lookups("opts-list-added.png");
                             vm.SelectedConfigTab = 0;
                             row.ExtraSources.Remove(added);
-                            vm.IsPickedOptionsOpen = false;
                             toOptions.ScrollToHome();
                         }
                         vm.PickedTarget = null;
@@ -447,7 +445,6 @@ namespace PadForge.Tests
                     vm.OutputType = PadForge.Engine.VirtualControllerType.PlayStation;
                     vm.SelectedConfigTab = 0;
                     vm.PickedTarget = PadForge.Engine.Data.MappingSetMigrator.MotionPitchTarget;
-                    vm.IsPickedOptionsOpen = true;
                     var toMotion = (ScrollViewer)page.FindName("ButtonsScroll");
                     Picture("opts-motion.png", () => { Lay(ground, Height); toMotion.ScrollToEnd(); });
                     Lookups("opts-motion.png");
@@ -459,7 +456,6 @@ namespace PadForge.Tests
                     });
                     Lookups("opts-motion-angle.png");
                     vm.PickedRow.MotionResponse = "";
-                    vm.IsPickedOptionsOpen = false;
                     vm.PickedTarget = null;
                     toMotion.ScrollToHome();
 
@@ -609,10 +605,13 @@ namespace PadForge.Tests
                 {
                     PadForge.Common.StagePictures.MakeStill(family, finish);
                     PadForge.Common.StagePictures.TryGetStill(family, finish, out var color, out var gray);
-                    slot.SetPicture(profile, type, string.Empty, true, color, gray);
+                    slot.SetPicture(profile, type, string.Empty, true, color, gray,
+                        marks: PadForge.Common.StagePictures.StillMarksOf(family, finish));
                 }
                 else
-                    slot.SetPicture(profile, type, string.Empty, false, PadForge.Common.StagePictures.Color(art), PadForge.Common.StagePictures.Gray(art));
+                    slot.SetPicture(profile, type, string.Empty, false, PadForge.Common.StagePictures.Color(art), PadForge.Common.StagePictures.Gray(art),
+                        marks: PadForge.Common.StagePictures.ArtMarks(art));
+                slot.ReadFirstDevice();
                 return slot;
             }
 
@@ -683,6 +682,58 @@ namespace PadForge.Tests
                 foreach (var device in xbox.MappedDevices) { device.IsOnline = false; device.IsSending = false; device.SetBattery(-1, false, 15); }
                 dash.ClearHomeOffer();
             });
+
+            // The picture is live: held controls light on a forging card's picture.
+            var held = new PadViewModel(0)
+            {
+                ButtonA = true, DPadLeft = true, LeftShoulder = true, RightTrigger = 0.7,
+                RawThumbLX = 30000, RawThumbRY = -12000,
+            };
+            void Forge()
+            {
+                dash.EngineStateKey = "Running";
+                dash.EngineStatus = s.Engine_Forging;
+                xbox.IsVirtualControllerConnected = true;
+                xbox.ConnectedDeviceCount = 2;
+                xbox.MappedDevices[0].IsOnline = true;
+                xbox.MappedDevices[0].IsSending = true;
+                xbox.MappedDevices[1].IsOnline = true;
+                xbox.ReadFirstDevice();
+            }
+            Shot("home-held.png", PageWidth, 760, () =>
+            {
+                Forge();
+                dash.HomeCards = HomeCardSize.Detailed;
+                xbox.ReadHeld(held);
+            });
+            Shot("home-compact.png", PageWidth, 760, () => dash.HomeCards = HomeCardSize.Compact);
+
+            // Seven controllers on Auto: detailed cards would run past this window, so they are compact.
+            // The same seven on Detailed, and on Auto in a window tall enough for the detailed ones.
+            stillFinish = null;
+            var more = new List<SlotSummary>
+            {
+                Slot(4, PadForge.Engine.VirtualControllerType.Xbox, "xbox-series-xs-bluetooth", "Xbox Series X|S Controller (Bluetooth)",
+                    Device("Keyboard", true, false, -1, sending: true), Device("Mouse", true, false, -1)),
+                Slot(5, PadForge.Engine.VirtualControllerType.Xbox, "xbox-360-wired", "Xbox 360 Controller",
+                    Device("T.16000M", true, false, -1)),
+                Slot(6, PadForge.Engine.VirtualControllerType.PlayStation, "dualsense-composite", "DualSense (PS5): Full",
+                    Device("DualSense Edge Wireless Controller", true, true, 65)),
+                Slot(7, PadForge.Engine.VirtualControllerType.PlayStation, "dualshock-4-v2", "DualShock 4 (PS4)",
+                    Device("8BitDo Pro 2", true, true, 80)),
+            };
+            more[0].IsVirtualControllerConnected = true;
+            more[2].IsVirtualControllerConnected = true;
+            more[3].IsVirtualControllerConnected = true;
+            more[1].IsEnabled = false;
+            Shot("home-auto-many.png", 1456, 988, () =>
+            {
+                foreach (var slot in more) dash.SlotSummaries.Add(slot);
+                dash.HomeCards = HomeCardSize.Auto;
+            });
+            Shot("home-detailed-many.png", 1456, 1500, () => dash.HomeCards = HomeCardSize.Detailed);
+            Shot("home-auto-tall.png", 1456, 1500, () => dash.HomeCards = HomeCardSize.Auto);
+            Shot("home-auto-many-again.png", 1456, 988, null);
         }
 
         /// <summary>The still of every 3D model in its first finish, as a Home card's stage shows

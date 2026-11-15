@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>ມັນຈະເລີ່ມເມື່ອອຸປະກອນນີ້ເຊື່ອມຕໍ່.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>ມັນຈະເລີ່ມເມື່ອອຸປະກອນໃດໜຶ່ງເຫຼົ່ານີ້ເຊື່ອມຕໍ່.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>ບໍ່ໄດ້ເຊື່ອມຕໍ່</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>ບັດ</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>ລະອຽດ</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>ກະທັດຮັດ</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>ອັດຕະໂນມັດ</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>ລະອຽດເມື່ອບັດພໍດີກັບໜ້າຕ່າງ, ກະທັດຮັດເມື່ອບັດຈະລົ້ນອອກນອກໜ້າຕ່າງ</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>ກຳລັງສົ່ງອິນພຸດຢູ່</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>ແບັດເຕີຣີ {0}, ໃກ້ໝົດ</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>ແບັດເຕີຣີ {0}, ກຳລັງສາກ</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>ຄລິກໂນ້ດ ຫຼື ສະໄລເດີ ແລ້ວກົດອິນພຸດໃນອຸປະກອນຂອງທ່ານທີ່ຈະຄວບຄຸມມັນ.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>“ແມັບທັງໝົດ” ຈະຂ້າມເອົາພຸດສຳຜັດຂອງ A ແລະ B. ຄລິກວົງອ້ອມ A ຫຼື B ເພື່ອຜູກເອົາພຸດນັ້ນ.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>ກຳລັງລໍຖ້າອິນພຸດສຳລັບ {0}. ກົດອິນພຸດໃນອຸປະກອນຂອງທ່ານ.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, ຂັບເຄື່ອນໂດຍ</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>ຕົວເລືອກເພີ່ມເຕີມ</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>ຕົວເລືອກໜ້ອຍລົງ</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>ປຸ່ມດ້ານໜ້າ</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>ປຸ່ມບ່າ</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>ປຸ່ມລະບົບ</value></data>
@@ -1400,6 +1403,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>ຄືນຄ່າທັງໝົດ</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>ລ້າງທັງໝົດ</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>ແຫຼ່ງ</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>ເກມເຫັນ</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} ອຸປະກອນບໍ່ໄດ້ເຊື່ອມຕໍ່</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>ສະແດງຖັນສຳລັບແຕ່ລະອຸປະກອນທີ່ບໍ່ໄດ້ເຊື່ອມຕໍ່</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>ຄລິກ ແລ້ວກົດການປ້ອນຂໍ້ມູນເທິງອຸປະກອນນີ້ທີ່ຈະຂັບເຄື່ອນ {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>ເລື່ອນອຸປະກອນໄປທາງຂ້າງ</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>ອຸປະກອນ</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>ໂໝດ</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>ຂຶ້ນ</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>ລົງ</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>ຕົວປັບແຕ່ງ</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>ກ້ານປັບລະອຽດ</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>ຜົນອອກ</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>ຄ່າ</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>ຕົວເລືອກ</value></data>
@@ -1428,7 +1443,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>ສູງສຸດ</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>ຂີດຈຳກັດເທິງຂອງຕົວສະສົມ. 1 = ບວກເຕັມ.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>ໄລ່ລະດັບ</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>ໂໝດຫຼັກ</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>ໄລຍະຂຶ້ນ</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>ຈຳນວນວິນາທີເພື່ອໄປເຖິງການເບນເຕັມ ຂະນະກົດປຸ່ມທີ່ກົງກັນຄ້າງໄວ້. 0 = ທັນທີ.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>ໄລຍະປ່ອຍ</value></data>
@@ -2453,7 +2467,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>ຕັ້ງໄວ້ສຳລັບ {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>ໃຊ້ຢູ່</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>ເພີ່ມເຕີມສຳລັບ {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>ລຶບ {0} ບໍ?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>ໂປຣໄຟລ໌ ແລະ ກົດການສະຫຼັບອັດຕະໂນມັດຂອງມັນຈະຖືກລຶບ. ບໍ່ສາມາດຍົກເລີກໄດ້.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>ໂປຣໄຟລ໌ຈະຖືກລຶບ. ບໍ່ສາມາດຍົກເລີກໄດ້.</value></data>
@@ -4388,7 +4401,6 @@
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>ອິນພຸດຂຶ້ນ</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>ອິນພຸດລົງ</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>ອິນພຸດຕົວປັບ</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>ປະເພດແຫຼ່ງ</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>ສີຕ່ຳ</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>ສີກາງ</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>ສີສູງ</value></data>

@@ -122,6 +122,17 @@ namespace PadForge.Views
             if (command?.CanExecute(item) == true) command.Execute(item);
         }
 
+        /// <summary>Raised by a controller's picture on the active profile's
+        /// card, with the controller's slot: the picture opens that
+        /// controller's page.</summary>
+        public event EventHandler<int> ControllerOpenRequested;
+
+        private void ProfileStill_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement { DataContext: ProfileController controller })
+                ControllerOpenRequested?.Invoke(this, controller.Slot);
+        }
+
         /// <summary>The drop tile opens Get Profiles on Import a File, as the board links it.</summary>
         private void DropTile_Click(object sender, RoutedEventArgs e)
             => (DataContext as SettingsViewModel)?.GetProfilesCommand.Execute("File");

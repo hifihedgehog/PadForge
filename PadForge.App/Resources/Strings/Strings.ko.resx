@@ -302,6 +302,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>이 장치가 연결되면 시작됩니다.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>이 장치 중 하나가 연결되면 시작됩니다.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>연결 안 됨</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>카드</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>자세히</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>간략히</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>자동</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>카드가 창에 들어가는 동안은 자세히, 창을 넘어가면 간략히 표시합니다</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>지금 입력 전송 중</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>배터리 {0}, 부족</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>배터리 {0}, 충전 중</value></data>
@@ -841,6 +847,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>전체 초기화</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>전체 지우기</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>소스</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>게임에 보이는 입력</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0}개 연결 안 됨</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>연결되지 않은 장치마다 열 표시</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>클릭한 다음 {0}을(를) 구동할 이 장치의 입력을 누르세요</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>장치를 가로로 스크롤</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>장치</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>모드</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>위</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>아래</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>수정자</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>트림 스틱</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>출력</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>값</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>옵션</value></data>
@@ -869,7 +887,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>최댓값</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>누산기의 상한. 1 = 전체 양수.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>램프</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>기본 모드</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>어택</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>해당 키를 누르고 있는 동안 최대 편향에 도달하는 시간(초). 0 = 즉시.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>릴리스</value></data>
@@ -1270,7 +1287,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>{0}용으로 설정</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>사용 중</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} 더 보기</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0}을(를) 삭제할까요?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>프로필과 자동 전환 규칙이 제거됩니다. 이 작업은 취소할 수 없습니다.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>프로필이 제거됩니다. 이 작업은 취소할 수 없습니다.</value></data>
@@ -3346,9 +3362,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>노트나 슬라이더를 클릭한 후 할당할 입력을 누르십시오.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>전체 매핑은 A와 B의 터치 출력을 건너뜁니다. 하나를 할당하려면 A나 B 주위의 링을 클릭하십시오.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0} 입력을 기다리는 중입니다. 장치에서 입력을 누르십시오.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, 할당된 입력</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>옵션 더 보기</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>옵션 접기</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>페이스 버튼</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>어깨 버튼</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>시스템 버튼</value></data>
@@ -4585,7 +4598,6 @@
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>증가 입력</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>감소 입력</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>수식키 입력</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>소스 유형</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>낮은 레벨 색상</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>중간 레벨 색상</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>높은 레벨 색상</value></data>

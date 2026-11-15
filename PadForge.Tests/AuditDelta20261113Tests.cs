@@ -503,7 +503,7 @@ namespace PadForge.Tests
             Assert.Contains("internal static string NameOf(VirtualControllerType type) => SlotTypeIconMap.NameFor(type);", add);
             Assert.DoesNotContain("Strings.Instance.ControllerType_", add);
             Assert.Contains("name + Strings.Instance.Search_WhereSeparator + line", add);
-            Assert.Contains("private static string NameOf(Engine.VirtualControllerType type) => SlotTypeIconMap.NameFor(type);",
+            Assert.Contains("TypeName = SlotTypeIconMap.NameFor(type);",
                 Text("PadForge.App", "ViewModels", "SettingsViewModel.cs"));
             Assert.Contains("Strings.Instance.Pad_Transport_Bluetooth + Strings.Instance.Search_WhereSeparator",
                 Text("PadForge.App", "ViewModels", "DashboardViewModel.FirstRun.cs"));
@@ -524,12 +524,15 @@ namespace PadForge.Tests
         private static string Text(params string[] parts) => ExtrasPageTests.RepoText(parts).Replace("\r", "");
 
         /// <summary>Search reads a row option's rules on the mapping row as
-        /// WPF reads them: a part that sets its own data (the Primary Mode
-        /// rows read the row's PrimaryKindSource) has its rules read through
-        /// that data, and every rule of a row option names a path a mapping
-        /// row has. Read on the row itself, the kind rules found nothing. One
-        /// search of the runtime sweep wrote 264 binding errors, and the
-        /// options under those rules never came up as results.</summary>
+        /// WPF reads them: a part that sets its own data (a mode's settings
+        /// and its keys are drawn on the one that holds the mode, the row's
+        /// ModeHolder) has its rules read through that data, and every rule
+        /// of a row option names a path a mapping row has. Read on the row
+        /// itself, the kind rules found nothing. One search of the runtime
+        /// sweep wrote 264 binding errors, and the options under those rules
+        /// never came up as results. The data may be set by the part itself
+        /// (DataContext) or handed to a template of its own (a
+        /// ContentControl's Content): <see cref="SearchOpenRowTests"/>.</summary>
         [Fact]
         public void ARowOptionsRules_AreReadThroughTheDataItsPartSets()
         {
@@ -537,9 +540,11 @@ namespace PadForge.Tests
                 p => p.Key, p => ExtrasPageTests.RepoText("PadForge.App", "Views", p.Value));
             var index = PadForge.Search.SearchIndexBuilder.Read(markup, PadForge.Views.PadPage.TabOfGroupName);
             var gates = index.Entries.Where(e => e.RowOptions).SelectMany(e => e.ItemGates).Select(g => g.Path).Distinct().ToList();
-            Assert.Contains("PrimaryKindSource.IsRampedKind", gates);
-            Assert.Contains("PrimaryKindSource.UsesUpDownKeys", gates);
+            // A template's data, and a part's own.
+            Assert.Contains("ModeHolder.IsRampedKind", gates);
+            Assert.Contains("ModeHolder.UsesUpDownKeys", gates);
             Assert.DoesNotContain("IsRampedKind", gates);
+            Assert.DoesNotContain("UsesUpDownKeys", gates);
             foreach (string path in gates)
             {
                 Type type = typeof(MappingItem);
@@ -888,15 +893,17 @@ namespace PadForge.Tests
             if (failure != null) System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(failure).Throw();
         }
 
-        /// <summary>A reset's tooltip names the row it stands in: Primary
-        /// Mode, Combine in its own case, Delay, a rumble's Hold Time, and a
-        /// color block's own name before its channel.</summary>
+        /// <summary>A reset's tooltip names the row it stands in: a
+        /// source's Mode, Combine in its own case, Delay, a rumble's Hold
+        /// Time, and a color block's own name before its channel.</summary>
         [Fact]
         public void AResetNamesItsOwnRow()
         {
             var page = Page();
             System.Xml.Linq.XElement ById(string id) => page.Descendants().Single(e => At(e, "AutomationProperties.AutomationId") == id);
-            Assert.Equal("{Binding Pad_Mapping_PrimaryMode" + S, At(ById("Reset_MappingSourceItem_Kind_4282"), "SettingLabel"));
+            // The reset says the word the head has over its column.
+            Assert.Equal("{Binding Pad_Row_Mode" + S, At(ById("Reset_MappingSourceItem_Kind_4282"), "SettingLabel"));
+            Assert.Equal("{Binding Pad_Row_Mode" + S, At(page.Descendants().Single(e => At(e, "SourceLinePanel.Part") == "Mode" && e.Name.LocalName == "TextBlock"), "Text"));
             Assert.Equal("{Binding Pad_Combine_Label" + S, At(ById("Reset_MappingItem_CombineMode_4340"), "SettingLabel"));
 
             // Delay: the row's own name through the reset's format.
@@ -1021,9 +1028,12 @@ namespace PadForge.Tests
             Assert.DoesNotContain(card.Descendants(), e => At(e, "Width") == "242");
         }
 
-        /// <summary>An open list row's Record and Clear are Tab stops: the
-        /// open row holds nothing else that records or clears it. A closed
-        /// row's are not, and neither is the chevron: the row is the stop.</summary>
+        /// <summary>An open list row's Clear is a Tab stop: a source's own
+        /// Clear empties that source alone, so nothing else in the open row
+        /// clears the whole row. A closed row's is not, and neither is the
+        /// chevron: the row is the stop. Record is each source's own, beside
+        /// its input in the open row, and takes the keyboard there with the
+        /// source's Clear.</summary>
         [Fact]
         public void AnOpenListRowsRecordAndClear_TakeTheKeyboard()
         {
@@ -1045,8 +1055,22 @@ namespace PadForge.Tests
             var chevron = page.Descendants().Single(e => At(e, "Click") == "MappingRowToggle_Click" && e.Name.LocalName == "Button");
             Assert.Equal("{StaticResource RowIconButton}", At(chevron, "Style"));
             var buttons = chevron.Parent.Elements().Where(e => e.Name.LocalName == "Button").ToList();
-            Assert.Equal(new[] { "{Binding ToggleRecordCommand}", "{Binding ClearCommand}", null }, buttons.Select(b => At(b, "Command")));
-            Assert.Equal(new[] { "{StaticResource RowActionButton}", "{StaticResource RowActionButton}", "{StaticResource RowIconButton}" }, buttons.Select(b => At(b, "Style")));
+            Assert.Equal(new[] { "{Binding ClearCommand}", null }, buttons.Select(b => At(b, "Command")));
+            Assert.Equal(new[] { "{StaticResource RowActionButton}", "{StaticResource RowIconButton}" }, buttons.Select(b => At(b, "Style")));
+            // A source's Record and Clear, in the open row: Record is a
+            // button of the app's own look, a Tab stop as any, and Clear
+            // says it is one, since its look is the line's quiet icon.
+            var record = page.Descendants().Single(e => At(e, "Name") == "OwnRecord");
+            Assert.Equal("{Binding LineRecordCommand}", At(record, "Command"));
+            Assert.Equal("{StaticResource RecordButton}", At(record, "Style"));
+            Assert.Null(At(record, "IsTabStop"));
+            var clears = page.Descendants().Where(e => At(e, "Command") == "{Binding LineClearCommand}").ToList();
+            Assert.Equal(2, clears.Count);
+            Assert.All(clears, clear =>
+            {
+                Assert.Equal("{StaticResource RowIconButton}", At(clear, "Style"));
+                Assert.Equal("True", At(clear, "IsTabStop"));
+            });
             // The row's own template tells the open row by the same flag.
             Assert.Contains("mm.IsRowSelected = ", Text("PadForge.App", "Views", "PadPage.xaml.cs").Replace("rm.", "mm.").Replace("am.", "mm."));
         }

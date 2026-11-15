@@ -205,9 +205,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Klik long wanpela not o slaida, na bihain presim baten o eksis long masin bilong yu we i mas ranim em.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Map All i lusim ol aut bilong tasim long A na B. Klik long ring i raunim A o B bilong mapim wanpela.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>I rekodim {0}. Presim baten o eksis long masin bilong yu.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, kisim input long</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Moa seting</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Liklik seting</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Baten long pes</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Baten long sol</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Baten bilong sistem</value></data>
@@ -1870,7 +1867,6 @@
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Femwea</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Rivisen</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Moa bilong {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Status_ProfileSetupSaved_Format" xml:space="preserve"><value>Profail “{0}” i holim seting bilong nau.</value></data>
   <data name="GetProfiles_Title" xml:space="preserve"><value>Kisim ol profail</value></data>
   <data name="GetProfiles_Starters" xml:space="preserve"><value>Ol starter</value></data>
@@ -1931,6 +1927,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Em i kirap taim dispela masin i konek.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Em i kirap taim wanpela bilong ol dispela masin i konek.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>I no konek</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Ol kad</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Pulap</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Liklik</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Oto</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Pulap taim ol kad i fit long windo, liklik taim ol bai go autsait long en</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>I salim input nau</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Bateri {0}, i daun</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Bateri {0}, i sas</value></data>
@@ -1943,4 +1945,16 @@
   <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Stretim</value></data>
   <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Gem i ritim muv i kalibret pinis na i putim sensitiviti na smoothing bilong em yet.</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Gem i ritim muv wantaim sensitiviti, smoothing na kev yu setim hia.</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Ol gem i lukim</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} i no konek</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Soim wanpela kolum long wanwan masin i no konek</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Klik, na presim input long dispela masin we bai muvim {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Muvim ol masin i go long sait</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Masin</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Mod</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Antap</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Daun</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Ki bilong senisim</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stik bilong stretim liklik</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Autput</value></data>
 </root>

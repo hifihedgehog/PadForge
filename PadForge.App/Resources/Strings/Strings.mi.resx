@@ -524,6 +524,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>Tautuhi anō katoa</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Ūkui katoa</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Puna</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Ka kite ngā kēmu</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} kāore i tūhono</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Whakaaturia he tīwae mō ia pūrere kāore i tūhono</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Pāwhiri, kātahi ka pēhi i te tāuru o tēnei pūrere hei whakahaere i {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Panuku whakatahaki i ngā pūrere</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Pūrere</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Aratau</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Ake</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Iho</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Kaiwhakarerekē</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Rākau whakatika</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Huaputa</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Uara</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Kōwhiringa</value></data>
@@ -534,7 +546,6 @@
   <data name="Pad_Mapping_RapidTrigger_Distance" xml:space="preserve"><value>Tawhiti</value></data>
   <data name="Pad_Mapping_Min" xml:space="preserve"><value>Mōkito</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Mōrahi</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Aratau matua</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Ngā hēkona e tae ai ki te deflection katoa i te wā e puritia ana te pātuhi hāngai. 0 = inamata.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Tuku</value></data>
   <data name="Pad_Mapping_Ramp_Release_Tooltip" xml:space="preserve"><value>Ngā hēkona e hoki ai ki waenganui i muri i te tuku. 0 = inamata.</value></data>
@@ -1836,9 +1847,6 @@
   <data name="Pad_More_BassShakers" xml:space="preserve"><value>Pūrere huaputa, ngā hongere, te kaha, he oro mō ia mōta</value></data>
   <data name="Pad_More_Stick" xml:space="preserve"><value>Ngā center offset, te āhua me ngā uara deadzone o ia tuaka, he ānau mō ia tuaka, Awhe, urungi</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Awhe hei tau, ngā uara mata</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, tāuru mai i</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Ētahi atu kōwhiringa</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Kōwhiringa iti iho</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Pātene kanohi</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Pātene pakihiwi</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Pātene pūnaha</value></data>
@@ -1910,7 +1918,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Kua tautuhia mō {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Hohe</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Ētahi atu mō {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Whakakapia te tatūnga kua tiakina ki “{0}” ki tō nāianei? Ka noho tonu tōna ingoa me ōna kēmu.</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Whakakapia</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Tukuna he kōnae kōtaha ki konei</value></data>
@@ -1972,4 +1979,5 @@
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} o {1} kua kā</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>He putanga hou ake o ēnei kōtaha kua kawemaitia kei te Steam Workshop. Kawemai anō i a rātou mai i Tiki kōtaha kia riro mai ngā panoni.</value></data>
   <data name="Pad_Stick_Speed" xml:space="preserve"><value>Tere</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
 </root>

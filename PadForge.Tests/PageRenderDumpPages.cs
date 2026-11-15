@@ -58,8 +58,35 @@ namespace PadForge.Tests
                         Executables = game == null ? null : Path.GetFileName(game),
                         ExecutablePaths = game,
                     };
-                    item.SetTopology(slots.Select(_ => true).ToArray(), slots.Select(t => (int)t).ToArray());
+                    item.SetTopology(slots.Select(_ => true).ToArray(), slots.Select(t => (int)t).ToArray(),
+                        slots.Select(PresetOf).ToArray(), slots.Select(_ => string.Empty).ToArray());
+                    Pictures(item);
                     return item;
+                }
+                // The preset a controller of a type is drawn as.
+                static string PresetOf(VirtualControllerType type) => type switch
+                {
+                    VirtualControllerType.Xbox => "xbox-series-xs-bluetooth",
+                    VirtualControllerType.PlayStation => "dualsense-composite",
+                    VirtualControllerType.Nintendo => "switch-pro",
+                    _ => string.Empty,
+                };
+                // What the app's service does for the cards while the page shows: each
+                // controller's picture, a still of its 3D model.
+                static void Pictures(ProfileListItem item)
+                {
+                    foreach (var controller in item.Controllers)
+                    {
+                        var (family, finish) = PadForge.Common.StagePictures.StillFor(controller.PresetId, controller.Type, controller.FinishOf);
+                        if (family == null)
+                        {
+                            controller.SetPicture(null, coming: false);
+                            continue;
+                        }
+                        PadForge.Common.StagePictures.MakeStill(family, finish);
+                        PadForge.Common.StagePictures.TryGetStill(family, finish, out var color, out _);
+                        controller.SetPicture(color, coming: false);
+                    }
                 }
                 var standard = Profile(ProfileListItem.DefaultProfileId, "Default", null,
                     VirtualControllerType.Xbox, VirtualControllerType.PlayStation, VirtualControllerType.Nintendo);
@@ -129,7 +156,27 @@ namespace PadForge.Tests
                 rocket.IsActive = false;
                 standard.IsActive = true;
                 drawing.Picture(ground, "profiles-no-controllers.png", width, height, () => rocket.SetTopology(null, null));
-                rocket.SetTopology(new[] { true, true }, new[] { (int)VirtualControllerType.Xbox, (int)VirtualControllerType.Extended });
+                // More controllers than the card has room for at full size: five share the
+                // row, narrower. Then more than fit at the least size: some, and the count
+                // of the rest.
+                var five = new[] { VirtualControllerType.Xbox, VirtualControllerType.PlayStation, VirtualControllerType.Nintendo,
+                    VirtualControllerType.KeyboardMouse, VirtualControllerType.Xbox };
+                drawing.Picture(ground, "profiles-three-controllers.png", width, height, () =>
+                {
+                    rocket.SetTopology(five.Take(3).Select(_ => true).ToArray(), five.Take(3).Select(type => (int)type).ToArray(),
+                        five.Take(3).Select(PresetOf).ToArray(), null);
+                    Pictures(rocket);
+                });
+                drawing.Picture(ground, "profiles-five-controllers.png", width, height, () =>
+                {
+                    rocket.SetTopology(five.Select(_ => true).ToArray(), five.Select(type => (int)type).ToArray(),
+                        five.Select(PresetOf).ToArray(), null);
+                    Pictures(rocket);
+                });
+                drawing.Picture(ground, "profiles-five-controllers-900.png", Least, 1500);
+                rocket.SetTopology(new[] { true, true }, new[] { (int)VirtualControllerType.Xbox, (int)VirtualControllerType.Extended },
+                    new[] { PresetOf(VirtualControllerType.Xbox), string.Empty }, null);
+                Pictures(rocket);
 
                 // The shortcut while it records, and on Specific Profile with
                 // the profile picker after its action.
@@ -866,6 +913,189 @@ namespace PadForge.Tests
                 ((UIElement)images.FindName("NoPackagesText")).Visibility = Visibility.Collapsed;
                 typeof(IconPicker).GetMethod("SetTab", own).Invoke(images, new object[] { true });
                 drawing.PictureControl(images, "icon-picker-images.png");
+            });
+        }
+
+        /// <summary>The mappings list as its boards draw it (keep16): the head
+        /// with a column for each device, rows that show what a cell can hold,
+        /// and each kind of open row. A controller driven by a DualSense, a
+        /// keyboard and an Xbox pad that is not connected, then the picture's
+        /// view with a control picked, a narrow window, and a controller with
+        /// more devices than the list has columns for.</summary>
+        [Fact]
+        public void DrawMappingsList()
+        {
+            Run("list", drawing =>
+            {
+                const double Board = 1720 - 264, Narrow = 1100 - 264;
+                double height = 1040 - 52;
+                var ds = Guid.Parse("11111111-1111-1111-1111-111111111111");
+                var kb = Guid.Parse("22222222-2222-2222-2222-222222222222");
+                var xb = Guid.Parse("33333333-3333-3333-3333-333333333333");
+                string Id(Guid g) => g.ToString("D");
+
+                var vm = new PadViewModel(0);
+                PadViewModel.MappedDeviceInfo Device(Guid id, string name, string type, int cap, bool online)
+                    => new PadViewModel.MappedDeviceInfo
+                    {
+                        InstanceGuid = id, Name = name, TypeKey = type, IsOnline = online,
+                        TypeGlyph = PadForge.Common.DeviceTypeGlyph.For(cap),
+                    };
+                vm.MappedDevices.Add(Device(ds, "DualSense Wireless Controller", "Gamepad", InputDeviceType.Gamepad, true));
+                vm.MappedDevices.Add(Device(kb, "Keyboard", "Keyboard", InputDeviceType.Keyboard, true));
+                vm.MappedDevices.Add(Device(xb, "Xbox Series X Controller", "Gamepad", InputDeviceType.Gamepad, false));
+
+                // The inputs the pickers offer, so each one names its choice.
+                void Offer(Guid device, string label, params (string Descriptor, string Name)[] inputs)
+                {
+                    foreach (var (descriptor, name) in inputs)
+                        vm.SlotAvailableInputs.Add(new InputChoice
+                        {
+                            Descriptor = descriptor, DisplayName = name, DeviceGuid = Id(device), DeviceLabel = label,
+                        });
+                }
+                var padInputs = new[]
+                {
+                    ("Button 0", "A"), ("Button 1", "B"), ("Button 2", "X"), ("Button 3", "Y"), ("Button 9", "Left Shoulder"),
+                    ("Axis 0", "Left Stick X"), ("Axis 1", "Left Stick Y"), ("Axis 2", "Left Trigger"),
+                    ("Axis 3", "Right Stick X"), ("Axis 4", "Right Stick Y"), ("Axis 5", "Right Trigger"),
+                };
+                Offer(ds, "DualSense Wireless Controller", padInputs);
+                Offer(xb, "Xbox Series X Controller", padInputs);
+                Offer(kb, "Keyboard", ("Button 32", "Space"), ("Button 87", "W"), ("Button 83", "S"), ("Button 68", "D"),
+                    ("Button 65", "A"), ("Button 69", "E"));
+                foreach (var choice in vm.SlotAvailableInputs) vm.SlotKeyInputs.Add(choice);
+                foreach (var row in vm.Mappings)
+                {
+                    row.UseSharedAvailableInputs(vm.SlotAvailableInputs);
+                    row.UseSharedKeyInputs(vm.SlotKeyInputs);
+                }
+
+                MappingItem Row(string target) => vm.Mappings.First(m => m.TargetSettingName == target);
+                void First(string target, Guid device, string label, string descriptor)
+                {
+                    var row = Row(target);
+                    row.PrimarySourceDeviceGuid = Id(device);
+                    row.PrimarySourceDeviceLabel = label;
+                    row.LoadDescriptor(descriptor);
+                }
+                MappingSourceItem Added(string target, Guid device, string label, string descriptor, bool invert = false)
+                {
+                    var source = new MappingSourceItem
+                    {
+                        Kind = "Direct", DeviceGuid = Id(device), DeviceLabel = label, Descriptor = descriptor, Invert = invert,
+                    };
+                    Row(target).ExtraSources.Add(source);
+                    return source;
+                }
+                const string Ds = "DualSense Wireless Controller", Kb = "Keyboard", Xb = "Xbox Series X Controller";
+
+                First("ButtonA", ds, Ds, "Button 0");
+                First("ButtonB", ds, Ds, "Button 1");
+                Added("ButtonB", kb, Kb, "Button 32");
+                Added("ButtonB", xb, Xb, "Button 1");
+                First("ButtonX", ds, Ds, "Button 2");
+                Row("ButtonX").PrimaryKindSource.Kind = "Toggle";
+                Added("ButtonX", xb, Xb, "Button 2");
+                First("ButtonY", ds, Ds, "Button 3");
+                Added("ButtonY", ds, Ds, "Button 9");
+                Row("ButtonY").CombineMode = "Custom";
+                Row("ButtonY").CombineExpression = "a && !b";
+                First("RightTrigger", ds, Ds, "Axis 5");
+                var steps = Added("RightTrigger", kb, Kb, "");
+                steps.Kind = "Incremental";
+                steps.SetParamKey(MappingSourceItem.ParamRecordTarget.Up, "Button 87", Id(kb));
+                steps.SetParamKey(MappingSourceItem.ParamRecordTarget.Down, "Button 83", Id(kb));
+                Added("RightTrigger", xb, Xb, "Axis 5");
+                First("LeftThumbAxisX", ds, Ds, "Axis 0");
+                Added("LeftThumbAxisX", kb, Kb, "Button 68");
+                Added("LeftThumbAxisX", kb, Kb, "Button 65", invert: true);
+                Added("LeftThumbAxisX", xb, Xb, "Axis 0");
+                First("RightThumbAxisY", ds, Ds, "Axis 4");
+                var hold = Added("RightThumbAxisY", ds, Ds, "");
+                hold.Kind = "InvertOnHold";
+                hold.SetParamKey(MappingSourceItem.ParamRecordTarget.Modifier, "Button 9", Id(ds));
+                First("LeftTrigger", ds, Ds, "Button 9");
+                Added("LeftTrigger", ds, Ds, "Axis 1");
+                Row("LeftTrigger").CombineMode = "StickTrim";
+
+                var page = new PadPage { DataContext = vm };
+                page.BindSteamVrState(new SettingsViewModel { IsSteamVrInstalled = true });
+                var ground = drawing.Ground(page);
+                vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
+                drawing.Step("the page is made");
+
+                // Levels as a held trigger and a pushed stick would read.
+                void Levels()
+                {
+                    vm.FlushList();
+                    foreach (var row in vm.Mappings)
+                        foreach (var tag in row.LiveTags)
+                        {
+                            bool stick = tag.Text.Contains("Stick", StringComparison.Ordinal);
+                            tag.IsCentered = stick;
+                            tag.Level = stick ? 0.41 : tag.Text.Contains("Right Trigger", StringComparison.Ordinal) ? 0.62 : 0;
+                            tag.LevelText = stick ? "-18%" : tag.Level > 0 ? "62%" : "0%";
+                        }
+                }
+                var table = (DataGrid)page.FindName("MappingDataGrid");
+                void Open(string target)
+                {
+                    table.SelectedItem = target == null ? null : Row(target);
+                    Levels();
+                }
+
+                drawing.Picture(ground, "list-closed.png", Board, height, () => Open(null));
+                foreach (string target in new[]
+                         { "ButtonA", "ButtonB", "ButtonX", "ButtonY", "RightTrigger", "LeftThumbAxisX", "RightThumbAxisY", "LeftTrigger", "ButtonBack" })
+                {
+                    drawing.Picture(ground, "list-open-" + target.ToLowerInvariant() + ".png", Board, 1500, () =>
+                    {
+                        Open(target);
+                        table.ScrollIntoView(Row(target));
+                    });
+                }
+                Open(null);
+
+                // Each mode on a first source, and a row with a gyro source.
+                foreach (string kind in new[] { "RapidTrigger", "Incremental", "Ramped" })
+                {
+                    drawing.Picture(ground, "list-mode-" + kind.ToLowerInvariant() + ".png", Board, 1500, () =>
+                    {
+                        Row("ButtonA").PrimaryKindSource.Kind = kind;
+                        Open("ButtonA");
+                    });
+                }
+                Row("ButtonA").PrimaryKindSource.Kind = "Direct";
+                Open(null);
+
+                // A narrow window: the switches stand under their source.
+                drawing.Picture(ground, "list-narrow-open.png", Narrow, 1500, () => Open("ButtonB"));
+                Open(null);
+                drawing.Picture(ground, "list-narrow.png", Narrow, height, () => Open(null));
+
+                // The picture's view: a button picked, then a stick.
+                drawing.Picture(ground, "picture-b.png", Board, 1500, () =>
+                {
+                    vm.SelectedConfigTab = PadViewModel.PictureTabIndex;
+                    vm.PickedTarget = "ButtonB";
+                });
+                drawing.Picture(ground, "picture-stick.png", Board, 1500, () => vm.PickedTarget = "LeftThumbAxisX");
+                vm.PickedTarget = null;
+                vm.SelectedConfigTab = PadViewModel.MappingsTabIndex;
+
+                // More devices than the list has columns for: the three that
+                // are not connected fold, and a click opens them again.
+                vm.MappedDevices.Add(Device(Guid.Parse("44444444-4444-4444-4444-444444444444"), "Logitech G29 Driving Force Racing Wheel", "Wheel", InputDeviceType.Driving, true));
+                vm.MappedDevices.Add(Device(Guid.Parse("55555555-5555-5555-5555-555555555555"), "T.16000M", "FlightStick", InputDeviceType.Flight, true));
+                vm.MappedDevices.Add(Device(Guid.Parse("66666666-6666-6666-6666-666666666666"), "Steam Controller", "Gamepad", InputDeviceType.Gamepad, false));
+                vm.MappedDevices.Add(Device(Guid.Parse("77777777-7777-7777-7777-777777777777"), "Xbox Elite Wireless Controller Series 2", "Gamepad", InputDeviceType.Gamepad, false));
+                drawing.Picture(ground, "list-folded.png", Board, height, () => Open(null));
+                drawing.Picture(ground, "list-unfolded.png", Board, height, () =>
+                {
+                    vm.OpenAwayColumnsCommand.Execute(null);
+                    Levels();
+                });
             });
         }
 

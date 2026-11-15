@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Tas startē, kad šī ierīce pievienojas.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Tas startē, kad pievienojas kāda no šīm ierīcēm.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Nav pievienota</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Kartes</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Detalizētas</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Kompaktas</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Automātiski</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Detalizētas, kamēr kartes ietilpst logā, kompaktas, tiklīdz tās pārsniegtu loga robežu</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Sūta ievadi tagad</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Akumulators {0}, zems</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Akumulators {0}, uzlādējas</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Noklikšķiniet uz nots vai slīdņa un nospiediet ievadi, kas to vadīs.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>„Piesaistīt visu” izlaiž A un B pieskāriena izvades. Lai piesaistītu kādu no tām, noklikšķiniet uz gredzena ap A vai B.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Gaida ievadi vadīklai {0}. Nospiediet ievadi savā ierīcē.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, ko vada</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Vairāk opciju</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Mazāk opciju</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Darbības poga</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Plecu poga</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Sistēmas poga</value></data>
@@ -1588,6 +1591,18 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Atiestatīt visu</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Notīrīt visu</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Avots</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Spēles redz</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} nav pievienotas</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Rādīt kolonnu katrai ierīcei, kas nav pievienota</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Noklikšķiniet, pēc tam nospiediet šīs ierīces ievadi, kurai jāvada {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Ritināt ierīces uz sāniem</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Ierīce</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Režīms</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Augšup</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Lejup</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifikators</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Precizēšanas kursorsvira</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Izvade</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Vērtība</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Opcijas</value></data>
@@ -1616,7 +1631,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Maks.</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Akumulatora augšējā robeža. 1 = pilna pozitīvā vērtība.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Plūdena pāreja</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Primārais režīms</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Ataka</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Sekundes līdz pilnai novirzei, kamēr tiek turēts atbilstošais taustiņš. 0 = uzreiz.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Atlaišana</value></data>
@@ -2649,7 +2663,6 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Iestatīts spēlei {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Aktīvs</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Vairāk profilam {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Dzēst {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Profils un tā automātiskās pārslēgšanas noteikums tiks noņemti. Šo darbību nevar atsaukt.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Profils tiks noņemts. Šo darbību nevar atsaukt.</value></data>
@@ -4636,7 +4649,6 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Augšup ievade</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Lejup ievade</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Modifikatora ievade</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Avota tips</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Zemā līmeņa krāsa</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Vidējā līmeņa krāsa</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Augstā līmeņa krāsa</value></data>

@@ -585,10 +585,19 @@ namespace PadForge.Services
             return null;
         }
 
+        /// <summary>The one device the next mapping recording listens to,
+        /// or empty for every device of the slot. A click on a cell of the
+        /// mappings list sets it to the device of the cell's column, so the
+        /// input lands under the column that was clicked. The recording
+        /// that starts next takes it, and it is empty again after.</summary>
+        internal Guid ListenOnly { get; set; }
+
         private void StartRecordingInternal(MappingItem mapping,
             MappingSourceItem extraSource, int padIndex,
             bool neutralizeBaseline, bool negRecording, ParamTarget paramTarget)
         {
+            Guid only = ListenOnly;
+            ListenOnly = Guid.Empty;
             if (mapping == null)
                 return;
 
@@ -624,6 +633,7 @@ namespace PadForge.Services
                 foreach (var md in padVm.MappedDevices)
                 {
                     if (md == null || md.InstanceGuid == Guid.Empty) continue;
+                    if (only != Guid.Empty && md.InstanceGuid != only) continue;
                     if (!seen.Add(md.InstanceGuid)) continue;
                     var udLookup = SettingsManager.UserDevices?.Items;
                     if (udLookup == null) continue;

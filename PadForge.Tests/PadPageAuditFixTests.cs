@@ -74,13 +74,14 @@ namespace PadForge.Tests
 
         /// <summary>A setting that can be hidden takes its reset button with
         /// it. An ungated reset left a lone button sitting behind nothing.
-        /// The gate is the reset's own, or its row's: an option row of the
-        /// mapping table (#574) holds the setting's label, its switch and
-        /// its reset, and hides as one. Or it is the gate of a tile around
-        /// the row, where the row shows while two things hold.</summary>
+        /// The gate is the reset's own, or its group's: a group of a
+        /// mapping row's line holds the setting's label, its switch and its
+        /// reset, and hides as one, as an option row of a macro's table
+        /// does. Or it is the gate of a tile around the row, where the row
+        /// shows while two things hold. Flip Output has one reset since
+        /// every source is drawn by one line.</summary>
         [Theory]
         [InlineData("Reset_MappingItem_InvertOutput_5776")]
-        [InlineData("Reset_MappingSourceItem_InvertOutput_4943")]
         [InlineData("Reset_MappingItem_NoInherit_5788")]
         [InlineData("Reset_MacroExpressionVariable_OutputChannel_1658")]
         public void AGatedSettingsResetButtonIsGatedToo(string automationId)
@@ -95,15 +96,20 @@ namespace PadForge.Tests
             string element = x.Substring(start, i - start);
             if (element.Contains("Visibility=", StringComparison.Ordinal)) return;
 
-            // No gate of its own: the option row it stands in has one. The
-            // row's opening tag is the nearest one before the reset, with no
-            // row closed in between.
+            // No gate of its own: the group or the option row it stands in
+            // has one. Its opening tag is the nearest one before the reset,
+            // with none closed in between.
+            const string group = "<StackPanel Style=\"{StaticResource LineGroup}\"";
             const string row = "<controls:FlexLinePanel Style=\"{DynamicResource RowOptionLine}\"";
-            int open = x.LastIndexOf(row, start, StringComparison.Ordinal);
-            Assert.True(open >= 0, $"{automationId} has no gate and stands in no option row");
-            Assert.DoesNotContain("</controls:FlexLinePanel>", x.Substring(open, start - open));
+            int inGroup = x.LastIndexOf(group, start, StringComparison.Ordinal);
+            int inRow = x.LastIndexOf(row, start, StringComparison.Ordinal);
+            bool grouped = inGroup > inRow;
+            int open = Math.Max(inGroup, inRow);
+            Assert.True(open >= 0, $"{automationId} has no gate and stands in no group and no option row");
+            Assert.DoesNotContain(grouped ? "</StackPanel>" : "</controls:FlexLinePanel>", x.Substring(open, start - open));
             string tag = x.Substring(open, x.IndexOf('>', open) - open);
             if (tag.Contains("Visibility=", StringComparison.Ordinal)) return;
+            Assert.False(grouped, $"{automationId}: its group has no gate");
 
             // The row has none either: it stands in a tile that is hidden
             // until its conditions hold, with no tile closed in between.

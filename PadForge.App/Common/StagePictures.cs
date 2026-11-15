@@ -145,7 +145,7 @@ namespace PadForge.Common
             return (family, ControllerStill.FinishFor(family, finishOf?.Invoke(family)));
         }
 
-        private static readonly ConcurrentDictionary<(string, string), (ImageSource Color, ImageSource Gray)> s_stills = new();
+        private static readonly ConcurrentDictionary<(string, string), (ImageSource Color, ImageSource Gray, StillMark[] Marks)> s_stills = new();
 
         /// <summary>What draws a model's still. A test puts its own here.</summary>
         internal static Func<string, string, BitmapSource> DrawStill = ControllerStill.Render;
@@ -161,6 +161,13 @@ namespace PadForge.Common
             return made;
         }
 
+        /// <summary>Where each control is drawn on a model's still, in
+        /// parts of the still's width and height. Nothing for a still that
+        /// has not been made or could not be.</summary>
+        internal static IReadOnlyList<StillMark> StillMarksOf(string family, string finish)
+            => s_stills.TryGetValue((family, finish ?? string.Empty), out var still) && still.Marks != null
+                ? still.Marks : StillMarks.None;
+
         /// <summary>Makes a model's still: draws the model, cuts the
         /// picture to the controller, fits it to the stage and makes its
         /// gray copy, once for each model and finish. A model takes up to
@@ -171,15 +178,18 @@ namespace PadForge.Common
             var key = (family, finish ?? string.Empty);
             if (s_stills.ContainsKey(key)) return;
             BitmapSource fit = null;
+            StillMark[] marks = StillMarks.None;
             try
             {
-                fit = Fit(DrawStill(family, finish));
+                BitmapSource drawn = DrawStill(family, finish);
+                fit = Fit(drawn, out var cut);
+                if (fit != null) marks = StillMarks.Place(ControllerStill.MarksOf(drawn), cut);
             }
             catch (Exception error)
             {
                 System.Diagnostics.Debug.WriteLine("[StagePictures] no still of " + family + ": " + error.Message);
             }
-            s_stills[key] = (fit, MakeGray(fit));
+            s_stills[key] = (fit, MakeGray(fit), marks);
         }
 
         /// <summary>Makes a model's still on a thread of its own and then
@@ -215,21 +225,59 @@ namespace PadForge.Common
 
         /// <summary>The base art of a folder with one finish, as the 2D
         /// view's own table has it (ControllerModel2DView.BuildCanvas).</summary>
-        internal static string BasePath(string folder) => folder switch
+        internal static string BasePath(string folder) => LayoutOf(folder).BasePath;
+
+        /// <summary>A folder's 2D art: its base picture, the size the
+        /// places of its controls are given in, and those controls.</summary>
+        internal static (string BasePath, int Width, int Height, OverlayElement[] Overlays) LayoutOf(string folder) => folder switch
         {
-            "DS3" => DualShock3Layout.BasePath,
-            "DS4" => DS4Layout.BasePath,
-            "DualSense" => DualSenseLayout.BasePath,
-            "DUALSENSEEDGE" => DualSenseEdgeLayout.BasePath,
-            "XBOXONE" => XboxOneSLayout.BasePath,
-            "XBOXSERIES" => XboxSeriesXLayout.BasePath,
-            "SWITCHPRO" => SwitchProLayout.BasePath,
-            "SWITCH2PRO" => Switch2ProLayout.BasePath,
-            "STEAMDECK" => SteamDeckLayout.BasePath,
-            "STEAMCONTROLLER" => SteamControllerLayout.BasePath,
-            "STEAMCONTROLLER2" => SteamController2Layout.BasePath,
-            _ => Xbox360Layout.BasePath,
+            "DS3" => (DualShock3Layout.BasePath, DualShock3Layout.BaseWidth, DualShock3Layout.BaseHeight, DualShock3Layout.Overlays),
+            "DS4" => (DS4Layout.BasePath, DS4Layout.BaseWidth, DS4Layout.BaseHeight, DS4Layout.Overlays),
+            "DualSense" => (DualSenseLayout.BasePath, DualSenseLayout.BaseWidth, DualSenseLayout.BaseHeight, DualSenseLayout.Overlays),
+            "DUALSENSEEDGE" => (DualSenseEdgeLayout.BasePath, DualSenseEdgeLayout.BaseWidth, DualSenseEdgeLayout.BaseHeight, DualSenseEdgeLayout.Overlays),
+            "XBOXONE" => (XboxOneSLayout.BasePath, XboxOneSLayout.BaseWidth, XboxOneSLayout.BaseHeight, XboxOneSLayout.Overlays),
+            "XBOXSERIES" => (XboxSeriesXLayout.BasePath, XboxSeriesXLayout.BaseWidth, XboxSeriesXLayout.BaseHeight, XboxSeriesXLayout.Overlays),
+            "SWITCHPRO" => (SwitchProLayout.BasePath, SwitchProLayout.BaseWidth, SwitchProLayout.BaseHeight, SwitchProLayout.Overlays),
+            "SWITCH2PRO" => (Switch2ProLayout.BasePath, Switch2ProLayout.BaseWidth, Switch2ProLayout.BaseHeight, Switch2ProLayout.Overlays),
+            "STEAMDECK" => (SteamDeckLayout.BasePath, SteamDeckLayout.BaseWidth, SteamDeckLayout.BaseHeight, SteamDeckLayout.Overlays),
+            "STEAMCONTROLLER" => (SteamControllerLayout.BasePath, SteamControllerLayout.BaseWidth, SteamControllerLayout.BaseHeight, SteamControllerLayout.Overlays),
+            "STEAMCONTROLLER2" => (SteamController2Layout.BasePath, SteamController2Layout.BaseWidth, SteamController2Layout.BaseHeight, SteamController2Layout.Overlays),
+            _ => (Xbox360Layout.BasePath, Xbox360Layout.BaseWidth, Xbox360Layout.BaseHeight, Xbox360Layout.Overlays),
         };
+
+        /// <summary>Where each control of a folder's 2D art is drawn, in
+        /// the pixels of a picture of that art <paramref name="pixelWidth"/>
+        /// wide: the buttons, the triggers and the sticks, each under the
+        /// role a Home card's picture lights it by.</summary>
+        internal static List<StillMark> LayoutMarks(string folder, int pixelWidth, int pixelHeight)
+        {
+            var (_, width, height, overlays) = LayoutOf(folder);
+            var marks = new List<StillMark>();
+            if (width <= 0 || height <= 0) return marks;
+            double sx = pixelWidth / (double)width, sy = pixelHeight / (double)height;
+            foreach (var part in overlays)
+            {
+                string role = part.ElementType switch
+                {
+                    OverlayElementType.Button or OverlayElementType.StickClick or OverlayElementType.Trigger => part.TargetName,
+                    OverlayElementType.StickRing when part.TargetName == "LeftThumbRing" => StillMarks.LeftStick,
+                    OverlayElementType.StickRing when part.TargetName == "RightThumbRing" => StillMarks.RightStick,
+                    _ => null,
+                };
+                if (role == null || !StillMarks.Reads(role)) continue;
+                marks.Add(new StillMark(role, new System.Windows.Rect(part.X * sx, part.Y * sy, part.Width * sx, part.Height * sy)));
+            }
+            return marks;
+        }
+
+        /// <summary>The folder of a piece of 2D art, from its path.</summary>
+        internal static string FolderOf(string path)
+        {
+            const string root = "2DModels/";
+            if (path == null || !path.StartsWith(root, StringComparison.OrdinalIgnoreCase)) return string.Empty;
+            int end = path.IndexOf('/', root.Length);
+            return end < 0 ? string.Empty : path.Substring(root.Length, end - root.Length);
+        }
 
         /// <summary>The most room a stage gives a picture, at twice its
         /// size on screen, so the copy stays sharp on a dense display.</summary>
@@ -239,21 +287,39 @@ namespace PadForge.Common
         /// to the controller and no larger than the stage needs. Null when
         /// there is none.</summary>
         internal static ImageSource Color(string path)
-            => string.IsNullOrEmpty(path) ? null : s_color.GetOrAdd(path, static p => Fit(Views.EmbeddedBitmaps.Load(p)));
+            => string.IsNullOrEmpty(path) ? null : s_art.GetOrAdd(path, MakeArt).Picture;
+
+        /// <summary>Where each control is drawn on that picture, in parts
+        /// of its width and height, made with it.</summary>
+        internal static IReadOnlyList<StillMark> ArtMarks(string path)
+            => string.IsNullOrEmpty(path) ? StillMarks.None : s_art.GetOrAdd(path, MakeArt).Marks;
 
         /// <summary>The gray copy of that picture, made once.</summary>
         internal static ImageSource Gray(string path)
             => string.IsNullOrEmpty(path) ? null : s_gray.GetOrAdd(path, static p => MakeGray(Color(p) as BitmapSource));
 
-        private static readonly ConcurrentDictionary<string, ImageSource> s_color = new(StringComparer.OrdinalIgnoreCase);
+        private static readonly ConcurrentDictionary<string, (ImageSource Picture, StillMark[] Marks)> s_art = new(StringComparer.OrdinalIgnoreCase);
         private static readonly ConcurrentDictionary<string, ImageSource> s_gray = new(StringComparer.OrdinalIgnoreCase);
+
+        private static (ImageSource Picture, StillMark[] Marks) MakeArt(string path)
+        {
+            BitmapSource art = Views.EmbeddedBitmaps.Load(path);
+            BitmapSource fit = Fit(art, out var cut);
+            if (fit == null) return (null, StillMarks.None);
+            return (fit, StillMarks.Place(LayoutMarks(FolderOf(path), art.PixelWidth, art.PixelHeight), cut));
+        }
 
         /// <summary>A picture cut to what is drawn in it and made to fit
         /// the stage's box. The art is some 1500 pixels wide with clear
         /// room around the controller, and a stage is 204: a copy of its
         /// own keeps the card from holding and rescaling the large one.</summary>
-        internal static BitmapSource Fit(BitmapSource source)
+        internal static BitmapSource Fit(BitmapSource source) => Fit(source, out _);
+
+        /// <summary>The same, and the piece of the picture that was kept,
+        /// in the picture's pixels: empty when nothing is drawn in it.</summary>
+        internal static BitmapSource Fit(BitmapSource source, out System.Windows.Int32Rect cut)
         {
+            cut = System.Windows.Int32Rect.Empty;
             if (source == null) return null;
             BitmapSource pixels = source.Format == PixelFormats.Pbgra32
                 ? source
@@ -263,15 +329,16 @@ namespace PadForge.Common
             pixels.CopyPixels(data, stride, 0);
             var drawn = Drawn(data, width, height);
             if (drawn.IsEmpty) return null;
+            cut = drawn;
 
-            BitmapSource cut = new CroppedBitmap(pixels, drawn);
+            BitmapSource kept = new CroppedBitmap(pixels, drawn);
             double scale = Math.Min(1.0, Math.Min(BoxWidth / (double)drawn.Width, BoxHeight / (double)drawn.Height));
-            if (scale < 1.0) cut = new TransformedBitmap(cut, new ScaleTransform(scale, scale));
+            if (scale < 1.0) kept = new TransformedBitmap(kept, new ScaleTransform(scale, scale));
             // A copy of its own pixels, so the large picture is not kept
             // alive behind it.
-            int w = cut.PixelWidth, h = cut.PixelHeight;
+            int w = kept.PixelWidth, h = kept.PixelHeight;
             var own = new byte[w * 4 * h];
-            cut.CopyPixels(own, w * 4, 0);
+            kept.CopyPixels(own, w * 4, 0);
             var made = BitmapSource.Create(w, h, 96, 96, PixelFormats.Pbgra32, null, own, w * 4);
             made.Freeze();
             return made;

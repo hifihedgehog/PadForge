@@ -189,6 +189,17 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>ʻIkai ha meʻa</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Maʻuʻanga</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>ʻOku sio ki ai ʻa e ngaahi keimi</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} ʻoku ʻikai fakafehokotaki</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Fakahā ha kōlomu ki he naunau taki taha ʻoku ʻikai fakafehokotaki</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Kiliki, pea lomiʻi ʻa e meʻa ʻi he naunau ko ʻeni ʻe fakalele ʻaki ʻa e {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Hiki ʻa e ngaahi naunau ki he toʻohema mo e toʻomataʻu</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Naunau</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Founga</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>ʻOlunga</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Lalo</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Fakaliliu</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Sitiki fakatonutonu</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Vaeua</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. -->
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -748,7 +759,6 @@
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Fika serial</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Liliu</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>ʻo ka</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>ʻi he</value></data>
   <data name="GetProfiles_Title" xml:space="preserve"><value>Maʻu ha ngaahi profile</value></data>

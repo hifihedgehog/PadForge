@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Покреће се када се овај уређај повеже.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Покреће се када се повеже један од ових уређаја.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Није повезан</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Картице</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Детаљно</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Збијено</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Аутоматски</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Детаљно док се картице уклапају у прозор, збијено чим би га премашиле</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Тренутно шаље улаз</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Батерија {0}, ниска</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Батерија {0}, пуни се</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Кликните на ноту или клизач, па притисните улаз који треба да њиме управља.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>„Мапирај све“ прескаче излазе додира за A и B. Кликните на прстен око A или B да бисте повезали тај излаз.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Снимање за {0}. Притисните улаз на свом уређају.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>Улаз за {0}</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Више опција</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Мање опција</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Дугме на лицу</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Бампер</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Системско дугме</value></data>
@@ -1588,6 +1591,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>Ресетуј све</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Обриши све</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Извор</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Игре виде</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>Није повезано: {0}</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Прикажи колону за сваки уређај који није повезан</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Кликни, па притисни улаз на овом уређају који треба да покреће {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Помери уређаје бочно</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Уређај</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Режим</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Горе</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Доле</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Модификатор</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Штапић за фино подешавање</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Излаз</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Вредност</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Опције</value></data>
@@ -1616,7 +1631,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Макс.</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Горња граница акумулатора. 1 = пуна позитивна вредност.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Рампа</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Примарни режим</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Напад</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Секунде до пуног отклона док се држи одговарајући тастер. 0 = тренутно.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Отпуштање</value></data>
@@ -2649,7 +2663,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Постављено за {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Активан</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Више за {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Избрисати {0}?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Профил и његово правило за аутоматско пребацивање се уклањају. Ово се не може опозвати.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>Профил се уклања. Ово се не може опозвати.</value></data>
@@ -4636,7 +4649,6 @@
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Улаз за горе</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Улаз за доле</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Улаз модификатора</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Тип извора</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Боја за тихо</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Боја за средње</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Боја за гласно</value></data>

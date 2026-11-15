@@ -826,10 +826,17 @@ namespace PadForge.Tests
             Assert.Equal("HasItems", (string)trigger.Attribute("Property"));
             Assert.Equal("False", (string)trigger.Attribute("Value"));
             Assert.Equal("Collapsed", (string)Assert.Single(trigger.Elements()).Attribute("Value"));
-            var underPicture = Assert.Single(tableStyle.Descendants(), e => e.Name.LocalName == "DataTrigger");
-            Assert.Equal("{Binding IsButtonsPictureView}", (string)underPicture.Attribute("Binding"));
+            var underPicture = Assert.Single(tableStyle.Descendants(), e => e.Name.LocalName == "DataTrigger"
+                && (string)e.Attribute("Binding") == "{Binding IsButtonsPictureView}");
             Assert.Equal("True", (string)underPicture.Attribute("Value"));
             Assert.Equal("Collapsed", (string)Assert.Single(underPicture.Elements()).Attribute("Value"));
+            // The table's one other rule: while the devices' columns scroll
+            // sideways, it leaves the foot of the card to their scroll bar.
+            var scrolls = Assert.Single(tableStyle.Descendants(), e => e.Name.LocalName == "DataTrigger"
+                && (string)e.Attribute("Binding") == "{Binding ShowListCellsScroll}");
+            Assert.Equal("Margin", (string)Assert.Single(scrolls.Elements()).Attribute("Property"));
+            Assert.Equal("1,-1,1,15", (string)Assert.Single(scrolls.Elements()).Attribute("Value"));
+            Assert.Equal(2, tableStyle.Descendants().Count(e => e.Name.LocalName == "DataTrigger"));
 
             // The picture's view is a page that scrolls, so an open row or
             // an open card never squeezes the picture. The page's code
@@ -901,12 +908,16 @@ namespace PadForge.Tests
             // A pick made on the picture leaves the page where it is: the
             // selected row is scrolled into view in the list only.
             Assert.Matches(@"bool underPicture = DataContext is PadViewModel viewVm && viewVm\.IsButtonsPictureView;\s*if \(!underPicture && e\.AddedItems\.Count > 0 && e\.AddedItems\[0\] is MappingItem sel\)", code);
-            // The bar under the picture, with its blocks on one line, is in
-            // view with the picture, and so are the folded cards (#574). The
-            // bar's height is read while it holds a control's one row, and a
-            // change of its height sizes the picture again while it shows.
+            // The bar under the picture is in view with the picture, and so
+            // are the folded cards (#574). The bar holds the picked row's
+            // lines and grows with its sources, so its height is read only
+            // while it holds a control's one row with one plain source: the
+            // picture is sized from that, and adding a source never resizes
+            // it. A change of the bar's height sizes the picture again while
+            // the bar shows.
             Assert.Matches(@"double bar = SteadyFoldedHeight\(vm\.ShowPictureBar, OneLineBarHeight\(\), ref _barMeasured\);\s*double folded = SteadyFoldedHeight\(vm\.OutputTabVisible \|\| vm\.ShowMidiCard, FoldedOutputHeight\(\), ref _foldedOutputMeasured\);\s*double picture = PictureHeightFor\(viewport, around, bar, folded, VisualTreeHelper\.GetDpi\(ButtonsScroll\)\.DpiScaleY\);\s*ButtonsPictureRow\.Height = new GridLength\(picture\);", code);
-            Assert.Matches(@"if \(PictureBar == null \|\| PictureBar\.Visibility != Visibility\.Visible \|\| PictureBar\.ActualHeight <= 0\) return double\.NaN;\s*if \(PickedBlocks == null \|\| PickedBlocks\.Items\.Count != 1\) return double\.NaN;\s*return PictureBar\.ActualHeight \+ PictureBar\.Margin\.Top \+ PictureBar\.Margin\.Bottom;", code);
+            Assert.Matches(@"if \(PictureBar == null \|\| PictureBar\.Visibility != Visibility\.Visible \|\| PictureBar\.ActualHeight <= 0\) return double\.NaN;\s*if \(PickedBlocks == null \|\| PickedBlocks\.Items\.Count != 1\) return double\.NaN;(\s*//[^\n]*)*\s*if \(DataContext is not PadViewModel \{ PickedRow: \{ \} row \} \|\| !IsPlainOneSource\(row\)\) return double\.NaN;\s*return PictureBar\.ActualHeight \+ PictureBar\.Margin\.Top \+ PictureBar\.Margin\.Bottom;", code);
+            Assert.Contains("private double _barMeasured = PictureBarBaseHeight;", code);
             Assert.Equal("PictureBar_SizeChanged", (string)Named(page, "PictureBar").Attribute("SizeChanged"));
             Assert.Matches(@"private void PictureBar_SizeChanged\(object sender, SizeChangedEventArgs e\)\s*\{\s*if \(e\.HeightChanged && DataContext is PadViewModel vm && vm\.ShowPictureBar\) SyncButtonsLayout\(\);", code);
             // Cards that are hidden or not laid out have no height to read.

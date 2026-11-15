@@ -178,9 +178,33 @@ namespace PadForge.Search
             if (grid.ItemContainerGenerator.ContainerFromItem(item) is not DataGridRow row) return null;
             row.DetailsVisibility = Visibility.Visible;
             row.UpdateLayout();
-            var parts = SearchLocator.VisualDescendants(row).ToList();
+            var parts = RowOptionParts(row).ToList();
             return SearchLocator.FindAmong(parts, entry, item, _service.Index, e => e.RowOptions);
         }
+
+        /// <summary>The parts of an open row an option's label is looked for
+        /// among: what the index reads, in the same order. That is the row's
+        /// body with its first source and its output. The row's line over
+        /// the body holds no option, and its tags can say an option's word
+        /// ("Up", "Down"). The added sources' lines repeat the first
+        /// source's words, so the Nth entry of a word would land on one of
+        /// them.</summary>
+        internal static System.Collections.Generic.IEnumerable<DependencyObject> RowOptionParts(DependencyObject root)
+        {
+            int count = root is Visual || root is System.Windows.Media.Media3D.Visual3D ? VisualTreeHelper.GetChildrenCount(root) : 0;
+            for (int i = 0; i < count; i++)
+            {
+                var part = VisualTreeHelper.GetChild(root, i);
+                if (part is FrameworkElement { Name: RowLineName or AddedSourcesName }) continue;
+                yield return part;
+                foreach (var below in RowOptionParts(part)) yield return below;
+            }
+        }
+
+        /// <summary>The names the controller page gives a row's line and
+        /// the list of a row's added sources.</summary>
+        internal const string RowLineName = "RowLine";
+        internal const string AddedSourcesName = "AddedSources";
 
         /// <summary>Scrolls the nearest scroll viewer so the element's top is
         /// 96 under the viewport's top, as far as the viewer goes.</summary>

@@ -313,6 +313,17 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>Bwezeretsani zonse</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Chotsani zonse</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Gwero</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Masewera amawona</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>Zosalumikizidwa: {0}</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Onetsani gawo la chipangizo chilichonse chomwe sichinalumikizidwe</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Dinani, kenako kanikizani cholowetsa pa chipangizochi chomwe chiyenera kuyendetsa {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>Sunthani zipangizo kumbali</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Chipangizo</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Njira</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Mmwamba</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Pansi</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Chosintha</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Ndodo yokonza pang'ono</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Zosankha</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Tembenuza</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Theka</value></data>
@@ -1384,7 +1395,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Yakhazikitsidwa ya {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Ikugwira</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Zina za {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Ikani fayilo ya mbiri pano</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>pamene</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>pa</value></data>
@@ -1431,4 +1441,5 @@
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} mwa {1} zayatsidwa</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Mbiri zolowetsedwa izi zili ndi mitundu yatsopano pa Steam Workshop. Zilowetseninso kuchokera ku Pezani mbiri kuti mupeze zosinthazo.</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Ma mapping</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
 </root>

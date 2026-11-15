@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>Magsisimula ito kapag nakakonekta ang device na ito.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>Magsisimula ito kapag nakakonekta ang isa sa mga device na ito.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>Hindi nakakonekta</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>Mga Card</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>Detalyado</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>Siksik</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>Awtomatiko</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Detalyado habang kasya ang mga card sa window, siksik kapag lalampas na ang mga ito</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>Nagpapadala ng input ngayon</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>Baterya {0}, mahina</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>Baterya {0}, nagcha-charge</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>Mag-click ng note o slider, pagkatapos ay pindutin ang input na dapat magpagalaw rito.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>Nilalaktawan ng I-map Lahat ang mga touch output ng A at B. I-click ang bilog sa paligid ng A o B para i-bind ang touch output nito.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>Naghihintay ng input para sa {0}. Pindutin ang input sa device mo.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, pinapagana ng</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>Higit Pang Opsyon</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>Mas Kaunting Opsyon</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>Button sa harap</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>Shoulder button</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>Button ng system</value></data>
@@ -1401,6 +1404,18 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>I-reset Lahat</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>I-clear Lahat</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Source</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>Nakikita ng mga laro</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} hindi nakakonekta</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>Magpakita ng column para sa bawat device na hindi nakakonekta</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>I-click, pagkatapos ay pindutin ang input sa device na ito na dapat magpagana sa {0}</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>I-scroll nang pahalang ang mga device</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>Device</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>Pataas</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>Pababa</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifier</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Trim stick</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>Output</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>Value</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>Options</value></data>
@@ -1429,7 +1444,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>Max</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>Pinakamataas na hangganan ng accumulator. 1 = buong positibo.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>Ramp</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>Pangunahing Mode</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>Attack</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>Segundo para maabot ang buong deflection habang hawak ang katugmang key. 0 = agad.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>Release</value></data>
@@ -4217,7 +4231,6 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Up Input</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Down Input</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Modifier Input</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Uri ng Source</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Mababang Kulay</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Gitnang Kulay</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>Mataas na Kulay</value></data>
@@ -4707,7 +4720,6 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>Itinakda para sa {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>Aktibo</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Higit pa para sa {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>I-vibrate Din ang Controller, Ulitin ang Abiso Kada, Abisuhan Kapag Ganap na Naka-charge</value></data>
   <data name="Import_NeedsALook" xml:space="preserve"><value>Kailangang Suriin</value></data>
   <data name="Import_ImportedCleanly" xml:space="preserve"><value>Na-import Nang Malinis</value></data>

@@ -343,9 +343,23 @@ namespace PadForge.ViewModels
         internal void RefreshCulture()
         {
             OnPropertyChanged(nameof(KindChoices));
+            OnPropertyChanged(nameof(KindLabel));
         }
 
-        internal MappingItem ParentMappingItem { get; set; }
+        private MappingItem _parentMappingItem;
+
+        /// <summary>The row the source is one of. What the source's line
+        /// reads through the row follows a change of it.</summary>
+        internal MappingItem ParentMappingItem
+        {
+            get => _parentMappingItem;
+            set
+            {
+                if (ReferenceEquals(_parentMappingItem, value)) return;
+                _parentMappingItem = value;
+                RaiseLineFacts();
+            }
+        }
 
         /// <summary>The picker entry a key shows. A key that carries its
         /// controller shows the entry for that pair, its controller's own
@@ -782,25 +796,7 @@ namespace PadForge.ViewModels
         /// which a direction badge on a bipolar-axis target makes sense.
         /// Axis / Slider sources encode their own sign so they get no
         /// direction badge.</summary>
-        public bool IsButtonClassDescriptor
-        {
-            get
-            {
-                var d = _descriptor?.Trim() ?? "";
-                if (d.Length == 0) return false;
-                // Abstract Gamepad button/D-pad aliases (#9) fold to their
-                // canonical "Button N" / "POV 0 Dir" form first.
-                d = PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(d) ?? d;
-                if (d.StartsWith("Button ", System.StringComparison.Ordinal)) return true;
-                if (d.StartsWith("POV ", System.StringComparison.Ordinal)) return true;
-                if (d.StartsWith("Touchpad ", System.StringComparison.Ordinal)) return true;
-                // NFC tag bools (#241): direction badge on a bipolar-axis row.
-                if (PadForge.Engine.Common.Mapping.SourceCoercion.IsNfcTagDescriptor(d)) return true;
-                // Voice phrase bools (#317): same treatment.
-                if (PadForge.Engine.Common.Mapping.SourceCoercion.IsVoicePhraseDescriptor(d)) return true;
-                return false;
-            }
-        }
+        public bool IsButtonClassDescriptor => IsButtonClass(_descriptor);
 
         /// <summary>"→ +" or "← −" for button-class sources, depending
         /// on the Invert flag. Empty for non-button-class sources. The
@@ -812,7 +808,7 @@ namespace PadForge.ViewModels
             get
             {
                 if (!IsButtonClassDescriptor) return "";
-                return _invert ? "← −" : "→ +";
+                return _invert ? DirectionNegative : DirectionPositive;
             }
         }
         public bool HalfAxis
@@ -1391,38 +1387,11 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _isRecording, value))
                 {
-                    if (!value) _activeParamTarget = null; // recording stopped → no param is active
                     OnPropertyChanged(nameof(RecordButtonText));
                     OnPropertyChanged(nameof(RecordButtonIcon));
-                    OnPropertyChanged(nameof(IsRecordingParamUp));
-                    OnPropertyChanged(nameof(IsRecordingParamDown));
-                    OnPropertyChanged(nameof(IsRecordingParamModifier));
-                    OnPropertyChanged(nameof(RecordIconParamUp));
-                    OnPropertyChanged(nameof(RecordIconParamDown));
-                    OnPropertyChanged(nameof(RecordIconParamModifier));
-                    OnPropertyChanged(nameof(RecordTextParamUp));
-                    OnPropertyChanged(nameof(RecordTextParamDown));
-                    OnPropertyChanged(nameof(RecordTextParamModifier));
                 }
             }
         }
-
-        // Per-Param recording state. Set by the Param Record commands so each
-        // button only swaps to its "stop" icon while ITS recording is armed —
-        // not when a sibling button (e.g. Up vs Down on an Incremental row) is
-        // the one listening. Cleared automatically when IsRecording goes false.
-        private ParamRecordTarget? _activeParamTarget;
-        public bool IsRecordingParamUp       => IsRecording && _activeParamTarget == ParamRecordTarget.Up;
-        public bool IsRecordingParamDown     => IsRecording && _activeParamTarget == ParamRecordTarget.Down;
-        public bool IsRecordingParamModifier => IsRecording && _activeParamTarget == ParamRecordTarget.Modifier;
-        // Segoe MDL2 glyphs — match the literal codepoints the existing
-        // RecordButtonIcon already uses: U+E71A = Stop, U+E7C8 = Record.
-        public string RecordIconParamUp       => IsRecordingParamUp       ? "" : "";
-        public string RecordIconParamDown     => IsRecordingParamDown     ? "" : "";
-        public string RecordIconParamModifier => IsRecordingParamModifier ? "" : "";
-        public string RecordTextParamUp       => IsRecordingParamUp       ? Strings.Instance.Common_Recording : Strings.Instance.Common_Record;
-        public string RecordTextParamDown     => IsRecordingParamDown     ? Strings.Instance.Common_Recording : Strings.Instance.Common_Record;
-        public string RecordTextParamModifier => IsRecordingParamModifier ? Strings.Instance.Common_Recording : Strings.Instance.Common_Record;
 
         public string RecordButtonText => IsRecording ? Strings.Instance.Common_Recording : Strings.Instance.Common_Record;
         public string RecordButtonIcon => IsRecording ? "" : ""; // Stop : Record
@@ -1452,11 +1421,9 @@ namespace PadForge.ViewModels
         }
         public event EventHandler<ParamRecordEventArgs> StartParamRecordingRequested;
 
-        /// <summary>Param record commands toggle on a second click — matches
-        /// the main ToggleRecordCommand pattern. Each command also stamps
-        /// <see cref="_activeParamTarget"/> so the icon swap only happens
-        /// on the button that's actually listening (Up vs Down record
-        /// buttons no longer both light up when only one is armed).</summary>
+        /// <summary>A key's Record: a click on the key's tag in a list
+        /// cell, and the line's one Record taking the mode's keys in turn.
+        /// A second click stops it, as the main ToggleRecordCommand does.</summary>
         private RelayCommand _recordParamUpCommand;
         public RelayCommand RecordParamUpCommand =>
             _recordParamUpCommand ??= new RelayCommand(() => StartParamRecord(ParamRecordTarget.Up));
@@ -1472,21 +1439,6 @@ namespace PadForge.ViewModels
         private void StartParamRecord(ParamRecordTarget target)
         {
             if (IsRecording) { StopRecordingRequested?.Invoke(this, EventArgs.Empty); return; }
-            _activeParamTarget = target;
-            // No SetProperty here — IsRecording isn't true yet; the handler
-            // will set it. Fire OnPropertyChanged for the per-Param props
-            // anyway so the icon updates synchronously with the click for
-            // immediate feedback (handlers route through the recorder which
-            // sets IsRecording=true a moment later).
-            OnPropertyChanged(nameof(IsRecordingParamUp));
-            OnPropertyChanged(nameof(IsRecordingParamDown));
-            OnPropertyChanged(nameof(IsRecordingParamModifier));
-            OnPropertyChanged(nameof(RecordIconParamUp));
-            OnPropertyChanged(nameof(RecordIconParamDown));
-            OnPropertyChanged(nameof(RecordIconParamModifier));
-            OnPropertyChanged(nameof(RecordTextParamUp));
-            OnPropertyChanged(nameof(RecordTextParamDown));
-            OnPropertyChanged(nameof(RecordTextParamModifier));
             StartParamRecordingRequested?.Invoke(this, new ParamRecordEventArgs(target));
         }
 

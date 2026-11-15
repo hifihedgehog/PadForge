@@ -313,6 +313,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>با اتصال این دستگاه شروع می‌شود.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>با اتصال یکی از این دستگاه‌ها شروع می‌شود.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>غیرمتصل</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>کارت‌ها</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>کامل</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>فشرده</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>خودکار</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>تا وقتی کارت‌ها در پنجره جا می‌شوند کامل، و وقتی از پنجره بیرون می‌زنند فشرده</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>در حال ارسال ورودی</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>باتری {0}، کم</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>باتری {0}، در حال شارژ</value></data>
@@ -359,9 +365,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>روی یک نت یا لغزنده کلیک کنید و سپس ورودی‌ای را که باید آن را هدایت کند فشار دهید.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>«نگاشت همه» خروجی‌های لمسی A و B را نادیده می‌گیرد. برای نگاشت یکی از آن‌ها، روی حلقه دور A یا B کلیک کنید.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>در حال گوش دادن به {0}. ورودی را روی دستگاه خود فشار دهید.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}، ورودی از</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>گزینه‌های بیشتر</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>گزینه‌های کمتر</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>دکمه اصلی</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>دکمه شانه</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>دکمه سیستمی</value></data>
@@ -1588,6 +1591,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>بازنشانی همه</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>پاک کردن همه</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>منبع</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>آنچه بازی می‌بیند</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} غیرمتصل</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>نمایش یک ستون برای هر دستگاه غیرمتصل</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>کلیک کنید، سپس ورودی‌ای از این دستگاه را که باید {0} را راه بیندازد فشار دهید</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>پیمایش افقی دستگاه‌ها</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>دستگاه</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>حالت</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>بالا</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>پایین</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>تغییردهنده</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>استیک تنظیم دقیق</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>خروجی</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>مقدار</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>گزینه‌ها</value></data>
@@ -1616,7 +1631,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>بیشینه</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>کران بالای انباشتگر. 1 = مثبت کامل.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>شیب</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>حالت اصلی</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>اوج‌گیری</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>تعداد ثانیه برای رسیدن به انحراف کامل تا وقتی کلید مربوط نگه داشته شده است. 0 = آنی.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>رهاسازی</value></data>
@@ -2649,7 +2663,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>تنظیم‌شده برای {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>فعال</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>بیشتر برای {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} حذف شود؟</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>پروفایل و قانون تعویض خودکار آن حذف می‌شوند. این کار قابل بازگشت نیست.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>پروفایل حذف می‌شود. این کار قابل بازگشت نیست.</value></data>
@@ -4636,7 +4649,6 @@
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>ورودی بالا</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>ورودی پایین</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>ورودی تغییردهنده</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>نوع منبع</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>رنگ پایین</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>رنگ میانی</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>رنگ بالا</value></data>

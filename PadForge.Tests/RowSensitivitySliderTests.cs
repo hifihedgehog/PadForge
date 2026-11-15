@@ -8,11 +8,12 @@ using Xunit;
 
 namespace PadForge.Tests
 {
-    /// <summary>The dials bound to a row's generic Sensitivity (the Gyro
-    /// Lean rows, primary and extra source) reach the same values as the
-    /// row's own item holds, and their text boxes show them: a slider whose
-    /// Minimum sat above the item's floor showed a value it could not reach,
-    /// and a two-place box showed 0.00 for a rotation's 0.001.</summary>
+    /// <summary>The dial bound to a source's generic Sensitivity (a Gyro
+    /// Lean source, a row's first one or an added one) reaches the same
+    /// values as the row's own item holds, and its text box shows them: a
+    /// slider whose Minimum sat above the item's floor showed a value it
+    /// could not reach, and a two-place box showed 0.00 for a rotation's
+    /// 0.001. Every source is drawn by one line, so the dial is one.</summary>
     public class RowSensitivitySliderTests
     {
         [Fact]
@@ -29,7 +30,7 @@ namespace PadForge.Tests
                     && ((string)e.Attribute("Value") ?? "").StartsWith("{Binding Sensitivity,", StringComparison.Ordinal)
                     && ((string)e.Parent?.Attribute("Visibility") ?? "").Contains("IsGyroLeanSource", StringComparison.Ordinal))
                 .ToList();
-            Assert.Equal(2, sliders.Count);
+            Assert.Single(sliders);
             foreach (var slider in sliders)
             {
                 Assert.Equal(floor, double.Parse((string)slider.Attribute("Minimum"), CultureInfo.InvariantCulture));

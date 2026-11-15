@@ -300,6 +300,12 @@
   <data name="Home_Card_StartsWhenThis" xml:space="preserve"><value>ഈ ഉപകരണം കണക്റ്റ് ചെയ്യുമ്പോൾ ഇത് ആരംഭിക്കും.</value></data>
   <data name="Home_Card_StartsWhenOne" xml:space="preserve"><value>ഈ ഉപകരണങ്ങളിൽ ഒന്ന് കണക്റ്റ് ചെയ്യുമ്പോൾ ഇത് ആരംഭിക്കും.</value></data>
   <data name="Home_Device_NotConnected" xml:space="preserve"><value>കണക്റ്റ് ചെയ്തിട്ടില്ല</value></data>
+  <data name="Home_Cards" xml:space="preserve"><value>കാർഡുകൾ</value></data>
+  <data name="Home_Cards_Detailed" xml:space="preserve"><value>വിശദം</value></data>
+  <data name="Home_Cards_Compact" xml:space="preserve"><value>ചുരുക്കം</value></data>
+  <data name="Home_Cards_Auto" xml:space="preserve"><value>ഓട്ടോ</value></data>
+  <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>കാർഡുകൾ വിൻഡോയിൽ ഒതുങ്ങുന്നിടത്തോളം വിശദമായി, അതിനപ്പുറം പോകുമ്പോൾ ചുരുക്കമായി</value></data>
+  <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
   <data name="Home_Device_Sending" xml:space="preserve"><value>ഇപ്പോൾ ഇൻപുട്ട് അയയ്ക്കുന്നു</value></data>
   <data name="Home_Battery_Low_Format" xml:space="preserve"><value>ബാറ്ററി {0}, കുറവ്</value></data>
   <data name="Home_Battery_Charging_Format" xml:space="preserve"><value>ബാറ്ററി {0}, ചാർജ് ചെയ്യുന്നു</value></data>
@@ -346,9 +352,6 @@
   <data name="Pad_PictureHint_Midi" xml:space="preserve"><value>ഒരു നോട്ടിലോ സ്ലൈഡറിലോ ക്ലിക്ക് ചെയ്ത ശേഷം, അത് നിയന്ത്രിക്കേണ്ട ഇൻപുട്ട് അമർത്തുക.</value></data>
   <data name="Pad_Vr_MapAllSkipsTouch" xml:space="preserve"><value>എല്ലാം മാപ്പ് ചെയ്യുക എന്നത് A, B എന്നിവയുടെ ടച്ച് ഔട്ട്പുട്ടുകൾ ഒഴിവാക്കുന്നു. ഒരെണ്ണം ബന്ധിപ്പിക്കാൻ A-യ്ക്കോ B-യ്ക്കോ ചുറ്റുമുള്ള വളയത്തിൽ ക്ലിക്ക് ചെയ്യുക.</value></data>
   <data name="Pad_Listening_Format" xml:space="preserve"><value>{0}-നായി കാത്തിരിക്കുന്നു. നിങ്ങളുടെ ഉപകരണത്തിലെ ഇൻപുട്ട് അമർത്തുക.</value></data>
-  <data name="Pad_DrivenBy_Format" xml:space="preserve"><value>{0}, ഇൻപുട്ട് ഉറവിടം</value></data>
-  <data name="Pad_MoreOptions" xml:space="preserve"><value>കൂടുതൽ ഓപ്ഷനുകൾ</value></data>
-  <data name="Pad_FewerOptions" xml:space="preserve"><value>കുറച്ച് ഓപ്ഷനുകൾ</value></data>
   <data name="Pad_Kind_FaceButton" xml:space="preserve"><value>ഫേസ് ബട്ടൺ</value></data>
   <data name="Pad_Kind_ShoulderButton" xml:space="preserve"><value>ഷോൾഡർ ബട്ടൺ</value></data>
   <data name="Pad_Kind_SystemButton" xml:space="preserve"><value>സിസ്റ്റം ബട്ടൺ</value></data>
@@ -1399,6 +1402,18 @@
   <data name="Pad_ResetAll" xml:space="preserve"><value>എല്ലാം പുനഃസജ്ജമാക്കുക</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>എല്ലാം മായ്ക്കുക</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>ഉറവിടം</value></data>
+  <data name="Pad_List_GamesSee" xml:space="preserve"><value>ഗെയിമുകൾ കാണുന്നത്</value></data>
+  <data name="Pad_List_NotConnected_Format" xml:space="preserve"><value>{0} കണക്റ്റ് ചെയ്തിട്ടില്ല</value></data>
+  <data name="Pad_List_ShowNotConnected_Tooltip" xml:space="preserve"><value>കണക്റ്റ് ചെയ്തിട്ടില്ലാത്ത ഓരോ ഉപകരണത്തിനും ഒരു കോളം കാണിക്കുക</value></data>
+  <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>ക്ലിക്ക് ചെയ്യുക, തുടർന്ന് {0} നിയന്ത്രിക്കേണ്ട ഈ ഉപകരണത്തിലെ ഇൻപുട്ട് അമർത്തുക</value></data>
+  <data name="Pad_List_Scroll" xml:space="preserve"><value>ഉപകരണങ്ങൾ വശത്തേക്ക് സ്ക്രോൾ ചെയ്യുക</value></data>
+  <data name="Pad_Row_Device" xml:space="preserve"><value>ഉപകരണം</value></data>
+  <data name="Pad_Row_Mode" xml:space="preserve"><value>മോഡ്</value></data>
+  <data name="Pad_Row_Up" xml:space="preserve"><value>മുകളിലേക്ക്</value></data>
+  <data name="Pad_Row_Down" xml:space="preserve"><value>താഴേക്ക്</value></data>
+  <data name="Pad_Row_Modifier" xml:space="preserve"><value>മോഡിഫയർ</value></data>
+  <data name="Pad_Row_TrimStick" xml:space="preserve"><value>ട്രിം സ്റ്റിക്ക്</value></data>
+  <data name="Pad_Picked_Row" xml:space="preserve"><value>ഔട്ട്പുട്ട്</value></data>
   <data name="Pad_HeaderValue" xml:space="preserve"><value>മൂല്യം</value></data>
   <data name="Pad_Value_Percent_Format" xml:space="preserve"><value>{0}%</value></data>
   <data name="Pad_HeaderOptions" xml:space="preserve"><value>ഓപ്ഷനുകൾ</value></data>
@@ -1427,7 +1442,6 @@
   <data name="Pad_Mapping_Max" xml:space="preserve"><value>കൂടിയത്</value></data>
   <data name="Pad_Mapping_Max_Tooltip" xml:space="preserve"><value>അക്യുമുലേറ്ററിന്റെ ഉയർന്ന പരിധി. 1 = പൂർണ്ണ പോസിറ്റീവ്.</value></data>
   <data name="Pad_Mapping_Kind_Ramped" xml:space="preserve"><value>റാമ്പ്</value></data>
-  <data name="Pad_Mapping_PrimaryMode" xml:space="preserve"><value>പ്രാഥമിക മോഡ്</value></data>
   <data name="Pad_Mapping_Ramp_Attack" xml:space="preserve"><value>അറ്റാക്ക്</value></data>
   <data name="Pad_Mapping_Ramp_Attack_Tooltip" xml:space="preserve"><value>അനുബന്ധ കീ അമർത്തിപ്പിടിക്കുമ്പോൾ പൂർണ്ണ വ്യതിയാനത്തിലെത്താൻ വേണ്ട സെക്കൻഡുകൾ. 0 = തൽക്ഷണം.</value></data>
   <data name="Pad_Mapping_Ramp_Release" xml:space="preserve"><value>റിലീസ്</value></data>
@@ -2453,7 +2467,6 @@
   <data name="Profiles_Card_SetFor_Format" xml:space="preserve"><value>സജ്ജമാക്കിയത്: {0}</value></data>
   <data name="Profiles_Active" xml:space="preserve"><value>സജീവം</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>കൂടുതൽ: {0}</value></data>
-  <data name="Profiles_TypeCount_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} ഇല്ലാതാക്കണോ?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>പ്രൊഫൈലും അതിന്റെ സ്വയമേവ മാറ്റാനുള്ള നിയമവും നീക്കം ചെയ്യപ്പെടും. ഇത് പഴയപടിയാക്കാൻ കഴിയില്ല.</value></data>
   <data name="Profiles_DeleteConfirmNoGames" xml:space="preserve"><value>പ്രൊഫൈൽ നീക്കം ചെയ്യപ്പെടും. ഇത് പഴയപടിയാക്കാൻ കഴിയില്ല.</value></data>
@@ -4372,7 +4385,6 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>അപ്പ് ഇൻപുട്ട്</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>ഡൗൺ ഇൻപുട്ട്</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>മോഡിഫയർ ഇൻപുട്ട്</value></data>
-  <data name="ResetLabel_SourceType" xml:space="preserve"><value>ഉറവിട തരം</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>ലോ നിറം</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>മിഡ് നിറം</value></data>
   <data name="ResetLabel_HighColor" xml:space="preserve"><value>ഹൈ നിറം</value></data>

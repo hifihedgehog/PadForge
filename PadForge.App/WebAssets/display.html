@@ -1,17 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
     <title>PadForge - Controller Picture</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/padforge.css">
     <link rel="stylesheet" href="/css/layout_view.css">
     <style>
-        /* Transparent, for a browser source over the broadcast. */
+        /* Transparent, for a browser source over the broadcast. The chat
+           panel under the picture is the program's card, a little clear so
+           the broadcast shows through (#574). The shared colors name a
+           dark page, which gives a page with no ground of its own a dark
+           one. This page has none on purpose, so it takes that back. */
+        :root { color-scheme: normal; }
         html, body {
             margin: 0;
             padding: 0;
             background: transparent;
             overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--font);
         }
         #stage {
             position: fixed;
@@ -35,8 +42,9 @@
             flex: 0 0 auto;
             max-width: 96%;
             box-sizing: border-box;
-            color: #fff;
-            background: rgba(16, 16, 26, 0.8);
+            color: var(--text-1);
+            background: var(--veil);
+            border: 1px solid var(--card-edge);
             border-radius: 12px;
             padding: 10px 18px;
             font-size: 24px;
@@ -44,10 +52,11 @@
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
             display: none;
         }
-        #chat .who { color: #ffb36b; font-weight: 600; }
-        #chat .cmd { font-family: Consolas, 'Courier New', monospace; }
-        #chat .small { font-size: 18px; color: #d8d8e4; }
-        #chat .paused { color: #ff8a8a; }
+        /* Who plays, in ember. A paused line in gold, the color of waiting. */
+        #chat .who { color: var(--ember-hot); font-weight: 600; }
+        #chat .cmd { font-family: var(--mono); }
+        #chat .small { font-size: 18px; color: var(--text-2); }
+        #chat .paused { color: var(--wait); }
         #chat div:empty { display: none; }
     </style>
 </head>

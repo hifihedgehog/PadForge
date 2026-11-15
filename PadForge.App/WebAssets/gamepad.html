@@ -1,35 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
     <title>PadForge - Browser Gamepad</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#0a0e15">
+    <link rel="stylesheet" href="/css/padforge.css">
     <style>
+        /* The browser gamepad page in the program's colors (#574): the
+           shared bar, then each forwarded pad as a card. */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; background: #1a1a2e; color: #eee; font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
-        .header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #16213e; border-bottom: 1px solid #0f3460; }
-        .header a { color: #888; text-decoration: none; font-size: 14px; }
-        .header a:hover { color: #e94560; }
-        .header .title { font-weight: 600; font-size: 16px; flex: 1; }
-        .header #status { font-size: 12px; color: #9aa; }
-        .header #fsMount button { margin-left: 8px; }
-        main { padding: 16px; max-width: 720px; margin: 0 auto; }
-        #prompt { text-align: center; padding: 40px 16px; color: #ccc; font-size: 18px; line-height: 1.5; }
-        #prompt small { display: block; margin-top: 12px; font-size: 13px; color: #888; }
-        .pad { background: #16213e; border: 1px solid #0f3460; border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; }
-        .pad-name { font-weight: 600; color: #7CFC00; }
-        .pad-meta { font-size: 12px; color: #9aa; margin-top: 4px; word-break: break-word; }
-        .pad-note { font-size: 12px; color: #e9a545; margin-top: 4px; }
-        #lock { font-size: 12px; color: #888; margin-top: 16px; }
-        .how { margin-top: 24px; font-size: 13px; color: #9aa; line-height: 1.6; }
-        .how b { color: #ccc; }
+        body { margin: 0; background: var(--ground); color: var(--text-1); font-family: var(--font); font-size: 15px; line-height: 1.4; min-height: 100vh; }
+        main { padding: 18px 20px 24px; max-width: 720px; margin: 0 auto; }
+        #prompt { text-align: center; padding: 40px 16px; color: var(--text-1); font-size: 18px; font-weight: 600; line-height: 1.5; }
+        #prompt small { display: block; margin-top: 12px; font-size: 13px; font-weight: 400; color: var(--text-2); }
+        .pad { background: var(--card); border: 1px solid var(--card-edge); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; }
+        .pad-name { font-weight: 600; color: var(--text-1); }
+        .pad-meta { font-size: 13px; color: var(--text-2); margin-top: 4px; word-break: break-word; }
+        .pad-note { font-size: 13px; color: var(--wait); margin-top: 4px; }
+        .pad-note:empty { display: none; }
+        #lock { font-size: 13px; color: var(--text-3); margin-top: 16px; }
+        .how { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line-soft); font-size: 13px; color: var(--text-2); line-height: 1.6; }
+        .how b { color: var(--text-1); font-weight: 600; }
     </style>
 </head>
 <body>
-    <div class="header">
+    <div class="pf-bar">
         <a href="/">&larr; Layouts</a>
-        <span class="title">Browser Gamepad</span>
-        <span id="status">Connecting...</span>
+        <span class="pf-title">Browser Gamepad</span>
+        <span id="status" class="pf-status">Connecting...</span>
         <span id="fsMount"></span>
     </div>
     <main>

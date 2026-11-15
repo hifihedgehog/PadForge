@@ -1,31 +1,40 @@
-/* PadForge Web Controller — 2D Controller Overlay Styles */
+/* PadForge Web Controller: the page that plays, a controller's 2D art with
+   touch zones over it. Its colors are css/padforge.css's (#574). */
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    background: #1a1a2e;
+    background: var(--ground);
     overflow: hidden;
     touch-action: none;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: var(--font);
 }
 
+/* What the page has to say: a pill at the top's middle, as wide as its
+   words, so it covers neither the fullscreen button at the left nor a
+   control. A strip across the whole top lay over that button. */
 #statusBar {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 70%;
     text-align: center;
     font-size: 12px;
-    color: #aaa;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 4px 0;
+    color: var(--text-2);
+    background: var(--veil);
+    border: 1px solid var(--line-soft);
+    border-radius: 999px;
+    padding: 3px 12px;
     z-index: 9999;
     pointer-events: none;
     transition: opacity 0.5s;
 }
+#statusBar:empty { display: none; }
 
 /* The bar announces, then gets out of the way (owner report 2026-08-19):
    left up permanently it sits over the layout's topmost controls, and on
@@ -112,17 +121,25 @@ body {
     position: absolute;
 }
 
+/* The touchpad's surface, marked out over the art in the cold blue the
+   program draws a measured thing in. */
+.touch-zone.touchpad-zone {
+    z-index: 15;
+    border-radius: 8px;
+    border: 2px solid var(--cold-line);
+    background: var(--cold-tint);
+}
+
 /* Visible touchpad-click pill (#296): an obvious "click here" target above
    the touch surface, so the click is discoverable and distinct from a drag. */
 .touchpad-click-pill {
     border-radius: 999px;
-    border: 2px solid rgba(0, 200, 232, 0.6);
-    background: rgba(0, 200, 232, 0.12);
-    box-shadow: 0 0 8px rgba(0, 200, 232, 0.2);
+    border: 2px solid var(--cold-line);
+    background: var(--cold-tint);
     transition: background 0.05s, transform 0.05s;
 }
 .touchpad-click-pill.pressed {
-    background: rgba(0, 200, 232, 0.7);
+    background: var(--cold);
     transform: scale(0.96);
 }
 
@@ -131,17 +148,13 @@ body {
     z-index: 11;
 }
 
-/* Portrait warning */
+/* The two messages that cover the page: turn the phone, and the link is
+   lost. Each is css/padforge.css's cover, a card at the page's middle. */
 #warning-portrait {
     display: none;
     height: 100vh;
     width: 100%;
     position: fixed;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    background: #1a1a2e;
-    font-family: 'Segoe UI', sans-serif;
     z-index: 10000;
 }
 
@@ -150,23 +163,11 @@ body {
     height: 100%;
     width: 100%;
     position: fixed;
-    text-align: center;
-    background: #1a1a2e;
     z-index: 10001;
 }
 
-#disconnect-message h2 {
-    color: white;
-    font-size: 18px;
-    position: absolute;
-    top: 0; bottom: 0; left: 0; right: 0;
-    margin: auto;
-    width: 80%;
-    height: 40px;
-    text-align: center;
-}
-
-/* Touchpad finger dots */
+/* Touchpad finger dots: the first finger in ember, the second in the cold
+   blue, as the program's own touchpad view draws them. */
 .touchpad-dot {
     position: absolute;
     width: 28px;
@@ -177,15 +178,15 @@ body {
     display: none;
     z-index: 16;
 }
-.touchpad-dot.f0 { background: rgba(255, 102, 0, 0.6); border: 2px solid #ff6600; }
-.touchpad-dot.f1 { background: rgba(0, 102, 255, 0.6); border: 2px solid #0066ff; }
+.touchpad-dot.f0 { background: rgba(255, 107, 44, 0.6); border: 2px solid var(--ember); }
+.touchpad-dot.f1 { background: rgba(124, 199, 234, 0.6); border: 2px solid var(--cold); }
 
 @media only screen and (orientation: portrait) {
     #controller-viewport, #disconnect-message {
         display: none;
     }
     #warning-portrait {
-        display: flex;
+        display: block;
     }
 }
 

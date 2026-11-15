@@ -546,6 +546,44 @@ namespace PadForge.Tests
             Assert.Equal(HttpStatusCode.OK, r.StatusCode);
         }
 
+        /// <summary>The program's own server answers every page, and every
+        /// sheet and script a page links, with the file and its type (#574).
+        /// The pages share one sheet of colors, css/padforge.css, and a sheet
+        /// the server does not answer leaves a page with no look. On a real
+        /// http.sys listener, on 127.0.0.1.</summary>
+        [Fact]
+        public async Task TheServerAnswersEveryPageWithItsSheetsAndScripts()
+        {
+            using var run = LoopbackRun.Start(localOnly: false);
+            using var http = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
+            string main = $"http://127.0.0.1:{run.MainPort}";
+            var asked = new HashSet<string>();
+            foreach (string page in new[] { "index.html", "controller.html", "gamepad.html", "custom.html", "touchpad.html", "display.html", "menus.html" })
+            {
+                string html = ExtrasPageTests.RepoText("PadForge.App", "WebAssets", page);
+                using (var r = await http.GetAsync(main + "/" + page))
+                {
+                    Assert.True(r.StatusCode == HttpStatusCode.OK, page + " answered " + (int)r.StatusCode);
+                    Assert.Equal("text/html; charset=utf-8", r.Content.Headers.ContentType.ToString());
+                    Assert.Equal(html, await r.Content.ReadAsStringAsync());
+                }
+                foreach (System.Text.RegularExpressions.Match link in
+                    System.Text.RegularExpressions.Regex.Matches(html, "(?:href|src)=\"(/(?:css|js)/[^\"]+)\""))
+                {
+                    string path = link.Groups[1].Value;
+                    if (!asked.Add(path)) continue;
+                    using var r = await http.GetAsync(main + path);
+                    Assert.True(r.StatusCode == HttpStatusCode.OK, path + " answered " + (int)r.StatusCode);
+                    Assert.Equal(path.EndsWith(".css", StringComparison.Ordinal) ? "text/css; charset=utf-8" : "application/javascript; charset=utf-8",
+                        r.Content.Headers.ContentType.ToString());
+                    Assert.Equal(ExtrasPageTests.RepoText(new[] { "PadForge.App", "WebAssets" }.Concat(path.Trim('/').Split('/')).ToArray()),
+                        await r.Content.ReadAsStringAsync());
+                }
+            }
+            Assert.Contains("/css/padforge.css", asked);
+            Assert.True(asked.Count >= 10, asked.Count + " sheets and scripts");
+        }
+
         private static async Task<HttpStatusCode> Send(HttpClient http, string url, string cookieCode)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, url);

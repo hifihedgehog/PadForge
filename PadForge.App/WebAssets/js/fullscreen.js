@@ -25,8 +25,9 @@
         var btn = doc.createElement("button");
         btn.id = "fsBtn";
         btn.type = "button";
-        btn.style.cssText = "background:#16213e;color:#9aa;border:1px solid #0f3460;border-radius:8px;" +
-            "padding:4px 10px;font:600 12px 'Segoe UI',sans-serif;opacity:0.85;";
+        // The look is css/padforge.css's chip, which every page that mounts
+        // this button links.
+        btn.className = "pf-chip";
         function label() { btn.textContent = doc.fullscreenElement ? "Exit fullscreen" : "Fullscreen"; }
         label();
         btn.addEventListener("click", function () {

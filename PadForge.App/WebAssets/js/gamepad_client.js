@@ -588,6 +588,9 @@
         setStatus(open ? ("Forwarding " + open + (open > 1 ? " pads" : " pad"))
             : live ? ("Connecting " + live + (live > 1 ? " pads" : " pad"))
             : "Waiting for a controller");
+        // The state's dot is ember while a pad is forwarded.
+        var state = el("status");
+        if (state && state.classList) state.classList.toggle("live", open > 0);
     }
 
     function start() {

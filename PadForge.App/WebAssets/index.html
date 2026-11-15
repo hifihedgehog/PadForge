@@ -7,29 +7,12 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="color-scheme" content="dark">
     <meta name="theme-color" content="#0a0e15">
+    <link rel="stylesheet" href="/css/padforge.css">
     <link rel="stylesheet" href="/css/layout_view.css">
     <style>
-        /* The phone's home page (#574, board WebController). Colors are the
-           app's dark brushes, named beside each value. */
-        :root {
-            color-scheme: dark;
-            --ground: #0a0e15;      /* ApplicationBackgroundBrush, SteelGroundBrush */
-            --card: #121925;        /* CardBackgroundFillColorDefaultBrush */
-            --card-lift: #161e2b;   /* SteelCardHoverBrush */
-            --card-edge: #263142;   /* SteelPillLineBrush */
-            --field: #0d131d;       /* SteelFieldBrush, TextControlBackground */
-            --field-edge: #2a3546;  /* SteelLineBrush, TextControlElevationBorderBrush */
-            --text-1: #eef2f7;      /* TextFillColorPrimaryBrush */
-            --text-2: #a9b4c4;      /* TextFillColorSecondaryBrush */
-            --text-3: #8693a6;      /* TextFillColorTertiaryBrush, TextControlPlaceholderForeground */
-            --ember: #ff6b2c;       /* EmberBrush */
-            --ember-lift: #ff8450;  /* EmberLiftBrush */
-            --ember-press: #e85f25; /* EmberPressBrush */
-            --ember-ink: #160a03;   /* EmberInkBrush */
-            --ember-pick: #1d1611;  /* EmberPickBrush */
-            --dot-ring: #3a475a;    /* the board's swatch ring */
-            --focus: #7cc7ea;       /* ColdBrush */
-        }
+        /* The phone's home page (#574, board WebController). Its colors are
+           css/padforge.css's, the app's dark brushes, which every page of
+           the web controller shares. */
         *, *::before, *::after { box-sizing: border-box; }
         [hidden] { display: none !important; }
         html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }

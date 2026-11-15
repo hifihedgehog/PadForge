@@ -1,41 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
     <title>PadForge - Touchpad</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#0a0e15">
+    <link rel="stylesheet" href="/css/padforge.css">
     <style>
+        /* The touchpad page in the program's colors (#574): the shared bar,
+           the surface as a well, and Click as a card that turns ember while
+           it is held. */
         * { box-sizing: border-box; margin: 0; padding: 0; touch-action: none; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #1a1a2e;
-            color: #eee;
+            font-family: var(--font);
+            background: var(--ground);
+            color: var(--text-1);
             height: 100vh;
+            height: 100dvh;
             width: 100vw;
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 16px;
-            background: #16213e;
-            font-size: 14px;
-        }
-        .header a { color: #888; text-decoration: none; }
-        .header a:hover { color: #e94560; }
-        .status { color: #888; font-size: 12px; }
-        .status.connected { color: #4ade80; }
         .touchpad {
             flex: 1;
             position: relative;
-            background: #16213e;
-            border: 1px solid #0f3460;
-            border-radius: 8px;
-            margin: 8px 8px 4px 8px;
+            background: var(--well);
+            border: 1px solid var(--card-edge);
+            border-radius: 12px;
+            margin: 10px 10px 6px 10px;
         }
+        /* The first finger in ember, the second in the cold blue. */
         .finger-dot {
             position: absolute;
             width: 40px;
@@ -44,15 +41,15 @@
             pointer-events: none;
             transform: translate(-50%, -50%);
         }
-        .finger-dot.f0 { background: rgba(255, 102, 0, 0.6); border: 2px solid #ff6600; }
-        .finger-dot.f1 { background: rgba(0, 102, 255, 0.6); border: 2px solid #0066ff; }
+        .finger-dot.f0 { background: rgba(255, 107, 44, 0.6); border: 2px solid var(--ember); }
+        .finger-dot.f1 { background: rgba(124, 199, 234, 0.6); border: 2px solid var(--cold); }
         .click-button {
-            margin: 0 8px 8px 8px;
+            margin: 0 10px 10px 10px;
             padding: 14px 0;
-            background: #0f3460;
-            border: 1px solid #0f3460;
-            border-radius: 8px;
-            color: #eee;
+            background: var(--card);
+            border: 1px solid var(--card-edge);
+            border-radius: 12px;
+            color: var(--text-1);
             font-size: 16px;
             font-weight: 600;
             text-align: center;
@@ -61,16 +58,17 @@
             cursor: pointer;
         }
         .click-button.active {
-            background: #1f5cae;
-            border-color: #4ade80;
+            background: var(--ember);
+            border-color: var(--ember);
+            color: var(--ember-ink);
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <a href="/">&larr; Back</a>
-        <span>PadForge Touchpad</span>
-        <span id="status" class="status">Connecting...</span>
+    <div class="pf-bar">
+        <a href="/">&larr; Layouts</a>
+        <span class="pf-title">Touchpad</span>
+        <span id="status" class="pf-status">Connecting...</span>
         <span id="fsMount"></span>
     </div>
     <div class="touchpad" id="touchpad">
@@ -155,7 +153,7 @@
                 clearTimeout(connectTimer);
                 connectTimer = null;
                 statusEl.textContent = 'Connected';
-                statusEl.className = 'status connected';
+                statusEl.className = 'pf-status live';
             };
             socket.onclose = function() {
                 if (ws !== socket) return;
@@ -163,7 +161,7 @@
                 clearTimeout(connectTimer);
                 connectTimer = null;
                 statusEl.textContent = 'Reconnecting...';
-                statusEl.className = 'status';
+                statusEl.className = 'pf-status';
                 clearTimeout(reconnectTimer);
                 reconnectTimer = setTimeout(function() {
                     reconnectTimer = null;

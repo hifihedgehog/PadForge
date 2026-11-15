@@ -208,10 +208,10 @@
         }
         if (typeof DeviceMotionEvent === "undefined") return;
         motionBtn = document.createElement("button");
+        motionBtn.type = "button";
         motionBtn.textContent = "⟳ Motion";
-        motionBtn.style.cssText = "position:fixed;bottom:10px;right:10px;z-index:45;" +
-            "background:#16213e;color:#9aa;border:1px solid #0f3460;border-radius:8px;" +
-            "padding:6px 12px;font:600 12px 'Segoe UI',sans-serif;opacity:0.85";
+        // css/padforge.css's chip, at the page's lower right corner.
+        motionBtn.className = "pf-chip pf-corner";
         motionBtn.addEventListener("click", toggleMotion);
         document.body.appendChild(motionBtn);
     }
@@ -224,9 +224,7 @@
         if (!(navigator.maxTouchPoints > 0)) return;
         var note = document.createElement("a");
         note.textContent = "Motion needs HTTPS";
-        note.style.cssText = "position:fixed;bottom:10px;right:10px;z-index:45;" +
-            "background:#16213e;color:#9aa;border:1px solid #0f3460;border-radius:8px;" +
-            "padding:6px 12px;font:600 12px 'Segoe UI',sans-serif;opacity:0.85;text-decoration:none";
+        note.className = "pf-chip pf-corner";
         document.body.appendChild(note);
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "/api/info", true);
@@ -249,8 +247,7 @@
             // sample stays latched server-side and a mid-motion toggle leaves
             // the gyro pipeline seeing a permanent rotation.
             send({ type: "motion", gx: 0, gy: 0, gz: 0, ax: 0, ay: 0, az: 0 });
-            motionBtn.style.color = "#9aa";
-            motionBtn.style.borderColor = "#0f3460";
+            motionBtn.classList.remove("on");
             return;
         }
         // iOS 13+: permission prompt, must run inside this click.
@@ -266,8 +263,8 @@
     function armMotion() {
         window.addEventListener("devicemotion", onMotion);
         motionOn = true;
-        motionBtn.style.color = "#7CFC00";
-        motionBtn.style.borderColor = "#7CFC00";
+        // Ember while the phone's motion is sent, as every live thing is.
+        motionBtn.classList.add("on");
         haptic();
     }
 
@@ -963,15 +960,12 @@
     // ── Touchpad: multi-touch zone for DS4 touchpad ──
     function setupTouchpadZone(ov, lay) {
         var zone = document.createElement("div");
-        zone.className = "touch-zone";
+        // The surface's outline and tint are css/controller.css's.
+        zone.className = "touch-zone touchpad-zone";
         zone.style.left = (ov.x / lay.baseWidth * 100) + "%";
         zone.style.top = (ov.y / lay.baseHeight * 100) + "%";
         zone.style.width = (ov.w / lay.baseWidth * 100) + "%";
         zone.style.height = (ov.h / lay.baseHeight * 100) + "%";
-        zone.style.zIndex = "15";
-        zone.style.borderRadius = "8px";
-        zone.style.border = "2px solid rgba(255,255,255,0.5)";
-        zone.style.background = "rgba(100,149,237,0.15)";
         touchLayer.appendChild(zone);
 
         // Finger preview dots

@@ -28,13 +28,12 @@ namespace PadForge.Common.Input
     ///
     /// <para>The pad is found exactly, never by vendor and product id, so two
     /// pads of one model each read their own. An XInput slot's interface
-    /// comes from OpenXInput's identity call (OpenXInputGetDeviceIdentityV1,
-    /// OpenXinput.cpp:4103), checked against the joystick's vendor and
-    /// product id. A HID path is the device's own. Windows names the
-    /// interface's device instance (DEVPKEY_Device_InstanceId, devpkey.h:86),
-    /// and the walk up its PnP parents to the Bluetooth address
-    /// (DEVPKEY_Bluetooth_DeviceAddress, km/bthguid.h:44) is
-    /// BluetoothBatteryService's.</para>
+    /// comes from OpenXInput's identity call (<see cref="XInputSlotIdentity"/>),
+    /// checked against the joystick's vendor and product id. A HID path is
+    /// the device's own. Windows names the interface's device instance
+    /// (DEVPKEY_Device_InstanceId, devpkey.h:86), and the walk up its PnP
+    /// parents to the Bluetooth address (DEVPKEY_Bluetooth_DeviceAddress,
+    /// km/bthguid.h:44) is BluetoothBatteryService's.</para>
     ///
     /// <para>The read runs off the UI thread, once for each SDL joystick,
     /// since a reconnect opens a new one. While the pad is connected it is
@@ -138,10 +137,13 @@ namespace PadForge.Common.Input
             string iface;
             if (BluetoothLinkHelper.TryParseXInputSlot(path, out uint slot))
             {
-                var (found, final) = XInputInterface(slot);
-                if (found == null) return (0, final);
-                if (!HidHideController.NamesVidPid(found, vendorId, productId)) return (0, false);
-                iface = found;
+                // Microsoft's xinput1_4.dll has no identity call, which is
+                // final. A busy or empty slot can answer later.
+                var answer = XInputSlotIdentity.Get((int)slot);
+                if (answer.Kind != XInputSlotIdentity.Kind.Found)
+                    return (0, answer.Kind == XInputSlotIdentity.Kind.Unsupported);
+                if (!HidHideController.NamesVidPid(answer.InterfacePath, vendorId, productId)) return (0, false);
+                iface = answer.InterfacePath;
             }
             else if (path != null && path.StartsWith(@"\\?\", StringComparison.Ordinal))
             {
@@ -151,48 +153,8 @@ namespace PadForge.Common.Input
             {
                 return (0, true);
             }
-            string instanceId = InterfaceInstanceId(iface);
+            string instanceId = XInputSlotIdentity.InstanceIdOf(iface);
             return (instanceId == null ? 0 : WalkForAddress(instanceId), true);
-        }
-
-        /// <summary>The interface OpenXInput serves an XInput slot from. Its
-        /// identity call does no enumeration or device I/O and answers
-        /// ERROR_BUSY instead of waiting on its lock (OpenXinput.h:476-478).
-        /// Microsoft's xinput1_4.dll has no such export, which is final.</summary>
-        private static (string Path, bool Final) XInputInterface(uint slot)
-        {
-            try
-            {
-                var identity = new OpenXInputIdentity { cbSize = (uint)Marshal.SizeOf<OpenXInputIdentity>() };
-                var buffer = new char[512];
-                uint rc = OpenXInputGetDeviceIdentityV1(slot, ref identity, buffer, (uint)buffer.Length);
-                if (rc == ERROR_INSUFFICIENT_BUFFER && identity.requiredCch > buffer.Length && identity.requiredCch <= 32768)
-                {
-                    buffer = new char[identity.requiredCch];
-                    rc = OpenXInputGetDeviceIdentityV1(slot, ref identity, buffer, (uint)buffer.Length);
-                }
-                if (rc == ERROR_SUCCESS && identity.requiredCch > 1 && identity.requiredCch <= buffer.Length)
-                    return (new string(buffer, 0, (int)identity.requiredCch - 1), true);
-                return (null, rc == ERROR_NOT_SUPPORTED);
-            }
-            catch (EntryPointNotFoundException) { return (null, true); }
-            catch (DllNotFoundException) { return (null, true); }
-        }
-
-        /// <summary>The device instance an interface belongs to, as Windows
-        /// names it.</summary>
-        private static string InterfaceInstanceId(string iface)
-        {
-            var buf = new byte[1024];
-            uint size = (uint)buf.Length;
-            if (CM_Get_Device_Interface_PropertyW(iface, in DEVPKEY_Device_InstanceId,
-                    out uint type, buf, ref size, 0) != CR_SUCCESS
-                || type != DEVPROP_TYPE_STRING || size < 4)
-            {
-                return null;
-            }
-            string id = Encoding.Unicode.GetString(buf, 0, (int)size).TrimEnd('\0');
-            return id.Length > 0 ? id : null;
         }
 
         /// <summary>Walks up the instance's own PnP ancestry to the first
@@ -301,22 +263,6 @@ namespace PadForge.Common.Input
 
         // ── Native ──
 
-        /// <summary>OPENXINPUT_DEVICE_IDENTITY_V1 (OpenXinput.h:463-470): 24
-        /// bytes, generation at offset 8.</summary>
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct OpenXInputIdentity
-        {
-            public uint cbSize;
-            public uint requiredCch;
-            public ulong generation;
-            public uint interfaceIndex;
-            public uint interfaceCount;
-        }
-
-        [DllImport("xinput1_4.dll", EntryPoint = "OpenXInputGetDeviceIdentityV1", CharSet = CharSet.Unicode, ExactSpelling = true)]
-        private static extern uint OpenXInputGetDeviceIdentityV1(uint userIndex, ref OpenXInputIdentity identity,
-            [Out] char[] path, uint capacityCch);
-
         [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern int CM_Locate_DevNodeW(
             out uint pdnDevInst, [MarshalAs(UnmanagedType.LPWStr)] string pDeviceID, uint ulFlags);
@@ -330,12 +276,6 @@ namespace PadForge.Common.Input
             out uint propertyType, byte[] propertyBuffer,
             ref uint propertyBufferSize, uint ulFlags);
 
-        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
-        private static extern int CM_Get_Device_Interface_PropertyW(
-            [MarshalAs(UnmanagedType.LPWStr)] string pszDeviceInterface, in DEVPROPKEY propertyKey,
-            out uint propertyType, byte[] propertyBuffer,
-            ref uint propertyBufferSize, uint ulFlags);
-
         [StructLayout(LayoutKind.Sequential)]
         private struct DEVPROPKEY
         {
@@ -343,18 +283,11 @@ namespace PadForge.Common.Input
             public uint pid;
         }
 
-        // devpkey.h:86
-        private static readonly DEVPROPKEY DEVPKEY_Device_InstanceId =
-            new() { fmtid = new Guid("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 256 };
-
         // km/bthguid.h:44
         private static readonly DEVPROPKEY DEVPKEY_Bluetooth_DeviceAddress =
             new() { fmtid = new Guid("2BD67D8B-8BEB-48D5-87E0-6CDA3428040A"), pid = 1 };
 
         private const int CR_SUCCESS = 0;
         private const uint DEVPROP_TYPE_STRING = 0x00000012;
-        private const uint ERROR_SUCCESS = 0;
-        private const uint ERROR_NOT_SUPPORTED = 50;
-        private const uint ERROR_INSUFFICIENT_BUFFER = 122;
     }
 }

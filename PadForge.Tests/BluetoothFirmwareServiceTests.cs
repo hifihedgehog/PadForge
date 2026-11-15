@@ -46,14 +46,15 @@ namespace PadForge.Tests
             Assert.Null(BluetoothFirmwareService.Clean(new byte[] { 0x35, 0xFF, 0x30 }));
         }
 
-        /// <summary>The identity struct matches OpenXInput's static asserts
+        /// <summary>The identity struct the service asks through
+        /// (XInputSlotIdentity) matches OpenXInput's static asserts
         /// (OpenXinput.cpp:4106-4107): 24 bytes, generation at offset 8.</summary>
         [Fact]
         public void IdentityStruct_MatchesOpenXInputsLayout()
         {
-            Assert.Equal(24, Marshal.SizeOf<BluetoothFirmwareService.OpenXInputIdentity>());
-            Assert.Equal(8, (int)Marshal.OffsetOf<BluetoothFirmwareService.OpenXInputIdentity>(
-                nameof(BluetoothFirmwareService.OpenXInputIdentity.generation)));
+            Assert.Equal(24, Marshal.SizeOf<XInputSlotIdentity.OpenXInputIdentity>());
+            Assert.Equal(8, (int)Marshal.OffsetOf<XInputSlotIdentity.OpenXInputIdentity>(
+                nameof(XInputSlotIdentity.OpenXInputIdentity.generation)));
         }
 
         /// <summary>An XInput slot's interface is checked against the joystick

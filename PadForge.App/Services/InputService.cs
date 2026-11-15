@@ -14633,13 +14633,16 @@ namespace PadForge.Services
         /// them. Interfaces PadForge does not show as rows stay with the
         /// pad, exactly as before.
         ///
-        /// <para>Online rows with a real HID path only. An offline record
-        /// is a memory, and letting one veto a live pad's sweep would
-        /// reopen the transport-switch double input (#391). Synthetic
-        /// paths (XInput#N, web://, overlay://) resolve to no HID node and
-        /// contribute nothing. The chain reader is a parameter so the tests
-        /// stand in for cfgmgr32. Production passes null and gets
-        /// <see cref="HidHideController.ChainInstanceIds"/>.</para></summary>
+        /// <para>Online rows with a node only. An offline record is a
+        /// memory, and letting one veto a live pad's sweep would reopen the
+        /// transport-switch double input (#391). A row with a real HID path
+        /// names its node. An online XInput row's node is the pad on its slot
+        /// (<see cref="OwnXInputNode"/>, #583). Before, an XInput row kept
+        /// nothing out, and an offline record of the same id set to hide swept
+        /// the visible pad's node. Other synthetic paths (web://, overlay://)
+        /// resolve to no node and contribute nothing. The chain reader is a
+        /// parameter so the tests stand in for cfgmgr32. Production passes
+        /// null and gets <see cref="HidHideController.ChainInstanceIds"/>.</para></summary>
         internal static HashSet<string> BuildHidHideKeepOut(
             UserDevice[] snapshot, Func<string, IReadOnlyList<string>> chainOf)
             => BuildHidHideKeepOut(snapshot, chainOf, rowsCurrent: true, alreadyHidden: null);
@@ -14675,11 +14678,13 @@ namespace PadForge.Services
         /// whatever opened it meanwhile.</para></summary>
         internal static HashSet<string> BuildHidHideKeepOut(
             UserDevice[] snapshot, Func<string, IReadOnlyList<string>> chainOf,
-            bool rowsCurrent, Func<string, bool> alreadyHidden)
+            bool rowsCurrent, Func<string, bool> alreadyHidden,
+            Func<UserDevice, string> xinputNodeOf = null)
         {
             var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             if (snapshot == null) return set;
             chainOf ??= HidHideController.ChainInstanceIds;
+            xinputNodeOf ??= row => OwnXInputNode(row, FindInstanceIdsForDevice(row));
             foreach (var ud in snapshot)
             {
                 // A touchpad PadForge reads alone is hidden, not left visible.
@@ -14687,7 +14692,13 @@ namespace PadForge.Services
                 bool offline = !ud.IsOnline;
                 if (offline && rowsCurrent) continue;
                 string id = HidHideController.DevicePathToInstanceId(ud.DevicePath);
-                if (!HidHideController.IsDeviceNodeId(id)) continue;
+                if (!HidHideController.IsDeviceNodeId(id))
+                {
+                    // The pad on an online XInput row's slot (#583).
+                    if (offline || !XInputSlotIdentity.TryParseSlot(ud.DevicePath, out _)) continue;
+                    id = xinputNodeOf(ud);
+                    if (!HidHideController.IsDeviceNodeId(id)) continue;
+                }
                 IReadOnlyList<string> chain;
                 try { chain = chainOf(id); }
                 catch { chain = new[] { id }; }
@@ -14824,6 +14835,34 @@ namespace PadForge.Services
                 realIds.AddRange(HidHideController.FindInstanceIdsByVidPid(
                     (ushort)ud.VendorId, pid));
             return realIds;
+        }
+
+        /// <summary>The node of the pad on an online XInput row's slot: the
+        /// device OpenXInput serves the slot from, when its interface carries
+        /// the row's vendor and product id, serves that slot alone, and the
+        /// node is one of <paramref name="nodes"/>, the present nodes of that
+        /// id. In the list's spelling. Null for a row that is offline or has no
+        /// slot path, and when OpenXInput has no answer or names another node
+        /// (#583).
+        ///
+        /// <para>An online row is SDL's open joystick on its slot, so the
+        /// slot's node is the pad the row shows. Two pads can share an id: a
+        /// DualShock 3 and a Navigation controller on DsHidMini's XInput mode
+        /// both report 045E:02FF, as does an Xbox One or Series pad on USB.
+        /// Which row a pad gets is unchanged: pads of one model follow the
+        /// order they connect (e002074ed).</para></summary>
+        internal static string OwnXInputNode(UserDevice ud, IReadOnlyList<string> nodes)
+        {
+            if (ud == null || !ud.IsOnline || nodes == null || nodes.Count == 0) return null;
+            if (!XInputSlotIdentity.TryParseSlot(ud.DevicePath, out int slot)) return null;
+            var answer = XInputSlotIdentity.Get(slot, busyRetries: 5);
+            if (answer.Kind != XInputSlotIdentity.Kind.Found || answer.InterfaceCount > 1) return null;
+            if (!HidHideController.NamesVidPid(answer.InterfacePath, ud.VendorId, ud.ProdId)) return null;
+            string own = XInputSlotIdentity.InstanceIdOf(answer.InterfacePath);
+            if (own == null) return null;
+            foreach (var node in nodes)
+                if (string.Equals(node, own, StringComparison.OrdinalIgnoreCase)) return node;
+            return null;
         }
 
         /// <summary>Player-identity idle floor (#191): re-seeds every
@@ -15558,15 +15597,24 @@ namespace PadForge.Services
                             // and the second pad stayed hidden from every game
                             // with no record saying so. A record with a serial
                             // keeps only the nodes that report it. Without one,
-                            // a twin present means this record hides nothing,
+                            // a twin present leaves the id's other nodes alone,
                             // said out loud.
                             bool sweepOn = HidHideSiblingSweepAllowed(snapshot, ud, out int syntheticSame, out int syntheticDevices, null, null, null);
                             bool bySerial = HidHideSerialScopes(ud.SerialNumber, out _);
                             int other = 0, unread = 0;
+                            var vidPidNodes = FindInstanceIdsForDevice(ud);
                             var realIds = (sweepOn || bySerial)
-                                ? SelectHidHideSweepNodes(ud.SerialNumber, FindInstanceIdsForDevice(ud),
+                                ? SelectHidHideSweepNodes(ud.SerialNumber, vidPidNodes,
                                     sweepOn, null, out bySerial, out other, out unread)
                                 : new List<string>();
+                            // The pad on this row's slot is this row's to hide,
+                            // whatever the twin count says (#583). With a
+                            // DualShock 3 and a Navigation controller on
+                            // DsHidMini's XInput mode, both 045E:02FF, neither
+                            // row hid anything.
+                            string own = OwnXInputNode(ud, vidPidNodes);
+                            if (own != null && !realIds.Contains(own, StringComparer.OrdinalIgnoreCase))
+                                realIds.Add(own);
                             string decision = HidHideSweepDecision(bySerial, sweepOn, syntheticSame, other, unread, syntheticDevices);
                             if (!sweepOn && realIds.Count == 0)
                             {
@@ -15687,7 +15735,7 @@ namespace PadForge.Services
                                 }
                             }
                             hidLog.Add(
-                                $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} synthetic path={ud.DevicePath} vidpid ids={realIds.Count} cached={ud.HidHideInstanceIds.Count} {decision}"
+                                $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} synthetic path={ud.DevicePath} own={own ?? "none"} vidpid ids={realIds.Count} cached={ud.HidHideInstanceIds.Count} {decision}"
                                 + HidHideKeptNote(kept));
                         }
                     }
@@ -16801,6 +16849,14 @@ namespace PadForge.Services
                 // the pane shows a real child instance instead of the raw token.
                 !instancePath.Equals("nintendo_joycons_combined", StringComparison.OrdinalIgnoreCase))
                 row.HidHideInstancePath = instancePath;
+            else if (ud.IsOnline && XInputSlotIdentity.TryParseSlot(ud.DevicePath, out _)
+                     && OwnXInputNode(ud, FindInstanceIdsForDevice(ud)) is string ownNode)
+            {
+                // The pad on the row's slot, the node the apply hides for it
+                // (#583). The lookups below show the first node of the id,
+                // the same node for two pads of one id.
+                row.HidHideInstancePath = ownNode;
+            }
             else if (ud.HidHideInstanceIds.Count > 0)
                 row.HidHideInstancePath = ud.HidHideInstanceIds[0];
             else if (ud.VendorId > 0 && ud.ProdId > 0)

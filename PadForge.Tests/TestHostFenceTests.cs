@@ -124,7 +124,7 @@ namespace PadForge.Tests
     /// The test process leaves the PC it runs on as it found it: its desktop,
     /// its clipboard, its devices, its radio, its drivers, its certificate
     /// stores, its logon task, its sound, the programs other vendors run on
-    /// it, and the network beyond it. Eighteen fences hold that
+    /// it, and the network beyond it. Thirty-one fences hold that
     /// (TestHostFences.cs), beside the ones MachineOffLimitsTests,
     /// HidHideOffLimitsTests and their neighbors pin. The listener gate's
     /// tests are in TestHostListenerTests.cs, and the workshop library's own
@@ -204,6 +204,7 @@ namespace PadForge.Tests
         private const string Icue = Services + "IcueSdkNative.cs";
         private const string ScreenCapture = Input + "ScreenColor/ScreenColorSource.cs";
         private const string KeyboardLayout = "PadForge.App/Common/ConfigImport/DirectInputKeys.cs";
+        private const string SlotIdentity = "PadForge.Engine/Common/XInputSlotIdentity.cs";
 
         private const string RefusesHost = "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(host))";
         private const string VendorRefuses = "if (PadForge.Engine.Common.VendorProgramGate.Refuses";
@@ -242,6 +243,7 @@ namespace PadForge.Tests
             (Icue, "IcueSdkNative"),
             (ScreenCapture, "ScreenColorSource"),
             (KeyboardLayout, "DirectInputKeys"),
+            (SlotIdentity, "XInputSlotIdentity"),
         };
 
         private const string Flag = "OffLimitsForTest";
@@ -288,6 +290,7 @@ namespace PadForge.Tests
             Assert.True(IcueSdkNative.OffLimitsForTest);
             Assert.True(PadForge.Common.Input.ScreenColor.ScreenColorSource.OffLimitsForTest);
             Assert.True(PadForge.Common.ConfigImport.DirectInputKeys.OffLimitsForTest);
+            Assert.True(PadForge.Engine.XInputSlotIdentity.OffLimitsForTest);
         }
 
         /// <summary>Each flag is a plain field that starts false, and no
@@ -517,6 +520,9 @@ namespace PadForge.Tests
             new object[] { WiiPairing, "internal PairPassResult RunPairingPass(bool temporary, CancellationToken ct,", "if (PadForge.Common.Input.BluetoothLinkHelper.OffLimitsForTest)", "BluetoothFindFirstRadio(" },
             new object[] { Ds3Driver, "internal static string EnsureSigningCertificate()", "if (OffLimitsForTest)", "RSA.Create(" },
             new object[] { "PadForge.App/Common/HidHideArm64Installer.cs", "int? Run(string arguments)", "if (HidHideController.SeamsOnlyForTest)", "Process.Start(psi)" },
+            // OpenXInput's identity call loads xinput1_4.dll, after a test's
+            // own answer (#583).
+            new object[] { SlotIdentity, "public static Answer Get(int slot, int busyRetries = 0)", "if (OffLimitsForTest) return new Answer(Kind.Unsupported);", "Ask((uint)slot)" },
 
             // Sound.
             new object[] { SoundMacro, "private static SlotOutput EnsureDefaultOutput_NoLock(int slot)", "if (AudioEndpointAccess.Refuses) return o;", "new WasapiOut(" },

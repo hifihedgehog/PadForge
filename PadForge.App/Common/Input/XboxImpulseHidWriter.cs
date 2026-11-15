@@ -8,40 +8,31 @@ using PadForge.Engine.Data;
 namespace PadForge.Common.Input
 {
     /// <summary>
-    /// Writes rumble + impulse-trigger output to physical Xbox One / Elite /
-    /// Elite Series 2 / Xbox Series X|S controllers via a raw HID output
-    /// report. Bypasses SDL3 / XInput / WGI / GameInput entirely.
+    /// Writes rumble and impulse-trigger output to physical Xbox One, Elite,
+    /// Elite Series 2 and Xbox Series controllers, and to a pad that presents
+    /// as one, such as a DualShock 3 on DsHidMini's XInput mode (045E:02FF).
+    /// PadForge writes the report itself. SDL's rumble call, the XInput API,
+    /// WGI and GameInput are not used for these pads.
     ///
-    /// <para>Two report shapes per SDL3 HIDAPI's verified
-    /// <c>SDL_hidapi_xboxone.c</c> (<c>HIDAPI_DriverXboxOne_UpdateRumble</c>):
-    /// </para>
-    /// <code>
-    /// // Bluetooth (PID 0x02E0, 0x02FD, 0x0B05, 0x0B13)
-    /// // 9 bytes: { 0x03, 0x0F, LT, RT, LM, RM, 0xFF, 0x00, 0xEB }
+    /// <para>The report is X1nput's: 9 bytes,
+    /// <c>{ 0x03, 0x0F, LT, RT, LM, RM, 0xFF, 0x00, 0xEB }</c>, written with
+    /// WriteFile to the pad's XUSB interface on every transport (X1nput.cpp,
+    /// its IOCTL 0x8000a010 branch). SDL's HIDAPI driver has a 13-byte GIP
+    /// shape for its own path past the Xbox driver
+    /// (<c>SDL_hidapi_xboxone.c</c>), which needs Steam's driver and is not
+    /// this one.</para>
     ///
-    /// // GIP (USB / Xbox Wireless Adapter — PID 0x02D1, 0x02DD, 0x02E3,
-    /// //       0x02EA, 0x02FF, 0x0B00, 0x0B12)
-    /// // 13 bytes: { 0x09, 0x00, 0x00, 0x09, 0x00, 0x0F, LT, RT, LM, RM,
-    /// //             0xFF, 0x00, 0xEB }
-    /// </code>
-    ///
-    /// <para>Device discovery uses the Ds4InputDump pattern at
-    /// <c>tools/Ds4InputDump/Program.cs:208-248</c>: enumerate HID
-    /// interfaces via <c>HidD_GetHidGuid + DIGCF_DEVICEINTERFACE</c>,
-    /// CreateFile each with access=0 (no permissions required), read
-    /// <c>HidD_GetAttributes</c> for VID/PID, filter. This is more robust
-    /// than instance-ID string matching (filter drivers like
-    /// <c>xinputhid.sys</c> can hide the device class enumerator from
-    /// SetupDiEnumDeviceInfo but the HID interface remains openable).
-    /// </para>
-    ///
-    /// <para>HIDMaestro virtual-controller loopback guard: each enumerated
-    /// HID interface is also checked against the PadForge fork's
-    /// <c>StableXInputInstance.FindAll</c> result set. That list is the
-    /// already-HM-filtered set of physical instance IDs for this VID/PID
-    /// (substring + 16-level PnP parent walk for "HIDMaestro" hardware
-    /// IDs). Any HID interface whose instance-ID-portion isn't in that
-    /// set is rejected as a possible HM virtual.</para>
+    /// <para>The interface is the one OpenXInput serves the pad's XInput
+    /// slot from (<see cref="XInputSlotIdentity"/>, #583), so a card's
+    /// rumble goes to the pad its input comes from. OpenXInput gives no slot
+    /// to a HIDMaestro virtual controller (OpenXinput.cpp,
+    /// IsHidMaestroInterface), so the interface is a physical pad's. Before
+    /// #583 the writer took the Nth XUSB interface in Windows' list for slot
+    /// N. OpenXInput hands slots out in the order pads connect, and Windows'
+    /// list has another order, so a DualShock 3 that connected after a
+    /// Navigation controller sent its rumble to the Navigator. The position
+    /// walk stays only for a process running Microsoft's xinput1_4.dll,
+    /// which has no identity call.</para>
     /// </summary>
     internal static class XboxImpulseHidWriter
     {
@@ -83,15 +74,20 @@ namespace PadForge.Common.Input
             // s_targets below.
             var buf = BuildReport(lt, rt, lm, rm);
 
+            // Which interface serves the pad's slot now. The identity call
+            // does no device I/O, so it is asked on every write (#583).
+            var slot = SlotAnswer(ud);
+
             // Cached resolved path + persistent handle: the per-change
-            // ResolveInterfacePath ran a full SetupDi interface sweep plus
-            // probe opens, and WriteRawDiag re-opened the device, at game
-            // rumble-update rate on the poll thread. FALLBACK-SAFE: any
-            // cached-handle write failure drops the cache and re-runs the
-            // exact legacy resolve+open+write for this same call.
+            // resolve ran a full SetupDi interface sweep plus probe opens,
+            // and WriteRawDiag re-opened the device, at game rumble-update
+            // rate on the poll thread. A handle whose slot has changed hands
+            // since it was cached is dropped. So is one whose write fails,
+            // and the resolve runs again for this same call.
             if (s_targets.TryGetValue(ud.DevicePath, out var cached))
             {
-                if (cached.Handle != null && !cached.Handle.IsInvalid && !cached.Handle.IsClosed
+                if (cached.Serves(slot)
+                    && cached.Handle != null && !cached.Handle.IsInvalid && !cached.Handle.IsClosed
                     && WriteFile(cached.Handle, buf, (uint)buf.Length, out _, IntPtr.Zero))
                     return true;
                 cached.Handle?.Dispose();
@@ -108,7 +104,7 @@ namespace PadForge.Common.Input
             if (!force && s_retryAt.TryGetValue(ud.DevicePath, out long retryAt) && now < retryAt)
                 return false;
 
-            string interfacePath = Resolver(ud);
+            string interfacePath = TargetOf(ud, slot);
             if (string.IsNullOrEmpty(interfacePath))
                 return Failed(ud.DevicePath, now);
 
@@ -130,7 +126,12 @@ namespace PadForge.Common.Input
                 // overwritten entry. The write above already succeeded
                 // either way, so the result is true regardless of who won.
                 if (!s_targets.TryAdd(ud.DevicePath,
-                        new CachedTarget { InterfacePath = interfacePath, Handle = handle }))
+                        new CachedTarget
+                        {
+                            InterfacePath = interfacePath,
+                            Generation = slot.Kind == XInputSlotIdentity.Kind.Found ? slot.Generation : 0,
+                            Handle = handle,
+                        }))
                     handle.Dispose();
                 return true;
             }
@@ -138,12 +139,43 @@ namespace PadForge.Common.Input
             return Failed(ud.DevicePath, now);
         }
 
+        /// <summary>OpenXInput's answer for the pad's slot, or
+        /// <see cref="XInputSlotIdentity.Kind.Unsupported"/> for a path that
+        /// is no XInput slot. A busy lock is asked again twice, a millisecond
+        /// apart, since a resolve that finds nothing waits out the
+        /// cooldown.</summary>
+        private static XInputSlotIdentity.Answer SlotAnswer(UserDevice ud)
+            => XInputSlotIdentity.TryParseSlot(ud.DevicePath, out int slot)
+                ? XInputSlotIdentity.Get(slot, busyRetries: 2)
+                : new XInputSlotIdentity.Answer(XInputSlotIdentity.Kind.Unsupported);
+
+        /// <summary>Where the report goes. The slot's own interface when it
+        /// carries the pad's vendor and product id, and nothing when it
+        /// carries another's: the slot has just changed hands, and the write
+        /// waits for SDL to catch up. Nothing for a busy or an empty slot.
+        /// The position walk (<see cref="Resolver"/>) only where there is no
+        /// identity call.</summary>
+        internal static string TargetOf(UserDevice ud, XInputSlotIdentity.Answer slot)
+        {
+            switch (slot.Kind)
+            {
+                case XInputSlotIdentity.Kind.Found:
+                    return HidHideController.NamesVidPid(slot.InterfacePath, ud.VendorId, ud.ProdId)
+                        ? slot.InterfacePath : null;
+                case XInputSlotIdentity.Kind.Unsupported:
+                    return Resolver(ud);
+                default:
+                    return null;
+            }
+        }
+
         /// <summary>How long a pad whose resolve, open or write failed waits
         /// before Write tries it again.</summary>
         internal const long FailedRetryCooldownMs = 1000;
 
-        /// <summary>The XUSB interface lookup Write runs on a miss,
-        /// <see cref="ResolveInterfacePath"/>. Tests replace it.</summary>
+        /// <summary>The XUSB interface lookup Write runs on a miss where
+        /// OpenXInput has no identity call, <see cref="ResolveInterfacePath"/>.
+        /// Tests replace it.</summary>
         internal static Func<UserDevice, string> Resolver = ResolveInterfacePath;
 
         /// <summary>Per device path, the time before which Write does not try
@@ -163,10 +195,27 @@ namespace PadForge.Common.Input
         internal static bool CoolingDown(string devicePath, long now)
             => s_retryAt.TryGetValue(devicePath, out long retryAt) && now < retryAt;
 
-        private sealed class CachedTarget
+        internal sealed class CachedTarget
         {
             public string InterfacePath;
+            /// <summary>The slot's generation when the handle was cached, or 0
+            /// where there was no identity call.</summary>
+            public ulong Generation;
             public Microsoft.Win32.SafeHandles.SafeFileHandle Handle;
+
+            /// <summary>Whether the handle still serves the slot. The same
+            /// interface and generation do. A busy answer, or no identity call,
+            /// keeps the handle, since nothing says otherwise. An empty slot or
+            /// another interface does not.</summary>
+            public bool Serves(XInputSlotIdentity.Answer slot) => slot.Kind switch
+            {
+                XInputSlotIdentity.Kind.Found =>
+                    Generation == slot.Generation
+                    && string.Equals(InterfacePath, slot.InterfacePath, StringComparison.OrdinalIgnoreCase),
+                XInputSlotIdentity.Kind.Busy => true,
+                XInputSlotIdentity.Kind.Unsupported => true,
+                _ => false,
+            };
         }
         // The poll thread is NOT the sole caller, though a comment here
         // claimed it was. The Remote Link output path (#138) reaches
@@ -180,18 +229,17 @@ namespace PadForge.Common.Input
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, CachedTarget> s_targets =
             new(StringComparer.OrdinalIgnoreCase);
 
-        /// <summary>Drops every cached handle. Called on any confirmed device
-        /// disconnect, because the cache key is <c>ud.DevicePath</c>, which for
-        /// these pads is SDL's SLOT-derived synthetic "XInput#N" string rather
-        /// than a stable hardware path.
+        /// <summary>Drops every cached handle and every cooldown. Called on any
+        /// confirmed device disconnect, because the cache key is
+        /// <c>ud.DevicePath</c>, which for these pads is SDL's slot-derived
+        /// "XInput#N" string rather than a stable hardware path.
         ///
-        /// <para>The lookup already self-heals when a cached handle has gone
-        /// bad: the write fails, the entry is dropped and the resolve re-runs.
-        /// The case that does NOT self-heal is a reshuffle in which the cached
-        /// handle is still VALID. Unplug the pad on XInput#0 and the pad that
-        /// was on #1 can re-enumerate as #0, at which point the stale #0 entry
-        /// writes a perfectly successful report to the wrong physical
-        /// controller, and nothing ever invalidates it.</para></summary>
+        /// <para>The lookup heals itself when a cached handle has gone bad:
+        /// the write fails, the entry is dropped and the resolve runs again. A
+        /// handle that is still valid on a slot another pad now holds is
+        /// caught by the slot's generation (<see cref="CachedTarget.Serves"/>).
+        /// Where there is no identity call, this sweep is what catches
+        /// it.</para></summary>
         internal static void InvalidateCachedTargets()
         {
             foreach (var kv in s_targets)
@@ -224,32 +272,22 @@ namespace PadForge.Common.Input
         //  HID interface enumeration
         // ─────────────────────────────────────────────
 
-        /// <summary>Resolves the XUSB device interface path PadForge
-        /// CreateFile+WriteFiles to send the 9-byte rumble report.
+        /// <summary>The XUSB interface in slot N's position: the Nth interface
+        /// in SetupAPI's order that opens, answers
+        /// IOCTL_XINPUT_GET_INFORMATION and has no "hidmaestro" in its path,
+        /// where N is the slot parsed from SDL's <c>"XInput#N"</c> path.
         ///
-        /// <para>Pairing logic, matching OpenXInput's
-        /// <c>EnumerateXInputDevices</c> at <c>OpenXinput.cpp:1057</c>:
-        /// enumerate <see cref="XUSB_INTERFACE_CLASS_GUID"/> in
-        /// SetupAPI's natural order, skip HIDMaestro virtual XInput
-        /// devices by substring on the interface path, take the Nth
-        /// surviving interface where N is the slot parsed from SDL's
-        /// <c>"XInput#N"</c> device path. SDL's XInput backend
-        /// inherits this same OpenXInput enumeration order through our
-        /// embedded <c>xinput1_4.dll</c>, so position N in the
-        /// HM-filtered list is the same physical controller SDL sees
-        /// at <c>XInput#N</c>.</para>
-        ///
-        /// <para>Verifies via P/Invoke into <c>OpenXInputGetDeviceUSBIds</c>
-        /// (an added export in PadForge's OpenXInput fork — header at
-        /// <c>OpenXinput.h:439</c>) that the slot OpenXInput reports
-        /// has the same VID/PID as PadForge expects. Mismatch logs a
-        /// warning but doesn't abort — VID/PID is identical for
-        /// same-model duplicates anyway, so this is a sanity check, not
-        /// a discriminator.</para></summary>
+        /// <para>The fallback for a process with no identity call
+        /// (<see cref="TargetOf"/>). The position is the slot only when every
+        /// pad arrived in SetupAPI's order, since OpenXInput hands slots out
+        /// in the order pads connect (OpenXinput.cpp, ProcessEnumeratedDevice),
+        /// and when both lists leave out the same interfaces: OpenXInput also
+        /// leaves out an interface whose node or one of the three nodes above
+        /// it carries HIDMaestro's hardware id (IsHidMaestroInterface). With
+        /// one pad it is right.</para></summary>
         private static string ResolveInterfacePath(UserDevice ud)
         {
-            int slot = ParseXInputSlot(ud.DevicePath);
-            if (slot < 0)
+            if (!XInputSlotIdentity.TryParseSlot(ud.DevicePath, out int slot))
                 return null;
 
             Guid classGuid = XUSB_INTERFACE_CLASS_GUID;
@@ -338,21 +376,6 @@ namespace PadForge.Common.Input
             return matchedPath;
         }
 
-        private static int ParseXInputSlot(string devicePath)
-        {
-            const string prefix = "XInput#";
-            if (string.IsNullOrEmpty(devicePath)) return -1;
-            if (!devicePath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) return -1;
-
-            int start = prefix.Length;
-            int end = start;
-            while (end < devicePath.Length && devicePath[end] >= '0' && devicePath[end] <= '9')
-                end++;
-            if (end == start) return -1;
-
-            return int.TryParse(devicePath.AsSpan(start, end - start), out int slot) ? slot : -1;
-        }
-
         // ─────────────────────────────────────────────
         //  HID write (synchronous, no overlapped — matches X1nput)
         // ─────────────────────────────────────────────
@@ -413,8 +436,8 @@ namespace PadForge.Common.Input
 
         /// <summary>XUSB driver's device interface class GUID, used by
         /// <c>xinput1_4.dll</c> + OpenXInput to enumerate Xbox
-        /// controllers (OpenXinput.cpp:506). PadForge uses the same
-        /// enumeration to reach the device handle that
+        /// controllers (OpenXinput.cpp:506). The position fallback walks
+        /// the same class to reach the device handle that
         /// <c>IOCTL_XINPUT_SET_GAMEPAD_STATE</c> hits and that X1nput's
         /// 9-byte WriteFile lands on for impulse-trigger rumble.</summary>
         private static readonly Guid XUSB_INTERFACE_CLASS_GUID =
@@ -433,22 +456,6 @@ namespace PadForge.Common.Input
             public int Flags;
             public IntPtr Reserved;
         }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct HIDD_ATTRIBUTES
-        {
-            public int Size;
-            public ushort VendorID;
-            public ushort ProductID;
-            public ushort VersionNumber;
-        }
-
-        [DllImport("hid.dll")]
-        private static extern void HidD_GetHidGuid(ref Guid HidGuid);
-
-        [DllImport("hid.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        private static extern bool HidD_GetAttributes(SafeFileHandle HidDeviceObject, ref HIDD_ATTRIBUTES Attributes);
 
         [DllImport("setupapi.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         private static extern IntPtr SetupDiGetClassDevsW(

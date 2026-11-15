@@ -32,6 +32,14 @@ namespace PadForge.Tests
         internal static void Set() => DirectDeviceAccess.OffLimitsForTest = true;
     }
 
+    /// <summary>xinput1_4.dll is not loaded for OpenXInput's identity call,
+    /// since its DllMain is not safe once other threads run (#583).</summary>
+    internal static class XInputIdentityOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Engine.XInputSlotIdentity.OffLimitsForTest = true;
+    }
+
     /// <summary>Nothing is handed to the shell: no page, folder or program
     /// is opened, and the clipboard stays as it is.</summary>
     internal static class ShellOffLimits

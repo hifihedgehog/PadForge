@@ -573,16 +573,22 @@ namespace PadForge.Tests
             Assert.Contains("sweep={sweep.Count}", body);
             Assert.Contains("HidHideSweepDecision(bySerial, sweepOn, same, other, unread, devices)", body);
             Assert.DoesNotContain("foreach (var realId in FindInstanceIdsForDevice(ud))", body);
-            // The synthetic branch is scoped the same way, hides nothing
-            // for a serial-less record with a present twin, and says so.
+            // The synthetic branch is scoped the same way. The node of the
+            // pad on the row's slot joins after the sweep and before the twin
+            // check (#583), so a serial-less record with a present twin hides
+            // its own pad and nothing else, and one with no such node hides
+            // nothing and says so.
             int synthetic = body.IndexOf("// Fallback for synthetic paths", StringComparison.Ordinal);
             Assert.True(synthetic > 0);
             int gate = body.IndexOf("bool sweepOn = HidHideSiblingSweepAllowed(snapshot, ud, out int syntheticSame, out int syntheticDevices, null, null, null);", synthetic, StringComparison.Ordinal);
-            int resolve = body.IndexOf("? SelectHidHideSweepNodes(ud.SerialNumber, FindInstanceIdsForDevice(ud),", synthetic, StringComparison.Ordinal);
+            int resolve = body.IndexOf("? SelectHidHideSweepNodes(ud.SerialNumber, vidPidNodes,", synthetic, StringComparison.Ordinal);
+            int own = body.IndexOf("string own = OwnXInputNode(ud, vidPidNodes);", synthetic, StringComparison.Ordinal);
+            int joins = body.IndexOf("if (own != null && !realIds.Contains(own, StringComparer.OrdinalIgnoreCase))", synthetic, StringComparison.Ordinal);
+            int added = body.IndexOf("realIds.Add(own);", synthetic, StringComparison.Ordinal);
             int twin = body.IndexOf("if (!sweepOn && realIds.Count == 0)", synthetic, StringComparison.Ordinal);
-            Assert.True(gate > synthetic && gate < resolve && resolve < twin);
+            Assert.True(gate > synthetic && gate < resolve && resolve < own && own < joins && joins < added && added < twin);
             Assert.Contains("synthetic twin present: not hidden (same={syntheticSame}) {decision}", body);
-            Assert.Contains("HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} synthetic path=", body);
+            Assert.Contains("HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} synthetic path={ud.DevicePath} own={own ?? \"none\"}", body);
             Assert.Contains("cached={ud.HidHideInstanceIds.Count} {decision}", body);
             Assert.Contains("bool synced = HidHideController.SyncManagedDevices(desiredIds, out var added, out var removed, out var heldBack, allowAdditions: !whitelistTrouble);", body);
             // A held-back id was never written, so it is named as held and

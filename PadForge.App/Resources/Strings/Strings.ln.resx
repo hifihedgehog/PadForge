@@ -1087,6 +1087,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Couche Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Kobongisa Base</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Nkombo, icône mpe langi ya couche Base na Shift Layer Flyout mpe na molongo ya ba couche.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Nkombo, icône mpe langi ya couche Base na Shift Layer Flyout mpe na molongo ya ba couche, mpe ntango boni flyout ekolakisa yango.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nkombo ya couche</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nkombo</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Esimbami na</value></data>
@@ -1099,6 +1100,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Kozonga na Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Kosala eloko te</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mode, lolenge ya input, ntango mpe langi</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mode, lolenge ya input, ntango, flyout mpe langi</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mode</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Kosimba</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Basculer</value></data>
@@ -1922,4 +1924,10 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modificateur</value></data>
   <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stick ya bobongisi</value></data>
   <data name="Pad_Picked_Row" xml:space="preserve"><value>Sortie</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Tango couche ezali kosala</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Mpo na sekondi 2</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Ata mokolo te</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Tango couche ezali kosala etikaka flyout na écran kino couche ebongwana. Mpo na sekondi 2 elakisaka yango tango couche ebandi kosala, sima etikaka yango ekende. Na Ata mokolo te, couche oyo elakisaka flyout te, mpe Base elakisaka yango te tango couche esili.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Mpo na sekondi 2 elakisaka nkombo ya Base tango couche Shift esili. Na Ata mokolo te, Base elakisaka flyout te.</value></data>
 </root>

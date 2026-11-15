@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Жібермес бұрын жұмыс істеп тұрған DSX іздейтін модтар үшін</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Не көрсетіледі</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Мәзір ашық кезіндегі оның сақинасы, торы немесе жолағы</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ауыстыру қабаты ұсталып тұрғанда қабаттың аты</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ауыстыру қабаты қосылғанда қабаттың аты, сол қабат белгілеген уақыт бойы</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Профиль ауысқанда профильдің аты</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Мекенжайды көшіру</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Экрандағы орны</value></data>
@@ -2896,6 +2896,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Ауыстыру қабаты</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Негізгіні баптау</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Ауыстыру қабаты ұшпа тақтасындағы және қабаттар жолындағы Негізгі қабаттың атауы, белгішесі және түсі.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Ауыстыру қабаты ұшпа тақтасындағы және қабаттар жолындағы Негізгі қабаттың атауы, белгішесі және түсі, сондай-ақ қалқымалы терезенің оларды қанша уақыт көрсететіні.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Қабат атауы</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Атауы</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Ұстап тұратын кіріс</value></data>
@@ -2908,6 +2909,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Негізгіге өту</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ештеңе істемеу</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Режим, кіріс түрі, уақыт және түс</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Режим, кіріс түрі, уақыт, қалқымалы терезе және түс</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Режим</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Ұстау</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Ауыстырғыш</value></data>
@@ -2961,6 +2963,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Белсендіргіштің өз тағайындауын да орындау</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Белгіленсе, белсендіргіш түйме оны көз ретінде пайдаланатын кез келген жолды басқара береді. Бір басу қабатты да ауыстырады, түйменің өз тағайындауын да орындайды. Белгіленбесе (әдепкі), белсендіргішті басу тек қабатты ауыстыруға жұмсалады.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Негізгіге өту таңдалса, бұл қабат сәйкестендірмеген басқару элементтері Негізгі қабаттағы сәйкестендірулерін сақтайды. Ештеңе істемеу таңдалса, қабат Негізгіні толығымен алмастырады, ал ол элементтер өшірулі қалады.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Қалқымалы терезе</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Қабат қосулы кезінде</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 секунд</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Ешқашан</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Қабат қосулы кезінде таңдалса, қалқымалы терезе қабат өзгергенше экранда тұрады. 2 секунд таңдалса, қабат қосылғанда терезе көрсетіледі де, кейін өздігінен жоғалады. Ешқашан таңдалса, бұл қабат қалқымалы терезені көрсетпейді, ал қабат аяқталғанда Негізгі де көрсетпейді.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 секунд таңдалса, ауыстыру қабаты өшкенде қалқымалы терезе Негізгінің атауын көрсетеді. Ешқашан таңдалса, Негізгі қалқымалы терезені көрсетпейді.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Бұру ауқымы</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Бұру ауқымын орнату</value></data>

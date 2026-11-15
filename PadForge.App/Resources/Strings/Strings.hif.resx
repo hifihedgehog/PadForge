@@ -580,6 +580,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Base pe chala jaao</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Kuch nai karo</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mode, input ke kisim, timing aur rang</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mode, input ke kisim, timing, flyout aur rang</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Dabaae rakho</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Layer ke naam chahi.</value></data>
   <data name="Pad_Shift_HintInputRequired" xml:space="preserve"><value>Ego activator input chuno.</value></data>
@@ -1085,6 +1086,7 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Koi dusra khula window nai mila.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} hatao</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Shift Layer Flyout pe aur layer ke row me Base layer ke naam, icon aur rang.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Shift Layer Flyout pe aur layer ke row me Base layer ke naam, icon aur rang, aur flyout ketna der ee sab ke dikhaai.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Import kara</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Connect device se import karo</value></data>
   <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>Byte ke order</value></data>
@@ -1116,4 +1118,10 @@
   <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifier</value></data>
   <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Trim stick</value></data>
   <data name="Pad_Picked_Row" xml:space="preserve"><value>Output</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Jab tak layer on hai</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 second ke liye</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Kabhi nai</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Jab tak layer on hai, flyout ke layer badle tak screen pe rakhe. 2 second ke liye, layer on hoe pe flyout ke dikhaai, phir apne se hatae dei. Kabhi nai ke saath, ee layer koi flyout nai dikhaai, aur layer khatam hoe pe Base bhi koi flyout nai dikhaai.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 second ke liye, shift layer khatam hoe pe Base ke naam dikhaai. Kabhi nai ke saath, Base koi flyout nai dikhaai.</value></data>
 </root>

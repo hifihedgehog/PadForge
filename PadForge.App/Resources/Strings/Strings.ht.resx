@@ -2454,6 +2454,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Kouch Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfigire baz la</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Non, ikòn ak koulè kouch Baz la sou Shift Layer Flyout la ak nan ranje kouch yo.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Non, ikòn ak koulè kouch Baz la sou Shift Layer Flyout la ak nan ranje kouch yo, ak konbyen tan flyout la montre yo.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Non kouch la</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Non</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Kenbe ak</value></data>
@@ -2466,6 +2467,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Pase sou Baz</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Pa fè anyen</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mòd, kalite antre, tan ak koulè</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mòd, kalite antre, tan, flyout ak koulè</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mòd</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Kenbe</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Limen/etenn</value></data>
@@ -2519,6 +2521,12 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Deklanche asiyasyon pa aktivatè a tou</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Lè l koche, bouton aktivatè a toujou kontwole nenpòt liy ki sèvi avè l kòm sous. Yon sèl peze chanje kouch epi deklanche asiyasyon pa bouton an. Lè l pa koche (pa defo), peze aktivatè a sèvi sèlman pou chanje kouch.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Avèk Pase sou Baz, kontwòl kouch sa a pa asiyen kenbe asiyasyon Baz yo. Avèk Pa fè anyen, kouch la ranplase Baz nèt epi kontwòl sa yo rete etenn.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Pandan kouch la aktive</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Pandan 2 segonn</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Jamè</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Pandan kouch la aktive kenbe flyout la sou ekran an jiskaske kouch la chanje. Pandan 2 segonn montre l lè kouch la aktive, epi li ale poukont li. Avèk Jamè, kouch sa a pa montre okenn flyout, epi Baz pa montre youn tou lè kouch la fini.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Pandan 2 segonn montre non Baz lè yon kouch Shift fini. Avèk Jamè, Baz pa montre okenn flyout.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Plaj wotasyon</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Regle plaj wotasyon</value></data>

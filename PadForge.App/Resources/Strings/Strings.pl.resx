@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Dla modów, które przed wysłaniem szukają uruchomionego DSX</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Co się pokazuje</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Pierścień, siatka lub pasek menu, gdy jest otwarte</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Nazwa warstwy, gdy przytrzymana jest warstwa Shift</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Nazwa warstwy, gdy włącza się warstwa Shift, przez czas ustawiony dla tej warstwy</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Nazwa profilu, gdy profil się zmienia</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiuj adres</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Miejsce na ekranie</value></data>
@@ -3090,6 +3090,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Warstwa Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfiguruj warstwę bazową</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Nazwa, ikona i kolor warstwy bazowej na wysuwanym panelu warstw Shift i w wierszu warstw.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Nazwa, ikona i kolor warstwy bazowej na wysuwanym okienku warstwy Shift i w wierszu warstw oraz czas, przez jaki okienko je pokazuje.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nazwa warstwy</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nazwa</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Przytrzymane z</value></data>
@@ -3102,6 +3103,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Przejdź do warstwy bazowej</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Nic nie rób</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Tryb, rodzaj wejścia, czas i kolor</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Tryb, rodzaj wejścia, czas, okienko i kolor</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Tryb</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Przytrzymanie</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Przełączanie</value></data>
@@ -3155,6 +3157,12 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Uruchamiaj też własne mapowanie aktywatora</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Gdy opcja jest zaznaczona, przycisk aktywatora nadal steruje każdym wierszem, który używa go jako źródła. Jedno naciśnięcie zmienia warstwę i uruchamia własne mapowanie przycisku. Gdy jest odznaczona (domyślnie), naciśnięcie aktywatora służy tylko do zmiany warstwy.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Przy opcji Przejdź do warstwy bazowej elementy, których ta warstwa nie mapuje, zachowują mapowania warstwy bazowej. Przy opcji Nic nie rób warstwa całkowicie zastępuje bazową, a te elementy pozostają wyłączone.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Wysuwane okienko</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Dopóki warstwa jest włączona</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Przez 2 sekundy</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Nigdy</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Opcja Dopóki warstwa jest włączona utrzymuje wysuwane okienko na ekranie do zmiany warstwy. Opcja Przez 2 sekundy pokazuje je po włączeniu warstwy, a potem je ukrywa. Przy opcji Nigdy ta warstwa nie pokazuje wysuwanego okienka, a warstwa bazowa nie pokazuje go po zakończeniu tej warstwy.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Opcja Przez 2 sekundy pokazuje nazwę warstwy bazowej po zakończeniu warstwy Shift. Przy opcji Nigdy warstwa bazowa nie pokazuje wysuwanego okienka.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Zakres obrotu</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Ustaw zakres obrotu</value></data>

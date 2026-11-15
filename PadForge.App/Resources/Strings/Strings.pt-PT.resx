@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Para mods que procuram um DSX em execução antes de enviar</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>O que aparece</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>O anel, a grelha ou a barra de um menu enquanto está aberto</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>O nome da camada enquanto uma camada de shift está premida</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>O nome da camada quando uma camada de shift é ativada, durante o tempo que essa camada define</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>O nome do perfil quando o perfil muda</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copiar endereço</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Posição no ecrã</value></data>
@@ -2901,6 +2901,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Camada de shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Configurar a Base</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>O nome, o ícone e a cor da camada Base no painel flutuante de camadas de shift e na linha de camadas.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>O nome, o ícone e a cor da camada Base no painel flutuante de camadas de shift e na linha de camadas, e durante quanto tempo o painel flutuante os mostra.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nome da camada</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nome</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Mantida com</value></data>
@@ -2913,6 +2914,7 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Recorrer à Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Não fazer nada</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modo, tipo de entrada, temporização e cor</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Modo, tipo de entrada, temporização, painel flutuante e cor</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modo</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Manter premido</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alternar</value></data>
@@ -2966,6 +2968,12 @@ Existe uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Disparar também o mapeamento do próprio ativador</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Quando está marcado, o botão ativador continua a acionar qualquer linha que o use como origem. Uma pressão muda de camada e dispara também o mapeamento do próprio botão. Quando está desmarcado (predefinido), a pressão do ativador é consumida apenas pela mudança de camada.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Com Recorrer à Base, os controlos que esta camada não mapeia mantêm os mapeamentos da Base. Com Não fazer nada, a camada substitui a Base por completo e esses controlos ficam desligados.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Painel flutuante</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Enquanto a camada estiver ativa</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Durante 2 segundos</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Nunca</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Enquanto a camada estiver ativa mantém o painel flutuante visível até a camada mudar. Durante 2 segundos mostra-o quando a camada é ativada e depois deixa-o desaparecer. Com Nunca, esta camada não mostra nenhum painel flutuante, e a Base também não mostra nenhum quando a camada termina.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Durante 2 segundos mostra o nome da Base quando uma camada de shift termina. Com Nunca, a Base não mostra nenhum painel flutuante.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Intervalo de rotação</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Definir intervalo de rotação</value></data>

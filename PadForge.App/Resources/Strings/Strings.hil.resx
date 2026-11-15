@@ -851,6 +851,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Isunod sa Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Wala sing Himuon</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mode, klase sang input, timing kag kolor</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mode, klase sang input, timing, flyout kag kolor</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Uyati</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Wala sang button</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Kinahanglan ang ngalan sang layer.</value></data>
@@ -1667,6 +1668,7 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Wala sing iban nga bukas nga window nga nakit-an.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Kuhaa ang {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Ang ngalan, icon kag kolor sang Base layer sa Shift Layer Flyout kag sa row sang mga layer.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Ang ngalan, icon kag kolor sang Base layer sa Shift Layer Flyout kag sa row sang mga layer, kag kon daw ano kalawig ini ginapakita sang flyout.</value></data>
   <data name="RemoteLink_ControllersOn_Format" xml:space="preserve"><value>Mga controller sa {0}</value></data>
   <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>Han-ay sang Byte</value></data>
   <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
@@ -1699,4 +1701,10 @@
   <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifier</value></data>
   <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stick pang-adjust</value></data>
   <data name="Pad_Picked_Row" xml:space="preserve"><value>Output</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Samtang Aktibo ang Layer</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Sa Sulod sang 2 Segundo</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Indi Gid</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Ang Samtang Aktibo ang Layer nagapabilin sang flyout sa screen tubtob magbaylo ang layer. Ang Sa Sulod sang 2 Segundo nagapakita sini kon mag-on ang layer, dayon kusa ini nga nagadula. Kon Indi Gid, wala sing flyout nga ginapakita ining layer, kag wala man sing ginapakita ang Base kon matapos ang layer.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Ang Sa Sulod sang 2 Segundo nagapakita sang ngalan sang Base kon matapos ang isa ka shift layer. Kon Indi Gid, wala sing flyout nga ginapakita ang Base.</value></data>
 </root>

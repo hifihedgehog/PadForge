@@ -1253,4 +1253,10 @@
   <data name="Pad_Row_Down" xml:space="preserve"><value>I lalo</value></data>
   <data name="Pad_Row_Modifier" xml:space="preserve"><value>Faʻasuiga</value></data>
   <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Laʻau faʻalelei</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Aʻo galue le layer</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Mo sekone e 2</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Leai lava</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>O le Aʻo galue le layer e tumau ai le flyout seʻia suia le layer. O le Mo sekone e 2 e faʻaali ai pe a amata le layer, ona mou ese ai lea. Pe a filifilia le Leai lava, e lē faʻaalia e lenei layer se flyout, ma e lē faʻaalia foʻi e le Base se flyout pe a uma le layer.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>O le Mo sekone e 2 e faʻaali ai le igoa o le Base pe a uma se shift layer. Pe a filifilia le Leai lava, e lē faʻaalia e le Base se flyout.</value></data>
 </root>

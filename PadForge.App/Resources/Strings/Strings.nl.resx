@@ -2279,6 +2279,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift-laag</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Basis configureren</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>De naam, het pictogram en de kleur van de Basislaag op de Shift-laag flyout en in de rij met lagen.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>De naam, het pictogram en de kleur van de Basislaag op de Shift-laag flyout en in de rij met lagen, en hoe lang de flyout ze toont.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Laagnaam</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Naam</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Vastgehouden met</value></data>
@@ -2291,6 +2292,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Terugvallen op Basis</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Niets doen</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modus, invoersoort, timing en kleur</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Modus, invoersoort, timing, flyout en kleur</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modus</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Vasthouden</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Schakelen</value></data>
@@ -2340,6 +2342,12 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Ook de eigen toewijzing van de activator activeren</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Indien aangevinkt stuurt de activatorknop nog steeds elke rij aan die hem als bron gebruikt. Één druk wisselt de laag EN activeert de eigen toewijzing van de knop. Indien niet aangevinkt (standaard) wordt de druk alleen verbruikt door de laagwissel.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Met Terugvallen op Basis behouden besturingen die deze laag niet toewijst hun Basistoewijzingen. Met Niets doen vervangt de laag Basis volledig en blijven die besturingen uit.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Zolang de laag aan is</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 seconden lang</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Nooit</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Zolang de laag aan is houdt de flyout zichtbaar tot de laag wisselt. 2 seconden lang toont hem wanneer de laag aangaat en laat hem dan los. Bij Nooit toont deze laag geen flyout en toont Basis er geen wanneer de laag eindigt.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 seconden lang toont de naam van Basis wanneer een shift-laag eindigt. Bij Nooit toont Basis geen flyout.</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse-triggers</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Triggerversterking, motorwissel, adaptieve triggertrillingen, Constante triggerkracht</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Stuurt motor-opdrachten per trigger (Xbox Impulse-triggers) door van de virtuele controller naar de toegewezen fysieke Xbox One-, Elite- of Series-controller. Door games gestuurde trigger-vibratie wordt automatisch doorgegeven. De regelaars hieronder schalen de sterkte per trigger.</value></data>
@@ -3443,7 +3451,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Voor mods die naar een draaiende DSX zoeken voordat ze iets versturen</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Wat er verschijnt</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>De ring, het raster of de balk van een menu zolang het open is</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>De naam van de laag zolang een shift-laag wordt vastgehouden</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>De naam van de laag wanneer een shift-laag aangaat, zolang als die laag instelt</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>De naam van het profiel wanneer het profiel wisselt</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Adres kopiëren</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Plek op het scherm</value></data>

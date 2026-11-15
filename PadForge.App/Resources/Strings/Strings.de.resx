@@ -2259,6 +2259,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift-Ebene</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Basis konfigurieren</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Name, Symbol und Farbe der Basis-Ebene im Shift-Ebenen-Flyout und in der Ebenenreihe.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Name, Symbol und Farbe der Basis-Ebene im Shift-Ebenen-Flyout und in der Ebenenreihe und wie lange das Flyout sie zeigt.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Ebenenname</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Name</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Gehalten mit</value></data>
@@ -2271,6 +2272,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Auf Basis zurückfallen</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Nichts tun</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modus, Eingabeart, Timing und Farbe</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Modus, Eingabeart, Timing, Flyout und Farbe</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modus</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Halten</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Umschalten</value></data>
@@ -2320,6 +2322,12 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Auch eigenes Mapping des Auslösers feuern</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Wenn aktiviert, treibt die Auslöser-Taste weiterhin jede Zeile an, die sie als Quelle verwendet. Ein Druck wechselt die Ebene UND feuert das eigene Mapping der Taste. Wenn deaktiviert (Standard), wird der Druck nur vom Ebenenwechsel verbraucht.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Mit Auf Basis zurückfallen behalten Elemente, die diese Ebene nicht zuordnet, ihre Zuordnungen der Basis. Mit Nichts tun ersetzt die Ebene die Basis vollständig, und diese Elemente bleiben aus.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Solange die Ebene aktiv ist</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 Sekunden lang</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Nie</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Mit Solange die Ebene aktiv ist bleibt das Flyout sichtbar, bis die Ebene wechselt. Mit 2 Sekunden lang erscheint es, wenn die Ebene aktiv wird, und verschwindet dann von selbst. Mit Nie zeigt diese Ebene kein Flyout, und die Basis zeigt auch keines, wenn die Ebene endet.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Mit 2 Sekunden lang zeigt das Flyout den Namen der Basis, wenn eine Shift-Ebene endet. Mit Nie zeigt die Basis kein Flyout.</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse-Trigger</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Trigger-Verstärkung, Motortausch, adaptive Trigger-Vibrationen, Konstante Trigger-Kraft</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Leitet Befehle pro Trigger-Motor (Xbox Impulse-Trigger) vom virtuellen Controller an den zugewiesenen physischen Xbox One-, Elite- oder Series-Controller weiter. Spielgesteuerte Trigger-Vibrationen werden automatisch durchgereicht. Die Regler unten skalieren die Stärke pro Trigger.</value></data>
@@ -3423,7 +3431,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Für Mods, die nach einem laufenden DSX suchen, bevor sie senden</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Was angezeigt wird</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ring, Raster oder Leiste eines Menüs, solange es geöffnet ist</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Der Name der Ebene, solange eine Shift-Ebene gehalten wird</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Der Name der Ebene, wenn eine Shift-Ebene aktiv wird, für die Dauer, die diese Ebene festlegt</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Der Name des Profils, wenn das Profil wechselt</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Adresse kopieren</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Position auf dem Bildschirm</value></data>

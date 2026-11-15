@@ -1967,6 +1967,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift nga layer</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>I-configure ang Base</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Ang ngalan, icon ug kolor sa Base nga layer sa Shift Layer Flyout ug sa laray sa mga layer.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Ang ngalan, icon ug kolor sa Base nga layer sa Shift Layer Flyout ug sa laray sa mga layer, ug kung unsa ka dugay kini ipakita sa flyout.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Ngalan sa layer</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Ngalan</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Gikuptan gamit ang</value></data>
@@ -1979,6 +1980,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Mobalik sa Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Walay buhaton</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mode, klase sa input, timing ug kolor</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mode, klase sa input, timing, flyout ug kolor</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Kupti</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Walay button</value></data>
@@ -2023,6 +2025,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Ipalihok usab ang kaugalingong mapping sa activator</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Kung naka-check, ang button sa activator mopalihok gihapon sa bisan unsang row nga naggamit niini isip source. Ang usa ka pislit mobalhin sa layer ug mopalihok usab sa kaugalingong mapping sa button. Kung wala naka-check (default), ang pislit sa activator gamiton lamang sa pagbalhin sa layer.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Uban sa Mobalik sa Base, ang mga kontrol nga wala gi-map niini nga layer magpabilin sa ilang mga mapping sa Base. Uban sa Walay buhaton, hingpit nga ilisan sa layer ang Base ug magpabiling off kadtong mga kontrol.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Samtang naka-on ang layer</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Sulod sa 2 segundos</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Dili gyud</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Ang Samtang naka-on ang layer magpabilin sa flyout hangtod mausab ang layer. Ang Sulod sa 2 segundos magpakita niini kung ma-on ang layer, unya kini mawala ra. Uban sa Dili gyud, kini nga layer walay ipakitang flyout, ug ang Base walay ipakita kung matapos ang layer.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Ang Sulod sa 2 segundos magpakita sa ngalan sa Base kung matapos ang usa ka shift nga layer. Uban sa Dili gyud, ang Base walay ipakitang flyout.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Range sa pagtuyok</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>I-set ang range sa pagtuyok</value></data>

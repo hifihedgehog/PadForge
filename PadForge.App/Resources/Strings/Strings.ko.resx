@@ -2259,6 +2259,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift 레이어</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>베이스 구성</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Shift 레이어 플라이아웃과 레이어 행에 표시되는 베이스 레이어의 이름, 아이콘, 색상입니다.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Shift 레이어 플라이아웃과 레이어 행에 표시되는 베이스 레이어의 이름, 아이콘, 색상, 그리고 플라이아웃이 이를 표시하는 시간입니다.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>레이어 이름</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>이름</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>누르고 있는 입력</value></data>
@@ -2271,6 +2272,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>베이스로 폴스루</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>아무 동작 안 함</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>모드, 입력 종류, 타이밍, 색상</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>모드, 입력 종류, 타이밍, 플라이아웃, 색상</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>모드</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>홀드</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>토글</value></data>
@@ -2320,6 +2322,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>활성화 버튼의 자체 매핑도 실행</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>선택하면 활성화 버튼이 소스로 사용되는 모든 행을 계속 구동합니다. 한 번 누르면 레이어를 변경하고 버튼의 자체 매핑도 실행합니다. 선택 해제(기본값)하면 누름은 레이어 변경에서만 소비됩니다.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>베이스로 폴스루를 선택하면 이 레이어가 매핑하지 않은 컨트롤은 베이스 매핑을 유지합니다. 아무 동작 안 함을 선택하면 레이어가 베이스를 완전히 대체하고 해당 컨트롤은 꺼진 상태로 유지됩니다.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>플라이아웃</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>레이어가 켜져 있는 동안</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2초 동안</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>안 함</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>레이어가 켜져 있는 동안은 레이어가 바뀔 때까지 플라이아웃을 계속 표시합니다. 2초 동안은 레이어가 켜질 때 플라이아웃을 표시한 뒤 사라지게 합니다. 안 함을 선택하면 이 레이어는 플라이아웃을 표시하지 않으며, 레이어가 끝날 때 기본도 표시하지 않습니다.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2초 동안은 시프트 레이어가 끝날 때 기본의 이름을 표시합니다. 안 함을 선택하면 기본은 플라이아웃을 표시하지 않습니다.</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>임펄스 트리거</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>트리거별 게인, 모터 교체, 적응형 트리거 진동, 지속 트리거 힘</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>가상 컨트롤러에서 할당된 물리적 Xbox One, Elite 또는 Series 컨트롤러로 트리거별 모터 명령(Xbox 임펄스 트리거)을 전달합니다. 게임이 보내는 트리거 진동은 자동으로 통과합니다. 아래 컨트롤로 트리거별 강도를 조절할 수 있습니다.</value></data>
@@ -3423,7 +3431,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>보내기 전에 실행 중인 DSX를 찾는 모드용</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>표시 항목</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>메뉴가 열려 있는 동안의 링, 격자 또는 바</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>시프트 레이어를 누르는 동안 레이어 이름</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>시프트 레이어가 켜질 때 레이어 이름, 해당 레이어가 정한 시간 동안</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>프로필이 바뀔 때 프로필 이름</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>주소 복사</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>화면 위치</value></data>

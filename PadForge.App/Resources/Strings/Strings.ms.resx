@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Untuk mod yang mencari DSX yang sedang berjalan sebelum menghantar</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Apa yang Dipaparkan</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Cincin, grid atau bar sesuatu menu semasa ia terbuka</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Nama lapisan semasa lapisan shift ditahan</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Nama lapisan apabila lapisan shift dihidupkan, selama masa yang ditetapkan oleh lapisan itu</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Nama profil apabila profil bertukar</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Salin Alamat</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Letak pada Skrin</value></data>
@@ -2895,6 +2895,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Lapisan Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfigurasikan Asas</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Nama, ikon dan warna lapisan Asas pada Flyout Lapisan Shift dan dalam baris lapisan.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Nama, ikon dan warna lapisan Asas pada Flyout Lapisan Shift dan dalam baris lapisan, serta berapa lama flyout memaparkannya.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nama Lapisan</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nama</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Ditahan Dengan</value></data>
@@ -2907,6 +2908,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Jatuh ke Asas</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Tidak Buat Apa-apa</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mod, jenis input, masa dan warna</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mod, jenis input, masa, tetingkap timbul dan warna</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mod</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Tahan</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Togol</value></data>
@@ -2960,6 +2962,12 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Laksanakan Juga Pemetaan Pengaktif Sendiri</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Apabila ditandakan, butang pengaktif masih memacu mana-mana baris yang menggunakannya sebagai sumber. Satu tekanan menukar lapisan dan melaksanakan pemetaan butang itu sendiri. Apabila tidak ditandakan (lalai), tekanan pengaktif digunakan oleh perubahan lapisan sahaja.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Dengan Jatuh ke Asas, kawalan yang tidak dipetakan lapisan ini mengekalkan pemetaan Asasnya. Dengan Tidak Buat Apa-apa, lapisan menggantikan Asas sepenuhnya dan kawalan itu kekal mati.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Tetingkap Timbul</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Semasa Lapisan Hidup</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Selama 2 Saat</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Tidak Pernah</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Semasa Lapisan Hidup mengekalkan tetingkap timbul sehingga lapisan bertukar. Selama 2 Saat memaparkannya apabila lapisan dihidupkan, kemudian melepaskannya. Dengan Tidak Pernah, lapisan ini tidak memaparkan tetingkap timbul, dan Asas tidak memaparkan apa-apa apabila lapisan tamat.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Selama 2 Saat memaparkan nama Asas apabila lapisan shift tamat. Dengan Tidak Pernah, Asas tidak memaparkan tetingkap timbul.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Julat Putaran</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Tetapkan Julat Putaran</value></data>

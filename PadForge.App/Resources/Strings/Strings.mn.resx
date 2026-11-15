@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Илгээхээсээ өмнө ажиллаж буй DSX хайдаг модуудад</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Юу харагдах</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Цэс нээлттэй үед түүний цагираг, тор эсвэл зурвас</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Сэлгэх давхаргыг барьж байх үед түүний нэр</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Сэлгэх давхарга идэвхжихэд тухайн давхаргын тохируулсан хугацаанд түүний нэр</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Профайл солигдоход профайлын нэр</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Хаягийг хуулах</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Дэлгэц дээрх байрлал</value></data>
@@ -2901,6 +2901,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift давхарга</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Суурийг тохируулах</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Давхарга сэлгэх гарч ирэх цонх болон давхаргын мөрөнд харагдах Суурь давхаргын нэр, дүрс тэмдэг, өнгө.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Давхарга сэлгэх гарч ирэх цонх болон давхаргын мөрөнд харагдах Суурь давхаргын нэр, дүрс тэмдэг, өнгө, мөн гарч ирэх цонх тэдгээрийг хэр удаан харуулах.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Давхаргын нэр</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Нэр</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Барих товч</value></data>
@@ -2913,6 +2914,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Суурь давхаргыг дагах</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Юу ч хийхгүй</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Горим, оролтын төрөл, хугацаа ба өнгө</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Горим, оролтын төрөл, хугацаа, гарч ирэх цонх ба өнгө</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Горим</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Дарж барих</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Сэлгэх</value></data>
@@ -2966,6 +2968,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Идэвхжүүлэгчийн өөрийн оноолтыг мөн ажиллуулах</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Чагтлагдсан үед идэвхжүүлэгч товч түүнийг эх үүсвэр болгон ашигладаг мөрүүдийг удирдсаар байна. Нэг даралт давхаргыг сольж, товчны өөрийн оноолтыг ажиллуулна. Чагтлаагүй (үндсэн) үед идэвхжүүлэгчийн даралт зөвхөн давхарга солиход зарцуулагдана.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Суурь давхаргыг дагах сонгосон үед энэ давхаргын оноогоогүй удирдлагууд Суурийн оноолтоо хадгална. Юу ч хийхгүй сонгосон үед давхарга Суурийг бүхэлд нь орлож, тэдгээр удирдлагууд унтраалттай үлдэнэ.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Гарч ирэх цонх</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Давхарга идэвхтэй байх үед</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 секундын турш</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Хэзээ ч</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Давхарга идэвхтэй байх үед сонгосон үед гарч ирэх цонх давхарга солигдох хүртэл дэлгэц дээр үлдэнэ. 2 секундын турш сонгосон үед давхарга идэвхжихэд цонхыг харуулаад дараа нь өөрөө хаана. Хэзээ ч сонгосон үед энэ давхарга гарч ирэх цонх харуулахгүй бөгөөд давхарга дуусахад Суурь ч мөн харуулахгүй.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 секундын турш сонгосон үед Shift давхарга дуусахад Суурийн нэрийг харуулна. Хэзээ ч сонгосон үед Суурь гарч ирэх цонх харуулахгүй.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Эргэлтийн муж</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Эргэлтийн мужийг тохируулах</value></data>

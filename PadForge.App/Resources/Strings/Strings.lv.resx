@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Modifikācijām, kas pirms sūtīšanas meklē darbojošos DSX</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Kas tiek rādīts</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Izvēlnes gredzens, režģis vai josla, kamēr tā ir atvērta</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Slāņa nosaukums, kamēr tiek turēts maiņas slānis</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Slāņa nosaukums, kad ieslēdzas maiņas slānis, uz laiku, ko nosaka šis slānis</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profila nosaukums, kad profils mainās</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopēt adresi</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Novietojums ekrānā</value></data>
@@ -3090,6 +3090,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Slānis</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfigurēt pamata slāni</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Pamata slāņa nosaukums, ikona un krāsa maiņas slāņa izlecošajā logā un slāņu rindā.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Pamata slāņa nosaukums, ikona un krāsa maiņas slāņa izlecošajā logā un slāņu rindā un tas, cik ilgi uznirstošais panelis tos rāda.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Slāņa nosaukums</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nosaukums</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Tur kopā ar</value></data>
@@ -3102,6 +3103,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Pāriet uz pamata slāni</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Nedarīt neko</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Režīms, ievades veids, laiks un krāsa</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Režīms, ievades veids, laiks, uznirstošais panelis un krāsa</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Režīms</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Turēšana</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Pārslēgšana</value></data>
@@ -3155,6 +3157,12 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Izpildīt arī aktivatora paša piesaisti</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Ja atzīmēts, aktivatora poga joprojām vada katru rindu, kas to izmanto kā avotu. Viena nospiešana gan maina slāni, gan izpilda pogas pašas piesaisti. Ja nav atzīmēts (noklusējums), aktivatora nospiešanu izmanto tikai slāņa maiņai.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Ar Pāriet uz pamata slāni šī slāņa nepiesaistītās vadīklas saglabā pamata slāņa piesaistes. Ar Nedarīt neko slānis pilnībā aizstāj pamata slāni, un šīs vadīklas paliek izslēgtas.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Uznirstošais panelis</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Kamēr slānis ir ieslēgts</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 sekundes</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Nekad</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Kamēr slānis ir ieslēgts patur uznirstošo paneli ekrānā, līdz slānis mainās. 2 sekundes parāda to, kad slānis ieslēdzas, un tad ļauj tam pazust. Ar Nekad šim slānim uznirstošais panelis netiek rādīts, un pamata slānis to nerāda, kad slānis beidzas.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 sekundes parāda pamata slāņa nosaukumu, kad maiņas slānis beidzas. Ar Nekad pamata slānis uznirstošo paneli nerāda.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rotācijas diapazons</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Iestatīt rotācijas diapazonu</value></data>

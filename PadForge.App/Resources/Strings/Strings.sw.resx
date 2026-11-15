@@ -417,7 +417,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Kwa mod zinazotafuta DSX inayoendesha kabla ya kutuma</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Kinachoonyeshwa</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Duara, gridi au upau wa menyu ikiwa wazi</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Jina la tabaka linaposhikiliwa tabaka la shift</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Jina la tabaka linapowashwa tabaka la shift, kwa muda ambao tabaka hilo huweka</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Jina la wasifu unapobadilika</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Nakili Anwani</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Weka Skrinini</value></data>
@@ -2842,6 +2842,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Tabaka la Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Sanidi Msingi</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Jina, ikoni na rangi ya tabaka la Msingi kwenye Shift Layer Flyout na kwenye safu ya matabaka.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Jina, ikoni na rangi ya tabaka la Msingi kwenye Shift Layer Flyout na kwenye safu ya matabaka, na muda ambao dirisha huvionyesha.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Jina la Tabaka</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Jina</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Hushikiliwa Kwa</value></data>
@@ -2854,6 +2855,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Angukia Msingi</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Usifanye Chochote</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Hali, aina ya ingizo, muda na rangi</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Hali, aina ya ingizo, muda, dirisha na rangi</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Hali</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Shikilia</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Badilisha</value></data>
@@ -2907,6 +2909,12 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Tekeleza Pia Ramani ya Kianzishi Chenyewe</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Ikichaguliwa, kitufe cha kianzishi bado huendesha safu yoyote inayokitumia kama chanzo. Kubonyeza mara moja hubadilisha tabaka na kutekeleza ramani ya kitufe chenyewe. Isipochaguliwa (chaguomsingi), kubonyeza kianzishi hutumiwa na mabadiliko ya tabaka pekee.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Kwa Angukia Msingi, vidhibiti ambavyo tabaka hili halina ramani yake huweka ramani zao za Msingi. Kwa Usifanye Chochote, tabaka hubadilisha Msingi kabisa na vidhibiti hivyo hubaki vimezimwa.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Dirisha</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Tabaka Likiwa Limewashwa</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Kwa Sekunde 2</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Kamwe</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Tabaka Likiwa Limewashwa huliacha dirisha wazi hadi tabaka libadilike. Kwa Sekunde 2 hulionyesha tabaka linapowashwa, kisha huliacha liondoke. Kwa Kamwe, tabaka hili halionyeshi dirisha, na Msingi hauonyeshi dirisha lolote tabaka hili linapoisha.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Kwa Sekunde 2 huonyesha jina la Msingi tabaka la shift linapoisha. Kwa Kamwe, Msingi hauonyeshi dirisha.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Masafa ya Mzunguko</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Weka Masafa ya Mzunguko</value></data>

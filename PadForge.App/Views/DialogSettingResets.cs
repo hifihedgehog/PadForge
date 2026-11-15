@@ -19,6 +19,13 @@ namespace PadForge.Views
                 case "CycleWrap": CycleWrapBox.IsChecked = true; break;
                 case "CycleIncludeBase": CycleIncludeBaseBox.IsChecked = false; break;
                 case "CycleLayers": CycleLayersList.SelectedItems.Clear(); break;
+                // A shift layer's flyout stays while the layer is on, and
+                // Base's shows for the flyout's own two seconds (#581).
+                case "Flyout":
+                    FlyoutCombo.SelectedValue = _baseMode
+                        ? PadForge.Engine.Data.LayerFlyout.Brief
+                        : PadForge.Engine.Data.LayerFlyout.Stay;
+                    break;
             }
         }
     }

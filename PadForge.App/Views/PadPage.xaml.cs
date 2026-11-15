@@ -2917,7 +2917,7 @@ namespace PadForge.Views
                 ?? new System.Collections.Generic.List<Engine.Data.ShiftActivator>();
 
             var dlg = new ShiftActivatorDialog(available, existing: null, otherActivators: existing,
-                recorder: Recorder, padIndex: _currentPadVm.PadIndex)
+                recorder: Recorder, padIndex: _currentPadVm.PadIndex, flyoutEnabled: LayerFlyoutIsOn())
             {
                 Owner = Window.GetWindow(this),
             };
@@ -2942,6 +2942,16 @@ namespace PadForge.Views
             _currentPadVm.ActiveLayerMask = dlg.Result.LayerMask;
             _currentPadVm.ConfigItemDirtyCallback?.Invoke();
         }
+
+        /// <summary>Whether the Shift Layer Flyout is on under Extras,
+        /// Overlays. The Shift Layer window shows its Flyout row only then
+        /// (#581): with the flyout off, a layer's choice would set
+        /// nothing a user can see. Off when the main window is not
+        /// reachable (design time, a detached host).</summary>
+        private static bool LayerFlyoutIsOn()
+            => Application.Current?.MainWindow?.DataContext is MainViewModel mainVm
+               && mainVm.Dashboard != null
+               && mainVm.Dashboard.EnableShiftLayerFlyout;
 
         private void ShiftLayerTab_Click(object sender, RoutedEventArgs e)
         {
@@ -3035,12 +3045,14 @@ namespace PadForge.Views
             if (string.IsNullOrEmpty(mask)) return;
 
             // Base has no activator. Configure edits its flyout/tab appearance
-            // (name + icon + color), stored on the MappingSet (#119).
+            // (name + icon + color), stored on the MappingSet (#119), and
+            // how long the flyout shows Base (#581).
             if (string.Equals(mask, "Base", StringComparison.Ordinal))
             {
                 var baseMs = GetOrCreateSlotMappingSet(_currentPadVm.PadIndex);
                 var bdlg = new ShiftActivatorDialog(
-                    baseMs.BaseLayerName ?? "", baseMs.BaseColor ?? "", baseMs.BaseIcon ?? "")
+                    baseMs.BaseLayerName ?? "", baseMs.BaseColor ?? "", baseMs.BaseIcon ?? "",
+                    baseMs.BaseFlyout ?? "", flyoutEnabled: LayerFlyoutIsOn())
                 {
                     Owner = Window.GetWindow(this),
                 };
@@ -3048,6 +3060,7 @@ namespace PadForge.Views
                 baseMs.BaseLayerName = bdlg.Result.LayerName ?? "";
                 baseMs.BaseColor = bdlg.Result.Color ?? "";
                 baseMs.BaseIcon = bdlg.Result.Icon ?? "";
+                baseMs.BaseFlyout = bdlg.Result.Flyout ?? "";
                 _currentPadVm.RebuildLayerTabs(baseMs.ShiftActivators);
                 _currentPadVm.ConfigItemDirtyCallback?.Invoke();
                 return;
@@ -3084,7 +3097,7 @@ namespace PadForge.Views
                 if (a != null && !ReferenceEquals(a, existing)) others.Add(a);
 
             var dlg = new ShiftActivatorDialog(available, existing, others,
-                recorder: Recorder, padIndex: _currentPadVm.PadIndex)
+                recorder: Recorder, padIndex: _currentPadVm.PadIndex, flyoutEnabled: LayerFlyoutIsOn())
             {
                 Owner = Window.GetWindow(this),
             };
@@ -3218,6 +3231,10 @@ namespace PadForge.Views
                 existing.AutoCancelMs = replacement.AutoCancelMs;
                 existing.Color = replacement.Color;
                 existing.Icon = replacement.Icon;
+                // How long the flyout shows the layer (#581). Like the color
+                // and the icon it changes nothing about when the layer is on,
+                // so it is no reason to clear the slot's shift runtime.
+                existing.Flyout = replacement.Flyout;
                 existing.PostponeMapping = replacement.PostponeMapping;
                 existing.FireOnRelease = replacement.FireOnRelease;
             }

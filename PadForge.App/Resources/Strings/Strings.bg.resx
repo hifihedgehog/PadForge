@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>За модове, които търсят работещ DSX, преди да изпратят</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Какво се показва</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Пръстенът, мрежата или лентата на менюто, докато е отворено</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Името на слоя, докато слоят е задържан</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Името на слоя, когато слоят се включи, за времето, което слоят задава</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Името на профила, когато профилът се смени</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Копирай адреса</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Място на екрана</value></data>
@@ -3090,6 +3090,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Слой</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Настройка на основния слой</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Името, иконата и цветът на основния слой в изскачащия панел за слоя и в реда със слоеве.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Името, иконата и цветът на основния слой в изскачащия панел за слоя и в реда със слоеве, и колко дълго панелът ги показва.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Име на слоя</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Име</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Задържа се с</value></data>
@@ -3102,6 +3103,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Преминаване към основния слой</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Без действие</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Режим, вид вход, време и цвят</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Режим, вид вход, време, изскачащ панел и цвят</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Режим</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Задържане</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Превключване</value></data>
@@ -3155,6 +3157,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Изпълняване и на собственото съпоставяне на активатора</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Когато е отметнато, бутонът на активатора продължава да управлява всеки ред, който го използва като източник. Едно натискане едновременно сменя слоя и изпълнява собственото съпоставяне на бутона. Когато не е отметнато (по подразбиране), натискането на активатора се използва само за смяна на слоя.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>При „Преминаване към основния слой“ контролите, които този слой не съпоставя, запазват основните си съпоставяния. При „Без действие“ слоят замества изцяло основния и тези контроли остават изключени.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Изскачащ панел</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Докато слоят е включен</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>За 2 секунди</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Никога</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>„Докато слоят е включен“ държи панела на екрана, докато слоят се смени. „За 2 секунди“ го показва, когато слоят се включи, и после го скрива. При „Никога“ този слой не показва панел и основният слой също не показва, когато слоят приключи.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>„За 2 секунди“ показва името на основния слой, когато слоят се изключи. При „Никога“ основният слой не показва панел.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Обхват на въртене</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Задаване на обхвата на въртене</value></data>

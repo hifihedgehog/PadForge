@@ -178,6 +178,7 @@ namespace PadForge.Tests
                 BaseLayerName = "Driving",
                 BaseColor = "#FF8800",
                 BaseIcon = "\U0001F3CE",
+                BaseFlyout = LayerFlyout.Off,
             };
 
             SettingsService.RefreshMappingSetsFromLegacy();
@@ -186,6 +187,8 @@ namespace PadForge.Tests
             Assert.Equal("Driving", merged.BaseLayerName);
             Assert.Equal("#FF8800", merged.BaseColor);
             Assert.Equal("\U0001F3CE", merged.BaseIcon);
+            // How long Base's flyout shows (#581) rides with the trio.
+            Assert.Equal(LayerFlyout.Off, merged.BaseFlyout);
         }
 
         // ── M3: menus are slot data ──

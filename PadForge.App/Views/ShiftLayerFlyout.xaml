@@ -17,8 +17,8 @@
         Win11 volume OSD replica — matches ProfileSwitchOverlay's pixel-
         measured chrome (bg #2D2E2E, border #141516, corner radius 8,
         layered shadow border + content border so ClearType survives).
-        Stays visible while a shift layer is engaged on the user's
-        currently-viewed slot; slides out when the slot returns to Base.
+        How long it stays is each layer's own Flyout choice (#581): while
+        the layer is on, for two seconds, or not at all.
     -->
     <Grid ClipToBounds="True">
         <Grid x:Name="FlyoutPanel" Margin="10,10,10,14">

@@ -667,6 +667,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Dirisa layer ya motheo</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Se dire sepe</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mokgwa, mofuta wa tseno, nako le mmala</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mokgwa, mofuta wa tseno, nako, flyout le mmala</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mokgwa</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Tshwara</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Leina la layer le a tlhokega.</value></data>
@@ -1133,6 +1134,7 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ga go window epe e nngwe e e buletsweng e e bonweng.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tlosa {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Leina, setshwantsho le mmala wa layer ya motheo mo Shift Layer Flyout le mo moleng wa di-layer.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Leina, setshwantsho le mmala wa layer ya motheo mo Shift Layer Flyout le mo moleng wa di-layer, le gore flyout e di bontsha lobaka lo lo kae.</value></data>
   <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>E ithutilwe mo go {0}</value></data>
   <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Tlhopha se e se bontshang. Ga go sepe se fetogang go fitlha o boloka.</value></data>
@@ -1143,4 +1145,10 @@
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} ya {1} di buletswe</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Diporofaele tse di tsentsweng tse di na le diphetolelo tse dintšhwa mo Steam Workshop. Di tsenye gape go tswa mo Bona diporofaele go bona diphetogo.</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Dikgolagano</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Fa layer e ntse e dira</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Metsotswana e le 2</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Le ka motlha</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Fa layer e ntse e dira e tshola flyout mo sekirining go fitlha layer e fetoga. Metsotswana e le 2 e e bontsha fa layer e simolola, e bo e nyelela ka bosi. Ka Le ka motlha, layer e ga e bontshe flyout, mme Base le yona ga e bontshe flyout fa layer e fela.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Metsotswana e le 2 e bontsha leina la Base fa shift layer e fela. Ka Le ka motlha, Base ga e bontshe flyout.</value></data>
 </root>

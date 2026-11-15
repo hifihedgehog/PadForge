@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>పంపే ముందు నడుస్తున్న DSX కోసం వెతికే మోడ్‌ల కోసం</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>ఏవి కనిపిస్తాయి</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>మెనూ తెరిచి ఉన్నప్పుడు దాని రింగ్, గ్రిడ్ లేదా బార్</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>షిఫ్ట్ లేయర్‌ను పట్టుకున్నప్పుడు లేయర్ పేరు</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>షిఫ్ట్ లేయర్ ఆన్ అయినప్పుడు, ఆ లేయర్ సెట్ చేసిన సమయం పాటు లేయర్ పేరు</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ప్రొఫైల్ మారినప్పుడు ప్రొఫైల్ పేరు</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>చిరునామా కాపీ చేయి</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>తెరపై స్థానం</value></data>
@@ -3090,6 +3090,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>షిఫ్ట్ లేయర్</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>బేస్ కాన్ఫిగర్ చేయి</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>షిఫ్ట్ లేయర్ ఫ్లైఔట్‌లో, లేయర్ల వరుసలో కనిపించే బేస్ లేయర్ పేరు, ఐకాన్, రంగు.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>షిఫ్ట్ లేయర్ ఫ్లైఔట్‌లో, లేయర్ల వరుసలో కనిపించే బేస్ లేయర్ పేరు, ఐకాన్, రంగు, అలాగే ఫ్లైఅవుట్ వాటిని ఎంతసేపు చూపుతుందో.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>లేయర్ పేరు</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>పేరు</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>దీనితో పట్టుకోవాలి</value></data>
@@ -3102,6 +3103,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>బేస్‌కు వెళ్లనివ్వు</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>ఏమీ చేయకు</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>మోడ్, ఇన్పుట్ రకం, సమయం, రంగు</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>మోడ్, ఇన్పుట్ రకం, సమయం, ఫ్లైఅవుట్, రంగు</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>మోడ్</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>నొక్కి ఉంచు</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>టోగుల్</value></data>
@@ -3155,6 +3157,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>యాక్టివేటర్ సొంత మ్యాపింగ్ను కూడా పనిచేయించు</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>ఎంచుకుంటే, యాక్టివేటర్ బటన్ను మూలంగా వాడే ఏ వరుసనైనా అది నడిపిస్తూనే ఉంటుంది. ఒక్క నొక్కుతో లేయర్ మారుతుంది, బటన్ సొంత మ్యాపింగ్ కూడా పనిచేస్తుంది. ఎంచుకోకపోతే (డిఫాల్ట్), యాక్టివేటర్ నొక్కు లేయర్ మార్పుకే వినియోగమవుతుంది.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>బేస్‌కు వెళ్లనివ్వు తో, ఈ లేయర్ మ్యాప్ చేయని నియంత్రణలు వాటి బేస్ మ్యాపింగ్‌లను ఉంచుకుంటాయి. ఏమీ చేయకు తో, లేయర్ బేస్‌ను పూర్తిగా భర్తీ చేస్తుంది, ఆ నియంత్రణలు ఆఫ్‌లోనే ఉంటాయి.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>ఫ్లైఅవుట్</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>లేయర్ ఆన్‌లో ఉన్నంతసేపు</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 సెకన్లు</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>ఎప్పుడూ వద్దు</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>లేయర్ ఆన్‌లో ఉన్నంతసేపు అనేది లేయర్ మారే వరకు ఫ్లైఅవుట్‌ను తెరపై ఉంచుతుంది. 2 సెకన్లు అనేది లేయర్ ఆన్ అయినప్పుడు దాన్ని చూపి, ఆ తర్వాత వదిలేస్తుంది. ఎప్పుడూ వద్దు ఎంచుకుంటే, ఈ లేయర్ ఫ్లైఅవుట్ చూపదు, లేయర్ ముగిసినప్పుడు బేస్ కూడా చూపదు.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 సెకన్లు అనేది షిఫ్ట్ లేయర్ ముగిసినప్పుడు బేస్ పేరును చూపుతుంది. ఎప్పుడూ వద్దు ఎంచుకుంటే, బేస్ ఫ్లైఅవుట్ చూపదు.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>భ్రమణ పరిధి</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>భ్రమణ పరిధిని సెట్ చేయి</value></data>

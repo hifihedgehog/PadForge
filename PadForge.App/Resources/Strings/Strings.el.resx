@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Για mod που αναζητούν ένα DSX σε λειτουργία πριν στείλουν</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Τι εμφανίζεται</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ο δακτύλιος, το πλέγμα ή η γραμμή ενός μενού όσο είναι ανοιχτό</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Το όνομα του επιπέδου όσο κρατιέται ένα επίπεδο shift</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Το όνομα του επιπέδου όταν ενεργοποιείται ένα επίπεδο shift, για τον χρόνο που ορίζει το επίπεδο</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Το όνομα του προφίλ όταν αλλάζει το προφίλ</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Αντιγραφή διεύθυνσης</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Θέση στην οθόνη</value></data>
@@ -3090,6 +3090,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Επίπεδο shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Ρύθμιση Βασικού</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Το όνομα, το εικονίδιο και το χρώμα του Βασικού επιπέδου στο αναδυόμενο παράθυρο επιπέδων shift και στη σειρά των επιπέδων.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Το όνομα, το εικονίδιο και το χρώμα του Βασικού επιπέδου στο αναδυόμενο παράθυρο επιπέδων shift και στη σειρά των επιπέδων, καθώς και πόση ώρα τα εμφανίζει το αναδυόμενο πλαίσιο.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Όνομα επιπέδου</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Όνομα</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Κρατιέται με</value></data>
@@ -3102,6 +3103,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Πέρασμα στο Βασικό</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Καμία ενέργεια</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Λειτουργία, είδος εισόδου, χρονισμός και χρώμα</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Λειτουργία, είδος εισόδου, χρονισμός, αναδυόμενο πλαίσιο και χρώμα</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Λειτουργία</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Κράτημα</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Εναλλαγή</value></data>
@@ -3155,6 +3157,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Εκτέλεση και της αντιστοίχισης του ίδιου του ενεργοποιητή</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Όταν είναι επιλεγμένο, το κουμπί ενεργοποιητή εξακολουθεί να οδηγεί κάθε γραμμή που το χρησιμοποιεί ως πηγή. Ένα πάτημα αλλάζει το επίπεδο και ταυτόχρονα εκτελεί την αντιστοίχιση του ίδιου του κουμπιού. Όταν δεν είναι επιλεγμένο (προεπιλογή), το πάτημα του ενεργοποιητή καταναλώνεται μόνο από την αλλαγή επιπέδου.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Με το Πέρασμα στο Βασικό, τα στοιχεία που αυτό το επίπεδο δεν αντιστοιχίζει κρατούν τις Βασικές αντιστοιχίσεις τους. Με το Καμία ενέργεια, το επίπεδο αντικαθιστά πλήρως το Βασικό και αυτά τα στοιχεία μένουν ανενεργά.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Αναδυόμενο πλαίσιο</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Όσο είναι ενεργό το επίπεδο</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Για 2 δευτερόλεπτα</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Ποτέ</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Το Όσο είναι ενεργό το επίπεδο κρατά το αναδυόμενο πλαίσιο στην οθόνη μέχρι να αλλάξει το επίπεδο. Το Για 2 δευτερόλεπτα το εμφανίζει όταν ενεργοποιείται το επίπεδο και μετά το αφήνει να φύγει. Με το Ποτέ, αυτό το επίπεδο δεν εμφανίζει αναδυόμενο πλαίσιο και το Βασικό δεν εμφανίζει κανένα όταν τελειώνει το επίπεδο.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Το Για 2 δευτερόλεπτα εμφανίζει το όνομα του Βασικού όταν τελειώνει ένα επίπεδο shift. Με το Ποτέ, το Βασικό δεν εμφανίζει αναδυόμενο πλαίσιο.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Εύρος περιστροφής</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Ορισμός εύρους περιστροφής</value></data>

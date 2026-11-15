@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>पाठवण्यापूर्वी चालू DSX शोधणाऱ्या मॉडसाठी</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>काय दिसते</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>मेनू उघडा असताना त्याची रिंग, ग्रिड किंवा बार</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>शिफ्ट लेयर धरलेला असताना लेयरचे नाव</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>शिफ्ट लेयर चालू झाल्यावर लेयरचे नाव, त्या लेयरने ठरवलेल्या वेळेपर्यंत</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>प्रोफाइल बदलल्यावर प्रोफाइलचे नाव</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>पत्ता कॉपी करा</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>स्क्रीनवर जागा</value></data>
@@ -2889,6 +2889,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>शिफ्ट लेयर</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>बेस कॉन्फिगर करा</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>शिफ्ट लेयर फ्लायआउटवर आणि लेयरच्या रांगेत बेस लेयरचे नाव, आयकॉन आणि रंग.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>शिफ्ट लेयर फ्लायआउटवर आणि लेयरच्या रांगेत बेस लेयरचे नाव, आयकॉन आणि रंग, तसेच फ्लायआउट ते किती वेळ दाखवतो.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>लेयरचे नाव</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>नाव</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>यासोबत धरले</value></data>
@@ -2901,6 +2902,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>बेसकडे जा</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>काहीही करू नका</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>मोड, इनपुट प्रकार, वेळ आणि रंग</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>मोड, इनपुट प्रकार, वेळ, फ्लायआउट आणि रंग</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>मोड</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>दाबून ठेवा</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>टॉगल</value></data>
@@ -2954,6 +2956,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>ॲक्टिव्हेटरचे स्वतःचे मॅपिंगही कार्यान्वित करा</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>निवडल्यास, ॲक्टिव्हेटर बटण स्रोत म्हणून वापरणाऱ्या कोणत्याही ओळीला ते अजूनही चालवते. एकाच दाबाने लेयर बदलतो आणि बटणाचे स्वतःचे मॅपिंगही कार्यान्वित होते. निवड काढलेली असताना (डिफॉल्ट), ॲक्टिव्हेटर दाब फक्त लेयर बदलण्यासाठी वापरला जातो.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>बेसकडे जा निवडल्यास, या लेयरने मॅप न केलेली नियंत्रणे त्यांचे बेस मॅपिंग राखतात. काहीही करू नका निवडल्यास, लेयर बेसची पूर्णपणे जागा घेतो आणि ती नियंत्रणे बंद राहतात.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>फ्लायआउट</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>लेयर चालू असताना</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 सेकंदांसाठी</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>कधीही नाही</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>लेयर चालू असताना निवडल्यास लेयर बदलेपर्यंत फ्लायआउट स्क्रीनवर राहतो. 2 सेकंदांसाठी निवडल्यास लेयर चालू होताना तो दिसतो आणि नंतर आपोआप जातो. कधीही नाही निवडल्यास या लेयरसाठी फ्लायआउट दिसत नाही आणि लेयर संपल्यावर बेससाठीही दिसत नाही.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 सेकंदांसाठी निवडल्यास शिफ्ट लेयर संपल्यावर फ्लायआउट बेसचे नाव दाखवतो. कधीही नाही निवडल्यास बेससाठी फ्लायआउट दिसत नाही.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>फिरण्याची श्रेणी</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>फिरण्याची श्रेणी सेट करा</value></data>

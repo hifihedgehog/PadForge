@@ -1280,6 +1280,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Arahina ny layer fototra</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Tsy manao na inona na inona</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Fomba, karazana fidirana, fotoana ary loko</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Fomba, karazana fidirana, fotoana, flyout ary loko</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Tazomina</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Tsy misy bokotra</value></data>
@@ -2172,6 +2173,7 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Tsy nisy varavarankely hafa misokatra hita.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Esory ny {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Ny anarana, ny kisary ary ny lokon'ny layer fototra ao amin'ny Shift Layer Flyout sy ao amin'ny andalan'ny layer.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Ny anarana, ny kisary ary ny lokon'ny layer fototra ao amin'ny Shift Layer Flyout sy ao amin'ny andalan'ny layer, ary ny faharetan'ny fisehoany ao amin'ny flyout.</value></data>
   <data name="Handheld_StartOver" xml:space="preserve"><value>Atombohy indray</value></data>
   <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Nianarana tamin'ny {0}</value></data>
   <data name="WiiPair_Step1" xml:space="preserve"><value>Sokafy ny saron'ny bateria ary tsindrio ny bokotra mena SYNC.</value></data>
@@ -2191,4 +2193,10 @@
   <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>tsy</value></data>
   <data name="Pad_Formula_Chip_If_Face" xml:space="preserve"><value>raha?</value></data>
   <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Raha mbola mandeha ny layer</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Mandritra ny 2 segondra</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Tsy mihitsy</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Raha mbola mandeha ny layer: mijanona eo ny flyout mandra-piovan'ny layer. Mandritra ny 2 segondra: miseho ny flyout rehefa mandeha ny layer, dia miala ho azy avy eo. Tsy mihitsy: tsy mampiseho flyout ity layer ity, ary tsy miseho koa i Base rehefa mijanona ity layer ity.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Mandritra ny 2 segondra: miseho ny anaran'i Base rehefa mijanona ny shift layer. Tsy mihitsy: tsy mampiseho flyout i Base.</value></data>
 </root>

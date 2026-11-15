@@ -1139,6 +1139,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Ìpele Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Ṣètò ìpìlẹ̀</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Orúkọ, àmì àti àwọ̀ ìpele ìpìlẹ̀ lórí Shift Layer Flyout àti nínú ìlà àwọn ìpele.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Orúkọ, àmì àti àwọ̀ ìpele ìpìlẹ̀ lórí Shift Layer Flyout àti nínú ìlà àwọn ìpele, àti bí flyout ṣe ń fi wọ́n hàn pẹ́ tó.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Orúkọ ìpele</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Orúkọ</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Dì mú pẹ̀lú</value></data>
@@ -1151,6 +1152,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Lo ti ìpele ìpìlẹ̀</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Má ṣe nǹkan</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Ipò, irú ìfiwọlé, àkókò àti àwọ̀</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Ipò, irú ìfiwọlé, àkókò, flyout àti àwọ̀</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Ọ̀nà</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Dì mú</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Yí padà</value></data>
@@ -2037,4 +2039,10 @@
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Àwọn profaili tí a ti pèsè sílẹ̀ fún gbogbo irú eré kan. Yan ọ̀kan, yan ẹ̀rọ ìdarí èyíkéyìí, kí o sì ṣeré.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} nínú {1} ló tàn</value></data>
   <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Níwọ̀n ìgbà tí ìpele bá tàn</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Fún ìṣẹ́jú àáyá 2</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Rárá</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Níwọ̀n ìgbà tí ìpele bá tàn máa ń jẹ́ kí flyout wà lójú ìbòjú títí ìpele yóò fi yí padà. Fún ìṣẹ́jú àáyá 2 máa ń fi í hàn nígbà tí ìpele bá tàn, lẹ́yìn náà yóò lọ fúnra rẹ̀. Pẹ̀lú Rárá, ìpele yìí kò ní fi flyout hàn, ìpìlẹ̀ kò sì ní fi flyout hàn nígbà tí ìpele bá parí.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Fún ìṣẹ́jú àáyá 2 máa ń fi orúkọ ìpìlẹ̀ hàn nígbà tí ìpele Shift bá parí. Pẹ̀lú Rárá, ìpìlẹ̀ kò ní fi flyout hàn.</value></data>
 </root>

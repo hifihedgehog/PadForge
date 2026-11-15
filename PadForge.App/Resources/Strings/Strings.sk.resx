@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Pre módy, ktoré pred odoslaním hľadajú spustený DSX</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Čo sa zobrazuje</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Prstenec, mriežka alebo lišta ponuky, kým je otvorená</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Názov vrstvy, kým je podržaná vrstva Shift</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Názov vrstvy pri zapnutí vrstvy Shift na čas, ktorý si vrstva nastaví</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Názov profilu pri zmene profilu</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopírovať adresu</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Umiestnenie na obrazovke</value></data>
@@ -3090,6 +3090,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Vrstva Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfigurovať základnú vrstvu</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Názov, ikona a farba základnej vrstvy v paneli vrstvy Shift a v riadku vrstiev.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Názov, ikona a farba základnej vrstvy v paneli vrstvy Shift a v riadku vrstiev a to, ako dlho ich panel zobrazuje.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Názov vrstvy</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Názov</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Podržané pomocou</value></data>
@@ -3102,6 +3103,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Prepustiť na základnú vrstvu</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Nerobiť nič</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Režim, druh vstupu, časovanie a farba</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Režim, druh vstupu, časovanie, panel a farba</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Režim</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Podržanie</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Prepínanie</value></data>
@@ -3155,6 +3157,12 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Spustiť aj vlastné mapovanie aktivátora</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Keď je začiarknuté, tlačidlo aktivátora stále ovláda každý riadok, ktorý ho používa ako zdroj. Jedno stlačenie zmení vrstvu a zároveň spustí vlastné mapovanie tlačidla. Keď nie je začiarknuté (predvolené), stlačenie aktivátora sa použije iba na zmenu vrstvy.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Pri možnosti Prepustiť na základnú vrstvu si ovládacie prvky, ktoré táto vrstva nemapuje, ponechajú svoje základné mapovania. Pri možnosti Nerobiť nič vrstva úplne nahradí základnú a tieto prvky zostanú vypnuté.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Panel</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Kým je vrstva zapnutá</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Na 2 sekundy</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Nikdy</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Pri možnosti Kým je vrstva zapnutá zostane panel zobrazený, kým sa vrstva nezmení. Pri možnosti Na 2 sekundy sa zobrazí pri zapnutí vrstvy a potom zmizne. Pri možnosti Nikdy táto vrstva panel nezobrazuje a základná vrstva ho nezobrazí ani po skončení vrstvy.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Pri možnosti Na 2 sekundy panel zobrazí názov základnej vrstvy, keď sa vrstva Shift skončí. Pri možnosti Nikdy základná vrstva panel nezobrazuje.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rozsah otáčania</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Nastaviť rozsah otáčania</value></data>

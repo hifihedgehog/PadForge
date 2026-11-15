@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Fyrir breytingar sem leita að DSX í gangi áður en þær senda</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Hvað birtist</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Hringur, rist eða stika valmyndar á meðan hún er opin</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Heiti lagsins á meðan skiptilagi er haldið inni</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Heiti lagsins þegar skiptilag verður virkt, í þann tíma sem lagið ákveður</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Heiti sniðsins þegar sniðið breytist</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Afrita vistfang</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Staðsetning á skjá</value></data>
@@ -3090,6 +3090,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Lag</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Stilla grunn</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Heiti, tákn og litur grunnlagsins í sprettiglugga skiptilaga og í röð laganna.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Heiti, tákn og litur grunnlagsins í sprettiglugga skiptilaga og í röð laganna, og hve lengi sprettiglugginn sýnir þau.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Heiti lags</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Heiti</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Haldið með</value></data>
@@ -3102,6 +3103,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Falla niður á grunn</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Gera ekkert</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Hamur, tegund inntaks, tímasetning og litur</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Hamur, tegund inntaks, tímasetning, sprettigluggi og litur</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Hamur</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Halda</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Víxla</value></data>
@@ -3155,6 +3157,12 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Virkja líka eigin vörpun virkisins</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Þegar hakað er við stýrir virkishnappurinn áfram öllum línum sem nota hann sem uppsprettu. Ein ýting skiptir bæði um lag og virkjar eigin vörpun hnappsins. Þegar ekki er hakað við (sjálfgefið) fer ýtingin á virkinn eingöngu í að skipta um lag.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Með „Falla niður á grunn“ halda stýringar sem þetta lag varpar ekki varpunum grunnsins. Með „Gera ekkert“ kemur lagið alveg í stað grunnsins og þær stýringar haldast óvirkar.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Sprettigluggi</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Á meðan lagið er virkt</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Í 2 sekúndur</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Aldrei</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>„Á meðan lagið er virkt“ heldur sprettiglugganum uppi þar til lagið breytist. „Í 2 sekúndur“ sýnir hann þegar lagið verður virkt og sleppir honum svo. Með „Aldrei“ sýnir þetta lag engan sprettiglugga og grunnur sýnir engan þegar lagið endar.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>„Í 2 sekúndur“ sýnir heiti grunnsins þegar skiptilag endar. Með „Aldrei“ sýnir grunnur engan sprettiglugga.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Snúningssvið</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Stilla snúningssvið</value></data>

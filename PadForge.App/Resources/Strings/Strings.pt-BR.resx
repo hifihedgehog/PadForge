@@ -2259,6 +2259,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Camada Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Configurar Base</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>O nome, o ícone e a cor da camada Base no Aviso de Camada Shift e na linha de camadas.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>O nome, o ícone e a cor da camada Base no Aviso de Camada Shift e na linha de camadas, e por quanto tempo o aviso os mostra.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nome da Camada</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nome</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Mantida Com</value></data>
@@ -2271,6 +2272,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Passar para a Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Não Fazer Nada</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modo, tipo de entrada, tempo e cor</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Modo, tipo de entrada, tempo, aviso e cor</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modo</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Manter</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alternar</value></data>
@@ -2320,6 +2322,12 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Também Disparar o Mapeamento Próprio do Ativador</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Quando marcado, o botão ativador continua a impulsionar qualquer linha que o use como fonte. Um toque muda a camada E dispara o mapeamento próprio do botão. Quando desmarcado (padrão), o toque é consumido apenas pela mudança de camada.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Com Passar para a Base, os controles que esta camada não mapeia mantêm seus mapeamentos da Base. Com Não Fazer Nada, a camada substitui a Base por inteiro e esses controles ficam desligados.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Aviso</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Enquanto a Camada Estiver Ativa</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Por 2 Segundos</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Nunca</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Enquanto a Camada Estiver Ativa mantém o aviso na tela até a camada mudar. Por 2 Segundos mostra o aviso quando a camada é ativada e depois o deixa sumir. Com Nunca, esta camada não mostra aviso, e a Base também não mostra nenhum quando a camada termina.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Por 2 Segundos mostra o nome da Base quando uma camada Shift termina. Com Nunca, a Base não mostra aviso.</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Gatilhos Impulse</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ganho por gatilho, troca de motores, vibrações dos gatilhos adaptáveis, Força Constante nos Gatilhos</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Encaminha comandos por motor de gatilho (gatilhos Impulse do Xbox) do controle virtual para o controle físico Xbox One, Elite ou Series atribuído. A vibração de gatilho gerada pelo jogo passa automaticamente. Os controles abaixo ajustam a intensidade por gatilho.</value></data>
@@ -3417,7 +3425,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Para mods que procuram um DSX em execução antes de enviar</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>O Que Aparece</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>O anel, a grade ou a barra de um menu enquanto ele está aberto</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>O nome da camada enquanto uma camada shift é mantida</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>O nome da camada quando uma camada shift é ativada, pelo tempo que essa camada define</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>O nome do perfil quando o perfil muda</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copiar Endereço</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Posição na Tela</value></data>

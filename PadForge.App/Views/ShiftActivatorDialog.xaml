@@ -11,14 +11,16 @@
 
     <!-- A shift layer (#574), as the Record board draws it: its name and
          icon, the input that turns it on, and what its unmapped controls
-         do. The mode, the kind of input, the timing and the layer's color
-         are under More, which opens by itself for a layer that uses one of
-         them. The line under the title says what the chosen mode does, and
-         the code-behind keeps it in step with the mode.
+         do. The mode, the kind of input, the timing, how long the flyout
+         shows the layer and the layer's color are under More, which opens by
+         itself for a layer that uses one of them. The line under the title
+         says what the chosen mode does, and the code-behind keeps it in step
+         with the mode.
 
-         The Base layer has a name, an icon and a color and nothing else, so
-         its window (the code-behind's first constructor) shows the name row
-         and the color with no More. -->
+         The Base layer has a name, an icon, a color and its flyout choice
+         and nothing else, so its window (the code-behind's first
+         constructor) shows the name row, the flyout row and the color with
+         no More. -->
     <views:DialogWindow.Resources>
         <!-- A color channel's letter, in the code face as on the controller
              page's color rows. -->
@@ -360,6 +362,22 @@
                                AutomationProperties.Name="{Binding Pad_ResetShiftAutoCancel, Source={x:Static strings:Strings.Instance}}">
                         <reset:GlyphText Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
                     </ui:Button>
+                </controls:SettingRow>
+
+                <!-- How long the Shift Layer Flyout shows this layer (#581):
+                     while the layer is on, for the flyout's own two seconds,
+                     or not at all. The code-behind fills the choices and
+                     shows the row only while the flyout itself is on under
+                     Extras, Overlays. Base's window shows the row under the
+                     name, with the two choices Base has. -->
+                <controls:SettingRow x:Name="FlyoutRow" MinHeight="44" Visibility="Collapsed">
+                    <TextBlock x:Name="FlyoutLabel" Style="{StaticResource DialogLabel}"
+                               Text="{Binding Pad_Shift_Flyout, Source={x:Static strings:Strings.Instance}}"/>
+                    <ComboBox x:Name="FlyoutCombo" Style="{StaticResource DialogSelect}" MinWidth="200" MaxWidth="300"
+                              controls:SettingRow.Fills="True"
+                              DisplayMemberPath="Name" SelectedValuePath="Value"
+                              AutomationProperties.Name="{Binding Pad_Shift_Flyout, Source={x:Static strings:Strings.Instance}}"/>
+                    <reset:SettingResetButton Click="ResetSetting_Click" Tag="Flyout" Visibility="{Binding Visibility, ElementName=FlyoutCombo}" IsEnabled="{Binding IsEnabled, ElementName=FlyoutCombo}" SettingLabel="{Binding Pad_Shift_Flyout, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_FlyoutCombo_581"/>
                 </controls:SettingRow>
 
                 <!-- The layer's color, as the controller page's Lighting

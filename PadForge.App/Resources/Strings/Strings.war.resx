@@ -879,6 +879,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Ibalik ha Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Waray Buhata</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mode, klase han input, timing ngan kolor</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mode, klase han input, timing, flyout ngan kolor</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Hold</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Kinahanglan an ngaran han layer.</value></data>
@@ -1455,6 +1456,7 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Waray iba nga bukas nga window nga nakita.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Kuhaa an {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>An ngaran, icon ngan kolor han Base nga layer ha Shift Layer Flyout ngan ha row han mga layer.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>An ngaran, icon ngan kolor han Base nga layer ha Shift Layer Flyout ngan ha row han mga layer, ngan kon gaano kahalaba ini ipapakita han flyout.</value></data>
   <data name="Handheld_LearnedOn_Format" xml:space="preserve"><value>Nahibaroan ha {0}</value></data>
   <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Pilia kun ano an iya ipakita. Waray mababag-o tubtob nga magtipig ka.</value></data>
@@ -1498,4 +1500,10 @@
   <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifier</value></data>
   <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stick han pagtadong</value></data>
   <data name="Pad_Picked_Row" xml:space="preserve"><value>Output</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Samtang Bukas an Layer</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Ha 2 Segundo</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Diri Gud</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>An Samtang Bukas an Layer nagpapabilin han flyout tubtob nga magbag-o an layer. An Ha 2 Segundo nagpapakita hini kon mabukas an layer, katapos nawawara ini hin kalugaringon. Kon Diri Gud, waray flyout nga ipapakita hini nga layer, ngan waray liwat ipapakita an Base kon matapos an layer.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>An Ha 2 Segundo nagpapakita han ngaran han Base kon matapos an shift layer. Kon Diri Gud, waray flyout nga ipapakita an Base.</value></data>
 </root>

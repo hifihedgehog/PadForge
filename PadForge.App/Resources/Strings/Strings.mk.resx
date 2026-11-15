@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>За модови што бараат активен DSX пред да испраќаат</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Што се прикажува</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Прстенот, мрежата или лентата на менито додека е отворено</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Името на слојот додека се држи слој за префрлање</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Името на слојот кога ќе се вклучи слој за префрлање, за времето што го одредува тој слој</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Името на профилот кога профилот се менува</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Копирај адреса</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Место на екранот</value></data>
@@ -3090,6 +3090,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Слој</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Конфигурирај основен слој</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Името, иконата и бојата на основниот слој во менито за слоеви и во редот со слоеви.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Името, иконата и бојата на основниот слој во менито за слоеви и во редот со слоеви, и колку долго скокачкиот прозорец ги прикажува.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Име на слојот</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Име</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Се држи со</value></data>
@@ -3102,6 +3103,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Премин кон основниот слој</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Не прави ништо</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Режим, вид на влез, тајминг и боја</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Режим, вид на влез, тајминг, скокачки прозорец и боја</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Режим</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Држење</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Префрлување</value></data>
@@ -3155,6 +3157,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Изврши го и сопственото мапирање на активаторот</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Кога е штиклирано, копчето-активатор и понатаму управува со секој ред што го користи како извор. Еден притисок и го менува слојот и го извршува сопственото мапирање на копчето. Кога не е штиклирано (стандардно), притисокот на активаторот се користи само за менување на слојот.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Со Премин кон основниот слој, контролите што овој слој не ги мапира ги задржуваат своите основни мапирања. Со Не прави ништо, слојот целосно го заменува основниот, а тие контроли остануваат исклучени.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Скокачки прозорец</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Додека слојот е вклучен</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 секунди</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Никогаш</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Со Додека слојот е вклучен, прозорецот останува додека слојот не се промени. Со 2 секунди, се прикажува кога слојот ќе се вклучи, а потоа сам исчезнува. Со Никогаш, овој слој не прикажува прозорец, а ниту основниот слој кога овој слој ќе заврши.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Со 2 секунди, се прикажува името на основниот слој кога ќе заврши слој за префрлање. Со Никогаш, основниот слој не прикажува прозорец.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Опсег на ротација</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Постави опсег на ротација</value></data>

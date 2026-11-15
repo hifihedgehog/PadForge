@@ -883,6 +883,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Siv txheej Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Tsis ua dab tsi</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Hom, hom input, sijhawm thiab xim</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Hom, hom input, sijhawm, flyout thiab xim</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Hom</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Nias tuav</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Toggle</value></data>
@@ -1513,6 +1514,7 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nrhiav tsis tau lwm lub qhov rais uas qhib.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tshem tawm {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Txheej Base lub npe, icon thiab xim ntawm Shift Layer Flyout thiab hauv kab cov txheej.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Txheej Base lub npe, icon thiab xim ntawm Shift Layer Flyout thiab hauv kab cov txheej, thiab flyout qhia lawv ntev npaum li cas.</value></data>
   <data name="WiiPair_Step1" xml:space="preserve"><value>Qhib lub hau roj teeb thiab nias lub khawm SYNC liab.</value></data>
   <data name="WiiPair_Step2" xml:space="preserve"><value>Cia lub remote nyob ze lub PC no thaum nws cov teeb ntsais.</value></data>
   <data name="Ds3Pair_Title" xml:space="preserve"><value>Pair ib lub DualShock 3</value></data>
@@ -1542,4 +1544,10 @@
   <data name="Pad_Row_Modifier" xml:space="preserve"><value>Tus hloov</value></data>
   <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stick kho me ntsis</value></data>
   <data name="Pad_Picked_Row" xml:space="preserve"><value>Qhov tso tawm</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Thaum txheej qhib</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Rau 2 vib nas this</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Tsis qhia li</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Xaiv Thaum txheej qhib yuav cia flyout nyob saum screen mus txog thaum txheej hloov. Xaiv Rau 2 vib nas this yuav qhia nws thaum txheej qhib, ces cia nws ploj mus. Thaum xaiv Tsis qhia li, txheej no tsis qhia flyout, thiab txheej Base kuj tsis qhia thaum txheej no xaus.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Xaiv Rau 2 vib nas this yuav qhia txheej Base lub npe thaum ib txheej shift xaus. Thaum xaiv Tsis qhia li, txheej Base tsis qhia flyout.</value></data>
 </root>

@@ -417,7 +417,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>ಕಳುಹಿಸುವ ಮೊದಲು ಚಾಲನೆಯಲ್ಲಿರುವ DSX ಅನ್ನು ಹುಡುಕುವ ಮಾಡ್‌ಗಳಿಗಾಗಿ</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>ಏನು ತೋರಿಸುತ್ತದೆ</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ತೆರೆದಿರುವಾಗ ಮೆನುವಿನ ರಿಂಗ್, ಗ್ರಿಡ್ ಅಥವಾ ಬಾರ್</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ಶಿಫ್ಟ್ ಲೇಯರ್ ಹಿಡಿದಿರುವಾಗ ಲೇಯರ್‌ನ ಹೆಸರು</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ಶಿಫ್ಟ್ ಲೇಯರ್ ಆನ್ ಆದಾಗ, ಆ ಲೇಯರ್ ನಿಗದಿಪಡಿಸಿದ ಅವಧಿಗೆ ಲೇಯರ್‌ನ ಹೆಸರು</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ಪ್ರೊಫೈಲ್ ಬದಲಾದಾಗ ಪ್ರೊಫೈಲ್‌ನ ಹೆಸರು</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>ವಿಳಾಸ ನಕಲಿಸಿ</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>ಪರದೆಯ ಮೇಲೆ ಸ್ಥಾನ</value></data>
@@ -2882,6 +2882,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>ಶಿಫ್ಟ್ ಲೇಯರ್</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>ಮೂಲವನ್ನು ಸಂರಚಿಸಿ</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>ಶಿಫ್ಟ್ ಲೇಯರ್ ಫ್ಲೈಔಟ್‌ನಲ್ಲಿ ಮತ್ತು ಲೇಯರ್‌ಗಳ ಸಾಲಿನಲ್ಲಿ ಬೇಸ್ ಲೇಯರ್‌ನ ಹೆಸರು, ಐಕಾನ್ ಮತ್ತು ಬಣ್ಣ.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>ಶಿಫ್ಟ್ ಲೇಯರ್ ಫ್ಲೈಔಟ್‌ನಲ್ಲಿ ಮತ್ತು ಲೇಯರ್‌ಗಳ ಸಾಲಿನಲ್ಲಿ ಬೇಸ್ ಲೇಯರ್‌ನ ಹೆಸರು, ಐಕಾನ್ ಮತ್ತು ಬಣ್ಣ, ಹಾಗೂ ಫ್ಲೈಔಟ್ ಅವನ್ನು ಎಷ್ಟು ಹೊತ್ತು ತೋರಿಸುತ್ತದೆ ಎಂಬುದು.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>ಲೇಯರ್ ಹೆಸರು</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>ಹೆಸರು</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>ಇದರಿಂದ ಹಿಡಿಯಿರಿ</value></data>
@@ -2894,6 +2895,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>ಬೇಸ್‌ಗೆ ಹಾದುಹೋಗಲಿ</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>ಏನೂ ಮಾಡಬೇಡ</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>ಮೋಡ್, ಇನ್‌ಪುಟ್ ಪ್ರಕಾರ, ಸಮಯ ಮತ್ತು ಬಣ್ಣ</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>ಮೋಡ್, ಇನ್‌ಪುಟ್ ಪ್ರಕಾರ, ಸಮಯ, ಫ್ಲೈಔಟ್ ಮತ್ತು ಬಣ್ಣ</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>ಮೋಡ್</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>ಒತ್ತಿ ಹಿಡಿ</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>ಟಾಗಲ್</value></data>
@@ -2947,6 +2949,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>ಸಕ್ರಿಯಕಾರಕದ ಸ್ವಂತ ಮ್ಯಾಪಿಂಗ್ ಅನ್ನೂ ಕಾರ್ಯಗತಗೊಳಿಸು</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>ಗುರುತಿಸಿದಾಗ, ಸಕ್ರಿಯಕಾರಕ ಬಟನ್ ಅದನ್ನು ಮೂಲವಾಗಿ ಬಳಸುವ ಯಾವುದೇ ಸಾಲನ್ನೂ ಇನ್ನೂ ನಡೆಸುತ್ತದೆ. ಒಂದೇ ಒತ್ತುವಿಕೆ ಲೇಯರ್ ಬದಲಿಸುತ್ತದೆ ಮತ್ತು ಬಟನ್‌ನ ಸ್ವಂತ ಮ್ಯಾಪಿಂಗ್ ಅನ್ನೂ ಕಾರ್ಯಗತಗೊಳಿಸುತ್ತದೆ. ಗುರುತಿಸದಿದ್ದರೆ (ಡೀಫಾಲ್ಟ್), ಸಕ್ರಿಯಕಾರಕ ಒತ್ತುವಿಕೆಯು ಲೇಯರ್ ಬದಲಾವಣೆಗೆ ಮಾತ್ರ ಬಳಕೆಯಾಗುತ್ತದೆ.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>ಬೇಸ್‌ಗೆ ಹಾದುಹೋಗಲಿ ಆಯ್ಕೆಯಲ್ಲಿ, ಈ ಲೇಯರ್ ಮ್ಯಾಪ್ ಮಾಡದ ನಿಯಂತ್ರಣಗಳು ತಮ್ಮ ಬೇಸ್ ಮ್ಯಾಪಿಂಗ್‌ಗಳನ್ನು ಉಳಿಸಿಕೊಳ್ಳುತ್ತವೆ. ಏನೂ ಮಾಡಬೇಡ ಆಯ್ಕೆಯಲ್ಲಿ, ಲೇಯರ್ ಬೇಸ್ ಅನ್ನು ಸಂಪೂರ್ಣವಾಗಿ ಬದಲಿಸುತ್ತದೆ ಮತ್ತು ಆ ನಿಯಂತ್ರಣಗಳು ಆಫ್ ಆಗಿರುತ್ತವೆ.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>ಫ್ಲೈಔಟ್</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>ಲೇಯರ್ ಆನ್ ಇರುವವರೆಗೆ</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 ಸೆಕೆಂಡ್‌ಗಳ ಕಾಲ</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>ಎಂದಿಗೂ</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>ಲೇಯರ್ ಆನ್ ಇರುವವರೆಗೆ ಆಯ್ಕೆಯು ಲೇಯರ್ ಬದಲಾಗುವವರೆಗೆ ಫ್ಲೈಔಟ್ ಅನ್ನು ಪರದೆಯ ಮೇಲೆ ಇರಿಸುತ್ತದೆ. 2 ಸೆಕೆಂಡ್‌ಗಳ ಕಾಲ ಆಯ್ಕೆಯು ಲೇಯರ್ ಆನ್ ಆದಾಗ ಅದನ್ನು ತೋರಿಸಿ, ನಂತರ ತಾನಾಗಿ ಮರೆಯಾಗಿಸುತ್ತದೆ. ಎಂದಿಗೂ ಆಯ್ಕೆಯಲ್ಲಿ, ಈ ಲೇಯರ್ ಯಾವುದೇ ಫ್ಲೈಔಟ್ ತೋರಿಸುವುದಿಲ್ಲ, ಲೇಯರ್ ಮುಗಿದಾಗ ಮೂಲ ಕೂಡ ತೋರಿಸುವುದಿಲ್ಲ.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 ಸೆಕೆಂಡ್‌ಗಳ ಕಾಲ ಆಯ್ಕೆಯು ಶಿಫ್ಟ್ ಲೇಯರ್ ಮುಗಿದಾಗ ಮೂಲದ ಹೆಸರನ್ನು ತೋರಿಸುತ್ತದೆ. ಎಂದಿಗೂ ಆಯ್ಕೆಯಲ್ಲಿ, ಮೂಲ ಯಾವುದೇ ಫ್ಲೈಔಟ್ ತೋರಿಸುವುದಿಲ್ಲ.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>ತಿರುಗುವ ವ್ಯಾಪ್ತಿ</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>ತಿರುಗುವ ವ್ಯಾಪ್ತಿ ಹೊಂದಿಸಿ</value></data>

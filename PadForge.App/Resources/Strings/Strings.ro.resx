@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Pentru modificările care caută un DSX în execuție înainte de a trimite</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ce se afișează</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Inelul, grila sau bara unui meniu cât timp este deschis</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Numele stratului cât timp un strat de comutare este ținut</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Numele stratului când se activează un strat de comutare, pe durata stabilită de acel strat</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Numele profilului când se schimbă profilul</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copiere adresă</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Poziție pe ecran</value></data>
@@ -3090,6 +3090,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Strat de comutare</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Configurare Bază</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Numele, pictograma și culoarea stratului Bază în indicatorul stratului de comutare și în rândul de straturi.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Numele, pictograma și culoarea stratului Bază în indicatorul stratului de comutare și în rândul de straturi, precum și cât timp le afișează panoul flotant.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Numele stratului</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nume</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Ținut cu</value></data>
@@ -3102,6 +3103,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Preluare din Bază</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Nicio acțiune</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mod, tip de intrare, temporizare și culoare</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mod, tip de intrare, temporizare, panou flotant și culoare</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mod</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Menținere</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Comutare</value></data>
@@ -3155,6 +3157,12 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Declanșare și a mapării proprii a activatorului</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Când este bifat, butonul activator controlează în continuare orice rând care îl folosește ca sursă. O singură apăsare schimbă stratul și declanșează și maparea proprie a butonului. Când nu este bifat (implicit), apăsarea activatorului este folosită doar pentru schimbarea stratului.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Cu Preluare din Bază, comenzile pe care acest strat nu le mapează își păstrează mapările din Bază. Cu Nicio acțiune, stratul înlocuiește complet Baza, iar acele comenzi rămân inactive.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Panou flotant</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Cât timp este activ stratul</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 secunde</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Niciodată</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Cât timp este activ stratul menține panoul flotant afișat până se schimbă stratul. 2 secunde îl afișează când se activează stratul, apoi îl retrage. Cu Niciodată, acest strat nu afișează niciun panou flotant, iar Baza nu afișează nici ea unul când stratul se termină.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 secunde afișează numele Bazei când se termină un strat de comutare. Cu Niciodată, Baza nu afișează niciun panou flotant.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Unghi de rotație</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Setare unghi de rotație</value></data>

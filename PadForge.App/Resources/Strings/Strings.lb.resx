@@ -417,7 +417,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Fir Mods, déi no engem lafenden DSX sichen, ier se schécken</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Wat ugewise gëtt</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>De Rank, d'Gitter oder d'Leescht vun engem Menü, soulaang en op ass</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Den Numm vun der Schicht, soulaang eng Shift-Schicht gehale gëtt</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Den Numm vun der Schicht, wann eng Shift-Schicht aktiv gëtt, fir d'Zäit, déi dës Schicht festleet</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Den Numm vum Profil, wann d'Profil wiesselt</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Adress kopéieren</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Plaz um Bildschierm</value></data>
@@ -2876,6 +2876,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift-Schicht</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Basis konfiguréieren</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Den Numm, d'Symbol an d'Faarf vun der Basis-Schicht an der Schicht-Uweisung an an der Rei vun de Schichten.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Den Numm, d'Symbol an d'Faarf vun der Basis-Schicht an der Schicht-Uweisung an an der Rei vun de Schichten, a wéi laang de Flyout se weist.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Schichtnumm</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Numm</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Gehale mat</value></data>
@@ -2888,6 +2889,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Op d'Basis zréckfalen</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Näischt maachen</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modus, Agabaart, Timing a Faarf</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Modus, Agabaart, Timing, Flyout a Faarf</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modus</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Halen</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Ëmschalten</value></data>
@@ -2941,6 +2943,12 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Och déi eegen Zouuerdnung vum Aktivator ausléisen</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Wann ugekräizt, steiert d'Aktivator-Knäppchen weider all Zeil, déi et als Quell benotzt. En eenzegen Drock wiesselt d'Schicht a léist déi eegen Zouuerdnung vum Knäppchen aus. Wann net ugekräizt (Standard), gëtt den Drock nëmme vum Schichtwiessel verbraucht.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Mat „Op d'Basis zréckfalen“ behalen Steierelementer, déi dës Schicht net zouuerdent, hir Basis-Zouuerdnungen. Mat „Näischt maachen“ ersetzt d'Schicht d'Basis ganz, an dës Steierelementer bleiwen aus.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Soulaang d'Schicht aktiv ass</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Fir 2 Sekonnen</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Ni</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>„Soulaang d'Schicht aktiv ass“ hält de Flyout um Schierm, bis d'Schicht wiesselt. „Fir 2 Sekonnen“ weist en, wann d'Schicht aktiv gëtt, an dann verschwënnt en eleng. Mat „Ni“ weist dës Schicht kee Flyout, an d'Basis weist och keen, wann d'Schicht ophält.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>„Fir 2 Sekonnen“ weist den Numm vun der Basis, wann eng Shift-Schicht ophält. Mat „Ni“ weist d'Basis kee Flyout.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Dréiberäich</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Dréiberäich festleeën</value></data>

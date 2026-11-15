@@ -1015,6 +1015,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Dlulela kumaleko osisiseko</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ungenzi nto</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Imowudi, uhlobo lwegalelo, ixesha nombala</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Imowudi, uhlobo lwegalelo, ixesha, i-flyout nombala</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Bamba</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>I-toggle</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Igama lomaleko liyafuneka.</value></data>
@@ -1838,6 +1839,7 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Akukho enye ifestile evuliweyo efunyenweyo.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Susa u {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Igama, i-icon nombala womaleko osisiseko kwi-Shift Layer Flyout nakumgca weemaleko.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Igama, i-icon nombala womaleko osisiseko kwi-Shift Layer Flyout nakumgca weemaleko, nokuba i-flyout iwabonisa ixesha elingakanani.</value></data>
   <data name="Voice_MoreHint" xml:space="preserve"><value>Ukumamela kuvuliwe okanye kuvaliwe, imowudi, ukuqiniseka</value></data>
   <data name="Voice_ListeningOff" xml:space="preserve"><value>Ukumamela kuvaliwe. Kuvule phantsi kokuthi Okungakumbi.</value></data>
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Seta igama lokugqitha</value></data>
@@ -1859,4 +1861,10 @@
   <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Elungisiweyo</value></data>
   <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Umdlalo ufunda intshukumo elinganisiweyo kwaye usebenzisa olwawo uvakalelo nokugudisa.</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Umdlalo ufunda intshukumo enovakalelo, ukugudisa kunye negophe elimiselwe apha.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>I-flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Ngelixa umaleko uvuliwe</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Imizuzwana eyi-2</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Soze</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Ngelixa umaleko uvuliwe igcina i-flyout isesikrinini de umaleko utshintshe. Imizuzwana eyi-2 iyibonisa xa umaleko uvuleka, emva koko iyayiyeka ihambe. Ukuba ukhetha Soze, lo maleko awubonisi i-flyout, kwaye i-Base ayibonisi nanye xa lo maleko uphela.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Imizuzwana eyi-2 ibonisa igama le-Base xa umaleko wokutshintsha uphela. Ukuba ukhetha Soze, i-Base ayibonisi i-flyout.</value></data>
 </root>

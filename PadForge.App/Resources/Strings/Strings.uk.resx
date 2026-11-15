@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Для модів, які шукають запущений DSX перед надсиланням</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Що показувати</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Кільце, сітка або смуга меню, поки воно відкрите</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Назва шару, поки утримується шар зсуву</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Назва шару, коли шар зсуву вмикається, протягом часу, який задає цей шар</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Назва профілю, коли профіль змінюється</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Копіювати адресу</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Місце на екрані</value></data>
@@ -2896,6 +2896,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Шар</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Налаштувати базовий шар</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Назва, піктограма й колір базового шару у виїзній панелі шарів зсуву та в рядку шарів.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Назва, піктограма й колір базового шару у виїзній панелі шарів зсуву та в рядку шарів, а також те, як довго спливне вікно їх показує.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Назва шару</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Назва</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Утримується з</value></data>
@@ -2908,6 +2909,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Передавати базовому шару</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Нічого не робити</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Режим, тип входу, часові параметри й колір</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Режим, тип входу, часові параметри, спливне вікно й колір</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Режим</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Утримання</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Перемикання</value></data>
@@ -2961,6 +2963,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Також виконувати власну прив'язку активатора</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Якщо позначено, кнопка активатора й далі керує всіма рядками, що використовують її як джерело. Одне натискання і змінює шар, і виконує власну прив'язку кнопки. Якщо не позначено (типово), натискання активатора витрачається лише на зміну шару.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>З «Передавати базовому шару» елементи, яких цей шар не прив'язує, зберігають базові прив'язки. З «Нічого не робити» шар повністю замінює базовий, а ці елементи залишаються вимкненими.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Спливне вікно</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Поки шар увімкнено</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Протягом 2 секунд</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Ніколи</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>«Поки шар увімкнено» тримає спливне вікно на екрані, доки шар не зміниться. «Протягом 2 секунд» показує його, коли шар вмикається, а потім прибирає. З «Ніколи» цей шар не показує спливного вікна, а базовий шар не показує його, коли шар закінчується.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>«Протягом 2 секунд» показує назву базового шару, коли шар зсуву вимикається. З «Ніколи» базовий шар не показує спливного вікна.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Діапазон обертання</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Задавати діапазон обертання</value></data>

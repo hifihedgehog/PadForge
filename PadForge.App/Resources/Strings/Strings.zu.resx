@@ -1654,6 +1654,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Ungqimba lwe-Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Lungiselela isisekelo</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Igama, isithonjana nombala wongqimba lwesisekelo ewindini lezingqimba nasemugqeni wezingqimba.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Igama, isithonjana nombala wongqimba lwesisekelo ewindini lezingqimba nasemugqeni wezingqimba, nokuthi iwindi lizibonisa isikhathi esingakanani.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Igama longqimba</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Igama</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Ibanjwe nge</value></data>
@@ -1666,6 +1667,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Dlulela kusisekelo</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ungenzi lutho</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Imodi, uhlobo lokokufaka, isikhathi nombala</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Imodi, uhlobo lokokufaka, isikhathi, iwindi nombala</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Imodi</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Bamba</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Shintsha</value></data>
@@ -2676,4 +2678,10 @@
   <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Okuhlungiwe</value></data>
   <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Igeyimu ifunda ukunyakaza okulinganisiwe bese isebenzisa ukuzwela kwayo nokushelelisa kwayo.</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Igeyimu ifunda ukunyakaza okunokuzwela, ukushelelisa nejika okusethwe lapha.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Iwindi</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Ngesikhathi ungqimba luvuliwe</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Imizuzwana engu-2</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Akunini</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Ngesikhathi ungqimba luvuliwe kugcina iwindi libonakala kuze kushintshe ungqimba. Imizuzwana engu-2 ibonisa iwindi uma ungqimba luvuleka, bese liyanyamalala. Ngokuthi Akunini, lolu ngqimba alulibonisi iwindi, futhi isisekelo asilibonisi uma ungqimba luphela.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Imizuzwana engu-2 ibonisa igama lesisekelo uma ungqimba lwe-Shift luphela. Ngokuthi Akunini, isisekelo asibonisi iwindi.</value></data>
 </root>

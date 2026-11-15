@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>За модове који траже покренут DSX пре слања</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Шта се приказује</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Прстен, мрежа или трака менија док је отворен</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Назив слоја док је шифт слој држан</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Назив слоја када се шифт слој укључи, на време које тај слој зада</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Назив профила када се профил промени</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Копирај адресу</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Положај на екрану</value></data>
@@ -3090,6 +3090,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Слој</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Подеси основни слој</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Назив, икона и боја основног слоја на менију слојева и у реду слојева.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Назив, икона и боја основног слоја на менију слојева и у реду слојева, као и колико дуго их мени приказује.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Назив слоја</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Назив</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Држи се са</value></data>
@@ -3102,6 +3103,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Прати основни слој</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Не ради ништа</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Режим, врста улаза, тајминг и боја</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Режим, врста улаза, тајминг, искачући панел и боја</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Режим</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Држање</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Прекидач</value></data>
@@ -3155,6 +3157,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Покрени и сопствено мапирање активатора</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Када је означено, дугме активатора и даље управља сваким редом који га користи као извор. Један притисак и мења слој и покреће сопствено мапирање дугмета. Када није означено (подразумевано), притисак активатора користи се само за промену слоја.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Уз „Прати основни слој“, контроле које овај слој не мапира задржавају мапирања основног слоја. Уз „Не ради ништа“, слој у потпуности замењује основни и те контроле остају искључене.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Искачући панел</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Док је слој укључен</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>На 2 секунде</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Никад</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>„Док је слој укључен“ држи панел на екрану док се слој не промени. „На 2 секунде“ га приказује када се слој укључи, а затим га пушта. Уз „Никад“, овај слој не приказује панел, а ни основни слој га не приказује када се слој заврши.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>„На 2 секунде“ приказује назив основног слоја када се шифт слој заврши. Уз „Никад“, основни слој не приказује панел.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Опсег ротације</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Подеси опсег ротације</value></data>

@@ -1941,6 +1941,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Kamada shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfigura bazi</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Nómi, ikoni i kor di kamada di bazi na Shift Layer Flyout i na linha di kamadas.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Nómi, ikoni i kor di kamada di bazi na Shift Layer Flyout i na linha di kamadas, i kantu tenpu ki flyout ta mostra-s.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nómi di kamada</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nómi</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Siguradu ku</value></data>
@@ -1953,6 +1954,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Uza kamada di bazi</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ka faze nada</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modu, tipu di entrada, tenpu i kor</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Modu, tipu di entrada, tenpu, flyout i kor</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modu</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Sigura</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alterna</value></data>
@@ -3096,4 +3098,10 @@
   <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Ajustadu</value></data>
   <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Jogu ta lê muvimentu kalibradu i ta aplika se própriu sensibilidadi i suavizason.</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Jogu ta lê muvimentu ku sensibilidadi, suavizason i kurva definidu li.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Timenti ki kamada sta ligadu</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Durante 2 sigundu</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Nunka</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Timenti ki kamada sta ligadu ta mantene flyout na ekran ti kamada muda. Durante 2 sigundu ta mostra-l ora ki kamada ta liga, i dipôs e ta bai sozinhu. Ku Nunka, es kamada ka ta mostra flyout, i Bazi tanbe ka ta mostra nenhun ora ki kamada ta kaba.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Durante 2 sigundu ta mostra nómi di Bazi ora ki un kamada shift ta kaba. Ku Nunka, Bazi ka ta mostra flyout.</value></data>
 </root>

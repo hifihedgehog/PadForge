@@ -2259,6 +2259,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift レイヤー</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>ベースを構成</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>シフトレイヤーフライアウトとレイヤー一覧に表示されるベースレイヤーの名前、アイコン、色です。</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>シフトレイヤーフライアウトとレイヤー一覧に表示されるベースレイヤーの名前、アイコン、色、およびフライアウトを表示する時間です。</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>レイヤー名</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>名前</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>押し続ける入力</value></data>
@@ -2271,6 +2272,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>ベースに引き継ぐ</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>何もしない</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>モード、入力の種類、タイミング、色</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>モード、入力の種類、タイミング、フライアウト、色</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>モード</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>ホールド</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>トグル</value></data>
@@ -2320,6 +2322,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>アクティベーター自身のマッピングも発火</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>有効にすると、アクティベーターのボタンはそれをソースとして使用するすべての行を引き続き駆動します。1回押すとレイヤーが変更され、ボタン自身のマッピングも発火します。無効(既定)にすると、押下はレイヤー変更でのみ消費されます。</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>「ベースに引き継ぐ」では、このレイヤーが割り当てていないコントロールはベースの割り当てを維持します。「何もしない」では、レイヤーがベースを完全に置き換え、それらのコントロールはオフのままです。</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>フライアウト</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>レイヤーがオンの間</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2秒間</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>表示しない</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>「レイヤーがオンの間」では、レイヤーが変わるまでフライアウトを表示し続けます。「2秒間」では、レイヤーがオンになったときに表示し、その後消えます。「表示しない」では、このレイヤーのフライアウトは表示されず、レイヤーが終了してもベースのフライアウトは表示されません。</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>「2秒間」では、シフトレイヤーが終了したときにベースの名前を表示します。「表示しない」では、ベースのフライアウトは表示されません。</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>インパルストリガー</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>トリガーごとのゲイン、モーターの入れ替え、アダプティブトリガーの振動、トリガー定常力</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>仮想コントローラーから割り当てられた物理 Xbox One / Elite / Series コントローラーへ、トリガーごとのモーターコマンド（Xbox インパルストリガー）を転送します。ゲームが発するトリガー振動は自動的に通過します。下のコントロールでトリガーごとの強度を調整できます。</value></data>
@@ -3423,7 +3431,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>送信前に DSX の実行を確認する MOD 向け</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>表示する内容</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>メニューを開いている間のリング、グリッド、バー</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>シフトレイヤーを押している間のレイヤー名</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>シフトレイヤーがオンになったときのレイヤー名、表示時間はレイヤーごとの設定に従います</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>プロファイルが切り替わったときのプロファイル名</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>アドレスをコピー</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>画面上の位置</value></data>

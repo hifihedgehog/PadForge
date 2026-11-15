@@ -743,6 +743,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Laghachi na Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Emela ihe ọ bụla</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Ọnọdụ, ụdị ntinye, oge na agba</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Ọnọdụ, ụdị ntinye, oge, flyout na agba</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Ụdị</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Jide</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Achọrọ aha layer.</value></data>
@@ -1389,6 +1390,7 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ahụghị window ọzọ meghere.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Wepụ {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Aha, akara ngosi na agba nke layer Base na Shift Layer Flyout na n'ahịrị layer.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Aha, akara ngosi na agba nke layer Base na Shift Layer Flyout na n'ahịrị layer, na ogologo oge flyout na-egosi ha.</value></data>
   <data name="Voice_MoreHint" xml:space="preserve"><value>Ige ntị gbanyere ma ọ bụ gbanyụrụ, ọnọdụ, ntụkwasị obi</value></data>
   <data name="Voice_ListeningOff" xml:space="preserve"><value>Ige ntị agbanyụọla. Gbanye ya n'okpuru Ihe ndị ọzọ.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Ebubatara</value></data>
@@ -1409,4 +1411,10 @@
   <data name="Pad_Row_Down" xml:space="preserve"><value>Ala</value></data>
   <data name="Pad_Row_Modifier" xml:space="preserve"><value>Mgbanwe</value></data>
   <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stick mmezi</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Mgbe layer ahụ na-arụ ọrụ</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Maka sekọnd 2</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Ọ dịghị mgbe</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Mgbe layer ahụ na-arụ ọrụ na-eme ka flyout ahụ nọrọ ruo mgbe layer ahụ gbanwere. Maka sekọnd 2 na-egosi ya mgbe layer ahụ malitere, wee hapụ ya ka ọ pụọ. Na Ọ dịghị mgbe, layer a anaghị egosi flyout, Base anaghịkwa egosi ya mgbe layer ahụ kwụsịrị.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Maka sekọnd 2 na-egosi aha Base mgbe shift layer kwụsịrị. Na Ọ dịghị mgbe, Base anaghị egosi flyout.</value></data>
 </root>

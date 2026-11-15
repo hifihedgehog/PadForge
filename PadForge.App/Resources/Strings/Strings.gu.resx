@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>મોકલતા પહેલાં ચાલુ DSX શોધતા મોડ માટે</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>શું દેખાય છે</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>મેનૂ ખુલ્લું હોય ત્યારે તેની રિંગ, ગ્રિડ અથવા બાર</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>શિફ્ટ લેયર પકડી રાખ્યું હોય ત્યારે લેયરનું નામ</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>શિફ્ટ લેયર ચાલુ થાય ત્યારે લેયરનું નામ, તે લેયર નક્કી કરે તેટલા સમય માટે</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>પ્રોફાઇલ બદલાય ત્યારે પ્રોફાઇલનું નામ</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>સરનામું કૉપિ કરો</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>સ્ક્રીન પર સ્થાન</value></data>
@@ -2889,6 +2889,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>શિફ્ટ લેયર</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>બેઝ ગોઠવો</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>શિફ્ટ લેયર ફ્લાયઆઉટ અને લેયરની પંક્તિમાં બેઝ લેયરનું નામ, આઇકન અને રંગ.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>શિફ્ટ લેયર ફ્લાયઆઉટ અને લેયરની પંક્તિમાં બેઝ લેયરનું નામ, આઇકન અને રંગ, અને ફ્લાયઆઉટ તેમને કેટલો સમય બતાવે છે.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>લેયરનું નામ</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>નામ</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>આનાથી પકડેલું</value></data>
@@ -2901,6 +2902,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>બેઝ પર જવા દો</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>કંઈ ન કરો</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>મોડ, ઇનપુટનો પ્રકાર, સમય અને રંગ</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>મોડ, ઇનપુટનો પ્રકાર, સમય, ફ્લાયઆઉટ અને રંગ</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>મોડ</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>પકડી રાખો</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>ટૉગલ</value></data>
@@ -2954,6 +2956,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>એક્ટિવેટરનું પોતાનું મેપિંગ પણ ચલાવો</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>ચેક કરેલ હોય ત્યારે, એક્ટિવેટર બટન તેને સ્રોત તરીકે વાપરતી કોઈપણ હરોળને હજુ ચલાવે છે. એક દબાણ લેયર બદલે છે અને બટનનું પોતાનું મેપિંગ પણ ચલાવે છે. ચેક વગર (ડિફોલ્ટ), એક્ટિવેટરનું દબાણ ફક્ત લેયર બદલવામાં વપરાય છે.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>બેઝ પર જવા દો સાથે, આ લેયર જેને મેપ કરતું નથી તે નિયંત્રણો તેમના બેઝ મેપિંગ રાખે છે. કંઈ ન કરો સાથે, લેયર બેઝને સંપૂર્ણ બદલે છે અને તે નિયંત્રણો બંધ રહે છે.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>ફ્લાયઆઉટ</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>લેયર ચાલુ હોય ત્યારે</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 સેકન્ડ માટે</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>ક્યારેય નહીં</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>લેયર ચાલુ હોય ત્યારે ફ્લાયઆઉટને લેયર બદલાય ત્યાં સુધી સ્ક્રીન પર રાખે છે. 2 સેકન્ડ માટે લેયર ચાલુ થાય ત્યારે તેને બતાવે છે, પછી જવા દે છે. ક્યારેય નહીં સાથે, આ લેયર કોઈ ફ્લાયઆઉટ બતાવતું નથી, અને લેયર પૂરું થાય ત્યારે બેઝ પણ કંઈ બતાવતું નથી.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 સેકન્ડ માટે શિફ્ટ લેયર પૂરું થાય ત્યારે બેઝનું નામ બતાવે છે. ક્યારેય નહીં સાથે, બેઝ કોઈ ફ્લાયઆઉટ બતાવતું નથી.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>પરિભ્રમણ શ્રેણી</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>પરિભ્રમણ શ્રેણી સેટ કરો</value></data>

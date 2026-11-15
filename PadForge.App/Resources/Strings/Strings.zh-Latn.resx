@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Shìyòng yú fāsòng qián huì jiǎnchá DSX shìfǒu zài yùnxíng de mózǔ</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Xiǎnshì nèiróng</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Càidān dǎkāi shí de huánxíng, wǎnggé huò tiáo</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ànzhù qiēhuàn céng shí xiǎnshì gāi céng de míngchēng</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Qiēhuàn céng jīhuó shí xiǎnshì gāi céng de míngchēng, chíxù shíjiān yóu gāi céng shèdìng</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Pèizhì wénjiàn gēnghuàn shí xiǎnshì qí míngchēng</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Fùzhì dìzhǐ</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Píngmù wèizhì</value></data>
@@ -2874,6 +2874,7 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift céng</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Pèizhì jīchǔ céng</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Jīchǔ céng zài qiēhuàn céng fúchū kòngjiàn hé céng lièbiǎo zhōng de míngchēng, túbiāo hé yánsè.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Jīchǔ céng zài qiēhuàn céng fúchū kòngjiàn hé céng lièbiǎo zhōng de míngchēng, túbiāo hé yánsè, yǐjí fúchū kòngjiàn xiǎnshì tāmen de shícháng.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Céng míngchēng</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Míngchēng</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Ànzhù jiàn</value></data>
@@ -2886,6 +2887,7 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Huítuì dào jīchǔ céng</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Bù zuò rènhé cāozuò</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Móshì, shūrù lèixíng, shíxù hé yánsè</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Móshì, shūrù lèixíng, shíxù, fúchū kòngjiàn hé yánsè</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Móshì</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Ànzhù</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Qiēhuàn</value></data>
@@ -2939,6 +2941,12 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Tóngshí chùfā chùfāqì zìshēn de yìngshè</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Xuǎnzhòng shí, chùfāqì ànniǔ réng qūdòng yǐ tā wéi láiyuán de rènhé háng. Yí cì ànxià jì qiēhuàn céng, yòu chùfā ànniǔ zìshēn de yìngshè. Wèi xuǎnzhòng (mòrèn) shí, chùfāqì ànxià jǐn yòng yú qiēhuàn céng.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Xuǎnzé Huítuì dào jīchǔ céng shí, cǐ céng wèi yìngshè de kòngjiàn bǎoliú jīchǔ céng de yìngshè. Xuǎnzé Bù zuò rènhé cāozuò shí, cǐ céng wánquán tìdài jīchǔ céng, zhèxiē kòngjiàn bǎochí guānbì.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Fúchū kòngjiàn</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Gāi céng jīhuó qījiān</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 miǎo</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Cóngbù</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Xuǎnzé Gāi céng jīhuó qījiān shí, fúchū kòngjiàn yīzhí xiǎnshì, zhídào céng gēnghuàn. Xuǎnzé 2 miǎo shí, céng jīhuó shí xiǎnshì fúchū kòngjiàn, suíhòu zìdòng xiāoshī. Xuǎnzé Cóngbù shí, cǐ céng bù xiǎnshì fúchū kòngjiàn, gāi céng jiéshù shí jīchǔ céng yě bù xiǎnshì.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Xuǎnzé 2 miǎo shí, qiēhuàn céng jiéshù shí xiǎnshì jīchǔ céng de míngchēng. Xuǎnzé Cóngbù shí, jīchǔ céng bù xiǎnshì fúchū kòngjiàn.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Xuánzhuǎn fànwéi</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Shèzhì xuánzhuǎn fànwéi</value></data>

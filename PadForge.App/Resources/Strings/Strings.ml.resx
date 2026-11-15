@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>അയയ്ക്കുന്നതിന് മുമ്പ് പ്രവർത്തിക്കുന്ന DSX തിരയുന്ന മോഡുകൾക്കായി</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>കാണിക്കുന്നവ</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ഒരു മെനു തുറന്നിരിക്കുമ്പോൾ അതിന്റെ റിംഗ്, ഗ്രിഡ് അല്ലെങ്കിൽ ബാർ</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ഒരു ഷിഫ്റ്റ് ലെയർ പിടിച്ചിരിക്കുമ്പോൾ ആ ലെയറിന്റെ പേര്</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ഒരു ഷിഫ്റ്റ് ലെയർ ഓണാകുമ്പോൾ ആ ലെയർ നിശ്ചയിക്കുന്ന സമയത്തേക്ക് ആ ലെയറിന്റെ പേര്</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>പ്രൊഫൈൽ മാറുമ്പോൾ പ്രൊഫൈലിന്റെ പേര്</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>വിലാസം പകർത്തുക</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>സ്ക്രീനിൽ സ്ഥാപിക്കുക</value></data>
@@ -2864,6 +2864,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>ഷിഫ്റ്റ് ലെയർ</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>അടിസ്ഥാനം ക്രമീകരിക്കുക</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>ഷിഫ്റ്റ് ലെയർ ഫ്ലൈഔട്ടിലും ലെയറുകളുടെ നിരയിലും കാണിക്കുന്ന ബേസ് ലെയറിന്റെ പേര്, ഐക്കൺ, നിറം.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>ഷിഫ്റ്റ് ലെയർ ഫ്ലൈഔട്ടിലും ലെയറുകളുടെ നിരയിലും കാണിക്കുന്ന ബേസ് ലെയറിന്റെ പേര്, ഐക്കൺ, നിറം, ഒപ്പം ഫ്ലൈഔട്ട് അവ എത്ര നേരം കാണിക്കണം എന്നതും.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>ലെയറിന്റെ പേര്</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>പേര്</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>ഇതുപയോഗിച്ച് പിടിക്കുക</value></data>
@@ -2876,6 +2877,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>ബേസിലേക്ക് കടത്തിവിടുക</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>ഒന്നും ചെയ്യരുത്</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>മോഡ്, ഇൻപുട്ട് തരം, സമയക്രമം, നിറം</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>മോഡ്, ഇൻപുട്ട് തരം, സമയക്രമം, ഫ്ലൈഔട്ട്, നിറം</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>മോഡ്</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>അമർത്തിപ്പിടിക്കുക</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>ടോഗിൾ</value></data>
@@ -2929,6 +2931,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>ആക്ടിവേറ്ററിന്റെ സ്വന്തം മാപ്പിംഗും പ്രവർത്തിപ്പിക്കുക</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>ടിക്ക് ചെയ്താൽ, ആക്ടിവേറ്റർ ബട്ടൺ അതിനെ സോഴ്സ് ആയി ഉപയോഗിക്കുന്ന ഏതു വരിയെയും തുടർന്നും നിയന്ത്രിക്കും. ഒരു അമർത്തൽ ലെയർ മാറ്റുകയും ബട്ടണിന്റെ സ്വന്തം മാപ്പിംഗ് പ്രവർത്തിപ്പിക്കുകയും ചെയ്യും. ടിക്ക് ഇല്ലെങ്കിൽ (സ്ഥിരസ്ഥിതി), ആക്ടിവേറ്റർ അമർത്തൽ ലെയർ മാറ്റത്തിന് മാത്രമായി ഉപയോഗിക്കപ്പെടും.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>ബേസിലേക്ക് കടത്തിവിടുക എന്നതിൽ, ഈ ലെയർ മാപ്പ് ചെയ്യാത്ത നിയന്ത്രണങ്ങൾ അവയുടെ ബേസ് മാപ്പിംഗുകൾ നിലനിർത്തും. ഒന്നും ചെയ്യരുത് എന്നതിൽ, ലെയർ ബേസിനെ പൂർണ്ണമായി മാറ്റിസ്ഥാപിക്കുകയും ആ നിയന്ത്രണങ്ങൾ ഓഫായി തുടരുകയും ചെയ്യും.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>ഫ്ലൈഔട്ട്</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>ലെയർ ഓണായിരിക്കുമ്പോൾ</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 സെക്കൻഡ് നേരം</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>ഒരിക്കലുമില്ല</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>ലെയർ ഓണായിരിക്കുമ്പോൾ എന്നത് ലെയർ മാറുന്നതുവരെ ഫ്ലൈഔട്ട് സ്ക്രീനിൽ നിലനിർത്തുന്നു. 2 സെക്കൻഡ് നേരം എന്നത് ലെയർ ഓണാകുമ്പോൾ അത് കാണിക്കുകയും പിന്നീട് സ്വയം മായ്ക്കുകയും ചെയ്യുന്നു. ഒരിക്കലുമില്ല എന്നതിൽ ഈ ലെയർ ഫ്ലൈഔട്ട് കാണിക്കില്ല, ലെയർ അവസാനിക്കുമ്പോൾ അടിസ്ഥാനവും ഒന്നും കാണിക്കില്ല.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 സെക്കൻഡ് നേരം എന്നത് ഒരു ഷിഫ്റ്റ് ലെയർ ഓഫാകുമ്പോൾ അടിസ്ഥാനത്തിന്റെ പേര് കാണിക്കുന്നു. ഒരിക്കലുമില്ല എന്നതിൽ അടിസ്ഥാനം ഫ്ലൈഔട്ട് കാണിക്കില്ല.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>ഭ്രമണ പരിധി</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>ഭ്രമണ പരിധി സജ്ജമാക്കുക</value></data>

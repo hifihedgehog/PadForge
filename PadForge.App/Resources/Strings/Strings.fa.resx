@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>برای مودهایی که پیش از فرستادن دنبال DSX در حال اجرا می‌گردند</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>آنچه نشان داده می‌شود</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>حلقه، جدول یا نوار یک منو تا وقتی باز است</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>نام لایه تا وقتی یک لایه شیفت نگه داشته شده</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>نام لایه هنگام روشن شدن یک لایه شیفت، به مدتی که آن لایه تعیین می‌کند</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>نام پروفایل وقتی پروفایل عوض می‌شود</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>کپی نشانی</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>جای روی صفحه</value></data>
@@ -3090,6 +3090,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>لایه شیفت</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>پیکربندی پایه</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>نام، نماد و رنگ لایه پایه روی پنجره شناور لایه شیفت و در ردیف لایه‌ها.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>نام، نماد و رنگ لایه پایه روی پنجره شناور لایه شیفت و در ردیف لایه‌ها و مدتی که پنجره شناور آن‌ها را نشان می‌دهد.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>نام لایه</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>نام</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>نگه داشتن با</value></data>
@@ -3102,6 +3103,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>رجوع به پایه</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>هیچ کاری نکردن</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>حالت، نوع ورودی، زمان‌بندی و رنگ</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>حالت، نوع ورودی، زمان‌بندی، پنجره شناور و رنگ</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>حالت</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>نگه داشتن</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>تغییر وضعیت</value></data>
@@ -3155,6 +3157,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>اجرای نگاشت خود فعال‌ساز نیز</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>اگر تیک خورده باشد، دکمه فعال‌ساز همچنان هر ردیفی را که از آن به‌عنوان منبع استفاده می‌کند به کار می‌اندازد. یک فشار هم لایه را عوض می‌کند و هم نگاشت خود دکمه را اجرا می‌کند. اگر تیک نخورده باشد (پیش‌فرض)، فشار فعال‌ساز فقط صرف تغییر لایه می‌شود.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>با «رجوع به پایه»، کنترل‌هایی که این لایه نگاشت نکرده، نگاشت‌های پایه خود را حفظ می‌کنند. با «هیچ کاری نکردن»، لایه کاملاً جایگزین پایه می‌شود و آن کنترل‌ها خاموش می‌مانند.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>پنجره شناور</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>تا وقتی لایه روشن است</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>به مدت 2 ثانیه</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>هرگز</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>«تا وقتی لایه روشن است» پنجره شناور را تا تغییر لایه نگه می‌دارد. «به مدت 2 ثانیه» آن را هنگام روشن شدن لایه نشان می‌دهد و بعد رها می‌کند. با «هرگز»، این لایه پنجره شناوری نشان نمی‌دهد و پایه هم وقتی لایه تمام می‌شود چیزی نشان نمی‌دهد.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>«به مدت 2 ثانیه» وقتی یک لایه شیفت خاموش می‌شود نام پایه را نشان می‌دهد. با «هرگز»، پایه پنجره شناوری نشان نمی‌دهد.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>محدوده چرخش</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>تنظیم محدوده چرخش</value></data>

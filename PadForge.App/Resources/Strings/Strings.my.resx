@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>မပို့မီ လည်ပတ်နေသော DSX ကို ရှာသည့် မော့များအတွက်</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>ပြသမည့်အရာ</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>မီနူးဖွင့်ထားစဉ် ၎င်း၏ အဝိုင်း၊ ဇယားကွက် သို့မဟုတ် ဘား</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Shift အလွှာကို ဖိထားစဉ် ထိုအလွှာ၏ အမည်</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Shift အလွှာ ဖွင့်လာသည့်အခါ ထိုအလွှာ သတ်မှတ်ထားသည့် ကြာချိန်အတွင်း ထိုအလွှာ၏ အမည်</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ပရိုဖိုင် ပြောင်းသည့်အခါ ပရိုဖိုင်၏ အမည်</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>လိပ်စာ ကူးယူရန်</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>မျက်နှာပြင်ပေါ်ရှိ နေရာ</value></data>
@@ -2894,6 +2894,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift အလွှာ</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>အခြေခံ ပြင်ဆင်သတ်မှတ်</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Shift အလွှာ ပေါ်လာကွက်နှင့် အလွှာများ အတန်းတွင် အခြေခံအလွှာ၏ အမည်၊ အိုင်ကွန်နှင့် အရောင်။</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Shift အလွှာ ပေါ်လာကွက်နှင့် အလွှာများ အတန်းတွင် အခြေခံအလွှာ၏ အမည်၊ အိုင်ကွန်နှင့် အရောင်၊ ထို့ပြင် ပေါ်လာကွက်က ၎င်းတို့ကို ပြသမည့် ကြာချိန်။</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>အလွှာအမည်</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>အမည်</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>ဖိထားရမည့်အရာ</value></data>
@@ -2906,6 +2907,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>အခြေခံအလွှာအတိုင်း</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>ဘာမှ မလုပ်ရန်</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>မုဒ်၊ အဝင်အမျိုးအစား၊ အချိန်နှင့် အရောင်</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>မုဒ်၊ အဝင်အမျိုးအစား၊ အချိန်၊ ပေါ်လာကွက်နှင့် အရောင်</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>မုဒ်</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>ဖိထား</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>အဖွင့်အပိတ်</value></data>
@@ -2959,6 +2961,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>အသက်သွင်းခလုတ်၏ ကိုယ်ပိုင်မက်ပင်းကိုလည်း လုပ်ဆောင်</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>အမှန်ခြစ်ထားလျှင် အသက်သွင်းခလုတ်သည် ၎င်းကို ရင်းမြစ်အဖြစ် သုံးသော အတန်းမှန်သမျှကို ဆက်မောင်းနှင်သည်။ တစ်ချက်နှိပ်ခြင်းဖြင့် အလွှာပြောင်းပြီး ခလုတ်၏ ကိုယ်ပိုင်မက်ပင်းကိုလည်း လုပ်ဆောင်သည်။ အမှန်ခြစ်မထားလျှင် (မူလ) အသက်သွင်းခလုတ် နှိပ်မှုကို အလွှာပြောင်းရန်သာ အသုံးပြုသည်။</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>“အခြေခံအလွှာအတိုင်း” ဖြင့် ဤအလွှာ မက်ပ်မလုပ်ထားသော ထိန်းချုပ်မှုများသည် ၎င်းတို့၏ အခြေခံ မက်ပင်းများကို ဆက်ထားသည်။ “ဘာမှ မလုပ်ရန်” ဖြင့် အလွှာသည် အခြေခံကို လုံးဝ အစားထိုးပြီး ထိုထိန်းချုပ်မှုများ ပိတ်ထားသည်။</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>ပေါ်လာကွက်</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>အလွှာ ဖွင့်ထားစဉ်</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 စက္ကန့်ကြာ</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>ဘယ်တော့မှ</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>“အလွှာ ဖွင့်ထားစဉ်” သည် အလွှာ ပြောင်းသည်အထိ ပေါ်လာကွက်ကို ဆက်ပြထားသည်။ “2 စက္ကန့်ကြာ” သည် အလွှာ ဖွင့်သည့်အခါ ၎င်းကို ပြပြီးနောက် အလိုအလျောက် ပျောက်သွားစေသည်။ “ဘယ်တော့မှ” ဖြင့် ဤအလွှာသည် ပေါ်လာကွက် မပြဘဲ အလွှာ ပြီးဆုံးသည့်အခါ အခြေခံ၏ ပေါ်လာကွက်လည်း မပြပါ။</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>“2 စက္ကန့်ကြာ” သည် Shift အလွှာ ပြီးဆုံးသည့်အခါ အခြေခံ၏ အမည်ကို ပြသည်။ “ဘယ်တော့မှ” ဖြင့် အခြေခံသည် ပေါ်လာကွက် မပြပါ။</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>လည်ပတ်မှု အပိုင်းအခြား</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>လည်ပတ်မှု အပိုင်းအခြား သတ်မှတ်ရန်</value></data>

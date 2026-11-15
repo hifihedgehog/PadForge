@@ -23,8 +23,8 @@ public sealed class EmptySlotClipboardTests : IDisposable
     {
         Rows = [new MappingRow { Target = "ButtonA", Sources = [new MappingSource { Descriptor = "Button 1" }] }],
         ShiftActivators = [new ShiftActivator { LayerMask = "Shift1", Mode = "Passive", LayerName = "Held" }],
-        BaseLayerName = "Base name", BaseColor = "#FF0000", BaseIcon = "base",
-        Menus = [new MenuDefinitionEntry { MenuId = 4, Name = "Menu" }],
+        BaseLayerName = "Base name", BaseColor = "#FF0000", BaseIcon = "base", BaseFlyout = LayerFlyout.Off,
+        Menus =[new MenuDefinitionEntry { MenuId = 4, Name = "Menu" }],
         RumbleAudio = new RumbleAudioConfig { Enabled = true, EndpointId = "explicit-endpoint" },
         SocdMode = "Neutral", SocdPairs = "DPadLeft|DPadRight",
         KeepAwakeEnabled = true, KeepAwakeAxis = "LeftThumbX", KeepAwakeDeflection = 42, KeepAwakeMotion = true
@@ -80,6 +80,7 @@ public sealed class EmptySlotClipboardTests : IDisposable
             Assert.Equal("", got.BaseLayerName);
             Assert.Equal("", got.BaseColor);
             Assert.Equal("", got.BaseIcon);
+            Assert.Equal("", got.BaseFlyout);
         }
         else if (section == "menus") Assert.Empty(got.Menus);
         else
@@ -111,7 +112,7 @@ public sealed class EmptySlotClipboardTests : IDisposable
     static void AssertAuthored(string section)
     {
         var got = SettingsManager.SlotMappingSets[1];
-        if (section == "shift") Assert.Single(got.ShiftActivators);
+        if (section == "shift") { Assert.Single(got.ShiftActivators); Assert.Equal(LayerFlyout.Off, got.BaseFlyout); }
         else if (section == "menus") Assert.Single(got.Menus);
         else { Assert.True(got.KeepAwakeEnabled); Assert.NotNull(got.RumbleAudio); }
     }

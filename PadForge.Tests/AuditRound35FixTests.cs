@@ -748,11 +748,13 @@ namespace PadForge.Tests
         /// The Base layer's appearance trio was added after that note and was
         /// the next omission of the same kind: a slot whose only authoring was
         /// renaming Base, or giving it a color or icon, read as empty and was
-        /// dropped.</summary>
+        /// dropped. How long Base's flyout shows (#581) is the trio's fourth
+        /// member.</summary>
         [Theory]
         [InlineData("BaseLayerName")]
         [InlineData("BaseColor")]
         [InlineData("BaseIcon")]
+        [InlineData("BaseFlyout")]
         public void MappingSetWithOnlyABaseLayerEdit_CountsAsAuthored(string property)
         {
             var set = new MappingSet();

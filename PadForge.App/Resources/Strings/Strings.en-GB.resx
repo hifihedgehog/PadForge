@@ -593,4 +593,6 @@
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Ready-made profiles for a whole genre. Pick one, assign any controller and play.</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Documentation for the Wii pairing ceremony, the speaker ADPCM, the sideways and upright Wii Remote orientation, the stick-gate model and its storage format and the gyro axis convention. Read as documentation only, no GPL code ships.</value></data>
   <data name="About_OpenRgbDesc" xml:space="preserve"><value>Detection rules, report frames, LED tables and key layouts for the lighting families PadForge drives directly, ported and generated from OpenRGB, and the DualSense and DualShock 4 lightbar bytes.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>The Base layer's name, icon and colour on the Shift Layer Flyout and in the row of layers, and how long the flyout shows them.</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mode, input kind, timing, flyout and colour</value></data>
 </root>

@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Այն մոտերուն համար, որոնք ղրկելէ առաջ աշխատող DSX մը կը փնտռեն</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ինչ կը ցուցադրուի</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ցանկի մը օղակը, ցանցը կամ գօտին, մինչ ան բաց է</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Շերտին անունը, մինչ լրացուցիչ շերտ մը սեղմած կը պահուի</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Շերտին անունը, երբ լրացուցիչ շերտ մը գործօն դառնայ, այն տեւողութեամբ, որ այդ շերտը կը սահմանէ</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Փրոֆիլին անունը, երբ փրոֆիլը կը փոխուի</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Պատճէնել հասցէն</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Տեղը պաստառին վրայ</value></data>
@@ -2863,6 +2863,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Լրացուցիչ շերտ</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Կարգաւորել հիմնական շերտը</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Հիմնական շերտին անունը, պատկերանշանը եւ գոյնը՝ շերտի ելնող պատուհանին վրայ եւ շերտերու շարքին մէջ։</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Հիմնական շերտին անունը, պատկերանշանը եւ գոյնը՝ շերտի ելնող պատուհանին վրայ եւ շերտերու շարքին մէջ, եւ թէ որքան ատեն ելնող պատուհանը զանոնք կը ցուցադրէ։</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Շերտի անուն</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Անուն</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Սեղմած պահել</value></data>
@@ -2875,6 +2876,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Անցնիլ հիմնականին</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ոչինչ ընել</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Կերպ, մուտքի տեսակ, ժամանակաչափում եւ գոյն</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Կերպ, մուտքի տեսակ, ժամանակաչափում, ելնող պատուհան եւ գոյն</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Կերպ</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Սեղմած պահել</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Փոխարկում</value></data>
@@ -2928,6 +2930,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Գործել նաեւ գործարկիչի սեփական համապատասխանեցումը</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Երբ նշուած է, գործարկիչ կոճակը կը շարունակէ վարել զայն աղբիւր գործածող որեւէ տող։ Մէկ սեղմումով թէ՛ շերտը կը փոխուի, թէ՛ կոճակի սեփական համապատասխանեցումը կը գործէ։ Երբ նշուած չէ (լռելեայն), գործարկիչի սեղմումը կը գործածուի միայն շերտը փոխելու համար։</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>«Անցնիլ հիմնականին» ընտրանքով այն կառավարները, որոնք այս շերտը չի համապատասխանեցներ, կը պահեն իրենց հիմնական համապատասխանեցումները։ «Ոչինչ ընել» ընտրանքով շերտը ամբողջովին կը փոխարինէ հիմնականը, եւ այդ կառավարները անջատ կը մնան։</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Ելնող պատուհան</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Մինչ շերտը գործօն է</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 երկվայրկեան</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Երբեք</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>«Մինչ շերտը գործօն է» ընտրանքով ելնող պատուհանը բաց կը մնայ, մինչեւ որ շերտը փոխուի։ «2 երկվայրկեան» ընտրանքով ան կը ցուցադրուի, երբ շերտը գործօն դառնայ, ապա ինքնիրեն կը փակուի։ «Երբեք» ընտրանքով այս շերտը ելնող պատուհան ցոյց չի տար, եւ հիմնականն ալ ցոյց չի տար, երբ շերտը աւարտի։</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>«2 երկվայրկեան» ընտրանքով ելնող պատուհանը հիմնականին անունը կը ցուցադրէ, երբ լրացուցիչ շերտ մը աւարտի։ «Երբեք» ընտրանքով հիմնականը ելնող պատուհան ցոյց չի տար։</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Պտոյտի միջակայք</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Կարգաւորել պտոյտի միջակայքը</value></data>

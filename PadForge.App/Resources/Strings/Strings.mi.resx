@@ -1222,6 +1222,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Hoki ki te Taketake</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Kaua e mahi</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Aratau, momo tāuru, wā me te tae</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Aratau, momo tāuru, wā, flyout me te tae</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Aratau</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Pupuri</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Me whai ingoa te paparanga.</value></data>
@@ -1967,6 +1968,7 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Kāore i kitea he matapihi tuwhera kē.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tango {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Te ingoa, te tohu me te tae o te paparanga Taketake i te Shift Layer Flyout me te rārangi paparanga.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Te ingoa, te tohu me te tae o te paparanga Taketake i te Shift Layer Flyout me te rārangi paparanga, me te roa e whakaaturia ai ēnei e te flyout.</value></data>
   <data name="ManageProfiles_Imported" xml:space="preserve"><value>Kua kawemaitia</value></data>
   <data name="ManageProfiles_ImportFromDevice" xml:space="preserve"><value>Kawemai i tētahi pūrere kua hono</value></data>
   <data name="Telemetry_Formats_ByteOrder" xml:space="preserve"><value>Raupapa paita</value></data>
@@ -1980,4 +1982,10 @@
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>He putanga hou ake o ēnei kōtaha kua kawemaitia kei te Steam Workshop. Kawemai anō i a rātou mai i Tiki kōtaha kia riro mai ngā panoni.</value></data>
   <data name="Pad_Stick_Speed" xml:space="preserve"><value>Tere</value></data>
   <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>I te wā e kā ana te paparanga</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Mō ngā hēkona 2</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Kore rawa</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Ki te I te wā e kā ana te paparanga, ka noho tonu te flyout kia huri rā anō te paparanga. Ki te Mō ngā hēkona 2, ka whakaaturia ina kā te paparanga, kātahi ka ngaro noa. Ki te Kore rawa, kāore he flyout mō tēnei paparanga, ā, kāore hoki te Base e whakaatu flyout ina mutu te paparanga.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Ki te Mō ngā hēkona 2, ka whakaaturia te ingoa o te Base ina mutu tētahi paparanga Shift. Ki te Kore rawa, kāore te Base e whakaatu flyout.</value></data>
 </root>

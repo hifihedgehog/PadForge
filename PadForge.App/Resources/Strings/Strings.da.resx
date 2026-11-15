@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Til mods, der leder efter en kørende DSX, før de sender</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Hvad der vises</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menuens ring, gitter eller bjælke, mens den er åben</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Lagets navn, mens et skiftelag holdes</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Lagets navn, når et skiftelag slås til, i den tid laget angiver</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profilens navn, når profilen skifter</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopier adresse</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Placering på skærmen</value></data>
@@ -3090,6 +3090,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Skiftelag</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfigurer Basis</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Navn, ikon og farve for laget Basis på flyoutmenuen til skiftelag og i rækken af lag.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Navn, ikon og farve for laget Basis på flyoutmenuen til skiftelag og i rækken af lag, og hvor længe flyoutmenuen viser dem.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Lagnavn</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Navn</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Holdes med</value></data>
@@ -3102,6 +3103,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Gå videre til Basis</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Gør ingenting</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Tilstand, inputtype, timing og farve</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Tilstand, inputtype, timing, pop op-panel og farve</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Tilstand</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Hold</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Skift</value></data>
@@ -3155,6 +3157,12 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Udløs også aktivatorens egen tildeling</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Når den er markeret, styrer aktivatorknappen stadig alle rækker, der bruger den som kilde. Ét tryk både skifter lag og udløser knappens egen tildeling. Når den ikke er markeret (standard), bruges aktivatortrykket kun til lagskiftet.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Med Gå videre til Basis beholder kontroller, som dette lag ikke tildeler, deres tildelinger fra Basis. Med Gør ingenting erstatter laget Basis helt, og disse kontroller forbliver slået fra.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Pop op-panel</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Mens laget er slået til</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>I 2 sekunder</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Aldrig</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Mens laget er slået til holder pop op-panelet oppe, indtil laget skifter. I 2 sekunder viser det, når laget slås til, og lader det så gå. Med Aldrig viser dette lag intet pop op-panel, og Basis viser heller intet, når laget slutter.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>I 2 sekunder viser Basis' navn, når et skiftelag slutter. Med Aldrig viser Basis intet pop op-panel.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rotationsområde</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Indstil rotationsområde</value></data>

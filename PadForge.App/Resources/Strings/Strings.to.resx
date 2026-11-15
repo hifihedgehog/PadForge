@@ -810,4 +810,10 @@
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} ʻi he {1} ʻoku fakaʻā</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>ʻOku ʻi ai ha ngaahi tatau foʻou ange ʻo e ngaahi profile ko ʻeni ne hū mai ʻi he Steam Workshop. Toe hū mai kinautolu mei he Maʻu ha ngaahi profile ke maʻu ʻa e ngaahi liliu.</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Ngaahi fakafehokotaki</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Lolotonga ʻoku ngāue ʻa e laea</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>ʻI he sekoni ʻe 2</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>ʻIkai ʻaupito</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>ʻOku tauhi ʻe he Lolotonga ʻoku ngāue ʻa e laea ʻa e Flyout kae ʻoua kuo liliu ʻa e laea. ʻOku fakahā ʻe he ʻI he sekoni ʻe 2 ʻa e Flyout ʻi he kamata ngāue ʻa e laea pea mole leva ia. ʻI he ʻIkai ʻaupito, ʻoku ʻikai ha Flyout ʻa e laea ni, pea ʻoku ʻikai fakahā ʻe Base ha Flyout ʻi he ngata ʻa e laea.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>ʻOku fakahā ʻe he ʻI he sekoni ʻe 2 ʻa e hingoa ʻo Base ʻi he ngata ha laea. ʻI he ʻIkai ʻaupito, ʻoku ʻikai ha Flyout ʻa Base.</value></data>
 </root>

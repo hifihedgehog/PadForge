@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>بۆ ئەو مۆدانەی پێش ناردن دەگەڕێن بزانن DSX کاردەکات یان نا</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>ئەوەی پیشان دەدرێت</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>بازنە، تۆڕ یان شریتی مێنیوێک کاتێک کراوەیە</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ناوی چینەکە کاتێک چینێکی شیفت ڕاگیراوە</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ناوی چینەکە کاتێک چینێکی شیفت چالاک دەبێت، بۆ ئەو ماوەیەی ئەو چینە دیاری دەکات</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ناوی پرۆفایلەکە کاتێک پرۆفایل دەگۆڕێت</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>لەبەرگرتنەوەی ناونیشان</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>شوێن لەسەر شاشە</value></data>
@@ -2886,6 +2886,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>چینی شیفت</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>ڕێکخستنی بنچینە</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>ناو، ئایکۆن و ڕەنگی چینی بنچینە لە فلایئاوتی چینی شیفت و لە ڕیزی چینەکاندا.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>ناو، ئایکۆن و ڕەنگی چینی بنچینە لە فلایئاوتی چینی شیفت و لە ڕیزی چینەکاندا، و ئەوەی فلایئاوتەکە بۆ چەند ماوە پیشانیان دەدات.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>ناوی چین</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>ناو</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>ڕاگیراو بە</value></data>
@@ -2898,6 +2899,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>پەیڕەوی چینی بنچینە</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>هیچ مەکە</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>دۆخ، جۆری تێخستن، کات و ڕەنگ</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>دۆخ، جۆری تێخستن، کات، پەنجەرەی بچووک و ڕەنگ</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>دۆخ</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>ڕاگرتن</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>گۆڕین</value></data>
@@ -2951,6 +2953,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>بەستنەوەی خودی چالاککەریش کار بکات</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>کاتێک دیاری کرابێت، دوگمەی چالاککەر هێشتا هەر ڕیزێک دەجووڵێنێت کە وەک سەرچاوە بەکاری دەهێنێت. یەک داگرتن هەم چین دەگۆڕێت و هەم بەستنەوەی خودی دوگمەکە کارا دەکات. کاتێک دیاری نەکرابێت (بنەڕەت)، داگرتنی چالاککەر تەنها بۆ گۆڕینی چین بەکار دەهێنرێت.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>لەگەڵ پەیڕەوی چینی بنچینە، ئەو کۆنترۆڵانەی ئەم چینە نایانبەستێتەوە بەستنەوەکانی بنچینە دەهێڵنەوە. لەگەڵ هیچ مەکە، چینەکە بە تەواوی جێگەی بنچینە دەگرێتەوە و ئەو کۆنترۆڵانە کوژاوە دەمێننەوە.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>پەنجەرەی بچووک</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>تا چینەکە چالاکە</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>بۆ ماوەی 2 چرکە</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>هەرگیز</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>لەگەڵ تا چینەکە چالاکە، پەنجەرە بچووکەکە دەمێنێتەوە تا چینەکە دەگۆڕێت. لەگەڵ بۆ ماوەی 2 چرکە، کاتێک چینەکە چالاک دەبێت پیشان دەدرێت و پاشان خۆی لادەچێت. لەگەڵ هەرگیز، ئەم چینە هیچ پەنجەرە بچووکێک پیشان نادات و بنچینەش کاتێک چینەکە کۆتایی دێت هیچ پیشان نادات.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>لەگەڵ بۆ ماوەی 2 چرکە، کاتێک چینێکی شیفت کۆتایی دێت ناوی بنچینە پیشان دەدرێت. لەگەڵ هەرگیز، بنچینە هیچ پەنجەرە بچووکێک پیشان نادات.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>مەودای سووڕانەوە</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>ڕێکخستنی مەودای سووڕانەوە</value></data>

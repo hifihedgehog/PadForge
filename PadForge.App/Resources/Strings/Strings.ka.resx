@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>მოდებისთვის, რომლებიც გაგზავნამდე გაშვებულ DSX-ს ეძებენ</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>რა ჩანს</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>მენიუს რგოლი, ბადე ან ზოლი, სანამ ის ღიაა</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>შრის სახელი, სანამ Shift-შრე დაჭერილია</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>შრის სახელი, როცა Shift-შრე ირთვება, იმ დროის განმავლობაში, რომელსაც ეს შრე განსაზღვრავს</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>პროფილის სახელი, როცა პროფილი იცვლება</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>მისამართის კოპირება</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>ადგილი ეკრანზე</value></data>
@@ -2897,6 +2897,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift შრე</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>ძირითადის კონფიგურაცია</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>ძირითადი შრის სახელი, ხატულა და ფერი Shift-შრის ამომხტარ პანელზე და შრეების რიგში.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>ძირითადი შრის სახელი, ხატულა და ფერი Shift-შრის ამომხტარ პანელზე და შრეების რიგში, ასევე ის, რამდენ ხანს აჩვენებს მათ ამომხტარი პანელი.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>შრის სახელი</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>სახელი</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>ჭერა ამით</value></data>
@@ -2909,6 +2910,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>გადასვლა ძირითადზე</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>არაფრის გაკეთება</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>რეჟიმი, შეყვანის სახეობა, დრო და ფერი</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>რეჟიმი, შეყვანის სახეობა, დრო, ამომხტარი პანელი და ფერი</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>რეჟიმი</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>დაჭერილად ყოფნა</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>გადართვა</value></data>
@@ -2962,6 +2964,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>გამშვების საკუთარი მიბმაც გააქტიურდეს</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>მონიშვნისას გამშვები ღილაკი კვლავ აკონტროლებს ყველა მწკრივს, რომელიც მას წყაროდ იყენებს. ერთი დაჭერა ცვლის შრეს და ამუშავებს ღილაკის საკუთარ მიბმასაც. მონიშვნის გარეშე (ნაგულისხმევი) გამშვების დაჭერას მხოლოდ შრის შეცვლა შთანთქავს.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>„გადასვლა ძირითადზე“ რეჟიმში კონტროლები, რომლებსაც ეს შრე არ მიაბამს, თავის ძირითადი შრის მიბმებს ინარჩუნებს. „არაფრის გაკეთება“ რეჟიმში შრე ძირითადს მთლიანად ცვლის და ეს კონტროლები გამორთული რჩება.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>ამომხტარი პანელი</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>სანამ შრე ჩართულია</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 წამით</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>არასოდეს</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>„სანამ შრე ჩართულია“ ამომხტარ პანელს ტოვებს ეკრანზე, სანამ შრე არ შეიცვლება. „2 წამით“ აჩვენებს მას შრის ჩართვისას და შემდეგ თავისით ხსნის. „არასოდეს“ რეჟიმში ამ შრეს პანელი არ აქვს და ძირითადიც არაფერს აჩვენებს შრის დასრულებისას.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>„2 წამით“ აჩვენებს ძირითადის სახელს, როცა Shift-შრე მთავრდება. „არასოდეს“ რეჟიმში ძირითადი ამომხტარ პანელს არ აჩვენებს.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>ბრუნვის დიაპაზონი</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>ბრუნვის დიაპაზონის დაყენება</value></data>

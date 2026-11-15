@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Moddeille, jotka etsivät käynnissä olevaa DSX-ohjelmaa ennen lähettämistä</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Mitä näytetään</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Valikon rengas, ruudukko tai palkki sen ollessa auki</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Kerroksen nimi, kun vaihtokerrosta pidetään painettuna</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Kerroksen nimi, kun vaihtokerros kytkeytyy päälle, sen ajan, jonka kerros määrittää</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profiilin nimi, kun profiili vaihtuu</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopioi osoite</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Aseta näytölle</value></data>
@@ -3090,6 +3090,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Vaihtokerros</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Määritä peruskerros</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Peruskerroksen nimi, kuvake ja väri vaihtokerroksen ponnahdusikkunassa ja kerrosten rivillä.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Peruskerroksen nimi, kuvake ja väri vaihtokerroksen ponnahdusikkunassa ja kerrosten rivillä sekä se, kuinka kauan ponnahdusikkuna näyttää ne.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Kerroksen nimi</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nimi</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Pito syötteellä</value></data>
@@ -3102,6 +3103,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Päästä läpi peruskerrokseen</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Älä tee mitään</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Tila, syötteen laji, ajoitus ja väri</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Tila, syötteen laji, ajoitus, ponnahdusikkuna ja väri</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Tila</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Pito</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Vaihto</value></data>
@@ -3155,6 +3157,12 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Laukaise myös aktivoijan oma määritys</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Kun valittuna, aktivoijapainike ohjaa edelleen jokaista riviä, joka käyttää sitä lähteenä. Yksi painallus sekä vaihtaa kerroksen että laukaisee painikkeen oman määrityksen. Kun ei valittuna (oletus), aktivoijan painallus käytetään vain kerroksen vaihtoon.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Valinnalla Päästä läpi peruskerrokseen ohjauselementit, joita tämä kerros ei määritä, säilyttävät peruskerroksen määritykset. Valinnalla Älä tee mitään kerros korvaa peruskerroksen kokonaan ja nämä ohjauselementit pysyvät pois päältä.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Ponnahdusikkuna</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Kun kerros on päällä</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 sekunnin ajan</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Ei koskaan</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Valinta Kun kerros on päällä pitää ponnahdusikkunan näkyvissä, kunnes kerros vaihtuu. Valinta 2 sekunnin ajan näyttää sen, kun kerros kytkeytyy päälle, ja päästää sen sitten pois. Valinnalla Ei koskaan tämä kerros ei näytä ponnahdusikkunaa, eikä peruskerroskaan näytä sitä kerroksen päättyessä.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Valinta 2 sekunnin ajan näyttää peruskerroksen nimen, kun vaihtokerros päättyy. Valinnalla Ei koskaan peruskerros ei näytä ponnahdusikkunaa.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Kiertokulma</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Aseta kiertokulma</value></data>

@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>ከመላካቸው በፊት የሚሠራ DSX ለሚፈልጉ ሞዶች</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>የሚታየው</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ምናሌ ክፍት ሆኖ ሳለ ቀለበቱ፣ ፍርግርጉ ወይም አሞሌው</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>የሺፍት ንብርብር ተጭኖ ሳለ የንብርብሩ ስም</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>የሺፍት ንብርብር ሲበራ፣ ያ ንብርብር ለወሰነው ጊዜ የንብርብሩ ስም</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>መገለጫው ሲቀየር የመገለጫው ስም</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>አድራሻ ቅዳ</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>በማያ ገጽ ላይ ያለ ቦታ</value></data>
@@ -2862,6 +2862,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>የመቀየሪያ ንብርብር</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>መሠረትን አዋቅር</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>በሺፍት ንብርብር ብቅ-ባዩ እና በንብርብሮች ረድፍ ላይ የመሠረት ንብርብሩ ስም፣ አዶ እና ቀለም።</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>በሺፍት ንብርብር ብቅ-ባዩ እና በንብርብሮች ረድፍ ላይ የመሠረት ንብርብሩ ስም፣ አዶ እና ቀለም፣ እንዲሁም ብቅ-ባዩ እነዚህን ለምን ያህል ጊዜ እንደሚያሳይ።</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>የንብርብር ስም</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>ስም</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>የሚያዘው በ</value></data>
@@ -2874,6 +2875,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>ወደ መሠረት ይለፍ</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>ምንም አታድርግ</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>ሁነታ፣ የግብዓት ዓይነት፣ ጊዜ እና ቀለም</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>ሁነታ፣ የግብዓት ዓይነት፣ ጊዜ፣ ብቅ-ባይ እና ቀለም</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>ሁነታ</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>ተጭኖ መያዝ</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>ቀያይር</value></data>
@@ -2927,6 +2929,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>የአንቂውን የራሱን ማዛመጃም ተግብር</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>ምልክት ሲደረግበት፣ የአንቂው አዝራር እንደ ምንጭ የሚጠቀመውን ማንኛውንም ረድፍ አሁንም ይነዳል። አንድ መጫን ንብርብሩንም ይቀይራል የአዝራሩንም ማዛመጃ ይተገብራል። ምልክት ሳይደረግበት (ነባሪ)፣ የአንቂው መጫን ለንብርብር መቀየር ብቻ ይውላል።</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>በ«ወደ መሠረት ይለፍ»፣ ይህ ንብርብር ያላዛመዳቸው መቆጣጠሪያዎች የመሠረት ማዛመጃዎቻቸውን ይይዛሉ። በ«ምንም አታድርግ»፣ ንብርብሩ መሠረትን ሙሉ በሙሉ ይተካል፣ እነዚያ መቆጣጠሪያዎችም ጠፍተው ይቆያሉ።</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>ብቅ-ባይ</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>ንብርብሩ በርቶ ሳለ</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>ለ2 ሰከንድ</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>በጭራሽ</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>«ንብርብሩ በርቶ ሳለ» ንብርብሩ እስኪቀየር ድረስ ብቅ-ባዩን በማያ ገጹ ላይ ያቆየዋል። «ለ2 ሰከንድ» ንብርብሩ ሲበራ ያሳየዋል፣ ከዚያም በራሱ እንዲጠፋ ይተወዋል። በ«በጭራሽ»፣ ይህ ንብርብር ብቅ-ባይ አያሳይም፣ ንብርብሩ ሲያበቃም መሠረት ብቅ-ባይ አያሳይም።</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>«ለ2 ሰከንድ» የሺፍት ንብርብር ሲያበቃ የመሠረትን ስም ያሳያል። በ«በጭራሽ»፣ መሠረት ብቅ-ባይ አያሳይም።</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>የማዞሪያ ክልል</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>የማዞሪያ ክልል አዘጋጅ</value></data>

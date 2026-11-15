@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>යැවීමට පෙර ධාවනය වන DSX එකක් සොයන මොඩ් සඳහා</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>පෙන්වන දේ</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>මෙනුවක් විවෘතව ඇති අතරතුර එහි වළල්ල, ජාලකය හෝ තීරුව</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>මාරු ස්ථරයක් ඔබාගෙන සිටින අතරතුර එම ස්ථරයේ නම</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>මාරු ස්ථරයක් ක්‍රියාත්මක වන විට, එම ස්ථරය සකසන කාලය සඳහා එම ස්ථරයේ නම</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>පැතිකඩ මාරු වන විට පැතිකඩෙහි නම</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>ලිපිනය පිටපත් කරන්න</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>තිරය මත ස්ථානය</value></data>
@@ -2859,6 +2859,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>මාරු ස්ථරය</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>මූලික වින්‍යාස කරන්න</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>මාරු ස්ථර උත්පතනයේ සහ ස්ථර පේළියේ මූලික ස්ථරයේ නම, නිරූපකය සහ වර්ණය.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>මාරු ස්ථර උත්පතනයේ සහ ස්ථර පේළියේ මූලික ස්ථරයේ නම, නිරූපකය සහ වර්ණය, සහ උත්පතනය ඒවා කොපමණ කාලයක් පෙන්වන්නේද යන්න.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>ස්ථරයේ නම</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>නම</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>ඔබාගෙන සිටින්නේ</value></data>
@@ -2871,6 +2872,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>මූලිකයට යොමු කරන්න</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>කිසිවක් නොකරන්න</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>ප්‍රකාරය, ආදාන වර්ගය, කාල නිර්ණය සහ වර්ණය</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>ප්‍රකාරය, ආදාන වර්ගය, කාල නිර්ණය, උත්පතනය සහ වර්ණය</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>ප්‍රකාරය</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>ඔබාගෙන සිටීම</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>ටොගල්</value></data>
@@ -2924,6 +2926,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>සක්‍රියකාරකයේම සිතියම්ගත කිරීමද ක්‍රියාත්මක කරන්න</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>සලකුණු කළ විට, සක්‍රියකාරක බොත්තම එය ප්‍රභවයක් ලෙස භාවිත කරන ඕනෑම පේළියක් තවමත් ධාවනය කරයි. එක් එබීමකින් ස්ථරය වෙනස් වන අතර බොත්තමේම සිතියම්ගත කිරීමද ක්‍රියාත්මක වේ. සලකුණු නොකළ විට (පෙරනිමි), සක්‍රියකාරක එබීම භාවිත වන්නේ ස්ථරය වෙනස් කිරීමට පමණි.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>“මූලිකයට යොමු කරන්න” සමඟ, මෙම ස්ථරය සිතියම්ගත නොකරන පාලන ඒවායේ මූලික සිතියම්ගත කිරීම් රඳවා ගනී. “කිසිවක් නොකරන්න” සමඟ, ස්ථරය මූලිකය සම්පූර්ණයෙන්ම ප්‍රතිස්ථාපනය කරන අතර එම පාලන අක්‍රියව පවතී.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>උත්පතනය</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>ස්ථරය ක්‍රියාත්මකව ඇති තාක්</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>තත්පර 2ක් සඳහා</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>කිසිවිටෙක</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>“ස්ථරය ක්‍රියාත්මකව ඇති තාක්” ස්ථරය වෙනස් වන තෙක් උත්පතනය තිරය මත රඳවා තබයි. “තත්පර 2ක් සඳහා” ස්ථරය ක්‍රියාත්මක වන විට එය පෙන්වා, පසුව එය ඉබේම ඉවත් වීමට ඉඩ දෙයි. “කිසිවිටෙක” සමඟ, මෙම ස්ථරය කිසිදු උත්පතනයක් නොපෙන්වන අතර ස්ථරය අවසන් වන විට මූලිකය ද එකක් නොපෙන්වයි.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>“තත්පර 2ක් සඳහා” මාරු ස්ථරයක් අවසන් වන විට මූලිකයේ නම පෙන්වයි. “කිසිවිටෙක” සමඟ, මූලිකය කිසිදු උත්පතනයක් නොපෙන්වයි.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>භ්‍රමණ පරාසය</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>භ්‍රමණ පරාසය සකසන්න</value></data>

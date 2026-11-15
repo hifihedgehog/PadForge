@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Vir mods wat soek na 'n lopende DSX voordat hulle stuur</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Wat wys</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Die ring, rooster of balk van 'n kieslys terwyl dit oop is</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Die laag se naam terwyl 'n skuiflaag vasgehou word</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Die laag se naam wanneer 'n skuiflaag aangaan, vir die tyd wat daardie laag instel</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Die profiel se naam wanneer die profiel verander</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopieer adres</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Plek op die skerm</value></data>
@@ -2778,6 +2778,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift-laag</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Stel basis op</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Die basislaag se naam, ikoon en kleur op die skuiflaag-opsteller en in die ry van lae.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Die basislaag se naam, ikoon en kleur op die skuiflaag-opsteller en in die ry van lae, en hoe lank die flyout dit wys.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Laagnaam</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Naam</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Vasgehou met</value></data>
@@ -2790,6 +2791,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Val terug na basis</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Doen niks</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modus, invoersoort, tydsberekening en kleur</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Modus, invoersoort, tydsberekening, flyout en kleur</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modus</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Hou</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Wissel</value></data>
@@ -2843,6 +2845,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Vuur ook die aktiveerder se eie toewysing</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Wanneer afgemerk, dryf die aktiveerknoppie steeds enige ry aan wat dit as bron gebruik. Een druk verander die laag en vuur die knoppie se eie toewysing. Wanneer nie afgemerk nie (verstek), word die aktiveerderdruk net deur die laagverandering verbruik.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Met Val terug na basis behou kontroles wat hierdie laag nie karteer nie hul basiskarteringe. Met Doen niks vervang die laag die basis heeltemal en bly daardie kontroles af.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Terwyl die laag aan is</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Vir 2 sekondes</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Nooit</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Terwyl die laag aan is hou die flyout op die skerm totdat die laag verander. Vir 2 sekondes wys dit wanneer die laag aangaan en laat dit dan gaan. Met Nooit wys hierdie laag geen flyout nie, en Basis wys niks wanneer die laag eindig nie.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Vir 2 sekondes wys Basis se naam wanneer 'n skuiflaag eindig. Met Nooit wys Basis geen flyout nie.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rotasiereeks</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Stel rotasiereeks</value></data>

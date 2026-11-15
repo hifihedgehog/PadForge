@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>पठाउनुअघि चलिरहेको DSX खोज्ने मोडहरूका लागि</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>के देखिन्छ</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>मेनु खुला रहँदा त्यसको रिङ, ग्रिड वा बार</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>शिफ्ट लेयर थिचिराख्दा लेयरको नाम</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>शिफ्ट लेयर सक्रिय हुँदा, त्यो लेयरले तोकेको समयसम्म लेयरको नाम</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>प्रोफाइल बदलिँदा प्रोफाइलको नाम</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>ठेगाना कपी गर्नुहोस्</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>स्क्रिनमा स्थान</value></data>
@@ -3090,6 +3090,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>सिफ्ट लेयर</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>आधार कन्फिगर गर्नुहोस्</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>शिफ्ट लेयर फ्लाइआउट र लेयरहरूको पङ्क्तिमा आधार लेयरको नाम, आइकन र रङ।</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>शिफ्ट लेयर फ्लाइआउट र लेयरहरूको पङ्क्तिमा आधार लेयरको नाम, आइकन र रङ, र फ्लाइआउटले तिनलाई कति समय देखाउँछ।</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>लेयरको नाम</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>नाम</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>थिचिराख्ने इनपुट</value></data>
@@ -3102,6 +3103,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>आधार लेयरबाट लिनुहोस्</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>केही नगर्नुहोस्</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>मोड, इनपुटको प्रकार, समय र रङ</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>मोड, इनपुटको प्रकार, समय, फ्लाइआउट र रङ</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>मोड</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>थिचिराख्ने</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>टगल</value></data>
@@ -3155,6 +3157,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>एक्टिभेटरको आफ्नै म्यापिङ पनि चलाउनुहोस्</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>चिन्ह लगाइएमा, एक्टिभेटर बटनले यसलाई स्रोतका रूपमा प्रयोग गर्ने कुनै पनि पङ्क्ति अझै चलाउँछ। एउटै थिचाइले लेयर पनि बदल्छ र बटनको आफ्नै म्यापिङ पनि चलाउँछ। चिन्ह हटाइएमा (पूर्वनिर्धारित), एक्टिभेटरको थिचाइ लेयर बदल्न मात्र प्रयोग हुन्छ।</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>“आधार लेयरबाट लिनुहोस्” मा, यो लेयरले म्याप नगरेका नियन्त्रणहरूले आधारका म्यापिङ राख्छन्। “केही नगर्नुहोस्” मा, लेयरले आधारलाई पूर्ण रूपमा प्रतिस्थापन गर्छ र ती नियन्त्रणहरू बन्द रहन्छन्।</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>फ्लाइआउट</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>लेयर सक्रिय रहँदासम्म</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 सेकेन्डका लागि</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>कहिल्यै होइन</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>“लेयर सक्रिय रहँदासम्म” ले लेयर नबदलिउन्जेल फ्लाइआउट देखाइराख्छ। “2 सेकेन्डका लागि” ले लेयर सक्रिय हुँदा फ्लाइआउट देखाउँछ र त्यसपछि आफैँ हटाउँछ। “कहिल्यै होइन” मा, यो लेयरले कुनै फ्लाइआउट देखाउँदैन र लेयर सकिँदा आधारले पनि देखाउँदैन।</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>“2 सेकेन्डका लागि” ले शिफ्ट लेयर सकिँदा आधारको नाम देखाउँछ। “कहिल्यै होइन” मा, आधारले कुनै फ्लाइआउट देखाउँदैन।</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>घुमाइको दायरा</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>घुमाइको दायरा सेट गर्नुहोस्</value></data>

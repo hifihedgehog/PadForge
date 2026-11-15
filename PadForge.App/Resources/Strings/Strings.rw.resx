@@ -1130,6 +1130,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Koresha urwego rw'ibanze</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Nta gikorwa</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Uburyo, ubwoko bw'icyinjizwa, igihe n'ibara</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Uburyo, ubwoko bw'icyinjizwa, igihe, flyout n'ibara</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Uburyo</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Gufata</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Fungura/funga</value></data>
@@ -1875,6 +1876,7 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Nta rindi dirishya rifunguye ryabonetse.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Kuraho {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Izina, ikimenyetso n'ibara by'urwego rw'ibanze kuri Shift Layer Flyout no mu murongo w'inzego.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Izina, ikimenyetso n'ibara by'urwego rw'ibanze kuri Shift Layer Flyout no mu murongo w'inzego, n'igihe flyout ibigaragaza.</value></data>
   <data name="Voice_Subtitle" xml:space="preserve"><value>Vuga interuro maze ikande buto ushobora guhuza. Buri mikoro PadForge ishobora kugeraho irumva.</value></data>
   <data name="Voice_MoreHint" xml:space="preserve"><value>Kumva bifunguye cyangwa bifunze, uburyo, icyizere</value></data>
   <data name="Voice_ListeningOff" xml:space="preserve"><value>Kumva birafunze. Bifungure muri Ibindi.</value></data>
@@ -1889,4 +1891,10 @@
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Iyi myirondoro yinjijwe ifite verisiyo nshya kuri Steam Workshop. Yongere winjize uhereye kuri Shaka imyirondoro kugira ngo ubone impinduka.</value></data>
   <data name="Pad_Stick_Speed" xml:space="preserve"><value>Umuvuduko</value></data>
   <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Igihe urwego rufunguye</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Amasegonda 2</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Nta na rimwe</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Ukoresheje Igihe urwego rufunguye, flyout iguma igaragara kugeza urwego ruhindutse. Ukoresheje Amasegonda 2, flyout igaragara iyo urwego rufunguka, hanyuma ikavaho ubwayo. Ukoresheje Nta na rimwe, uru rwego ntirugaragaza flyout, kandi Base nta yo igaragaza iyo uru rwego ruvuyeho.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Ukoresheje Amasegonda 2, flyout igaragaza izina rya Base iyo urwego rwa shift ruvuyeho. Ukoresheje Nta na rimwe, Base ntigaragaza flyout.</value></data>
 </root>

@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Për modet që kërkojnë një DSX në punë para se të dërgojnë</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Çfarë shfaqet</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Unaza, rrjeta ose shiriti i një menuje ndërsa është e hapur</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Emri i shtresës ndërsa mbahet një shtresë ndërrimi</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Emri i shtresës kur aktivizohet një shtresë ndërrimi, për kohën që cakton ajo shtresë</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Emri i profilit kur ndryshon profili</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopjo adresën</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Vendi në ekran</value></data>
@@ -2845,6 +2845,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shtresa Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfiguro bazën</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Emri, ikona dhe ngjyra e shtresës Baza te Dalja e shtresës së ndërrimit dhe në rreshtin e shtresave.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Emri, ikona dhe ngjyra e shtresës Baza te Dalja e shtresës së ndërrimit dhe në rreshtin e shtresave, si dhe sa gjatë i shfaq Dalja ato.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Emri i shtresës</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Emri</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Mbahet me</value></data>
@@ -2857,6 +2858,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Kalo te Baza</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Mos bëj asgjë</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modaliteti, lloji i hyrjes, koha dhe ngjyra</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Modaliteti, lloji i hyrjes, koha, dalja dhe ngjyra</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mënyra</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Mbaj shtypur</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Ndërro</value></data>
@@ -2910,6 +2912,12 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Aktivizo edhe hartëzimin e vetë aktivizuesit</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Kur është zgjedhur, butoni aktivizues vazhdon të drejtojë çdo rresht që e ka si burim. Një shtypje ndryshon shtresën dhe aktivizon hartëzimin e vetë butonit. Kur nuk është zgjedhur (parazgjedhja), shtypja e aktivizuesit përdoret vetëm për ndryshimin e shtresës.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Me Kalo te Baza, kontrollet që kjo shtresë nuk i hartëzon mbajnë hartëzimet e Bazës. Me Mos bëj asgjë, shtresa zëvendëson plotësisht Bazën dhe ato kontrolle mbeten të fikura.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Dalja</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Për sa kohë shtresa është aktive</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Për 2 sekonda</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Asnjëherë</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Për sa kohë shtresa është aktive e mban daljen në ekran deri sa ndryshon shtresa. Për 2 sekonda e shfaq kur shtresa aktivizohet, pastaj e lë të largohet. Me Asnjëherë, kjo shtresë nuk shfaq dalje, dhe Baza nuk shfaq asnjë kur shtresa mbaron.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Për 2 sekonda shfaq emrin e Bazës kur një shtresë ndërrimi mbaron. Me Asnjëherë, Baza nuk shfaq dalje.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Diapazoni i rrotullimit</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Cakto diapazonin e rrotullimit</value></data>

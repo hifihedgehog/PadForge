@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>For mods that look for a running DSX before they send</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>What Shows</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>The ring, grid or bar of a menu while it is open</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>The layer's name while a shift layer is held</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>The layer's name when a shift layer turns on, for the time that layer sets</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>The profile's name when the profile changes</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copy Address</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Place on Screen</value></data>
@@ -3104,6 +3104,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift Layer</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Configure Base</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>The Base layer's name, icon and color on the Shift Layer Flyout and in the row of layers.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>The Base layer's name, icon and color on the Shift Layer Flyout and in the row of layers, and how long the flyout shows them.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Layer Name</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Name</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Held With</value></data>
@@ -3116,6 +3117,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Fall Through to Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Do Nothing</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mode, input kind, timing and color</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mode, input kind, timing, flyout and color</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mode</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Hold</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Toggle</value></data>
@@ -3169,6 +3171,12 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Also Fire Activator's Own Mapping</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>When checked, the activator button still drives any row that uses it as a source. One press both changes layer and fires the button's own mapping. When unchecked (default), the activator press is consumed by the layer change only.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>With Fall Through to Base, controls this layer does not map keep their Base mappings. With Do Nothing, the layer replaces Base entirely and those controls stay off.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>While the Layer Is On</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>For 2 Seconds</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Never</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>While the Layer Is On keeps the flyout up until the layer changes. For 2 Seconds shows it when the layer turns on, then lets it go. With Never, this layer shows no flyout, and Base shows none when the layer ends.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>For 2 Seconds shows Base's name when a shift layer ends. With Never, Base shows no flyout.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rotation Range</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Set Rotation Range</value></data>

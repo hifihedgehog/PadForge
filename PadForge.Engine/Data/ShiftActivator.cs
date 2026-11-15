@@ -264,6 +264,18 @@ namespace PadForge.Engine.Data
         /// was flagged as surprising by the requester.</summary>
         [XmlAttribute] public int AutoCancelMs { get; set; } = 0;
 
+        // ── Flyout (#581) ──
+
+        /// <summary>How long the Shift Layer Flyout shows this layer (#581):
+        /// empty for the default (it stays while the layer is on),
+        /// <see cref="LayerFlyout.Brief"/> or <see cref="LayerFlyout.Off"/>.
+        /// Read through <see cref="LayerFlyout.OfLayer(string)"/>. Display
+        /// only: it changes nothing about when the layer is on. When several
+        /// activators name one layer, the first speaks for it, as with
+        /// <see cref="LayerName"/>, <see cref="Color"/> and
+        /// <see cref="Icon"/>.</summary>
+        [XmlAttribute] public string Flyout { get; set; } = "";
+
         /// <summary>Full-field copy. Every field is a string / value type
         /// (strings are immutable), so a memberwise clone is a complete deep
         /// copy. Copy sites must use this instead of hand-listing fields:

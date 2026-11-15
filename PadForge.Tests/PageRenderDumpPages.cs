@@ -535,7 +535,16 @@ namespace PadForge.Tests
                     LayerName = "Sprint", LayerMask = "Sprint", Mode = "Toggle", Kind = "Chord", Descriptor = "Button 4", DeviceGuid = pad,
                     ChordSecondDescriptor = "Button 5", ChordSecondDeviceGuid = pad, DelayMs = 250, AutoCancelMs = 5000, Color = "#FF6B2C",
                 };
-                drawing.PictureWindow(new ShiftActivatorDialog(inputs, sprint, others), "dialog-shift-layer-more.png");
+                // With the Shift Layer Flyout on, More holds the Flyout row
+                // (#581), and a layer whose choice is not the default opens
+                // More by that alone.
+                drawing.PictureWindow(new ShiftActivatorDialog(inputs, sprint, others, flyoutEnabled: true), "dialog-shift-layer-more.png");
+                var brief = new PadForge.Engine.Data.ShiftActivator
+                {
+                    LayerName = "Aim", LayerMask = "Aim", Mode = "Hold", Kind = "Button", Descriptor = "Button 4", DeviceGuid = pad,
+                    Flyout = PadForge.Engine.Data.LayerFlyout.Brief,
+                };
+                drawing.PictureWindow(new ShiftActivatorDialog(inputs, brief, others, flyoutEnabled: true), "dialog-shift-layer-flyout.png");
                 var trigger = new PadForge.Engine.Data.ShiftActivator
                 {
                     LayerName = "Scope", LayerMask = "Scope", Mode = "Hold", Kind = "Axis", Descriptor = "Axis 4", DeviceGuid = pad, AxisThreshold = 0.6,
@@ -548,6 +557,7 @@ namespace PadForge.Tests
                 };
                 drawing.PictureWindow(new ShiftActivatorDialog(inputs, ring, others), "dialog-shift-layer-cycle.png");
                 drawing.PictureWindow(new ShiftActivatorDialog("Base", "#7CC7EA", ""), "dialog-shift-layer-base.png");
+                drawing.PictureWindow(new ShiftActivatorDialog("Base", "#7CC7EA", "", "", flyoutEnabled: true), "dialog-shift-layer-base-flyout.png");
 
                 // The four dialogs that list what a registry holds. Each
                 // registry takes the board's rows for its pictures and gets

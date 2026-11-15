@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Modidele, mis otsivad enne saatmist töötavat DSX-i</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Mida näidatakse</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menüü ring, ruudustik või riba, kui see on avatud</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Kihi nimi, kui Shift-kihti hoitakse all</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Kihi nimi, kui Shift-kiht sisse lülitub, selleks ajaks, mille see kiht määrab</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profiili nimi, kui profiil vahetub</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopeeri aadress</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Asukoht ekraanil</value></data>
@@ -2900,6 +2900,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift-kiht</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Seadista põhikiht</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Põhikihi nimi, ikoon ja värv Shift-kihi väljalennul ja kihtide reas.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Põhikihi nimi, ikoon ja värv Shift-kihi väljalennul ja kihtide reas ning see, kui kaua hüpikpaan neid näitab.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Kihi nimi</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nimi</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Hoitakse sisendiga</value></data>
@@ -2912,6 +2913,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Jäta põhikihile</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ära tee midagi</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Režiim, sisendi liik, ajastus ja värv</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Režiim, sisendi liik, ajastus, hüpikpaan ja värv</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Režiim</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Hoidmine</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Lülitus</value></data>
@@ -2965,6 +2967,12 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Käivita ka aktivaatori enda vastendus</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Kui see on märgitud, juhib aktivaatori nupp endiselt kõiki ridu, mis kasutavad seda allikana. Üks vajutus vahetab kihti ja käivitab ka nupu enda vastenduse. Kui märkimata (vaikimisi), kasutatakse aktivaatori vajutust ainult kihi vahetamiseks.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Valikuga Jäta põhikihile säilitavad juhtelemendid, mida see kiht ei vastenda, oma põhikihi vastendused. Valikuga Ära tee midagi asendab kiht põhikihi täielikult ja need juhtelemendid jäävad välja lülitatuks.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Hüpikpaan</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Kuni kiht on sees</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 sekundit</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Mitte kunagi</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Valikuga Kuni kiht on sees püsib hüpikpaan ekraanil, kuni kiht vahetub. Valikuga 2 sekundit ilmub see kihi sisselülitumisel ja kaob siis ise. Valikuga Mitte kunagi selle kihi hüpikpaani ei näidata ning põhikihi oma ei ilmu ka siis, kui kiht lõpeb.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Valikuga 2 sekundit näitab hüpikpaan põhikihi nime, kui Shift-kiht lõpeb. Valikuga Mitte kunagi põhikiht hüpikpaani ei näita.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Pöördenurga vahemik</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Määra pöördenurga vahemik</value></data>

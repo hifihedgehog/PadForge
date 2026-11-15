@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>For modder som leter etter en kjørende DSX før de sender</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Hva som vises</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ringen, rutenettet eller linjen i en meny mens den er åpen</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Navnet på laget mens et skiftlag holdes</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Navnet på laget når et skiftlag slås på, så lenge det laget angir</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Navnet på profilen når profilen byttes</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopier adresse</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Plassering på skjermen</value></data>
@@ -3090,6 +3090,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Skiftlag</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfigurer grunnlag</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Navnet, ikonet og fargen til grunnlaget på flyouten for skiftlag og i raden med lag.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Navnet, ikonet og fargen til grunnlaget på hurtigpanelet for skiftlag og i raden med lag, og hvor lenge hurtigpanelet viser dem.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Lagnavn</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Navn</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Holdes med</value></data>
@@ -3102,6 +3103,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Gå videre til grunnlaget</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Gjør ingenting</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modus, inndatatype, timing og farge</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Modus, inndatatype, timing, hurtigpanel og farge</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modus</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Hold</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Veksle</value></data>
@@ -3155,6 +3157,12 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Utløs også aktivatorens egen tilordning</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Når dette er avmerket, styrer aktivatorknappen fortsatt alle rader som bruker den som kilde. Ett trykk både bytter lag og utløser knappens egen tilordning. Når det ikke er avmerket (standard), brukes aktivatortrykket bare til å bytte lag.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Med Gå videre til grunnlaget beholder kontroller dette laget ikke tilordner, tilordningene sine fra grunnlaget. Med Gjør ingenting erstatter laget grunnlaget helt, og de kontrollene forblir av.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Hurtigpanel</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Så lenge laget er på</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>I 2 sekunder</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Aldri</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Så lenge laget er på holder hurtigpanelet oppe til laget skiftes. I 2 sekunder viser det når laget slås på, og slipper det så. Med Aldri viser dette laget ikke noe hurtigpanel, og Grunnlag viser heller ikke noe når laget tar slutt.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>I 2 sekunder viser navnet til grunnlaget når et skiftlag tar slutt. Med Aldri viser grunnlaget ikke noe hurtigpanel.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rotasjonsområde</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Angi rotasjonsområde</value></data>

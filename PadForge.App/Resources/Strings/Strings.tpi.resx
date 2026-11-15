@@ -1034,6 +1034,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift lea</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Stretim Bes</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Nem, aikon na kala bilong Bes lea long Shift Layer Flyout na long lain bilong ol lea.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Nem, aikon na kala bilong Bes lea long Shift Layer Flyout na long lain bilong ol lea, na hamas taim flyout i soim ol.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nem bilong lea</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nem</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Holim wantaim</value></data>
@@ -1046,6 +1047,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Go daun long Bes</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>No mekim wanpela samting</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mod, kain input, taim na kala</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mod, kain input, taim, flyout na kala</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Pasin</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Holim</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Tanim on o of</value></data>
@@ -1089,6 +1091,12 @@
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Wok taim yu lusim</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>I wet inap yu lusim baten, na bihain activator i wok. Sapos yu putim wet bilong holim, yu mas holim presim long dispela taim pastaim.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Wantaim Go daun long Bes, ol kontrol dispela lea i no mapim i holim yet ol mapin bilong Bes. Wantaim No mekim wanpela samting, lea i kisim ples bilong Bes olgeta na ol dispela kontrol i stap of.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Taim lea i on</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Inap 2 sekon</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Neva</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Taim lea i on i holim flyout long skrin inap lea i senis. Inap 2 sekon i soim em taim lea i kam on, na bihain em i go. Wantaim Neva, dispela lea i no soim flyout, na Bes tu i no soim flyout taim lea i pinis.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Inap 2 sekon i soim nem bilong Bes taim wanpela shift lea i pinis. Wantaim Neva, Bes i no soim flyout.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Renj bilong tanim</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Setim renj bilong tanim</value></data>

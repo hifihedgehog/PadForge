@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Bidali aurretik DSX martxan dagoen bilatzen duten modentzat</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Zer erakusten den</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menu baten eraztuna, sareta edo barra irekita dagoen bitartean</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Geruzaren izena, aldaketa-geruza bati eusten zaion bitartean</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Geruzaren izena, aldaketa-geruza bat aktibatzen denean, geruza horrek ezartzen duen denboran zehar</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profilaren izena, profila aldatzen denean</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiatu helbidea</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Kokatu pantailan</value></data>
@@ -2891,6 +2891,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Aldaketa-geruza</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfiguratu oinarria</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Oinarri-geruzaren izena, ikonoa eta kolorea Aldaketa-geruzaren gainjartzean eta geruzen errenkadan.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Oinarri-geruzaren izena, ikonoa eta kolorea Aldaketa-geruzaren gainjartzean eta geruzen errenkadan, eta oharrak zenbat denbora erakusten dituen.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Geruzaren izena</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Izena</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Honekin eutsita</value></data>
@@ -2903,6 +2904,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Oinarrira igaro</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ez egin ezer</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modua, sarrera mota, denbora eta kolorea</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Modua, sarrera mota, denbora, oharra eta kolorea</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modua</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Eutsi</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Txandakatu</value></data>
@@ -2956,6 +2958,12 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Abiarazi aktibatzailearen beraren esleipena ere</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Markatuta dagoenean, aktibatzaile-botoiak iturburu gisa erabiltzen duen edozein errenkada eragiten jarraitzen du. Sakatze bakar batek geruza aldatzen du eta botoiaren beraren esleipena abiarazten du. Markatu gabe dagoenean (lehenetsia), aktibatzailearen sakatzea geruza-aldaketak soilik kontsumitzen du.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Oinarrira igaro aukerarekin, geruza honek esleitzen ez dituen kontrolek oinarriko esleipenak mantentzen dituzte. Ez egin ezer aukerarekin, geruzak oinarria guztiz ordezten du eta kontrol horiek desaktibatuta geratzen dira.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Oharra</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Geruza aktibo dagoen bitartean</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 segundoz</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Inoiz ez</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Geruza aktibo dagoen bitartean aukerarekin, oharrak geruza aldatu arte jarraitzen du ikusgai. 2 segundoz aukerarekin, geruza aktibatzean erakusten da eta gero desagertzen da. Inoiz ez aukerarekin, geruza honek ez du oharrik erakusten, eta Oinarriak ere ez du bat erakusten geruza amaitzean.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 segundoz aukerarekin, oharrak Oinarriaren izena erakusten du aldaketa-geruza bat amaitzean. Inoiz ez aukerarekin, Oinarriak ez du oharrik erakusten.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Biraketa-heina</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Ezarri biraketa-heina</value></data>

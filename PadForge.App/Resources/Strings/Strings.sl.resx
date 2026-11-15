@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Za modifikacije, ki pred pošiljanjem iščejo zagnan DSX</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Kaj se prikaže</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Obroč, mreža ali vrstica menija, medtem ko je odprt</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ime plasti, medtem ko je preklopna plast pridržana</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ime plasti ob vklopu preklopne plasti, za čas, ki ga določi ta plast</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Ime profila ob zamenjavi profila</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiraj naslov</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Mesto na zaslonu</value></data>
@@ -3090,6 +3090,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Preklopna plast</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Nastavi osnovo</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Ime, ikona in barva osnovne plasti v pojavnem oknu preklopne plasti in v vrstici plasti.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Ime, ikona in barva osnovne plasti v pojavnem oknu preklopne plasti in v vrstici plasti ter čas, ko jih pojavno okno prikazuje.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Ime plasti</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Ime</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Pridržano z</value></data>
@@ -3102,6 +3103,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Prepusti osnovni plasti</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ne naredi nič</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Način, vrsta vnosa, časovanje in barva</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Način, vrsta vnosa, časovanje, pojavno okno in barva</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Način</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Držanje</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Preklop</value></data>
@@ -3155,6 +3157,12 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Sproži tudi lastno preslikavo aktivatorja</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Ko je označeno, gumb aktivatorja še vedno upravlja vsako vrstico, ki ga uporablja kot vir. En pritisk hkrati zamenja plast in sproži lastno preslikavo gumba. Ko ni označeno (privzeto), pritisk aktivatorja porabi le zamenjava plasti.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Pri možnosti Prepusti osnovni plasti kontrolniki, ki jih ta plast ne preslika, obdržijo osnovne preslikave. Pri možnosti Ne naredi nič plast v celoti nadomesti osnovno in ti kontrolniki ostanejo izklopljeni.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Pojavno okno</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Dokler je plast vklopljena</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Za 2 sekundi</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Nikoli</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Možnost Dokler je plast vklopljena pusti pojavno okno na zaslonu, dokler se plast ne spremeni. Možnost Za 2 sekundi ga prikaže ob vklopu plasti, nato ga spusti. Pri možnosti Nikoli ta plast ne prikaže pojavnega okna in osnova ga ne prikaže, ko se plast konča.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Možnost Za 2 sekundi prikaže ime osnove, ko se preklopna plast konča. Pri možnosti Nikoli osnova ne prikaže pojavnega okna.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Obseg vrtenja</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Nastavi obseg vrtenja</value></data>

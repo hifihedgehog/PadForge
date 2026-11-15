@@ -16,7 +16,8 @@ namespace PadForge.Views
     /// The Shift Layer window (#574): makes or edits one
     /// <see cref="ShiftActivator"/>. The name, the input and what the
     /// layer's unmapped controls do show at once. The mode, the kind of
-    /// input, the timing and the color are under More.
+    /// input, the timing, how long the flyout shows the layer (#581) and
+    /// the color are under More.
     /// </summary>
     public partial class ShiftActivatorDialog : DialogWindow
     {
@@ -84,6 +85,13 @@ namespace PadForge.Views
         private bool _baseMode;   // #119: editing only the Base layer's flyout appearance
         private string _selectedIcon = "";
 
+        // The Flyout row (#581). It shows only while the Shift Layer Flyout
+        // is on under Extras, Overlays, which the caller says. The stored
+        // value the window opened with is kept, and a save from a window
+        // whose row is hidden hands it back unchanged.
+        private readonly bool _flyoutShown;
+        private readonly string _flyoutStored;
+
         // Tracked so the matching RemoveValueChanged fires on Closed.
         // DependencyPropertyDescriptor holds a static strong reference to
         // the value-changed handler; without the explicit removal the
@@ -98,14 +106,25 @@ namespace PadForge.Views
         /// the Base tab. Base has no activator input/mode/cycle, so every
         /// activator-specific row is collapsed. Save returns a
         /// <see cref="ShiftActivator"/> carrying just LayerName/Color/Icon
-        /// (LayerMask = "Base"); the caller stores those on the MappingSet.</summary>
-        public ShiftActivatorDialog(string baseName, string baseColor, string baseIcon)
+        /// and Flyout (LayerMask = "Base"); the caller stores those on the
+        /// MappingSet. <paramref name="baseFlyout"/> is the set's stored
+        /// <see cref="MappingSet.BaseFlyout"/>, and
+        /// <paramref name="flyoutEnabled"/> says whether the Shift Layer
+        /// Flyout is on, which is when the Flyout row shows (#581).</summary>
+        public ShiftActivatorDialog(string baseName, string baseColor, string baseIcon,
+            string baseFlyout = "", bool flyoutEnabled = false)
         {
             InitializeComponent();
 
             _baseMode = true;
+            _flyoutShown = flyoutEnabled;
+            _flyoutStored = baseFlyout ?? "";
             Title = Strings.Instance.Pad_Shift_BaseConfigTitle;
-            Subtitle = Strings.Instance.Pad_Shift_BaseSubtitle;
+            // The line under the title lists what the window sets, the
+            // flyout's time among it while that row shows.
+            Subtitle = flyoutEnabled
+                ? Strings.Instance.Pad_Shift_BaseSubtitle_Flyout
+                : Strings.Instance.Pad_Shift_BaseSubtitle;
 
             LayerNameBox.Text = baseName ?? "";
 
@@ -138,6 +157,7 @@ namespace PadForge.Views
             UpdateHexBoxFromPicker();
 
             InitEmojiPicker(baseIcon ?? "");
+            InitFlyoutRow();
             CollapseForBaseMode();
 
             Loaded += (_, __) => { LayerNameBox.Focus(); LayerNameBox.SelectAll(); };
@@ -153,16 +173,53 @@ namespace PadForge.Views
             };
         }
 
-        /// <summary>Base mode shows the name row and the color and nothing
-        /// else: Base has no input, no mode and no unmapped controls. The
-        /// color leaves More, which is hidden with every row it holds, and
-        /// stands under the name.</summary>
+        /// <summary>Base mode shows the name row, the flyout row and the
+        /// color and nothing else: Base has no input, no mode and no
+        /// unmapped controls. The flyout row and the color leave More, which
+        /// is hidden with every row it holds, and stand under the name in
+        /// that order.</summary>
         private void CollapseForBaseMode()
         {
             foreach (var row in new UIElement[] { InputRow, ChordSecondRow, AxisThresholdRow, UnmappedRow, ShiftMore })
                 row.Visibility = Visibility.Collapsed;
+            MorePanel.Children.Remove(FlyoutRow);
+            BodyPanel.Children.Add(FlyoutRow);
             MorePanel.Children.Remove(ColorBlock);
             BodyPanel.Children.Add(ColorBlock);
+        }
+
+        /// <summary>Fills the Flyout row (#581) for the layer the window is
+        /// for and shows it while the flyout itself is on. A shift layer has
+        /// three choices and starts on While the Layer Is On. Base has two
+        /// and starts on For 2 Seconds: it is on whenever no shift layer is,
+        /// so it has no time of its own to stay for.</summary>
+        private void InitFlyoutRow()
+        {
+            var s = Strings.Instance;
+            var choices = new List<ChoiceOption>();
+            if (!_baseMode)
+                choices.Add(new ChoiceOption { Value = LayerFlyout.Stay, Name = s.Pad_Shift_Flyout_Stay });
+            choices.Add(new ChoiceOption { Value = LayerFlyout.Brief, Name = s.Pad_Shift_Flyout_Brief });
+            choices.Add(new ChoiceOption { Value = LayerFlyout.Off, Name = s.Pad_Shift_Flyout_Off });
+            FlyoutCombo.ItemsSource = choices;
+            FlyoutCombo.SelectedValue = _baseMode
+                ? LayerFlyout.OfBase(_flyoutStored)
+                : LayerFlyout.OfLayer(_flyoutStored);
+
+            string tip = _baseMode ? s.Pad_Shift_Flyout_Base_Tooltip : s.Pad_Shift_Flyout_Tooltip;
+            FlyoutLabel.ToolTip = tip;
+            FlyoutCombo.ToolTip = tip;
+            FlyoutRow.Visibility = _flyoutShown ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        /// <summary>The value a save stores for the layer's Flyout choice:
+        /// empty for the layer's default. A window whose row is hidden never
+        /// showed the choice, so it hands back what the layer had.</summary>
+        internal string FlyoutToStore()
+        {
+            if (!_flyoutShown) return _flyoutStored;
+            string choice = FlyoutCombo.SelectedValue as string;
+            return _baseMode ? LayerFlyout.StoreBase(choice) : LayerFlyout.StoreLayer(choice);
         }
 
         public ShiftActivatorDialog(
@@ -170,11 +227,16 @@ namespace PadForge.Views
             ShiftActivator existing,
             IEnumerable<ShiftActivator> otherActivators,
             PadForge.Services.RecorderService recorder = null,
-            int padIndex = -1)
+            int padIndex = -1,
+            bool flyoutEnabled = false)
         {
             InitializeComponent();
             _recorder = recorder;
             _padIndex = padIndex;
+            // Whether the Shift Layer Flyout is on, which is when the
+            // Flyout row shows (#581).
+            _flyoutShown = flyoutEnabled;
+            _flyoutStored = existing?.Flyout ?? "";
 
             // A freeform recording that TIMES OUT never calls its callback:
             // RecorderService.CancelRecording nulls _freeformCallback and
@@ -361,6 +423,7 @@ namespace PadForge.Views
             RefreshInputComboSources();
             ShowInputPicks();
             InitEmojiPicker(existing?.Icon ?? "");
+            InitFlyoutRow();
 
             // A layer that exists can be deleted from here. Base never comes
             // through this constructor, and a leftover entry that carries
@@ -369,7 +432,10 @@ namespace PadForge.Views
             DeleteLayerButton.Visibility = existing != null
                 && !string.Equals(existing.LayerMask, "Base", StringComparison.Ordinal)
                 ? Visibility.Visible : Visibility.Collapsed;
-            ShiftMore.IsExpanded = UsesMore(existing);
+            ShiftMore.IsExpanded = UsesMore(existing, flyoutEnabled);
+            // More's hint lists what More holds, the flyout among it while
+            // that row shows.
+            if (flyoutEnabled) ShiftMore.Hint = Strings.Instance.Pad_Shift_MoreHint_Flyout;
 
             Loaded += (_, __) =>
             {
@@ -530,9 +596,11 @@ namespace PadForge.Views
         /// <summary>Whether a layer uses a setting that More holds, so More
         /// opens with it: a mode other than Hold, a kind other than one
         /// button, a host layer, Fire on Release, the input's own mapping
-        /// kept, a delay, an auto-cancel, or a Cycle list. The color alone
-        /// does not open it, and a new layer starts with More closed.</summary>
-        internal static bool UsesMore(ShiftActivator existing)
+        /// kept, a delay, an auto-cancel, a Cycle list, or a Flyout choice
+        /// other than the default while the Flyout row shows
+        /// (<paramref name="flyoutShown"/>, #581). The color alone does not
+        /// open it, and a new layer starts with More closed.</summary>
+        internal static bool UsesMore(ShiftActivator existing, bool flyoutShown = false)
             => existing != null
                && (!string.Equals(existing.Mode ?? "Hold", "Hold", StringComparison.Ordinal)
                    || !string.Equals(existing.Kind ?? "Button", "Button", StringComparison.Ordinal)
@@ -541,7 +609,8 @@ namespace PadForge.Views
                    || existing.PostponeMapping
                    || existing.DelayMs != 0
                    || existing.AutoCancelMs != 0
-                   || !string.IsNullOrEmpty(existing.CycleLayers));
+                   || !string.IsNullOrEmpty(existing.CycleLayers)
+                   || (flyoutShown && LayerFlyout.OfLayer(existing.Flyout) != LayerFlyout.Stay));
 
         /// <summary>An input picker says Choose an Input until it has a
         /// pick, and its tooltip names the device the pick is on, or says
@@ -831,8 +900,9 @@ namespace PadForge.Views
                 typed.GetBindingExpression(System.Windows.Controls.TextBox.TextProperty)?.UpdateSource();
             if (_baseMode)
             {
-                // Base-appearance mode: only name/color/icon matter. Name may
-                // be empty (falls back to the localized Base label downstream).
+                // Base-appearance mode: only name/color/icon and the flyout
+                // choice matter. Name may be empty (falls back to the
+                // localized Base label downstream).
                 string baseColorHex = _colorSet
                     ? $"#{ColorPicker.Red:X2}{ColorPicker.Green:X2}{ColorPicker.Blue:X2}"
                     : "";
@@ -842,6 +912,7 @@ namespace PadForge.Views
                     LayerName = (LayerNameBox.Text ?? "").Trim(),
                     Color = baseColorHex,
                     Icon = _selectedIcon ?? "",
+                    Flyout = FlyoutToStore(),
                 };
                 DialogResult = true;
                 Close();
@@ -953,6 +1024,7 @@ namespace PadForge.Views
                     && FireOnReleaseBox.IsChecked == true,
                 Color = colorHex,
                 Icon = _selectedIcon ?? "",
+                Flyout = FlyoutToStore(),
             };
 
             DialogResult = true;

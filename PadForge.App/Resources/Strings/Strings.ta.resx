@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>அனுப்பும் முன் இயங்கும் DSX-ஐத் தேடும் மோடுகளுக்கு</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>எது காட்டப்படும்</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>திறந்திருக்கும் போது மெனுவின் வளையம், கட்டம் அல்லது பட்டை</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ஷிஃப்ட் அடுக்கு பிடிக்கப்பட்டிருக்கும்போது அடுக்கின் பெயர்</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ஷிஃப்ட் அடுக்கு ஆன் ஆகும்போது அடுக்கின் பெயர், அந்த அடுக்கு அமைக்கும் நேரத்திற்கு</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>சுயவிவரம் மாறும்போது அதன் பெயர்</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>முகவரியை நகலெடு</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>திரையில் இடம்</value></data>
@@ -3090,6 +3090,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>ஷிஃப்ட் அடுக்கு</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>அடிப்படையை உள்ளமை</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>ஷிஃப்ட் அடுக்கு ஃப்ளையவுட்டிலும் அடுக்குகளின் வரிசையிலும் அடிப்படை அடுக்கின் பெயர், ஐகான், நிறம்.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>ஷிஃப்ட் அடுக்கு ஃப்ளையவுட்டிலும் அடுக்குகளின் வரிசையிலும் அடிப்படை அடுக்கின் பெயர், ஐகான், நிறம், ஃப்ளையவுட் அவற்றை எவ்வளவு நேரம் காட்டும் என்பதும்.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>அடுக்குப் பெயர்</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>பெயர்</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>பிடிக்க</value></data>
@@ -3102,6 +3103,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>அடிப்படைக்குச் செல்</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>எதுவும் செய்யாதே</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>பயன்முறை, உள்ளீட்டு வகை, நேரம், நிறம்</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>பயன்முறை, உள்ளீட்டு வகை, நேரம், ஃப்ளைஅவுட், நிறம்</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>பயன்முறை</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>பிடித்திரு</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>நிலைமாற்று</value></data>
@@ -3155,6 +3157,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>செயல்படுத்தியின் சொந்த மேப்பிங்கையும் தூண்டு</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>தேர்வுசெய்தால், செயல்படுத்திப் பொத்தான் அதை மூலமாகப் பயன்படுத்தும் எந்த வரிசையையும் தொடர்ந்து இயக்கும். ஒரே அழுத்தம் அடுக்கையும் மாற்றும், பொத்தானின் சொந்த மேப்பிங்கையும் தூண்டும். தேர்வுநீக்கினால் (இயல்புநிலை), செயல்படுத்தி அழுத்தம் அடுக்கு மாற்றத்துக்கு மட்டுமே பயன்படும்.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>அடிப்படைக்குச் செல் என்பதில், இந்த அடுக்கு மேப் செய்யாத கட்டுப்பாடுகள் தங்கள் அடிப்படை மேப்பிங்குகளையே வைத்திருக்கும். எதுவும் செய்யாதே என்பதில், அடுக்கு அடிப்படையை முழுவதுமாக மாற்றும், அந்தக் கட்டுப்பாடுகள் ஆஃப் நிலையிலேயே இருக்கும்.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>ஃப்ளைஅவுட்</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>அடுக்கு ஆனில் இருக்கும் வரை</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 விநாடிகள்</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>ஒருபோதும்</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>அடுக்கு ஆனில் இருக்கும் வரை என்பது அடுக்கு மாறும் வரை ஃப்ளைஅவுட்டைத் திரையில் வைத்திருக்கும். 2 விநாடிகள் என்பது அடுக்கு ஆன் ஆகும்போது அதைக் காட்டி, பிறகு தானாகவே மறையவிடும். ஒருபோதும் என்பதில், இந்த அடுக்கு ஃப்ளைஅவுட்டைக் காட்டாது, அடுக்கு முடியும்போது அடிப்படையும் காட்டாது.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 விநாடிகள் என்பது ஷிஃப்ட் அடுக்கு முடியும்போது அடிப்படையின் பெயரைக் காட்டும். ஒருபோதும் என்பதில், அடிப்படை ஃப்ளைஅவுட்டைக் காட்டாது.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>சுழற்சி வீச்சு</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>சுழற்சி வீச்சை அமை</value></data>

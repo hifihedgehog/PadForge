@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>För moddar som letar efter en körande DSX innan de skickar</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Vad som visas</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menyns ring, rutnät eller fält medan den är öppen</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Lagrets namn medan ett skiftlager hålls</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Lagrets namn när ett skiftlager slås på, under den tid som lagret anger</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profilens namn när profilen byts</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiera adress</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Placering på skärmen</value></data>
@@ -3090,6 +3090,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Skiftlager</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfigurera Bas</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Baslagrets namn, ikon och färg på den utfällbara rutan för skiftlager och i raden av lager.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Baslagrets namn, ikon och färg på den utfällbara rutan för skiftlager och i raden av lager, och hur länge den utfällbara rutan visar dem.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Lagernamn</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Namn</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Hålls med</value></data>
@@ -3102,6 +3103,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Falla igenom till Bas</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Gör ingenting</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Läge, typ av inmatning, timing och färg</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Läge, typ av inmatning, timing, utfällbar ruta och färg</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Läge</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Håll ned</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Växla</value></data>
@@ -3155,6 +3157,12 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Utlös även aktiverarens egen mappning</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>När rutan är markerad styr aktiverarknappen fortfarande alla rader som använder den som källa. Ett tryck byter både lager och utlöser knappens egen mappning. När den är avmarkerad (standard) förbrukas aktiverartryckningen enbart av lagerbytet.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Med Falla igenom till Bas behåller kontroller som det här lagret inte mappar sina mappningar från Bas. Med Gör ingenting ersätter lagret Bas helt och de kontrollerna förblir av.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Utfällbar ruta</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Medan lagret är på</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>I 2 sekunder</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Aldrig</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Medan lagret är på låter den utfällbara rutan stå kvar tills lagret byts. I 2 sekunder visar den när lagret slås på och släpper den sedan. Med Aldrig visar det här lagret ingen utfällbar ruta, och Bas visar ingen när lagret tar slut.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>I 2 sekunder visar Bas namn när ett skiftlager tar slut. Med Aldrig visar Bas ingen utfällbar ruta.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rotationsomfång</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Ställ in rotationsomfång</value></data>

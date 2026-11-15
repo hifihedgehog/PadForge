@@ -417,7 +417,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Modifikacijoms, kurios prieš siųsdamos ieško veikiančio DSX</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Kas rodoma</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Meniu žiedas, tinklelis ar juosta, kol jis atidarytas</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Sluoksnio pavadinimas, kol laikomas lygiaverčio sluoksnio klavišas</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Sluoksnio pavadinimas, kai įjungiamas lygiavertis sluoksnis, tiek laiko, kiek nustato tas sluoksnis</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profilio pavadinimas, kai profilis pasikeičia</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopijuoti adresą</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Vieta ekrane</value></data>
@@ -2894,6 +2894,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Perjungimo sluoksnis</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfigūruoti bazinį</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Bazinio sluoksnio pavadinimas, piktograma ir spalva perdangoje „Sluoksnio iškylantysis langas“ bei sluoksnių eilutėje.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Bazinio sluoksnio pavadinimas, piktograma ir spalva perdangoje „Sluoksnio iškylantysis langas“ bei sluoksnių eilutėje ir kiek laiko iššokantis skydelis juos rodo.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Sluoksnio pavadinimas</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Pavadinimas</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Laikoma su</value></data>
@@ -2906,6 +2907,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Perimti iš bazinio</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Nieko nedaryti</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Režimas, įvesties rūšis, laikas ir spalva</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Režimas, įvesties rūšis, laikas, iššokantis skydelis ir spalva</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Režimas</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Laikymas</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Perjungimas</value></data>
@@ -2959,6 +2961,12 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Taip pat vykdyti paties aktyviklio priskyrimą</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Pažymėjus, aktyviklio mygtukas vis tiek valdo visas eilutes, kurios jį naudoja kaip šaltinį. Vienas paspaudimas ir pakeičia sluoksnį, ir suveikdina paties mygtuko priskyrimą. Nepažymėjus (numatytoji reikšmė), aktyviklio paspaudimas naudojamas tik sluoksniui pakeisti.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Pasirinkus „Perimti iš bazinio“, šio sluoksnio nepriskirti valdikliai išlaiko bazinio sluoksnio priskyrimus. Pasirinkus „Nieko nedaryti“, sluoksnis visiškai pakeičia bazinį ir tie valdikliai lieka išjungti.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Iššokantis skydelis</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Kol sluoksnis įjungtas</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 sekundes</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Niekada</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Pasirinkus „Kol sluoksnis įjungtas“, iššokantis skydelis lieka ekrane, kol sluoksnis pasikeičia. Pasirinkus „2 sekundes“, jis parodomas sluoksniui įsijungus ir paskui dingsta pats. Pasirinkus „Niekada“, šis sluoksnis iššokančio skydelio nerodo, o sluoksniui pasibaigus jo nerodo ir bazinis.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Pasirinkus „2 sekundes“, iššokantis skydelis parodo bazinio sluoksnio pavadinimą, kai perjungimo sluoksnis baigiasi. Pasirinkus „Niekada“, bazinis sluoksnis iššokančio skydelio nerodo.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Sukimo diapazonas</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Nustatyti sukimo diapazoną</value></data>

@@ -1185,6 +1185,7 @@
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Bu'uura</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Bu'uura qindeessi</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Maqaa, mallattoo fi halluu sadarkaa Bu'uuraa Shift Layer Flyout irrattii fi tarree sadarkaalee keessatti.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Maqaa, mallattoo fi halluu sadarkaa Bu'uuraa Shift Layer Flyout irrattii fi tarree sadarkaalee keessatti, akkasumas flyout-iin isaan hammam akka agarsiisu.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Maqaa sadarkaa</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Maqaa</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Kanaan qabama</value></data>
@@ -1197,6 +1198,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Gara bu'uuraatti dabarsi</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Homaa hin hojjetin</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Haala, gosa galtee, yeroo fi halluu</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Haala, gosa galtee, yeroo, flyout fi halluu</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Haala</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Qabadhu</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Jijjiiri</value></data>
@@ -2064,4 +2066,10 @@
   <data name="Home_Cards_Auto" xml:space="preserve"><value>Ofumaan</value></data>
   <data name="Home_Cards_Auto_Tooltip" xml:space="preserve"><value>Yeroo kaardiiwwan foddaa keessatti ga'an bal'aa, yeroo foddaa darbuuf jedhan xiqqaa</value></data>
   <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Hamma sadarkaan banaa ta'etti</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Sekondii 2f</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Gonkumaa</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Hamma sadarkaan banaa ta'etti flyout-ii hamma sadarkaan jijjiiramutti mul'isee tursa. Sekondii 2f yeroo sadarkaan banamu ni agarsiisa, booda ofumaan dhabama. Gonkumaa yoo filatame, sadarkaan kun flyout hin agarsiisu, Bu'uurris yeroo sadarkaan kun xumuramu hin agarsiisu.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Sekondii 2f yeroo sadarkaan shift xumuramu maqaa Bu'uuraa ni agarsiisa. Gonkumaa yoo filatame, Bu'uurri flyout hin agarsiisu.</value></data>
 </root>

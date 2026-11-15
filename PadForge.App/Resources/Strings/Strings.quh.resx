@@ -940,6 +940,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Base capaman kutichiy</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ama imatapas ruwaychu</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modo, yaykuypa rikch'aynin, pacha, llimphi</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Modo, yaykuypa rikch'aynin, pacha, flyout, llimphi</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modo</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Hap'iy</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Toggle</value></data>
@@ -1575,6 +1576,7 @@
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} qulluchiychu?</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>{0} urqhuy</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Base capapa sutin, iconon, llimphin ima Shift Layer Flyout nisqapi capakunapa filanpipas.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Base capapa sutin, iconon, llimphin ima Shift Layer Flyout nisqapi capakunapa filanpipas, flyoutpa hayk'a pacha chaykunata rikuchisqanpas.</value></data>
   <data name="Voice_MoreHint" xml:space="preserve"><value>Uyariy hap'isqa utaq wañusqa, modo, confianza</value></data>
   <data name="Voice_ListeningOff" xml:space="preserve"><value>Uyariyqa wañusqam. Astawan nisqapi hap'ichiy.</value></data>
   <data name="Handheld_StartOver" xml:space="preserve"><value>Watiqmanta qallariy</value></data>
@@ -1603,4 +1605,10 @@
   <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modificador</value></data>
   <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Allichana palanca</value></data>
   <data name="Pad_Picked_Row" xml:space="preserve"><value>Lluqsiq</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Capa activo kachkaptin</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 segundopaq</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Mana hayk'aqpas</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Capa activo kachkaptin nisqawanqa flyout rikhurichkan capa t'ikrakunankama. 2 segundopaq nisqawanqa capa qallarikuptin rikuchin, chaymanta kikillanmanta chinkan. Mana hayk'aqpas nisqawanqa kay capa mana flyoutta rikuchinchu, capa tukukuptintaq Basepas mana rikuchinchu.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 segundopaq nisqawanqa shift capa tukukuptin Basepa sutin rikhurin. Mana hayk'aqpas nisqawanqa Base mana flyoutta rikuchinchu.</value></data>
 </root>

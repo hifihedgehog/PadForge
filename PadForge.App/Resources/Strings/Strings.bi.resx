@@ -1004,6 +1004,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Folem Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>No Mekem Samting</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mod, kaen input, taem mo kala</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mod, kaen input, taem, flyout mo kala</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Holem</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>On/of</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>No gat baton</value></data>
@@ -1734,6 +1735,7 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>I no faenem narafala windo we i open.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tekemaot {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Nem, aekon mo kala blong Base layer long Shift Layer Flyout mo long lain blong ol layer.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Nem, aekon mo kala blong Base layer long Shift Layer Flyout mo long lain blong ol layer, mo hamas taem flyout i soem olgeta.</value></data>
   <data name="Nfc_Subtitle" xml:space="preserve"><value>Tajem wan tag long rida mo givim nem long hem. Hem i kam wan baton we yu save mapem.</value></data>
   <data name="Handheld_StartOver" xml:space="preserve"><value>Stat Bakegen</value></data>
   <data name="Telemetry_Formats_LittleEndian" xml:space="preserve"><value>Little-Endian</value></data>
@@ -1768,4 +1770,10 @@
   <data name="Pad_Row_Modifier" xml:space="preserve"><value>Modifaea</value></data>
   <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stik blong stretem</value></data>
   <data name="Pad_Picked_Row" xml:space="preserve"><value>Autput</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Taem Layer i On</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Blong 2 Seken</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Neva</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Taem Layer i On i holem flyout i stap kasem we layer i jenis. Blong 2 Seken i soem flyout taem layer i stat, afta i letem i go. Wetem Neva, layer ya i no soem flyout, mo Base i no soem wan tu taem layer i finis.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Blong 2 Seken i soem nem blong Base taem wan shift layer i finis. Wetem Neva, Base i no soem flyout.</value></data>
 </root>

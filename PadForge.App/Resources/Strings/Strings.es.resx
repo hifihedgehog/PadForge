@@ -2259,6 +2259,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Capa Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Configurar Base</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>El nombre, el icono y el color de la capa base en el menú de capas de cambio y en la fila de capas.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>El nombre, el icono y el color de la capa base en el menú de capas de cambio y en la fila de capas, y cuánto tiempo los muestra el aviso.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nombre de la capa</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nombre</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Mantenida con</value></data>
@@ -2271,6 +2272,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Usar la capa base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>No hacer nada</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modo, tipo de entrada, tiempos y color</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Modo, tipo de entrada, tiempos, aviso y color</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modo</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Mantener</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alternar</value></data>
@@ -2320,6 +2322,12 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Disparar también el mapeo propio del activador</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Cuando se marca, el botón activador sigue impulsando cualquier fila que lo use como fuente: una pulsación cambia la capa Y dispara el mapeo propio del botón. Cuando no se marca (por defecto), la pulsación es consumida solo por el cambio de capa.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Con Usar la capa base, los controles que esta capa no asigna conservan sus asignaciones de la base. Con No hacer nada, la capa reemplaza la base por completo y esos controles quedan desactivados.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Aviso</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Mientras la capa está activa</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Durante 2 segundos</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Nunca</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Mientras la capa está activa mantiene el aviso en pantalla hasta que la capa cambie. Durante 2 segundos lo muestra cuando la capa se activa y luego lo quita. Con Nunca, esta capa no muestra aviso, y la base tampoco lo muestra cuando la capa termina.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Durante 2 segundos muestra el nombre de la base cuando termina una capa de cambio. Con Nunca, la base no muestra aviso.</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Gatillos de impulso</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ganancia por gatillo, intercambio de motores, vibraciones de gatillos adaptativos, Fuerza constante en gatillos</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Reenvía los comandos por motor de gatillo (gatillos de impulso de Xbox) desde el control virtual al control físico Xbox One, Elite o Series asignado. La vibración de gatillo generada por el juego pasa automáticamente. Los controles de abajo ajustan la intensidad por gatillo.</value></data>
@@ -3423,7 +3431,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Para mods que buscan un DSX en ejecución antes de enviar</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Qué se muestra</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>El anillo, la cuadrícula o la barra de un menú mientras está abierto</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>El nombre de la capa mientras se mantiene una capa de cambio</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>El nombre de la capa cuando se activa una capa de cambio, durante el tiempo que esa capa establece</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>El nombre del perfil cuando este cambia</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copiar dirección</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Posición en pantalla</value></data>

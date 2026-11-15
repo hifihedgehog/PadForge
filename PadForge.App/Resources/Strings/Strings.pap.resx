@@ -1664,6 +1664,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Kapa shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfigurá Base</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>E nòmber, ikono i koló di e kapa base riba e Shift Layer Flyout i den e fila di kapanan.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>E nòmber, ikono i koló di e kapa base riba e Shift Layer Flyout i den e fila di kapanan, i kuantu tempu e flyout ta mustra nan.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nòmber di kapa</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nòmber</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Tené ku</value></data>
@@ -1676,6 +1677,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Pasa pa e kapa base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>No hasi nada</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modo, tipo di entrada, tempu i koló</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Modo, tipo di entrada, tempu, flyout i koló</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modo</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Tene primí</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Aktivá/desaktivá</value></data>
@@ -2758,4 +2760,10 @@
   <data name="Pad_Formula_Chip_And_Face" xml:space="preserve"><value>i</value></data>
   <data name="Pad_Formula_Chip_Or_Face" xml:space="preserve"><value>of</value></data>
   <data name="Pad_Formula_Chip_Not_Face" xml:space="preserve"><value>no</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Miéntras e kapa ta aktivo</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Pa 2 sekònde</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Nunka</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Miéntras e kapa ta aktivo ta tene e flyout riba pantaya te ora e kapa kambia. Pa 2 sekònde ta mustra e flyout ora e kapa aktivá, i despues e ta disparsé su so. Ku Nunka, e kapa aki no ta mustra ningun flyout, i Base tampoko no ta mustra un ora e kapa kaba.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Pa 2 sekònde ta mustra e nòmber di Base ora un kapa shift kaba. Ku Nunka, Base no ta mustra ningun flyout.</value></data>
 </root>

@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Untuk mod yang mencari DSX yang berjalan sebelum mengirim</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Yang ditampilkan</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Cincin, kisi, atau bilah menu saat terbuka</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Nama lapisan saat lapisan shift ditahan</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Nama lapisan saat lapisan shift aktif, selama waktu yang diatur lapisan itu</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Nama profil saat profil berganti</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Salin alamat</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Posisi di layar</value></data>
@@ -3090,6 +3090,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Lapisan shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfigurasikan Dasar</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Nama, ikon, dan warna lapisan Dasar pada flyout lapisan shift dan di baris lapisan.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Nama, ikon, dan warna lapisan Dasar pada flyout lapisan shift dan di baris lapisan, serta berapa lama flyout menampilkannya.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nama lapisan</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nama</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Ditahan dengan</value></data>
@@ -3102,6 +3103,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Teruskan ke Dasar</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Tidak melakukan apa pun</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mode, jenis input, waktu, dan warna</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mode, jenis input, waktu, flyout, dan warna</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mode</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Tahan</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alih</value></data>
@@ -3155,6 +3157,12 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Jalankan juga pemetaan milik aktivator</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Jika dicentang, tombol aktivator tetap menggerakkan baris mana pun yang memakainya sebagai sumber. Satu penekanan sekaligus mengganti lapisan dan menjalankan pemetaan tombol itu sendiri. Jika tidak dicentang (default), penekanan aktivator hanya dipakai untuk pergantian lapisan.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Dengan Teruskan ke Dasar, kontrol yang tidak dipetakan lapisan ini tetap memakai pemetaan Dasar. Dengan Tidak melakukan apa pun, lapisan ini menggantikan Dasar sepenuhnya dan kontrol itu tetap nonaktif.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Selama lapisan aktif</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Selama 2 detik</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Tidak pernah</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Selama lapisan aktif mempertahankan flyout sampai lapisan berganti. Selama 2 detik menampilkannya saat lapisan aktif, lalu melepasnya. Dengan Tidak pernah, lapisan ini tidak menampilkan flyout, dan Dasar juga tidak menampilkannya saat lapisan berakhir.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Selama 2 detik menampilkan nama Dasar saat lapisan shift berakhir. Dengan Tidak pernah, Dasar tidak menampilkan flyout.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rentang rotasi</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Atur rentang rotasi</value></data>

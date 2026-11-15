@@ -64,6 +64,13 @@ namespace PadForge.Engine.Data
         /// back to the universal Shift glyph.</summary>
         [XmlAttribute] public string BaseIcon { get; set; } = "";
 
+        /// <summary>How long the Shift Layer Flyout shows Base when a shift
+        /// layer ends (#581): empty for the default (the window's two
+        /// seconds), or <see cref="LayerFlyout.Off"/>. Read through
+        /// <see cref="LayerFlyout.OfBase(string)"/>. It travels with the trio
+        /// above.</summary>
+        [XmlAttribute] public string BaseFlyout { get; set; } = "";
+
         /// <summary>
         /// Rumble-to-audio (bass shaker / LFE) configuration for this slot,
         /// issue #236. Null = feature disabled, nothing persisted. Rides the
@@ -159,6 +166,10 @@ namespace PadForge.Engine.Data
             || !string.IsNullOrEmpty(BaseLayerName)
             || !string.IsNullOrEmpty(BaseColor)
             || !string.IsNullOrEmpty(BaseIcon)
+            // Base's flyout choice (#581) is the trio's fourth member: a
+            // slot whose only authoring is silencing Base's flyout must
+            // survive cold load too.
+            || !string.IsNullOrEmpty(BaseFlyout)
             // Keep Awake (#270): the gate's own append rule. A slot whose
             // only authoring is the keep-awake config must survive cold
             // load like every structure before it.

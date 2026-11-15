@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Cho các mod tìm DSX đang chạy trước khi gửi</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Nội dung hiển thị</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Vòng tròn, lưới hoặc thanh của một menu khi nó đang mở</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Tên của lớp trong lúc một lớp chuyển đang được giữ</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Tên của lớp khi một lớp chuyển bật lên, trong khoảng thời gian mà lớp đó đặt</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Tên của hồ sơ khi hồ sơ thay đổi</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Sao chép địa chỉ</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Vị trí trên màn hình</value></data>
@@ -3090,6 +3090,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Lớp shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Cấu hình Cơ sở</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Tên, biểu tượng và màu của lớp Cơ sở trên bảng Lớp chuyển và trong hàng các lớp.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Tên, biểu tượng và màu của lớp Cơ sở trên bảng Lớp chuyển và trong hàng các lớp, cùng thời gian cửa sổ bật lên hiển thị chúng.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Tên lớp</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Tên</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Giữ bằng</value></data>
@@ -3102,6 +3103,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Rơi xuống Cơ sở</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Không làm gì</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Chế độ, loại đầu vào, thời gian và màu</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Chế độ, loại đầu vào, thời gian, cửa sổ bật lên và màu</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Chế độ</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Giữ</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Bật/tắt</value></data>
@@ -3155,6 +3157,12 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Kích hoạt cả ánh xạ riêng của bộ kích hoạt</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Khi được chọn, nút kích hoạt vẫn điều khiển mọi hàng dùng nó làm nguồn. Một lần nhấn vừa đổi lớp vừa kích hoạt ánh xạ riêng của nút. Khi bỏ chọn (mặc định), lần nhấn nút kích hoạt chỉ được dùng cho việc đổi lớp.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Với Rơi xuống Cơ sở, các điều khiển mà lớp này không ánh xạ giữ ánh xạ Cơ sở của chúng. Với Không làm gì, lớp thay thế hoàn toàn Cơ sở và các điều khiển đó vẫn tắt.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Cửa sổ bật lên</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Khi lớp bật</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Trong 2 giây</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Không bao giờ</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Khi lớp bật giữ cửa sổ bật lên hiển thị cho đến khi lớp thay đổi. Trong 2 giây hiển thị nó khi lớp bật, rồi để nó biến mất. Với Không bao giờ, lớp này không hiện cửa sổ bật lên, và Cơ sở cũng không hiện khi lớp kết thúc.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Trong 2 giây hiển thị tên của Cơ sở khi một lớp shift kết thúc. Với Không bao giờ, Cơ sở không hiện cửa sổ bật lên.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Phạm vi xoay</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Đặt phạm vi xoay</value></data>

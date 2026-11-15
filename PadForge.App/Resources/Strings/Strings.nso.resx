@@ -708,6 +708,7 @@
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Motheo</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Beakanya motheo</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Leina, aekhone le mmala wa layer ya Base go Shift Layer Flyout le mothalong wa di layer.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Leina, aekhone le mmala wa layer ya Motheo go Shift Layer Flyout le mothalong wa di layer, le gore flyout e di bontšha nako ye kae.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Leina la layer</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Leina</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>E swerwe ka</value></data>
@@ -720,6 +721,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Diriša layer ya Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Se dire selo</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mokgwa, mohuta wa tsenyo, nako le mmala</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mokgwa, mohuta wa tsenyo, nako, flyout le mmala</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mokgwa</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Swara</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Toggle</value></data>
@@ -1270,4 +1272,10 @@
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} ya {1} di butšwe</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Diprofaele tše di tsentšhitšwego di na le diphetolelo tše mpsha go Steam Workshop. Di tsenye gape go tšwa go Hwetša diprofaele gore o hwetše diphetogo.</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Dimapo</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Ge layer e šoma</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Metsotswana ye 2</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Le gatee</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Ge layer e šoma e boloka flyout e bonagala go fihlela layer e fetoga. Metsotswana ye 2 e bontšha flyout ge layer e thoma go šoma, ke moka ya e tlogela e tloga. Ka Le gatee, layer ye ga e bontšhe flyout, gomme Motheo ga o bontšhe flyout ge layer e fela.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Metsotswana ye 2 e bontšha leina la Motheo ge shift layer e fela. Ka Le gatee, Motheo ga o bontšhe flyout.</value></data>
 </root>

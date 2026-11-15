@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Göndermeden önce çalışan bir DSX arayan modlar için</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ne gösterilir</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Açıkken bir menünün halkası, ızgarası veya çubuğu</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Shift katmanı basılı tutulurken katmanın adı</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Bir shift katmanı açıldığında katmanın adı, o katmanın belirlediği süre boyunca</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profil değiştiğinde profilin adı</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Adresi kopyala</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Ekrandaki yer</value></data>
@@ -3090,6 +3090,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift katmanı</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Temel katmanı yapılandır</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Temel katmanın adı, simgesi ve rengi, Shift katmanı açılır bildiriminde ve katman satırında görünür.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Temel katmanın adı, simgesi ve rengi, Shift katmanı açılır bildiriminde ve katman satırında görünür ve açılır bildirimin bunları ne kadar süre gösterdiği burada ayarlanır.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Katman adı</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Ad</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Basılı tutan</value></data>
@@ -3102,6 +3103,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Temel katmana düş</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Bir şey yapma</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mod, giriş türü, zamanlama ve renk</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mod, giriş türü, zamanlama, açılır bildirim ve renk</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mod</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Basılı tutma</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Aç/kapat</value></data>
@@ -3155,6 +3157,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Etkinleştiricinin kendi eşlemesini de tetikle</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>İşaretliyken etkinleştirici düğme, onu kaynak olarak kullanan satırları sürmeye devam eder. Tek bir basış hem katmanı değiştirir hem de düğmenin kendi eşlemesini tetikler. İşaretli değilken (varsayılan), etkinleştirici basışı yalnızca katman değişimi tarafından tüketilir.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Temel katmana düş seçiliyken, bu katmanın eşlemediği denetimler Temel eşlemelerini korur. Bir şey yapma seçiliyken katman Temel katmanın yerini tamamen alır ve bu denetimler kapalı kalır.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Açılır bildirim</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Katman açıkken</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 saniye boyunca</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Hiçbir zaman</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Katman açıkken, katman değişene kadar açılır bildirimi ekranda tutar. 2 saniye boyunca, katman açıldığında bildirimi gösterir, sonra kendiliğinden kaldırır. Hiçbir zaman seçiliyken bu katman açılır bildirim göstermez ve katman bittiğinde Temel katman da göstermez.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 saniye boyunca, bir shift katmanı kapandığında Temel katmanın adını gösterir. Hiçbir zaman seçiliyken Temel katman açılır bildirim göstermez.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Dönüş aralığı</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Dönüş aralığını ayarla</value></data>

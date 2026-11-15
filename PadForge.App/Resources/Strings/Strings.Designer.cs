@@ -4033,6 +4033,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Shift_DialogTitle => Get("Pad_Shift_DialogTitle");
     public string Pad_Shift_BaseConfigTitle => Get("Pad_Shift_BaseConfigTitle");
     public string Pad_Shift_BaseSubtitle => Get("Pad_Shift_BaseSubtitle");
+    public string Pad_Shift_BaseSubtitle_Flyout => Get("Pad_Shift_BaseSubtitle_Flyout");
     public string Pad_Shift_LayerName => Get("Pad_Shift_LayerName");
     public string Pad_Shift_NameLabel => Get("Pad_Shift_NameLabel");
     public string Pad_Shift_HeldWith => Get("Pad_Shift_HeldWith");
@@ -4045,6 +4046,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Shift_FallThroughToBase => Get("Pad_Shift_FallThroughToBase");
     public string Pad_Shift_DoNothing => Get("Pad_Shift_DoNothing");
     public string Pad_Shift_MoreHint => Get("Pad_Shift_MoreHint");
+    public string Pad_Shift_MoreHint_Flyout => Get("Pad_Shift_MoreHint_Flyout");
     public string Pad_Shift_Mode => Get("Pad_Shift_Mode");
     public string Pad_Shift_ModeHold => Get("Pad_Shift_ModeHold");
     public string Pad_Shift_ModeToggle => Get("Pad_Shift_ModeToggle");
@@ -4105,6 +4107,12 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Shift_FireOnRelease => Get("Pad_Shift_FireOnRelease");
     public string Pad_Shift_FireOnRelease_Tooltip => Get("Pad_Shift_FireOnRelease_Tooltip");
     public string Pad_Shift_InheritUnmapped_Tooltip => Get("Pad_Shift_InheritUnmapped_Tooltip");
+    public string Pad_Shift_Flyout => Get("Pad_Shift_Flyout");
+    public string Pad_Shift_Flyout_Stay => Get("Pad_Shift_Flyout_Stay");
+    public string Pad_Shift_Flyout_Brief => Get("Pad_Shift_Flyout_Brief");
+    public string Pad_Shift_Flyout_Off => Get("Pad_Shift_Flyout_Off");
+    public string Pad_Shift_Flyout_Tooltip => Get("Pad_Shift_Flyout_Tooltip");
+    public string Pad_Shift_Flyout_Base_Tooltip => Get("Pad_Shift_Flyout_Base_Tooltip");
     public string Settings_CommunityConfigs => Get("Settings_CommunityConfigs");
     public string Settings_CommunityConfigsDesc => Get("Settings_CommunityConfigsDesc");
     public string Settings_CommunityConfigs_Line => Get("Settings_CommunityConfigs_Line");

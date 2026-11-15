@@ -2258,6 +2258,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift 层</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>配置基础层</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>基础层在 Shift 层悬浮窗和层行中使用的名称、图标和颜色。</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>基础层在 Shift 层悬浮窗和层行中使用的名称、图标和颜色，以及悬浮窗显示它们的时长。</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>层名称</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>名称</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>按住输入</value></data>
@@ -2270,6 +2271,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>回退到基础层</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>不执行任何操作</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>模式、输入类型、时机和颜色</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>模式、输入类型、时机、浮出控件和颜色</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>模式</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>按住</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>切换</value></data>
@@ -2319,6 +2321,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>同时触发激活器自身的映射</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>选中时，激活器按钮继续驱动以它为源的任何行。一次按压同时切换层并触发按钮自身的映射。未选中（默认）时，按压仅被层切换消费。</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>选择“回退到基础层”时，此层未映射的控件保留其基础映射。选择“不执行任何操作”时，此层完全替换基础层，这些控件保持关闭。</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>浮出控件</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>层开启期间</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 秒</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>从不</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>“层开启期间”会让浮出控件一直显示，直到层发生变化。“2 秒”会在层开启时显示浮出控件，随后自动消失。选择“从不”时，此层不显示浮出控件，该层结束时基础层也不显示。</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>“2 秒”会在 Shift 层结束时显示基础层的名称。选择“从不”时，基础层不显示浮出控件。</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>冲击扳机</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>各扳机增益、交换马达、自适应扳机震动、扳机持续力</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>将每个扳机的电机指令（Xbox 冲击扳机）从虚拟控制器转发到所分配的物理 Xbox One / Elite / Series 手柄。游戏产生的扳机振动自动通过。下方控件可分别调节每个扳机的强度。</value></data>
@@ -3423,7 +3431,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>供在发送前查找运行中 DSX 的模组使用</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>显示内容</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>菜单打开时显示其环形、网格或条形</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>按住 Shift 层时显示该层的名称</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Shift 层开启时显示该层的名称，时长由该层设定</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>配置文件切换时显示配置文件的名称</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>复制地址</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>屏幕位置</value></data>

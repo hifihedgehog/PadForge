@@ -9,13 +9,18 @@ using System.Windows.Threading;
 namespace PadForge.Views
 {
     /// <summary>
-    /// Win11-flyout-styled window that surfaces the currently-engaged
-    /// shift layer's name + color. Visually matches ProfileSwitchOverlay:
-    /// bottom-center of the work area, slides up from below the taskbar
-    /// edge, themed background/border. Stays visible while a layer is
-    /// engaged; slides out when the slot returns to Base. Owned by
-    /// InputService which polls the engine's shift-engagement state at
-    /// ~30Hz and calls <see cref="ShowLayer"/> / <see cref="HideFlyout"/>.
+    /// Win11-flyout-styled window that shows a shift layer's icon, name and
+    /// color. Visually matches ProfileSwitchOverlay: bottom-center of the
+    /// work area, slides up from below the taskbar edge, themed
+    /// background/border.
+    ///
+    /// <para>The window shows what it is told and lets it go after
+    /// <see cref="AutoDismissDelay"/> unless it is kept alive. How long a
+    /// layer's flyout stays is the layer's own Flyout choice (#581), which
+    /// <c>LayerFlyoutDirector</c> reads on InputService's UI timer: it calls
+    /// <see cref="ShowLayer"/> for a layer, <see cref="KeepAlive"/> on every
+    /// tick for a layer set to stay, and <see cref="HideFlyout"/> when a
+    /// layer ends with nothing to follow it.</para>
     /// </summary>
     public partial class ShiftLayerFlyout : Window
     {
@@ -35,11 +40,12 @@ namespace PadForge.Views
         // Slide travel distance — enough to fully hide the flyout below the clip boundary.
         private const double SlideTravel = 80;
 
-        // Auto-dismiss delay. Matches the profile flyout's 2-second window so
-        // toggle / custom / cycle modes don't leave the flyout on screen
-        // forever after a transition. Hold mode users keep seeing it for the
-        // duration of their hold because the engine-driven mask-change calls
-        // re-arm the timer on every fresh engage.
+        // How long a flyout stays when nothing keeps it alive: the profile
+        // flyout's two seconds. That is the whole life of a layer set to
+        // For 2 Seconds and of Base's flyout. A layer set to While the Layer
+        // Is On, the default in every mode, is kept alive on each tick of the
+        // UI timer for as long as it is on, so this delay never runs out for
+        // it (#581).
         private static readonly TimeSpan AutoDismissDelay = TimeSpan.FromSeconds(2);
 
         private readonly TranslateTransform _slideTransform;
@@ -144,8 +150,8 @@ namespace PadForge.Views
         /// <summary>Updates the displayed icon, layer name and dot color
         /// and shows the flyout, arming a 2-second auto-dismiss timer.
         /// Re-calling while visible refreshes the content and re-arms the
-        /// timer (so transitioning from one shift layer to another keeps
-        /// the flyout on screen for another 2 seconds). An empty
+        /// timer (so a change from one layer to another gives the new one
+        /// its own 2 seconds, or longer if the caller keeps it alive). An empty
         /// <paramref name="icon"/> falls back to the universal Shift
         /// glyph <c>⇧</c>. A picture icon (#471), a package entry or an
         /// image file, draws scaled into the glyph's spot, and one that no
@@ -182,22 +188,23 @@ namespace PadForge.Views
         }
 
         /// <summary>Re-arms the auto-dismiss without touching the content.
-        ///
-        /// <para>AutoDismissDelay's note claims hold-mode users keep seeing the
-        /// flyout for the duration of their hold "because the engine-driven
-        /// mask-change calls re-arm the timer on every fresh engage". There are
-        /// no fresh engages during a steady hold: the caller no-ops while the
-        /// (slot, mask) tuple is unchanged, so ShowLayer ran once and the
-        /// flyout dismissed itself two seconds later with the layer still
-        /// held. This is the keep-alive that makes the note true.</para>
+        /// The caller sends it on every tick while a layer set to stay is
+        /// on. A steady layer brings no new <see cref="ShowLayer"/>, so
+        /// without it the flyout went two seconds in with the layer still
+        /// on.
         ///
         /// <para>Does nothing while hidden or sliding out, so it can never
-        /// resurrect a flyout that HideFlyout is in the middle of retiring.</para></summary>
-        public void KeepAlive()
+        /// resurrect a flyout that HideFlyout is in the middle of retiring,
+        /// and says so: false means the flyout is not up. A caller that still
+        /// wants the layer shown calls <see cref="ShowLayer"/> again, which
+        /// is how a flyout that the timer took during a stall of the UI
+        /// thread comes back.</para></summary>
+        public bool KeepAlive()
         {
-            if (_isSlidingOut || Visibility != Visibility.Visible) return;
+            if (_isSlidingOut || Visibility != Visibility.Visible) return false;
             _autoDismissTimer.Stop();
             _autoDismissTimer.Start();
+            return true;
         }
 
         /// <summary>Slides the flyout out and hides it. Safe to call when

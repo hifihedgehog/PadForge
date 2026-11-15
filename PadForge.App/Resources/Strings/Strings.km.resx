@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>សម្រាប់ម៉ូដដែលស្វែងរក DSX ដែលកំពុងដំណើរការ មុនពេលវាផ្ញើ</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>អ្វីដែលបង្ហាញ</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>រង្វង់ ក្រឡា ឬរបាររបស់ម៉ឺនុយ ខណៈវាកំពុងបើក</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ឈ្មោះស្រទាប់ ខណៈកំពុងសង្កត់ស្រទាប់ប្ដូរ</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ឈ្មោះស្រទាប់ នៅពេលស្រទាប់ប្ដូរបើក សម្រាប់រយៈពេលដែលស្រទាប់នោះកំណត់</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ឈ្មោះប្រូហ្វាល់ នៅពេលប្រូហ្វាល់ផ្លាស់ប្ដូរ</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>ចម្លងអាសយដ្ឋាន</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>ទីតាំងលើអេក្រង់</value></data>
@@ -2896,6 +2896,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>ស្រទាប់ប្ដូរ</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>កំណត់រចនាសម្ព័ន្ធមូលដ្ឋាន</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>ឈ្មោះ រូបតំណាង និងពណ៌របស់ស្រទាប់មូលដ្ឋាន នៅលើផ្ទាំងលេចឡើងស្រទាប់ប្ដូរ និងក្នុងជួរស្រទាប់។</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>ឈ្មោះ រូបតំណាង និងពណ៌របស់ស្រទាប់មូលដ្ឋាន នៅលើផ្ទាំងលេចឡើងស្រទាប់ប្ដូរ និងក្នុងជួរស្រទាប់ ព្រមទាំងរយៈពេលដែលផ្ទាំងលេចឡើងបង្ហាញពួកវា។</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>ឈ្មោះស្រទាប់</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>ឈ្មោះ</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>សង្កត់ជាប់ដោយ</value></data>
@@ -2908,6 +2909,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>ធ្លាក់ទៅមូលដ្ឋាន</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>មិនធ្វើអ្វី</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>របៀប, ប្រភេទការបញ្ចូល, ពេលវេលា និងពណ៌</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>របៀប, ប្រភេទការបញ្ចូល, ពេលវេលា, ផ្ទាំងលេចឡើង និងពណ៌</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>របៀប</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>សង្កត់ជាប់</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>បិទ/បើក</value></data>
@@ -2961,6 +2963,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>ដំណើរការការម៉ាបរបស់ការបញ្ចូលបើកផ្ទាល់ផងដែរ</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>ពេលធីក ប៊ូតុងបញ្ចូលបើកនៅតែបញ្ជាជួរដេកណាមួយដែលប្រើវាជាប្រភព។ ការចុចតែម្ដង ទាំងប្ដូរស្រទាប់ និងដំណើរការការម៉ាបរបស់ប៊ូតុងផ្ទាល់។ ពេលមិនធីក (លំនាំដើម) ការចុចបញ្ចូលបើកត្រូវបានប្រើសម្រាប់តែការប្ដូរស្រទាប់ប៉ុណ្ណោះ។</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>ជាមួយ ធ្លាក់ទៅមូលដ្ឋាន ការគ្រប់គ្រងដែលស្រទាប់នេះមិនបានម៉ាប រក្សាការម៉ាបមូលដ្ឋានរបស់វា។ ជាមួយ មិនធ្វើអ្វី ស្រទាប់ជំនួសមូលដ្ឋានទាំងស្រុង ហើយការគ្រប់គ្រងទាំងនោះនៅតែបិទ។</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>ផ្ទាំងលេចឡើង</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>ខណៈស្រទាប់កំពុងបើក</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>រយៈពេល 2 វិនាទី</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>មិនដែល</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>ខណៈស្រទាប់កំពុងបើក រក្សាផ្ទាំងលេចឡើងនៅលើអេក្រង់ រហូតដល់ស្រទាប់ផ្លាស់ប្ដូរ។ រយៈពេល 2 វិនាទី បង្ហាញវានៅពេលស្រទាប់បើក រួចឲ្យវាបាត់ទៅវិញដោយខ្លួនឯង។ ជាមួយ មិនដែល ស្រទាប់នេះមិនបង្ហាញផ្ទាំងលេចឡើងទេ ហើយមូលដ្ឋានក៏មិនបង្ហាញដែរ នៅពេលស្រទាប់នេះបញ្ចប់។</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>រយៈពេល 2 វិនាទី បង្ហាញឈ្មោះមូលដ្ឋាន នៅពេលស្រទាប់ប្ដូរមួយបញ្ចប់។ ជាមួយ មិនដែល មូលដ្ឋានមិនបង្ហាញផ្ទាំងលេចឡើងទេ។</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>ជួរបង្វិល</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>កំណត់ជួរបង្វិល</value></data>

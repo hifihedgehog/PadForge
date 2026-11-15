@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Մոդերի համար, որոնք ուղարկելուց առաջ որոնում են աշխատող DSX</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ինչ է երևում</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ընտրացանկի օղակը, ցանցը կամ գոտին՝ բաց լինելու ժամանակ</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Շերտի անունը, մինչ տեղաշարժի շերտը պահված է</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Շերտի անունը, երբ տեղաշարժի շերտը միանում է, այդ շերտի սահմանած ժամանակով</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Պրոֆիլի անունը, երբ պրոֆիլը փոխվում է</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Պատճենել հասցեն</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Տեղը էկրանին</value></data>
@@ -2859,6 +2859,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift շերտ</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Կարգավորել հիմնականը</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Հիմնական շերտի անունը, պատկերակը և գույնը տեղաշարժի շերտի թռուցիկում և շերտերի շարքում։</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Հիմնական շերտի անունը, պատկերակը և գույնը տեղաշարժի շերտի թռուցիկում և շերտերի շարքում, ինչպես նաև թե որքան ժամանակ է ծանուցումը դրանք ցույց տալիս։</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Շերտի անուն</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Անուն</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Պահվում է սրանով</value></data>
@@ -2871,6 +2872,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Անցնել հիմնականին</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ոչինչ չանել</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Ռեժիմ, մուտքի տեսակ, ժամանակացույց և գույն</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Ռեժիմ, մուտքի տեսակ, ժամանակացույց, ծանուցում և գույն</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Ռեժիմ</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Պահել</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Փոխանջատել</value></data>
@@ -2924,6 +2926,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Գործարկել նաև ակտիվացնողի սեփական կապակցումը</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Եթե նշված է, ակտիվացնող կոճակը շարունակում է կառավարել այն տողերը, որոնք այն օգտագործում են որպես աղբյուր։ Մեկ սեղմումը և՛ փոխում է շերտը, և՛ գործարկում կոճակի սեփական կապակցումը։ Երբ նշված չէ (լռելյայն), ակտիվացնողի սեղմումը ծախսվում է միայն շերտի փոփոխման վրա։</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Անցնել հիմնականին ընտրանքի դեպքում այս շերտում չկապակցված կառավարման տարրերը պահում են իրենց հիմնական կապակցումները։ Ոչինչ չանել ընտրանքի դեպքում շերտը լիովին փոխարինում է հիմնականին, և այդ տարրերը մնում են անջատված։</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Ծանուցում</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Մինչև շերտը միացած է</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 վայրկյանով</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Երբեք</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Մինչև շերտը միացած է ընտրանքը ծանուցումը պահում է էկրանին, մինչև շերտը փոխվի։ 2 վայրկյանով ընտրանքը ցույց է տալիս այն շերտի միանալու պահին, ապա թողնում է, որ անհետանա։ Երբեք ընտրանքի դեպքում այս շերտը ծանուցում չի ցույց տալիս, և շերտի ավարտին Հիմնականը ևս ծանուցում չի ցույց տալիս։</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 վայրկյանով ընտրանքը ցույց է տալիս Հիմնականի անունը, երբ տեղաշարժի շերտն ավարտվում է։ Երբեք ընտրանքի դեպքում Հիմնականը ծանուցում չի ցույց տալիս։</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Պտտման միջակայք</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Սահմանել պտտման միջակայքը</value></data>

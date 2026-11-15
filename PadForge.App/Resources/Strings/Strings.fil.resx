@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Para sa mga mod na naghahanap ng tumatakbong DSX bago magpadala</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ano ang Ipinapakita</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ang ring, grid o bar ng isang menu habang bukas ito</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ang pangalan ng layer habang hawak ang isang shift layer</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ang pangalan ng layer kapag nag-on ang isang shift layer, sa haba ng oras na itinakda ng layer na iyon</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Ang pangalan ng profile kapag nagbago ang profile</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopyahin ang Address</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Ilagay sa Screen</value></data>
@@ -2710,6 +2710,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Magdagdag ng shift layer. Isang pangalawang mapping table na nag-a-activate habang hawak o naka-toggle ang isang button.</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>I-configure ang Base</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Ang pangalan, icon at kulay ng Base layer sa Shift Layer Flyout at sa row ng mga layer.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Ang pangalan, icon at kulay ng Base layer sa Shift Layer Flyout at sa row ng mga layer, at kung gaano katagal ipinapakita ng flyout ang mga ito.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Pangalan ng Layer</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Pangalan</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Hawak Gamit ang</value></data>
@@ -2722,6 +2723,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Ipasa sa Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Walang Gawin</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mode, uri ng input, timing at kulay</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mode, uri ng input, timing, flyout at kulay</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mode</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Hawakan</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>I-toggle</value></data>
@@ -2775,6 +2777,12 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>I-fire Din ang Sariling Mapping ng Activator</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Kapag may check, patuloy na pinapagana ng activator button ang anumang row na gumagamit dito bilang source. Sa isang pindot, magpapalit ng layer at gagana rin ang sariling mapping ng button. Kapag walang check (default), ang pindot ng activator ay para sa pagpapalit ng layer lang.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Sa Ipasa sa Base, nananatili ang mga Base mapping ng mga control na hindi ima-map ng layer na ito. Sa Walang Gawin, pinapalitan ng layer ang buong Base at mananatiling patay ang mga control na iyon.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Habang Naka-on ang Layer</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Sa Loob ng 2 Segundo</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Hindi Kailanman</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Pinananatili ng Habang Naka-on ang Layer ang flyout hanggang magbago ang layer. Ipinapakita ito ng Sa Loob ng 2 Segundo kapag nag-on ang layer, saka ito kusang aalis. Sa Hindi Kailanman, walang ipinapakitang flyout ang layer na ito, at walang ipinapakita ang Base kapag natapos ang layer.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Ipinapakita ng Sa Loob ng 2 Segundo ang pangalan ng Base kapag natapos ang isang shift layer. Sa Hindi Kailanman, walang ipinapakitang flyout ang Base.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Saklaw ng Pag-ikot</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Itakda ang Saklaw ng Pag-ikot</value></data>

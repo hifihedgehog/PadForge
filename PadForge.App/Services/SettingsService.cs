@@ -2133,6 +2133,7 @@ namespace PadForge.Services
                     BaseLayerName = current.BaseLayerName ?? "",
                     BaseColor = current.BaseColor ?? "",
                     BaseIcon = current.BaseIcon ?? "",
+                    BaseFlyout = current.BaseFlyout ?? "",
                 };
                 // Workshop stamps (v18) are part of the "everything that
                 // isn't Rows" family this swap must carry, via the shared

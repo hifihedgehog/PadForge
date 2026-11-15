@@ -1446,4 +1446,10 @@
   <data name="Pad_Row_Down" xml:space="preserve"><value>Pasi</value></data>
   <data name="Pad_Row_Modifier" xml:space="preserve"><value>Chishandura</value></data>
   <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Sitiki yekugadzirisa</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Layer ichiri kushanda</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Kwemasekondi 2</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Kwete</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Layer ichiri kushanda inochengeta flyout pachiratidziri kusvikira layer yachinja. Kwemasekondi 2 inoiratidza kana layer yabatidzwa, yobva yaenda yoga. Kana wasarudza Kwete, layer iyi hairatidzi flyout, uye Base hairatidzi flyout kana layer yapera.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Kwemasekondi 2 inoratidza zita reBase kana shift layer yapera. Kana wasarudza Kwete, Base hairatidzi flyout.</value></data>
 </root>

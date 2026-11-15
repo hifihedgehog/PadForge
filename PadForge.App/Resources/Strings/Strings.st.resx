@@ -650,6 +650,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Sebedisa layer ya motheo</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Se etse letho</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mokgwa, mofuta wa input, nako le mmala</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mokgwa, mofuta wa input, nako, flyout le mmala</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mokgwa</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Tshwara</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>Ha ho konopo</value></data>
@@ -1132,6 +1133,7 @@
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ha ho fensetere e nngwe e butsweng e fumanweng.</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Tlosa {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Lebitso, icon le mmala wa layer ya motheo ho Shift Layer Flyout le molaleng wa di-layer.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Lebitso, icon le mmala wa layer ya motheo ho Shift Layer Flyout le molaleng wa di-layer, le hore flyout e di bontsha nako e kae.</value></data>
   <data name="WiiPair_Step1" xml:space="preserve"><value>Bula sekwahelo sa betri mme o tobetse konopo e kgubedu ya SYNC.</value></data>
   <data name="WiiPair_Step2" xml:space="preserve"><value>Boloka remote haufi le PC ena ha mabone a yona a ntse a panya.</value></data>
   <data name="Ds3Pair_Title" xml:space="preserve"><value>Hokahanya DualShock 3</value></data>
@@ -1148,4 +1150,10 @@
   <data name="Profiles_StartersHint" xml:space="preserve"><value>Diprofaele tse lokisitsweng bakeng sa mofuta wohle wa dipapadi. Kgetha e nngwe, abela controller efe kapa efe, mme o bapale.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} ho {1} di butswe</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Diprofaele tsena tse kentsweng di na le mefuta e metjha ho Steam Workshop. Di kenye hape ho tswa ho Fumana diprofaele ho fumana diphetoho.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Ha layer e ntse e sebetsa</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Metsotswana e 2</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Le ka mohla</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>"Ha layer e ntse e sebetsa" e boloka flyout skrineng ho fihlela layer e fetoha. "Metsotswana e 2" e e bontsha ha layer e qala, ebe e a e tlohela. Ka "Le ka mohla", layer ena ha e bontshe flyout, mme Motheo ha o bontshe letho ha layer e fela.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>"Metsotswana e 2" e bontsha lebitso la Motheo ha shift layer e fela. Ka "Le ka mohla", Motheo ha o bontshe flyout.</value></data>
 </root>

@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Olyan modokhoz, amelyek küldés előtt futó DSX-et keresnek</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Mi jelenjen meg</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>A menü gyűrűje, rácsa vagy sávja, amíg nyitva van</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>A réteg neve, amíg egy váltóréteg le van tartva</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>A réteg neve, amikor egy váltóréteg bekapcsol, az adott réteg által megadott ideig</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>A profil neve, amikor a profil megváltozik</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Cím másolása</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Elhelyezés a képernyőn</value></data>
@@ -3090,6 +3090,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Váltóréteg</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Alap beállítása</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Az Alap réteg neve, ikonja és színe a felugró panelen és a rétegek sorában.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Az Alap réteg neve, ikonja és színe a felugró panelen és a rétegek sorában, valamint az, hogy a felugró panel mennyi ideig mutatja őket.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Réteg neve</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Név</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Tartva ezzel</value></data>
@@ -3102,6 +3103,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Átesés az Alapra</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Nem csinál semmit</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mód, bemenet típusa, időzítés és szín</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mód, bemenet típusa, időzítés, felugró panel és szín</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mód</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Nyomva tartás</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Kapcsoló</value></data>
@@ -3155,6 +3157,12 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Az aktivátor saját hozzárendelésének kiváltása is</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Bejelölve az aktivátorgomb továbbra is hajtja az összes olyan sort, amely forrásként használja. Egyetlen lenyomás réteget is vált, és a gomb saját hozzárendelését is kiváltja. Jelölés nélkül (alapértelmezés) az aktivátor lenyomását csak a rétegváltás használja fel.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Az Átesés az Alapra beállításnál az ebben a rétegben nem hozzárendelt vezérlők megtartják az Alap hozzárendeléseit. A Nem csinál semmit beállításnál a réteg teljesen felváltja az Alapot, és ezek a vezérlők kikapcsolva maradnak.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Felugró panel</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Amíg a réteg be van kapcsolva</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 másodpercig</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Soha</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Az Amíg a réteg be van kapcsolva beállítás addig mutatja a felugró panelt, amíg a réteg nem változik. A 2 másodpercig beállítás a réteg bekapcsolásakor mutatja, majd elengedi. A Soha beállításnál ez a réteg nem mutat felugró panelt, és az Alap sem mutat, amikor a réteg véget ér.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>A 2 másodpercig beállítás az Alap nevét mutatja, amikor egy váltóréteg véget ér. A Soha beállításnál az Alap nem mutat felugró panelt.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Elfordulási tartomány</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Elfordulási tartomány beállítása</value></data>

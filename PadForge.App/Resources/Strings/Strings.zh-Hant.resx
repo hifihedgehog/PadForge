@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>供會先尋找執行中 DSX 才送出資料的模組使用</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>顯示內容</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>選單開啟時的環形、格狀或列狀介面</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>按住切換層時顯示該層的名稱</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>切換層開啟時顯示該層的名稱，顯示時間由該層設定</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>設定檔變更時顯示該設定檔的名稱</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>複製位址</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>螢幕位置</value></data>
@@ -3090,6 +3090,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Shift 層</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>設定基礎層</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>基本層在切換層飛出選單和各層列中的名稱、圖示和顏色。</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>基本層在切換層飛出選單和各層列中的名稱、圖示和顏色，以及飛出選單顯示這些項目的時間長度。</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>層名稱</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>名稱</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>按住</value></data>
@@ -3102,6 +3103,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>沿用基本層</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>不做任何事</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>模式、輸入類型、時機和顏色</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>模式、輸入類型、時機、飛出視窗和顏色</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>模式</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>按住</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>切換</value></data>
@@ -3155,6 +3157,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>同時觸發啟動鍵本身的對應</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>勾選時，啟動鍵按鈕仍會驅動以它為來源的任何列。按一次既會變更層，也會觸發按鈕本身的對應。未勾選時（預設），啟動鍵的按壓只會用於變更層。</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>選擇「沿用基本層」時，此層未對應的控制項會保留基本層的對應。選擇「不做任何事」時，此層會完全取代基本層，那些控制項則保持關閉。</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>飛出視窗</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>此層開啟期間</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>顯示 2 秒</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>從不</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>選擇「此層開啟期間」時，飛出視窗會一直顯示到切換層改變為止。選擇「顯示 2 秒」時，此層開啟時會顯示飛出視窗，之後自動消失。選擇「從不」時，此層不會顯示飛出視窗，此層結束時基礎層也不會顯示。</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>選擇「顯示 2 秒」時，切換層結束後會顯示基礎的名稱 2 秒。選擇「從不」時，基礎不會顯示飛出視窗。</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>旋轉範圍</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>設定旋轉範圍</value></data>

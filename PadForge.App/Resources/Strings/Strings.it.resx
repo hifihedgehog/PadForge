@@ -2279,6 +2279,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Livello Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Configura Base</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Nome, icona e colore del livello Base nel Riquadro livello Shift e nella riga dei livelli.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Nome, icona e colore del livello Base nel Riquadro livello Shift e nella riga dei livelli, e per quanto tempo il riquadro li mostra.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nome del livello</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nome</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Tenuto con</value></data>
@@ -2291,6 +2292,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Ricadi sulla Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Non fare nulla</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modalità, tipo di input, tempi e colore</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Modalità, tipo di input, tempi, riquadro e colore</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modalità</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Tieni premuto</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alterna</value></data>
@@ -2340,6 +2342,12 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Attiva anche la mappatura propria dell'attivatore</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Se selezionato, il pulsante attivatore continua a guidare ogni riga che lo usa come sorgente. Una pressione cambia livello E attiva la mappatura propria del pulsante. Se non selezionato (predefinito), la pressione è consumata solo dal cambio di livello.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Con Ricadi sulla Base, i controlli che questo livello non mappa mantengono le mappature della Base. Con Non fare nulla, il livello sostituisce del tutto la Base e quei controlli restano spenti.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Riquadro</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Finché il livello è attivo</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Per 2 secondi</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Mai</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Finché il livello è attivo mantiene il riquadro visibile fino al cambio di livello. Per 2 secondi lo mostra quando il livello si attiva, poi lo lascia andare. Con Mai, questo livello non mostra alcun riquadro, e la Base non ne mostra uno quando il livello termina.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Per 2 secondi mostra il nome della Base quando un livello Shift termina. Con Mai, la Base non mostra alcun riquadro.</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Grilletti Impulse</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Guadagno per grilletto, scambio motori, vibrazioni adattive, Forza costante sui grilletti</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Inoltra i comandi per motore di grilletto (grilletti Impulse Xbox) dal controller virtuale al controller fisico Xbox One, Elite o Series assegnato. La vibrazione dei grilletti generata da un gioco passa automaticamente. I controlli sottostanti regolano l'intensità per grilletto.</value></data>
@@ -3445,7 +3453,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Per le mod che cercano un DSX in esecuzione prima di inviare</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Cosa viene mostrato</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>L'anello, la griglia o la barra di un menu mentre è aperto</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Il nome del livello mentre un livello shift è tenuto premuto</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Il nome del livello quando un livello shift si attiva, per il tempo impostato da quel livello</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Il nome del profilo quando il profilo cambia</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copia indirizzo</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Posizione sullo schermo</value></data>

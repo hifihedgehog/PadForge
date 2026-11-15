@@ -774,6 +774,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Oipuru capa Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ndojapói mba'eve</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modo, jeike tipo, aravo ha sa'y</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Modo, jeike tipo, aravo, flyout ha sa'y</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Mantener</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Alternar</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>Capa sa'y</value></data>
@@ -1225,6 +1226,7 @@
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Embojuaju ñembosarái oikóva</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Nohẽ {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Capa Base réra, icono ha sa'y Shift Layer Flyoutpe ha capakuéra rysýipe.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Capa Base réra, icono ha sa'y Shift Layer Flyoutpe ha capakuéra rysýipe, ha mboy are flyout ohechauka umíva.</value></data>
   <data name="Voice_Subtitle" xml:space="preserve"><value>Ere peteĩ ñe'ẽjoaju ha ojopy peteĩ votõ ikatúva embojoaju. Opaite micrófono PadForge ohupytykuaáva ohendu.</value></data>
   <data name="Voice_MoreHint" xml:space="preserve"><value>Ohendu térã nohendúi, modo, jerovia</value></data>
   <data name="Voice_ListeningOff" xml:space="preserve"><value>Ñehendu oñembogue. Emyendy Hetavépe.</value></data>
@@ -1250,4 +1252,10 @@
   <data name="Pad_List_Cell_Tooltip" xml:space="preserve"><value>Eikutu, upéi ejopy ko mba'e'okápe pe input omboguatátava {0}</value></data>
   <data name="Pad_List_Scroll" xml:space="preserve"><value>Embosyryry mba'e'oka kuéra yke gotyo</value></data>
   <data name="Pad_Picked_Row" xml:space="preserve"><value>Ñesẽha</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Capa oñemyendy aja</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 segundo aja</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Araka'eve</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Capa oñemyendy aja omantene flyout ojehechakuaa capa iñambue peve. 2 segundo aja ohechauka chupe capa oñemyendývo, upéi oheja oho. Araka'eve ndive, ko capa ndohechaukái flyout, ha Base avei ndohechaukái mba'eve capa opávo.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 segundo aja ohechauka Base réra peteĩ shift layer opávo. Araka'eve ndive, Base ndohechaukái flyout.</value></data>
 </root>

@@ -2648,6 +2648,8 @@ namespace PadForge.Services
                     _shiftLayerFlyout.Close();
                     _shiftLayerFlyout = null;
                 }
+                // The window is gone, so nothing is shown any more.
+                _layerFlyoutDirector.Reset();
                 if (_menuOverlay != null)
                 {
                     _menuOverlay.Close();
@@ -9349,10 +9351,12 @@ namespace PadForge.Services
             int retargetSlot = -1)
         {
             if (src == null) return;
-            // Base-layer flyout appearance (#119) travels with the shift authoring.
+            // Base-layer flyout appearance (#119) travels with the shift
+            // authoring, and so does how long Base's flyout shows (#581).
             dst.BaseLayerName = src.BaseLayerName ?? "";
             dst.BaseColor = src.BaseColor ?? "";
             dst.BaseIcon = src.BaseIcon ?? "";
+            dst.BaseFlyout = src.BaseFlyout ?? "";
             if (src.ShiftActivators == null) return;
             dst.ShiftActivators ??= new System.Collections.Generic.List<Engine.Data.ShiftActivator>();
             foreach (var a in src.ShiftActivators)
@@ -9393,6 +9397,10 @@ namespace PadForge.Services
             public string BaseLayerName { get; set; } = "";
             public string BaseColor { get; set; } = "";
             public string BaseIcon { get; set; } = "";
+            /// <summary>How long Base's flyout shows (#581). A snapshot
+            /// copied before the setting existed has none and reads as the
+            /// default.</summary>
+            public string BaseFlyout { get; set; } = "";
         }
 
         /// <summary>Builds a shift-layer clipboard snapshot, including empty
@@ -9408,6 +9416,7 @@ namespace PadForge.Services
                 BaseLayerName = ms.BaseLayerName ?? "",
                 BaseColor = ms.BaseColor ?? "",
                 BaseIcon = ms.BaseIcon ?? "",
+                BaseFlyout = ms.BaseFlyout ?? "",
             };
             return System.Text.Json.JsonSerializer.Serialize(snap,
                 new System.Text.Json.JsonSerializerOptions { WriteIndented = false });
@@ -9433,6 +9442,7 @@ namespace PadForge.Services
                 BaseLayerName = snap.BaseLayerName ?? "",
                 BaseColor = snap.BaseColor ?? "",
                 BaseIcon = snap.BaseIcon ?? "",
+                BaseFlyout = snap.BaseFlyout ?? "",
             };
             // Build into a detached MappingSet, then swap the finished list
             // onto the live slot in one atomic reference assignment. The
@@ -9447,6 +9457,7 @@ namespace PadForge.Services
             slotMs.BaseLayerName = built.BaseLayerName;
             slotMs.BaseColor = built.BaseColor;
             slotMs.BaseIcon = built.BaseIcon;
+            slotMs.BaseFlyout = built.BaseFlyout;
         }
 
         /// <summary>Builds a menu clipboard snapshot, including an empty list.
@@ -14018,146 +14029,91 @@ namespace PadForge.Services
             _menuOverlay ??= new Views.MenuOverlayWindow();
             _menuOverlay.UpdateFromSnapshot(snap);
         }
-        private int _shiftLayerFlyoutLastSlot = -1;
-        private string _shiftLayerFlyoutLastShown = "Base";
+        // What the flyout shows and for how long (#581). The director reads
+        // every slot's layer and each layer's Flyout choice, and this class
+        // does what it says with the window.
+        private readonly LayerFlyoutDirector _layerFlyoutDirector = new LayerFlyoutDirector();
 
-        /// <summary>Polls every slot's engaged layer and surfaces the flyout
-        /// for whichever slot has a non-Base layer active. Independent of
-        /// which page/tab the user is viewing — a Shift engagement on Pad 3
-        /// shows the flyout even while the user is on the Dashboard or
-        /// Devices page. When more than one slot has a Shift engaged at the
-        /// same time, the currently-selected pad wins (if any); otherwise
-        /// the lowest-numbered engaged slot wins, for stable display
-        /// without flip-flopping.</summary>
+        /// <summary>Drives the flyout from every slot's layer, whatever page
+        /// is open: a layer on Pad 3 shows while the user is on Home or
+        /// Devices. Which layer shows, and whether it stays, is
+        /// <see cref="LayerFlyoutDirector"/>'s to say: a layer set to stay
+        /// owns the flyout while it is on (the selected pad's first, else the
+        /// lowest slot's), a layer set to show briefly and Base after a layer
+        /// show once, and a layer set to show nothing is silent.</summary>
         private void UpdateShiftLayerFlyout()
         {
             var sets = SettingsManager.SlotMappingSets;
 
             // Gated INSIDE the method, not at the call site: turning the
             // setting off while a flyout is on screen has to take it down,
-            // and skipping the call would strand it there. Same shape as the
-            // no-mapping-sets branch below. Display only, so the engaged layer
-            // and every row that resolves against it are unaffected.
-            if (!_mainVm.Dashboard.EnableShiftLayerFlyout)
+            // and skipping the call would strand it there. The same goes for
+            // having no mapping sets. Display only, so the engaged layer and
+            // every row that resolves against it are unaffected.
+            if (!_mainVm.Dashboard.EnableShiftLayerFlyout || sets == null)
             {
-                if (_shiftLayerFlyoutLastSlot >= 0)
-                {
+                if (_layerFlyoutDirector.Reset()) _shiftLayerFlyout?.HideFlyout();
+                return;
+            }
+
+            var decision = _layerFlyoutDirector.Tick(
+                sets, Common.Input.InputManager.GetEngagedLayerMask, _mainVm.SelectedPadIndex);
+            switch (decision.Step)
+            {
+                case LayerFlyoutDirector.Step.Show:
+                    ShowLayerOnFlyout(sets, decision.Slot, decision.Mask);
+                    break;
+                case LayerFlyoutDirector.Step.KeepAlive:
+                    // A layer set to stay keeps its flyout up. If the window
+                    // let it go anyway (its timer can run out while the UI
+                    // thread is held up), the layer is shown again.
+                    if (_shiftLayerFlyout == null || !_shiftLayerFlyout.KeepAlive())
+                        ShowLayerOnFlyout(sets, decision.Slot, decision.Mask);
+                    break;
+                case LayerFlyoutDirector.Step.Hide:
                     _shiftLayerFlyout?.HideFlyout();
-                    _shiftLayerFlyoutLastSlot = -1;
-                    _shiftLayerFlyoutLastShown = "Base";
-                }
-                return;
+                    break;
             }
+        }
 
-            if (sets == null)
+        /// <summary>Shows one layer of one slot on the flyout: a shift layer
+        /// by the name, color and icon of the first activator that names it,
+        /// and Base by the slot's own Base name, color and icon (#119).</summary>
+        private void ShowLayerOnFlyout(Engine.Data.MappingSet[] sets, int slot, string mask)
+        {
+            if (slot < 0 || slot >= sets.Length) return;
+            var ms = sets[slot];
+            string layerName, color = "", icon = "";
+            if (string.Equals(mask, LayerFlyoutDirector.Base, System.StringComparison.Ordinal))
             {
-                if (_shiftLayerFlyoutLastSlot >= 0)
+                layerName = PadForge.Resources.Strings.Strings.Instance.Pad_Shift_BaseTabLabel;
+                if (ms != null)
                 {
-                    _shiftLayerFlyout?.HideFlyout();
-                    _shiftLayerFlyoutLastSlot = -1;
-                    _shiftLayerFlyoutLastShown = "Base";
-                }
-                return;
-            }
-
-            // Selection priority: currently-viewed pad first, then any
-            // engaged slot in ascending order.
-            int engagedSlot = -1;
-            string engagedMask = "Base";
-            int viewed = _mainVm.SelectedPadIndex;
-            if (viewed >= 0 && viewed < sets.Length)
-            {
-                string mask = Common.Input.InputManager.GetEngagedLayerMask(viewed, sets[viewed]);
-                if (!string.IsNullOrEmpty(mask) && !string.Equals(mask, "Base", System.StringComparison.Ordinal))
-                {
-                    engagedSlot = viewed;
-                    engagedMask = mask;
+                    if (!string.IsNullOrEmpty(ms.BaseLayerName)) layerName = ms.BaseLayerName;
+                    color = ms.BaseColor ?? "";
+                    icon = ms.BaseIcon ?? "";
                 }
             }
-            if (engagedSlot < 0)
+            else
             {
-                for (int s = 0; s < sets.Length; s++)
-                {
-                    if (s == viewed) continue; // already checked
-                    string mask = Common.Input.InputManager.GetEngagedLayerMask(s, sets[s]);
-                    if (!string.IsNullOrEmpty(mask) && !string.Equals(mask, "Base", System.StringComparison.Ordinal))
-                    {
-                        engagedSlot = s;
-                        engagedMask = mask;
-                        break;
-                    }
-                }
-            }
-
-            // Capture the prior (slot, mask) before updating so a transition
-            // from a shift layer back to Base can surface the Base flyout (#119).
-            int prevSlot = _shiftLayerFlyoutLastSlot;
-            string prevShown = _shiftLayerFlyoutLastShown;
-
-            // No-op when (slot, mask) tuple hasn't changed since last tick.
-            if (engagedSlot == prevSlot
-                && string.Equals(engagedMask, prevShown, System.StringComparison.Ordinal))
-            {
-                // Except: keep a still-engaged layer's flyout alive. This
-                // branch is the steady state of a HELD layer, and without the
-                // keep-alive the flyout retired two seconds in while the layer
-                // was still engaged.
-                if (engagedSlot >= 0) _shiftLayerFlyout?.KeepAlive();
-                return;
-            }
-
-            if (engagedSlot >= 0)
-            {
-                _shiftLayerFlyoutLastSlot = engagedSlot;
-                _shiftLayerFlyoutLastShown = engagedMask;
-
-                // Resolve activator (for LayerName + Color + Icon) by the engaged mask.
-                var ms = sets[engagedSlot];
-                string layerName = engagedMask;
-                string color = "";
-                string icon = "";
+                layerName = mask;
                 if (ms?.ShiftActivators != null)
                 {
                     foreach (var a in ms.ShiftActivators)
                     {
                         if (a == null) continue;
-                        if (!string.Equals(a.LayerMask, engagedMask, System.StringComparison.Ordinal)) continue;
+                        if (!string.Equals(a.LayerMask, mask, System.StringComparison.Ordinal)) continue;
                         if (!string.IsNullOrEmpty(a.LayerName)) layerName = a.LayerName;
                         color = a.Color ?? "";
                         icon = a.Icon ?? "";
                         break;
                     }
                 }
-
-                if (_shiftLayerFlyout == null)
-                    _shiftLayerFlyout = new Views.ShiftLayerFlyout();
-                _shiftLayerFlyout.ShowLayer(layerName, color, icon);
-                return;
-            }
-
-            // Everything is at Base now. Surface that slot's Base flyout once on
-            // the shift-layer -> Base transition (#119). A steady Base state, or
-            // a transition we already showed, shows nothing.
-            _shiftLayerFlyoutLastSlot = -1;
-            _shiftLayerFlyoutLastShown = "Base";
-            if (prevSlot < 0 || prevSlot >= sets.Length
-                || string.Equals(prevShown, "Base", System.StringComparison.Ordinal))
-                return;
-
-            var baseMs = sets[prevSlot];
-            string baseName = PadForge.Resources.Strings.Strings.Instance.Pad_Shift_BaseTabLabel;
-            string baseColor = "";
-            string baseIcon = "";
-            if (baseMs != null)
-            {
-                if (!string.IsNullOrEmpty(baseMs.BaseLayerName)) baseName = baseMs.BaseLayerName;
-                baseColor = baseMs.BaseColor ?? "";
-                baseIcon = baseMs.BaseIcon ?? "";
             }
 
             if (_shiftLayerFlyout == null)
                 _shiftLayerFlyout = new Views.ShiftLayerFlyout();
-            _shiftLayerFlyout.ShowLayer(baseName, baseColor, baseIcon);
+            _shiftLayerFlyout.ShowLayer(layerName, color, icon);
         }
 
         private void ShowTouchpadOverlay()

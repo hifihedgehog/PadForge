@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Għal mods li jfittxu DSX li jkun qed jaħdem qabel jibagħtu</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Dak li jidher</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>L-anell, il-griglja jew il-bar ta' menu waqt li jkun miftuħ</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>L-isem tas-saff waqt li saff shift jinżamm</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>L-isem tas-saff meta saff shift jinxtegħel, għall-ħin li jistabbilixxi dak is-saff</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>L-isem tal-profil meta l-profil jinbidel</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Ikkopja l-indirizz</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Poġġi fuq l-iskrin</value></data>
@@ -2839,6 +2839,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Saff shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Ikkonfigura l-bażi</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>L-isem, l-ikona u l-kulur tas-saff tal-Bażi fuq il-flyout tas-Saff u fil-ringiela tas-saffi.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>L-isem, l-ikona u l-kulur tas-saff tal-Bażi fuq il-flyout tas-Saff u fil-ringiela tas-saffi, u kemm iddum turihom il-flyout.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Isem tas-saff</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Isem</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Miżmum permezz</value></data>
@@ -2851,6 +2852,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Għaddi għall-Bażi</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Agħmel xejn</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modalità, tip ta' input, ħin u kulur</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Modalità, tip ta' input, ħin, avviż u kulur</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modalità</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Żomm</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Ibdel</value></data>
@@ -2904,6 +2906,12 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Attiva wkoll il-mappjar tal-attivatur innifsu</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Meta jkun immarkat, il-buttuna tal-attivatur xorta tmexxi kull ringiela li tużaha bħala sors. Għafsa waħda tbiddel is-saff u tattiva l-mappjar tal-buttuna stess. Meta ma jkunx immarkat (default), l-għafsa tal-attivatur tintuża biss għall-bidla tas-saff.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>B'Għaddi għall-Bażi, il-kontrolli li dan is-saff ma jimmappjax iżommu l-mappjar tal-Bażi tagħhom. B'Agħmel xejn, is-saff jieħu post il-Bażi għalkollox u dawk il-kontrolli jibqgħu mitfija.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Avviż</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Waqt li s-saff ikun mixgħul</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Għal 2 sekondi</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Qatt</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Waqt li s-saff ikun mixgħul iżomm l-avviż fuq l-iskrin sakemm is-saff jinbidel. Għal 2 sekondi juri l-avviż meta s-saff jinxtegħel, imbagħad iħallih jitlaq. B'Qatt, dan is-saff ma juri l-ebda avviż, u l-Bażi ma turi xejn meta s-saff jintemm.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Għal 2 sekondi juri l-isem tal-Bażi meta saff shift jintemm. B'Qatt, il-Bażi ma turi l-ebda avviż.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Firxa tar-rotazzjoni</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Issettja l-firxa tar-rotazzjoni</value></data>

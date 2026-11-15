@@ -1330,4 +1330,10 @@
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} iti {1} ti nakasindi</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Dagitoy a naiyalis a profile ket addaan kadagiti baro a bersion iti Steam Workshop. Iyalis manen dagitoy manipud iti Mangala kadagiti profile tapno maala dagiti panagbaliw.</value></data>
   <data name="Common_MoreCount_Format" xml:space="preserve"><value>+{0}</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Bayat a nakasindi ti layer</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Iti 2 a segundo</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Saan pulos</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>No Bayat a nakasindi ti layer, agtalinaed ti flyout agingga nga agbaliw ti layer. No Iti 2 a segundo, agparang ti flyout inton agsindi ti layer, sa mapukaw a bukodna. No Saan pulos, awan ti flyout daytoy a layer, ken awan met ti ipakita ti Base inton maiddep ti layer.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>No Iti 2 a segundo, ipakita ti flyout ti nagan ti Base inton maiddep ti maysa a shift layer. No Saan pulos, awan ti flyout ti Base.</value></data>
 </root>

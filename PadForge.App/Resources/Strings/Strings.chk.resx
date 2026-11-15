@@ -396,6 +396,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Feiló ngeni Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ese fori mettóch</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mode, sókkun input, fansoun me color</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mode, sókkun input, fansoun, flyout me color</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>A lamot iten ewe layer.</value></data>
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>Siwili iten ewe layer…</value></data>
   <data name="Pad_Shift_Delete" xml:space="preserve"><value>Amóeló ewe layer</value></data>
@@ -696,6 +697,7 @@
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>A poputá nge esor controller. Epwe load pwisin lupwen eú me lein an kewe urumwot a nóm mwmwan.</value></data>
   <data name="ProfileDialog_NoRunningGames" xml:space="preserve"><value>Ese kúnaló pwal eú window mi suuk.</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Iten, icon me color an ewe Base layer won ewe Shift Layer Flyout me lón ewe órun layer.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Iten, icon me color an ewe Base layer won ewe Shift Layer Flyout me lón ewe órun layer, me ifa langattamen an ewe flyout pwárátá ir.</value></data>
   <data name="WiiPair_Step1" xml:space="preserve"><value>Suuki ewe kuffun battery me tiki ewe SYNC button mi par.</value></data>
   <data name="WiiPair_Step2" xml:space="preserve"><value>Ánómu ewe remote arap ngeni ei PC lupwen an kewe saram ra mwékút.</value></data>
   <data name="Ds3Pair_Title" xml:space="preserve"><value>Pair eú DualShock 3</value></data>
@@ -719,4 +721,10 @@
   <data name="Pad_Row_Down" xml:space="preserve"><value>Fán</value></data>
   <data name="Pad_Row_Modifier" xml:space="preserve"><value>Siwil</value></data>
   <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stick ren kúkkún siwil</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Lupwen ewe layer a angang</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Lón 2 sekon</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Ese fókkun</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Lupwen ewe layer a angang a amwóchu ewe flyout tori an ewe layer siwil. Lón 2 sekon a pwárátá lupwen ewe layer a poputá, mwirin a mwúttiiló. Ren Ese fókkun, ei layer ese pwárátá flyout, me Base ese pwárátá lupwen ewe layer a wesiló.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Lón 2 sekon a pwárátá iten Base lupwen eu shift layer a wesiló. Ren Ese fókkun, Base ese pwárátá flyout.</value></data>
 </root>

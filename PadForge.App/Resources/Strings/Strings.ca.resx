@@ -417,7 +417,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Per als mods que busquen un DSX en execució abans d'enviar</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Què es mostra</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>L'anell, la quadrícula o la barra d'un menú mentre és obert</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>El nom de la capa mentre es manté premuda una capa</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>El nom de la capa quan s'activa una capa, durant el temps que aquesta capa estableix</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>El nom del perfil quan canvia el perfil</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copia l'adreça</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Posició a la pantalla</value></data>
@@ -2899,6 +2899,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Capa</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Configura la capa Base</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>El nom, la icona i el color de la capa Base al panell emergent de capes i a la fila de capes.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>El nom, la icona i el color de la capa Base al panell emergent de capes i a la fila de capes, i quant de temps els mostra l'avís emergent.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nom de la capa</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nom</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Mantinguda amb</value></data>
@@ -2911,6 +2912,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Passa a la Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>No facis res</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mode, tipus d'entrada, temporització i color</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mode, tipus d'entrada, temporització, avís emergent i color</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mode</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Mantén premut</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Commutació</value></data>
@@ -2964,6 +2966,12 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Activa també l'assignació pròpia de l'activador</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Si està marcat, el botó activador continua controlant qualsevol fila que el faci servir com a font. Una pulsació canvia la capa i, alhora, activa l'assignació pròpia del botó. Si no està marcat (per defecte), la pulsació de l'activador només s'aprofita per canviar la capa.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Amb Passa a la Base, els controls que aquesta capa no assigna mantenen les assignacions de la Base. Amb No facis res, la capa substitueix completament la Base i aquests controls es mantenen desactivats.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Avís emergent</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Mentre la capa és activa</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Durant 2 segons</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Mai</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Mentre la capa és activa manté l'avís emergent a la pantalla fins que la capa canviï. Durant 2 segons el mostra quan s'activa la capa i després el deixa anar. Amb Mai, aquesta capa no mostra cap avís emergent, i la Base tampoc no en mostra cap quan la capa acaba.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Durant 2 segons mostra el nom de la Base quan acaba una capa. Amb Mai, la Base no mostra cap avís emergent.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rang de rotació</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Defineix el rang de rotació</value></data>

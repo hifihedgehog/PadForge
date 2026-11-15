@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>للتعديلات التي تبحث عن DSX قيد التشغيل قبل أن ترسل</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>ما الذي يظهر</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>حلقة القائمة أو شبكتها أو شريطها ما دامت مفتوحة</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>اسم الطبقة أثناء الضغط على طبقة تحويل</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>اسم الطبقة عند تفعيل طبقة تحويل، للمدة التي تحددها تلك الطبقة</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>اسم ملف التعريف عند تغيّره</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>نسخ العنوان</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>الموضع على الشاشة</value></data>
@@ -2900,6 +2900,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>طبقة Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>إعداد الطبقة الأساسية</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>اسم الطبقة الأساسية وأيقونتها ولونها في قائمة الطبقة المنبثقة وفي صف الطبقات.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>اسم الطبقة الأساسية وأيقونتها ولونها في قائمة الطبقة المنبثقة وفي صف الطبقات، ومدة عرض النافذة المنبثقة لها.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>اسم الطبقة</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>الاسم</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>يُضغط باستمرار مع</value></data>
@@ -2912,6 +2913,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>الرجوع إلى الأساسية</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>عدم فعل شيء</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>الوضع ونوع المدخل والتوقيت واللون</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>الوضع ونوع المدخل والتوقيت والنافذة المنبثقة واللون</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>الوضع</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>ضغط مستمر</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>تبديل</value></data>
@@ -2965,6 +2967,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>إطلاق التعيين الخاص بمدخل التفعيل أيضا</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>عند التحديد، يظل زر التفعيل يشغّل أي صف يستخدمه مصدرا. ضغطة واحدة تغيّر الطبقة وتطلق التعيين الخاص بالزر معا. عند إلغاء التحديد (الافتراضي)، يتم استهلاك ضغطة التفعيل في تغيير الطبقة فقط.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>مع «الرجوع إلى الأساسية»، تحتفظ عناصر التحكم التي لا تعيّنها هذه الطبقة بتعييناتها في الأساسية. ومع «عدم فعل شيء»، تحل الطبقة محل الأساسية كليا وتبقى هذه العناصر متوقفة.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>النافذة المنبثقة</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>أثناء تفعيل الطبقة</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>لمدة 2 ثانية</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>أبدا</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>«أثناء تفعيل الطبقة» تُبقي النافذة المنبثقة ظاهرة حتى تتغير الطبقة. «لمدة 2 ثانية» تعرضها عند تفعيل الطبقة ثم تتركها تختفي. مع «أبدا»، لا تعرض هذه الطبقة نافذة منبثقة، ولا تعرض الأساسية أي نافذة عند انتهاء الطبقة.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>«لمدة 2 ثانية» تعرض اسم الأساسية عند انتهاء طبقة Shift. مع «أبدا»، لا تعرض الأساسية أي نافذة منبثقة.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>نطاق الدوران</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>ضبط نطاق الدوران</value></data>

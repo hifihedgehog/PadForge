@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>ສຳລັບມອດທີ່ຊອກຫາ DSX ທີ່ກຳລັງເຮັດວຽກກ່ອນຈະສົ່ງ</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>ສິ່ງທີ່ສະແດງ</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ວົງ, ຕາຕະລາງ ຫຼື ແຖບຂອງເມນູໃນຂະນະທີ່ມັນເປີດຢູ່</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ຊື່ຂອງຊັ້ນໃນຂະນະທີ່ກົດຄ້າງເພື່ອປ່ຽນຊັ້ນ</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ຊື່ຂອງຊັ້ນເມື່ອປ່ຽນຊັ້ນ, ຕາມໄລຍະເວລາທີ່ຊັ້ນນັ້ນກຳນົດ</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ຊື່ຂອງໂປຣໄຟລ໌ເມື່ອໂປຣໄຟລ໌ປ່ຽນ</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>ສຳເນົາທີ່ຢູ່</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>ຕຳແໜ່ງເທິງໜ້າຈໍ</value></data>
@@ -2882,6 +2882,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>ຊັ້ນ Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>ຕັ້ງຄ່າພື້ນຖານ</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>ຊື່, ໄອຄອນ ແລະ ສີຂອງຊັ້ນພື້ນຖານໃນປ້າຍແຈ້ງການປ່ຽນຊັ້ນ ແລະ ໃນແຖວຂອງຊັ້ນ.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>ຊື່, ໄອຄອນ ແລະ ສີຂອງຊັ້ນພື້ນຖານໃນປ້າຍແຈ້ງການປ່ຽນຊັ້ນ ແລະ ໃນແຖວຂອງຊັ້ນ, ແລະ ໄລຍະເວລາທີ່ປ້າຍແຈ້ງການສະແດງພວກມັນ.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>ຊື່ຊັ້ນ</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>ຊື່</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>ກົດຄ້າງດ້ວຍ</value></data>
@@ -2894,6 +2895,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>ໃຊ້ຕາມຊັ້ນພື້ນຖານ</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>ບໍ່ເຮັດຫຍັງ</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>ໂໝດ, ປະເພດອິນພຸດ, ຈັງຫວະເວລາ ແລະ ສີ</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>ໂໝດ, ປະເພດອິນພຸດ, ຈັງຫວະເວລາ, ປ້າຍແຈ້ງການ ແລະ ສີ</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>ໂໝດ</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>ກົດຄ້າງ</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>ສະຫຼັບ</value></data>
@@ -2947,6 +2949,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>ໃຫ້ການແມັບຂອງຕົວເປີດໃຊ້ເຮັດວຽກນຳ</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>ເມື່ອໝາຍເລືອກ, ປຸ່ມຕົວເປີດໃຊ້ຍັງຂັບແຖວທີ່ໃຊ້ມັນເປັນແຫຼ່ງ. ການກົດຄັ້ງດຽວຈະທັງປ່ຽນຊັ້ນ ແລະ ເຮັດວຽກຕາມການແມັບຂອງປຸ່ມເອງ. ເມື່ອບໍ່ໝາຍເລືອກ (ຄ່າເລີ່ມຕົ້ນ), ການກົດຕົວເປີດໃຊ້ຈະໃຊ້ສຳລັບການປ່ຽນຊັ້ນເທົ່ານັ້ນ.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>ເມື່ອເລືອກ ໃຊ້ຕາມຊັ້ນພື້ນຖານ, ປຸ່ມທີ່ຊັ້ນນີ້ບໍ່ໄດ້ແມັບຈະໃຊ້ການແມັບຂອງຊັ້ນພື້ນຖານ. ເມື່ອເລືອກ ບໍ່ເຮັດຫຍັງ, ຊັ້ນຈະແທນທີ່ຊັ້ນພື້ນຖານທັງໝົດ ແລະ ປຸ່ມເຫຼົ່ານັ້ນຈະປິດຢູ່.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>ປ້າຍແຈ້ງການ</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>ຂະນະທີ່ຊັ້ນເປີດຢູ່</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>ເປັນເວລາ 2 ວິນາທີ</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>ບໍ່ເຄີຍ</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>ຂະນະທີ່ຊັ້ນເປີດຢູ່ ຈະສະແດງປ້າຍແຈ້ງການໄວ້ຈົນກວ່າຊັ້ນຈະປ່ຽນ. ເປັນເວລາ 2 ວິນາທີ ຈະສະແດງມັນເມື່ອຊັ້ນເປີດ, ແລ້ວປ່ອຍໃຫ້ມັນຫາຍໄປເອງ. ເມື່ອເລືອກ ບໍ່ເຄີຍ, ຊັ້ນນີ້ຈະບໍ່ສະແດງປ້າຍແຈ້ງການ ແລະ ຊັ້ນພື້ນຖານກໍຈະບໍ່ສະແດງເມື່ອຊັ້ນນີ້ສິ້ນສຸດ.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>ເປັນເວລາ 2 ວິນາທີ ຈະສະແດງຊື່ຂອງຊັ້ນພື້ນຖານເມື່ອຊັ້ນ Shift ສິ້ນສຸດ. ເມື່ອເລືອກ ບໍ່ເຄີຍ, ຊັ້ນພື້ນຖານຈະບໍ່ສະແດງປ້າຍແຈ້ງການ.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>ຂອບເຂດການໝຸນ</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>ຕັ້ງຂອບເຂດການໝຸນ</value></data>

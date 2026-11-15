@@ -480,6 +480,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Muria na Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Kakua ni Cakava e Dua na Ka</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mode, mataqali input, gauna kei na roka</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mode, mataqali input, gauna, flyout kei na roka</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Taura</value></data>
 
   <data name="Pad_Steering_Orient_Forward" xml:space="preserve"><value>I liu</value></data>
@@ -783,6 +784,7 @@
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Bokoca na {0}?</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Kauta tani na {0}</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Na yaca, ivakatakilakila kei na roka ni Base layer ena Shift Layer Flyout kei na laini ni layer.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Na yaca, ivakatakilakila kei na roka ni Base layer ena Shift Layer Flyout kei na laini ni layer, kei na balavu ni gauna e vakaraitaki kina ena flyout.</value></data>
   <data name="WiiPair_Step1" xml:space="preserve"><value>Dolava na ubi ni battery ka taqara na bulukau damudamu SYNC.</value></data>
   <data name="WiiPair_Step2" xml:space="preserve"><value>Biuta voleka ni PC qo na remote ni se cila tiko na nona rarama.</value></data>
   <data name="Ds3Pair_Title" xml:space="preserve"><value>Pair e Dua na DualShock 3</value></data>
@@ -806,4 +808,10 @@
   <data name="Pad_Row_Down" xml:space="preserve"><value>Ra</value></data>
   <data name="Pad_Row_Modifier" xml:space="preserve"><value>Ivakaveisau</value></data>
   <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stick ni vakadodonu</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Flyout</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Ni Se Vakacaka Tiko na Layer</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Me 2 na Sekodi</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Sega Vakadua</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Ni Se Vakacaka Tiko na Layer e tiko ga kina na flyout me yacova ni veisau na layer. Me 2 na Sekodi e vakaraitaka ni tekivu na layer, qai biuta. Ena Sega Vakadua, e sega ni vakaraitaka e dua na flyout na layer qo, ka sega talega ni vakaraitaki na Base ni oti na layer.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Me 2 na Sekodi e vakaraitaka na yaca ni Base ni oti e dua na shift layer. Ena Sega Vakadua, e sega ni vakaraitaka e dua na flyout na Base.</value></data>
 </root>

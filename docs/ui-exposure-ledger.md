@@ -57,6 +57,7 @@ may take but not how far it may travel.
 | Field | Status |
 |---|---|
 | `BaseLayerName` / `BaseColor` / `BaseIcon` | Card. Layer tab appearance (#119) |
+| `BaseFlyout` | Card. The Flyout row of Configure Base (#581), shown while the Shift Layer Flyout is on |
 | `SocdMode` / `SocdPairs` | Card. The SOCD card (#240) |
 | `Authoritative` | Internal. An import flag |
 | `Workshop*` (6 fields) | Folded into the device's OWN settings at assignment (`WorkshopTuningApplier`). The runtime overlays are gone |

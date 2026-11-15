@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>যেসব মড পাঠানোর আগে চালু DSX খোঁজে তাদের জন্য</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>যা দেখানো হয়</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>মেনু খোলা থাকাকালীন তার রিং, গ্রিড বা বার</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>শিফট লেয়ার ধরে রাখা অবস্থায় লেয়ারের নাম</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>শিফট লেয়ার চালু হলে লেয়ারের নাম, সেই লেয়ারের ঠিক করা সময় ধরে</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>প্রোফাইল বদলালে প্রোফাইলের নাম</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>ঠিকানা কপি করুন</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>স্ক্রিনে অবস্থান</value></data>
@@ -3090,6 +3090,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>শিফট লেয়ার</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>বেস কনফিগার করুন</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>শিফট লেয়ার ফ্লাইআউটে ও লেয়ারের সারিতে বেস লেয়ারের নাম, আইকন ও রং।</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>শিফট লেয়ার ফ্লাইআউটে ও লেয়ারের সারিতে বেস লেয়ারের নাম, আইকন ও রং এবং ফ্লাইআউট সেগুলো কতক্ষণ দেখাবে।</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>লেয়ারের নাম</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>নাম</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>ধরে রাখার ইনপুট</value></data>
@@ -3102,6 +3103,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>বেস থেকে নিন</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>কিছু করবেন না</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>মোড, ইনপুটের ধরন, সময় ও রং</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>মোড, ইনপুটের ধরন, সময়, ফ্লাইআউট ও রং</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>মোড</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>ধরে রাখা</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>টগল</value></data>
@@ -3155,6 +3157,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>অ্যাক্টিভেটরের নিজস্ব ম্যাপিংও চালু করুন</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>টিক দেওয়া থাকলে অ্যাক্টিভেটর বোতামটি যেসব সারিতে উৎস হিসেবে আছে সেগুলোও চালায়। এক চাপেই লেয়ার বদলায় এবং বোতামের নিজস্ব ম্যাপিংও চালু হয়। টিক না থাকলে (ডিফল্ট) অ্যাক্টিভেটরের চাপ কেবল লেয়ার বদলের কাজেই লাগে।</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>“বেস থেকে নিন” হলে এই লেয়ার যেসব কন্ট্রোল ম্যাপ করে না সেগুলো বেসের ম্যাপিং রাখে। “কিছু করবেন না” হলে লেয়ারটি বেসের জায়গা পুরোপুরি নেয় এবং ওই কন্ট্রোলগুলো বন্ধ থাকে।</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>ফ্লাইআউট</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>লেয়ার চালু থাকা পর্যন্ত</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 সেকেন্ডের জন্য</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>কখনো না</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>“লেয়ার চালু থাকা পর্যন্ত” হলে লেয়ার বদলানো পর্যন্ত ফ্লাইআউট থাকে। “2 সেকেন্ডের জন্য” হলে লেয়ার চালু হওয়ার সময় ফ্লাইআউট দেখায়, তারপর নিজে থেকে সরে যায়। “কখনো না” হলে এই লেয়ারে কোনো ফ্লাইআউট দেখায় না, আর লেয়ার শেষ হলে বেসও কোনোটি দেখায় না।</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>“2 সেকেন্ডের জন্য” হলে শিফট লেয়ার শেষ হওয়ার সময় বেসের নাম দেখায়। “কখনো না” হলে বেস কোনো ফ্লাইআউট দেখায় না।</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>ঘূর্ণনের পরিসর</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>ঘূর্ণনের পরিসর নির্ধারণ করুন</value></data>

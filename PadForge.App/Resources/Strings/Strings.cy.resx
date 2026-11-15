@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Ar gyfer modiau sy'n chwilio am DSX yn rhedeg cyn iddynt anfon</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Yr Hyn a Ddangosir</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Cylch, grid neu far dewislen tra bydd ar agor</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Enw'r haen tra bydd haen shift yn cael ei dal</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Enw'r haen pan fydd haen shift yn troi ymlaen, am yr amser y mae'r haen honno'n ei osod</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Enw'r proffil pan fydd y proffil yn newid</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copïo'r Cyfeiriad</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Gosod ar y Sgrin</value></data>
@@ -2895,6 +2895,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Haen Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Ffurfweddu'r Sylfaen</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Enw, eicon a lliw'r haen Sylfaen ar Naidlen Haen Shift ac yn rhes yr haenau.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Enw, eicon a lliw'r haen Sylfaen ar Naidlen Haen Shift ac yn rhes yr haenau, a pha mor hir y mae'r naidlen yn eu dangos.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Enw'r Haen</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Enw</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Dal Gyda</value></data>
@@ -2907,6 +2908,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Disgyn Drwodd i'r Sylfaen</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Gwneud Dim</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Modd, math o fewnbwn, amseru a lliw</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Modd, math o fewnbwn, amseru, naidlen a lliw</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Modd</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Dal</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Toglo</value></data>
@@ -2960,6 +2962,12 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Tanio mapio'r ysgogydd ei hun hefyd</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Wrth ei dicio, mae botwm yr ysgogydd yn dal i yrru unrhyw res sy'n ei ddefnyddio fel ffynhonnell. Mae un gwasgiad yn newid haen ac yn tanio mapio'r botwm ei hun. Wrth ei ddad-dicio (rhagosodedig), dim ond y newid haen sy'n defnyddio gwasgiad yr ysgogydd.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Gyda Disgyn Drwodd i'r Sylfaen, mae rheolaethau nad yw'r haen hon yn eu mapio yn cadw eu mapiadau Sylfaen. Gyda Gwneud Dim, mae'r haen yn disodli'r Sylfaen yn llwyr ac mae'r rheolaethau hynny'n aros i ffwrdd.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Naidlen</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Tra bydd yr haen ymlaen</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Am 2 eiliad</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Byth</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Mae Tra bydd yr haen ymlaen yn cadw'r naidlen i fyny nes bydd yr haen yn newid. Mae Am 2 eiliad yn ei dangos pan fydd yr haen yn troi ymlaen, yna'n gadael iddi fynd. Gyda Byth, nid yw'r haen hon yn dangos naidlen, ac nid yw'r Sylfaen yn dangos un pan ddaw'r haen i ben.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Mae Am 2 eiliad yn dangos enw'r Sylfaen pan ddaw haen shift i ben. Gyda Byth, nid yw'r Sylfaen yn dangos naidlen.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Amrediad cylchdroi</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Gosod Amrediad Cylchdroi</value></data>

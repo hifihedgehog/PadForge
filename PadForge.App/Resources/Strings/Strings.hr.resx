@@ -419,7 +419,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Za modove koji prije slanja traže pokrenuti DSX</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Što se prikazuje</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Prsten, mreža ili traka izbornika dok je otvoren</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Naziv sloja dok se drži sloj promjene</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Naziv sloja kad se sloj promjene uključi, onoliko dugo koliko taj sloj odredi</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Naziv profila kad se profil promijeni</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiraj adresu</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Položaj na zaslonu</value></data>
@@ -2900,6 +2900,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Sloj</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Konfiguriraj osnovni sloj</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Naziv, ikona i boja osnovnog sloja na izborniku sloja promjene i u retku slojeva.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Naziv, ikona i boja osnovnog sloja na izborniku sloja promjene i u retku slojeva te koliko dugo ih skočni prozor prikazuje.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Naziv sloja</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Naziv</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Drži se pomoću</value></data>
@@ -2912,6 +2913,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Prijeđi na osnovni</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ne radi ništa</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Način, vrsta ulaza, vrijeme i boja</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Način, vrsta ulaza, vrijeme, skočni prozor i boja</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Način</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Držanje</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Preklopno</value></data>
@@ -2965,6 +2967,12 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Aktiviraj i vlastito mapiranje aktivatora</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Kada je označeno, gumb aktivatora i dalje upravlja svakim retkom koji ga koristi kao izvor. Jedan pritisak mijenja sloj i aktivira vlastito mapiranje gumba. Kada nije označeno (zadano), pritisak aktivatora troši se samo na promjenu sloja.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Uz Prijeđi na osnovni, kontrole koje ovaj sloj ne mapira zadržavaju svoja osnovna mapiranja. Uz Ne radi ništa, sloj u potpunosti zamjenjuje osnovni, a te kontrole ostaju isključene.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Skočni prozor</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Dok je sloj uključen</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 sekunde</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Nikad</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Dok je sloj uključen drži skočni prozor na zaslonu dok se sloj ne promijeni. 2 sekunde prikazuje ga kad se sloj uključi, a zatim ga pušta. Uz Nikad ovaj sloj ne prikazuje skočni prozor, a osnovni ga ne prikazuje kad sloj završi.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 sekunde prikazuje naziv osnovnog sloja kad sloj promjene završi. Uz Nikad osnovni sloj ne prikazuje skočni prozor.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Raspon okretanja</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>Postavi raspon okretanja</value></data>

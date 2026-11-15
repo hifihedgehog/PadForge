@@ -2259,6 +2259,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Couche Shift</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>Configurer la Base</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>Le nom, l'icône et la couleur de la couche Base dans l'info-bulle de couche Shift et dans la rangée des couches.</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>Le nom, l'icône et la couleur de la couche Base dans l'info-bulle de couche Shift et dans la rangée des couches, ainsi que la durée d'affichage de l'info-bulle.</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Nom de la couche</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>Nom</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>Maintenu avec</value></data>
@@ -2271,6 +2272,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>Retomber sur Base</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>Ne rien faire</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>Mode, type d'entrée, durée et couleur</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mode, type d'entrée, durée, info-bulle et couleur</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>Mode</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>Maintenir</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Bascule</value></data>
@@ -2320,6 +2322,12 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Déclencher aussi le mapping propre de l'activateur</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Si coché, le bouton activateur continue de piloter toute ligne qui l'utilise comme source. Une pression change la couche ET déclenche le mapping propre du bouton. Si non coché (par défaut), la pression est consommée uniquement par le changement de couche.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>Avec Retomber sur Base, les commandes que cette couche ne mappe pas gardent leurs mappages de Base. Avec Ne rien faire, la couche remplace entièrement Base et ces commandes restent désactivées.</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>Info-bulle</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>Tant que la couche est active</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>Pendant 2 secondes</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Jamais</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Tant que la couche est active maintient l'info-bulle affichée jusqu'à ce que la couche change. Pendant 2 secondes l'affiche à l'activation de la couche, puis la laisse disparaître. Avec Jamais, cette couche n'affiche aucune info-bulle, et Base n'en affiche aucune à la fin de la couche.</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Pendant 2 secondes affiche le nom de Base à la fin d'une couche Shift. Avec Jamais, Base n'affiche aucune info-bulle.</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Gâchettes Impulse</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain par gâchette, inversion des moteurs, vibrations des gâchettes adaptatives, Force constante sur gâchettes</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Transmet les commandes par moteur de gâchette (gâchettes Impulse Xbox) du contrôleur virtuel vers le contrôleur physique Xbox One, Elite ou Series assigné. La vibration de gâchette générée par un jeu est transmise automatiquement. Les contrôles ci-dessous ajustent l'amplitude par gâchette.</value></data>
@@ -3423,7 +3431,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Pour les mods qui cherchent un DSX en cours d'exécution avant d'envoyer</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Ce qui s'affiche</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>L'anneau, la grille ou la barre d'un menu tant qu'il est ouvert</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Le nom de la couche tant qu'une couche Shift est maintenue</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Le nom de la couche à l'activation d'une couche Shift, pendant la durée que cette couche définit</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Le nom du profil quand le profil change</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copier l'adresse</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Placer à l'écran</value></data>

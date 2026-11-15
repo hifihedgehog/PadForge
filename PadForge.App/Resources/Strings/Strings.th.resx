@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>สำหรับม็อดที่มองหา DSX ที่กำลังทำงานอยู่ก่อนส่งข้อมูล</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>สิ่งที่แสดง</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>วงแหวน ตาราง หรือแถบของเมนูขณะที่เมนูเปิดอยู่</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ชื่อของเลเยอร์ขณะที่กดเลเยอร์ชิฟต์ค้างไว้</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ชื่อของเลเยอร์เมื่อเลเยอร์ชิฟต์เปิดทำงาน ตามระยะเวลาที่เลเยอร์นั้นกำหนด</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ชื่อของโปรไฟล์เมื่อโปรไฟล์เปลี่ยน</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>คัดลอกที่อยู่</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>ตำแหน่งบนหน้าจอ</value></data>
@@ -3090,6 +3090,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>เลเยอร์ชิฟต์</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>กำหนดค่าฐาน</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>ชื่อ ไอคอน และสีของเลเยอร์ฐานบนหน้าต่างลอยเลเยอร์ชิฟต์และในแถวเลเยอร์</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>ชื่อ ไอคอน และสีของเลเยอร์ฐานบนหน้าต่างลอยเลเยอร์ชิฟต์และในแถวเลเยอร์ และระยะเวลาที่หน้าต่างลอยแสดงสิ่งเหล่านี้</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>ชื่อเลเยอร์</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>ชื่อ</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>กดค้างด้วย</value></data>
@@ -3102,6 +3103,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>ส่งต่อไปยังเลเยอร์ฐาน</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>ไม่ทำอะไร</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>โหมด, ชนิดอินพุต, จังหวะเวลา, สี</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>โหมด, ชนิดอินพุต, จังหวะเวลา, หน้าต่างลอย, สี</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>โหมด</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>กดค้าง</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>สลับเปิด/ปิด</value></data>
@@ -3155,6 +3157,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>ให้การแมปของตัวเปิดใช้งานเองทำงานด้วย</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>เมื่อเลือก ปุ่มตัวเปิดใช้งานยังคงขับแถวใดก็ตามที่ใช้ปุ่มนี้เป็นแหล่งที่มา การกดหนึ่งครั้งจะทั้งเปลี่ยนเลเยอร์และทำให้การแมปของปุ่มเองทำงาน เมื่อไม่เลือก (ค่าเริ่มต้น) การกดตัวเปิดใช้งานจะถูกใช้ไปกับการเปลี่ยนเลเยอร์เท่านั้น</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>เมื่อเลือกส่งต่อไปยังเลเยอร์ฐาน ตัวควบคุมที่เลเยอร์นี้ไม่ได้แมปจะคงการแมปของเลเยอร์ฐานไว้ เมื่อเลือกไม่ทำอะไร เลเยอร์จะแทนที่เลเยอร์ฐานทั้งหมด และตัวควบคุมเหล่านั้นจะปิดอยู่</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>หน้าต่างลอย</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>ขณะที่เลเยอร์เปิดอยู่</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 วินาที</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>ไม่แสดง</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>ขณะที่เลเยอร์เปิดอยู่ จะคงหน้าต่างลอยไว้จนกว่าเลเยอร์จะเปลี่ยน 2 วินาที จะแสดงหน้าต่างลอยเมื่อเลเยอร์เปิด แล้วปล่อยให้หายไป ไม่แสดง จะไม่มีหน้าต่างลอยสำหรับเลเยอร์นี้ และเลเยอร์ฐานก็ไม่แสดงเมื่อเลเยอร์นี้สิ้นสุด</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 วินาที จะแสดงชื่อของเลเยอร์ฐานเมื่อเลเยอร์ชิฟต์สิ้นสุด ไม่แสดง จะไม่มีหน้าต่างลอยสำหรับเลเยอร์ฐาน</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>ช่วงการหมุน</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>ตั้งช่วงการหมุน</value></data>

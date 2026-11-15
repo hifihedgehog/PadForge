@@ -432,7 +432,7 @@
   <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>ان موڈز کے لیے جو بھیجنے سے پہلے چلتا ہوا DSX تلاش کرتے ہیں</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>کیا دکھایا جائے</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>کھلے ہونے کے دوران مینیو کا رِنگ، گرڈ یا بار</value></data>
-  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>شفٹ لیئر تھامے جانے کے دوران لیئر کا نام</value></data>
+  <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>شفٹ لیئر آن ہونے پر لیئر کا نام، اتنی دیر کے لیے جتنی وہ لیئر طے کرتی ہے</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>پروفائل بدلنے پر پروفائل کا نام</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>پتہ کاپی کریں</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>اسکرین پر جگہ</value></data>
@@ -3090,6 +3090,7 @@
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>شفٹ لیئر</value></data>
   <data name="Pad_Shift_BaseConfigTitle" xml:space="preserve"><value>بنیادی لیئر ترتیب دیں</value></data>
   <data name="Pad_Shift_BaseSubtitle" xml:space="preserve"><value>بیس لیئر کا نام، آئیکن اور رنگ شفٹ لیئر فلائی آؤٹ میں اور لیئرز کی قطار میں۔</value></data>
+  <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>بیس لیئر کا نام، آئیکن اور رنگ شفٹ لیئر فلائی آؤٹ میں اور لیئرز کی قطار میں، اور فلائی آؤٹ انہیں کتنی دیر دکھاتا ہے۔</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>لیئر کا نام</value></data>
   <data name="Pad_Shift_NameLabel" xml:space="preserve"><value>نام</value></data>
   <data name="Pad_Shift_HeldWith" xml:space="preserve"><value>تھامنے کا ان پٹ</value></data>
@@ -3102,6 +3103,7 @@
   <data name="Pad_Shift_FallThroughToBase" xml:space="preserve"><value>بیس پر لوٹ جائیں</value></data>
   <data name="Pad_Shift_DoNothing" xml:space="preserve"><value>کچھ نہ کریں</value></data>
   <data name="Pad_Shift_MoreHint" xml:space="preserve"><value>موڈ، ان پٹ کی قسم، وقت اور رنگ</value></data>
+  <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>موڈ، ان پٹ کی قسم، وقت، فلائی آؤٹ اور رنگ</value></data>
   <data name="Pad_Shift_Mode" xml:space="preserve"><value>موڈ</value></data>
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>دبائے رکھنا</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>ٹوگل</value></data>
@@ -3155,6 +3157,12 @@
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>ایکٹیویٹر کی اپنی میپنگ بھی چلائیں</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>نشان زد ہونے پر ایکٹیویٹر بٹن ان قطاروں کو بھی چلاتا ہے جو اسے بطور ماخذ استعمال کرتی ہیں۔ ایک ہی بار دبانے سے لیئر بھی بدلتی ہے اور بٹن کی اپنی میپنگ بھی چلتی ہے۔ نشان زد نہ ہونے پر (ڈیفالٹ) ایکٹیویٹر کا دبانا صرف لیئر بدلنے میں صرف ہوتا ہے۔</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>بیس پر لوٹ جائیں کے ساتھ، جن کنٹرولز کو یہ لیئر میپ نہیں کرتی وہ اپنی بیس میپنگز برقرار رکھتے ہیں۔ کچھ نہ کریں کے ساتھ، لیئر بیس کی جگہ پوری طرح لے لیتی ہے اور وہ کنٹرولز آف رہتے ہیں۔</value></data>
+  <data name="Pad_Shift_Flyout" xml:space="preserve"><value>فلائی آؤٹ</value></data>
+  <data name="Pad_Shift_Flyout_Stay" xml:space="preserve"><value>لیئر آن ہونے کے دوران</value></data>
+  <data name="Pad_Shift_Flyout_Brief" xml:space="preserve"><value>2 سیکنڈ کے لیے</value></data>
+  <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>کبھی نہیں</value></data>
+  <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>لیئر آن ہونے کے دوران فلائی آؤٹ کو لیئر بدلنے تک اسکرین پر رکھتا ہے۔ 2 سیکنڈ کے لیے اسے لیئر آن ہونے پر دکھاتا ہے، پھر ہٹا دیتا ہے۔ کبھی نہیں کے ساتھ، یہ لیئر کوئی فلائی آؤٹ نہیں دکھاتی، اور لیئر ختم ہونے پر بنیادی بھی کوئی فلائی آؤٹ نہیں دکھاتا۔</value></data>
+  <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 سیکنڈ کے لیے کے ساتھ، شفٹ لیئر ختم ہونے پر فلائی آؤٹ بنیادی کا نام دکھاتا ہے۔ کبھی نہیں کے ساتھ، بنیادی کوئی فلائی آؤٹ نہیں دکھاتا۔</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>گردش کی رینج</value></data>
   <data name="Pad_Wheel_SetRotationRange" xml:space="preserve"><value>گردش کی رینج سیٹ کریں</value></data>

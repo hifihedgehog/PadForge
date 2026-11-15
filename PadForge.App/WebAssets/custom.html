@@ -12,16 +12,23 @@
         /* The build-your-own pad in the program's colors (#574). A widget
            rests in steel and turns ember while it is pressed, a touch area
            is marked in the cold blue, and what is picked for editing is
-           ringed in ember. */
+           ringed in ember. Every widget's box is set in the screen's pixels
+           by js/pad_fit.js, so each keeps its shape on a screen of any
+           shape: nothing here is a share of the screen's width or height. */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-user-select: none; user-select: none; }
+        [hidden] { display: none !important; }
         html, body { width: 100%; height: 100%; overflow: hidden; background: var(--ground); color: var(--text-1);
                      font-family: var(--font); touch-action: none; }
         #canvas { position: absolute; inset: 0; }
+        /* The editor's grid: a dot at each place a control snaps to. */
+        #canvas.grid { background-image: radial-gradient(circle at 1px 1px, var(--field-edge) 1px, transparent 1.5px); }
 
         .widget { position: absolute; touch-action: none; }
-        .w-button { border-radius: 50%; background: var(--raised); border: 2px solid var(--dot-ring);
+        /* A button is a circle when it is as wide as it is tall, and a pill
+           when it is not. */
+        .w-button { border-radius: 9999px; background: var(--raised); border: 2px solid var(--dot-ring);
                     display: flex; align-items: center; justify-content: center;
-                    font-weight: 700; font-size: 16px; color: var(--text-1); }
+                    font-weight: 700; color: var(--text-1); white-space: nowrap; }
         .w-button.pressed { background: var(--ember); border-color: var(--ember); color: var(--ember-ink); }
         .w-stick { border-radius: 50%; background: var(--well); border: 2px solid var(--card-edge); }
         .w-stick .knob { position: absolute; width: 44%; height: 44%; left: 28%; top: 28%;
@@ -30,24 +37,36 @@
                     overflow: hidden; }
         .w-slider .fill { position: absolute; left: 0; right: 0; bottom: 0; height: 0%;
                           background: var(--ember); opacity: 0.75; }
-        .w-slider .tag { position: absolute; top: 4px; width: 100%; text-align: center;
-                         font-size: 11px; color: var(--text-2); }
-        .w-dpad { background: var(--raised); border: 2px solid var(--dot-ring); border-radius: 14px; }
-        .w-dpad:after { content: "\271B"; position: absolute; inset: 0; display: flex;
-                        align-items: center; justify-content: center; font-size: 34px; color: var(--text-3); }
+        .w-slider .tag { position: absolute; top: 4px; width: 100%; text-align: center; color: var(--text-2); }
+        /* A D-pad is a cross. The arm it is pushed toward lights ember. */
+        .w-dpad svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+        .w-dpad .face { fill: var(--raised); stroke: var(--dot-ring); stroke-width: 2; vector-effect: non-scaling-stroke; }
+        .w-dpad .arm { fill: var(--ember); opacity: 0; }
+        .w-dpad .tip { fill: var(--text-3); }
+        .w-dpad.lit-n .arm.n, .w-dpad.lit-e .arm.e, .w-dpad.lit-s .arm.s, .w-dpad.lit-w .arm.w { opacity: 1; }
+        .w-dpad.lit-n .tip.n, .w-dpad.lit-e .tip.e, .w-dpad.lit-s .tip.s, .w-dpad.lit-w .tip.w { fill: var(--ember-ink); }
         .w-touch { background: var(--cold-tint); border: 2px dashed var(--cold-line); border-radius: 10px; }
-        .w-touch .tag { position: absolute; top: 4px; width: 100%; text-align: center;
-                        font-size: 11px; color: var(--cold); }
+        .w-touch .tag { position: absolute; top: 4px; width: 100%; text-align: center; color: var(--cold); }
 
-        .selected { outline: 3px solid var(--ember); }
+        .selected { outline: 3px solid var(--ember); outline-offset: 2px; }
         .handle { position: absolute; right: -10px; bottom: -10px; width: 22px; height: 22px;
                   border-radius: 50%; background: var(--ember); border: 2px solid var(--ground); display: none; z-index: 5; }
         .selected .handle { display: block; }
 
-        #toolbar { position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: none;
-                   background: var(--veil); border-bottom: 1px solid var(--line-soft);
-                   padding: 8px 10px; gap: 8px; align-items: center; flex-wrap: wrap; }
+        /* The tools: a panel at the top's middle that its grip moves, so it
+           can be taken off a control. It fades and lets touches through
+           while a control is dragged. */
+        #toolbar { position: fixed; top: 8px; left: 50%; transform: translateX(-50%); z-index: 50; display: none;
+                   width: max-content; max-width: calc(100% - 16px);
+                   background: var(--veil); border: 1px solid var(--card-edge); border-radius: 12px;
+                   padding: 8px 10px; gap: 8px; align-items: center; flex-wrap: wrap;
+                   transition: opacity 0.12s; }
         #toolbar.on { display: flex; }
+        #toolbar.moved { transform: none; }
+        body.dragging #toolbar { opacity: 0.2; pointer-events: none; }
+        #barGrip { flex: none; width: 14px; height: 26px; cursor: grab; touch-action: none;
+                   background-image: radial-gradient(circle, var(--text-3) 1.5px, transparent 2px);
+                   background-size: 7px 8px; background-position: center; }
         #toolbar select, #toolbar input, #toolbar button {
             background: var(--field); color: var(--text-1); border: 1px solid var(--field-edge); border-radius: 8px;
             padding: 6px 10px; font: 13px var(--font); }
@@ -59,13 +78,22 @@
         #toolbar .pf-chip { padding: 6px 10px; font: 600 13px var(--font); }
         /* Edit is css/padforge.css's chip, at the lower left corner. */
         #editBtn { position: fixed; bottom: 10px; left: 10px; z-index: 55; opacity: 0.9; }
-        #statusBar { position: fixed; bottom: 12px; right: 12px; z-index: 40;
-                     font-size: 11px; color: var(--text-3); pointer-events: none; }
+        /* What the page has to say: a pill at the bottom's middle that goes
+           after a moment, as the controller page's does. A pad sits at the
+           bottom of the screen, so a line left there lay over its controls. */
+        #statusBar { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 40;
+                     width: max-content; max-width: calc(100% - 24px); text-align: center;
+                     font-size: 12px; color: var(--text-2); background: var(--veil);
+                     border: 1px solid var(--line-soft); border-radius: 999px; padding: 3px 12px;
+                     pointer-events: none; transition: opacity 0.5s; }
+        #statusBar:empty { display: none; }
+        #statusBar.faded { opacity: 0; }
         #disconnect-message { display: none; position: fixed; inset: 0; z-index: 60; }
     </style>
 </head>
 <body>
     <div id="toolbar">
+        <span id="barGrip" title="Move these tools"></span>
         <select id="palette">
             <option value="">+ Add widget</option>
             <optgroup label="Buttons">
@@ -93,6 +121,8 @@
         <button id="delWidget">Remove</button>
         <label class="check"><input type="checkbox" id="snap" checked> Grid</label>
         <input id="padName" placeholder="Pad name" maxlength="40">
+        <!-- Shown when the pad has an arrangement of its own for the way this screen is held and one for the other way. -->
+        <button id="autoBtn" hidden title="Give up this arrangement. The pad is fitted to this screen from the one made for the other way of holding it.">Auto-fit</button>
         <button id="saveBtn">Save</button>
         <button id="deleteLayoutBtn">Delete pad</button>
         <!-- Fullscreen toggle mount (#402): in the edit toolbar, so it covers no widget in play mode. -->
@@ -103,6 +133,7 @@
     <div id="statusBar"></div>
     <div id="disconnect-message" class="pf-cover"><h2>Disconnected. Tap to reconnect.</h2></div>
     <script src="/js/fullscreen.js"></script>
+    <script src="/js/pad_fit.js"></script>
     <script src="/js/custom_client.js"></script>
 </body>
 </html>

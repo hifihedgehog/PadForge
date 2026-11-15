@@ -80,6 +80,76 @@ namespace PadForge.Tests
             Assert.False(w0.TryGetProperty("junk", out _));
         }
 
+        /// <summary>A pad keeps the shape of the screen it was arranged on,
+        /// and a second arrangement for the other way of holding the screen
+        /// (#574). The page needs the shape to keep a control's own shape
+        /// on any other screen. The whitelist dropped both as unknown.</summary>
+        [Fact]
+        public void Upsert_KeepsTheScreensShape_AndTheSecondArrangement()
+        {
+            WebCustomLayoutStore.LoadFrom("[]");
+            var id = WebCustomLayoutStore.Upsert(
+                "{\"name\":\"Both\",\"aspect\":2.16410256,\"aspect2\":0.46208531,\"widgets\":[" +
+                "{\"kind\":\"stick\",\"x\":0.05,\"y\":0.5,\"w\":0.16,\"h\":0.35,\"code\":0," +
+                "\"x2\":0.06,\"y2\":7,\"w2\":0.001,\"h2\":0.1}," +
+                "{\"kind\":\"button\",\"x\":0.8,\"y\":0.5,\"w\":0.07,\"h\":0.16,\"code\":1}]}");
+            Assert.NotNull(id);
+
+            using var doc = JsonDocument.Parse(WebCustomLayoutStore.Find(id));
+            var root = doc.RootElement;
+            Assert.Equal(2.1641, root.GetProperty("aspect").GetDouble());
+            Assert.Equal(0.4621, root.GetProperty("aspect2").GetDouble());
+            var stick = root.GetProperty("widgets")[0];
+            Assert.Equal(0.06, stick.GetProperty("x2").GetDouble());
+            Assert.Equal(1.0, stick.GetProperty("y2").GetDouble());    // clamped to max 1
+            Assert.Equal(0.02, stick.GetProperty("w2").GetDouble());   // clamped to min 0.02
+            Assert.Equal(0.1, stick.GetProperty("h2").GetDouble());
+            Assert.Equal(0.05, stick.GetProperty("x").GetDouble());
+            // A control that came with no second place has none. The page gives it one.
+            Assert.False(root.GetProperty("widgets")[1].TryGetProperty("x2", out _));
+            Assert.Equal(1, root.GetProperty("widgets")[1].GetProperty("code").GetInt32());
+
+            // It survives the round trip through the settings file's text.
+            WebCustomLayoutStore.LoadFrom(WebCustomLayoutStore.Json);
+            using var again = JsonDocument.Parse(WebCustomLayoutStore.Find(id));
+            Assert.Equal(0.4621, again.RootElement.GetProperty("aspect2").GetDouble());
+        }
+
+        /// <summary>A shape no screen has is not kept, a second arrangement
+        /// counts only beside a first and only for the other way of holding
+        /// the screen, and a pad of the first builder, which sends no shape,
+        /// is kept as it always was.</summary>
+        [Theory]
+        [InlineData("\"aspect\":9,\"aspect2\":0.5,", false, false)]
+        [InlineData("\"aspect\":0.05,", false, false)]
+        [InlineData("\"aspect\":\"wide\",\"aspect2\":0.5,", false, false)]
+        [InlineData("\"aspect2\":0.5,", false, false)]
+        [InlineData("\"aspect\":2,\"aspect2\":1.5,", true, false)]
+        [InlineData("\"aspect\":0.5,\"aspect2\":0.6,", true, false)]
+        [InlineData("\"aspect\":2,\"aspect2\":44,", true, false)]
+        [InlineData("\"aspect\":2,", true, false)]
+        [InlineData("\"aspect\":0.5,\"aspect2\":2,", true, true)]
+        [InlineData("\"aspect\":1,\"aspect2\":0.99,", true, true)]
+        [InlineData("", false, false)]
+        public void Upsert_KeepsOnlyAShapeAScreenHas(string shape, bool first, bool second)
+        {
+            WebCustomLayoutStore.LoadFrom("[]");
+            var id = WebCustomLayoutStore.Upsert(
+                "{\"name\":\"Shape\"," + shape + "\"widgets\":[" +
+                "{\"kind\":\"button\",\"x\":0.5,\"y\":0.5,\"w\":0.1,\"h\":0.1,\"code\":2," +
+                "\"x2\":0.3,\"y2\":0.3,\"w2\":0.2,\"h2\":0.2}]}");
+            Assert.NotNull(id);
+
+            using var doc = JsonDocument.Parse(WebCustomLayoutStore.Find(id));
+            Assert.Equal(first, doc.RootElement.TryGetProperty("aspect", out _));
+            Assert.Equal(second, doc.RootElement.TryGetProperty("aspect2", out _));
+            var button = doc.RootElement.GetProperty("widgets")[0];
+            Assert.Equal(second, button.TryGetProperty("x2", out _));
+            Assert.Equal(second, button.TryGetProperty("h2", out _));
+            Assert.Equal(0.5, button.GetProperty("x").GetDouble());
+            Assert.Equal(2, button.GetProperty("code").GetInt32());
+        }
+
         [Fact]
         public void Upsert_RejectsEmptyOrOversizedWidgetSets()
         {

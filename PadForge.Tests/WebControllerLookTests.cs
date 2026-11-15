@@ -30,7 +30,7 @@ namespace PadForge.Tests
         private static readonly string[] Scripts =
         {
             "controller_client.js", "custom_client.js", "display_client.js", "fullscreen.js", "gamepad_client.js",
-            "home_client.js", "layout_view.js",
+            "home_client.js", "layout_view.js", "pad_fit.js",
         };
 
         // The 5.x pages' colors: their navy grounds, their steel blue edges,

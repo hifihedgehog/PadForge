@@ -4,6 +4,10 @@
 // and Save persists the layout server-side (PadForge.xml) via
 // POST /api/custom-layouts. A saved pad connects under typeKey custom:<id>,
 // so it appears in Devices as its own controller.
+//
+// Where each control goes on this screen is js/pad_fit.js's: a control keeps
+// its shape and its size on a screen of any shape, and a pad may have an
+// arrangement of its own for a screen held sideways and for one held upright.
 
 (function () {
     "use strict";
@@ -12,12 +16,16 @@
     var layoutId = params.get("id") || "new";
     var isNew = layoutId === "new";
 
-    var layout = { id: null, name: "Custom Pad", widgets: [] };
+    var layout = PadFit.read({ name: "Custom Pad", widgets: [] });
     var editMode = isNew;
     var selected = null;   // widget model currently selected in edit mode
     var ws = null;
 
     var canvas, toolbar, editBtn, statusEl;
+
+    // The screen, and the pad as it is drawn on it (PadFit.place).
+    var screenW = 0, screenH = 0;
+    var shown = { face: 0, own: true, scale: 0, natural: 0, rects: [] };
 
     // ── WebSocket (same protocol as controller_client) ──
     function send(obj) {
@@ -101,23 +109,43 @@
         }
     });
 
-    function setStatus(t) { if (statusEl) statusEl.textContent = t; }
-
-    // ── Model helpers ──
-    function addWidget(kind, code, label) {
-        var def = {
-            kind: kind, code: code || 0, label: label || "",
-            x: 0.42, y: 0.4,
-            w: kind === "touch" ? 0.3 : kind === "dpad" ? 0.22 : kind === "stick" ? 0.2 : kind === "slider" ? 0.08 : 0.1,
-            h: kind === "touch" ? 0.35 : kind === "dpad" ? 0.34 : kind === "stick" ? 0.32 : kind === "slider" ? 0.4 : 0.16
-        };
-        layout.widgets.push(def);
-        render();
-        select(def);
+    // The page's line says its piece and goes, so it stays over no control.
+    var statusFade = null;
+    function setStatus(t) {
+        if (!statusEl) return;
+        statusEl.textContent = t;
+        statusEl.classList.remove("faded");
+        clearTimeout(statusFade);
+        statusFade = setTimeout(function () { statusEl.classList.add("faded"); }, 4000);
     }
 
     var BTN_LABELS = { 0:"A",1:"B",2:"X",3:"Y",4:"LB",5:"RB",6:"Back",7:"Start",8:"LS",9:"RS",10:"Guide",
                        11:"M1",12:"RP1",13:"LP1",14:"RP2",15:"LP2",17:"M2",18:"M3" };
+
+    // A D-pad's face: a cross, an arm that lights for each way it is pushed,
+    // and a tip on each arm. It is drawn in a box of 100 so it is the same
+    // cross at any size.
+    var DPAD_ART =
+        '<svg viewBox="0 0 100 100" aria-hidden="true">' +
+        '<path class="face" d="M36 4H64a4 4 0 0 1 4 4V32H92a4 4 0 0 1 4 4V64a4 4 0 0 1-4 4H68V92a4 4 0 0 1-4 4H36a4 4 0 0 1-4-4V68H8a4 4 0 0 1-4-4V36a4 4 0 0 1 4-4H32V8a4 4 0 0 1 4-4Z"/>' +
+        '<rect class="arm n" x="34" y="6" width="32" height="28" rx="3"/>' +
+        '<rect class="arm e" x="66" y="34" width="28" height="32" rx="3"/>' +
+        '<rect class="arm s" x="34" y="66" width="32" height="28" rx="3"/>' +
+        '<rect class="arm w" x="6" y="34" width="28" height="32" rx="3"/>' +
+        '<path class="tip n" d="M50 12L58 24H42Z"/>' +
+        '<path class="tip e" d="M88 50L76 58V42Z"/>' +
+        '<path class="tip s" d="M50 88L42 76H58Z"/>' +
+        '<path class="tip w" d="M12 50L24 42V58Z"/>' +
+        '</svg>';
+    // The arms lit for each of the eight ways, clockwise from up.
+    var DPAD_ARMS = ["n", "ne", "e", "se", "s", "sw", "w", "nw"];
+
+    function lightDpad(el, way) {
+        var lit = way < 0 ? "" : DPAD_ARMS[way];
+        ["n", "e", "s", "w"].forEach(function (arm) {
+            el.classList.toggle("lit-" + arm, lit.indexOf(arm) >= 0);
+        });
+    }
 
     // ── Rendering ──
     function render() {
@@ -135,7 +163,6 @@
         layout.widgets.forEach(function (wd) {
             var el = document.createElement("div");
             el.className = "widget";
-            positionEl(el, wd);
             if (wd.kind === "button") {
                 el.className += " w-button";
                 el.textContent = wd.label || BTN_LABELS[wd.code] || ("B" + wd.code);
@@ -152,10 +179,11 @@
                 el.appendChild(tag);
             } else if (wd.kind === "dpad") {
                 el.className += " w-dpad";
+                el.innerHTML = DPAD_ART;
             } else if (wd.kind === "touch") {
                 el.className += " w-touch";
                 var ttag = document.createElement("div"); ttag.className = "tag";
-                ttag.textContent = "touch"; el.appendChild(ttag);
+                ttag.textContent = "Touch"; el.appendChild(ttag);
             }
             var handle = document.createElement("div");
             handle.className = "handle";
@@ -168,13 +196,32 @@
             if (wd === selected && editMode) el.classList.add("selected");
             canvas.appendChild(el);
         });
+        fit();
     }
 
-    function positionEl(el, wd) {
-        el.style.left = (wd.x * 100) + "%";
-        el.style.top = (wd.y * 100) + "%";
-        el.style.width = (wd.w * 100) + "%";
-        el.style.height = (wd.h * 100) + "%";
+    // Draws the pad for the screen as it is now. Called again when the
+    // screen changes: the phone is turned, the browser's bars come or go, a
+    // window is resized.
+    function fit() {
+        screenW = canvas.clientWidth;
+        screenH = canvas.clientHeight;
+        shown = PadFit.place(layout, screenW, screenH);
+        layout.widgets.forEach(function (wd, i) {
+            if (wd._el && shown.rects[i]) setBox(wd._el, wd, shown.rects[i]);
+        });
+        showEditAids();
+    }
+
+    // A control's box, in the screen's pixels. Its words are sized with it.
+    function setBox(el, wd, r) {
+        el.style.left = r.x + "px";
+        el.style.top = r.y + "px";
+        el.style.width = r.w + "px";
+        el.style.height = r.h + "px";
+        var small = Math.min(r.w, r.h);
+        var words = wd.kind === "button" ? Math.max(10, Math.min(44, small * 0.34))
+                                         : Math.max(9, Math.min(15, small * 0.2));
+        el.style.fontSize = words + "px";
     }
 
     function select(wd) {
@@ -185,15 +232,54 @@
     }
 
     // ── Edit interactions ──
+
+    // The grid's step in pixels: the same along and down, so what snaps to
+    // it keeps its shape.
+    function gridStep() { return PadFit.GRID * Math.min(screenW, screenH) / PadFit.SHORT; }
+
     function snap(v) {
-        return document.getElementById("snap").checked ? Math.round(v * 50) / 50 : v;
+        if (!document.getElementById("snap").checked) return v;
+        var step = gridStep();
+        return step > 0 ? Math.round(v / step) * step : v;
+    }
+
+    // The first edit on a screen makes the pad as it is drawn here the pad's
+    // own arrangement for a screen held this way. Until then a pad built on
+    // another screen is only fitted to this one.
+    function takeScreen() {
+        if (shown.own && Math.abs(layout.faces[shown.face] - screenW / screenH) < 1e-6) return;
+        PadFit.adopt(layout, shown.rects, screenW, screenH);
+        shown = PadFit.place(layout, screenW, screenH);
+    }
+
+    // Keeps a moved or resized control's box as the pad's.
+    function keepBox(wd, r) {
+        var i = layout.widgets.indexOf(wd);
+        shown.rects[i] = r;
+        wd.at[shown.face] = { x: r.x / screenW, y: r.y / screenH, w: r.w / screenW, h: r.h / screenH };
+        setBox(wd._el, wd, r);
+    }
+
+    // The grid's dots, the way back to a fitted arrangement, and the line
+    // that says the pad is only fitted to this screen.
+    function showEditAids() {
+        var grid = editMode && document.getElementById("snap").checked;
+        canvas.classList.toggle("grid", grid);
+        if (grid) canvas.style.backgroundSize = gridStep() + "px " + gridStep() + "px";
+        var auto = document.getElementById("autoBtn");
+        auto.hidden = !(editMode && shown.own && layout.faces[0] && layout.faces[1]);
+        if (editMode && layout.widgets.length && !shown.own)
+            setStatus("Fitted to this screen. Move a control to arrange it here.");
+        keepBarOnScreen();
     }
 
     // The drag/resize state lives here, ONE set of window listeners serves
     // every widget. The old shape added four window listeners per widget per
     // render(), so a session of edits accumulated hundreds of stale closures
     // over deleted elements, each running on every pointer move.
-    var editDrag = null;   // { wd, el, mode, sx, sy, ox, oy, ow, oh }
+    var editDrag = null;   // { wd, mode, sx, sy, r, moved }: r is the box the drag began with
+    var barDrag = null;    // { sx, sy, x, y }: the tools being moved
+    var missedFit = false; // the screen changed during a drag
 
     function editPt(e) {
         var t = (e.changedTouches && e.changedTouches.length) ? e.changedTouches[0]
@@ -203,28 +289,56 @@
     }
 
     function editMove(e) {
+        if (barDrag) { e.preventDefault(); moveBar(editPt(e)); return; }
         if (!editDrag) return;
         e.preventDefault();
-        var d = editDrag;
-        var p = editPt(e);
-        var dx = (p.x - d.sx) / canvas.clientWidth;
-        var dy = (p.y - d.sy) / canvas.clientHeight;
-        if (d.mode === "move") {
-            d.wd.x = snap(Math.max(0, Math.min(0.98 - d.wd.w, d.ox + dx)));
-            d.wd.y = snap(Math.max(0, Math.min(0.98 - d.wd.h, d.oy + dy)));
-        } else {
-            d.wd.w = snap(Math.max(0.04, Math.min(0.9, d.ow + dx)));
-            d.wd.h = snap(Math.max(0.04, Math.min(0.9, d.oh + dy)));
+        var d = editDrag, p = editPt(e);
+        var dx = p.x - d.sx, dy = p.y - d.sy;
+        if (!d.moved) {
+            // A tap picks a control and leaves it, and the pad, as they are.
+            if (Math.abs(dx) + Math.abs(dy) < 4) return;
+            d.moved = true;
+            takeScreen();
+            var from = shown.rects[layout.widgets.indexOf(d.wd)];
+            d.r = { x: from.x, y: from.y, w: from.w, h: from.h };
+            // The tools stand aside while a control is dragged, so one can
+            // be put where they are.
+            document.body.classList.add("dragging");
         }
-        positionEl(d.el, d.wd);
+        var r = { x: d.r.x, y: d.r.y, w: d.r.w, h: d.r.h };
+        if (d.mode === "move") {
+            r.x = Math.max(0, Math.min(screenW - r.w, snap(d.r.x + dx)));
+            r.y = Math.max(0, Math.min(screenH - r.h, snap(d.r.y + dy)));
+        } else {
+            var least = PadFit.SMALLEST * Math.min(screenW, screenH) / PadFit.SHORT;
+            var mostW = screenW - r.x, mostH = screenH - r.y;
+            if (PadFit.isSquare(d.wd.kind)) {
+                // A stick and a D-pad stay as wide as they are tall.
+                var side = Math.max(least, Math.min(mostW, mostH, snap(Math.max(d.r.w + dx, d.r.h + dy))));
+                r.w = r.h = side;
+            } else {
+                r.w = Math.max(least, Math.min(mostW, snap(d.r.w + dx)));
+                r.h = Math.max(least, Math.min(mostH, snap(d.r.h + dy)));
+                // A button drawn nearly round is round. Drawn wide or tall it is a pill.
+                if (d.wd.kind === "button" && PadFit.nearSquare(r.w, r.h)) r.w = r.h = Math.min(r.w, r.h);
+            }
+        }
+        keepBox(d.wd, r);
     }
 
-    function editUp() { editDrag = null; }
+    function editUp() {
+        if (!editDrag && !barDrag) return;
+        editDrag = null;
+        barDrag = null;
+        document.body.classList.remove("dragging");
+        if (missedFit) { missedFit = false; fit(); }
+    }
 
     function wireEditWindowListeners() {
         window.addEventListener("touchmove", editMove, { passive: false });
         window.addEventListener("mousemove", editMove);
         window.addEventListener("touchend", editUp);
+        window.addEventListener("touchcancel", editUp);
         window.addEventListener("mouseup", editUp);
     }
 
@@ -233,14 +347,40 @@
             e.preventDefault(); e.stopPropagation();
             select(wd);
             var p = editPt(e);
-            editDrag = {
-                wd: wd, el: el,
-                mode: (e.target === handle) ? "resize" : "move",
-                sx: p.x, sy: p.y, ox: wd.x, oy: wd.y, ow: wd.w, oh: wd.h
-            };
+            editDrag = { wd: wd, mode: (e.target === handle) ? "resize" : "move", sx: p.x, sy: p.y, r: null, moved: false };
         }
         el.addEventListener("touchstart", down, { passive: false });
         el.addEventListener("mousedown", down);
+    }
+
+    // ── The tools: a small panel that can be moved off a control ──
+    function moveBar(p) {
+        placeBar(barDrag.x + p.x - barDrag.sx, barDrag.y + p.y - barDrag.sy);
+    }
+
+    function placeBar(x, y) {
+        var w = toolbar.offsetWidth, h = toolbar.offsetHeight;
+        toolbar.classList.add("moved");
+        toolbar.style.left = Math.max(0, Math.min(screenW - w, x)) + "px";
+        toolbar.style.top = Math.max(0, Math.min(screenH - h, y)) + "px";
+    }
+
+    function keepBarOnScreen() {
+        // Hidden, it has no box to keep: it is where it was left when it shows again.
+        if (!toolbar.classList.contains("moved") || !toolbar.classList.contains("on")) return;
+        var box = toolbar.getBoundingClientRect();
+        placeBar(box.left, box.top);
+    }
+
+    function wireBarGrip() {
+        var grip = document.getElementById("barGrip");
+        function down(e) {
+            e.preventDefault(); e.stopPropagation();
+            var p = editPt(e), box = toolbar.getBoundingClientRect();
+            barDrag = { sx: p.x, sy: p.y, x: box.left, y: box.top };
+        }
+        grip.addEventListener("touchstart", down, { passive: false });
+        grip.addEventListener("mousedown", down);
     }
 
     // ── Play interactions ──
@@ -369,11 +509,16 @@
             var t = widgetTouch(e);
             var nx = ((t.clientX - r.left) / r.width - 0.5) * 2;
             var ny = ((t.clientY - r.top) / r.height - 0.5) * 2;
-            if (Math.sqrt(nx * nx + ny * ny) < 0.25) { send({ type: "input", kind: "pov", code: 0, value: -1 }); return; }
+            if (Math.sqrt(nx * nx + ny * ny) < 0.25) {
+                lightDpad(el, -1);
+                send({ type: "input", kind: "pov", code: 0, value: -1 });
+                return;
+            }
             // 8-way: angle from up, clockwise, snapped to 45°.
             var deg = Math.atan2(nx, -ny) * 180 / Math.PI;
             if (deg < 0) deg += 360;
             var oct = Math.round(deg / 45) % 8;
+            lightDpad(el, oct);
             send({ type: "input", kind: "pov", code: 0, value: oct * 4500 });
         }
         function down(e) { e.preventDefault(); active = true; update(e); haptic(); }
@@ -382,6 +527,7 @@
             if (!active) return;
             if (e && e.preventDefault) e.preventDefault();
             active = false;
+            lightDpad(el, -1);
             send({ type: "input", kind: "pov", code: 0, value: -1 });
         }
         releaseFns.push(function () { up(null); });
@@ -474,6 +620,13 @@
         render();
     }
 
+    function addWidget(kind, code) {
+        takeScreen();
+        var wd = PadFit.add(layout, kind, code || 0, "", screenW, screenH);
+        render();
+        select(wd);
+    }
+
     function wireToolbar() {
         editBtn.addEventListener("click", function () { setEditMode(!editMode); });
 
@@ -494,15 +647,20 @@
             render();
         });
 
+        document.getElementById("snap").addEventListener("change", showEditAids);
+
+        // Gives up this screen's own arrangement: the pad is fitted here
+        // again from the one made for the other way of holding the screen.
+        document.getElementById("autoBtn").addEventListener("click", function () {
+            if (PadFit.drop(layout, screenW, screenH)) { selected = null; render(); }
+        });
+
         document.getElementById("saveBtn").addEventListener("click", function () {
             // A pad with no widgets connects as a device that can never send
             // anything: catch it here rather than shipping a dead controller.
             if (!layout.widgets.length) { setStatus("Add at least one control first"); return; }
             layout.name = document.getElementById("padName").value.trim() || "Custom Pad";
-            var body = { name: layout.name, widgets: layout.widgets.map(function (w) {
-                return { kind: w.kind, x: w.x, y: w.y, w: w.w, h: w.h, code: w.code, label: w.label || "" };
-            }) };
-            if (layout.id) body.id = layout.id;
+            var body = PadFit.write(layout);
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "/api/custom-layouts", true);
             xhr.onload = function () {
@@ -546,15 +704,20 @@
         document.getElementById("disconnect-message").addEventListener("click", function () { location.reload(); });
         wireToolbar();
         wireEditWindowListeners();
+        wireBarGrip();
+
+        // The screen changed. A drag in hand is finished first: its numbers
+        // are this screen's.
+        function screenChanged() {
+            if (editDrag || barDrag) { missedFit = true; return; }
+            fit();
+        }
+        window.addEventListener("resize", screenChanged);
+        window.addEventListener("orientationchange", screenChanged);
 
         if (isNew) {
             // Seed a starter shape so edit mode is not a blank page.
-            layout.widgets = [
-                { kind: "stick", code: 0, x: 0.06, y: 0.45, w: 0.2, h: 0.34 },
-                { kind: "button", code: 0, x: 0.82, y: 0.55, w: 0.1, h: 0.17 },
-                { kind: "button", code: 1, x: 0.9, y: 0.4, w: 0.1, h: 0.17 },
-                { kind: "slider", code: 5, x: 0.9, y: 0.04, w: 0.07, h: 0.3 },
-            ];
+            layout = PadFit.starter(canvas.clientWidth || window.innerWidth, canvas.clientHeight || window.innerHeight);
             setEditMode(true);
             setStatus("New pad: arrange, then Save");
         } else {
@@ -569,8 +732,7 @@
                 var found = null;
                 for (var i = 0; i < list.length; i++) if (list[i].id === layoutId) found = list[i];
                 if (!found) { setStatus("Pad not found"); setEditMode(true); return; }
-                layout = found;
-                if (!layout.widgets) layout.widgets = [];
+                layout = PadFit.read(found);
                 document.getElementById("padName").value = layout.name || "";
                 render();
                 connect();

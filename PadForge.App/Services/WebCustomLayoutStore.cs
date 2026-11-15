@@ -12,11 +12,21 @@ namespace PadForge.Services
     /// and keeping it out of the profile lanes sidesteps the five-way mirror.
     ///
     /// Shape: a JSON array of layouts,
-    ///   { "id": "c1a2...", "name": "My Pad", "widgets": [
+    ///   { "id": "c1a2...", "name": "My Pad",
+    ///     "aspect": 2.16,         // the screen the pad was arranged on, its width over its height
+    ///     "aspect2": 0.46,        // the screen of its second arrangement, when it has one
+    ///     "widgets": [
     ///       { "kind": "button"|"stick"|"slider"|"dpad"|"touch",
-    ///         "x": 0.10, "y": 0.20, "w": 0.12, "h": 0.18,   // fractions of the canvas
+    ///         "x": 0.10, "y": 0.20, "w": 0.12, "h": 0.18,   // shares of that screen's width and height
+    ///         "x2": 0.1, "y2": 0.7, "w2": 0.2, "h2": 0.09,  // the same on the second screen
     ///         "code": 0,          // button slot / axis index, per kind
     ///         "label": "A" } ] }
+    /// A pad has an arrangement for a screen held sideways, one for a screen
+    /// held upright, or both (js/pad_fit.js draws them). The shape of each
+    /// arrangement's screen is what lets a control keep its shape on any
+    /// other. A layout saved before 6 has no aspect: its numbers were shares
+    /// of whatever screen it was built on, and the page works that screen's
+    /// shape out from its round controls.
     /// The server validates on save and never trusts the browser's ids.
     /// </summary>
     public static class WebCustomLayoutStore
@@ -66,14 +76,24 @@ namespace PadForge.Services
                 if (string.IsNullOrEmpty(name)) name = "Custom Pad";
                 if (name.Length > 40) name = name.Substring(0, 40);
 
+                // The shape of the screen each arrangement was made on. The
+                // second counts only beside a first and only when it is for
+                // the other way of holding the screen: one arrangement is for
+                // a screen held sideways and the other for one held upright.
+                double aspect = Aspect(root, "aspect");
+                double aspect2 = aspect > 0 ? Aspect(root, "aspect2") : 0;
+                if (aspect2 > 0 && (aspect >= 1) == (aspect2 >= 1)) aspect2 = 0;
+
                 // Re-serialize through a whitelist so nothing beyond the schema
                 // is stored (the browser is untrusted input).
                 var clean = new Dictionary<string, object>
                 {
                     ["id"] = id,
                     ["name"] = name,
-                    ["widgets"] = CleanWidgets(widgets),
                 };
+                if (aspect > 0) clean["aspect"] = aspect;
+                if (aspect2 > 0) clean["aspect2"] = aspect2;
+                clean["widgets"] = CleanWidgets(widgets, aspect2 > 0);
 
                 lock (_lock)
                 {
@@ -156,7 +176,21 @@ namespace PadForge.Services
             catch { return new(); }
         }
 
-        private static List<Dictionary<string, object>> CleanWidgets(JsonElement widgets)
+        /// <summary>The narrowest and the widest screen an arrangement can be
+        /// kept for, as width over height. js/pad_fit.js holds the same two.</summary>
+        internal const double AspectLeast = 0.2, AspectMost = 5;
+
+        /// <summary>A screen's shape from a layout, or 0 when it has none
+        /// or one no screen has.</summary>
+        private static double Aspect(JsonElement root, string name)
+        {
+            if (!root.TryGetProperty(name, out var p) || p.ValueKind != JsonValueKind.Number) return 0;
+            double value = p.GetDouble();
+            if (double.IsNaN(value) || value < AspectLeast || value > AspectMost) return 0;
+            return Math.Round(value, 4);
+        }
+
+        private static List<Dictionary<string, object>> CleanWidgets(JsonElement widgets, bool second)
         {
             var result = new List<Dictionary<string, object>>();
             foreach (var w in widgets.EnumerateArray())
@@ -187,16 +221,26 @@ namespace PadForge.Services
                     ? lp.GetString() : "";
                 if (label?.Length > 12) label = label.Substring(0, 12);
 
-                result.Add(new Dictionary<string, object>
+                var clean = new Dictionary<string, object>
                 {
                     ["kind"] = kind,
                     ["x"] = Math.Round(Get("x", 0.1, 0, 1), 4),
                     ["y"] = Math.Round(Get("y", 0.1, 0, 1), 4),
                     ["w"] = Math.Round(Get("w", 0.1, 0.02, 1), 4),
                     ["h"] = Math.Round(Get("h", 0.1, 0.02, 1), 4),
-                    ["code"] = code,
-                    ["label"] = label ?? "",
-                });
+                };
+                // Its place in the pad's second arrangement. A control that
+                // came without one is given a place by the page.
+                if (second && w.TryGetProperty("w2", out _) && w.TryGetProperty("h2", out _))
+                {
+                    clean["x2"] = Math.Round(Get("x2", 0.1, 0, 1), 4);
+                    clean["y2"] = Math.Round(Get("y2", 0.1, 0, 1), 4);
+                    clean["w2"] = Math.Round(Get("w2", 0.1, 0.02, 1), 4);
+                    clean["h2"] = Math.Round(Get("h2", 0.1, 0.02, 1), 4);
+                }
+                clean["code"] = code;
+                clean["label"] = label ?? "";
+                result.Add(clean);
                 if (result.Count >= 64) break;
             }
             return result;

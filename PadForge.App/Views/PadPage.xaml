@@ -6698,7 +6698,7 @@
                                     <TextBlock Text="{Binding Settings_AudioRumble_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <Slider Value="{Binding AudioRumbleSensitivity, Mode=TwoWay}"
                                             Style="{StaticResource DzSlider}"
-                                            Minimum="1" Maximum="20" TickFrequency="0.1"/>
+                                            Minimum="1" Maximum="60" TickFrequency="0.1"/>
                                     <TextBox Text="{Binding AudioRumbleSensitivity, Mode=TwoWay, StringFormat=F1, UpdateSourceTrigger=LostFocus}"
                                              Style="{StaticResource DzValueEdit}"/>
                                     <ui:Button Command="{Binding ResetAudioSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioSensitivity, Source={x:Static strings:Strings.Instance}}"/>
@@ -6709,7 +6709,7 @@
                                     <TextBlock Text="{Binding Settings_AudioRumble_Cutoff, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <Slider Value="{Binding AudioRumbleCutoffHz, Mode=TwoWay}"
                                             Style="{StaticResource DzSlider}"
-                                            Minimum="20" Maximum="200" TickFrequency="1"/>
+                                            Minimum="20" Maximum="2000" TickFrequency="1"/>
                                     <TextBox Text="{Binding AudioRumbleCutoffHz, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
                                              Style="{StaticResource DzValueEdit}"/>
                                     <ui:Button Command="{Binding ResetAudioCutoffCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioCutoff, Source={x:Static strings:Strings.Instance}}"/>
@@ -7203,7 +7203,7 @@
                                             <TextBlock Text="{Binding Pad_AudioTriggerRumble_Sensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                             <Slider Value="{Binding AudioRumbleTriggersSensitivity, Mode=TwoWay}"
                                                     Style="{StaticResource DzSlider}"
-                                                    Minimum="1" Maximum="20" TickFrequency="0.1"/>
+                                                    Minimum="1" Maximum="60" TickFrequency="0.1"/>
                                             <TextBox Text="{Binding AudioRumbleTriggersSensitivity, Mode=TwoWay, StringFormat=F1, UpdateSourceTrigger=LostFocus}"
                                                      Style="{StaticResource DzValueEdit}"/>
                                             <ui:Button Command="{Binding ResetAudioTriggerSensitivityCommand}" Style="{StaticResource ResetButton}"
@@ -7214,7 +7214,7 @@
                                             <TextBlock Text="{Binding Pad_AudioTriggerRumble_Cutoff, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                             <Slider Value="{Binding AudioRumbleTriggersCutoffHz, Mode=TwoWay}"
                                                     Style="{StaticResource DzSlider}"
-                                                    Minimum="20" Maximum="200" TickFrequency="1"/>
+                                                    Minimum="20" Maximum="2000" TickFrequency="1"/>
                                             <TextBox Text="{Binding AudioRumbleTriggersCutoffHz, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
                                                      Style="{StaticResource DzValueEdit}"/>
                                             <ui:Button Command="{Binding ResetAudioTriggerCutoffCommand}" Style="{StaticResource ResetButton}"

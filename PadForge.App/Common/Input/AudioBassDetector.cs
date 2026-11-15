@@ -46,6 +46,19 @@ namespace PadForge.Common.Input
         private volatile float _fullSpectrumPeak;
         private long _lastCallbackTick;
 
+        /// <summary>The settings' ranges, shared by the detector, the Pad
+        /// page's view model and its sliders, on both the body-motor and the
+        /// trigger chain (#571). Sensitivity is a gain on the filtered level,
+        /// and the level is clamped to full scale after it, so a high value
+        /// only reaches full strength from quieter audio. The low-pass runs at
+        /// the capture's own rate, 48 kHz on most PCs, so a cutoff of 2000 Hz
+        /// passes the engine notes above 200 Hz that the old top value cut
+        /// out.</summary>
+        public const float MinSensitivity = 1f;
+        public const float MaxSensitivity = 60f;
+        public const float MinCutoffHz = 20f;
+        public const float MaxCutoffHz = 2000f;
+
         // User-configurable parameters.
         private float _sensitivity = 4f;
         private float _cutoffHz = 80f;
@@ -81,38 +94,38 @@ namespace PadForge.Common.Input
         /// <summary>Trigger-path motor value as ushort (0–65535).</summary>
         public ushort TriggerMotorValue => (ushort)(_triggerBassEnergy * 65535f);
 
-        /// <summary>Sensitivity multiplier (1.0–20.0). Default 4.0.</summary>
+        /// <summary>Sensitivity multiplier (1.0 to 60.0). Default 4.0.</summary>
         public float Sensitivity
         {
             get => _sensitivity;
-            set => _sensitivity = Math.Clamp(value, 1f, 20f);
+            set => _sensitivity = Math.Clamp(value, MinSensitivity, MaxSensitivity);
         }
 
-        /// <summary>Low-pass filter cutoff in Hz (20–200). Default 80.</summary>
+        /// <summary>Low-pass filter cutoff in Hz (20 to 2000). Default 80.</summary>
         public float CutoffHz
         {
             get => _cutoffHz;
             set
             {
-                _cutoffHz = Math.Clamp(value, 20f, 200f);
+                _cutoffHz = Math.Clamp(value, MinCutoffHz, MaxCutoffHz);
                 // Alpha is recalculated on next DataAvailable if sample rate is known.
             }
         }
 
         /// <summary>Sensitivity multiplier for the trigger-path bass
-        /// detector (1.0–20.0). Default 4.0.</summary>
+        /// detector (1.0 to 60.0). Default 4.0.</summary>
         public float TriggerSensitivity
         {
             get => _triggerSensitivity;
-            set => _triggerSensitivity = Math.Clamp(value, 1f, 20f);
+            set => _triggerSensitivity = Math.Clamp(value, MinSensitivity, MaxSensitivity);
         }
 
         /// <summary>Low-pass filter cutoff for the trigger-path bass
-        /// detector, in Hz (20–200). Default 80.</summary>
+        /// detector, in Hz (20 to 2000). Default 80.</summary>
         public float TriggerCutoffHz
         {
             get => _triggerCutoffHz;
-            set => _triggerCutoffHz = Math.Clamp(value, 20f, 200f);
+            set => _triggerCutoffHz = Math.Clamp(value, MinCutoffHz, MaxCutoffHz);
         }
 
         /// <summary>Left motor scale (0.0–1.0). Default 1.0.</summary>

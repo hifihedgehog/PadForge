@@ -4929,14 +4929,16 @@ namespace PadForge.ViewModels
         public double AudioRumbleTriggersSensitivity
         {
             get => _audioRumbleTriggersSensitivity;
-            set => SetProperty(ref _audioRumbleTriggersSensitivity, Math.Clamp(value, 1.0, 20.0));
+            set => SetProperty(ref _audioRumbleTriggersSensitivity,
+                Math.Clamp(value, AudioBassDetector.MinSensitivity, AudioBassDetector.MaxSensitivity));
         }
 
         private double _audioRumbleTriggersCutoffHz = 80.0;
         public double AudioRumbleTriggersCutoffHz
         {
             get => _audioRumbleTriggersCutoffHz;
-            set => SetProperty(ref _audioRumbleTriggersCutoffHz, Math.Clamp(value, 20.0, 200.0));
+            set => SetProperty(ref _audioRumbleTriggersCutoffHz,
+                Math.Clamp(value, AudioBassDetector.MinCutoffHz, AudioBassDetector.MaxCutoffHz));
         }
 
         private int _audioRumbleLeftTrigger = 100;
@@ -5054,10 +5056,10 @@ namespace PadForge.ViewModels
         public bool AudioRumbleEnabled { get => _audioRumbleEnabled; set => SetProperty(ref _audioRumbleEnabled, value); }
 
         private double _audioRumbleSensitivity = 4.0;
-        public double AudioRumbleSensitivity { get => _audioRumbleSensitivity; set => SetProperty(ref _audioRumbleSensitivity, Math.Clamp(value, 1, 20)); }
+        public double AudioRumbleSensitivity { get => _audioRumbleSensitivity; set => SetProperty(ref _audioRumbleSensitivity, Math.Clamp(value, AudioBassDetector.MinSensitivity, AudioBassDetector.MaxSensitivity)); }
 
         private double _audioRumbleCutoffHz = 80.0;
-        public double AudioRumbleCutoffHz { get => _audioRumbleCutoffHz; set => SetProperty(ref _audioRumbleCutoffHz, Math.Clamp(value, 20, 200)); }
+        public double AudioRumbleCutoffHz { get => _audioRumbleCutoffHz; set => SetProperty(ref _audioRumbleCutoffHz, Math.Clamp(value, AudioBassDetector.MinCutoffHz, AudioBassDetector.MaxCutoffHz)); }
 
         private int _audioRumbleLeftMotor = 100;
         public int AudioRumbleLeftMotor { get => _audioRumbleLeftMotor; set => SetProperty(ref _audioRumbleLeftMotor, Math.Clamp(value, 0, 100)); }

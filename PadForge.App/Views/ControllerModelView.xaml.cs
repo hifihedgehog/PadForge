@@ -615,7 +615,6 @@ namespace PadForge.Views
                 _currentModel.TriggerMaxAngleDeg,
                 ref _triggerAngleRight);
             UpdateTouchpadPreview3D();
-            UpdateAnnotationLevelBars();
             UpdateAnnotationChipLights();
         }
 

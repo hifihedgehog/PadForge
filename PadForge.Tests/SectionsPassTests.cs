@@ -17,6 +17,9 @@ using PadForge.Controls;
 using PadForge.Converters;
 using PadForge.ViewModels;
 using Xunit;
+using Color = System.Windows.Media.Color;
+using SolidColorBrush = System.Windows.Media.SolidColorBrush;
+using TagLight = PadForge.Views.TagLight;
 
 namespace PadForge.Tests
 {
@@ -543,17 +546,21 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>A legend tag of the 3D and 2D pictures lights while its
-        /// control's output is on, an ember edge and name, in the frame the
-        /// picture lights the control. It is the tag's one light: a press
+        /// <summary>A legend tag of the 3D and 2D pictures is lit by its
+        /// control's output, in the frame the picture lights the control:
+        /// an ember edge and name while a button is on, and for a trigger
+        /// and a stick axis a share of ember that grows with the pull or
+        /// the deflection. The buttons had ember on their tags and the axes
+        /// none, and the triggers of the 3D picture had two level bars of
+        /// their own beside them, raw in blue and output in ember, which
+        /// are gone (owner, 2026-11-14). The tag is the one light: a press
         /// used to flash the tag blue for 250 ms while a dot beside it
         /// showed the output, and the flash went out with the button still
-        /// held (owner, 2026-11-14). The 3D view reads a Nintendo row's raw
-        /// name as its anchor does, so that slot's tags light too. The 2D
-        /// view's timer did the flash and the dot and nothing else, and is
-        /// gone.</summary>
+        /// held. Both views read a raw row name as the control it is drawn
+        /// as. The 2D view's timer did the flash and the dot and nothing
+        /// else, and is gone.</summary>
         [Fact]
-        public void ALegendTag_LightsWhileItsControlsOutputIsOn()
+        public void ALegendTag_IsLitByItsControlsOutput_AnAxisByHowFarItIsDriven()
         {
             foreach (string view in new[] { "ControllerModelView", "ControllerModel2DView" })
             {
@@ -561,17 +568,91 @@ namespace PadForge.Tests
                 Assert.DoesNotContain("FlashUntil", tags);
                 Assert.DoesNotContain("EmberDot", tags);
                 Assert.DoesNotContain("IsInputActive", tags);
-                Assert.Contains("LightChip(chip, ChipOutputOn(chip.Row.TargetSettingName));", tags);
+                Assert.DoesNotContain("TriggerBars", tags);
+                Assert.DoesNotContain("ColdBar", tags);
+                Assert.DoesNotContain("LevelBars", tags);
+                Assert.Contains("LightChip(chip, ChipStep(chip.Row.TargetSettingName));", tags);
                 // A tag made while its control is held is lit at once.
-                Assert.Contains("LightChip(chip, ChipOutputOn(row.TargetSettingName));", tags);
-                Assert.Contains("chip.Border.SetResourceReference(Border.BorderBrushProperty, on ? \"EmberBrush\" : \"SteelLineSoftBrush\");", tags);
-                Assert.Contains("chip.Text.SetResourceReference(TextBlock.ForegroundProperty, on ? \"EmberBrush\" : \"TextFillColorSecondaryBrush\");", tags);
+                Assert.Contains("LightChip(chip, ChipStep(row.TargetSettingName));", tags);
+                Assert.Matches(@"if \(chip\.Step == step\)\s*return;\s*chip\.Step = step;\s*TagLight\.Paint\(chip\.Border, chip\.Text, step\);", tags);
                 string code = ExtrasPageTests.RepoText("PadForge.App", "Views", view + ".xaml.cs");
                 Assert.Matches(@"private void OnRendering\(object sender, EventArgs e\)\s*\{[\s\S]*?UpdateAnnotationChipLights\(\);\s*\}", code);
+                Assert.DoesNotContain("LevelBars", code);
             }
             string model = ExtrasPageTests.RepoText("PadForge.App", "Views", "ControllerModelView.Annotations.cs");
-            Assert.Matches(@"private bool ChipOutputOn\(string target\)\s*\{[\s\S]*?Models2D\.NintendoPreviewMap\.ToPreview\(target, _vm\?\.ProfileId\);[\s\S]*?return GetButtonState\(target\);", model);
-            Assert.DoesNotContain("DispatcherTimer", ExtrasPageTests.RepoText("PadForge.App", "Views", "ControllerModel2DView.Annotations.cs"));
+            Assert.Matches(@"private int ChipStep\(string target\)\s*\{[\s\S]*?Models2D\.NintendoPreviewMap\.ToPreview\(target, _vm\.ProfileId\);[\s\S]*?return TagLight\.StepOf\(TagLight\.AnalogLevel\(_vm, target\) \?\? \(GetButtonState\(target\) \? 1 : 0\)\);", model);
+            string flat = ExtrasPageTests.RepoText("PadForge.App", "Views", "ControllerModel2DView.Annotations.cs");
+            Assert.Matches(@"private int ChipStep\(string target\)\s*\{[\s\S]*?NintendoPreviewMap\.ToPreview\(target, _vm\.ProfileId\)[\s\S]*?return TagLight\.StepOf\(TagLight\.AnalogLevel\(_vm, control\) \?\? \(GetAnnotationButtonState\(control\) \? 1 : 0\)\);", flat);
+            Assert.DoesNotContain("DispatcherTimer", flat);
+
+            // The step: dark at rest, a first share of ember as the control
+            // leaves rest so the least movement shows, and full at the end.
+            Assert.Equal(16, TagLight.Steps);
+            Assert.Equal(0, TagLight.StepOf(0));
+            Assert.Equal(0, TagLight.StepOf(0.019));
+            Assert.Equal(0, TagLight.StepOf(double.NaN));
+            Assert.Equal(6, TagLight.StepOf(0.02));
+            Assert.Equal(11, TagLight.StepOf(0.5));
+            Assert.Equal(16, TagLight.StepOf(1));
+            Assert.Equal(16, TagLight.StepOf(1.7));
+            int last = 0;
+            for (double level = 0; level <= 1.0001; level += 0.01)
+            {
+                int step = TagLight.StepOf(level);
+                Assert.True(step >= last, "the light fell at " + level);
+                last = step;
+            }
+
+            // The level: a trigger's pull and a stick axis's deflection to
+            // either side, and none for a control that is on or off.
+            var vm = new PadViewModel(0);
+            Assert.Equal(0.0, TagLight.AnalogLevel(vm, "LeftTrigger"));
+            Assert.Equal(0.0, TagLight.AnalogLevel(vm, "LeftThumbAxisX"));
+            vm.LeftTrigger = 0.25;
+            vm.RightTrigger = 1;
+            vm.ThumbLX = 1;
+            vm.ThumbLY = 0;
+            vm.ThumbRX = 0.75;
+            vm.ThumbRY = 0.5;
+            Assert.Equal(0.25, TagLight.AnalogLevel(vm, "LeftTrigger"));
+            Assert.Equal(1.0, TagLight.AnalogLevel(vm, "RightTrigger"));
+            Assert.Equal(1.0, TagLight.AnalogLevel(vm, "LeftThumbAxisX"));
+            Assert.Equal(1.0, TagLight.AnalogLevel(vm, "LeftThumbAxisY"));
+            Assert.Equal(0.5, TagLight.AnalogLevel(vm, "RightThumbAxisX"));
+            Assert.Equal(0.0, TagLight.AnalogLevel(vm, "RightThumbAxisY"));
+            Assert.Null(TagLight.AnalogLevel(vm, "ButtonA"));
+            Assert.Null(TagLight.AnalogLevel(vm, "DPadUp"));
+
+            // The color: each part its share of the way from rest to ember.
+            var rest = Color.FromArgb(255, 40, 60, 80);
+            var ember = Color.FromArgb(255, 255, 107, 44);
+            Assert.Equal(rest, TagLight.Mix(rest, ember, 0));
+            Assert.Equal(ember, TagLight.Mix(rest, ember, 16));
+            Assert.Equal(Color.FromArgb(255, 148, 84, 62), TagLight.Mix(rest, ember, 8));
+
+            Sta(() =>
+            {
+                var steel = new SolidColorBrush(rest);
+                var words = new SolidColorBrush(Color.FromArgb(255, 200, 200, 200));
+                var fire = new SolidColorBrush(ember);
+                var name = new TextBlock();
+                var edge = new Border { Child = name };
+                edge.Resources["SteelLineSoftBrush"] = steel;
+                edge.Resources["TextFillColorSecondaryBrush"] = words;
+                edge.Resources["EmberBrush"] = fire;
+
+                TagLight.Paint(edge, name, 8);
+                Assert.Equal(Color.FromArgb(255, 148, 84, 62), ((SolidColorBrush)edge.BorderBrush).Color);
+                Assert.Equal(Color.FromArgb(255, 228, 154, 122), ((SolidColorBrush)name.Foreground).Color);
+                Assert.True(edge.BorderBrush.IsFrozen);
+                // Fully lit and at rest are the theme's own brushes.
+                TagLight.Paint(edge, name, 16);
+                Assert.Same(fire, edge.BorderBrush);
+                Assert.Same(fire, name.Foreground);
+                TagLight.Paint(edge, name, 0);
+                Assert.Same(steel, edge.BorderBrush);
+                Assert.Same(words, name.Foreground);
+            });
         }
 
         /// <summary>A line of gray text under a row starts where the row's

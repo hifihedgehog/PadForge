@@ -324,6 +324,52 @@ namespace PadForge.Tests
             Assert.Equal(PadForge.Models2D.DualShock3Layout.BasePath, StagePictures.FirstPath("DS3"));
         }
 
+        /// <summary>A controller on another link, or through its own
+        /// dongle, is still that controller. A preset is one device on one
+        /// link, so the Steam Controllers on Bluetooth and through their
+        /// dongles answered to no preset and had no picture, where a Sony
+        /// or a Microsoft pad had one on either link (owner, 2026-11-14).
+        /// Each such id names the preset whose body is its own. The ids are
+        /// SDL's (src/joystick/controller_list.h): the 2015 Steam Controller
+        /// as 1101, 1105, 1106 and 1142 beside the preset's 1102, the 2026
+        /// one as 1303, 1304 and 1305 beside 1302, a DualShock 4 through
+        /// Sony's wireless adaptor, an Xbox One S pad on Bluetooth with its
+        /// first firmware and its Bluetooth LE one, and the Adaptive
+        /// Controller on both.</summary>
+        [Fact]
+        public void AControllerOnAnotherLink_HasItsOwnPicture()
+        {
+            foreach (ushort product in new ushort[] { 0x1101, 0x1102, 0x1105, 0x1106, 0x1142 })
+                Assert.Equal(("STEAMCONTROLLER", "SteamController"), StagePictures.ForDevice(0x28DE, product));
+            foreach (ushort product in new ushort[] { 0x1302, 0x1303, 0x1304, 0x1305 })
+                Assert.Equal(("STEAMCONTROLLER2", "SteamController2"), StagePictures.ForDevice(0x28DE, product));
+            Assert.Equal(("STEAMDECK", "SteamDeck"), StagePictures.ForDevice(0x28DE, 0x1205));
+            Assert.Equal(("DS4", "DS4"), StagePictures.ForDevice(0x054C, 0x0BA0));
+            Assert.Equal(("XBOXONE", "XboxSeries"), StagePictures.ForDevice(0x045E, 0x02E0));
+            Assert.Equal(("XBOXONE", "XboxSeries"), StagePictures.ForDevice(0x045E, 0x0B20));
+            Assert.Equal(("XBOXONE", "XboxSeries"), StagePictures.ForDevice(0x045E, 0x0B0C));
+            Assert.Equal(("XBOXONE", "XboxSeries"), StagePictures.ForDevice(0x045E, 0x0B21));
+            // Valve's unreleased second pad and Steam's own virtual gamepad
+            // are no controller PadForge has a body for.
+            Assert.Null(StagePictures.ForDevice(0x28DE, 0x1201).Folder);
+            Assert.Null(StagePictures.ForDevice(0x28DE, 0x11FF).Folder);
+
+            // Each id in the table names a preset that is in the catalog and
+            // has art of its own, and no preset has the id itself: the
+            // table holds only what the catalog cannot answer.
+            var presets = PadForge.Common.Input.HMaestroProfileCatalog.AllProfiles.ToList();
+            Assert.Equal(12, StagePictures.SameController.Count);
+            foreach (var (ids, presetId) in StagePictures.SameController)
+            {
+                var preset = presets.SingleOrDefault(p => string.Equals(p.Id, presetId, StringComparison.OrdinalIgnoreCase));
+                Assert.True(preset != null, presetId + " is in the catalog");
+                PadForge.Common.Input.HMaestroProfileCatalog.ResolveAssetFolders(presetId, VirtualControllerType.Xbox, out bool dedicated);
+                Assert.True(dedicated, presetId + " has art of its own");
+                Assert.Equal(ids.Vendor, preset.VendorId);
+                Assert.DoesNotContain(presets, p => p.VendorId == ids.Vendor && p.ProductId == ids.Product);
+            }
+        }
+
         [Fact]
         public void ThePanelsPictureIsAskedForOnceForADeviceAndAView()
         {

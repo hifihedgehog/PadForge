@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -48,15 +49,53 @@ namespace PadForge.Common
 
         private static readonly ConcurrentDictionary<(string, string), string> s_paths = new();
 
+        /// <summary>A controller's other ids: the same pad on another link
+        /// or through its own dongle, each with the preset whose body is
+        /// its own. A preset is one device on one link, so these ids are in
+        /// no preset, and a Steam Controller on Bluetooth had no picture
+        /// where a Sony or a Microsoft pad had one on either link (owner,
+        /// 2026-11-14). The ids and what each is are SDL's
+        /// (src/joystick/controller_list.h).</summary>
+        internal static readonly IReadOnlyDictionary<(ushort Vendor, ushort Product), string> SameController =
+            new Dictionary<(ushort Vendor, ushort Product), string>
+            {
+                // The 2015 Steam Controller: its first hardware, Bluetooth
+                // in both firmwares, and its wireless dongle.
+                [(0x28DE, 0x1101)] = "steam-controller",
+                [(0x28DE, 0x1105)] = "steam-controller",
+                [(0x28DE, 0x1106)] = "steam-controller",
+                [(0x28DE, 0x1142)] = "steam-controller",
+                // The 2026 Steam Controller: Bluetooth and its two dongles.
+                [(0x28DE, 0x1303)] = "steam-controller-2",
+                [(0x28DE, 0x1304)] = "steam-controller-2",
+                [(0x28DE, 0x1305)] = "steam-controller-2",
+                // A DualShock 4 through Sony's wireless adaptor.
+                [(0x054C, 0x0BA0)] = "dualshock-4-v2",
+                // An Xbox One S pad on Bluetooth with its first firmware
+                // and with its Bluetooth LE one.
+                [(0x045E, 0x02E0)] = "xbox-one-s-bt",
+                [(0x045E, 0x0B20)] = "xbox-one-s-bt",
+                // The Adaptive Controller on Bluetooth and Bluetooth LE.
+                [(0x045E, 0x0B0C)] = "xbox-adaptive",
+                [(0x045E, 0x0B21)] = "xbox-adaptive",
+            };
+
         /// <summary>The picture of a device on the Devices page: the art
         /// folder and the 3D model of the first preset in the catalog that
-        /// has the device's own vendor and product ids and art of its own.
-        /// Nothing for a device no such preset names, since another
-        /// controller's body under its name would be wrong. A preset whose
-        /// ids cannot be read names no device.</summary>
+        /// has the device's own vendor and product ids and art of its own,
+        /// or of the preset the device is on another link
+        /// (<see cref="SameController"/>). Nothing for a device no such
+        /// preset names, since another controller's body under its name
+        /// would be wrong. A preset whose ids cannot be read names no
+        /// device.</summary>
         internal static (string Folder, string Family) ForDevice(ushort vendorId, ushort productId)
         {
             if (vendorId == 0 && productId == 0) return (null, null);
+            if (SameController.TryGetValue((vendorId, productId), out string same))
+            {
+                var (folder, family) = HMaestroProfileCatalog.ResolveAssetFolders(same, VirtualControllerType.Xbox, out bool own);
+                if (own) return (folder, family);
+            }
             foreach (var preset in HMaestroProfileCatalog.AllProfiles)
             {
                 try

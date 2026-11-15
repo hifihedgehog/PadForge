@@ -13,14 +13,8 @@ namespace PadForge.ViewModels
     public partial class DashboardViewModel
     {
         // ─────────────────────────────────────────────
-        //  The engine's button
+        //  The engine's words
         // ─────────────────────────────────────────────
-
-        /// <summary>The word on the engine's button: what a click does. Stop
-        /// while the engine is on, idle and stopping included, as
-        /// <see cref="IsEngineOn"/> counts them, and Start while it is
-        /// stopped.</summary>
-        public string EngineButtonText => IsEngineOn ? Strings.Instance.Common_Stop : Strings.Instance.Common_Start;
 
         /// <summary>The line under the engine's state: what the state means,
         /// in one sentence with no numbers in it, so it needs no plural
@@ -310,9 +304,6 @@ namespace PadForge.ViewModels
         {
             switch (changed)
             {
-                case nameof(IsEngineOn):
-                    base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(EngineButtonText)));
-                    break;
                 case nameof(EngineStateKey):
                     RaiseFirstRunCard();
                     break;
@@ -339,14 +330,13 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>The offer's sentence and the button's word in the new
+        /// <summary>The offer's sentence and the engine's lines in the new
         /// language. Called from OnCultureChanged.</summary>
         private void RefreshHomeText()
         {
             if (HasHomeOffer)
                 HomeOfferText = string.Format(Strings.Instance.Home_Offer_Format, _homeOfferName);
             SetOfferParts();
-            base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(EngineButtonText)));
             base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(HeroLine)));
             base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(LiveLine)));
             foreach (var slot in SlotSummaries) slot.RefreshWords();

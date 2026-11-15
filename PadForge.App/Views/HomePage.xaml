@@ -459,43 +459,6 @@
                                            Text="{Binding Home_Stat_DevicesConnected, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
                         </controls:FlexLinePanel>
-
-                        <!-- Start or Stop in words. It raises the click the
-                             flame raises and wears the flame's tooltips. Start
-                             is the page's one ember button, since with the
-                             engine stopped nothing else on the page works. -->
-                        <ui:Button x:Name="EngineButton" VerticalAlignment="Center" MinHeight="42" MinWidth="96" Padding="22,0"
-                                   FontSize="15"
-                                   Content="{Binding EngineButtonText}"
-                                   Click="EngineToggle_Click"
-                                   AutomationProperties.AutomationId="Home_EngineButton">
-                            <ui:Button.Style>
-                                <Style TargetType="ui:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
-                                    <Setter Property="Template" Value="{StaticResource PadUiButtonTemplate}"/>
-                                    <Setter Property="ToolTip" Value="{Binding Dashboard_EngineFlame_Running, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding EngineStateKey}" Value="Stopped">
-                                            <Setter Property="ToolTip" Value="{Binding Dashboard_EngineFlame_Stopped, Source={x:Static strings:Strings.Instance}}"/>
-                                            <Setter Property="Background" Value="{DynamicResource EmberBrush}"/>
-                                            <Setter Property="BorderBrush" Value="{DynamicResource EmberBrush}"/>
-                                            <Setter Property="Foreground" Value="{DynamicResource EmberInkBrush}"/>
-                                            <Setter Property="FontWeight" Value="SemiBold"/>
-                                            <Setter Property="MouseOverBackground" Value="{DynamicResource EmberLiftBrush}"/>
-                                            <Setter Property="MouseOverBorderBrush" Value="{DynamicResource EmberLiftBrush}"/>
-                                            <Setter Property="PressedBackground" Value="{DynamicResource EmberPressBrush}"/>
-                                            <Setter Property="PressedBorderBrush" Value="{DynamicResource EmberPressBrush}"/>
-                                            <Setter Property="PressedForeground" Value="{DynamicResource EmberInkBrush}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding EngineStateKey}" Value="Idle">
-                                            <Setter Property="ToolTip" Value="{Binding Dashboard_EngineFlame_Idle, Source={x:Static strings:Strings.Instance}}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding EngineStateKey}" Value="Stopping">
-                                            <Setter Property="ToolTip" Value="{Binding Common_Stopping, Source={x:Static strings:Strings.Instance}}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ui:Button.Style>
-                        </ui:Button>
                     </controls:FlexLinePanel>
                 </Grid>
             </Border>

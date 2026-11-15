@@ -292,6 +292,76 @@ namespace PadForge.Tests
             Assert.True(watch.Look(other, held, true, now));
         }
 
+        /// <summary>A finger on a touchpad is input, and so are a pad
+        /// pressed in, a note held on a MIDI device, a knob turned on one
+        /// and a key down on an analog keyboard. A touchpad's row on the
+        /// Devices page stayed dark under a finger (owner, 2026-11-14): the
+        /// light read buttons, directions, axes and the mouse's counts, and
+        /// a touchpad sends none of them. The idle test has always counted
+        /// a finger, a note and a key's depth.</summary>
+        [Fact]
+        public void AFingerOnATouchpad_ANote_AndAKeysDepth_AreInput()
+        {
+            var watch = new InputActivity();
+            var pad = Guid.NewGuid();
+            var touch = new CustomInputState { Touchpads = new[] { new TouchpadInputState(5) } };
+            long now = 0;
+            Assert.False(watch.Look(pad, touch, gamepad: false, nowMs: now));
+            Assert.False(watch.Look(pad, touch, false, now += 33));
+
+            // A finger down: sending for as long as it is, and a moment after.
+            touch.Touchpads[0].FingerDown[1] = true;
+            Assert.True(watch.Look(pad, touch, false, now += 33));
+            Assert.True(watch.Look(pad, touch, false, now += 5000));
+            touch.Touchpads[0].FingerDown[1] = false;
+            Assert.True(watch.Look(pad, touch, false, now += InputActivity.HoldMs));
+            Assert.False(watch.Look(pad, touch, false, now += 1));
+
+            // The pad pressed in.
+            touch.Touchpads[0].Clicked = true;
+            Assert.True(watch.Look(pad, touch, false, now += 1000));
+            touch.Touchpads[0].Clicked = false;
+            Assert.False(watch.Look(pad, touch, false, now += InputActivity.HoldMs + 1));
+
+            // A pad that was never made is no finger.
+            var bare = new CustomInputState { Touchpads = new TouchpadInputState[] { null } };
+            Assert.False(watch.Look(Guid.NewGuid(), bare, false, now));
+
+            // A MIDI device: a note held, a knob turned, the pitch wheel moved.
+            var keys = Guid.NewGuid();
+            var midi = new CustomInputState { Midi = new MidiInputState() };
+            Assert.False(watch.Look(keys, midi, false, now += 33));
+            midi.Midi.Notes[60] = true;
+            Assert.True(watch.Look(keys, midi, false, now += 33));
+            midi.Midi.Notes[60] = false;
+            Assert.False(watch.Look(keys, midi, false, now += InputActivity.HoldMs + 1));
+            midi.Midi.Cc[7] = 100;
+            Assert.True(watch.Look(keys, midi, false, now += 33));
+            // A knob left where it was turned to is at rest.
+            Assert.False(watch.Look(keys, midi, false, now += InputActivity.HoldMs + 1));
+            midi.Midi.PitchBend += IdleInputDetector.DeltaSlop;
+            Assert.False(watch.Look(keys, midi, false, now += InputActivity.HoldMs + 1));
+            midi.Midi.PitchBend += 1;
+            Assert.True(watch.Look(keys, midi, false, now += 33));
+            Assert.False(watch.Look(keys, midi, false, now += InputActivity.HoldMs + 1));
+
+            // A knob that stood turned when the device was first seen is at rest.
+            var turned = new CustomInputState { Midi = new MidiInputState() };
+            turned.Midi.Cc[1] = 64;
+            var late = Guid.NewGuid();
+            Assert.False(watch.Look(late, turned, false, now += 33));
+            Assert.False(watch.Look(late, turned, false, now += 33));
+
+            // An analog keyboard: a key above rest.
+            var board = Guid.NewGuid();
+            var depth = new CustomInputState { AnalogKeys = new AnalogKeyInputState() };
+            Assert.False(watch.Look(board, depth, false, now += 33));
+            Assert.True(depth.AnalogKeys.Set(0x04, 0.4f));
+            Assert.True(watch.Look(board, depth, false, now += 33));
+            depth.AnalogKeys.Remove(0x04);
+            Assert.False(watch.Look(board, depth, false, now += InputActivity.HoldMs + 1));
+        }
+
         /// <summary>The service asks about each mapped device on the
         /// dashboard's lane, only for one that is connected and only while
         /// the engine reads devices.</summary>

@@ -35,8 +35,6 @@ namespace PadForge.Views
         private const double AnnotationChipHeight = 20;   // CH
         private const double AnnotationChipGap = 6;       // G
         private const double AnnotationEdgeMargin = 8;    // M
-        private const double AnnotationBarHeight = 36;    // trigger fill track
-        private const double AnnotationBarTrackWidth = 12; // 1px border + 1px pad + 3+2+3
         private const int AnnotationDetailMaxRows = 12;   // wiring rows before the +N tail
 
         // ─────────────────────────────────────────────
@@ -49,7 +47,6 @@ namespace PadForge.Views
         private System.Collections.ObjectModel.ObservableCollection<MappingItem> _annotationHookedMappings;
         private DispatcherTimer _annotationTimer;
         private readonly List<AnnotationChip> _annotationChips = new();
-        private readonly List<AnnotationTriggerBars> _annotationTriggerBars = new();
         private readonly List<MappingItem> _annotationSubscribedRows = new();
 
         /// <summary>Raised from the toggle button click only (user intent),
@@ -121,7 +118,7 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Per-chip / per-bar bookkeeping
+        //  Per-chip bookkeeping
         // ─────────────────────────────────────────────
 
         private sealed class AnnotationChip
@@ -131,33 +128,20 @@ namespace PadForge.Views
             public Border Border;
             public TextBlock Text;
             public Line Leader;
-            /// <summary>Whether the tag is lit: its control's output is on.</summary>
-            public bool Lit;
+            /// <summary>The step the tag is lit at, by its control's
+            /// output: 0 at rest, <see cref="TagLight.Steps"/> fully on.</summary>
+            public int Step;
             public Point Projected;
             public bool LeftColumn;
             public bool Visible;
-        }
-
-        private sealed class AnnotationTriggerBars
-        {
-            public Model3DGroup Anchor;
-            public Border Track;
-            public Rectangle ColdBar;
-            public Rectangle EmberBar;
-            public bool LeftSide;
-            // Both gates must hold for the track to show: anchor projects
-            // on-canvas AND a level is nonzero. An idle empty track read as
-            // a stray box on the trigger (user report, 2026-07-04).
-            public bool ProjectionValid;
-            public bool LevelsLive;
         }
 
         // ─────────────────────────────────────────────
         //  Build / teardown
         // ─────────────────────────────────────────────
 
-        /// <summary>Rebuilds every chip and bar cluster from the current
-        /// model + Mappings. Cheap no-op while disabled or unbound.</summary>
+        /// <summary>Rebuilds every chip from the current model + Mappings.
+        /// Cheap no-op while disabled or unbound.</summary>
         private void RebuildAnnotations()
         {
             ClearAnnotationVisuals();
@@ -195,11 +179,6 @@ namespace PadForge.Views
                 _annotationChips.Add(CreateAnnotationChip(row, anchor));
             }
 
-            if (_currentModel.LeftShoulderTrigger != null)
-                _annotationTriggerBars.Add(CreateTriggerBars(_currentModel.LeftShoulderTrigger, leftSide: true));
-            if (_currentModel.RightShoulderTrigger != null)
-                _annotationTriggerBars.Add(CreateTriggerBars(_currentModel.RightShoulderTrigger, leftSide: false));
-
             ReprojectAnnotations();
         }
 
@@ -226,7 +205,6 @@ namespace PadForge.Views
                 row.PropertyChanged -= OnAnnotationRowPropertyChanged;
             _annotationSubscribedRows.Clear();
             _annotationChips.Clear();
-            _annotationTriggerBars.Clear();
             AnnotationCanvas.Children.Clear();
         }
 
@@ -709,57 +687,8 @@ namespace PadForge.Views
                 Text = text,
                 Leader = leader,
             };
-            LightChip(chip, ChipOutputOn(row.TargetSettingName));
+            LightChip(chip, ChipStep(row.TargetSettingName));
             return chip;
-        }
-
-        private AnnotationTriggerBars CreateTriggerBars(Model3DGroup anchor, bool leftSide)
-        {
-            var cold = new Rectangle
-            {
-                Width = 3,
-                Height = 0,
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Bottom,
-                IsHitTestVisible = false,
-            };
-            cold.SetResourceReference(Shape.FillProperty, "ColdBrush");
-
-            var ember = new Rectangle
-            {
-                Width = 3,
-                Height = 0,
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Bottom,
-                IsHitTestVisible = false,
-            };
-            ember.SetResourceReference(Shape.FillProperty, "EmberBrush");
-
-            var inner = new Grid { Height = AnnotationBarHeight };
-            inner.Children.Add(cold);
-            inner.Children.Add(ember);
-
-            var track = new Border
-            {
-                Width = AnnotationBarTrackWidth,
-                BorderThickness = new Thickness(1),
-                Padding = new Thickness(1),
-                Child = inner,
-                IsHitTestVisible = false,
-                Visibility = Visibility.Collapsed,
-            };
-            track.SetResourceReference(Border.BorderBrushProperty, "SteelLineSoftBrush");
-
-            AnnotationCanvas.Children.Add(track);
-
-            return new AnnotationTriggerBars
-            {
-                Anchor = anchor,
-                Track = track,
-                ColdBar = cold,
-                EmberBar = ember,
-                LeftSide = leftSide,
-            };
         }
 
         private void AnnotationChip_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -844,26 +773,6 @@ namespace PadForge.Views
 
             LayoutAnnotationColumn(leftColumn, leftSide: true, w, h);
             LayoutAnnotationColumn(rightColumn, leftSide: false, w, h);
-
-            foreach (var bars in _annotationTriggerBars)
-            {
-                var p = ProjectAnnotationAnchor(bars.Anchor);
-                bool visible = p.HasValue
-                    && p.Value.X >= 0 && p.Value.X <= w
-                    && p.Value.Y >= 0 && p.Value.Y <= h;
-                bars.ProjectionValid = visible;
-                bars.Track.Visibility = visible && bars.LevelsLive
-                    ? Visibility.Visible : Visibility.Collapsed;
-                if (!visible)
-                    continue;
-
-                // Offset 10px toward the nearer canvas edge.
-                double x = bars.LeftSide
-                    ? p.Value.X - 10 - AnnotationBarTrackWidth
-                    : p.Value.X + 10;
-                Canvas.SetLeft(bars.Track, x);
-                Canvas.SetTop(bars.Track, p.Value.Y - (AnnotationBarHeight + 4) / 2);
-            }
         }
 
         /// <summary>Two-pass slot assignment: downward greedy from the sorted
@@ -946,67 +855,47 @@ namespace PadForge.Views
                 ReprojectAnnotations();
         }
 
-        /// <summary>Lights each tag while its control's output is on, in the
-        /// frame the picture lights the control: an ember edge and name, and
-        /// steel otherwise. One light for one state: a press used to flash
+        /// <summary>Lights each tag by its control's output, in the frame
+        /// the picture lights the control: an ember edge and name while a
+        /// button is on, a share of ember that grows with a trigger's pull
+        /// and a stick axis's deflection (<see cref="TagLight"/>), and
+        /// steel at rest. One light for one state: a press used to flash
         /// the tag blue for 250 ms while a dot beside it showed the output,
         /// and the flash went out with the button still held (owner,
-        /// 2026-11-14). A tag's brushes change only when its state does.</summary>
+        /// 2026-11-14). A tag's brushes change only when its step does.</summary>
         private void UpdateAnnotationChipLights()
         {
             if (!_annotationsEnabled || _vm == null)
                 return;
             foreach (var chip in _annotationChips)
-                LightChip(chip, ChipOutputOn(chip.Row.TargetSettingName));
+                LightChip(chip, ChipStep(chip.Row.TargetSettingName));
         }
 
-        private static void LightChip(AnnotationChip chip, bool on)
+        private static void LightChip(AnnotationChip chip, int step)
         {
-            if (chip.Lit == on)
+            if (chip.Step == step)
                 return;
-            chip.Lit = on;
-            chip.Border.SetResourceReference(Border.BorderBrushProperty, on ? "EmberBrush" : "SteelLineSoftBrush");
-            chip.Text.SetResourceReference(TextBlock.ForegroundProperty, on ? "EmberBrush" : "TextFillColorSecondaryBrush");
+            chip.Step = step;
+            TagLight.Paint(chip.Border, chip.Text, step);
         }
 
-        /// <summary>Whether a tag's control is on at the virtual
-        /// controller's output: a button's state on the view model. A
-        /// stick's axes and a trigger are never lit, and a trigger has its
-        /// level bars. A Nintendo row's raw name (RawBtn0) is read as the
-        /// control it is drawn as, as its anchor is: unread, every tag of
-        /// that slot stayed dark, as the 2D view's did before it read them.</summary>
-        private bool ChipOutputOn(string target)
+        /// <summary>The step a tag is lit at, from its control at the
+        /// virtual controller's output: a trigger's and a stick axis's
+        /// level, and a button's state on the view model. A Nintendo row's
+        /// raw name (RawBtn0) is read as the control it is drawn as, as its
+        /// anchor is: unread, every tag of that slot stayed dark, as the 2D
+        /// view's did before it read them.</summary>
+        private int ChipStep(string target)
         {
-            if (target == null)
-                return false;
+            if (target == null || _vm == null)
+                return 0;
             if (target.StartsWith("Raw", StringComparison.Ordinal))
             {
-                target = Models2D.NintendoPreviewMap.ToPreview(target, _vm?.ProfileId);
+                target = Models2D.NintendoPreviewMap.ToPreview(target, _vm.ProfileId);
                 if (target == null)
-                    return false;
+                    return 0;
             }
-            return GetButtonState(target);
-        }
-
-        /// <summary>Bar heights only; positions move on re-projection.
-        /// Called from OnRendering inside the existing dirty gate, so this
-        /// runs at VM change rate, not frame rate. Cold = raw selected
-        /// device, ember = combined slot output. When no device is selected
-        /// the raw feed stops updating; the ember bar still moves.</summary>
-        private void UpdateAnnotationLevelBars()
-        {
-            if (!_annotationsEnabled || _annotationDragHidden || _vm == null)
-                return;
-            foreach (var bars in _annotationTriggerBars)
-            {
-                double raw = bars.LeftSide ? _vm.DeviceLeftTrigger : _vm.DeviceRightTrigger;
-                double output = bars.LeftSide ? _vm.LeftTrigger : _vm.RightTrigger;
-                bars.ColdBar.Height = Math.Clamp(raw, 0.0, 1.0) * AnnotationBarHeight;
-                bars.EmberBar.Height = Math.Clamp(output, 0.0, 1.0) * AnnotationBarHeight;
-                bars.LevelsLive = raw > 0.02 || output > 0.02;
-                bars.Track.Visibility = bars.LevelsLive && bars.ProjectionValid
-                    ? Visibility.Visible : Visibility.Collapsed;
-            }
+            return TagLight.StepOf(TagLight.AnalogLevel(_vm, target) ?? (GetButtonState(target) ? 1 : 0));
         }
 
         /// <summary>Hides the overlay while a mouse/touch drag is active and

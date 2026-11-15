@@ -79,7 +79,6 @@ namespace PadForge.Tests
             foreach (string added in new[]
             {
                 "<TextBlock x:Name=\"HomeTitle\" AutomationProperties.HeadingLevel=\"Level1\"",
-                "AutomationProperties.AutomationId=\"Home_EngineButton\"",
                 "AutomationProperties.AutomationId=\"HomeOffer\"",
                 "AutomationProperties.AutomationId=\"HomeOfferUse\"",
                 "AutomationProperties.AutomationId=\"HomeOfferDismiss\"",
@@ -108,27 +107,32 @@ namespace PadForge.Tests
 
         /// <summary>The engine's card, the page's first and its largest
         /// words: the flame in its ring is the switch it always was, and
-        /// the worded button at the card's end raises the same click. The
-        /// state is one large word, a polite live line, with a sentence
-        /// under it and three numbers beside it, each with its label. While
-        /// the engine runs the card and the ring stand in ember light, the
-        /// ring's breathing, and Start is the page's one ember button.</summary>
+        /// the card's only one. A worded Start or Stop button stood at the
+        /// card's end and raised the same click, which was one switch too
+        /// many (owner, 2026-11-14). The state is one large word, a polite
+        /// live line, with a sentence under it and three numbers beside it,
+        /// each with its label. While the engine runs the card and the ring
+        /// stand in ember light, the ring's breathing.</summary>
         [Fact]
-        public void TheEngineCard_HasTheFlameAndAWordedButton_ForTheOneSwitch()
+        public void TheEngineCard_HasTheFlame_ForTheOneSwitch()
         {
             string page = Home();
             int card = At(page, "<Border x:Name=\"EngineCard\"");
             int offer = At(page, "<Border x:Name=\"HomeOffer\"");
             string engine = page.Substring(card, offer - card);
-            Assert.Equal(2, Count(engine, "Click=\"EngineToggle_Click\""));
-            Assert.Equal(2, Count(page, "Click=\"EngineToggle_Click\""));
+            Assert.Equal(1, Count(engine, "Click=\"EngineToggle_Click\""));
+            Assert.Equal(1, Count(page, "Click=\"EngineToggle_Click\""));
             At(engine, "<controls:StateToggleButton x:Name=\"EngineFlame\" IsOn=\"{Binding IsEngineOn}\"");
-            At(engine, "Content=\"{Binding EngineButtonText}\"");
+            Assert.DoesNotContain("EngineButton", page);
+            Assert.DoesNotContain("<ui:Button", engine);
+            Assert.Null(typeof(DashboardViewModel).GetProperty("EngineButtonText"));
             At(engine, "<TextBlock x:Name=\"EngineStatusLine\" common:LiveText.Polite=\"True\" Text=\"{Binding EngineStatus}\"");
             At(engine, "<TextBlock x:Name=\"EngineDevicesLine\" Text=\"{Binding HeroLine}\"");
-            // The flame and the button say the same thing on hover, in each state.
+            // The flame says what a click does on hover, in each state, and
+            // a screen reader hears it named for the engine.
             foreach (string tip in new[] { "Dashboard_EngineFlame_Stopped", "Dashboard_EngineFlame_Running", "Dashboard_EngineFlame_Idle", "Common_Stopping" })
-                Assert.Equal(2, Count(engine, "Value=\"{Binding " + tip + ", Source={x:Static strings:Strings.Instance}}\""));
+                Assert.Equal(1, Count(engine, "Value=\"{Binding " + tip + ", Source={x:Static strings:Strings.Instance}}\""));
+            At(engine, "AutomationProperties.Name=\"{Binding Dashboard_InputEngine, Source={x:Static strings:Strings.Instance}}\"");
 
             // The card's own measures, the board's: a 76 ring with the
             // flame of a 38 icon, which is three quarters of the icon's
@@ -154,8 +158,7 @@ namespace PadForge.Tests
 
             // Three numbers, each a text of its own with its label under it.
             int stats = At(engine, "<controls:FlexLinePanel x:Name=\"EngineStats\" Gap=\"36\" LineGap=\"14\" VerticalAlignment=\"Center\">");
-            int button = At(engine, "<ui:Button x:Name=\"EngineButton\"");
-            string numbers = engine.Substring(stats, button - stats);
+            string numbers = engine.Substring(stats);
             int rate = At(numbers, "<TextBlock x:Name=\"EngineRate\"");
             int live = At(numbers, "<TextBlock x:Name=\"EngineLive\"");
             int devices = At(numbers, "<TextBlock x:Name=\"EngineDevices\" Text=\"{Binding OnlineDevices, Mode=OneWay}\"");
@@ -175,13 +178,8 @@ namespace PadForge.Tests
             At(numbers, "AutomationProperties.Name=\"{Binding LiveLine, Mode=OneWay, TargetNullValue='', FallbackValue=''}\"");
             At(numbers, "<Run Text=\"{Binding LiveControllers, Mode=OneWay}\" FontSize=\"30\" FontWeight=\"SemiBold\" Foreground=\"{DynamicResource TextFillColorPrimaryBrush}\"/><Run Text=\" / \"/><Run Text=\"{Binding ControllerCount, Mode=OneWay}\"/>");
 
-            // Start is ember, and only Start: the trigger is the stopped state's.
-            string start = engine.Substring(button);
-            Assert.Matches(new Regex("<DataTrigger Binding=\"\\{Binding EngineStateKey\\}\" Value=\"Stopped\">\\s*"
-                + "<Setter Property=\"ToolTip\" Value=\"[^\"]*\"/>\\s*"
-                + "<Setter Property=\"Background\" Value=\"\\{DynamicResource EmberBrush\\}\"/>"), start);
-            Assert.Equal(1, Count(start, "<Setter Property=\"Background\" Value=\"{DynamicResource EmberBrush}\"/>"));
-            At(start, "MinHeight=\"42\" MinWidth=\"96\" Padding=\"22,0\"");
+            // The numbers close the card: nothing stands after them.
+            Assert.Matches(new Regex("</controls:FlexLinePanel>\\s*</controls:FlexLinePanel>\\s*</Grid>\\s*</Border>\\s*$"), engine.TrimEnd().Substring(0, engine.TrimEnd().LastIndexOf("<!--", StringComparison.Ordinal)).TrimEnd());
         }
 
         /// <summary>What Home's engine card and the sidebar's foot read beside
@@ -264,28 +262,6 @@ namespace PadForge.Tests
             Assert.Equal(vm.PollingFrequencyText, vm.PollingRateLead + vm.PollingRateNumber + vm.PollingRateTail);
             Assert.Equal(1000.4.ToString("F0", System.Globalization.CultureInfo.CurrentCulture), vm.PollingRateNumber);
             Assert.NotEqual(string.Empty, vm.PollingRateLead + vm.PollingRateTail);
-        }
-
-        [Fact]
-        public void TheEngineButton_SaysWhatAClickDoes()
-        {
-            var vm = new DashboardViewModel();
-            var changed = new List<string>();
-            vm.PropertyChanged += (_, e) => changed.Add(e.PropertyName);
-
-            vm.EngineStateKey = "Running";
-            Assert.Equal(Strings.Instance.Common_Stop, vm.EngineButtonText);
-            // Idle and stopping are still on: the button stops the engine.
-            vm.EngineStateKey = "Idle";
-            Assert.Equal(Strings.Instance.Common_Stop, vm.EngineButtonText);
-            vm.EngineStateKey = "Stopping";
-            Assert.Equal(Strings.Instance.Common_Stop, vm.EngineButtonText);
-
-            changed.Clear();
-            vm.EngineStateKey = "Stopped";
-            Assert.Equal(Strings.Instance.Common_Start, vm.EngineButtonText);
-            Assert.Contains(nameof(DashboardViewModel.IsEngineOn), changed);
-            Assert.Contains(nameof(DashboardViewModel.EngineButtonText), changed);
         }
 
         /// <summary>A controller's card, as its board draws it. Its head is
@@ -1725,7 +1701,10 @@ namespace PadForge.Tests
             Assert.True(card < title && title < body && body < tiles && tiles < more && more < foot, "the first page is out of order");
             At(first, "FontSize=\"30\" FontWeight=\"SemiBold\"");
             At(first, "Click=\"FirstRunStart_Click\"");
-            Assert.Equal(2, Count(page, "Click=\"EngineToggle_Click\""));
+            // The engine's flame is the page's one engine switch, and it is
+            // not on the first page.
+            Assert.Equal(1, Count(page, "Click=\"EngineToggle_Click\""));
+            Assert.DoesNotContain("EngineToggle_Click", first);
             At(page, "Visibility=\"{Binding IsFirstRun, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}\"");
         }
 

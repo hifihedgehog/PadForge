@@ -125,8 +125,9 @@ namespace PadForge.Views
             public Border Border;
             public TextBlock Text;
             public Line Leader;
-            /// <summary>Whether the tag is lit: its control's output is on.</summary>
-            public bool Lit;
+            /// <summary>The step the tag is lit at, by its control's
+            /// output: 0 at rest, <see cref="TagLight.Steps"/> fully on.</summary>
+            public int Step;
             /// <summary>Anchor translated to AnnotationCanvas coordinates.</summary>
             public Point Translated;
             public bool LeftColumn;
@@ -706,7 +707,7 @@ namespace PadForge.Views
                 Text = text,
                 Leader = leader,
             };
-            LightChip(chip, ChipOutputOn(row.TargetSettingName));
+            LightChip(chip, ChipStep(row.TargetSettingName));
             return chip;
         }
 
@@ -823,38 +824,51 @@ namespace PadForge.Views
         //  Live state
         // ─────────────────────────────────────────────
 
-        /// <summary>Lights each tag while its control's output is on, in the
-        /// frame the picture lights the control: an ember edge and name, and
-        /// steel otherwise. One light for one state: a press used to flash
+        /// <summary>Lights each tag by its control's output, in the frame
+        /// the picture lights the control: an ember edge and name while a
+        /// button is on, a share of ember that grows with a trigger's pull
+        /// and a stick axis's deflection (<see cref="TagLight"/>), and
+        /// steel at rest. One light for one state: a press used to flash
         /// the tag blue for 250 ms while a dot beside it showed the output,
         /// and the flash went out with the button still held (owner,
-        /// 2026-11-14). A tag's brushes change only when its state does.</summary>
+        /// 2026-11-14). A tag's brushes change only when its step does.</summary>
         private void UpdateAnnotationChipLights()
         {
             if (!_annotationsEnabled || _vm == null)
                 return;
             foreach (var chip in _annotationChips)
-                LightChip(chip, ChipOutputOn(chip.Row.TargetSettingName));
+                LightChip(chip, ChipStep(chip.Row.TargetSettingName));
         }
 
-        private static void LightChip(AnnotationChip chip, bool on)
+        private static void LightChip(AnnotationChip chip, int step)
         {
-            if (chip.Lit == on)
+            if (chip.Step == step)
                 return;
-            chip.Lit = on;
-            chip.Border.SetResourceReference(Border.BorderBrushProperty, on ? "EmberBrush" : "SteelLineSoftBrush");
-            chip.Text.SetResourceReference(TextBlock.ForegroundProperty, on ? "EmberBrush" : "TextFillColorSecondaryBrush");
+            chip.Step = step;
+            TagLight.Paint(chip.Border, chip.Text, step);
         }
 
-        /// <summary>Whether a tag's control is on at the virtual
-        /// controller's output, read as the 3D view reads it.</summary>
-        private bool ChipOutputOn(string target) => GetAnnotationButtonState(target);
+        /// <summary>The step a tag is lit at, from its control at the
+        /// virtual controller's output, read as the 3D view reads it: a
+        /// trigger's and a stick axis's level, and a button's state. A raw
+        /// row name is read as the control it is drawn as.</summary>
+        private int ChipStep(string target)
+        {
+            if (target == null || _vm == null)
+                return 0;
+            string control = target.StartsWith("Raw", System.StringComparison.Ordinal)
+                ? NintendoPreviewMap.ToPreview(target, _vm.ProfileId)
+                : target;
+            if (control == null)
+                return 0;
+            return TagLight.StepOf(TagLight.AnalogLevel(_vm, control) ?? (GetAnnotationButtonState(control) ? 1 : 0));
+        }
 
-        /// <summary>Virtual-output state for a tag's light. Mirrors the 3D
+        /// <summary>Virtual-output state for a button's tag. Mirrors the 3D
         /// GetButtonState switch, plus TouchpadClick, which the 2D layouts
         /// anchor (PlayStation slots) and the VM already exposes for the
-        /// touchpad preview. Axis and trigger targets return false, same as
-        /// the 3D view.</summary>
+        /// touchpad preview. A stick's axes and a trigger are levels, read
+        /// by <see cref="TagLight.AnalogLevel"/>.</summary>
         private bool GetAnnotationButtonState(string prop)
         {
             if (_vm == null) return false;

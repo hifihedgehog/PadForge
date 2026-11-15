@@ -7,9 +7,18 @@ namespace PadForge.Common.Input
 {
     /// <summary>Which devices are sending input now (#574, the world-class
     /// pass): the small light beside a device's name on a controller's Home
-    /// card and in its page's header. A device is sending while a button or
-    /// a direction is held, and for a moment after an axis moved, so a
-    /// short tap can still be seen.
+    /// card and in its page's header, and the light on a device's row on
+    /// the Devices page. A device is sending while a button or a direction
+    /// is held, and for a moment after an axis moved, so a short tap can
+    /// still be seen.
+    ///
+    /// <para>Every kind of input the idle test counts is counted here. A
+    /// finger on a touchpad, a pen on a tablet and a pad pressed in are
+    /// held, as are a note on a MIDI device and a key above rest on an
+    /// analog keyboard, and a MIDI knob or pitch wheel that turns has
+    /// moved. A touchpad's row stayed dark under a finger while the light
+    /// read buttons, directions, axes and the mouse's counts alone (owner,
+    /// 2026-11-14).</para>
     ///
     /// <para>It is asked at the interface's own pace, about thirty times a
     /// second, and reads the state the engine last wrote. It keeps a copy
@@ -27,6 +36,8 @@ namespace PadForge.Common.Input
             internal int[] Axis = Array.Empty<int>();
             internal int[] Sliders = Array.Empty<int>();
             internal int MouseX, MouseY;
+            internal byte[] Knobs = Array.Empty<byte>();
+            internal int PitchBend;
             internal long LastActive = long.MinValue;
             internal bool Any;
         }
@@ -48,7 +59,8 @@ namespace PadForge.Common.Input
 
             bool active = Held(state) || (gamepad && !IdleInputDetector.IsGamepadIdle(state));
             bool moved = Moved(ref seen.Axis, state.Axis) | Moved(ref seen.Sliders, state.Sliders)
-                | state.MouseRawDX != seen.MouseX | state.MouseRawDY != seen.MouseY;
+                | state.MouseRawDX != seen.MouseX | state.MouseRawDY != seen.MouseY
+                | MidiMoved(seen, state.Midi);
             seen.MouseX = state.MouseRawDX;
             seen.MouseY = state.MouseRawDY;
             if (seen.Any && moved) active = true;
@@ -82,7 +94,60 @@ namespace PadForge.Common.Input
             if (povs != null)
                 for (int i = 0; i < povs.Length; i++)
                     if (povs[i] >= 0) return true;
-            return false;
+
+            // A finger on a touchpad or a pen on a tablet, and a pad
+            // pressed in.
+            var pads = state.Touchpads;
+            if (pads != null)
+                for (int p = 0; p < pads.Length; p++)
+                {
+                    var pad = pads[p];
+                    if (pad == null) continue;
+                    if (pad.Clicked) return true;
+                    var down = pad.FingerDown;
+                    if (down == null) continue;
+                    for (int f = 0; f < down.Length; f++)
+                        if (down[f]) return true;
+                }
+
+            // A note held on a MIDI device.
+            var notes = state.Midi?.Notes;
+            if (notes != null)
+                for (int i = 0; i < notes.Length; i++)
+                    if (notes[i]) return true;
+
+            // A key above rest on an analog keyboard: an entry exists only
+            // while its key is.
+            return state.AnalogKeys != null && state.AnalogKeys.Count > 0;
+        }
+
+        /// <summary>Whether a MIDI knob or the pitch wheel has turned since
+        /// the copy was taken. A knob's value is copied as it changes, so a
+        /// knob left where it was turned to is at rest. The pitch wheel
+        /// springs back, and counts past the idle test's slop.</summary>
+        private static bool MidiMoved(Seen seen, MidiInputState midi)
+        {
+            if (midi == null) return false;
+            bool moved = false;
+            var knobs = midi.Cc;
+            if (knobs != null)
+            {
+                if (seen.Knobs.Length != knobs.Length)
+                    seen.Knobs = (byte[])knobs.Clone();
+                else
+                    for (int i = 0; i < knobs.Length; i++)
+                    {
+                        if (knobs[i] == seen.Knobs[i]) continue;
+                        moved = true;
+                        seen.Knobs[i] = knobs[i];
+                    }
+            }
+            if (Math.Abs(midi.PitchBend - seen.PitchBend) > IdleInputDetector.DeltaSlop)
+            {
+                moved = true;
+                seen.PitchBend = midi.PitchBend;
+            }
+            return moved;
         }
 
         /// <summary>Whether any value stands more than the idle test's

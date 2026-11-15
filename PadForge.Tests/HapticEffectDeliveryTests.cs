@@ -224,11 +224,25 @@ internal sealed class HapticEffectFixture : IDisposable
     internal readonly List<SDL_HapticEffect> Writes = [];
     internal readonly List<string> Calls = [];
     internal readonly HashSet<int> Allocated = [];
-    internal bool FailCreate, FailUpdate, Running;
+    /// <summary>Each allocated effect's type, so an update that changes the
+    /// type is refused, as SDL refuses it.</summary>
+    internal readonly Dictionary<int, ushort> Types = [];
+    /// <summary>The effects that are playing.</summary>
+    internal readonly HashSet<int> Playing = [];
+    internal bool FailCreate, FailUpdate;
     internal bool FailRun = false;
+    /// <summary>A create of this type fails, whatever the room.</summary>
+    internal ushort? FailCreateOfType;
+    /// <summary>How many effects the device holds at once. A create past it
+    /// fails, as DirectInput's CreateEffect fails on a full device.</summary>
+    internal int Room = int.MaxValue;
     internal Action AfterWrite;
     int nextId;
-    ushort effectType;
+
+    /// <summary>True while any effect plays.</summary>
+    internal bool Running => Playing.Count > 0;
+
+    internal bool PlayingType(uint type) => Playing.Any(id => Types.TryGetValue(id, out var t) && t == type);
 
     internal HapticEffectFixture()
     {
@@ -240,24 +254,36 @@ internal sealed class HapticEffectFixture : IDisposable
         State.CreateEffect = (IntPtr handle, ref SDL_HapticEffect effect) =>
         {
             Calls.Add("create");
-            if (FailCreate) return -1;
-            effectType = effect.type;
+            if (FailCreate || FailCreateOfType == effect.type || Allocated.Count >= Room) return -1;
             Writes.Add(effect);
             AfterWrite?.Invoke();
             Allocated.Add(++nextId);
+            Types[nextId] = effect.type;
             return nextId;
         };
         State.UpdateEffect = (IntPtr handle, int id, ref SDL_HapticEffect effect) =>
         {
             Calls.Add("update");
-            if (FailUpdate || effect.type != effectType) return false;
+            if (FailUpdate || !Types.TryGetValue(id, out var type) || effect.type != type) return false;
             Writes.Add(effect);
             AfterWrite?.Invoke();
             return true;
         };
-        State.RunEffect = (_, _, _) => { Calls.Add("run"); Running = !FailRun; return Running; };
-        State.StopEffect = (_, _) => { Calls.Add("stop"); Running = false; return true; };
-        State.DestroyEffect = (_, id) => { Calls.Add("destroy"); Allocated.Remove(id); Running = false; };
+        State.RunEffect = (_, id, _) =>
+        {
+            Calls.Add("run");
+            if (FailRun) return false;
+            Playing.Add(id);
+            return true;
+        };
+        State.StopEffect = (_, id) => { Calls.Add("stop"); Playing.Remove(id); return true; };
+        State.DestroyEffect = (_, id) =>
+        {
+            Calls.Add("destroy");
+            Allocated.Remove(id);
+            Playing.Remove(id);
+            Types.Remove(id);
+        };
     }
 
     internal void Set(string name, object value) => typeof(SdlDeviceWrapper).GetProperty(name)!.SetValue(Device, value);

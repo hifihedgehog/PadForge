@@ -97,10 +97,37 @@ public sealed class HapticEffectTransitionTests(ITestOutputHelper output)
         Assert.Equal(SDL_HAPTIC_LEFTRIGHT, h.Writes[^1].type);
     }
 
+    /// <summary>#572: the spring joins rumble that is already playing and
+    /// leaves it alone, and turning the spring off leaves it playing.</summary>
     [Fact]
-    public void DisablingAutoCenterRestoresUnchangedScalarMotors()
+    public void AutoCenterJoinsAndLeavesUnchangedScalarMotors()
     {
         using var h = new HapticEffectFixture();
+        h.Set("JoystickType", SDL_JoystickType.SDL_JOYSTICK_TYPE_WHEEL);
+        var scalar = new Vibration(1000, 0);
+        h.Apply(scalar);
+        Assert.Equal(SDL_HAPTIC_LEFTRIGHT, h.Writes[^1].type);
+        int rumbleWrites = h.Writes.Count(w => w.type == SDL_HAPTIC_LEFTRIGHT);
+        h.Settings.AutoCenterStrength = "25";
+        h.Apply(scalar);
+        Assert.Equal(SDL_HAPTIC_SPRING, h.Writes[^1].type);
+        Assert.True(h.PlayingType(SDL_HAPTIC_SPRING));
+        Assert.True(h.PlayingType(SDL_HAPTIC_LEFTRIGHT));
+        h.Settings.AutoCenterStrength = "0";
+        h.Apply(scalar);
+        Assert.False(h.PlayingType(SDL_HAPTIC_SPRING));
+        Assert.True(h.PlayingType(SDL_HAPTIC_LEFTRIGHT));
+        Assert.Equal(rumbleWrites, h.Writes.Count(w => w.type == SDL_HAPTIC_LEFTRIGHT));
+        Assert.Equal(1000, h.State.LeftMotorSpeed);
+    }
+
+    /// <summary>A device that holds one effect keeps the pre-#572 order: the
+    /// spring displaces rumble, and turning it off restores the unchanged
+    /// motors.</summary>
+    [Fact]
+    public void DisablingAutoCenterRestoresUnchangedScalarMotorsOnAOneEffectDevice()
+    {
+        using var h = new HapticEffectFixture { Room = 1 };
         h.Set("JoystickType", SDL_JoystickType.SDL_JOYSTICK_TYPE_WHEEL);
         var scalar = new Vibration(1000, 0);
         h.Apply(scalar);
@@ -108,6 +135,8 @@ public sealed class HapticEffectTransitionTests(ITestOutputHelper output)
         h.Settings.AutoCenterStrength = "25";
         h.Apply(scalar);
         Assert.Equal(SDL_HAPTIC_SPRING, h.Writes[^1].type);
+        Assert.True(h.PlayingType(SDL_HAPTIC_SPRING));
+        Assert.False(h.PlayingType(SDL_HAPTIC_LEFTRIGHT));
         h.Settings.AutoCenterStrength = "0";
         h.Apply(scalar);
         Assert.True(h.Running);

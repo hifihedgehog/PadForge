@@ -1007,8 +1007,8 @@ namespace PadForge.Views
                          || PadForge.Common.Input.ThrustmasterRawHidWriter.IsThrustmasterWheel(ud.VendorId, ud.ProdId);
                         // Generic (non-vendor) FFB wheel routed through SDL: no native range
                         // or RPM-LED support, but a spring-capable haptic still self-centers
-                        // from the Auto Centering slider (TryApplyAutoCenterSpring). Show the
-                        // Wheel tab with only the auto-center row in that case.
+                        // from the Auto Centering slider (ForceFeedbackState.HoldsOnlyTheSpring).
+                        // Show the Wheel tab with only the auto-center row in that case.
                         //
                         // The haptic half of the gate is the ENGINE's predicate, shared with
                         // the spring itself, so the tab and the spring cannot drift apart

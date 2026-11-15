@@ -5,7 +5,7 @@ namespace PadForge.Tests
 {
     /// <summary>
     /// #282 (Moza): the generic-wheel spring gate. One predicate now serves
-    /// both the Wheel tab's hasGenericWheel check and TryApplyAutoCenterSpring,
+    /// both the Wheel tab's hasGenericWheel check and the auto-center spring,
     /// and these tests lock its contract: device TYPE decides wheel identity,
     /// axis count does not. The old inline gates required NumHapticAxes &lt;= 1,
     /// which hid the Wheel tab for wheelbase-plus-pedals composites that report

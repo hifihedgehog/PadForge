@@ -883,6 +883,14 @@ namespace PadForge.Engine
                 Joystick = IntPtr.Zero;
             }
 
+            // A closed joystick holds no rumble, so a reopen starts with
+            // nothing to renew.
+            lock (_rumbleSync)
+            {
+                _heldRumble = default;
+                _heldTriggerRumble = default;
+            }
+
             // Reset NFC pulse/edge state so a wrapper that is closed and
             // reopened (Open supports this) cannot inherit a stale press or
             // suppress the first equal UID from the prior connection.
@@ -2365,11 +2373,53 @@ namespace PadForge.Engine
         // ─────────────────────────────────────────────
         //  Rumble (SDL only)
         //
-        //  Uses SDL_RumbleJoystick with a very long duration so the
-        //  caller controls when rumble stops. Change-detection in
-        //  ForceFeedbackState ensures we only call when values differ,
-        //  avoiding the hardware restart gaps that occur with redundant calls.
+        //  SDL caps the duration of one rumble call at 0xFFFF ms
+        //  (SDL_MAX_RUMBLE_DURATION_MS, SDL_sysjoystick.h:250), and its
+        //  update loop stops the motors once that time runs out
+        //  (SDL_joystick.c:3084-3087, the trigger motors at :3097-3100).
+        //  PadForge holds a level until it changes, as XInput does, so a
+        //  call made with uint.MaxValue is held here and renewed before the
+        //  cap (RenewHeldRumble, #572). A call that repeats the level SDL
+        //  holds only moves the end time and never reaches the driver
+        //  (SDL_joystick.c:2295-2298, :2341-2343, and SDL_gamepad.c:4540
+        //  for the trigger motors), so a renewal sends the device nothing.
         // ─────────────────────────────────────────────
+
+        /// <summary>SDL's cap on one rumble call in milliseconds,
+        /// SDL_MAX_RUMBLE_DURATION_MS (SDL_sysjoystick.h:250).</summary>
+        internal const uint SdlRumbleCapMs = 0xFFFF;
+
+        /// <summary>How old a held level gets before it is renewed: half of
+        /// SDL's cap, so a late poll still lands well inside it.</summary>
+        internal const long RumbleRenewAfterMs = SdlRumbleCapMs / 2;
+
+        /// <summary>A level SDL holds for this device that has to outlast
+        /// one call, and when SDL last took it.</summary>
+        private struct HeldRumble
+        {
+            internal bool On;
+            internal ushort A, B;
+            internal long At;
+
+            /// <summary>The hold a call leaves: a nonzero level asked for
+            /// longer than SDL's cap is held, anything else is not.</summary>
+            internal static HeldRumble After(ushort a, ushort b, uint durationMs, long now) => new()
+            {
+                On = durationMs > SdlRumbleCapMs && (a != 0 || b != 0),
+                A = a,
+                B = b,
+                At = now,
+            };
+        }
+
+        private readonly object _rumbleSync = new();
+        private HeldRumble _heldRumble, _heldTriggerRumble;
+
+        /// <summary>The SDL calls and the clock the rumble path uses. Tests
+        /// replace them.</summary>
+        internal Func<IntPtr, ushort, ushort, uint, bool> RumbleJoystickCall = SDL_RumbleJoystick;
+        internal Func<IntPtr, ushort, ushort, uint, bool> RumbleTriggersCall = SDL_RumbleGamepadTriggers;
+        internal Func<long> RumbleClock = () => Environment.TickCount64;
 
         /// <summary>Steam Deck (Valve 0x28DE:0x1205) rumble headroom.
         /// Discussion #179 brackets a 16-bit wrap in the firmware's
@@ -2439,7 +2489,55 @@ namespace PadForge.Engine
                 highFreq = (ushort)(highFreq * DeckRumbleHeadroom);
             }
 
-            return SDL_RumbleJoystick(Joystick, lowFreq, highFreq, durationMs);
+            // Under the lock the renewal takes, so a renewal never puts back
+            // a level this call just replaced.
+            lock (_rumbleSync)
+            {
+                bool sent = RumbleJoystickCall(Joystick, lowFreq, highFreq, durationMs);
+                // A refused call leaves SDL's level as it was, and the hold
+                // with it.
+                if (sent) _heldRumble = HeldRumble.After(lowFreq, highFreq, durationMs, RumbleClock());
+                return sent;
+            }
+        }
+
+        /// <summary>Sets the impulse-trigger motors through SDL's gamepad
+        /// handle, held past SDL's cap like <see cref="SetRumble"/>.</summary>
+        public bool SetTriggerRumble(ushort left, ushort right, uint durationMs = uint.MaxValue)
+        {
+            if (GameController == IntPtr.Zero)
+                return false;
+            lock (_rumbleSync)
+            {
+                bool sent = RumbleTriggersCall(GameController, left, right, durationMs);
+                if (sent) _heldTriggerRumble = HeldRumble.After(left, right, durationMs, RumbleClock());
+                return sent;
+            }
+        }
+
+        /// <summary>Asks SDL for a held level again before SDL's cap ends it
+        /// (#572). Whatever set the level, a slot's force, a Remote Link
+        /// peer's relayed frame or a Bliss-Box hand-back, the device keeps it
+        /// until the next call changes it. A renewal that SDL refuses is
+        /// tried again a half cap later rather than on every poll.</summary>
+        public void RenewHeldRumble()
+        {
+            long now = RumbleClock();
+            lock (_rumbleSync)
+            {
+                if (_heldRumble.On && now - _heldRumble.At >= RumbleRenewAfterMs)
+                {
+                    if (Joystick != IntPtr.Zero)
+                        RumbleJoystickCall(Joystick, _heldRumble.A, _heldRumble.B, uint.MaxValue);
+                    _heldRumble.At = now;
+                }
+                if (_heldTriggerRumble.On && now - _heldTriggerRumble.At >= RumbleRenewAfterMs)
+                {
+                    if (GameController != IntPtr.Zero)
+                        RumbleTriggersCall(GameController, _heldTriggerRumble.A, _heldTriggerRumble.B, uint.MaxValue);
+                    _heldTriggerRumble.At = now;
+                }
+            }
         }
 
         /// <summary>
@@ -2532,7 +2630,16 @@ namespace PadForge.Engine
         /// (BlissBoxRuntime.TakeMotors). False when SDL refused the stop, true
         /// when it took it or there was nothing to stop.</summary>
         public bool StopSdlRumble()
-            => Joystick == IntPtr.Zero || !_hasRumble || SDL_RumbleJoystick(Joystick, 0, 0, 0);
+        {
+            if (Joystick == IntPtr.Zero || !_hasRumble)
+                return true;
+            lock (_rumbleSync)
+            {
+                bool stopped = RumbleJoystickCall(Joystick, 0, 0, 0);
+                if (stopped) _heldRumble = default;
+                return stopped;
+            }
+        }
 
         // ─────────────────────────────────────────────
         //  GUID construction

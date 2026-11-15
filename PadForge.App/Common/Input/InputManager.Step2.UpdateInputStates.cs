@@ -809,6 +809,13 @@ namespace PadForge.Common.Input
                 return;
             }
 
+            // SDL stops a rumble 65.5 s after the call that set it. A level the
+            // device holds is asked for again before then, whoever set it: this
+            // pass, a Remote Link peer's relayed frame, or a Bliss-Box hand-back
+            // (#572). Ahead of the slot lookup, so a pad held for a peer with
+            // no slot of its own here is renewed too.
+            ud.Device?.RenewHeldRumble();
+
             // ══════════════════════════════════════════════════════════════
             // SONY DS5 / DS4 SKIP — DO NOT REMOVE.
             // ══════════════════════════════════════════════════════════════

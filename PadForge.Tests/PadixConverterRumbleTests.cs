@@ -141,7 +141,7 @@ namespace PadForge.Tests
             Assert.Contains("|| PadixConverterIdentity.IsPlayStationConverter(VendorId, ProductId);", code);
             int setRumble = code.IndexOf("public bool SetRumble(ushort lowFreq, ushort highFreq, uint durationMs = uint.MaxValue)", StringComparison.Ordinal);
             int guard = code.IndexOf("if (PadixConverterIdentity.IsPlayStationConverter(VendorId, ProductId))\n                return false;", StringComparison.Ordinal);
-            int call = code.IndexOf("return SDL_RumbleJoystick(Joystick, lowFreq, highFreq, durationMs);", StringComparison.Ordinal);
+            int call = code.IndexOf("bool sent = RumbleJoystickCall(Joystick, lowFreq, highFreq, durationMs);", StringComparison.Ordinal);
             Assert.True(setRumble > 0 && guard > setRumble && call > guard, "SetRumble must refuse the converter before calling SDL");
         }
 

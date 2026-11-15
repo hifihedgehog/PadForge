@@ -130,5 +130,17 @@ namespace PadForge.Engine
 
         bool SetRumble(ushort low, ushort high, uint durationMs = uint.MaxValue);
         bool StopRumble();
+
+        /// <summary>Sets the impulse-trigger motors through the gamepad
+        /// handle. Only the SDL wrapper has a gamepad handle, so every other
+        /// device refuses, as the direct SDL call this replaced did.</summary>
+        bool SetTriggerRumble(ushort left, ushort right, uint durationMs = uint.MaxValue)
+            => GamepadHandle != IntPtr.Zero
+               && SDL3.SDL.SDL_RumbleGamepadTriggers(GamepadHandle, left, right, durationMs);
+
+        /// <summary>Keeps a rumble level the device holds running past a cap
+        /// in the layer below it. Called on every poll. Only the SDL wrapper's
+        /// rumble has such a cap, so by default there is nothing to do.</summary>
+        void RenewHeldRumble() { }
     }
 }

@@ -336,7 +336,7 @@ namespace PadForge.Tests
             string wrapper = Repo("PadForge.Engine", "Common", "SdlDeviceWrapper.cs");
             int setRumble = wrapper.IndexOf("public bool SetRumble(ushort lowFreq, ushort highFreq, uint durationMs = uint.MaxValue)", StringComparison.Ordinal);
             int guard = wrapper.IndexOf("if (BlissBoxApi.OwnsRumble(VendorId, ProductId))", StringComparison.Ordinal);
-            int call = wrapper.IndexOf("return SDL_RumbleJoystick(Joystick, lowFreq, highFreq, durationMs);", StringComparison.Ordinal);
+            int call = wrapper.IndexOf("bool sent = RumbleJoystickCall(Joystick, lowFreq, highFreq, durationMs);", StringComparison.Ordinal);
             Assert.True(setRumble > 0 && guard > setRumble && call > guard, "SetRumble must refuse an owned port before calling SDL");
             Assert.Contains("get => _hasRumble || BlissBoxApi.OwnsRumble(VendorId, ProductId);", wrapper);
 

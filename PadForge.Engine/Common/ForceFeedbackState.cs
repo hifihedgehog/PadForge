@@ -34,8 +34,15 @@ namespace PadForge.Engine
     /// duration to mimic XInput's "set and forget" behavior. SDL caps every
     /// duration at 0xFFFF ms, about 65.5 s, the Linux kernel's limit
     /// (SDL_MAX_RUMBLE_DURATION_MS, SDL_sysjoystick.h), and its update loop
-    /// stops the motors when that runs out, so a level held unchanged for
-    /// longer than that stops.
+    /// stops the motors when that runs out. The SDL wrapper asks again for a
+    /// level held that long (SdlDeviceWrapper.RenewHeldRumble, #572).
+    ///
+    /// <para>A haptic device gets two effects: the main one for game force
+    /// and rumble, and one of its own for the auto-center spring, so rumble
+    /// plays on top of centering (#572), as FFBTestTool runs its background
+    /// spring beside a second effect (FfbDevice.cs, the main and spring
+    /// slots). A device that turns out to hold one effect keeps the spring
+    /// and rumble waits, as before.</para>
     /// </summary>
     public class ForceFeedbackState
     {
@@ -66,9 +73,28 @@ namespace PadForge.Engine
         /// by the next snapshot.</summary>
         private bool _directWriteNeedsRetry;
 
-        // Haptic effect tracking
-        private int _hapticEffectId = -1;
-        private bool _hapticEffectCreated;
+        /// <summary>One SDL haptic effect this state owns on the device.</summary>
+        private sealed class EffectSlot
+        {
+            internal int Id = -1;
+            internal bool Created;
+        }
+
+        /// <summary>The main effect: game force, Constant Force and rumble.</summary>
+        private readonly EffectSlot _main = new();
+        /// <summary>The auto-center spring's own effect (#572).</summary>
+        private readonly EffectSlot _spring = new();
+
+        /// <summary>What a haptic device turned out to hold. One: a second
+        /// effect was refused while the first ran, and the refused one then
+        /// ran alone. Enough: both ran at once, or a refusal turned out not to
+        /// be about room, so a later refusal is retried like any failed
+        /// write. Unknown until one of those happens.</summary>
+        private enum EffectRoom : byte { Unknown, One, Enough }
+        private EffectRoom _room;
+        /// <summary>The haptic handle <see cref="_room"/> was learned on. A
+        /// reopened device starts over.</summary>
+        private IntPtr _roomHandle;
 
         internal delegate int CreateEffectHandler(IntPtr handle, ref SDL_HapticEffect effect);
         internal delegate bool UpdateEffectHandler(IntPtr handle, int id, ref SDL_HapticEffect effect);
@@ -273,6 +299,7 @@ namespace PadForge.Engine
 
             if (device.HasHaptic)
             {
+                StopAndDestroySpring(device);
                 StopAndDestroyHapticEffect(device);
             }
             else if (device.HasRumble)
@@ -288,7 +315,7 @@ namespace PadForge.Engine
             // rather than the joystick's.
             if (device.HasRumbleTriggers && device.GamepadHandle != IntPtr.Zero)
             {
-                SDL_RumbleGamepadTriggers(device.GamepadHandle, 0, 0, 0);
+                device.SetTriggerRumble(0, 0, 0);
             }
 
             ForgetForces();
@@ -374,6 +401,14 @@ namespace PadForge.Engine
             // support, route through the directional path for true force direction.
             if (device.HasHaptic && (v.HasDirectionalData || v.HasConditionData))
             {
+                // The game's own force, or Constant Force, takes the wheel, so
+                // the auto-center spring lets go, as it did when the two shared
+                // one effect: Constant Force and centering are alternatives on
+                // this path (#282). Released before the game's effect is made,
+                // so a device that holds one effect has room for it.
+                if (_spring.Created || _autoCenterActive)
+                    StopAndDestroySpring(device);
+
                 var snapshot = DirectionalSnapshot.Capture(v, overallGain);
                 if (_cachedDirectional == snapshot)
                     return;
@@ -412,10 +447,6 @@ namespace PadForge.Engine
                     _cachedLeftMotorSpeed = snapshot.LeftMotorSpeed;
                     _cachedRightMotorSpeed = snapshot.RightMotorSpeed;
                     _scalarNeedsWrite = true;
-                    // The game's effect now owns the shared haptic slot, so the
-                    // auto-center spring (if any) is gone; force a re-apply the
-                    // next idle frame instead of trusting the change-gate.
-                    _autoCenterActive = false;
                 }
 
                 LeftMotorSpeed = v.LeftMotorSpeed;
@@ -427,7 +458,7 @@ namespace PadForge.Engine
 
             // ── Path 2: Standard scalar rumble ──
             // Leaving a game effect must replace or stop its native effect even
-            // when scalar motor values match. Auto-centering can replace it below.
+            // when scalar motor values match.
             if (_cachedDirectional.HasValue)
             {
                 _cachedDirectional = null;
@@ -439,9 +470,12 @@ namespace PadForge.Engine
             // Strength slider is set, hold a steering-axis spring centered at 0 so
             // the wheel returns to center. Vendor wheels (Logitech / Fanatec /
             // Thrustmaster) own centering in their native writers and never reach
-            // SetDeviceForces. Centering takes precedence over scalar rumble here —
-            // a wheel has no rumble motor, and a held spring is its expected idle.
-            if (TryApplyAutoCenterSpring(device, ps))
+            // SetDeviceForces. The spring has an effect of its own, so the rumble
+            // below plays on top of it (#572), as Fanatec's software spring keeps
+            // its own slot beside the force in Step 2's vendor branch. A device
+            // that holds one effect keeps the spring, and its rumble waits.
+            short springCoeff = AutoCenterCoefficient(device, ps);
+            if (HoldsOnlyTheSpring(device, springCoeff))
             {
                 LeftMotorSpeed = 0;
                 RightMotorSpeed = 0;
@@ -476,6 +510,13 @@ namespace PadForge.Engine
                 if (device.HasHaptic)
                 {
                     scalarSuccess = SetHapticForces(device, finalLeft, finalRight);
+                    if (SpringKeepsTheOnlyEffect(device, scalarSuccess, finalLeft, finalRight, springCoeff))
+                    {
+                        LeftMotorSpeed = 0;
+                        RightMotorSpeed = 0;
+                        IsActive = true;
+                        return;
+                    }
                 }
                 else if (finalLeft == 0 && finalRight == 0)
                 {
@@ -522,7 +563,7 @@ namespace PadForge.Engine
                 && device.GamepadHandle != IntPtr.Zero
                 && (finalLT != _cachedLeftTriggerMotorSpeed || finalRT != _cachedRightTriggerMotorSpeed))
             {
-                if (SDL_RumbleGamepadTriggers(device.GamepadHandle, finalLT, finalRT, uint.MaxValue))
+                if (device.SetTriggerRumble(finalLT, finalRT, uint.MaxValue))
                 {
                     _cachedLeftTriggerMotorSpeed = finalLT;
                     _cachedRightTriggerMotorSpeed = finalRT;
@@ -531,7 +572,9 @@ namespace PadForge.Engine
             LeftTriggerMotorSpeed = finalLT;
             RightTriggerMotorSpeed = finalRT;
 
-            IsActive = finalLeft > 0 || finalRight > 0 || finalLT > 0 || finalRT > 0;
+            // A held spring counts, so a wheel unassigned from its slot still
+            // gets the stop that releases it.
+            IsActive = finalLeft > 0 || finalRight > 0 || finalLT > 0 || finalRT > 0 || _autoCenterActive;
         }
 
         // ─────────────────────────────────────────────
@@ -831,36 +874,118 @@ namespace PadForge.Engine
                 && IsGenericWheelSpringCapable(device.HasHaptic, device.HapticFeatures, device.GetInputDeviceType());
         }
 
-        /// <summary>
-        /// Holds a software centering spring on a generic FFB wheel routed through
-        /// SDL, driven by the Wheel-tab Auto Centering Strength slider. Mirrors what
-        /// Logitech / Fanatec / Thrustmaster get from their native writers, for wheels
-        /// that aren't one of those vendors. Single-axis haptic gates this to wheels —
-        /// gamepads report two or more haptic axes (or no spring support), so it never
-        /// fires for them. Returns false (leaving the rumble path to run) when the
-        /// device isn't a spring-capable single-axis wheel or the slider is at 0.
-        /// </summary>
-        private bool TryApplyAutoCenterSpring(ISdlInputDevice device, PadSetting ps)
+        /// <summary>The spring coefficient, 0 to 32767, that the Wheel tab's
+        /// Auto Centering Strength asks of a generic FFB wheel routed through
+        /// SDL, or 0 for a device that takes no software spring. Logitech,
+        /// Fanatec and Thrustmaster get theirs from their native writers.</summary>
+        private static short AutoCenterCoefficient(ISdlInputDevice device, PadSetting ps)
         {
             if (!IsGenericWheelSpringCapable(device))
-                return false;
-
+                return 0;
             int strength = Math.Clamp(TryParseInt(ps.AutoCenterStrength, 0), 0, 100);
-            if (strength <= 0)
+            return (short)(strength * 32767 / 100); // 0..100% -> 0..32767
+        }
+
+        /// <summary>
+        /// Holds the auto-center spring in its own effect, or lets it go at a
+        /// coefficient of 0 so the wheel goes slack instead of staying sprung from
+        /// a prior frame's value. True only on a device that holds one effect,
+        /// where the spring keeps it and rumble waits, as before #572. A spring
+        /// refused beside the main effect is tried alone, once per device, to
+        /// learn which kind of device it is.
+        /// </summary>
+        private bool HoldsOnlyTheSpring(ISdlInputDevice device, short coeff)
+        {
+            if (coeff <= 0)
             {
-                // Slider at 0: tear down a spring we were holding so the wheel goes
-                // slack instead of staying sprung from a prior frame's value.
-                if (_autoCenterActive)
-                {
-                    StopAndDestroyHapticEffect(device);
-                    _autoCenterActive = false;
-                }
+                if (_spring.Created || _autoCenterActive)
+                    StopAndDestroySpring(device);
                 return false;
             }
 
-            short coeff = (short)(strength * 32767 / 100); // 0..100% -> 0..32767
-            if (_autoCenterActive && coeff == _autoCenterCoeff)
-                return true; // unchanged — the spring is already holding, no HID write
+            IntPtr haptic = device.HapticHandle;
+            if (RoomOf(haptic) == EffectRoom.One)
+            {
+                if (_main.Created)
+                    StopAndDestroyHapticEffect(device);
+                return ApplyAutoCenterSpring(device, coeff);
+            }
+
+            if (ApplyAutoCenterSpring(device, coeff))
+            {
+                if (_main.Created)
+                    NoteRoom(device, EffectRoom.Enough, "runs the centering spring beside its main effect");
+                return false;
+            }
+            if (!_main.Created || RoomOf(haptic) != EffectRoom.Unknown)
+                return false;
+
+            // Refused beside the main effect: release that one and try the
+            // spring alone. Released rumble is written again below if the
+            // spring fails here too, since the release asks for that write.
+            StopAndDestroyHapticEffect(device);
+            if (ApplyAutoCenterSpring(device, coeff))
+            {
+                NoteRoom(device, EffectRoom.One, "holds one effect: the centering spring keeps it and rumble waits");
+                return true;
+            }
+            NoteRoom(device, EffectRoom.Enough, "refused the centering spring even alone");
+            return false;
+        }
+
+        /// <summary>
+        /// Learns what a haptic device holds from a rumble write made while the
+        /// spring runs. True when the rumble was refused beside the spring and
+        /// then ran alone: the device holds one effect, so the spring takes it
+        /// back and rumble waits, as before #572.
+        /// </summary>
+        private bool SpringKeepsTheOnlyEffect(ISdlInputDevice device, bool written,
+            ushort left, ushort right, short springCoeff)
+        {
+            if (!_spring.Created || springCoeff <= 0)
+                return false;
+            if (written)
+            {
+                if (_main.Created)
+                    NoteRoom(device, EffectRoom.Enough, "runs rumble beside the centering spring");
+                return false;
+            }
+            if (RoomOf(device.HapticHandle) != EffectRoom.Unknown)
+                return false;
+
+            // Refused beside the spring: release it and try the rumble alone.
+            StopAndDestroySpring(device);
+            if (SetHapticForces(device, left, right))
+            {
+                NoteRoom(device, EffectRoom.One, "holds one effect: the centering spring keeps it and rumble waits");
+                StopAndDestroyHapticEffect(device);
+                ApplyAutoCenterSpring(device, springCoeff);
+                return true;
+            }
+            NoteRoom(device, EffectRoom.Enough, "refused rumble even alone");
+            ApplyAutoCenterSpring(device, springCoeff);
+            return false;
+        }
+
+        private EffectRoom RoomOf(IntPtr haptic)
+            => haptic != IntPtr.Zero && haptic == _roomHandle ? _room : EffectRoom.Unknown;
+
+        private void NoteRoom(ISdlInputDevice device, EffectRoom room, string what)
+        {
+            IntPtr haptic = device.HapticHandle;
+            if (haptic == _roomHandle && room == _room)
+                return;
+            _roomHandle = haptic;
+            _room = room;
+            SdlDiagLog.WriteLine($"HAPTICDIAG {device.VendorId:X4}:{device.ProductId:X4} {what}");
+        }
+
+        /// <summary>Puts the spring at <paramref name="coeff"/> in its own
+        /// effect, or leaves it when it already holds that coefficient.</summary>
+        private bool ApplyAutoCenterSpring(ISdlInputDevice device, short coeff)
+        {
+            if (_autoCenterActive && _spring.Created && coeff == _autoCenterCoeff)
+                return true; // unchanged: the spring is already holding, no HID write
 
             var effect = new SDL_HapticEffect();
             effect.condition.type = (ushort)SDL_HAPTIC_SPRING;
@@ -889,14 +1014,11 @@ namespace PadForge.Engine
             effect.condition.center0 = 0;
             effect.condition.deadband0 = 0;
 
-            bool ok = ApplyHapticEffect(device, ref effect);
-            if (ok)
-            {
-                _autoCenterActive = true;
-                _autoCenterCoeff = coeff;
-                _scalarNeedsWrite = true;
-            }
-            return ok;
+            if (!ApplyEffect(device, ref effect, _spring))
+                return false;
+            _autoCenterActive = true;
+            _autoCenterCoeff = coeff;
+            return true;
         }
 
         // ─────────────────────────────────────────────
@@ -957,74 +1079,83 @@ namespace PadForge.Engine
         }
 
         /// <summary>
-        /// Creates or updates the haptic effect on the device. On first call, creates
-        /// the effect and runs it. On subsequent calls, updates the existing effect
-        /// in place. Failed starts release the allocation so the next call retries playback.
+        /// Creates or updates the main haptic effect on the device: game force,
+        /// Constant Force and rumble.
         /// </summary>
         private bool ApplyHapticEffect(ISdlInputDevice device, ref SDL_HapticEffect effect)
+            => ApplyEffect(device, ref effect, _main);
+
+        /// <summary>
+        /// Creates or updates the effect in one slot. On first call, creates the
+        /// effect and runs it. On later calls, updates the existing effect in
+        /// place, and recreates it when the update is rejected, as a type change
+        /// is. Failed starts release the allocation so the next call retries
+        /// playback.
+        /// </summary>
+        private bool ApplyEffect(ISdlInputDevice device, ref SDL_HapticEffect effect, EffectSlot slot)
         {
             IntPtr haptic = device.HapticHandle;
             if (haptic == IntPtr.Zero)
                 return false;
 
-            if (!_hapticEffectCreated)
+            if (slot.Created)
             {
-                _hapticEffectId = CreateEffect(haptic, ref effect);
-                if (_hapticEffectId < 0)
-                {
-                    return false;
-                }
-                _hapticEffectCreated = true;
-
-                return RunCreatedEffect(device, haptic);
+                if (UpdateEffect(haptic, slot.Id, ref effect))
+                    return true;
+                // Recreate after a rejected update, including type changes.
+                Release(device, slot);
             }
-            else
-            {
-                bool upd = UpdateEffect(haptic, _hapticEffectId, ref effect);
-                if (!upd)
-                {
-                    // Recreate after a rejected update, including type changes.
-                    StopAndDestroyHapticEffect(device);
-                    _hapticEffectId = CreateEffect(haptic, ref effect);
-                    if (_hapticEffectId < 0)
-                    {
-                        return false;
-                    }
-                    _hapticEffectCreated = true;
-                    return RunCreatedEffect(device, haptic);
-                }
-                return true;
-            }
-        }
 
-        private bool RunCreatedEffect(ISdlInputDevice device, IntPtr haptic)
-        {
-            if (RunEffect(haptic, _hapticEffectId, SDL_HAPTIC_INFINITY))
+            slot.Id = CreateEffect(haptic, ref effect);
+            if (slot.Id < 0)
+                return false;
+            slot.Created = true;
+
+            if (RunEffect(haptic, slot.Id, SDL_HAPTIC_INFINITY))
                 return true;
-            StopAndDestroyHapticEffect(device);
+            Release(device, slot);
             return false;
         }
 
+        private void Release(ISdlInputDevice device, EffectSlot slot)
+        {
+            if (slot == _spring) StopAndDestroySpring(device);
+            else StopAndDestroyHapticEffect(device);
+        }
+
         /// <summary>
-        /// Stops and destroys the current haptic effect if one is active.
+        /// Stops and destroys the main haptic effect if one is active. The
+        /// auto-center spring is not touched.
         /// </summary>
         private void StopAndDestroyHapticEffect(ISdlInputDevice device)
         {
             _cachedDirectional = null;
-            _autoCenterActive = false;
             _scalarNeedsWrite = true;
-            if (!_hapticEffectCreated || _hapticEffectId < 0)
-                return;
+            DestroyEffectIn(device, _main);
+        }
 
-            IntPtr haptic = device.HapticHandle;
-            if (haptic != IntPtr.Zero)
+        /// <summary>Stops and destroys the auto-center spring if one is held.</summary>
+        private void StopAndDestroySpring(ISdlInputDevice device)
+        {
+            _autoCenterActive = false;
+            _autoCenterCoeff = 0;
+            DestroyEffectIn(device, _spring);
+        }
+
+        private void DestroyEffectIn(ISdlInputDevice device, EffectSlot slot)
+        {
+            if (slot.Created && slot.Id >= 0)
             {
-                StopEffect(haptic, _hapticEffectId);
-                DestroyEffect(haptic, _hapticEffectId);
+                IntPtr haptic = device.HapticHandle;
+                if (haptic != IntPtr.Zero)
+                {
+                    StopEffect(haptic, slot.Id);
+                    DestroyEffect(haptic, slot.Id);
+                }
             }
 
-            _hapticEffectId = -1;
-            _hapticEffectCreated = false;
+            slot.Id = -1;
+            slot.Created = false;
         }
 
         // ─────────────────────────────────────────────

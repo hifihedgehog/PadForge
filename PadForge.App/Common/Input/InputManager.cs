@@ -290,13 +290,13 @@ namespace PadForge.Common.Input
 
         /// <summary>True when the slot's virtual controller has a touch
         /// surface Step 3 must produce and Step 4 must combine: every
-        /// PlayStation slot, and an Extended slot on a Valve profile, whose
-        /// native frame carries both trackpads.</summary>
+        /// PlayStation slot, and an Extended slot on a Valve or SInput
+        /// profile, whose native frame carries both trackpads.</summary>
         internal bool SlotCarriesTouchpad(int slot)
             => SlotControllerTypes[slot] == VirtualControllerType.PlayStation
             || (SlotControllerTypes[slot] == VirtualControllerType.Extended
                 && SlotRawHidSurface[slot]
-                && Models2D.NintendoPreviewMap.IsValve(SlotProfileIds[slot]));
+                && Models2D.NintendoPreviewMap.UsesValveRoles(SlotProfileIds[slot]));
 
         /// <summary>Per-(slot, device, touchpad-pad-index) gesture
         /// recognizer state. Slot-keyed so two slots sharing one
@@ -799,6 +799,10 @@ namespace PadForge.Common.Input
         /// consumers to skip processing while it is unchanged.</summary>
         private long _deckFrameCounter;
         private readonly byte[] _deckReportScratch = new byte[ValveReportPackers.MaxReportSize];
+
+        /// <summary>Scratch for the SInput persona's report 0x01 (#584), report
+        /// ID at byte 0. Poll thread only, like the Valve buffer above.</summary>
+        private readonly byte[] _sinputReportScratch = new byte[SInputReportPacker.ReportSize];
 
         /// <summary>Scratch for an Extended layout the fixed gamepad state
         /// cannot carry (#C292). Poll thread only, like the Valve buffer beside

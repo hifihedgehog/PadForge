@@ -14,7 +14,7 @@ namespace PadForge.Models2D;
 ///
 /// The class keeps its original name, but it is the raw wire map for EVERY
 /// profile family whose rows carry real control names rather than "Button
-/// N": the two Nintendo families and the three Valve families. A family is
+/// N": the two Nintendo families, the three Valve families and SInput. A family is
 /// a wire: every raw index means the same control on every profile in it,
 /// and nothing else can be assumed across families.
 ///
@@ -162,6 +162,28 @@ public static class NintendoPreviewMap
         "LeftGripTouch", "RightGripTouch",                      // 24-25 capacitive
     };
 
+    // SInput (sinput, #584). The order is the wire's own bit order, report
+    // 0x01 bytes 3 to 5 (SINPUT-LIB-HID include/sinput_lib_types.h:222-283,
+    // which SDL reads in that order, SDL_hidapi_sinput.c:848-870), less the
+    // two digital trigger bits, which the packer sets at the analog pull as
+    // the Valve packers do (TriggerClickPull). The paddles take SDL's names:
+    // the left paddle 1 bit is SDL's paddle2, LEFT_PADDLE1, Paddle2 here, as
+    // SDL's SInput mapping binds it (SDL_gamepad.c:1009-1011 and 1040-1042,
+    // names at 2187-2190). The D-pad is four buttons on this wire. Append
+    // only, as on the Valve tables.
+    private static readonly string[] PreviewBySInputBtn =
+    {
+        "ButtonA", "ButtonB", "ButtonX", "ButtonY",            // 0-3   south east west north
+        "DPadUp", "DPadDown", "DPadLeft", "DPadRight",          // 4-7   discrete buttons
+        "LeftThumbButton", "RightThumbButton",                  // 8-9
+        "LeftShoulder", "RightShoulder",                        // 10-11
+        "Paddle2", "Paddle1",                                   // 12-13 L4 R4
+        "ButtonStart", "ButtonBack",                            // 14-15
+        "ButtonGuide", "ButtonShare",                           // 16-17 guide, misc 1
+        "Paddle4", "Paddle3",                                   // 18-19 L5 R5
+        "LeftTouchpadClick", "RightTouchpadClick",              // 20-21
+    };
+
     // Nintendo pads have no analog triggers, so ComputeAxisLayout packs the
     // two sticks at 0-3 with nothing between them.
     private static readonly string[] PreviewByNintendoAxis =
@@ -173,7 +195,8 @@ public static class NintendoPreviewMap
     // Valve pads carry two sticks and two analog triggers, which
     // ComputeAxisLayout interleaves as [LX LY LT | RX RY RT], the same order
     // the automap and the frame packers use. On the 2015 pad "RightThumb"
-    // is the right trackpad ridden as a stick.
+    // is the right trackpad ridden as a stick. SInput's two sticks and two
+    // analog triggers take the same table.
     private static readonly string[] PreviewByValveAxis =
     {
         "LeftThumbAxisX", "LeftThumbAxisY", "LeftTrigger",
@@ -182,7 +205,7 @@ public static class NintendoPreviewMap
 
     /// <summary>A wire family. Every profile in a family shares one raw
     /// index space; none is shared across families.</summary>
-    public enum Family { None, SwitchPro, Switch2Pro, SteamDeck, SteamController, SteamController2 }
+    public enum Family { None, SwitchPro, Switch2Pro, SteamDeck, SteamController, SteamController2, SInput }
 
     private static bool Starts(string id, string prefix) =>
         !string.IsNullOrEmpty(id) && id.StartsWith(prefix, System.StringComparison.OrdinalIgnoreCase);
@@ -202,6 +225,7 @@ public static class NintendoPreviewMap
         if (Starts(profileId, "steam-deck")) return Family.SteamDeck;
         if (Starts(profileId, "steam-controller-2")) return Family.SteamController2;
         if (Starts(profileId, "steam-controller")) return Family.SteamController;
+        if (Starts(profileId, "sinput")) return Family.SInput;
         return Family.None;
     }
 
@@ -212,6 +236,17 @@ public static class NintendoPreviewMap
     /// <summary>True for the three Valve families.</summary>
     public static bool IsValve(string profileId) => FamilyOf(profileId) is
         Family.SteamDeck or Family.SteamController or Family.SteamController2;
+
+    /// <summary>True for the wires whose rows are the Valve roles: the three
+    /// Valve families and SInput (#584). SInput's controls are the same Xbox
+    /// names, two analog triggers, two touchpads and an IMU, so it takes the
+    /// Valve automap, grid, touchpad and motion paths. Every decision that
+    /// reads a Valve wire's roles asks this rather than <see cref="IsValve"/>.</summary>
+    public static bool UsesValveRoles(string profileId) => FamilyOf(profileId) is
+        Family.SteamDeck or Family.SteamController or Family.SteamController2 or Family.SInput;
+
+    /// <summary>True for the SInput wire.</summary>
+    public static bool IsSInput(string profileId) => FamilyOf(profileId) == Family.SInput;
 
     private static bool IsSwitch2(string profileId) => FamilyOf(profileId) == Family.Switch2Pro;
 
@@ -240,14 +275,15 @@ public static class NintendoPreviewMap
         Family.SteamDeck => PreviewByDeckBtn,
         Family.SteamController => PreviewBySteamControllerBtn,
         Family.SteamController2 => PreviewBySteamController2Btn,
+        Family.SInput => PreviewBySInputBtn,
         _ => PreviewBySwitchProBtn,
     };
 
     /// <summary>The axis table for a profile: raw axis index to preview
-    /// element. Valve pads interleave their analog triggers; Nintendo pads
-    /// have none.</summary>
+    /// element. Valve pads and SInput interleave their analog triggers.
+    /// Nintendo pads have none.</summary>
     public static string[] AxisTable(string profileId) =>
-        IsValve(profileId) ? PreviewByValveAxis : PreviewByNintendoAxis;
+        UsesValveRoles(profileId) ? PreviewByValveAxis : PreviewByNintendoAxis;
 
     /// <summary>Stick count the raw surface has to be sized for. Two on
     /// every family: the 2015 pad has one physical stick and rides its
@@ -256,7 +292,7 @@ public static class NintendoPreviewMap
 
     /// <summary>Analog trigger count on the wire (zero on Nintendo, whose
     /// ZL / ZR are buttons).</summary>
-    public static int TriggerCount(string profileId) => IsValve(profileId) ? 2 : 0;
+    public static int TriggerCount(string profileId) => UsesValveRoles(profileId) ? 2 : 0;
 
     /// <summary>Number of role-mapped buttons on a profile's wire. Sizes
     /// every raw surface: grid rows, SOCD bounds, macro pickers.</summary>
@@ -399,9 +435,9 @@ public static class NintendoPreviewMap
     /// <paramref name="Index"/> say where the automap reads the position on a
     /// pad, in SDL's gamepad order. A D-pad direction is read from the hat
     /// and needs no index. The Nintendo role serves both Switch wires and
-    /// the Valve roles serve the three Valve wires. A wire that lacks a role
-    /// binds nothing for it, and of the two Valve roles a wire has at most
-    /// one.</para></summary>
+    /// the Valve roles serve the three Valve wires and SInput's. A wire that
+    /// lacks a role binds nothing for it, and of the two Valve roles a wire
+    /// has at most one.</para></summary>
     public sealed record GamepadPosition(string Target, GamepadInput Input, int Index,
         string NintendoRole, string ValveRole, string ValveAlternateRole = null)
     {
@@ -441,8 +477,10 @@ public static class NintendoPreviewMap
         new("LeftThumbButton", GamepadInput.Button, 8, "LeftThumbButton", "LeftThumbButton"),
         new("RightThumbButton", GamepadInput.Button, 9, "RightThumbButton", "RightThumbButton"),
         new("ButtonGuide", GamepadInput.Button, 10, "ButtonGuide", "ButtonGuide"), // Home, Steam
-        new("ButtonShare", GamepadInput.Button, 11, "ButtonShare", "ButtonQuickAccess"),   // misc 1
-        new("ButtonMute", GamepadInput.Button, 11, "ButtonShare", "ButtonQuickAccess"),    // misc 1
+        // Misc 1 is Quick Access on a Valve wire and Share on SInput's
+        // (SDL_gamepad.c:1028-1031 maps SInput's share bit as misc1).
+        new("ButtonShare", GamepadInput.Button, 11, "ButtonShare", "ButtonQuickAccess", "ButtonShare"),   // misc 1
+        new("ButtonMute", GamepadInput.Button, 11, "ButtonShare", "ButtonQuickAccess", "ButtonShare"),    // misc 1
         new("RightPaddle", GamepadInput.Button, 12, "RightPaddle", "Paddle1", "RightGrip"),
         new("LeftPaddle", GamepadInput.Button, 13, "LeftPaddle", "Paddle2", "LeftGrip"),
         new("RightFunction", GamepadInput.Button, 14, null, "Paddle3"),

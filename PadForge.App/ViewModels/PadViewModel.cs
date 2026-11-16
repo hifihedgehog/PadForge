@@ -3411,10 +3411,12 @@ namespace PadForge.ViewModels
                         MacroButtonNames.RawButtonLabel(ProfileId, i + 1),
                         $"RawBtn{i}", MappingCategory.Buttons) { Role = role });
                 }
+                // Share is SInput's misc 1 (#584), where the Valve pads have
+                // Quick Access, so a wire carries one or the other.
                 foreach (var role in new[] {
                     "ButtonA", "ButtonB", "ButtonX", "ButtonY",
                     "LeftShoulder", "RightShoulder",
-                    "ButtonBack", "ButtonStart", "ButtonGuide", "ButtonQuickAccess",
+                    "ButtonBack", "ButtonStart", "ButtonGuide", "ButtonQuickAccess", "ButtonShare",
                     "LeftThumbButton", "RightThumbButton",
                     "LeftTouchpadClick", "RightTouchpadClick",
                     "Paddle1", "Paddle2", "Paddle3", "Paddle4",
@@ -6516,7 +6518,7 @@ namespace PadForge.ViewModels
                 // RVL-CNT-01 (0x0306) / -TR (0x0330).
                 if (PadForge.Common.Input.WiiSpeakerService.DeviceHasSpeaker(ud)) return true;
                 // Switch HD Rumble / Steam Controller haptic tones (#147):
-                // Joy-Con L/R, Switch Pro, Steam Controller 2015.
+                // Joy-Con L/R, Switch Pro, the Steam family, and SInput pads (#584).
                 if (PadForge.Common.Input.HapticToneService.DeviceHasHaptics(ud)) return true;
                 if (ud.VendorId != 0x054C) return false;
                 // DS5 family: audio on both transports. DS4: Bluetooth, and USB

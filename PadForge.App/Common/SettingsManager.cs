@@ -1020,13 +1020,15 @@ namespace PadForge.Common.Input
                 }
 
                 if (outputType == Engine.VirtualControllerType.Extended
-                    && Models2D.NintendoPreviewMap.IsValve(profileId))
+                    && Models2D.NintendoPreviewMap.UsesValveRoles(profileId))
                 {
                     // Valve automap. The three Valve wires (Deck, 2015, 2026)
                     // share the table's Valve roles: Quick Access at misc 1,
                     // the rear buttons in SDL's RP1 LP1 RP2 LP2 order at 12 to
                     // 15 (R4 L4 R5 L5 on the Deck and 2026 wires, the two grips
                     // on the 2015 wire: SDL_gamepad.c 1455 / 1458 / 1461).
+                    // SInput's wire (#584) takes the same roles, with Share
+                    // where the Valve pads have Quick Access.
                     void MapValve(string role, string source)
                     {
                         if (source == null) return;

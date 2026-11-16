@@ -8516,11 +8516,12 @@ namespace PadForge.ViewModels
         /// <summary>Valve lettering gate: the Steam Deck, the 2015 Steam
         /// Controller and the 2026 Steam Controller families, whose rows
         /// carry the controls' own names (Steam, Quick Access, L4, Left
-        /// Grip, Left Pad Click) instead of "Button N". The wire order
+        /// Grip, Left Pad Click) instead of "Button N", and SInput (#584),
+        /// whose rows take the same roles under generic names. The wire order
         /// lives in NintendoPreviewMap, which is the raw wire map for every
         /// lettered family despite its name.</summary>
         public static bool IsValveLetteredProfile(string profileId) =>
-            PadForge.Models2D.NintendoPreviewMap.IsValve(profileId);
+            PadForge.Models2D.NintendoPreviewMap.UsesValveRoles(profileId);
 
         /// <summary>Any profile whose raw grid is lettered rather than
         /// numbered: the two Nintendo families or the three Valve ones.</summary>
@@ -8589,25 +8590,33 @@ namespace PadForge.ViewModels
         /// and Start on the 2015 pad (SDL calls its bits MENU and ESCAPE),
         /// Steam, Quick Access, the rear buttons by their printed L4 / L5 /
         /// R4 / R5 on the Deck and 2026 pad and Left / Right Grip on the
-        /// 2015 pad, and the two pad clicks.</summary>
+        /// 2015 pad, and the two pad clicks.
+        ///
+        /// <para>SInput (#584) takes the gamepad names its ABXY face style
+        /// gives it in SDL: Back, Start, Guide, Share, the shoulders and the
+        /// stick buttons as an Xbox pad names them, and the rear buttons L4,
+        /// R4, L5 and R5, the library's own names for its two grip pairs
+        /// (SINPUT-LIB-HID sinput_lib_protocol.c:39-40).</para></summary>
         private static string ValveRoleLabel(string profileId, string role)
         {
-            bool sc15 = PadForge.Models2D.NintendoPreviewMap.FamilyOf(profileId)
-                == PadForge.Models2D.NintendoPreviewMap.Family.SteamController;
+            var family = PadForge.Models2D.NintendoPreviewMap.FamilyOf(profileId);
+            bool sc15 = family == PadForge.Models2D.NintendoPreviewMap.Family.SteamController;
+            bool sinput = family == PadForge.Models2D.NintendoPreviewMap.Family.SInput;
             return role switch
             {
                 "ButtonA" => "A",
                 "ButtonB" => "B",
                 "ButtonX" => "X",
                 "ButtonY" => "Y",
-                "LeftShoulder" => Strings.Instance.Btn_L1,
-                "RightShoulder" => Strings.Instance.Btn_R1,
-                "ButtonBack" => sc15 ? Strings.Instance.Btn_Back : Strings.Instance.Btn_View,
-                "ButtonStart" => sc15 ? Strings.Instance.Btn_Start : Strings.Instance.Btn_Menu,
-                "ButtonGuide" => Strings.Instance.Btn_Steam,
+                "LeftShoulder" => sinput ? Strings.Instance.Btn_LeftShoulder : Strings.Instance.Btn_L1,
+                "RightShoulder" => sinput ? Strings.Instance.Btn_RightShoulder : Strings.Instance.Btn_R1,
+                "ButtonBack" => sc15 || sinput ? Strings.Instance.Btn_Back : Strings.Instance.Btn_View,
+                "ButtonStart" => sc15 || sinput ? Strings.Instance.Btn_Start : Strings.Instance.Btn_Menu,
+                "ButtonGuide" => sinput ? Strings.Instance.Btn_Guide : Strings.Instance.Btn_Steam,
                 "ButtonQuickAccess" => Strings.Instance.Btn_QuickAccess,
-                "LeftThumbButton" => Strings.Instance.Btn_L3,
-                "RightThumbButton" => Strings.Instance.Btn_R3,
+                "ButtonShare" => Strings.Instance.Btn_Share,
+                "LeftThumbButton" => sinput ? Strings.Instance.Btn_LeftStickButton : Strings.Instance.Btn_L3,
+                "RightThumbButton" => sinput ? Strings.Instance.Btn_RightStickButton : Strings.Instance.Btn_R3,
                 "Paddle1" => "R4",
                 "Paddle2" => "L4",
                 "Paddle3" => "R5",

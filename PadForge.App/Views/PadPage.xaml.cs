@@ -1076,8 +1076,8 @@ namespace PadForge.Views
                         }
                         else if (PadForge.Common.Input.HapticToneService.DeviceHasHaptics(ud))
                         {
-                            // Switch HD Rumble / Steam Controller haptic tones (#147):
-                            // macro sounds play as tones through the actuator.
+                            // Switch HD Rumble / Steam Controller / SInput haptic tones
+                            // (#147, #584): macro sounds play as tones through the actuator.
                             hasAudio = true;
                         }
                         // Grip-motor rumble: modern Xbox (impulse-trigger devices), the

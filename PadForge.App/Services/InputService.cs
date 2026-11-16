@@ -9656,9 +9656,10 @@ namespace PadForge.Services
             VirtualControllerType Type, bool IsExtended, CustomControllerLayout Raw = default,
             IReadOnlySet<string> Grid = null, string ProfileId = null)
         {
-            /// <summary>True for an Extended slot on a Valve pad's profile.</summary>
+            /// <summary>True for an Extended slot on a Valve pad's profile or
+            /// SInput's, whose rows are the Valve roles.</summary>
             public bool Valve => Type == VirtualControllerType.Extended
-                && Models2D.NintendoPreviewMap.IsValve(ProfileId);
+                && Models2D.NintendoPreviewMap.UsesValveRoles(ProfileId);
 
             /// <summary>True when the slot's raw positions carry gamepad
             /// roles: a Nintendo slot, read as the Switch Pro where its
@@ -13875,11 +13876,13 @@ namespace PadForge.Services
                     case OutputEffectCodec.Kind.PlayerIndex:
                     {
                         // #191 over the link: light the owner's real pad from the
-                        // consumer slot's number. Nintendo -> SDL player index (the
-                        // wrapper allowlists 057E); BT DS3 -> the direct service, reached
-                        // by SDL instance id (same match as UpdateDs3PlayerNumber).
+                        // consumer slot's number. Nintendo and SInput (#584) -> SDL
+                        // player index (the wrapper allowlists both). BT DS3 -> the
+                        // direct service, reached by SDL instance id (same match as
+                        // UpdateDs3PlayerNumber).
                         int n = effect.PlayerIndex;
-                        if (source.VendorId == 0x057E)
+                        if (source.VendorId == 0x057E
+                            || PadForge.Engine.SInputControllerIdentity.IsSInput(source.VendorId, source.ProductId))
                         {
                             if (source is PadForge.Engine.SdlDeviceWrapper w2 && n > 0)
                                 w2.SetPlayerIndex(n - 1);
@@ -14868,9 +14871,10 @@ namespace PadForge.Services
         }
 
         /// <summary>Player-identity idle floor (#191): re-seeds every
-        /// assigned device's player number. Nintendo-family pads get the
-        /// SDL player index (wrapper-allowlisted to VID 0x057E; the SDL
-        /// call is how their player LEDs light), and every live Sony
+        /// assigned device's player number. Nintendo-family and SInput pads
+        /// get the SDL player index (wrapper-allowlisted to VID 0x057E and
+        /// SDL's SInput IDs, whose player LEDs light through that SDL call),
+        /// and every live Sony
         /// dispatcher re-applies so its per-dispatch player number picks
         /// up topology changes. Called on device-list updates and after
         /// slot create / delete / reorder.</summary>
@@ -14935,7 +14939,9 @@ namespace PadForge.Services
                         // PS Move (#277): the owner-side receive lane routes the
                         // number into the sphere's default color.
                         bool move = rpd.VendorId == 0x054C && rpd.ProductId == 0x03D5;
-                        if (nintendo || ds3 || move)
+                        // SInput (#584): the owner lights it through SDL, as Nintendo.
+                        bool sinput = PadForge.Engine.SInputControllerIdentity.IsSInput(rpd.VendorId, rpd.ProductId);
+                        if (nintendo || ds3 || move || sinput)
                             PadForge.Common.Input.RemoteLinkOutputRouter.ShipPlayerIndex(rpd.DevicePath, n);
                     }
                 }

@@ -87,15 +87,15 @@ namespace PadForge.Common.Input
         private readonly MotionSnapshot[] _motionRowsBase = new MotionSnapshot[MaxPads];
 
         /// <summary>The slot families whose grids carry the Motion rows:
-        /// PlayStation, Nintendo, and Extended on a Valve profile. The rule
-        /// MappingSetMigrator.EnsureMotionRows and the three grid builders
-        /// follow.</summary>
+        /// PlayStation, Nintendo, and Extended on a Valve or SInput profile.
+        /// The rule MappingSetMigrator.EnsureMotionRows and the three grid
+        /// builders follow.</summary>
         internal bool SlotCarriesMotion(int slot)
             => slot >= 0 && slot < MaxPads
             && (SlotControllerTypes[slot] is VirtualControllerType.PlayStation or VirtualControllerType.Nintendo
                 || (SlotControllerTypes[slot] == VirtualControllerType.Extended
                     && SlotRawHidSurface[slot]
-                    && Models2D.NintendoPreviewMap.IsValve(SlotProfileIds[slot])));
+                    && Models2D.NintendoPreviewMap.UsesValveRoles(SlotProfileIds[slot])));
 
         /// <summary>True when any row on any layer names one of the three
         /// targets and carries an input. An InvertOnHold modifier alone reads

@@ -139,9 +139,10 @@ namespace PadForge.Services
             var (family, set) = PadForge.Models2D.Controller2DColorways.For(name2D);
             string finish = family != null && set != null ? pad.GetModelAppearance(family) ?? string.Empty : string.Empty;
             // The pad page's rule (PadViewModel.PreviewRidesRawSurface): a
-            // Nintendo slot and a Valve lettered one show their raw surface.
+            // Nintendo slot and a Valve or SInput lettered one show their raw
+            // surface.
             bool raw = type == VirtualControllerType.Nintendo
-                || (type == VirtualControllerType.Extended && PadForge.Models2D.NintendoPreviewMap.IsValve(profileId));
+                || (type == VirtualControllerType.Extended && PadForge.Models2D.NintendoPreviewMap.UsesValveRoles(profileId));
             var pose = raw
                 ? DisplayPose.FromRaw(im.CombinedRawHidStates[slot], profileId)
                 : DisplayPose.FromGamepad(im.CombinedOutputStates[slot]);

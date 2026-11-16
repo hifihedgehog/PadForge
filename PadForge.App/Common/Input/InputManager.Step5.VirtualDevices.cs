@@ -2366,6 +2366,25 @@ namespace PadForge.Common.Input
                                     _deckReportScratch);
                                 hmExt.SubmitRawReport(new ReadOnlySpan<byte>(_deckReportScratch, 0, valvePacker.Size));
                             }
+                            // SInput persona (#584): report 0x01 packed whole,
+                            // the Valve split, with the slot's battery as the
+                            // Sony packers carry it. Every engine tick submits,
+                            // so the persona reports at the engine's 1 kHz.
+                            else if (SInputReportPacker.IsSInputProfile(hmExt.ProfileId))
+                            {
+                                int sinputPct = BatteryPercents[padIndex];
+                                SInputReportPacker.Pack(
+                                    rawOut,
+                                    CombinedTouchpadStates[padIndex],
+                                    MotionSnapshots[padIndex],
+                                    sinputPct,
+                                    BatteryCharging[padIndex],
+                                    ValveReportPackers.MicrosNow(),
+                                    _sinputReportScratch);
+                                hmExt.SubmitRawReport(hmExt.RawFramesCarryReportId
+                                    ? new ReadOnlySpan<byte>(_sinputReportScratch, 0, SInputReportPacker.ReportSize)
+                                    : new ReadOnlySpan<byte>(_sinputReportScratch, 1, SInputReportPacker.ReportSize - 1));
+                            }
                             // A persona that builds its own reports takes no
                             // finished frame, whatever its layout counts say.
                             // The raw submit throws on it, and would on every
@@ -3256,7 +3275,8 @@ namespace PadForge.Common.Input
             // for a generic one while the packer kept emitting the persona's
             // bytes. Identity overrides still apply; only the descriptor rebuild
             // is off the table here.
-            bool fixedWireFrame = ValveReportPackers.ForProfile(profileId) != null;
+            bool fixedWireFrame = ValveReportPackers.ForProfile(profileId) != null
+                || SInputReportPacker.IsSInputProfile(profileId);
 
             if (type == VirtualControllerType.Extended && build.Customize)
             {

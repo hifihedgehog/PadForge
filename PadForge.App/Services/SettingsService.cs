@@ -627,10 +627,10 @@ namespace PadForge.Services
                 if (devicesForSlot.Count == 0) continue;
 
                 var ms = sets[slot] ?? (sets[slot] = new MappingSet());
-                // Valve profiles on an Extended slot carry an IMU in their
-                // native frame, so their motion rows are backfilled too.
+                // Valve and SInput profiles on an Extended slot carry an IMU
+                // in their native frame, so their motion rows are backfilled too.
                 bool valveProfile = slotType == VirtualControllerType.Extended
-                    && Models2D.NintendoPreviewMap.IsValve(_mainVm.Pads[slot].ProfileId);
+                    && Models2D.NintendoPreviewMap.UsesValveRoles(_mainVm.Pads[slot].ProfileId);
                 MappingSetMigrator.EnsureMotionRows(ms, (int)slotType, valveProfile, devicesForSlot);
 
                 // Mirror the row presence into each device's PadSetting

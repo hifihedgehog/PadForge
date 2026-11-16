@@ -757,6 +757,13 @@ namespace PadForge.Common.Input
         /// frame that already carries its own id.</summary>
         private readonly bool _extendedFrameCarriesItsOwnId;
 
+        /// <summary>Whether <see cref="SubmitRawReport"/> takes this profile's
+        /// frame with its report ID (<see cref="_extendedFrameCarriesItsOwnId"/>)
+        /// or data-only, the ID put back by the driver. A packer that builds its
+        /// frame with the ID at byte 0, as the SInput packer does (#584), drops
+        /// that byte for the second kind.</summary>
+        internal bool RawFramesCarryReportId => _extendedFrameCarriesItsOwnId;
+
         /// <summary>Re-evaluates PID effect state on the engine clock. The
         /// HM packet callback applies the decoder only when the game sends a
         /// report, but effect durations expire on the DEVICE clock — without

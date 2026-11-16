@@ -704,6 +704,12 @@ namespace PadForge.Engine
                         _padCurrentContactIds[p] = new int[nf];
                         for (int f = 0; f < nf; f++) _padCurrentContactIds[p][f] = -1;
                     }
+                    // An SInput pad's second touchpad click is not always Misc 2
+                    // (#584): SDL's mapping puts it after the pad's misc buttons
+                    // and a dual-stage trigger's two clicks, so it is read where
+                    // that mapping binds it.
+                    if (numPads >= 2 && SInputControllerIdentity.IsSInput(VendorId, ProductId))
+                        _secondPadClickPosition = SInputSecondTouchpadClickPosition(GetGamepadMapping(GameController));
                 }
             }
             else
@@ -918,6 +924,7 @@ namespace PadForge.Engine
             HasAccelAux = false;
             HasTouchpad = false;
             _padFingerCounts = null;
+            _secondPadClickPosition = -1;
             _capSenseChannels = null;
             _extButtonPresent = null;
 
@@ -2183,7 +2190,9 @@ namespace PadForge.Engine
                         // this since the touchpad-click-as-button recipe, but
                         // only p == 1 was implemented, so a third pad's click
                         // could never go true on a device that exposes one.
-                        int pos = 16 + p;
+                        // An SInput pad's second click sits where SDL's
+                        // mapping put it (#584, _secondPadClickPosition).
+                        int pos = p == 1 && _secondPadClickPosition > 0 ? _secondPadClickPosition : 16 + p;
                         if (pos <= 21 && state.Buttons.Length > pos)
                         {
                             bool mapped = _extButtonPresent != null
@@ -2267,6 +2276,57 @@ namespace PadForge.Engine
         private int[] _padFingerCounts;
         private int[] _padContactIdNext;
         private int[][] _padCurrentContactIds;
+
+        /// <summary>The PadForge button position of an SInput pad's second
+        /// touchpad click, 17 to 21, or -1 to read it at Misc 2 as on every
+        /// other pad. Stamped at open (#584).</summary>
+        private int _secondPadClickPosition = -1;
+
+        /// <summary>
+        /// Where SDL's mapping puts an SInput pad's second touchpad click, as
+        /// a PadForge button position (Misc 2 is 17, Misc 6 is 21), or -1.
+        ///
+        /// <para>SDL's SInput driver sends the two touchpad clicks as
+        /// consecutive joystick buttons, report bits 22 and 23 in order
+        /// (SDL_hidapi_sinput.c:848-870, which numbers the buttons by the
+        /// pad's usage masks), and SDL's mapping binds the first to
+        /// <c>touchpad</c> and the next to a misc button
+        /// (SDL_gamepad.c:1051-1055). Which misc depends on the pad: the misc
+        /// buttons before it and a dual-stage trigger's two clicks move it
+        /// past Misc 2 (:996-1003). On OpenPuck's shape, dual-stage triggers
+        /// and two touchpads (OpenPuck mode_sinput.cpp:155-185), it is Misc 5.
+        /// So the click is the misc button bound to the joystick button after
+        /// the touchpad's.</para>
+        /// </summary>
+        internal static int SInputSecondTouchpadClickPosition(string mapping)
+        {
+            if (string.IsNullOrEmpty(mapping)) return -1;
+            var segments = mapping.Split(',');
+            int touchpadButton = -1;
+            foreach (var segment in segments)
+            {
+                if (segment.StartsWith("touchpad:b", StringComparison.Ordinal)
+                    && int.TryParse(segment.AsSpan(10), System.Globalization.NumberStyles.None,
+                        System.Globalization.CultureInfo.InvariantCulture, out int b))
+                {
+                    touchpadButton = b;
+                    break;
+                }
+            }
+            if (touchpadButton < 0) return -1;
+            string next = "b" + (touchpadButton + 1).ToString(System.Globalization.CultureInfo.InvariantCulture);
+            foreach (var segment in segments)
+            {
+                // "miscK:bN", K from 2 to 6.
+                if (segment.Length == 6 + next.Length
+                    && segment.StartsWith("misc", StringComparison.Ordinal)
+                    && segment[4] >= '2' && segment[4] <= '6'
+                    && segment[5] == ':'
+                    && string.CompareOrdinal(segment, 6, next, 0, next.Length) == 0)
+                    return 15 + (segment[4] - '0');
+            }
+            return -1;
+        }
 
         /// <summary>
         /// Parses the SDL gamepad mapping string to find which raw button indices (bN)
@@ -2562,11 +2622,17 @@ namespace PadForge.Engine
         /// whose LED is owned by Ds3DirectService.SetPlayerNumber, so it is excluded
         /// here to keep exactly one writer per transport. Not opened to other Sony PIDs:
         /// SDL's PS4/PS5 drivers would fight the sole-writer Sony dispatcher.
+        ///
+        /// SInput pads (#584) are allowed too. SDL gives every gamepad a player
+        /// index of its own when it is added (SDL_joystick.c:3619-3624) and the
+        /// SInput driver sends it to the pad's player LED, plus one, when the pad
+        /// opens (SDL_hidapi_sinput.c:691-709), so without this call the LED shows
+        /// SDL's connection order rather than the slot.
         /// </summary>
         public bool SetPlayerIndex(int playerIndex)
         {
             if (Joystick == IntPtr.Zero) return false;
-            if (VendorId == 0x057E)
+            if (VendorId == 0x057E || SInputControllerIdentity.IsSInput(VendorId, ProductId))
                 return SDL_SetJoystickPlayerIndex(Joystick, playerIndex);
             if (VendorId == 0x054C && ProductId == 0x0268 &&
                 !SDL_IsJoystickVirtual(SdlInstanceId))

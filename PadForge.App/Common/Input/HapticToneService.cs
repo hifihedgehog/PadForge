@@ -20,6 +20,10 @@ namespace PadForge.Common.Input
     /// <see cref="SoundMacroService"/> alongside the Sony and Wii sinks, so a
     /// macro PlaySound fans out to it with no macro-layer change.
     ///
+    /// SInput pads (#584) are a family too: their tone is a type 1 frequency
+    /// and amplitude frame in output report 0x03 (SINPUT-LIB-HID
+    /// sinput_lib_protocol.c:490-526), which SDL's SInput driver never sends.
+    ///
     /// Fidelity ceiling, stated up front: a Switch HD Rumble coil and a Steam
     /// Controller actuator are single LRAs, so they play a TONE with an amplitude
     /// envelope, not PCM. Beeps, alerts, and melodic cues land. Speech and music
@@ -69,7 +73,7 @@ namespace PadForge.Common.Input
         // Protocol per family is verified against SteamHapticsSinger / SteamControllerSinger
         // / joycon-singer; same-family PIDs are the same controller over a different
         // transport (wired / BLE / dongle) and share the report format.
-        private enum Family { None, JoyConL, JoyConR, Pro, JoyConPair, Steam, Steam2026, SteamDeck }
+        private enum Family { None, JoyConL, JoyConR, Pro, JoyConPair, Steam, Steam2026, SteamDeck, SInput }
 
         private static bool IsJoyConGen1(Family f) => f == Family.JoyConL || f == Family.JoyConR || f == Family.Pro || f == Family.JoyConPair;
 
@@ -117,6 +121,13 @@ namespace PadForge.Common.Input
                         return Family.Steam2026;
                     // 0x11ff = Steam Virtual Gamepad (not real hardware) -> None.
                 }
+            }
+            // SInput (#584), every ID SDL's SInput driver opens: its tone is a
+            // type 1 frame in output report 0x03, which SDL's driver never
+            // sends (it writes type 2 only, SDL_hidapi_sinput.c:766-788).
+            else if (Engine.SInputControllerIdentity.IsSInput(ud.VendorId, ud.ProdId))
+            {
+                return Family.SInput;
             }
             return Family.None;
         }
@@ -664,6 +675,19 @@ namespace PadForge.Common.Input
             // sustained note re-arms when the envelope steps, not every tick. The
             // 0x8f square (2015 + Deck) has no working gain, so it ignores this.
             public float SteamLastAmp;
+            // SInput (#584): the pad holds the last type 1 frame it was sent
+            // ("SInput sends the state to hold, not a stream of grains",
+            // HOJA-LIB-RP2040 core_sinput.c:81), so a frame goes out when the
+            // tone changes, and one stop when the cue or a pulse ends.
+            // SInputOn is true while the pad holds a sounding frame,
+            // SInputLastHz and SInputLastAmp are the frame it holds (-1 forces
+            // the next tone frame out), and SInputPulseUntilMs is when a
+            // touchpad pulse's frame is stopped. Stream-thread only.
+            public bool SInputOn;
+            public int SInputLastHz = -1;
+            public int SInputLastAmp = -1;
+            public long SInputPulseUntilMs;
+            public long SInputLastWriteMs;
             // Wall-clock of the last re-arm burst on the Steam-family paths.
             // Busy audio (a macro's wobbling pitch) crosses the 3% pitch gate on
             // many consecutive ticks; the resulting edge flood is what wedged the
@@ -804,6 +828,9 @@ namespace PadForge.Common.Input
                 || !string.Equals(sink.HidPath, path, StringComparison.OrdinalIgnoreCase))
             {
                 sink.SteamOn = false;
+                // A new SInput connection holds no frame of ours (#584).
+                sink.SInputOn = false;
+                sink.SInputLastHz = sink.SInputLastAmp = -1;
                 Interlocked.Exchange(ref sink.PulsePendingSides, 0);
                 sink.PulseAmp = 0;
                 sink.PulseAmpLeft = sink.PulseAmpRight = 0;
@@ -1673,6 +1700,16 @@ namespace PadForge.Common.Input
                             $"HAPTICDIAG triton-build usb={(usbTriton ? 1 : 0)} puck={(puckTriton ? 1 : 0)} outlenCaps={capOut} featCaps={capFeat} path-tail={(path != null && path.Length > 24 ? path.Substring(path.Length - 24) : path)}");
                     }
 
+                    // SInput (#584) needs no init. Its frames go out the way SDL
+                    // writes them, SDL_hid_write, which is WriteFile on the
+                    // interrupt OUT endpoint, and HidOutputWriteTo falls back to
+                    // SET_REPORT for the rest of a cue if that is refused. Both
+                    // reach the firmware: OpenPuck takes the endpoint's write
+                    // with its report ID first and SET_REPORT without it
+                    // (mode_sinput.cpp:262-281).
+                    if (s.Family == Family.SInput)
+                        s.UseWriteFile = true;
+
                     if (IsJoyConGen1(s.Family))
                     {
                         // Joy-Con gen-1 init: set input report mode 0x30 then enable
@@ -1807,6 +1844,10 @@ namespace PadForge.Common.Input
                         case Family.SteamDeck:                       // Deck: 0x8F note-off on both haptics (same as 2015)
                             SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamClassic(0f, 0.0, haptic: 0));
                             SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamClassic(0f, 0.0, haptic: 1));
+                            break;
+                        case Family.SInput:                          // SInput: the all-zero type 1 frame
+                            SInputWrite(s, HapticToneEncoder.EncodeSInputHaptics(0f, 0f, 0f));
+                            s.SInputOn = false;
                             break;
                         default:
                             // Joy-Con note-off. A dual-handle pair (#223) quiets
@@ -2514,6 +2555,7 @@ namespace PadForge.Common.Input
                             StreamTritonTick(s, toneHz, amp, streaming);
                         break;
                     case Family.SteamDeck: StreamSteamDeckTick(s, toneHz, amp, streaming); break;
+                    case Family.SInput: StreamSInputTick(s, toneHz, amp, streaming, nowMs); break;
                     default: StreamJoyConTick(s, toneHz, amp, streaming, testActive, nowMs); break;
                 }
             }
@@ -3114,6 +3156,68 @@ namespace PadForge.Common.Input
             try { FeatureReportWriter(s.Handle, buf, buf.Length); } catch { }
         }
 
+        // ── SInput (#584): type 1 frames in output report 0x03 ──
+        // The pad holds the last frame (HOJA core_sinput.c:81), so this writes
+        // when the tone changes, not every tick, and ONE stop when the cue
+        // ends: the Joy-Con lane's one-neutral-then-quiet shape. A held tone
+        // is sent again every SInputRefreshMs, because SDL's own rumble write
+        // (type 2, SDL_hidapi_sinput.c:766-788) replaces the frame the pad
+        // holds whenever a game changes its rumble. A touchpad pulse's frame
+        // (SendTouchpadPulses) holds until SInputPulseUntilMs, then the same
+        // stop ends it unless a tone has taken the pad over.
+        internal const int SInputRefreshMs = 50;
+
+        private static void StreamSInputTick(Sink s, float toneHz, float amp, bool streaming, long nowMs)
+        {
+            if (streaming)
+            {
+                int hz = amp > 0f ? (int)MathF.Round(HapticToneEncoder.FoldSInputFrequency(toneHz)) : 0;
+                int amp16 = HapticToneEncoder.SInputAmplitude(amp);
+                if (amp16 == 0) hz = 0;
+                bool refresh = amp16 != 0 && nowMs - s.SInputLastWriteMs >= SInputRefreshMs;
+                if (hz != s.SInputLastHz || amp16 != s.SInputLastAmp || refresh)
+                {
+                    if (!s.SInputOn)
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"HAPTICDIAG stream=ON family={s.Family} slot={s.Slot} handle={(s.Handle != IntPtr.Zero ? "OPEN" : "NULL")} tone={toneHz:F0}Hz amp={amp:F2}");
+                    if (SInputWrite(s, HapticToneEncoder.EncodeSInputHaptics(toneHz, amp, amp)))
+                    {
+                        s.SInputLastHz = hz;
+                        s.SInputLastAmp = amp16;
+                        s.SInputLastWriteMs = nowMs;
+                    }
+                    s.SInputOn = true;
+                }
+                s.SInputPulseUntilMs = 0;
+            }
+            else if (s.SInputOn && nowMs >= s.SInputPulseUntilMs)
+            {
+                // A failed stop keeps SInputOn, so the next tick retries it.
+                if (SInputWrite(s, HapticToneEncoder.EncodeSInputHaptics(0f, 0f, 0f)))
+                {
+                    s.SInputOn = false;
+                    s.SInputLastHz = s.SInputLastAmp = -1;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"HAPTICDIAG stream=off family={s.Family} slot={s.Slot}");
+                }
+            }
+        }
+
+        /// <summary>One SInput command report on the sink's handle, padded to
+        /// the queried OutputReportByteLength (48 on every SInput descriptor,
+        /// SINPUT-LIB-HID sinput_lib_hid.c:123-130).</summary>
+        private static bool SInputWrite(Sink s, byte[] report)
+            => s.Handle != IntPtr.Zero && HidOutputWrite(s, ResizeOut(report, Math.Max(report.Length, s.OutLen)));
+
+        /// <summary>How long an SInput touchpad pulse holds before its stop,
+        /// two 10 ms stream ticks. SInput has no one-shot tick: the pad keeps
+        /// the frame until the next one.</summary>
+        internal const int SInputPulseMs = 20;
+
+        /// <summary>The pulse pitch, the 160 Hz the Triton's PCM lane uses for
+        /// the same tick (PcmPulseHz).</summary>
+        private const float SInputPulseHz = PcmPulseHz;
+
         // ── #219 touchpad swipe-haptic tick delivery ──
         // One-shot per-side pulses, family-specific:
         //   Steam 2015 / Deck: 0x8F FireHapticPulse, on-time 200-1200 µs by
@@ -3211,6 +3315,24 @@ namespace PadForge.Common.Input
                     // heartbeat without re-arming, so no SteamOn reset.
                     TritonSend(s, HapticToneEncoder.EncodeTritonTickCommand(
                         sides & 0x3, HapticToneEncoder.TritonTickGainDb(pAmp)));
+                    break;
+                }
+                case Family.SInput:
+                {
+                    // Pad 0 is the left actuator and pad 1 the right, the
+                    // side OpenPuck plays each half on (mode_sinput.cpp:292-307).
+                    // The frame holds for SInputPulseMs, then StreamSInputTick
+                    // stops it. A tone streaming meanwhile re-sends itself on
+                    // the next tick, since the pulse replaced the frame it was
+                    // holding.
+                    float l = (sides & 0x1) != 0 ? Math.Clamp(left > 0f ? left : pAmp, 0f, 1f) : 0f;
+                    float r = (sides & 0x2) != 0 ? Math.Clamp(right > 0f ? right : pAmp, 0f, 1f) : 0f;
+                    if (SInputWrite(s, HapticToneEncoder.EncodeSInputHaptics(SInputPulseHz, l, r)))
+                    {
+                        s.SInputOn = true;
+                        s.SInputPulseUntilMs = nowMs + SInputPulseMs;
+                        s.SInputLastHz = s.SInputLastAmp = -1;
+                    }
                     break;
                 }
                 // Joy-Con families have no touchpad; nothing queues for them.

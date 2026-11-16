@@ -89,7 +89,7 @@ namespace PadForge.Common.Input
 
         // ── Raw surface readers ──────────────────────────────────────────
 
-        private static bool Btn(in RawHidState r, string profileId, string role)
+        internal static bool Btn(in RawHidState r, string profileId, string role)
         {
             int i = NintendoPreviewMap.IndexOf(profileId, role);
             if (i < 0 || r.Buttons == null) return false;
@@ -97,7 +97,7 @@ namespace PadForge.Common.Input
             return w < r.Buttons.Length && (r.Buttons[w] & (1u << (i % 32))) != 0;
         }
 
-        private static short Axis(in RawHidState r, int i)
+        internal static short Axis(in RawHidState r, int i)
             => r.Axes != null && i < r.Axes.Length ? r.Axes[i] : (short)0;
 
         /// <summary>A trigger slot, rescaled from the raw surface's range to
@@ -114,12 +114,12 @@ namespace PadForge.Common.Input
         /// Rest and full pull both came out right by luck, and everything
         /// between did not: the whole lower half of the travel read as zero,
         /// then the upper half swept the entire range.</para></summary>
-        private static int Trigger(in RawHidState r, int i)
+        internal static int Trigger(in RawHidState r, int i)
             => r.Axes != null && i < r.Axes.Length ? (r.Axes[i] + 32768) / 2 : 0;
 
         // Valve axis slots, the interleaved [LX LY LT | RX RY RT] layout
         // ComputeAxisLayout produces for two sticks and two triggers.
-        private const int AxLX = 0, AxLY = 1, AxLT = 2, AxRX = 3, AxRY = 4, AxRT = 5;
+        internal const int AxLX = 0, AxLY = 1, AxLT = 2, AxRX = 3, AxRY = 4, AxRT = 5;
 
         private static (bool up, bool right, bool down, bool left) DecodePov(in RawHidState r)
         {
@@ -135,7 +135,7 @@ namespace PadForge.Common.Input
         /// <summary>The D-pad as four booleans whichever way the wire
         /// carries it: discrete buttons where the table has them, else the
         /// hat.</summary>
-        private static (bool up, bool right, bool down, bool left) DPad(in RawHidState r, string profileId)
+        internal static (bool up, bool right, bool down, bool left) DPad(in RawHidState r, string profileId)
         {
             if (!NintendoPreviewMap.DPadIsHat(profileId))
                 return (Btn(r, profileId, "DPadUp"), Btn(r, profileId, "DPadRight"),
@@ -148,7 +148,7 @@ namespace PadForge.Common.Input
         /// same split the web Deck layout feeds. A pad click comes from its
         /// own raw slot, or from the shared touch click on whichever pad is
         /// touched (the left one when neither is).</summary>
-        private static (bool lTouch, bool rTouch, bool lClick, bool rClick) Pads(
+        internal static (bool lTouch, bool rTouch, bool lClick, bool rClick) Pads(
             in RawHidState raw, in TouchpadState tp, string profileId)
         {
             bool lTouch = tp.Down0, rTouch = tp.Down1;
@@ -162,7 +162,7 @@ namespace PadForge.Common.Input
             return (lTouch, rTouch, lClick, rClick);
         }
 
-        private static short NormToPad(float v)
+        internal static short NormToPad(float v)
             => (short)Math.Clamp((int)MathF.Round((v * 2f - 1f) * short.MaxValue), short.MinValue, short.MaxValue);
 
         private static short NormToPadY(float v) => NegateSat(NormToPad(v));
@@ -188,7 +188,7 @@ namespace PadForge.Common.Input
         /// 2.0 and 0.</summary>
         internal const ushort FullPadPressure = 32767;
 
-        private static ushort PadPressure(bool touched, bool clicked)
+        internal static ushort PadPressure(bool touched, bool clicked)
             => touched || clicked ? FullPadPressure : (ushort)0;
 
         /// <summary>A monotonic clock in microseconds for the 2026 pad's IMU
@@ -209,7 +209,7 @@ namespace PadForge.Common.Input
         private static short ScaleAccel(float g)
             => (short)Math.Clamp((int)MathF.Round(g / 2f * 32768f), short.MinValue, short.MaxValue);
 
-        private static void WriteI16(Span<byte> b, int off, short v)
+        internal static void WriteI16(Span<byte> b, int off, short v)
         {
             b[off] = (byte)(v & 0xFF);
             b[off + 1] = (byte)((v >> 8) & 0xFF);
@@ -221,7 +221,7 @@ namespace PadForge.Common.Input
             b[off + 1] = (byte)((v >> 8) & 0xFF);
         }
 
-        private static void WriteU32(Span<byte> b, int off, uint v)
+        internal static void WriteU32(Span<byte> b, int off, uint v)
         {
             b[off] = (byte)(v & 0xFF);
             b[off + 1] = (byte)((v >> 8) & 0xFF);

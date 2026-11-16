@@ -65,8 +65,8 @@ namespace PadForge.Engine.RemoteLink
             // Player-index / player-LED number (#191) for non-Sony shared pads:
             // the consumer's winning 1-based global number (0 = unmapped; when
             // the pad feeds several consumer slots, the smallest displayed
-            // number). The owner routes it to SetPlayerIndex (Nintendo) /
-            // SetPlayerNumber (BT DS3).
+            // number). The owner routes it to SetPlayerIndex (Nintendo and
+            // SInput) / SetPlayerNumber (BT DS3).
             PlayerIndex = 5,
             // Guide / Home button LED brightness (#209, Switch #226) for a
             // shared Xbox GIP pad, 2015 Steam Controller, or Switch home-LED

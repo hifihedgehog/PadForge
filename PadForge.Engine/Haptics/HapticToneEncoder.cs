@@ -481,6 +481,81 @@ namespace PadForge.Engine.Haptics
         //  proven tone path is 0x8F.
         // ─────────────────────────────────────────────────────────────
 
+        // ─────────────────────────────────────────────────────────────
+        //  SInput (#584): output report 0x03, command 0x01, haptics type 1.
+        //  Ground truth: SINPUT-LIB-HID 8dd1e5a, the packed sinput_haptic_s
+        //  (sinput_lib_protocol.c:216-261) that _sinput_protocol_haptic_process
+        //  (:490-526) reads from byte 2: the type, then frequency 1,
+        //  amplitude 1, frequency 2 and amplitude 2 for the left side and the
+        //  same four for the right, each a little-endian uint16. HOJA-LIB-RP2040
+        //  faf3cad core_sinput.c:67-82 plays it: amplitude over 65535,
+        //  frequency in Hz, band 1 on its high oscillator and band 2 on its low
+        //  one, both frequencies read from the LEFT side and each band's
+        //  amplitude the louder side's. OpenPuck 0020aa6 mode_sinput.cpp:292-299
+        //  plays amplitude only, the louder band per side on that side's motor.
+        // ─────────────────────────────────────────────────────────────
+
+        /// <summary>The SInput command report's length with its report ID:
+        /// report 0x03 carries 47 bytes (SINPUT-LIB-HID sinput_lib_hid.c:123-130,
+        /// SDL_hidapi_sinput.c:49).</summary>
+        public const int SInputCommandLength = 48;
+
+        /// <summary>The band a tone is folded into, the Switch HD Rumble span
+        /// (41 Hz at the bottom of its low band to 1252 Hz at the top of its high
+        /// one, Nintendo_Switch_Reverse_Engineering rumble_data_table.md), which
+        /// HOJA's oscillators already take from the Switch 2 rumble it plays
+        /// (HOJA-LIB-RP2040 ns2_ble.c:210, the same
+        /// pcm_frequency_to_fixedpoint_increment).</summary>
+        public const float SInputFreqMin = 41f;
+        public const float SInputFreqMax = 1252f;
+
+        /// <summary>Octave-folds a frequency into [<see cref="SInputFreqMin"/>,
+        /// <see cref="SInputFreqMax"/>], keeping its pitch class, the
+        /// <see cref="FoldJoyConFrequency"/> shape with the same guard against
+        /// NaN, infinity and non-positive input.</summary>
+        public static float FoldSInputFrequency(float freq)
+        {
+            if (float.IsNaN(freq) || float.IsInfinity(freq) || freq <= 0.0f) return SInputFreqMin;
+            while (freq < SInputFreqMin) freq *= 2.0f;
+            while (freq > SInputFreqMax) freq *= 0.5f;
+            return freq;
+        }
+
+        /// <summary>Encodes one SInput type 1 haptics frame, the full 48-byte
+        /// output report: the tone on band 1 of both sides, each side at its own
+        /// amplitude 0..1, band 2 silent. Both sides carry the frequency even
+        /// when one is silent, because HOJA reads its oscillator frequencies from
+        /// the left side alone (core_sinput.c:78-79). Both amplitudes at zero is
+        /// the stop: every pair zero.</summary>
+        public static byte[] EncodeSInputHaptics(float freqHz, float leftAmp, float rightAmp)
+        {
+            var b = new byte[SInputCommandLength];
+            b[0] = 0x03; // REPORT_ID_SINPUT_OUTPUT_CMDDAT (sinput_lib_protocol.c:20)
+            b[1] = 0x01; // SINPUT_COMMAND_HAPTIC (:22)
+            b[2] = 0x01; // type 1, frequency and amplitude pairs (:505-516)
+            ushort left = SInputAmplitude(leftAmp);
+            ushort right = SInputAmplitude(rightAmp);
+            ushort freq = left == 0 && right == 0
+                ? (ushort)0
+                : (ushort)MathF.Round(FoldSInputFrequency(freqHz));
+            // Left: frequency 1 at 3 and amplitude 1 at 5. Band 2, at 7 and 9, stays 0.
+            b[3] = (byte)freq; b[4] = (byte)(freq >> 8);
+            b[5] = (byte)left; b[6] = (byte)(left >> 8);
+            // Right: frequency 1 at 11 and amplitude 1 at 13. Band 2, at 15 and 17, stays 0.
+            b[11] = (byte)freq; b[12] = (byte)(freq >> 8);
+            b[13] = (byte)right; b[14] = (byte)(right >> 8);
+            return b;
+        }
+
+        /// <summary>An amplitude 0..1 as SInput's uint16, full scale 65535, the
+        /// scale HOJA divides by (core_sinput.c:73-74). NaN reads as silence.</summary>
+        public static ushort SInputAmplitude(float amp)
+        {
+            if (!(amp > 0f)) return 0;
+            if (amp >= 1f) return ushort.MaxValue;
+            return (ushort)MathF.Round(amp * ushort.MaxValue);
+        }
+
         // Switch 2 was dropped from the #147 tone scope. No reference plays an
         // audible tone on a Switch 2 actuator: switch2-controllers/controller.py
         // defines en_tone/lf_freq/hf_freq but never sets them, and the one PC

@@ -159,6 +159,103 @@ namespace PadForge.Tests
             }
         });
 
+        /// <summary>How far a drawing's pixels inside a box lean toward the
+        /// accent's red and away from its blue, on average: the accent is an
+        /// ember orange, and the Carbon finish is gray.</summary>
+        private static double Warmth(byte[] pixels, int width, int height, Rect box)
+        {
+            double sum = 0;
+            int count = 0;
+            for (int y = Math.Max(0, (int)box.Top); y < Math.Min(height, (int)Math.Ceiling(box.Bottom)); y++)
+                for (int x = Math.Max(0, (int)box.Left); x < Math.Min(width, (int)Math.Ceiling(box.Right)); x++)
+                {
+                    int i = (y * width + x) * 4;
+                    if (pixels[i + 3] < 128) continue;
+                    sum += pixels[i + 2] - pixels[i];
+                    count++;
+                }
+            return count == 0 ? 0 : sum / count;
+        }
+
+        /// <summary>A pulled trigger and a tilted stick glow toward the accent
+        /// as the controller's page grades them, apart from their turning: a
+        /// turn alone moves gray pixels and leaves them gray. At the card's
+        /// own size on screen, half the size these tests draw at, both still
+        /// change a field of pixels the eye can see.</summary>
+        [Fact]
+        public void APullAndATiltGlowTowardTheAccent_AndShowAtTheCardsSize() => RunSta(() =>
+        {
+            StagePictures.ForgetStills();
+            try
+            {
+                StagePictures.MakeStill("XboxSeries", "Carbon");
+                Assert.True(StagePictures.TryGetStill("XboxSeries", "Carbon", out var color, out _));
+                var live = StagePictures.LiveModelFor("XboxSeries", "Carbon");
+                var stage = new LiveStage { Model = live, Picture = color };
+                var marks = StagePictures.StillMarksFor("XboxSeries", "Carbon", "xbox-series-xs");
+                Rect box = HeldGlow.PictureBox(new Size(W, H), color.Width, color.Height);
+                Rect Px(Rect m, double grow)
+                {
+                    var r = new Rect(box.X + m.X * box.Width, box.Y + m.Y * box.Height, m.Width * box.Width, m.Height * box.Height);
+                    r.Inflate(r.Width * grow, r.Height * grow);
+                    return r;
+                }
+                byte[] rest = Draw(stage);
+                var trigger = Px(marks.First(m => m.Role == StillMarks.LeftTrigger).Box, 0.25);
+                var stick = Px(marks.First(m => m.Role == StillMarks.LeftStick).Box, 0.1);
+
+                stage.Pose = new StagePose(0, 0, 0, 0, 1, 0);
+                byte[] pulled = Draw(stage);
+                double pullGlow = Warmth(pulled, W, H, trigger) - Warmth(rest, W, H, trigger);
+                stage.Pose = new StagePose(short.MaxValue, 0, 0, 0, 0, 0);
+                byte[] tilted = Draw(stage);
+                double tiltGlow = Warmth(tilted, W, H, stick) - Warmth(rest, W, H, stick);
+
+                // The card's size on screen.
+                const int w = W / 2, h = H / 2;
+                byte[] Small()
+                {
+                    var host = new Grid { Width = w, Height = h };
+                    host.Children.Add(stage);
+                    host.Measure(new Size(w, h));
+                    host.Arrange(new Rect(0, 0, w, h));
+                    host.UpdateLayout();
+                    var bitmap = new RenderTargetBitmap(w, h, 96, 96, PixelFormats.Pbgra32);
+                    bitmap.Render(host);
+                    host.Children.Clear();
+                    var pixels = new byte[w * h * 4];
+                    bitmap.CopyPixels(pixels, w * 4, 0);
+                    return pixels;
+                }
+                int CountChanged(byte[] a, byte[] b)
+                {
+                    int n = 0;
+                    for (int i = 0; i < a.Length; i += 4)
+                        if (Math.Abs(a[i] - b[i]) + Math.Abs(a[i + 1] - b[i + 1]) + Math.Abs(a[i + 2] - b[i + 2]) + Math.Abs(a[i + 3] - b[i + 3]) > 24) n++;
+                    return n;
+                }
+                stage.Pose = StagePose.Rest;
+                byte[] smallRest = Small();
+                stage.Pose = new StagePose(0, 0, 0, 0, 1, 0);
+                int smallPull = CountChanged(smallRest, Small());
+                stage.Pose = new StagePose(short.MaxValue, 0, 0, 0, 0, 0);
+                int smallTilt = CountChanged(smallRest, Small());
+
+                // Measured 2026-11-16: a full pull warms the trigger by 70 and
+                // a full tilt the stick by 131, and with no glow both stay at
+                // 0. At the card's size the pull changes 274 pixels and the
+                // tilt 593, where the turn alone changes 98 and 218.
+                Assert.True(pullGlow > 20, $"a full pull warmed the trigger by {pullGlow:0.0}");
+                Assert.True(tiltGlow > 20, $"a full tilt warmed the stick by {tiltGlow:0.0}");
+                Assert.True(smallPull > 150, $"a full pull changed {smallPull} pixels at the card's size");
+                Assert.True(smallTilt > 350, $"a full tilt changed {smallTilt} pixels at the card's size");
+            }
+            finally
+            {
+                StagePictures.ForgetStills();
+            }
+        });
+
         /// <summary>The bit a pose holds a button's role in.</summary>
         private static ulong Bit(string role)
         {

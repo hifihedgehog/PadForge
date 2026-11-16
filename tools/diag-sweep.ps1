@@ -29,7 +29,12 @@ function Note($m) { Add-Content $out $m -Encoding utf8 }
 # tools shares. settings_guard.ps1 says what each one does.
 . (Join-Path $PSScriptRoot 'settings_guard.ps1')
 
-$src = 'C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\PadForge.App\bin\Release\net10.0-windows10.0.26100.0\win-x64\publish\PadForge.exe'
+# The framework folder comes from the project file, so a .NET upgrade moves
+# this path with it instead of leaving it on the last build's exe.
+$appDir = Join-Path (Split-Path -Parent $PSScriptRoot) 'PadForge.App'
+$tfm = (Read-SettingsXml -Path (Join-Path $appDir 'PadForge.App.csproj')).Project.PropertyGroup |
+    ForEach-Object { $_.TargetFramework } | Where-Object { $_ } | Select-Object -First 1
+$src = Join-Path $appDir "bin\Release\$tfm\win-x64\publish\PadForge.exe"
 $dst = 'C:\PadForge\PadForge.exe'
 $diag = 'C:\tmp\pfdiag-verify.log'
 Remove-Item $diag -Force -ErrorAction SilentlyContinue

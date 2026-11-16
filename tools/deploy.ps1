@@ -6,7 +6,13 @@
 # path now comes off the script's own location and matches where the publish
 # step actually puts the single-file exe.
 $repo = Split-Path -Parent $PSScriptRoot
-$src = Join-Path $repo 'PadForge.App\bin\Release\net10.0-windows10.0.26100.0\win-x64\publish\PadForge.exe'
+# The framework folder comes from the project file, so a .NET upgrade moves
+# this path with it instead of leaving it on the last build's exe.
+$project = New-Object System.Xml.XmlDocument
+$project.Load((Join-Path $repo 'PadForge.App\PadForge.App.csproj'))
+$tfm = $project.Project.PropertyGroup |
+    ForEach-Object { $_.TargetFramework } | Where-Object { $_ } | Select-Object -First 1
+$src = Join-Path $repo "PadForge.App\bin\Release\$tfm\win-x64\publish\PadForge.exe"
 $dst = 'C:\PadForge\PadForge.exe'
 
 # Check the source BEFORE stopping anything. Killing the running app and only

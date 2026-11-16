@@ -4760,14 +4760,20 @@ namespace PadForge.Engine.Common.Mapping
             bool raw = ReadAsBool(state, src, globalThresholdPercent, slotIndex,
                 EffectiveDeviceGuid(src, evaluatedDeviceGuid));
 
-            // Axis sources internalize Invert inside ReadAsBool — for
+            // A plain read (TryPlainTypeIndex): an Axis took Invert inside
+            // the read, and a Button, a Slider or a POV did not. Every test
+            // below answers the same for these.
+            string desc = CanonicalDescriptor(src.Descriptor);
+            if (TryPlainTypeIndex(desc, out var plain, out _, out _))
+                return plain == SourceType.Axis ? raw : (src.Invert ? !raw : raw);
+
+            // Axis sources internalize Invert inside ReadAsBool. For
             // half-axis it picks which half to test, for full-axis it
             // flips the comparison. Applying Invert again here would
             // double-cancel, which is what broke the standard "two
             // opposing buttons on a centered axis" pattern (Left half
             // never fired because the inner branch returned true and
             // this outer flip turned it back to false).
-            string desc = CanonicalDescriptor(src.Descriptor);
             if (desc.StartsWith("Axis", System.StringComparison.Ordinal)) return raw;
             // Mouse Motion internalizes Invert the same way (issue #154):
             // with HalfAxis it picks the direction (left/up vs right/down),
@@ -5876,6 +5882,11 @@ namespace PadForge.Engine.Common.Mapping
             string s = CanonicalDescriptor(src.Descriptor);
             if (string.IsNullOrEmpty(s)) return false;
 
+            // No family below reads a plain "Button N", "Axis N", "Slider N"
+            // or "POV N Up", so one goes straight to the type-index read
+            // the families end in.
+            if (TryPlainTypeIndex(s, out var t, out int idx, out string povDir)) goto typeIndex;
+
             // Constant-true source (translator v25, Steam's always_on_action
             // member): the binding fires the whole time its hosting layer
             // is active. Layer scoping is the ROW's LayerMask (rows on an
@@ -6172,9 +6183,10 @@ namespace PadForge.Engine.Common.Mapping
             if (IsVoicePhraseDescriptor(s))
                 return ReadVoicePhraseBool(state, s);
 
-            if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
+            if (!TryParseTypeIndex(s, out t, out idx, out povDir))
                 return false;
 
+        typeIndex:
             int dz = EffectiveThresholdPercent(src, globalThresholdPercent);
             // Floor 0, not 1: a zero effective threshold means
             // strictly-positive detection ("any nonzero"), the
@@ -6260,6 +6272,11 @@ namespace PadForge.Engine.Common.Mapping
         {
             string s = CanonicalDescriptor(src.Descriptor);
             if (string.IsNullOrEmpty(s)) return 0f;
+
+            // No family below reads a plain "Button N", "Axis N", "Slider N"
+            // or "POV N Up", so one goes straight to the type-index read
+            // the families end in.
+            if (TryPlainTypeIndex(s, out var t, out int idx, out string povDir)) goto typeIndex;
 
             // Constant-true source (translator v25): full assert, the
             // ReadAsBool contract on the analog lanes.
@@ -6484,9 +6501,10 @@ namespace PadForge.Engine.Common.Mapping
             if (IsVoicePhraseDescriptor(s))
                 return ReadVoicePhraseBool(state, s) ? 1f : 0f;
 
-            if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
+            if (!TryParseTypeIndex(s, out t, out idx, out povDir))
                 return 0f;
 
+        typeIndex:
             float axisValue;
             // Set to the axis index by the full-axis read below, so the
             // curve/range tail can floor the anti-deadzone radially over the
@@ -6578,6 +6596,11 @@ namespace PadForge.Engine.Common.Mapping
         {
             string s = CanonicalDescriptor(src.Descriptor);
             if (string.IsNullOrEmpty(s)) return 0f;
+
+            // No family below reads a plain "Button N", "Axis N", "Slider N"
+            // or "POV N Up", so one goes straight to the type-index read
+            // the families end in.
+            if (TryPlainTypeIndex(s, out var t, out int idx, out string povDir)) goto typeIndex;
 
             // Constant-true source (translator v25): full pull, the
             // ReadAsBool contract on the trigger lane.
@@ -6773,9 +6796,10 @@ namespace PadForge.Engine.Common.Mapping
             if (IsCapSenseDescriptor(s))
                 return ReadCapSenseBool(state, s) ? 1f : 0f;
 
-            if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
+            if (!TryParseTypeIndex(s, out t, out idx, out povDir))
                 return 0f;
 
+        typeIndex:
             float axisValue;
             switch (t)
             {
@@ -6905,6 +6929,96 @@ namespace PadForge.Engine.Common.Mapping
             index = hit.Index;
             povDir = hit.PovDir;
             return hit.Ok;
+        }
+
+        // ─── Plain descriptors ─────────────────────────────────────────
+        //
+        // "Button N", "Axis N", "Slider N" and "POV N" with a direction are
+        // most of what a mapping set reads. Each family test in ReadAsBool,
+        // ReadAsBipolar and ReadAsUnipolar keys on a name or a first word of
+        // its own, so none claims one of these, and a read of one passed
+        // some thirty string tests and a dictionary lookup on every pass
+        // before it reached the type-index read they all end in. A plain
+        // descriptor now goes there at once.
+
+        /// <summary>True for exactly "Button N", "Axis N", "Slider N", or
+        /// "POV N" and then Up, Down, Left or Right, where N is one to three
+        /// digits and one space stands between the words: the shape
+        /// <see cref="TryParseTypeIndex"/> reads, which no family test
+        /// claims.</summary>
+        internal static bool IsPlainTypeIndexGrammar(string s)
+        {
+            int at;
+            bool pov = false;
+            if (s.StartsWith("Button ", StringComparison.Ordinal)) at = 7;
+            else if (s.StartsWith("Axis ", StringComparison.Ordinal)) at = 5;
+            else if (s.StartsWith("Slider ", StringComparison.Ordinal)) at = 7;
+            else if (s.StartsWith("POV ", StringComparison.Ordinal)) { at = 4; pov = true; }
+            else return false;
+            int first = at;
+            while (at < s.Length && char.IsAsciiDigit(s[at])) at++;
+            int digits = at - first;
+            if (digits == 0 || digits > 3) return false;
+            if (!pov) return at == s.Length;
+            if (at >= s.Length || s[at] != ' ') return false;
+            return s.AsSpan(at + 1) is "Up" or "Down" or "Left" or "Right";
+        }
+
+        /// <summary>One string's answer from <see cref="TryPlainTypeIndex"/>.</summary>
+        private struct PlainParse
+        {
+            public string Key;
+            public bool Plain;
+            public SourceType Type;
+            public int Index;
+            public string PovDir;
+        }
+
+        /// <summary>The slots of a thread's plain-parse table, a power of two.</summary>
+        private const int PlainParseSlots = 1024;
+
+        // A table per thread, so no reader meets an entry another thread is
+        // writing. Slots are picked by the string's identity: a string whose
+        // slot another one took is parsed again, for one dictionary lookup,
+        // and the table never grows.
+        [ThreadStatic] private static PlainParse[] t_plainParses;
+
+        /// <summary>The type-index parse of <paramref name="canonical"/> when
+        /// it is a plain descriptor (<see cref="IsPlainTypeIndexGrammar"/>),
+        /// or false. A source holds the same string from one edit of its
+        /// descriptor to the next, so the answer is kept by the string's
+        /// identity and a read of it compares one reference.</summary>
+        private static bool TryPlainTypeIndex(string canonical, out SourceType t, out int index, out string povDir)
+        {
+            // Most other descriptors begin with another letter ("Touchpad",
+            // "Gyro", "Motion", "Mouse", "Midi", "IR") and leave here
+            // without the table. An empty one reads nothing.
+            char first = canonical.Length != 0 ? canonical[0] : '\0';
+            if (first != 'B' && first != 'A' && first != 'S' && first != 'P')
+            {
+                t = SourceType.Unmapped;
+                index = 0;
+                povDir = null;
+                return false;
+            }
+            var table = t_plainParses ??= new PlainParse[PlainParseSlots];
+            ref var entry = ref table[System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(canonical) & (PlainParseSlots - 1)];
+            if (!ReferenceEquals(entry.Key, canonical))
+            {
+                entry.Plain = IsPlainTypeIndexGrammar(canonical)
+                    && TryParseTypeIndex(canonical, out entry.Type, out entry.Index, out entry.PovDir);
+                if (!entry.Plain)
+                {
+                    entry.Type = SourceType.Unmapped;
+                    entry.Index = 0;
+                    entry.PovDir = null;
+                }
+                entry.Key = canonical;
+            }
+            t = entry.Type;
+            index = entry.Index;
+            povDir = entry.PovDir;
+            return entry.Plain;
         }
 
         private static (SourceType T, int Index, string PovDir, bool Ok) ParseTypeIndexUncached(string key)

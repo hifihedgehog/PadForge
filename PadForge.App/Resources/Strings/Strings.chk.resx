@@ -71,6 +71,7 @@
   <data name="Common_Start" xml:space="preserve"><value>Poputá</value></data>
   <data name="Common_None" xml:space="preserve"><value>Esor</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
   <!-- ═══ Controller Types ═══ -->

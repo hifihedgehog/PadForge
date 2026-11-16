@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>ஒரு பக்கம் வலப்புறம்</value></data>
   <data name="Common_None" xml:space="preserve"><value>ஏதுமில்லை</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>ஒதுக்கப்படாதது</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>வன்பொருள் ஆதரவு</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>தொடங்கும்போது இன்ஜினைத் தானாகத் தொடங்கு</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>சாளரம் ஃபோகஸை இழந்தாலும் போலிங்கைத் தொடர்</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>போலிங் இடைவெளி (சுயவிவரம் இதை மேலெழுதாதவரை)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>இன்ஜின் இந்த இடைவெளியில் சாதனங்களைப் படிக்கிறது. தனக்கெனப் போலிங் வீதம் கொண்ட சுயவிவரம் செயலில் இருக்கும்போது, அதற்குப் பதிலாக அந்த வீதமே பொருந்தும். அந்தச் சுயவிவரம் செயலிழக்கும்போது இந்த மதிப்பு திரும்பும்.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>போலிங் வீதம் (சுயவிவரம் இதை மேலெழுதாதவரை)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>இன்ஜின் ஒவ்வொரு சாதனத்தையும் படித்து மெய்நிகர் கட்டுப்படுத்திகளை வினாடிக்கு இத்தனை முறை புதுப்பிக்கிறது, இது 60 முதல் 10000 வரை இருக்கலாம். அதிக வீதம் அதிகச் செயலி நேரத்தைப் பயன்படுத்தும். Windows இன்ஜினை வினாடிக்கு அதிகபட்சம் சுமார் 2000 முறை மட்டுமே எழுப்புவதால், அதைவிட அதிக வீதத்தில் ஒவ்வொரு எழுப்பலிலும் பல சுற்றுகள் இயங்கும். தனக்கெனப் போலிங் வீதம் கொண்ட சுயவிவரம் செயலில் இருக்கும்போது, அதற்குப் பதிலாக அந்த வீதமே பொருந்தும். அந்தச் சுயவிவரம் செயலிழக்கும்போது இந்த மதிப்பு திரும்பும்.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>கேம்களிடமிருந்து சாதனங்களை மறை</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide சாதன மறைப்புக்கும் கீழ்நிலை உள்ளீட்டு ஹூக்குகளுக்குமான முதன்மை சுவிட்ச். இது ஆஃப் ஆக இருக்கும்போது, ஒவ்வொரு சாதனத்தின் அமைப்புகள் எதுவாக இருந்தாலும் எந்தச் சாதனமும் மறைக்கப்படாது.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>தொடக்கங்களுக்கு இடையிலும் சாதனங்களை மறைத்தே வை</value></data>
@@ -2678,7 +2679,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>ஏற்றும் கேம்கள்</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>போலிங் வீதம்</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>இயல்புநிலை (பொது அமைப்பு)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>“{0}” சுயவிவரம் செயலில் இருக்கும்போது மேலெழுதப்படும்: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>“{0}” சுயவிவரம் செயலில் இருக்கும்போது மேலெழுதப்படும்: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>ஒவ்வொரு கட்டுப்படுத்தியின் மேப்பிங்குகளையும் அமைப்புகளையும் ஒரே பெயரின் கீழ் சேமிக்கும். அதன் கேம்களில் ஒன்று முன்னணியில் இருக்கும்போது தானாக ஏற்றப்படும்.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>சுயவிவரம், அதன் கேம்களில் ஒன்று முன்னணியில் இருக்கும்போது தானாக ஏற்றப்படும்.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>கட்டுப்படுத்திகள் எதுவும் இல்லாமல் தொடங்கும். அதன் கேம்களில் ஒன்று முன்னணியில் இருக்கும்போது தானாக ஏற்றப்படும்.</value></data>

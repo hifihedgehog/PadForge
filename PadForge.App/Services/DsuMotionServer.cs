@@ -89,6 +89,20 @@ namespace PadForge.Services
         /// <summary>Slot has-motion states (device has gyro/accel sensors).</summary>
         private readonly bool[] _slotHasMotion = new bool[MaxSlots];
 
+        // The gate of each slot's motion frames, which go out on every
+        // pass, and what the last one it let out said. Poll thread only, as
+        // BroadcastMotion is.
+        private readonly PadForge.Common.Input.EveryPassFrameGate[] _everyPassGates = NewEveryPassGates();
+        private readonly MotionSnapshot[] _gatedSnapshots = new MotionSnapshot[MaxSlots];
+        private readonly bool[] _gatedConnected = new bool[MaxSlots];
+
+        private static PadForge.Common.Input.EveryPassFrameGate[] NewEveryPassGates()
+        {
+            var gates = new PadForge.Common.Input.EveryPassFrameGate[MaxSlots];
+            for (int i = 0; i < gates.Length; i++) gates[i] = new PadForge.Common.Input.EveryPassFrameGate();
+            return gates;
+        }
+
         /// <summary>Raised when server status changes (for UI display).</summary>
         public event EventHandler<string> StatusChanged;
 
@@ -202,7 +216,10 @@ namespace PadForge.Services
 
         /// <summary>
         /// Updates slot state and broadcasts motion data to subscribed clients.
-        /// Called from the InputManager polling thread at ~1000Hz.
+        /// Called from the InputManager polling thread on every pass. A frame
+        /// carries the sensor's timestamp and a packet number, so it goes out
+        /// on every pass, and is spaced above 1000 passes a second
+        /// (<see cref="PadForge.Common.Input.EveryPassFrameGate"/>).
         /// </summary>
         public void BroadcastMotion(int slot, MotionSnapshot snapshot, bool connected)
         {
@@ -234,6 +251,19 @@ namespace PadForge.Services
             var endpoints = GetSubscribers(slot);
             if (endpoints.Count == 0)
                 return;
+
+            if (PadForge.Common.Input.EveryPassFrameGate.Engaged)
+            {
+                bool changed = connected != _gatedConnected[slot]
+                    || !PadForge.Common.Input.FrameContent.Same(in snapshot, in _gatedSnapshots[slot]);
+                if (!_everyPassGates[slot].Due(changed, System.Diagnostics.Stopwatch.GetTimestamp()))
+                    return;
+                if (changed)
+                {
+                    _gatedSnapshots[slot] = snapshot;
+                    _gatedConnected[slot] = connected;
+                }
+            }
 
             // Build pad data packet.
             var packet = BuildPadDataPacket(slot, snapshot, connected);

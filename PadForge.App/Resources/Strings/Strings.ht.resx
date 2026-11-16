@@ -108,6 +108,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Efase</value></data>
   <data name="Common_None" xml:space="preserve"><value>Okenn</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Pa asiyen</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -491,8 +492,8 @@
   <data name="Settings_InputEngine" xml:space="preserve"><value>Motè antre</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Demare motè a otomatikman lè pwogram nan louvri</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Kontinye li aparèy yo lè fenèt la pa aktif</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Entèval lekti (sof si yon pwofil chanje l)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Motè a li aparèy yo nan entèval sa a. Lè yon pwofil ki gen pwòp frekans lekti pa l aktif, se frekans sa a ki aplike. Valè sa a tounen lè pwofil la dezaktive.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Frekans lekti (sof si yon pwofil chanje l)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Motè a li tout aparèy yo epi mete kontwolè vityèl yo ajou kantite fwa sa a chak segonn, soti 60 rive 10000. Yon frekans ki pi wo sèvi ak plis tan pwosesè. Windows reveye motè a apeprè 2000 fwa pa segonn pou pi plis, kidonk avèk yon frekans ki pi wo, motè a fè plizyè pasaj chak fwa li reveye. Lè yon pwofil ki gen pwòp frekans lekti pa l aktif, se frekans sa a ki aplike. Valè sa a tounen lè pwofil la dezaktive.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Kache aparèy yo devan jwèt yo</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Kenbe aparèy yo kache ant lansman yo</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Fenèt</value></data>
@@ -2153,7 +2154,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Non</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Nouvo pwofil</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Pa defo (paramèt global)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Ranplase pandan pwofil “{0}” aktif: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Ranplase pandan pwofil “{0}” aktif: {1} Hz</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Kopye depi</value></data>

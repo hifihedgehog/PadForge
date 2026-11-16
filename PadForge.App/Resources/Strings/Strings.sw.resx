@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Safisha</value></data>
   <data name="Common_None" xml:space="preserve"><value>Hakuna</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Haijapangiwa</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -542,8 +543,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Usaidizi wa Maunzi</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Anzisha injini kiotomatiki wakati wa kuzindua</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Endelea kukagua dirisha linapopoteza kipaumbele</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Muda wa ukaguzi (isipokuwa wasifu uubatilishe)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Injini hukagua vifaa kwa muda huu. Wakati wasifu wenye kasi yake ya ukaguzi unatumika, kasi hiyo hutumika badala yake. Thamani hii hurudi wasifu unapozimwa.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Kasi ya Kusoma (isipokuwa wasifu uibatilishe)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Injini hukagua kila kifaa na kusasisha vidhibiti pepe mara hizi kwa sekunde, kuanzia 60 hadi 10000. Kasi ya juu zaidi hutumia muda zaidi wa kichakataji. Windows huamsha injini takriban mara 2000 kwa sekunde kwa kiwango cha juu, kwa hiyo kasi ya juu zaidi huendesha mizunguko kadhaa kila injini inapoamshwa. Wakati wasifu wenye kasi yake ya ukaguzi unatumika, kasi hiyo hutumika badala yake. Thamani hii hurudi wasifu unapozimwa.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Ficha vifaa kutoka kwa michezo</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Swichi kuu ya kuficha vifaa kwa HidHide na vifungo vya ingizo vya kiwango cha chini. Ikiwa imezimwa, hakuna kifaa kinachofichwa bila kujali mipangilio ya kila kifaa.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Weka vifaa vimefichwa kati ya uzinduzi</value></data>
@@ -2470,7 +2471,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Michezo Inayoupakia</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Kasi ya Kusoma</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Chaguomsingi (Mpangilio wa Jumla)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Imebatilishwa wakati wasifu “{0}” unatumika: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Imebatilishwa wakati wasifu “{0}” unatumika: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Huhifadhi ramani na mipangilio ya kila kidhibiti chini ya jina moja. Hupakia yenyewe mchezo wake mmoja ukiwa mbele.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Wasifu hupakia yenyewe mchezo wake mmoja ukiwa mbele.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Huanza bila vidhibiti. Hupakia yenyewe mchezo wake mmoja ukiwa mbele.</value></data>

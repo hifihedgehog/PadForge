@@ -116,6 +116,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>오른쪽으로 한 페이지</value></data>
   <data name="Common_None" xml:space="preserve"><value>없음</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>할당되지 않음</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -409,8 +410,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>하드웨어 지원</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>실행 시 엔진 자동 시작</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>창이 포커스를 잃어도 폴링 계속</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>폴링 간격 (프로필이 재정의하지 않는 한)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>엔진은 이 간격으로 장치를 폴링합니다. 자체 폴링 속도가 있는 프로필이 활성화된 동안은 그 속도가 적용되고, 프로필이 비활성화되면 이 값으로 돌아갑니다.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>폴링 속도 (프로필이 재정의하지 않는 한)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>엔진은 모든 장치를 읽고 가상 컨트롤러를 초당 이 횟수만큼 업데이트하며, 60에서 10000까지 설정할 수 있습니다. 속도가 높을수록 프로세서 시간을 더 많이 사용합니다. Windows는 엔진을 초당 최대 약 2000번만 깨우므로, 속도가 그보다 높으면 한 번 깨울 때마다 여러 번의 패스를 실행합니다. 자체 폴링 속도가 있는 프로필이 활성화된 동안은 그 속도가 적용되고, 프로필이 비활성화되면 이 값으로 돌아갑니다.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>게임에서 장치 숨기기</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide 장치 숨김 및 저수준 입력 후킹의 마스터 스위치입니다. 끄면 장치별 설정에 관계없이 장치가 숨겨지지 않습니다.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>창</value></data>
@@ -1302,7 +1303,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>로드하는 게임</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>폴링 속도</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>기본값(전역 설정)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>프로필 “{0}”이(가) 활성화된 동안 재정의됨: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>프로필 “{0}”이(가) 활성화된 동안 재정의됨: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>모든 컨트롤러의 매핑과 설정을 하나의 이름으로 저장합니다. 지정된 게임이 앞에 있으면 자동으로 로드됩니다.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>프로필에 지정된 게임이 앞에 있으면 프로필이 자동으로 로드됩니다.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>컨트롤러 없이 시작합니다. 프로필에 지정된 게임이 앞에 있으면 자동으로 로드됩니다.</value></data>

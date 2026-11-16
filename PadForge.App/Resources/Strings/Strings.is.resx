@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Síða til hægri</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ekkert</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Óúthlutað</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Stuðningur við vélbúnað</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Ræsa vélina sjálfkrafa við opnun</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Halda könnun áfram þegar glugginn missir fókus</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Könnunarbil (nema snið hnekki því)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Vélin kannar tæki með þessu millibili. Á meðan snið með eigin könnunartíðni er virkt gildir sú tíðni í staðinn. Þetta gildi tekur aftur gildi þegar sniðið verður óvirkt.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Könnunartíðni (nema snið hnekki því)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Vélin les öll tæki og uppfærir sýndarstýringarnar þetta oft á sekúndu, frá 60 upp í 10000. Hærri tíðni notar meiri örgjörvatíma. Windows vekur vélina um það bil 2000 sinnum á sekúndu í mesta lagi, þannig að hærri tíðni keyrir nokkrar umferðir í hvert sinn sem hún vaknar. Á meðan snið með eigin könnunartíðni er virkt gildir sú tíðni í staðinn. Þetta gildi tekur aftur gildi þegar sniðið verður óvirkt.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Fela tæki fyrir leikjum</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Aðalrofi fyrir felingu tækja með HidHide og lágstigs inntakskróka. Þegar slökkt er á honum er ekkert tæki falið, óháð stillingum hvers tækis.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Halda tækjum földum milli ræsinga</value></data>
@@ -2678,7 +2679,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Leikir sem hlaða það</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Könnunartíðni</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Sjálfgefið (almenn stilling)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Hnekkt á meðan sniðið „{0}“ er virkt: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Hnekkt á meðan sniðið „{0}“ er virkt: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Vistar varpanir og stillingar allra leikjastýringa undir einu heiti. Það hleðst sjálfkrafa þegar einn af leikjum þess er fremst.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Snið hleðst sjálfkrafa þegar einn af leikjum þess er fremst.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Byrjar án leikjastýringa. Það hleðst sjálfkrafa þegar einn af leikjum þess er fremst.</value></data>

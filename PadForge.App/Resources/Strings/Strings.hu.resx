@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Lapozás jobbra</value></data>
   <data name="Common_None" xml:space="preserve"><value>Nincs</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Nincs hozzárendelve</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Hardvertámogatás</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>A bemeneti motor automatikus indítása a program indulásakor</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Lekérdezés folytatása, ha az ablak elveszíti a fókuszt</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Lekérdezési időköz (ha egy profil nem bírálja felül)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>A bemeneti motor ilyen időközönként kérdezi le az eszközöket. Amíg saját lekérdezési gyakoriságú profil aktív, helyette az érvényes. Ez az érték a profil inaktiválásakor visszatér.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Lekérdezési gyakoriság (ha egy profil nem bírálja felül)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>A bemeneti motor másodpercenként ennyiszer olvassa be az összes eszközt és frissíti a virtuális kontrollereket, 60 és 10000 között. A magasabb gyakoriság több processzoridőt használ. A Windows legfeljebb másodpercenként körülbelül 2000-szer ébreszti fel a bemeneti motort, ezért ennél magasabb gyakoriságnál minden ébresztéskor több feldolgozási kör fut le. Amíg saját lekérdezési gyakoriságú profil aktív, helyette az érvényes. Ez az érték a profil inaktiválásakor visszatér.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Eszközök elrejtése a játékok elől</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>A HidHide eszközelrejtés és az alacsony szintű bemeneti hookok főkapcsolója. Kikapcsolva egyetlen eszköz sincs elrejtve, az eszközönkénti beállításoktól függetlenül.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Eszközök rejtve tartása az indítások között</value></data>
@@ -2678,7 +2679,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>A profilt betöltő játékok</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Lekérdezési gyakoriság</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Alapértelmezett (globális beállítás)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Felülbírálva, amíg a(z) „{0}” profil aktív: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Felülbírálva, amíg a(z) „{0}” profil aktív: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Egy név alatt menti minden kontroller hozzárendeléseit és beállításait. Magától betöltődik, amikor valamelyik játéka előtérben van.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>A profil magától betöltődik, amikor valamelyik játéka előtérben van.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Kontrollerek nélkül indul. Magától betöltődik, amikor valamelyik játéka előtérben van.</value></data>

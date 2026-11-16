@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>เลื่อนไปทางขวาหนึ่งหน้า</value></data>
   <data name="Common_None" xml:space="preserve"><value>ไม่มี</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>ยังไม่ได้กำหนด</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>การรองรับฮาร์ดแวร์</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>เริ่มเอนจินอัตโนมัติเมื่อเปิดโปรแกรม</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>โพลต่อไปเมื่อหน้าต่างเสียโฟกัส</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>ช่วงเวลาการโพล (เว้นแต่โปรไฟล์จะแทนที่)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>เอนจินจะโพลอุปกรณ์ตามช่วงเวลานี้ ขณะที่โปรไฟล์ที่มีอัตราการโพลของตัวเองทำงานอยู่ จะใช้อัตรานั้นแทน ค่านี้จะกลับมาเมื่อโปรไฟล์เลิกทำงาน</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>อัตราการโพล (เว้นแต่โปรไฟล์จะแทนที่)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>เอนจินจะอ่านอุปกรณ์ทุกตัวและอัปเดตคอนโทรลเลอร์เสมือนตามจำนวนครั้งต่อวินาทีนี้ ตั้งได้ตั้งแต่ 60 ถึง 10000 อัตราที่สูงขึ้นจะใช้เวลาของโปรเซสเซอร์มากขึ้น Windows ปลุกเอนจินได้มากที่สุดประมาณ 2000 ครั้งต่อวินาที ดังนั้นที่อัตราสูงกว่านั้น เอนจินจะทำงานหลายรอบในการปลุกแต่ละครั้ง ขณะที่โปรไฟล์ที่มีอัตราการโพลของตัวเองทำงานอยู่ จะใช้อัตรานั้นแทน ค่านี้จะกลับมาเมื่อโปรไฟล์เลิกทำงาน</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>ซ่อนอุปกรณ์จากเกม</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>สวิตช์หลักสำหรับการซ่อนอุปกรณ์ด้วย HidHide และฮุกอินพุตระดับล่าง เมื่อปิด จะไม่มีอุปกรณ์ใดถูกซ่อน ไม่ว่าการตั้งค่ารายอุปกรณ์จะเป็นอย่างไร</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>คงการพรางอุปกรณ์ไว้ระหว่างการเปิดแต่ละครั้ง</value></data>
@@ -2678,7 +2679,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>เกมที่โหลดโปรไฟล์นี้</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>อัตราการโพล</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>ค่าเริ่มต้น (การตั้งค่าส่วนกลาง)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>ถูกแทนที่ขณะโปรไฟล์ “{0}” ทำงานอยู่: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>ถูกแทนที่ขณะโปรไฟล์ “{0}” ทำงานอยู่: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>บันทึกการแมปและการตั้งค่าของทุกคอนโทรลเลอร์ไว้ภายใต้ชื่อเดียว โปรไฟล์จะโหลดเองเมื่อเกมของโปรไฟล์อยู่ด้านหน้า</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>โปรไฟล์จะโหลดเองเมื่อเกมของโปรไฟล์อยู่ด้านหน้า</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>เริ่มโดยไม่มีคอนโทรลเลอร์ โปรไฟล์จะโหลดเองเมื่อเกมของโปรไฟล์อยู่ด้านหน้า</value></data>

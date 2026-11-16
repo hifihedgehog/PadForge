@@ -89,6 +89,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Ūkui</value></data>
   <data name="Common_None" xml:space="preserve"><value>Kore</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
   <!-- ═══ Controller Types ═══ -->

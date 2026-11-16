@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Тазалау</value></data>
   <data name="Common_None" xml:space="preserve"><value>Жоқ</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>мс</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Гц</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Тағайындалмаған</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Жабдықты қолдау</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Іске қосқанда қозғалтқышты автоматты бастау</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Терезе фокусты жоғалтқанда сұрауды жалғастыру</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Сұрау аралығы (профиль басқасын белгілемесе)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Қозғалтқыш құрылғыларды осы аралықпен сұрайды. Өз сұрау жиілігі бар профиль белсенді болғанда, оның орнына сол жиілік қолданылады. Профиль өшкенде осы мән қайта қолданылады.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Сұрау жиілігі (профиль басқасын белгілемесе)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Қозғалтқыш барлық құрылғыларды сұрап, виртуалды контроллерлерді секундына осынша рет жаңартады, мәні 60-тан 10000-ға дейін. Жиілік жоғары болған сайын процессор уақыты көбірек жұмсалады. Windows қозғалтқышты секундына ең көбі шамамен 2000 рет оятады, сондықтан жоғарырақ жиілікте әр оянған сайын бірнеше жүріс орындалады. Өз сұрау жиілігі бар профиль белсенді болғанда, оның орнына сол жиілік қолданылады. Профиль өшкенде осы мән қайта қолданылады.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Құрылғыларды ойындардан жасыру</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide арқылы құрылғыларды жасыру мен төменгі деңгейлі кіріс ілмектерінің негізгі қосқышы. Өшірулі болса, әр құрылғының параметрлеріне қарамастан ешбір құрылғы жасырылмайды.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Іске қосулар арасында құрылғыларды жасырын ұстау</value></data>
@@ -2489,7 +2490,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Оны жүктейтін ойындар</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Сұрау жиілігі</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Әдепкі (жалпы параметр)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>«{0}» профилі белсенді кезде қайта анықталған: {1} мс</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>«{0}» профилі белсенді кезде қайта анықталған: {1} Гц</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Әр контроллердің сәйкестендірулері мен параметрлерін бір атаумен сақтайды. Ойындарының бірі алдыңғы қатарда тұрғанда өздігінен жүктеледі.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Профиль ойындарының бірі алдыңғы қатарда тұрғанда өздігінен жүктеледі.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Контроллерсіз басталады. Ойындарының бірі алдыңғы қатарда тұрғанда өздігінен жүктеледі.</value></data>

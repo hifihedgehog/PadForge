@@ -1697,17 +1697,16 @@ namespace PadForge.Services
             PadForge.Engine.SdlDeviceWrapper.NfcArmedProvider =
                 () => System.Threading.Volatile.Read(ref _switchNfcArmed);
 
-            // — sample rate for the dual-threshold smoothing buffer.
-            // Reads the live PollingRateMs setting; falls back to 60Hz
-            // if the setting is missing or invalid.
+            // The sample rate for the dual-threshold smoothing buffer: the
+            // rate the loop runs at, or the setting while no engine exists.
             PadForge.Engine.Common.Mapping.SourceCoercion.PollHzProvider = () =>
             {
                 // The rate the loop is ACTUALLY running at. A profile can
                 // override the global setting, and the resolved value lives on
                 // the manager, so reading the setting reported a rate the loop
                 // was not using and sized the gyro smoothing window from it.
-                int ms = _inputManager?.PollingIntervalMs ?? (_mainVm?.Settings?.PollingRateMs ?? 0);
-                return ms > 0 ? 1000f / ms : 60f;
+                if (_inputManager != null) return _inputManager.PollingRateHz;
+                return _mainVm?.Settings?.PollingRateHz ?? InputManager.DefaultPollingRateHz;
             };
 
             // Wii Balance Board (#146): per-board kg calibration + tare. The
@@ -3538,10 +3537,17 @@ namespace PadForge.Services
                 }
             }
 
-            _inputManager.IsIdle = !anyActive && !remoteSharing && !teardownPending;
+            _inputManager.IsIdle = !s_benchStayAwake && !anyActive && !remoteSharing && !teardownPending;
 
             RefreshSwitchNfcArming();
         }
+
+        /// <summary>Bench switch: launched with PADFORGE_POLL_AWAKE set to 1,
+        /// the engine never idles, so its passes are measured with no
+        /// controller on a slot. It goes with PADFORGE_POLL_HZ
+        /// (<see cref="s_benchPollingRateHz"/>).</summary>
+        private static readonly bool s_benchStayAwake =
+            Environment.GetEnvironmentVariable("PADFORGE_POLL_AWAKE") == "1";
 
         // ─────────────────────────────────────────────
         //  Switch NFC arming (issue #241)
@@ -11528,7 +11534,7 @@ namespace PadForge.Services
         /// </summary>
         private void OnSettingsPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(SettingsViewModel.PollingRateMs) && _inputManager != null)
+            if (e.PropertyName == nameof(SettingsViewModel.PollingRateHz) && _inputManager != null)
             {
                 // Through the resolver, not a direct write: an active
                 // profile's override outranks the global knob until that
@@ -21310,19 +21316,27 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>The ONE owner of the live polling interval (#365). The
+        /// <summary>Bench switch: launched with PADFORGE_POLL_HZ set to a
+        /// rate, the loop runs at it whatever the settings and the active
+        /// profile say, so a rate is measured without a change to
+        /// anyone's settings. The Settings page and the settings file
+        /// keep their own value.</summary>
+        private static readonly int s_benchPollingRateHz =
+            int.TryParse(Environment.GetEnvironmentVariable("PADFORGE_POLL_HZ"), out int benchHz) && benchHz > 0 ? benchHz : 0;
+
+        /// <summary>The ONE owner of the live polling rate (#365). The
         /// active profile's override wins when it has one (nonzero), the
-        /// global Settings value applies otherwise, and both clamp to the
-        /// knob's own 1..16 range. Called wherever either input changes:
-        /// engine start, the Settings slider, every profile switch lane
-        /// (all of which run ResetRuntimeStateForProfileSwitch), and a
-        /// profile edit that may have retuned the ACTIVE profile. The loop
-        /// itself recomputes its target from PollingIntervalMs every cycle,
-        /// so the write takes effect on the next tick with no timer
-        /// churn.</summary>
+        /// global Settings value applies otherwise, and both are held to
+        /// the range the loop runs in (PollingRates.Resolve). Called
+        /// wherever either input changes: engine start, the Settings box,
+        /// every profile switch lane (all of which run
+        /// ResetRuntimeStateForProfileSwitch), and a profile edit that may
+        /// have retuned the ACTIVE profile. The loop reads PollingRateHz
+        /// before every pass, so the write takes effect at the next
+        /// one.</summary>
         internal void ApplyEffectivePollingRate()
         {
-            int ms = 0;
+            int overrideHz = 0;
             string activeName = null;
             string activeId = SettingsManager.ActiveProfileId;
             if (!string.IsNullOrEmpty(activeId))
@@ -21330,15 +21344,17 @@ namespace PadForge.Services
                 var active = SettingsManager.Profiles.Find(p => p.Id == activeId);
                 if (active != null)
                 {
-                    ms = active.PollingRateOverrideMs;
+                    overrideHz = active.PollingRateOverrideHz;
                     activeName = active.Name;
                 }
             }
             // A stopped engine has no loop to pace. It takes the rate at
             // its next start, which calls this.
             if (_inputManager != null)
-                _inputManager.PollingIntervalMs =
-                    ResolvePollingMs(ms, _mainVm?.Settings?.PollingRateMs ?? 1);
+                _inputManager.PollingRateHz = s_benchPollingRateHz > 0
+                    ? s_benchPollingRateHz
+                    : PollingRates.Resolve(overrideHz,
+                        _mainVm?.Settings?.PollingRateHz ?? InputManager.DefaultPollingRateHz);
 
             // The Settings page says WHO is in charge of the knob (#365
             // follow-up): a global setting that a profile silently outranks
@@ -21348,18 +21364,11 @@ namespace PadForge.Services
             // changes who is in charge.
             var settingsVm = _mainVm?.Settings;
             if (settingsVm != null)
-                settingsVm.PollingOverrideNote = ms > 0 && activeName != null
+                settingsVm.PollingOverrideNote = overrideHz > 0 && activeName != null
                     ? string.Format(Strings.Instance.Settings_PollingOverriddenBy_Format,
-                        activeName, Math.Clamp(ms, 1, 16))
+                        activeName, PollingRates.Resolve(overrideHz, overrideHz))
                     : null;
         }
-
-        /// <summary>The pure half of the resolver, for the tests: the
-        /// override wins when it has an opinion (nonzero), the global value
-        /// applies otherwise, and the result clamps to the knob's 1..16
-        /// range whichever side supplied it.</summary>
-        internal static int ResolvePollingMs(int overrideMs, int globalMs)
-            => Math.Clamp(overrideMs > 0 ? overrideMs : globalMs, 1, 16);
 
         /// <summary>Drops every stateful accumulator a profile switch must not
         /// carry across: source-kind runtime (Incremental cruise / ramp
@@ -21617,7 +21626,7 @@ namespace PadForge.Services
         /// Returns the created ProfileData.
         /// </summary>
         public ProfileData CreateEmptyProfile(string name, string pipeSeparatedExePaths,
-            int pollingRateOverrideMs = 0)
+            int pollingRateOverrideHz = 0)
         {
             ProfDiag("CreateEmptyProfile:enter");
             var profile = new ProfileData
@@ -21625,7 +21634,7 @@ namespace PadForge.Services
                 Id = Guid.NewGuid().ToString("N"),
                 Name = name.Trim(),
                 ExecutableNames = pipeSeparatedExePaths,
-                PollingRateOverrideMs = pollingRateOverrideMs,
+                PollingRateOverrideHz = pollingRateOverrideHz,
                 Entries = Array.Empty<ProfileEntry>(),
                 PadSettings = Array.Empty<PadSetting>(),
                 SlotCreated = new bool[InputManager.MaxPads],
@@ -21655,14 +21664,14 @@ namespace PadForge.Services
         /// Returns the created ProfileData.
         /// </summary>
         public ProfileData CreateSnapshotProfile(string name, string pipeSeparatedExePaths,
-            int pollingRateOverrideMs = 0)
+            int pollingRateOverrideHz = 0)
         {
             ProfDiag("CreateSnapshotProfile:enter");
             var snapshot = SnapshotCurrentProfile();
             snapshot.Id = Guid.NewGuid().ToString("N");
             snapshot.Name = name.Trim();
             snapshot.ExecutableNames = pipeSeparatedExePaths;
-            snapshot.PollingRateOverrideMs = pollingRateOverrideMs;
+            snapshot.PollingRateOverrideHz = pollingRateOverrideHz;
             SettingsManager.Profiles.Add(snapshot);
             return snapshot;
         }
@@ -21686,7 +21695,7 @@ namespace PadForge.Services
             snapshot.Id = stored.Id;
             snapshot.Name = stored.Name;
             snapshot.ExecutableNames = stored.ExecutableNames;
-            snapshot.PollingRateOverrideMs = stored.PollingRateOverrideMs;
+            snapshot.PollingRateOverrideHz = stored.PollingRateOverrideHz;
             snapshot.DreamcastPicture = stored.DreamcastPicture;
             snapshot.KeyboardScreenPicture = stored.KeyboardScreenPicture;
             snapshot.WorkshopSource = null;
@@ -21718,13 +21727,13 @@ namespace PadForge.Services
         /// Returns the updated ProfileData, or null if not found.
         /// </summary>
         public ProfileData EditProfile(string profileId, string newName, string newPipeSeparatedExePaths,
-            int pollingRateOverrideMs = 0)
+            int pollingRateOverrideHz = 0)
         {
             var profile = SettingsManager.Profiles.Find(p => p.Id == profileId);
             if (profile == null) return null;
             profile.Name = newName;
             profile.ExecutableNames = newPipeSeparatedExePaths;
-            profile.PollingRateOverrideMs = pollingRateOverrideMs;
+            profile.PollingRateOverrideHz = pollingRateOverrideHz;
             // Editing the ACTIVE profile's override changes the live rate
             // now, not at the next switch.
             if (SettingsManager.ActiveProfileId == profileId)

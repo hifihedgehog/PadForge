@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Страница удесно</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ништа</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>мс</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Хц</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Недодељено</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Подршка за хардвер</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Аутоматски покрени механизам при покретању</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Настави очитавање када прозор изгуби фокус</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Интервал очитавања (осим ако га профил не замени)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Механизам очитава уређаје у овом интервалу. Док је активан профил са сопственом учесталошћу очитавања, примењује се та учесталост. Ова вредност се враћа када се профил деактивира.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Учесталост очитавања (осим ако је профил не замени)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Механизам очитава све уређаје и ажурира виртуелне контролере толико пута у секунди, од 60 до 10000. Већа учесталост троши више процесорског времена. Windows буди механизам највише око 2000 пута у секунди, па при већој учесталости механизам при сваком буђењу изврши неколико пролаза. Док је активан профил са сопственом учесталошћу очитавања, примењује се та учесталост. Ова вредност се враћа када се профил деактивира.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Сакриј уређаје од игара</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Главни прекидач за скривање уређаја помоћу драјвера HidHide и пресретање улаза на ниском нивоу. Када је искључен, ниједан уређај није сакривен, без обзира на подешавања појединачних уређаја.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Задржи уређаје скривене између покретања</value></data>
@@ -2678,7 +2679,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Игре које га учитавају</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Учесталост очитавања</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Подразумевано (глобално подешавање)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Замењено док је профил „{0}“ активан: {1} мс</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Замењено док је профил „{0}“ активан: {1} Хц</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Чува мапирања и подешавања сваког контролера под једним називом. Учитава се сам када је једна од његових игара у првом плану.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Профил се учитава сам када је једна од његових игара у првом плану.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Почиње без контролера. Учитава се сам када је једна од његових игара у првом плану.</value></data>

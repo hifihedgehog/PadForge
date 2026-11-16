@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Sang phải một trang</value></data>
   <data name="Common_None" xml:space="preserve"><value>Không có</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Chưa gán</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Hỗ trợ phần cứng</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Tự khởi động bộ máy khi mở chương trình</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Tiếp tục thăm dò khi cửa sổ mất tiêu điểm</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Chu kỳ thăm dò (trừ khi hồ sơ ghi đè)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Bộ máy thăm dò thiết bị theo chu kỳ này. Khi một hồ sơ có tần số thăm dò riêng đang hoạt động, tần số đó được áp dụng thay thế. Giá trị này trở lại khi hồ sơ ngừng hoạt động.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Tần số thăm dò (trừ khi hồ sơ ghi đè)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Bộ máy đọc mọi thiết bị và cập nhật các tay cầm ảo với số lần này mỗi giây, từ 60 đến 10000. Tần số càng cao thì càng tốn thời gian của bộ xử lý. Windows đánh thức bộ máy tối đa khoảng 2000 lần mỗi giây, nên với tần số cao hơn, bộ máy chạy nhiều lượt trong mỗi lần được đánh thức. Khi một hồ sơ có tần số thăm dò riêng đang hoạt động, tần số đó được áp dụng thay thế. Giá trị này trở lại khi hồ sơ ngừng hoạt động.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Ẩn thiết bị khỏi trò chơi</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Công tắc tổng cho việc ẩn thiết bị bằng HidHide và các hook đầu vào cấp thấp. Khi tắt, không thiết bị nào bị ẩn, bất kể thiết lập của từng thiết bị.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Giữ thiết bị ẩn giữa các lần chạy</value></data>
@@ -2678,7 +2679,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Trò chơi tải nó</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Tần số thăm dò</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Mặc định (thiết lập chung)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Bị ghi đè khi hồ sơ “{0}” đang hoạt động: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Bị ghi đè khi hồ sơ “{0}” đang hoạt động: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Lưu ánh xạ và thiết lập của mọi tay cầm dưới một tên. Hồ sơ tự tải khi một trong các trò chơi của nó ở phía trước.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Hồ sơ tự tải khi một trong các trò chơi của nó ở phía trước.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Bắt đầu không có tay cầm nào. Hồ sơ tự tải khi một trong các trò chơi của nó ở phía trước.</value></data>

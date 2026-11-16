@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Sida åt höger</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ingen</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Inte tilldelad</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Stöd för maskinvara</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Starta motorn automatiskt vid programstart</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Fortsätt avläsningen när fönstret tappar fokus</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Avläsningsintervall (om inte en profil åsidosätter det)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Motorn läser av enheterna med det här intervallet. Medan en profil med egen avläsningsfrekvens är aktiv gäller den frekvensen i stället. Det här värdet återgår när profilen inaktiveras.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Avläsningsfrekvens (om inte en profil åsidosätter den)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Motorn läser av alla enheter och uppdaterar de virtuella handkontrollerna så här många gånger per sekund, från 60 till 10000. En högre frekvens tar mer processortid. Windows väcker motorn högst cirka 2000 gånger per sekund, så en högre frekvens kör flera avläsningsomgångar vid varje väckning. Medan en profil med egen avläsningsfrekvens är aktiv gäller den frekvensen i stället. Det här värdet återgår när profilen inaktiveras.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Dölj enheter för spel</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Huvudbrytare för HidHide-döljning av enheter och lågnivåhookar för inmatning. När den är av döljs inga enheter, oavsett inställningarna per enhet.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Håll enheter dolda mellan programstarter</value></data>
@@ -2678,7 +2679,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Spel som läser in den</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Avläsningsfrekvens</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Standard (global inställning)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Åsidosätts medan profilen ”{0}” är aktiv: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Åsidosätts medan profilen ”{0}” är aktiv: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Sparar alla handkontrollers mappningar och inställningar under ett namn. Den läses in av sig själv när ett av dess spel ligger överst.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>En profil läses in av sig själv när ett av dess spel ligger överst.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Börjar utan handkontroller. Den läses in av sig själv när ett av dess spel ligger överst.</value></data>

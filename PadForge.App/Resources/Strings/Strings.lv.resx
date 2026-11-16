@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Lappuse pa labi</value></data>
   <data name="Common_None" xml:space="preserve"><value>Nav</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Nepiešķirts</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Aparatūras atbalsts</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Automātiski palaist dzinēju, startējot programmu</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Turpināt aptauju, kad logs zaudē fokusu</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Aptaujas intervāls (ja vien profils to neaizstāj)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Dzinējs aptaujā ierīces ar šo intervālu. Kamēr ir aktīvs profils ar savu aptaujas biežumu, tiek izmantots tā biežums. Šī vērtība atjaunojas, kad profils tiek deaktivizēts.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Aptaujas biežums (ja vien profils to neaizstāj)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Dzinējs nolasa katru ierīci un atjaunina virtuālos kontrollerus šādu reižu skaitu sekundē, no 60 līdz 10000. Augstāks biežums prasa vairāk procesora laika. Windows pamodina dzinēju ne biežāk kā aptuveni 2000 reižu sekundē, tāpēc augstāka biežuma gadījumā dzinējs katrā pamodināšanas reizē veic vairākus ciklus. Kamēr ir aktīvs profils ar savu aptaujas biežumu, tiek izmantots tā biežums. Šī vērtība atjaunojas, kad profils tiek deaktivizēts.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Paslēpt ierīces no spēlēm</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Galvenais slēdzis HidHide ierīču slēpšanai un zema līmeņa ievades āķiem. Kad tas ir izslēgts, neviena ierīce netiek paslēpta neatkarīgi no katras ierīces iestatījumiem.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Saglabāt ierīču maskēšanu starp palaišanām</value></data>
@@ -2678,7 +2679,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Spēles, kas to ielādē</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Aptaujas biežums</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Noklusējums (globālais iestatījums)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Aizstāts, kamēr aktīvs profils „{0}”: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Aizstāts, kamēr aktīvs profils „{0}”: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Saglabā visu kontrolleru piesaistes un iestatījumus ar vienu nosaukumu. Tas ielādējas pats, kad priekšplānā ir kāda no tā spēlēm.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profils ielādējas pats, kad priekšplānā ir kāda no tā spēlēm.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Sākas bez kontrolleriem. Tas ielādējas pats, kad priekšplānā ir kāda no tā spēlēm.</value></data>

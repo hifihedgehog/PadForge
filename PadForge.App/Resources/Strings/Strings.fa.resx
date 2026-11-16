@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>یک صفحه به راست</value></data>
   <data name="Common_None" xml:space="preserve"><value>هیچ‌کدام</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>اختصاص‌نیافته</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>پشتیبانی سخت‌افزار</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>شروع خودکار موتور هنگام اجرا</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>ادامه نمونه‌برداری وقتی پنجره فوکوس را از دست می‌دهد</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>بازه نمونه‌برداری (مگر اینکه پروفایلی آن را تغییر دهد)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>موتور با این بازه از دستگاه‌ها نمونه‌برداری می‌کند. تا وقتی پروفایلی با نرخ نمونه‌برداری خودش فعال است، همان نرخ اعمال می‌شود. با غیرفعال شدن آن پروفایل، این مقدار برمی‌گردد.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>نرخ نمونه‌برداری (مگر اینکه پروفایلی آن را تغییر دهد)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>موتور به این تعداد بار در ثانیه، از 60 تا 10000، همه دستگاه‌ها را می‌خواند و کنترلرهای مجازی را به‌روز می‌کند. نرخ بالاتر زمان بیشتری از پردازنده را مصرف می‌کند. Windows موتور را حداکثر حدود 2000 بار در ثانیه بیدار می‌کند، پس نرخ بالاتر در هر بیدارسازی چند اجرا انجام می‌دهد. تا وقتی پروفایلی با نرخ نمونه‌برداری خودش فعال است، همان نرخ اعمال می‌شود. با غیرفعال شدن آن پروفایل، این مقدار برمی‌گردد.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>پنهان کردن دستگاه‌ها از بازی‌ها</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>کلید اصلی پنهان‌سازی دستگاه با HidHide و هوک‌های ورودی سطح پایین. وقتی خاموش است، صرف‌نظر از تنظیمات هر دستگاه، هیچ دستگاهی پنهان نمی‌شود.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>پنهان نگه داشتن دستگاه‌ها بین اجراها</value></data>
@@ -2678,7 +2679,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>بازی‌هایی که آن را بارگذاری می‌کنند</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>نرخ نمونه‌برداری</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>پیش‌فرض (تنظیم سراسری)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>تا وقتی پروفایل «{0}» فعال است مقدار دیگری اعمال می‌شود: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>تا وقتی پروفایل «{0}» فعال است مقدار دیگری اعمال می‌شود: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>نگاشت‌ها و تنظیمات همه کنترلرها را با یک نام ذخیره می‌کند. وقتی یکی از بازی‌هایش در جلو باشد، خودکار بارگذاری می‌شود.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>پروفایل وقتی یکی از بازی‌هایش در جلو باشد، خودکار بارگذاری می‌شود.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>بدون کنترلر شروع می‌شود. وقتی یکی از بازی‌هایش در جلو باشد، خودکار بارگذاری می‌شود.</value></data>

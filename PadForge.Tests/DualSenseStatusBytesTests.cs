@@ -26,7 +26,7 @@ namespace PadForge.Tests
             var tp = default(TouchpadState);
             var motion = default(MotionSnapshot);
             var dest = new byte[63];
-            SonyReportPackers.ForProfile(profile)(in gp, in tp, in motion, 100, false, 1, dest);
+            SonyReportPackers.ForProfile(profile)(in gp, in tp, in motion, 100, false, 1, 0, dest);
             return dest;
         }
 

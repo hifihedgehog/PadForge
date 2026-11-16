@@ -26,7 +26,7 @@ namespace PadForge.Tests
             var motion = default(MotionSnapshot);
             var dest = new byte[63];
             SonyReportPackers.ForProfile("dualsense-edge-composite")(
-                in gp, in tp, in motion, 100, false, 1, dest);
+                in gp, in tp, in motion, 100, false, 1, 0, dest);
             return dest[9];
         }
 

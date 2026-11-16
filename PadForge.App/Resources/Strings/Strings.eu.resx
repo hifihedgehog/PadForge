@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Garbitu</value></data>
   <data name="Common_None" xml:space="preserve"><value>Bat ere ez</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Esleitu gabe</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Hardware-euskarria</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Abiarazi motorra automatikoki hastean</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Jarraitu galdeketan leihoak fokua galtzean</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Galdeketa-tartea (profil batek bestelakorik ezartzen ez badu)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Motorrak tarte honetan galdetzen die gailuei. Bere galdeketa-maiztasuna duen profil bat aktibo dagoen bitartean, maiztasun hori aplikatzen da. Balio hau berriro aplikatzen da profila desaktibatzean.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Galdeketa-maiztasuna (profil batek bestelakorik ezartzen ez badu)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Motorrak gailu guztiak irakurtzen ditu eta kontrolagailu birtualak eguneratzen ditu segundoko hainbeste aldiz, 60tik 10000ra. Maiztasun altuago batek prozesadorearen denbora gehiago erabiltzen du. Windowsek motorra segundoko 2000 aldiz esnatzen du gehienez, beraz maiztasun altuago batean motorrak pasaldi bat baino gehiago exekutatzen ditu esnatze bakoitzean. Bere galdeketa-maiztasuna duen profil bat aktibo dagoen bitartean, maiztasun hori aplikatzen da. Balio hau berriro aplikatzen da profila desaktibatzean.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Ezkutatu gailuak jokoetatik</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide bidezko gailu-ezkutatzearen eta behe-mailako sarrera-kakoen etengailu nagusia. Desaktibatuta dagoenean, ez da gailurik ezkutatzen, gailu bakoitzaren ezarpenak edozein direla ere.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Mantendu gailuak ezkutatuta abioen artean</value></data>
@@ -2484,7 +2485,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Kargatzen duten jokoak</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Galdeketa-maiztasuna</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Lehenetsia (ezarpen orokorra)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>«{0}» profila aktibo dagoen bitartean gainidatzita: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>«{0}» profila aktibo dagoen bitartean gainidatzita: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Kontrolagailu guztien esleipenak eta ezarpenak gordetzen ditu izen bakar baten pean. Bere jokoetako bat aurrealdean dagoenean berez kargatzen da.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profil bat berez kargatzen da bere jokoetako bat aurrealdean dagoenean.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Kontrolagailurik gabe hasten da. Bere jokoetako bat aurrealdean dagoenean berez kargatzen da.</value></data>

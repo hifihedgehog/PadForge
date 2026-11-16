@@ -108,6 +108,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Hawani</value></data>
   <data name="Common_None" xml:space="preserve"><value>Wala</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Wala gi-assign</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -1675,7 +1676,7 @@
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Bag-ong profile</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Mga dula nga mo-load niini</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Default (global nga setting)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Gi-override samtang aktibo ang profile nga “{0}”: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Gi-override samtang aktibo ang profile nga “{0}”: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>I-save ang mga mapping ug setting sa matag controller ubos sa usa ka ngalan. Mo-load kini sa kaugalingon kung ang usa sa mga dula niini anaa sa unahan.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Mo-load ang profile sa kaugalingon kung ang usa sa mga dula niini anaa sa unahan.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Magsugod nga walay controller. Mo-load kini sa kaugalingon kung ang usa sa mga dula niini anaa sa unahan.</value></data>

@@ -73,7 +73,7 @@ namespace PadForge.Tests
             var gp = default(Gamepad);
             var dest = new byte[63];
             SonyReportPackers.ForProfile("dualsense-composite")(
-                in gp, in tp, in motion, 100, false, frameCounter, dest);
+                in gp, in tp, in motion, 100, false, frameCounter, 0, dest);
             return dest;
         }
 

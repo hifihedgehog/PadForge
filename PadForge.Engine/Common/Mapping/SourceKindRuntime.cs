@@ -139,10 +139,35 @@ namespace PadForge.Engine.Common.Mapping
             public int FrontSample;                     // JSM _frontSample
         }
 
-        // JSM NUM_SAMPLES (JoyShock.h:123). The live window is capped at
-        // 64 ms of ticks per tick (JoyShock.cpp:926), so this is the
-        // 1000 Hz-poll ceiling, same as JSM's.
-        private const int FlickNumSamples = 256;
+        /// <summary>The smoothing window, JSM's 64 ms (JoyShock.cpp:926).</summary>
+        internal const int FlickWindowMs = 64;
+
+        /// <summary>The window's samples at the fastest polling rate, 10000
+        /// passes a second. JSM's NUM_SAMPLES is 256 (JoyShock.h:123), four
+        /// times what its window holds at its shortest tick of a
+        /// millisecond (main.cpp filterTickTime). At 256 the window here
+        /// was 64 ms up to 4000 passes a second and 25.6 ms at
+        /// 10000.</summary>
+        internal const int FlickNumSamples = 640;
+
+        /// <summary>How many samples the smoothing window holds. JSM sizes
+        /// it from its configured tick (JoyShock.cpp:925-926), and so does
+        /// this when the app names its polling rate
+        /// (<see cref="SourceCoercion.PollHzProvider"/>): every pass then
+        /// averages the same count, whatever its own length, and what goes
+        /// in comes out. Sized from each pass's measured length, the count
+        /// changed from pass to pass. Above 2000 passes a second several
+        /// passes run at one wake, the first long and the rest short, and
+        /// each sized a window of its own. With no rate named, the pass's
+        /// own length stands for the tick.</summary>
+        internal static int FlickWindowSamples(double deltaSeconds)
+        {
+            var pollHz = SourceCoercion.PollHzProvider;
+            int samples = pollHz != null
+                ? (FlickWindowMs * Math.Max(1, (int)MathF.Round(pollHz())) + 999) / 1000
+                : (int)Math.Ceiling(FlickWindowMs / 1000.0 / Math.Max(deltaSeconds, 0.0001));
+            return Math.Min(FlickNumSamples, samples);
+        }
 
         private Dictionary<(int slot, string target, string layer, int srcIdx), FlickState> _flickState = new();
 
@@ -1027,9 +1052,7 @@ namespace PadForge.Engine.Common.Mapping
                     if (angleChange < 0) angleChange += 2.0 * Math.PI;
                     angleChange -= Math.PI;
                     double flickSpeed = -(angleChange * countsPerRad); // JoyShock.cpp:923-924
-                    // 64 ms max smoothing window (JoyShock.cpp:926).
-                    int maxSamples = Math.Min(FlickNumSamples,
-                        (int)Math.Ceiling(0.064 / Math.Max(deltaSeconds, 0.0001)));
+                    int maxSamples = FlickWindowSamples(deltaSeconds);
                     const double stepSize = 0.01; // rad, ~minimum stick resolution (JoyShock.cpp:927)
                     double smooth = src.ParamFlickSmooth;
                     rotationCounts = smooth < 0

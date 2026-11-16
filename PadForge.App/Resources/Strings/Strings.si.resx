@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>හිස් කරන්න</value></data>
   <data name="Common_None" xml:space="preserve"><value>කිසිවක් නැත</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>පවරා නැත</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>දෘඪාංග සහාය</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>දියත් කරන විට එන්ජිම ස්වයංක්‍රීයව අරඹන්න</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>කවුළුවේ නාභිගත බව නැති වූ විට විමසීම දිගටම කරන්න</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>විමසීම් අන්තරය (පැතිකඩක් එය අභිබවා නොයන්නේ නම්)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>එන්ජිම මෙම අන්තරයෙන් උපාංග විමසයි. තමන්ගේම විමසීම් අනුපාතයක් ඇති පැතිකඩක් සක්‍රිය අතරතුර, ඒ වෙනුවට එම අනුපාතය යෙදේ. පැතිකඩ අක්‍රිය වූ විට මෙම අගය නැවත යෙදේ.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>විමසුම් අනුපාතය (පැතිකඩක් එය අභිබවා නොයන්නේ නම්)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>එන්ජිම සෑම උපාංගයක්ම කියවා අතථ්‍ය පාලක යාවත්කාලීන කරන්නේ තත්පරයකට මෙම වාර ගණනකි, 60 සිට 10000 දක්වා. ඉහළ අනුපාතයක් වැඩි ප්‍රොසෙසර කාලයක් භාවිත කරයි. Windows එන්ජිම අවදි කරන්නේ තත්පරයකට උපරිම වශයෙන් ආසන්න වශයෙන් 2000 වතාවක් පමණි, එබැවින් ඊට වැඩි අනුපාතයක් එක් එක් අවදි කිරීමේදී ධාවන වට කිහිපයක් ක්‍රියාත්මක කරයි. තමන්ගේම විමසීම් අනුපාතයක් ඇති පැතිකඩක් සක්‍රිය අතරතුර, ඒ වෙනුවට එම අනුපාතය යෙදේ. පැතිකඩ අක්‍රිය වූ විට මෙම අගය නැවත යෙදේ.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>ක්‍රීඩාවලින් උපාංග සඟවන්න</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide උපාංග සැඟවීම සහ පහළ මට්ටමේ ආදාන හුක් සඳහා ප්‍රධාන ස්විචය. අක්‍රිය විට, එක් එක් උපාංගයේ සැකසීම් කුමක් වුවත් කිසිදු උපාංගයක් සඟවන්නේ නැත.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>දියත් කිරීම් අතර උපාංග සඟවා තබන්න</value></data>
@@ -2484,7 +2485,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>එය පූරණය කරන ක්‍රීඩා</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>විමසුම් අනුපාතය</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>පෙරනිමි (ගෝලීය සැකසුම)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>“{0}” පැතිකඩ සක්‍රියව ඇති අතරතුර අභිබවා ඇත: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>“{0}” පැතිකඩ සක්‍රියව ඇති අතරතුර අභිබවා ඇත: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>සෑම පාලකයකම සිතියම්ගත කිරීම් සහ සැකසීම් එක් නමක් යටතේ සුරකියි. එහි ක්‍රීඩාවක් ඉදිරියෙන් ඇති විට එය ස්වයංක්‍රීයව පූරණය වේ.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>පැතිකඩක් එහි ක්‍රීඩාවක් ඉදිරියෙන් ඇති විට ස්වයංක්‍රීයව පූරණය වේ.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>පාලක නොමැතිව ආරම්භ වේ. එහි ක්‍රීඩාවක් ඉදිරියෙන් ඇති විට එය ස්වයංක්‍රීයව පූරණය වේ.</value></data>

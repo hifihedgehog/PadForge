@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Очистити</value></data>
   <data name="Common_None" xml:space="preserve"><value>Немає</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>мс</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Гц</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Не призначено</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Підтримка обладнання</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Автоматично запускати рушій разом із програмою</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Продовжувати опитування, коли вікно втрачає фокус</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Інтервал опитування (якщо профіль не задає власний)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Рушій опитує пристрої з цим інтервалом. Поки активний профіль із власною частотою опитування, діє його частота. Це значення повертається, коли профіль деактивується.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Частота опитування (якщо профіль не задає власну)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Рушій зчитує всі пристрої й оновлює віртуальні контролери стільки разів на секунду, від 60 до 10000. Вища частота використовує більше процесорного часу. Windows пробуджує рушій щонайбільше близько 2000 разів на секунду, тому за вищої частоти рушій виконує кілька проходів за кожне пробудження. Поки активний профіль із власною частотою опитування, діє його частота. Це значення повертається, коли профіль деактивується.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Приховувати пристрої від ігор</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Головний перемикач приховування пристроїв через HidHide та низькорівневого перехоплення введення. Коли його вимкнено, жоден пристрій не приховується незалежно від налаштувань окремих пристроїв.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Залишати пристрої замаскованими між запусками</value></data>
@@ -2489,7 +2490,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Ігри, що його завантажують</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Частота опитування</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Типово (глобальне налаштування)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Перевизначено, поки активний профіль «{0}»: {1} мс</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Перевизначено, поки активний профіль «{0}»: {1} Гц</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Зберігає прив'язки й налаштування кожного контролера під однією назвою. Завантажується сам, коли попереду одна з його ігор.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Профіль завантажується сам, коли попереду одна з його ігор.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Починається без контролерів. Завантажується сам, коли попереду одна з його ігор.</value></data>

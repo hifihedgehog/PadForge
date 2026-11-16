@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Strona w prawo</value></data>
   <data name="Common_None" xml:space="preserve"><value>Brak</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Nieprzypisane</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Obsługa sprzętu</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Uruchamiaj silnik automatycznie przy starcie programu</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Kontynuuj odpytywanie, gdy okno nie jest aktywne</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Interwał odpytywania (o ile profil go nie zastępuje)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Silnik odpytuje urządzenia w tym interwale. Gdy aktywny jest profil z własną częstotliwością odpytywania, obowiązuje ta częstotliwość. Ta wartość wraca, gdy profil przestaje być aktywny.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Częstotliwość odpytywania (o ile profil jej nie zastępuje)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Silnik odczytuje wszystkie urządzenia i aktualizuje wirtualne kontrolery tyle razy na sekundę, od 60 do 10000. Wyższa częstotliwość zużywa więcej czasu procesora. System Windows budzi silnik najwyżej około 2000 razy na sekundę, więc przy wyższej częstotliwości silnik wykonuje kilka przebiegów przy każdym wybudzeniu. Gdy aktywny jest profil z własną częstotliwością odpytywania, obowiązuje ta częstotliwość. Ta wartość wraca, gdy profil przestaje być aktywny.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Ukrywaj urządzenia przed grami</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Główny przełącznik ukrywania urządzeń przez HidHide i niskopoziomowego przechwytywania wejścia. Gdy jest wyłączony, żadne urządzenie nie jest ukrywane, niezależnie od ustawień poszczególnych urządzeń.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Utrzymuj maskowanie urządzeń między uruchomieniami</value></data>
@@ -2678,7 +2679,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Gry, które go wczytują</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Częstotliwość odpytywania</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Domyślna (ustawienie globalne)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Zastąpione, gdy aktywny jest profil „{0}”: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Zastąpione, gdy aktywny jest profil „{0}”: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Zapisuje mapowania i ustawienia każdego kontrolera pod jedną nazwą. Wczytuje się sam, gdy jedna z jego gier jest na wierzchu.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profil wczytuje się sam, gdy jedna z jego gier jest na wierzchu.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Zaczyna bez kontrolerów. Wczytuje się sam, gdy jedna z jego gier jest na wierzchu.</value></data>

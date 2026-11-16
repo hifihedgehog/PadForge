@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Išvalyti</value></data>
   <data name="Common_None" xml:space="preserve"><value>Nėra</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Nepriskirta</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -542,8 +543,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Aparatinės įrangos palaikymas</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Automatiškai paleisti variklį paleidžiant programą</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Tęsti apklausą, kai langas neaktyvus</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Apklausos intervalas (jei profilis jo nepakeičia)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Variklis apklausia įrenginius šiuo intervalu. Kol aktyvus profilis su savo apklausos dažniu, taikomas jo dažnis. Šis nustatymas grįžta, kai profilis išjungiamas.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Apklausos dažnis (jei profilis jo nepakeičia)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Variklis nuskaito kiekvieną įrenginį ir atnaujina virtualius valdiklius tiek kartų per sekundę, nuo 60 iki 10000. Didesnis dažnis naudoja daugiau procesoriaus laiko. „Windows“ pažadina variklį daugiausia apie 2000 kartų per sekundę, todėl esant didesniam dažniui kiekvieną kartą pažadinus atliekama keletas ciklų. Kol aktyvus profilis su savo apklausos dažniu, taikomas jo dažnis. Šis nustatymas grįžta, kai profilis išjungiamas.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Slėpti įrenginius nuo žaidimų</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Pagrindinis „HidHide“ įrenginių slėpimo ir žemo lygio įvesties perėmimo jungiklis. Kai išjungta, joks įrenginys neslepiamas, nepaisant atskirų įrenginių nustatymų.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Laikyti įrenginius paslėptus tarp paleidimų</value></data>
@@ -2487,7 +2488,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Jį įkeliantys žaidimai</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Apklausos dažnis</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Numatytasis (bendrasis nustatymas)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Pakeista, kol aktyvus profilis „{0}“: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Pakeista, kol aktyvus profilis „{0}“: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Išsaugo visų valdiklių priskyrimus ir nustatymus vienu pavadinimu. Jis įkeliamas pats, kai priekyje yra vienas iš jo žaidimų.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profilis įkeliamas pats, kai priekyje yra vienas iš jo žaidimų.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Prasideda be valdiklių. Jis įkeliamas pats, kai priekyje yra vienas iš jo žaidimų.</value></data>

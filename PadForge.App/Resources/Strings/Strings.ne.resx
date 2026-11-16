@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>एक पृष्ठ दायाँ</value></data>
   <data name="Common_None" xml:space="preserve"><value>कुनै पनि छैन</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>मि.से.</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>हर्ज</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>तोकिएको छैन</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>हार्डवेयर समर्थन</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>सुरु हुँदा इन्जिन आफैँ सुरु गर्नुहोस्</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>सञ्झ्यालले फोकस गुमाउँदा पनि पोलिङ जारी राख्नुहोस्</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>पोलिङ अन्तराल (प्रोफाइलले अर्को नतोकेसम्म)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>इन्जिनले यन्त्रहरूलाई यो अन्तरालमा पोल गर्छ। आफ्नै पोलिङ दर भएको प्रोफाइल सक्रिय हुँदा त्यही दर लागू हुन्छ। प्रोफाइल निष्क्रिय भएपछि यो मान फर्कन्छ।</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>पोलिङ दर (प्रोफाइलले अर्को नतोकेसम्म)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>इन्जिनले हरेक यन्त्र पढ्छ र भर्चुअल कन्ट्रोलरहरूलाई प्रति सेकेन्ड यति पटक अद्यावधिक गर्छ, 60 देखि 10000 सम्म। उच्च दरले प्रोसेसरको बढी समय लिन्छ। Windows ले इन्जिनलाई प्रति सेकेन्ड बढीमा करिब 2000 पटक मात्र ब्युँझाउँछ, त्यसैले त्योभन्दा उच्च दरमा इन्जिनले हरेक पटक ब्युँझँदा धेरै चक्र चलाउँछ। आफ्नै पोलिङ दर भएको प्रोफाइल सक्रिय हुँदा त्यही दर लागू हुन्छ। प्रोफाइल निष्क्रिय भएपछि यो मान फर्कन्छ।</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>खेलहरूबाट यन्त्रहरू लुकाउनुहोस्</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide यन्त्र लुकाउने र निम्न-स्तरीय इनपुट हुकहरूको मुख्य स्विच। बन्द हुँदा, प्रति-यन्त्र सेटिङ जे भए पनि कुनै यन्त्र लुकाइँदैन।</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>हरेक पटक खोल्दा यन्त्रहरू लुकेकै राख्नुहोस्</value></data>
@@ -2678,7 +2679,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>यसलाई लोड गर्ने खेलहरू</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>पोलिङ दर</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>पूर्वनिर्धारित (विश्वव्यापी सेटिङ)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>प्रोफाइल “{0}” सक्रिय रहँदा अधिलेखित: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>प्रोफाइल “{0}” सक्रिय रहँदा अधिलेखित: {1} हर्ज</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>हरेक कन्ट्रोलरका म्यापिङ र सेटिङहरू एउटै नाममा सेभ गर्छ। यसको कुनै खेल अगाडि हुँदा यो आफैँ लोड हुन्छ।</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>प्रोफाइल यसको कुनै खेल अगाडि हुँदा आफैँ लोड हुन्छ।</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>कुनै कन्ट्रोलरबिना सुरु हुन्छ। यसको कुनै खेल अगाडि हुँदा यो आफैँ लोड हुन्छ।</value></data>

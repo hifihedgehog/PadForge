@@ -95,6 +95,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Qulqulleessi</value></data>
   <data name="Common_None" xml:space="preserve"><value>Homaa</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Hin ramadamne</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 

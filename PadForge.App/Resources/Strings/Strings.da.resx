@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Side til højre</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ingen</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Ikke tildelt</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Hardwareunderstøttelse</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Start motoren automatisk ved opstart</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Fortsæt aflæsning, når vinduet mister fokus</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Aflæsningsinterval (medmindre en profil tilsidesætter det)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Motoren aflæser enheder med dette interval. Mens en profil med sin egen aflæsningsfrekvens er aktiv, gælder den frekvens i stedet. Denne værdi gælder igen, når profilen deaktiveres.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Aflæsningsfrekvens (medmindre en profil tilsidesætter den)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Motoren aflæser alle enheder og opdaterer de virtuelle controllere så mange gange i sekundet, fra 60 til 10000. En højere frekvens bruger mere processortid. Windows vækker motoren højst omkring 2000 gange i sekundet, så en højere frekvens kører flere gennemløb ved hver opvågning. Mens en profil med sin egen aflæsningsfrekvens er aktiv, gælder den frekvens i stedet. Denne værdi gælder igen, når profilen deaktiveres.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Skjul enheder for spil</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Hovedkontakt for skjulning af enheder med HidHide og input-hooks på lavt niveau. Når den er slået fra, skjules ingen enheder, uanset indstillingerne for hver enkelt enhed.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Hold enheder skjult mellem opstarter</value></data>
@@ -2678,7 +2679,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Spil, der indlæser den</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Aflæsningsfrekvens</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Standard (global indstilling)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Tilsidesat, mens profilen ”{0}” er aktiv: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Tilsidesat, mens profilen ”{0}” er aktiv: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Gemmer alle controlleres tildelinger og indstillinger under ét navn. Den indlæses af sig selv, når et af dens spil er forrest.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>En profil indlæses af sig selv, når et af dens spil er forrest.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Starter uden controllere. Den indlæses af sig selv, når et af dens spil er forrest.</value></data>

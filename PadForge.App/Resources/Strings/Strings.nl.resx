@@ -116,6 +116,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Pagina naar rechts</value></data>
   <data name="Common_None" xml:space="preserve"><value>Geen</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Niet toegewezen</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -409,8 +410,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Hardwareondersteuning</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Engine automatisch starten bij opstarten</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Polling voortzetten wanneer het venster de focus verliest</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Polling-interval (tenzij een profiel het overschrijft)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>De engine pollt apparaten met dit interval. Zolang een profiel met een eigen pollingfrequentie actief is, geldt die frequentie. Daarna geldt deze waarde weer.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Pollingfrequentie (tenzij een profiel het overschrijft)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>De engine leest elk apparaat uit en werkt de virtuele controllers zo vaak per seconde bij, van 60 tot 10000. Een hogere frequentie kost meer processortijd. Windows maakt de engine hooguit ongeveer 2000 keer per seconde wakker, dus bij een hogere frequentie voert de engine bij elke keer wakker worden meerdere rondes uit. Zolang een profiel met een eigen pollingfrequentie actief is, geldt die frequentie. Daarna geldt deze waarde weer.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Apparaten verbergen voor games</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Hoofdschakelaar voor HidHide-apparaatverberging en low-level invoerhooks. Bij uitschakeling worden geen apparaten verborgen, ongeacht individuele apparaatinstellingen.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Venster</value></data>
@@ -1302,7 +1303,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Games die het laden</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Pollingfrequentie</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Standaard (globale instelling)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Overschreven zolang profiel “{0}” actief is: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Overschreven zolang profiel “{0}” actief is: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Slaat de toewijzingen en instellingen van elke controller op onder één naam. Het laadt vanzelf wanneer een van de bijbehorende games vooraan staat.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Een profiel laadt vanzelf wanneer een van de bijbehorende games vooraan staat.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Begint zonder controllers. Het laadt vanzelf wanneer een van de bijbehorende games vooraan staat.</value></data>

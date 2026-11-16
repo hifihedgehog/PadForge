@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Страница надесно</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ништо</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Недоделено</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Поддршка за хардвер</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Автоматски стартувај го моторот при отворање</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Продолжи со читање кога прозорецот ќе го изгуби фокусот</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Интервал на читање (освен ако профилот не го замени)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Моторот ги чита уредите на овој интервал. Додека е активен профил со сопствена фреквенција на читање, наместо ова важи таа фреквенција. Оваа вредност се враќа кога профилот ќе се деактивира.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Фреквенција на читање (освен ако профилот не ја замени)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Моторот ги чита сите уреди и ги ажурира виртуелните контролери толку пати во секунда, од 60 до 10000. Повисока фреквенција користи повеќе процесорско време. Windows го буди моторот најмногу околу 2000 пати во секунда, па при повисока фреквенција моторот извршува по неколку циклуси при секое будење. Додека е активен профил со сопствена фреквенција на читање, наместо ова важи таа фреквенција. Оваа вредност се враќа кога профилот ќе се деактивира.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Скриј ги уредите од игрите</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Главен прекинувач за криењето уреди со HidHide и за влезните куки на ниско ниво. Кога е исклучен, ниту еден уред не се крие, без оглед на поставките за поединечните уреди.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Држи ги уредите скриени помеѓу стартувањата</value></data>
@@ -2678,7 +2679,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Игри што го вчитуваат</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Фреквенција на читање</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Стандардно (глобална поставка)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Заменето додека е активен профилот „{0}“: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Заменето додека е активен профилот „{0}“: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Ги зачувува мапирањата и поставките на сите контролери под едно име. Се вчитува сам кога некоја од неговите игри е напред.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Профилот се вчитува сам кога некоја од неговите игри е напред.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Почнува без контролери. Се вчитува сам кога некоја од неговите игри е напред.</value></data>

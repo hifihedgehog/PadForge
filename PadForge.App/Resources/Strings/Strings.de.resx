@@ -116,6 +116,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Eine Seite nach rechts</value></data>
   <data name="Common_None" xml:space="preserve"><value>Keine</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Nicht zugewiesen</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -409,8 +410,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Hardwareunterstützung</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Engine beim Start automatisch starten</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Abfrage fortsetzen, wenn das Fenster den Fokus verliert</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Abfrageintervall (sofern kein Profil es überschreibt)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>In diesem Intervall fragt die Engine die Geräte ab. Solange ein Profil mit eigener Abfragerate aktiv ist, gilt stattdessen diese Rate. Danach gilt wieder dieser Wert.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Abfragerate (sofern kein Profil sie überschreibt)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Die Engine liest alle Geräte aus und aktualisiert die virtuellen Controller so oft pro Sekunde, von 60 bis 10000. Eine höhere Rate beansprucht mehr Prozessorzeit. Windows weckt die Engine höchstens etwa 2000-mal pro Sekunde, daher führt eine höhere Rate bei jedem Wecken mehrere Durchläufe aus. Solange ein Profil mit eigener Abfragerate aktiv ist, gilt stattdessen diese Rate. Danach gilt wieder dieser Wert.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Geräte vor Spielen verbergen</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Hauptschalter für HidHide-Geräteverbergung und Low-Level-Eingabe-Hooks. Bei Deaktivierung werden keine Geräte verborgen, unabhängig von den Einzelgeräteeinstellungen.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Fenster</value></data>
@@ -1302,7 +1303,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Spiele, die es laden</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Abfragerate</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Standard (globale Einstellung)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Während das Profil „{0}“ aktiv ist, gilt stattdessen: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Während das Profil „{0}“ aktiv ist, gilt stattdessen: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Speichert die Zuordnungen und Einstellungen aller Controller unter einem Namen. Es wird von selbst geladen, wenn eines seiner Spiele im Vordergrund ist.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Ein Profil wird von selbst geladen, wenn eines seiner Spiele im Vordergrund ist.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Beginnt ohne Controller. Es wird von selbst geladen, wenn eines seiner Spiele im Vordergrund ist.</value></data>

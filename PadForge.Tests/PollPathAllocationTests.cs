@@ -210,5 +210,25 @@ namespace PadForge.Tests
                 read(state, src, descriptor, Slot, Device, out _);
             }
         }
+
+        /// <summary>The idle countdown and the Quick Charge check run for
+        /// every device on every pass. Quick Charge's wired drop ran a
+        /// lambda that captured a local of the check, so the compiler
+        /// built the lambda's object at the check's entry: 24 bytes a
+        /// device a pass, and with twelve devices the poll thread's whole
+        /// 289 bytes a pass (measured 2026-11-16).</summary>
+        [Theory]
+        [InlineData(false, 0)]
+        [InlineData(true, 0)]
+        [InlineData(true, 300)]
+        public void TheIdleAndQuickChargeChecksAllocateNothing(bool quickCharge, int idleSeconds)
+        {
+            var device = new UserDevice { QuickChargeEnabled = quickCharge, IdleDisconnectSeconds = idleSeconds };
+            var state = new CustomInputState();
+            device.OldInputState = state;
+            long[] windows = AllocationWindow.Clean(
+                () => PadForge.Common.Input.InputManager.UpdateIdleDisconnect(device, state), 1000);
+            AssertNothing(windows);
+        }
     }
 }

@@ -105,7 +105,7 @@ namespace PadForge.Tests
             DialogTestHost.Run(() =>
             {
                 var dialog = new ProfileDialog();
-                dialog.LoadForEdit("Rocket League", new[] { @"C:\Games\RocketLeague.exe", @"D:\Other\Game_2.exe" }, pollingOverrideMs: 2);
+                dialog.LoadForEdit("Rocket League", new[] { @"C:\Games\RocketLeague.exe", @"D:\Other\Game_2.exe" }, pollingOverrideHz: 500);
                 var line = Part<Panel>(dialog, "GamesLine");
                 Assert.Equal(4, line.Children.Count);
                 var chips = line.Children.OfType<Border>().ToList();
@@ -128,7 +128,7 @@ namespace PadForge.Tests
                 Assert.Equal(Strings.Instance.ProfileDialog_Edit, dialog.Title);
                 Assert.Equal(Strings.Instance.ProfileDialog_EditDescription, dialog.Subtitle);
                 Assert.True(Part<Expander>(dialog, "ProfileMore").IsExpanded);
-                Assert.Equal(2, dialog.PollingOverrideMs);
+                Assert.Equal(500, dialog.PollingOverrideHz);
 
                 // A chip's remove takes its game off the list.
                 remove.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
@@ -173,7 +173,7 @@ namespace PadForge.Tests
                 edit.LoadForEdit("Desktop", Array.Empty<string>());
                 Assert.Equal(Strings.Instance.ProfileDialog_Edit, edit.Title);
                 Assert.False(Part<Expander>(edit, "ProfileMore").IsExpanded);
-                Assert.Equal(0, edit.PollingOverrideMs);
+                Assert.Equal(0, edit.PollingOverrideHz);
                 edit.Close();
             });
             // The New caller asks for the New look.
@@ -181,6 +181,55 @@ namespace PadForge.Tests
             int at = main.IndexOf("private void OnNewProfile(", StringComparison.Ordinal);
             Assert.True(at > 0);
             Assert.Contains("dialog.ForNew();", main.Substring(at, 300));
+        }
+
+        /// <summary>The polling rate box: following the global setting first,
+        /// then the rates fastest first, each with the time between two of
+        /// its passes. A profile whose rate is none of the choices, as one
+        /// saved at 3 ms before PadForge 6 is, gets an entry of its own in
+        /// its place, and a save of the dialog keeps it.</summary>
+        [Fact]
+        public void TheProfilesPollingRatesRunFastestFirst()
+        {
+            // A rate as the box writes it: in the culture's number form, with
+            // the interface language's two units.
+            static string Label(int hz) => PollingRates.Label(hz, System.Globalization.CultureInfo.CurrentCulture,
+                Strings.Instance.Common_Hz, Strings.Instance.Common_Ms);
+
+            DialogTestHost.Run(() =>
+            {
+                var fresh = new ProfileDialog();
+                var box = Part<ComboBox>(fresh, "PollingRateBox");
+                var entries = box.Items.Cast<string>().ToList();
+                Assert.Equal(Strings.Instance.ProfileDialog_PollingDefault, entries[0]);
+                Assert.Equal(PollingRates.Choices.Length + 1, entries.Count);
+                Assert.Equal(Label(10000), entries[1]);
+                Assert.Equal(Label(60), entries[^1]);
+                Assert.Equal(0, fresh.PollingOverrideHz);
+                box.SelectedIndex = 3;
+                Assert.Equal(4000, fresh.PollingOverrideHz);
+                fresh.Close();
+
+                var old = new ProfileDialog();
+                old.LoadForEdit("Old", Array.Empty<string>(), pollingOverrideHz: 333);
+                var oldBox = Part<ComboBox>(old, "PollingRateBox");
+                var oldEntries = oldBox.Items.Cast<string>().ToList();
+                Assert.Equal(PollingRates.Choices.Length + 2, oldEntries.Count);
+                Assert.Equal(333, old.PollingOverrideHz);
+                Assert.Equal(Label(333), (string)oldBox.SelectedItem);
+                // Between 500 and 250, where the list stays fastest first.
+                int at333 = oldBox.SelectedIndex;
+                Assert.Equal(Label(500), oldEntries[at333 - 1]);
+                Assert.Equal(Label(250), oldEntries[at333 + 1]);
+                old.Close();
+
+                // A rate outside the loop's range is held to it.
+                var wild = new ProfileDialog();
+                wild.LoadForEdit("Wild", Array.Empty<string>(), pollingOverrideHz: 50000);
+                Assert.Equal(10000, wild.PollingOverrideHz);
+                Assert.Equal(PollingRates.Choices.Length + 1, Part<ComboBox>(wild, "PollingRateBox").Items.Count);
+                wild.Close();
+            });
         }
 
         // ── The Shift Layer window ──

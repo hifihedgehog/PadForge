@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Մաքրել</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ոչ մէկ</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Չնշանակուած</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Սարքաւորումներու աջակցութիւն</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Գործարկման ժամանակ ինքնաբերաբար սկսիլ շարժիչը</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Շարունակել հարցումը, երբ պատուհանը կը կորսնցնէ կիզակէտը</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Հարցման ժամանակամիջոց (եթէ փրոֆիլ մը զայն չփոխարինէ)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Շարժիչը այս ժամանակամիջոցով կը հարցնէ սարքերը։ Երբ իր սեփական հարցման յաճախականութիւնը ունեցող փրոֆիլ մը գործօն է, անոր յաճախականութիւնը կը կիրարկուի։ Այս արժէքը կը վերադառնայ, երբ փրոֆիլը դադրի գործօն ըլլալէ։</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Հարցման յաճախականութիւն (եթէ փրոֆիլ մը զայն չփոխարինէ)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Շարժիչը բոլոր սարքերը կը կարդայ եւ վիրթուալ կառավարիչները կը թարմացնէ վայրկեանին այսքան անգամ, 60-էն մինչեւ 10000։ Աւելի բարձր յաճախականութիւնը մշակիչէն աւելի շատ ժամանակ կը գործածէ։ Windows-ը շարժիչը կ՚արթնցնէ առաւելագոյնը վայրկեանին մօտաւորապէս 2000 անգամ, ուստի աւելի բարձր յաճախականութեան պարագային շարժիչը ամէն արթնցումի ատեն քանի մը անցում կը կատարէ։ Երբ իր սեփական հարցման յաճախականութիւնը ունեցող փրոֆիլ մը գործօն է, անոր յաճախականութիւնը կը կիրարկուի։ Այս արժէքը կը վերադառնայ, երբ փրոֆիլը դադրի գործօն ըլլալէ։</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Թաքցնել սարքերը խաղերէն</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Գլխաւոր անջատիչ՝ HidHide-ով սարքեր թաքցնելու եւ ցածր մակարդակի մուտքի կարթերու համար։ Անջատուած ըլլալու պարագային ոչ մէկ սարք չի թաքցուիր՝ անկախ իւրաքանչիւր սարքի կարգաւորումներէն։</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Սարքերը թաքցուած պահել գործարկումներու միջեւ</value></data>
@@ -2480,7 +2481,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Զայն բեռնող խաղեր</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Հարցման յաճախականութիւն</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Լռելեայն (ընդհանուր կարգաւորում)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Փոխարինուած է, քանի դեռ «{0}» փրոֆիլը գործօն է՝ {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Փոխարինուած է, քանի դեռ «{0}» փրոֆիլը գործօն է՝ {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Ամէն կառավարիչի համապատասխանեցումները եւ կարգաւորումները կը պահէ մէկ անունի տակ։ Ինքնիրեն կը բեռնուի, երբ իր խաղերէն մէկը առջեւն է։</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Փրոֆիլը ինքնիրեն կը բեռնուի, երբ իր խաղերէն մէկը առջեւն է։</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Կը սկսի առանց կառավարիչներու։ Ինքնիրեն կը բեռնուի, երբ իր խաղերէն մէկը առջեւն է։</value></data>

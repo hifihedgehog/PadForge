@@ -27,7 +27,7 @@ namespace PadForge.ViewModels
         {
             "Window" => new[] { nameof(MinimizeToTray), nameof(CloseToTray), nameof(AlwaysShowTrayIcon), nameof(StartMinimized), nameof(StartAtLogin) },
             "Updates" => new[] { nameof(CheckForUpdatesAutomatically), nameof(InstallUpdatesAutomatically), nameof(IncludePreReleaseUpdates) },
-            "InputEngine" => new[] { nameof(AutoStartEngine), nameof(EnablePollingOnFocusLoss), nameof(PollingRateMs), nameof(HmInactivityDestroyTimeoutSeconds) },
+            "InputEngine" => new[] { nameof(AutoStartEngine), nameof(EnablePollingOnFocusLoss), nameof(PollingRateHz), nameof(HmInactivityDestroyTimeoutSeconds) },
             "AssignmentPrompts" => new[] { nameof(AssignOfferNewDevice), nameof(AssignOfferEmptySlot), nameof(AssignOfferHome) },
             "BatteryAlerts" => new[] { nameof(BatteryNotifyEnabled), nameof(BatteryNotifyThreshold), nameof(BatteryNotifyVibrate), nameof(BatteryNotifyRepeatMinutes), nameof(BatteryNotifyFull) },
             "Hardware" => new[] { nameof(FlydigiEnhancedProtocol), nameof(GKeysEnabled), nameof(AnalogKeyboardsEnabled), nameof(BlissBoxEnabled), nameof(HandheldButtonsEnabled), nameof(KeyboardScreensEnabled), nameof(NovintFalconEnabled) },
@@ -58,7 +58,7 @@ namespace PadForge.ViewModels
             nameof(BlissBoxEnabled) or
             nameof(KeyboardScreensEnabled) or
             nameof(NovintFalconEnabled) or
-            nameof(PollingRateMs) or
+            nameof(PollingRateHz) or
             nameof(HmInactivityDestroyTimeoutSeconds) or
             nameof(AssignOfferNewDevice) or
             nameof(AssignOfferEmptySlot) or
@@ -180,9 +180,9 @@ namespace PadForge.ViewModels
                     NovintFalconEnabled = false;
                     break;
                 }
-                case nameof(PollingRateMs):
+                case nameof(PollingRateHz):
                 {
-                    PollingRateMs = 1;
+                    PollingRateHz = PadForge.Common.Input.InputManager.DefaultPollingRateHz;
                     break;
                 }
                 case nameof(HmInactivityDestroyTimeoutSeconds):

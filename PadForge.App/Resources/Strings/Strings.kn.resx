@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>ತೆರವುಗೊಳಿಸಿ</value></data>
   <data name="Common_None" xml:space="preserve"><value>ಯಾವುದೂ ಇಲ್ಲ</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ಮಿ.ಸೆ.</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>ನಿಯೋಜಿಸಿಲ್ಲ</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -542,8 +543,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>ಹಾರ್ಡ್‌ವೇರ್ ಬೆಂಬಲ</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>ಲಾಂಚ್ ಆದಾಗ ಎಂಜಿನ್ ತಾನಾಗಿ ಪ್ರಾರಂಭಿಸಿ</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>ವಿಂಡೋ ಫೋಕಸ್ ಕಳೆದುಕೊಂಡಾಗಲೂ ಪೋಲಿಂಗ್ ಮುಂದುವರಿಸಿ</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>ಪೋಲಿಂಗ್ ಅಂತರ (ಪ್ರೊಫೈಲ್ ಅತಿಕ್ರಮಿಸದ ಹೊರತು)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>ಎಂಜಿನ್ ಈ ಅಂತರದಲ್ಲಿ ಸಾಧನಗಳನ್ನು ಪೋಲ್ ಮಾಡುತ್ತದೆ. ತನ್ನದೇ ಪೋಲಿಂಗ್ ದರವಿರುವ ಪ್ರೊಫೈಲ್ ಸಕ್ರಿಯವಾಗಿರುವಾಗ ಆ ದರ ಅನ್ವಯಿಸುತ್ತದೆ. ಪ್ರೊಫೈಲ್ ನಿಷ್ಕ್ರಿಯವಾದಾಗ ಈ ಮೌಲ್ಯ ಮರಳುತ್ತದೆ.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>ಪೋಲಿಂಗ್ ದರ (ಪ್ರೊಫೈಲ್ ಅತಿಕ್ರಮಿಸದ ಹೊರತು)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>ಎಂಜಿನ್ ಪ್ರತಿ ಸಾಧನವನ್ನು ಓದಿ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳನ್ನು ಸೆಕೆಂಡಿಗೆ ಇಷ್ಟು ಬಾರಿ ನವೀಕರಿಸುತ್ತದೆ, 60 ರಿಂದ 10000 ರವರೆಗೆ. ಹೆಚ್ಚಿನ ದರವು ಪ್ರೊಸೆಸರ್‌ನ ಹೆಚ್ಚು ಸಮಯವನ್ನು ಬಳಸುತ್ತದೆ. Windows ಎಂಜಿನ್ ಅನ್ನು ಸೆಕೆಂಡಿಗೆ ಗರಿಷ್ಠ ಸುಮಾರು 2000 ಬಾರಿ ಮಾತ್ರ ಎಚ್ಚರಿಸುತ್ತದೆ, ಆದ್ದರಿಂದ ಅದಕ್ಕಿಂತ ಹೆಚ್ಚಿನ ದರದಲ್ಲಿ ಪ್ರತಿ ಎಚ್ಚರಿಕೆಯಲ್ಲಿ ಹಲವು ಪಾಸ್‌ಗಳು ಓಡುತ್ತವೆ. ತನ್ನದೇ ಪೋಲಿಂಗ್ ದರವಿರುವ ಪ್ರೊಫೈಲ್ ಸಕ್ರಿಯವಾಗಿರುವಾಗ ಆ ದರ ಅನ್ವಯಿಸುತ್ತದೆ. ಪ್ರೊಫೈಲ್ ನಿಷ್ಕ್ರಿಯವಾದಾಗ ಈ ಮೌಲ್ಯ ಮರಳುತ್ತದೆ.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>ಆಟಗಳಿಂದ ಸಾಧನಗಳನ್ನು ಮರೆಮಾಡಿ</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide ಸಾಧನ ಮರೆಮಾಡುವಿಕೆ ಮತ್ತು ಕಡಿಮೆ-ಮಟ್ಟದ ಇನ್‌ಪುಟ್ ಹುಕ್‌ಗಳ ಮುಖ್ಯ ಸ್ವಿಚ್. ಆಫ್ ಆಗಿರುವಾಗ, ಪ್ರತಿ ಸಾಧನದ ಸೆಟ್ಟಿಂಗ್ಸ್ ಏನೇ ಇದ್ದರೂ ಯಾವುದೇ ಸಾಧನವನ್ನು ಮರೆಮಾಡುವುದಿಲ್ಲ.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>ಲಾಂಚ್‌ಗಳ ನಡುವೆ ಸಾಧನಗಳನ್ನು ಮರೆಮಾಡಿಯೇ ಇರಿಸಿ</value></data>
@@ -2483,7 +2484,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>ಅದನ್ನು ಲೋಡ್ ಮಾಡುವ ಆಟಗಳು</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>ಪೋಲಿಂಗ್ ದರ</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>ಡೀಫಾಲ್ಟ್ (ಜಾಗತಿಕ ಸೆಟ್ಟಿಂಗ್)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>“{0}” ಪ್ರೊಫೈಲ್ ಸಕ್ರಿಯವಾಗಿರುವಾಗ ಅತಿಕ್ರಮಿಸಲಾಗಿದೆ: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>“{0}” ಪ್ರೊಫೈಲ್ ಸಕ್ರಿಯವಾಗಿರುವಾಗ ಅತಿಕ್ರಮಿಸಲಾಗಿದೆ: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>ಪ್ರತಿ ಕಂಟ್ರೋಲರ್‌ನ ಮ್ಯಾಪಿಂಗ್‌ಗಳು ಮತ್ತು ಸೆಟ್ಟಿಂಗ್ಸ್ ಅನ್ನು ಒಂದು ಹೆಸರಿನಲ್ಲಿ ಉಳಿಸುತ್ತದೆ. ಅದರ ಒಂದು ಆಟ ಮುಂದಿರುವಾಗ ಅದು ತಾನಾಗಿ ಲೋಡ್ ಆಗುತ್ತದೆ.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>ಪ್ರೊಫೈಲ್‌ನ ಒಂದು ಆಟ ಮುಂದಿರುವಾಗ ಅದು ತಾನಾಗಿ ಲೋಡ್ ಆಗುತ್ತದೆ.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>ಯಾವುದೇ ಕಂಟ್ರೋಲರ್ ಇಲ್ಲದೆ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ. ಅದರ ಒಂದು ಆಟ ಮುಂದಿರುವಾಗ ಅದು ತಾನಾಗಿ ಲೋಡ್ ಆಗುತ್ತದೆ.</value></data>

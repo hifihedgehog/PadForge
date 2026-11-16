@@ -116,6 +116,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Página para a Direita</value></data>
   <data name="Common_None" xml:space="preserve"><value>Nenhum</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Não Atribuído</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -409,8 +410,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Suporte a Hardware</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Iniciar Motor Automaticamente ao Abrir</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continuar Polling Quando a Janela Perder o Foco</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervalo de Polling (Salvo se um Perfil o Substituir)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>O mecanismo consulta os dispositivos neste intervalo. Enquanto um perfil com taxa de polling própria estiver ativo, vale essa taxa. Este valor volta a valer quando o perfil é desativado.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Taxa de Polling (Salvo se um Perfil a Substituir)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>O mecanismo lê todos os dispositivos e atualiza os controles virtuais este número de vezes por segundo, de 60 a 10000. Uma taxa maior usa mais tempo do processador. O Windows ativa o mecanismo cerca de 2000 vezes por segundo no máximo, então uma taxa maior executa várias passagens a cada ativação. Enquanto um perfil com taxa de polling própria estiver ativo, vale essa taxa. Este valor volta a valer quando o perfil é desativado.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Ocultar Dispositivos dos Jogos</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Chave principal para ocultação de dispositivos via HidHide e hooks de entrada de baixo nível. Quando desativada, nenhum dispositivo é ocultado independentemente das configurações individuais.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Janela</value></data>
@@ -1302,7 +1303,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Jogos que o Carregam</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Taxa de Polling</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Padrão (Configuração Global)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Substituído enquanto o perfil “{0}” está ativo: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Substituído enquanto o perfil “{0}” está ativo: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Salva as configurações e os mapeamentos de cada controle sob um único nome. Ele é carregado sozinho quando um dos seus jogos está em primeiro plano.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Um perfil é carregado sozinho quando um dos seus jogos está em primeiro plano.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Começa sem controles. É carregado sozinho quando um dos seus jogos está em primeiro plano.</value></data>

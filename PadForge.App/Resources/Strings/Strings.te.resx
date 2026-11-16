@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>పేజీ కుడికి</value></data>
   <data name="Common_None" xml:space="preserve"><value>ఏదీ లేదు</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>కేటాయించలేదు</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>హార్డ్‌వేర్ మద్దతు</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>ప్రారంభంలో ఇంజిన్‌ను ఆటో-స్టార్ట్ చేయి</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>విండో ఫోకస్ కోల్పోయినప్పుడు కూడా పోలింగ్ కొనసాగించు</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>పోలింగ్ వ్యవధి (ప్రొఫైల్ మార్చకపోతే)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>ఇంజిన్ ఈ వ్యవధిలో పరికరాలను పోల్ చేస్తుంది. స్వంత పోలింగ్ రేటు ఉన్న ప్రొఫైల్ సక్రియంగా ఉన్నంత వరకు ఆ రేటు వర్తిస్తుంది. ప్రొఫైల్ నిష్క్రియం అయినప్పుడు ఈ విలువ తిరిగి వస్తుంది.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>పోలింగ్ రేటు (ప్రొఫైల్ మార్చకపోతే)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>ఇంజిన్ ప్రతి పరికరాన్ని చదివి, వర్చువల్ కంట్రోలర్లను సెకనుకు ఇన్నిసార్లు నవీకరిస్తుంది, ఈ సంఖ్య 60 నుండి 10000 వరకు ఉండవచ్చు. ఎక్కువ రేటు ప్రాసెసర్ సమయాన్ని ఎక్కువగా వినియోగిస్తుంది. Windows ఇంజిన్‌ను సెకనుకు గరిష్టంగా సుమారు 2000 సార్లు మాత్రమే మేల్కొలుపుతుంది, కాబట్టి అంతకంటే ఎక్కువ రేటులో ప్రతి మేల్కొలుపులో ఇంజిన్ అనేక పాస్‌లను నడుపుతుంది. స్వంత పోలింగ్ రేటు ఉన్న ప్రొఫైల్ సక్రియంగా ఉన్నంత వరకు ఆ రేటు వర్తిస్తుంది. ప్రొఫైల్ నిష్క్రియం అయినప్పుడు ఈ విలువ తిరిగి వస్తుంది.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>పరికరాలను గేమ్‌ల నుండి దాచు</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide పరికరాలను దాచడం, లో-లెవల్ ఇన్పుట్ హుక్‌ల కోసం మాస్టర్ స్విచ్. ఆఫ్‌లో ఉన్నప్పుడు, ఒక్కో పరికర సెట్టింగులతో సంబంధం లేకుండా ఏ పరికరమూ దాచబడదు.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>ప్రారంభాల మధ్య పరికరాలను దాచి ఉంచు</value></data>
@@ -2678,7 +2679,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>దీన్ని లోడ్ చేసే గేమ్‌లు</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>పోలింగ్ రేటు</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>డిఫాల్ట్ (గ్లోబల్ సెట్టింగ్)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>ప్రొఫైల్ “{0}” యాక్టివ్‌గా ఉన్నంత వరకు భర్తీ చేయబడింది: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>ప్రొఫైల్ “{0}” యాక్టివ్‌గా ఉన్నంత వరకు భర్తీ చేయబడింది: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>ప్రతి కంట్రోలర్ మ్యాపింగ్‌లను, సెట్టింగులను ఒకే పేరుతో సేవ్ చేస్తుంది. దాని గేమ్‌లలో ఒకటి ముందున్నప్పుడు అదే లోడ్ అవుతుంది.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>ప్రొఫైల్ దాని గేమ్‌లలో ఒకటి ముందున్నప్పుడు అదే లోడ్ అవుతుంది.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>కంట్రోలర్లు లేకుండా మొదలవుతుంది. దాని గేమ్‌లలో ఒకటి ముందున్నప్పుడు అదే లోడ్ అవుతుంది.</value></data>

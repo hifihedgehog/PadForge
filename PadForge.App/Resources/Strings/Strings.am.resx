@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>አጽዳ</value></data>
   <data name="Common_None" xml:space="preserve"><value>ምንም</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>አልተመደበም</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -543,8 +544,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>የሃርድዌር ድጋፍ</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>ሲከፈት ሞተሩን በራስ-ሰር አስጀምር</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>መስኮቱ ትኩረት ሲያጣ ንባቡን ቀጥል</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>የንባብ ክፍተት (መገለጫ ካልሻረው በስተቀር)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>ሞተሩ መሣሪያዎችን በዚህ ክፍተት ያነባል። የራሱ የንባብ ፍጥነት ያለው መገለጫ ንቁ ሲሆን፣ በምትኩ ያ ፍጥነት ይሠራል። መገለጫው ሲቦዝን ይህ እሴት ይመለሳል።</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>የንባብ ድግግሞሽ (መገለጫ ካልሻረው በስተቀር)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>ሞተሩ እያንዳንዱን መሣሪያ ያነባል እና ምናባዊ መቆጣጠሪያዎቹን በሰከንድ ይህን ያህል ጊዜ ያዘምናል፣ ከ60 እስከ 10000። ከፍ ያለ ድግግሞሽ ተጨማሪ የፕሮሰሰር ጊዜ ይወስዳል። Windows ሞተሩን በሰከንድ ቢበዛ ወደ 2000 ጊዜ ገደማ ይቀሰቅሳል፣ ስለዚህ ከዚያ በላይ ያለ ድግግሞሽ በእያንዳንዱ መቀስቀስ ብዙ ዙሮችን ያካሂዳል። የራሱ የንባብ ፍጥነት ያለው መገለጫ ንቁ ሲሆን፣ በምትኩ ያ ፍጥነት ይሠራል። መገለጫው ሲቦዝን ይህ እሴት ይመለሳል።</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>መሣሪያዎችን ከጨዋታዎች ደብቅ</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>ለHidHide የመሣሪያ መደበቂያ እና ለዝቅተኛ ደረጃ የግብዓት መንጠቆዎች ዋና ማብሪያ። ሲጠፋ፣ የእያንዳንዱ መሣሪያ ቅንብር ምንም ይሁን ምን ምንም መሣሪያ አይደበቅም።</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>መሣሪያዎችን በማስጀመሪያዎች መካከል እንደተደበቁ አቆይ</value></data>
@@ -2482,7 +2483,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>የሚጭኑት ጨዋታዎች</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>የንባብ ድግግሞሽ</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>ነባሪ (አጠቃላይ ቅንብር)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>መገለጫ «{0}» ገባሪ ሆኖ ሳለ ተሽሯል: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>መገለጫ «{0}» ገባሪ ሆኖ ሳለ ተሽሯል: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>የእያንዳንዱን መቆጣጠሪያ ማዛመጃዎችና ቅንብሮች በአንድ ስም ያስቀምጣል። ከጨዋታዎቹ አንዱ ፊት ለፊት ሲሆን በራሱ ይጫናል።</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>መገለጫ ከጨዋታዎቹ አንዱ ፊት ለፊት ሲሆን በራሱ ይጫናል።</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>ያለ መቆጣጠሪያዎች ይጀምራል። ከጨዋታዎቹ አንዱ ፊት ለፊት ሲሆን በራሱ ይጫናል።</value></data>

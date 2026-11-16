@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Sivu oikealle</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ei mitään</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Ei määritetty</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Laitteistotuki</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Käynnistä moottori ohjelman käynnistyessä</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Jatka kyselyä, kun ikkuna menettää kohdistuksen</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Kyselyväli (ellei profiili ohita sitä)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Moottori kysyy laitteiden tilaa tällä välillä. Kun aktiivisena on profiili, jolla on oma kyselytaajuus, käytetään sitä. Tämä arvo palaa käyttöön, kun profiili poistuu käytöstä.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Kyselytaajuus (ellei profiili ohita sitä)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Moottori lukee jokaisen laitteen ja päivittää virtuaaliohjaimet näin monta kertaa sekunnissa, vähintään 60 ja enintään 10000 kertaa. Suurempi taajuus käyttää enemmän suoritinaikaa. Windows herättää moottorin enintään noin 2000 kertaa sekunnissa, joten tätä suuremmalla taajuudella moottori suorittaa jokaisella herätyksellä useita kierroksia. Kun aktiivisena on profiili, jolla on oma kyselytaajuus, käytetään sitä. Tämä arvo palaa käyttöön, kun profiili poistuu käytöstä.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Piilota laitteet peleiltä</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Pääkytkin HidHide-laitepiilotukselle ja matalan tason syötekoukuille. Kun tämä on pois päältä, laitteita ei piiloteta laitekohtaisista asetuksista riippumatta.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Pidä laitteet piilotettuina käynnistysten välillä</value></data>
@@ -2678,7 +2679,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Pelit, jotka lataavat sen</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Kyselytaajuus</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Oletus (yleinen asetus)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Ohitettu, kun profiili ”{0}” on aktiivinen: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Ohitettu, kun profiili ”{0}” on aktiivinen: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Tallentaa kaikkien ohjainten määritykset ja asetukset yhden nimen alle. Se latautuu itsestään, kun jokin sen peleistä on etualalla.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profiili latautuu itsestään, kun jokin sen peleistä on etualalla.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Alkaa ilman ohjaimia. Se latautuu itsestään, kun jokin sen peleistä on etualalla.</value></data>

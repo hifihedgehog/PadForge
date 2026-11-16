@@ -239,7 +239,7 @@ namespace PadForge.Tests
                 var dialog = new ProfileDialog();
                 if (look == "new") dialog.ForNew();
                 if (look == "edit")
-                    dialog.LoadForEdit("Rocket League", new[] { @"C:\Games\RocketLeague.exe", @"D:\Other\Game_2.exe" }, pollingOverrideMs: 2);
+                    dialog.LoadForEdit("Rocket League", new[] { @"C:\Games\RocketLeague.exe", @"D:\Other\Game_2.exe" }, pollingOverrideHz: 500);
                 return dialog;
             });
         });

@@ -102,6 +102,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Sula</value></data>
   <data name="Common_None" xml:space="preserve"><value>Lutho</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Akwabiwe</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -1363,7 +1364,7 @@
   <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Igama</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Iphrofayela entsha</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Okuzenzakalelayo (isilungiselelo sohlelo lonke)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Kushintshwe ngesikhathi iphrofayela “{0}” isebenza: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Kushintshwe ngesikhathi iphrofayela “{0}” isebenza: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Ilondoloza ukumepha nezilungiselelo zazo zonke izilawuli ngaphansi kwegama elilodwa. Ilayishwa ngokwayo uma omunye wemidlalo yayo ungaphambili.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Iphrofayela ilayishwa ngokwayo uma omunye wemidlalo yayo ungaphambili.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Iqala ingenazo izilawuli. Ilayishwa ngokwayo uma omunye wemidlalo yayo ungaphambili.</value></data>

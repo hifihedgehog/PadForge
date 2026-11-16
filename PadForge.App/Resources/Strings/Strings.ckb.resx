@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>پاککردنەوە</value></data>
   <data name="Common_None" xml:space="preserve"><value>هیچ</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>دیارینەکراو</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>پشتگیریی ڕەقەکاڵا</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>دەستپێکردنی خۆکاری بزوێنەر لە کاتی کردنەوەدا</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>بەردەوامبوونی پشکنین کاتێک پەنجەرە سەرنج لەدەست دەدات</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>ماوەی پشکنین (مەگەر پرۆفایلێک بیگۆڕێت)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>بزوێنەر بەم ماوەیە ئامێرەکان دەپشکنێت. کاتێک پرۆفایلێک بە خێرایی پشکنینی خۆی چالاکە، ئەو خێراییە جێبەجێ دەکرێت. ئەم بەهایە دەگەڕێتەوە کاتێک پرۆفایلەکە ناچالاک دەبێت.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>ڕێژەی پشکنین (مەگەر پرۆفایلێک بیگۆڕێت)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>بزوێنەر هەموو ئامێرێک دەخوێنێتەوە و کۆنترۆڵەرە مەجازییەکان ئەوەندە جار لە چرکەیەکدا نوێ دەکاتەوە، لە 60 تا 10000. ڕێژەیەکی بەرزتر کاتی زیاتری پرۆسێسەر بەکاردەهێنێت. Windows لە زۆرترین حاڵەتدا نزیکەی 2000 جار لە چرکەیەکدا بزوێنەر بەئاگا دەهێنێتەوە، بۆیە ڕێژەیەکی بەرزتر لە هەر بەئاگاهێنانەوەیەکدا چەند خولێک جێبەجێ دەکات. کاتێک پرۆفایلێک بە خێرایی پشکنینی خۆی چالاکە، ئەو خێراییە جێبەجێ دەکرێت. ئەم بەهایە دەگەڕێتەوە کاتێک پرۆفایلەکە ناچالاک دەبێت.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>شاردنەوەی ئامێرەکان لە یارییەکان</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>سویچی سەرەکی بۆ شاردنەوەی ئامێر بە HidHide و هووکەکانی تێخستنی ئاستنزم. کاتێک کوژاوەیە، هیچ ئامێرێک ناشاردرێتەوە بەبێ گوێدانە ڕێکخستنی هەر ئامێرێک.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>ئامێرەکان لە نێوان کردنەوەکاندا شاراوە بهێڵەوە</value></data>
@@ -2482,7 +2483,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>ئەو یارییانەی باری دەکەن</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>ڕێژەی پشکنین</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>بنەڕەت (ڕێکخستنی گشتی)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>لە کاتێکدا پرۆفایلی «{0}» چالاکە گۆڕدراوە: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>لە کاتێکدا پرۆفایلی «{0}» چالاکە گۆڕدراوە: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>بەستنەوە و ڕێکخستنەکانی هەموو کۆنترۆڵەرێک لە ژێر یەک ناودا پاشەکەوت دەکات. خۆی بار دەبێت کاتێک یەکێک لە یارییەکانی لە پێشەوەیە.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>پرۆفایل خۆی بار دەبێت کاتێک یەکێک لە یارییەکانی لە پێشەوەیە.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>بێ هیچ کۆنترۆڵەرێک دەست پێدەکات. خۆی بار دەبێت کاتێک یەکێک لە یارییەکانی لە پێشەوەیە.</value></data>

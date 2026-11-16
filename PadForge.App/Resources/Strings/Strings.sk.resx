@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Strana doprava</value></data>
   <data name="Common_None" xml:space="preserve"><value>Žiadne</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Nepriradené</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Podpora hardvéru</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Automaticky spustiť jadro pri štarte</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Pokračovať v dotazovaní, keď okno nie je aktívne</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Interval dotazovania (ak ho neprepíše profil)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Jadro dotazuje zariadenia v tomto intervale. Kým je aktívny profil s vlastnou frekvenciou dotazovania, platí namiesto toho jeho frekvencia. Táto hodnota sa vráti, keď sa profil deaktivuje.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Frekvencia dotazovania (ak ju neprepíše profil)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Jadro načíta každé zariadenie a aktualizuje virtuálne ovládače toľkokrát za sekundu, od 60 do 10000. Vyššia frekvencia využíva viac procesorového času. Windows prebúdza jadro najviac približne 2000-krát za sekundu, takže pri vyššej frekvencii sa pri každom prebudení vykoná niekoľko prechodov. Kým je aktívny profil s vlastnou frekvenciou dotazovania, platí namiesto toho jeho frekvencia. Táto hodnota sa vráti, keď sa profil deaktivuje.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Skryť zariadenia pred hrami</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Hlavný vypínač skrývania zariadení cez HidHide a nízkoúrovňových háčikov vstupu. Keď je vypnutý, nie sú skryté žiadne zariadenia bez ohľadu na nastavenia jednotlivých zariadení.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Ponechať zariadenia skryté medzi spusteniami</value></data>
@@ -2678,7 +2679,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Hry, ktoré ho načítajú</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Frekvencia dotazovania</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Predvolené (globálne nastavenie)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Prepísané, kým je aktívny profil „{0}“: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Prepísané, kým je aktívny profil „{0}“: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Uloží mapovania a nastavenia všetkých ovládačov pod jedným názvom. Načíta sa sám, keď je vpredu jedna z jeho hier.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profil sa načíta sám, keď je vpredu jedna z jeho hier.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Začína bez ovládačov. Načíta sa sám, keď je vpredu jedna z jeho hier.</value></data>

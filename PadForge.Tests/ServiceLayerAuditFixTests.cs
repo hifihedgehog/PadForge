@@ -94,10 +94,9 @@ namespace PadForge.Tests
         /// value lives on the manager, so reading the setting reported a rate
         /// the loop was not using and sized the gyro smoothing window from it.</summary>
         [Fact]
-        public void TheReportedPollRateFollowsTheResolvedInterval()
+        public void TheReportedPollRateFollowsTheResolvedRate()
         {
-            Assert.Contains("_inputManager?.PollingIntervalMs ?? (_mainVm?.Settings?.PollingRateMs ?? 0)",
-                InputService());
+            Assert.Contains("if (_inputManager != null) return _inputManager.PollingRateHz;", InputService());
         }
 
         // C96: a single-slot edit reset every slot's menu runtime.

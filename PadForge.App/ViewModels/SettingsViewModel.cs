@@ -1383,16 +1383,20 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _pollingOverrideNote, value);
         }
 
-        private int _pollingRateMs = 1;
+        private int _pollingRateHz = PadForge.Common.Input.InputManager.DefaultPollingRateHz;
 
         /// <summary>
-        /// Target polling interval in milliseconds. Lower = faster but more CPU.
-        /// Valid range: 1–16.
+        /// How many times a second the engine reads the devices and updates
+        /// the virtual controllers, from 60 to 10000. A higher rate shortens
+        /// the wait between an input and the pass that carries it, and
+        /// costs processor time.
         /// </summary>
-        public int PollingRateMs
+        public int PollingRateHz
         {
-            get => _pollingRateMs;
-            set => SetProperty(ref _pollingRateMs, Math.Clamp(value, 1, 16));
+            get => _pollingRateHz;
+            set => SetProperty(ref _pollingRateHz, Math.Clamp(value,
+                PadForge.Common.Input.InputManager.MinPollingRateHz,
+                PadForge.Common.Input.InputManager.MaxPollingRateHz));
         }
 
         private int _hmInactivityDestroyTimeoutSeconds = 60;

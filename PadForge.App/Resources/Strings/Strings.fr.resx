@@ -116,6 +116,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Page vers la droite</value></data>
   <data name="Common_None" xml:space="preserve"><value>Aucun</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Non assigné</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -409,8 +410,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Prise en charge matérielle</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Démarrer automatiquement le moteur au lancement</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continuer la scrutation en arrière-plan</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervalle de scrutation (sauf si un profil le remplace)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Le moteur interroge les périphériques à cet intervalle. Tant qu’un profil avec son propre taux de scrutation est actif, ce taux s’applique. Cette valeur reprend effet quand le profil se désactive.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Taux de scrutation (sauf si un profil le remplace)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Le moteur lit chaque périphérique et met à jour les contrôleurs virtuels ce nombre de fois par seconde, de 60 à 10000. Un taux plus élevé consomme plus de temps processeur. Windows réveille le moteur environ 2000 fois par seconde au maximum, donc un taux plus élevé exécute plusieurs passes à chaque réveil. Tant qu’un profil avec son propre taux de scrutation est actif, ce taux s’applique. Cette valeur reprend effet quand le profil se désactive.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Masquer les appareils des jeux</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Commutateur principal pour le masquage des appareils HidHide et les hooks d'entrée bas niveau. Lorsque désactivé, aucun appareil n'est masqué quels que soient les paramètres individuels.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Fenêtre</value></data>
@@ -1302,7 +1303,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Jeux qui le chargent</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Taux de scrutation</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Par défaut (réglage global)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Remplacé tant que le profil « {0} » est actif : {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Remplacé tant que le profil « {0} » est actif : {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Enregistre les mappages et les paramètres de chaque contrôleur sous un même nom. Il se charge de lui-même quand l'un de ses jeux est au premier plan.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Un profil se charge de lui-même quand l'un de ses jeux est au premier plan.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Démarre sans contrôleur. Il se charge de lui-même quand l'un de ses jeux est au premier plan.</value></data>

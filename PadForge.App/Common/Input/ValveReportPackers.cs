@@ -191,11 +191,13 @@ namespace PadForge.Common.Input
         internal static ushort PadPressure(bool touched, bool clicked)
             => touched || clicked ? FullPadPressure : (ushort)0;
 
-        /// <summary>A monotonic clock in microseconds for the 2026 pad's IMU
-        /// timestamp, wrapping every 71.6 minutes as its 32-bit word does.
-        /// SDL_hidapi_steam_triton.c (274 to 277) moves its sensor clock by
-        /// the word's difference from the last report, in microseconds, and
-        /// its Uint32 subtraction carries across the wrap.</summary>
+        /// <summary>A monotonic clock in microseconds for the clocks the
+        /// persona frames carry: the 2026 pad's IMU timestamp, the SInput
+        /// frame's, and the DualShock 4's frame timestamp. It wraps every
+        /// 71.6 minutes as a 32-bit word does. SDL_hidapi_steam_triton.c
+        /// (274 to 277) moves its sensor clock by the word's difference from
+        /// the last report, in microseconds, and its Uint32 subtraction
+        /// carries across the wrap.</summary>
         internal static uint MicrosNow()
         {
             long ticks = System.Diagnostics.Stopwatch.GetTimestamp();

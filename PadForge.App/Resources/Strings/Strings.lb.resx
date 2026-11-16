@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Eidelmaachen</value></data>
   <data name="Common_None" xml:space="preserve"><value>Keng</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Net zougewisen</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -542,8 +543,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Hardware-Ënnerstëtzung</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Engine beim Start automatesch starten</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Weider ofroen, wann d'Fënster de Fokus verléiert</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Ofrointervall (ausser e Profil iwwerschreift en)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>D'Engine freet d'Apparater an dësem Intervall of. Soulaang e Profil mat enger eegener Ofrofrequenz aktiv ass, gëllt amplaz dës Frequenz. Dëse Wäert gëllt nees, wann de Profil desaktivéiert gëtt.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Ofrofrequenz (ausser e Profil iwwerschreift se)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>D'Engine liest all Apparat aus an aktualiséiert déi virtuell Controller sou vill Mol pro Sekonn, vu 60 bis 10000. Eng méi héich Frequenz brauch méi Prozessorzäit. Windows weckt d'Engine héchstens ongeféier 2000 Mol pro Sekonn, dofir mécht d'Engine bei enger méi héijer Frequenz e puer Duerchgäng bei all Wecken. Soulaang e Profil mat enger eegener Ofrofrequenz aktiv ass, gëllt amplaz dës Frequenz. Dëse Wäert gëllt nees, wann de Profil desaktivéiert gëtt.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Apparater virun de Spiller verstoppen</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Haaptschalter fir d'Verstoppe vun Apparater duerch HidHide an d'Low-Level-Agab-Hooks. Wann en aus ass, gëtt keen Apparat verstoppt, egal wéi d'Astellunge pro Apparat sinn.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Apparater iwwer Neistarte verstoppt halen</value></data>
@@ -2475,7 +2476,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Neit Profil</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Spiller, déi et lueden</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Standard (global Astellung)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Wärend d'Profil „{0}“ aktiv ass, gëllt amplaz: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Wärend d'Profil „{0}“ aktiv ass, gëllt amplaz: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Späichert d'Zouuerdnungen an d'Astellunge vun all Controller ënner engem Numm. Et lued sech vum selwen, wann ee vu senge Spiller am Virdergrond ass.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>E Profil lued sech vum selwen, wann ee vu senge Spiller am Virdergrond ass.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Fänkt ouni Controller un. Et lued sech vum selwen, wann ee vu senge Spiller am Virdergrond ass.</value></data>

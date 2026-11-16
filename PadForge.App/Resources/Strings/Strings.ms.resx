@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Kosongkan</value></data>
   <data name="Common_None" xml:space="preserve"><value>Tiada</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Belum ditetapkan</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Sokongan Perkakasan</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Mulakan Enjin Secara Automatik semasa Pelancaran</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Teruskan Pengundian Apabila Tetingkap Hilang Fokus</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Selang Pengundian (Melainkan Profil Mengatasinya)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Enjin mengundi peranti pada selang ini. Semasa profil dengan kadar pengundiannya sendiri aktif, kadar itu digunakan sebaliknya. Nilai ini kembali apabila profil dinyahaktifkan.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Kadar Pengundian (Melainkan Profil Mengatasinya)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Enjin membaca setiap peranti dan mengemas kini pengawal maya sebanyak ini kali sesaat, dari 60 hingga 10000. Kadar yang lebih tinggi menggunakan lebih banyak masa pemproses. Windows membangunkan enjin kira-kira 2000 kali sesaat paling banyak, jadi kadar yang lebih tinggi menjalankan beberapa laluan pada setiap kali enjin dibangunkan. Semasa profil dengan kadar pengundiannya sendiri aktif, kadar itu digunakan sebaliknya. Nilai ini kembali apabila profil dinyahaktifkan.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Sembunyikan Peranti daripada Permainan</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Suis induk untuk penyembunyian peranti HidHide dan cangkuk input aras rendah. Apabila dimatikan, tiada peranti disembunyikan tanpa mengira tetapan setiap peranti.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Kekalkan Peranti Tersamar Antara Pelancaran</value></data>
@@ -2488,7 +2489,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Permainan yang Memuatkannya</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Kadar Pengundian</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Lalai (Tetapan Global)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Ditindih semasa profil “{0}” aktif: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Ditindih semasa profil “{0}” aktif: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Menyimpan pemetaan dan tetapan setiap pengawal di bawah satu nama. Ia dimuatkan sendiri apabila salah satu permainannya berada di hadapan.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profil dimuatkan sendiri apabila salah satu permainannya berada di hadapan.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Bermula tanpa pengawal. Ia dimuatkan sendiri apabila salah satu permainannya berada di hadapan.</value></data>

@@ -601,7 +601,7 @@ namespace PadForge
                      or nameof(SettingsViewModel.DiagnosticsLoggingEnabled)
                      or nameof(SettingsViewModel.StartAtLogin)
                      or nameof(SettingsViewModel.EnablePollingOnFocusLoss)
-                     or nameof(SettingsViewModel.PollingRateMs)
+                     or nameof(SettingsViewModel.PollingRateHz)
                      or nameof(SettingsViewModel.HmInactivityDestroyTimeoutSeconds)
                      or nameof(SettingsViewModel.EnableInputHiding)
                      or nameof(SettingsViewModel.HandheldButtonsEnabled)
@@ -6796,7 +6796,7 @@ namespace PadForge
 
             string name = dialog.ProfileName;
             string exePaths = string.Join("|", dialog.ExecutablePaths);
-            var profile = _inputService.CreateEmptyProfile(name, exePaths, dialog.PollingOverrideMs);
+            var profile = _inputService.CreateEmptyProfile(name, exePaths, dialog.PollingOverrideHz);
 
             var listItem = new ViewModels.ProfileListItem
             {
@@ -6818,7 +6818,7 @@ namespace PadForge
 
             string name = dialog.ProfileName;
             string exePaths = string.Join("|", dialog.ExecutablePaths);
-            var snapshot = _inputService.CreateSnapshotProfile(name, exePaths, dialog.PollingOverrideMs);
+            var snapshot = _inputService.CreateSnapshotProfile(name, exePaths, dialog.PollingOverrideHz);
 
             var listItem = new ViewModels.ProfileListItem
             {
@@ -7211,12 +7211,12 @@ namespace PadForge
                 : profile.ExecutableNames.Split('|', StringSplitOptions.RemoveEmptyEntries);
 
             var dialog = new Views.ProfileDialog { Owner = this };
-            dialog.LoadForEdit(profile.Name, exePaths, profile.PollingRateOverrideMs);
+            dialog.LoadForEdit(profile.Name, exePaths, profile.PollingRateOverrideHz);
             if (dialog.ShowDialog() != true) return;
 
             string newName = dialog.ProfileName;
             string newExePaths = string.Join("|", dialog.ExecutablePaths);
-            _inputService.EditProfile(selected.Id, newName, newExePaths, dialog.PollingOverrideMs);
+            _inputService.EditProfile(selected.Id, newName, newExePaths, dialog.PollingOverrideHz);
 
             selected.Name = newName;
             selected.Executables = InputService.FormatExePaths(newExePaths);

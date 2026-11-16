@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>صفحہ دائیں</value></data>
   <data name="Common_None" xml:space="preserve"><value>کوئی نہیں</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ملی سیکنڈ</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>ہرٹز</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>غیر تفویض شدہ</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>ہارڈویئر سپورٹ</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>لانچ پر انجن خودکار طور پر شروع کریں</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>ونڈو کا فوکس ختم ہونے پر بھی پولنگ جاری رکھیں</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>پولنگ کا وقفہ (جب تک کوئی پروفائل اسے اوور رائیڈ نہ کرے)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>انجن اسی وقفے سے آلات کو پول کرتا ہے۔ جب تک اپنے پولنگ ریٹ والا کوئی پروفائل فعال ہو، اس کی جگہ وہی ریٹ لاگو ہوتا ہے۔ پروفائل کے غیر فعال ہونے پر یہ قدر واپس آ جاتی ہے۔</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>پولنگ ریٹ (جب تک کوئی پروفائل اسے اوور رائیڈ نہ کرے)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>انجن ہر سیکنڈ میں اتنی بار تمام آلات کو پڑھتا ہے اور ورچوئل کنٹرولرز کو اپ ڈیٹ کرتا ہے، یہ تعداد 60 سے 10000 تک ہو سکتی ہے۔ زیادہ ریٹ پروسیسر کا زیادہ وقت استعمال کرتا ہے۔ Windows انجن کو ایک سیکنڈ میں زیادہ سے زیادہ تقریباً 2000 بار جگاتا ہے، اس لیے اس سے زیادہ ریٹ پر انجن ہر بار جاگنے پر کئی پاس چلاتا ہے۔ جب تک اپنے پولنگ ریٹ والا کوئی پروفائل فعال ہو، اس کی جگہ وہی ریٹ لاگو ہوتا ہے۔ پروفائل کے غیر فعال ہونے پر یہ قدر واپس آ جاتی ہے۔</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>آلات کو گیمز سے چھپائیں</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide کے ذریعے آلات چھپانے اور نچلی سطح کے ان پٹ ہکس کا مرکزی سوئچ۔ آف ہونے پر کوئی آلہ نہیں چھپایا جاتا، چاہے ہر آلے کی اپنی ترتیبات کچھ بھی ہوں۔</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>لانچز کے درمیان آلات چھپے رکھیں</value></data>
@@ -2678,7 +2679,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>وہ گیمز جو اسے لوڈ کرتے ہیں</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>پولنگ ریٹ</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>ڈیفالٹ (عمومی ترتیب)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>جب تک پروفائل "{0}" فعال ہے اوور رائیڈ ہے: {1} ملی سیکنڈ</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>جب تک پروفائل "{0}" فعال ہے اوور رائیڈ ہے: {1} ہرٹز</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>ہر کنٹرولر کی میپنگز اور ترتیبات کو ایک نام کے تحت محفوظ کرتا ہے۔ اس کا کوئی گیم سامنے ہو تو یہ خود لوڈ ہو جاتا ہے۔</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>پروفائل اس کا کوئی گیم سامنے ہونے پر خود لوڈ ہو جاتا ہے۔</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>بغیر کسی کنٹرولر کے شروع ہوتا ہے۔ اس کا کوئی گیم سامنے ہو تو یہ خود لوڈ ہو جاتا ہے۔</value></data>

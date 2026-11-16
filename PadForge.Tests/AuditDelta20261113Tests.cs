@@ -172,9 +172,9 @@ namespace PadForge.Tests
         {
             string service = Service();
             int from = service.IndexOf("internal void ApplyEffectivePollingRate()", StringComparison.Ordinal);
-            string apply = service.Substring(from, service.IndexOf("internal static int ResolvePollingMs(", from, StringComparison.Ordinal) - from);
+            string apply = service.Substring(from, service.IndexOf("private void ResetRuntimeStateForProfileSwitch()", from, StringComparison.Ordinal) - from);
             Assert.DoesNotContain("if (_inputManager == null) return;", apply);
-            Assert.Matches(@"if \(_inputManager != null\)\s+_inputManager\.PollingIntervalMs =", apply);
+            Assert.Matches(@"if \(_inputManager != null\)\s+_inputManager\.PollingRateHz =", apply);
             Assert.Contains("settingsVm.PollingOverrideNote =", apply);
         }
 
@@ -698,8 +698,8 @@ namespace PadForge.Tests
             Assert.Matches(@"private void SaveButton_Click\(object sender, RoutedEventArgs e\)\s+\{(\s+//[^\n]*)+\s+if \(System\.Windows\.Input\.Keyboard\.FocusedElement is System\.Windows\.Controls\.TextBox typed\)\s+typed\.GetBindingExpression\(System\.Windows\.Controls\.TextBox\.TextProperty\)\?\.UpdateSource\(\);",
                 Text("PadForge.App", "Views", "ShiftActivatorDialog.xaml.cs"));
             string profile = Text("PadForge.App", "Views", "ProfileDialog.xaml.cs");
-            Assert.Contains("=> _pollingMs[System.Math.Clamp(PollingRateBox.SelectedIndex, 0, _pollingMs.Count - 1)];", profile);
-            Assert.Contains("_pollingMs.Insert(idx, ms);", profile);
+            Assert.Contains("=> _pollingHz[System.Math.Clamp(PollingRateBox.SelectedIndex, 0, _pollingHz.Count - 1)];", profile);
+            Assert.Contains("_pollingHz.Insert(idx, hz);", profile);
             Assert.DoesNotContain("PollingRateBox.SelectedIndex = idx >= 0 ? idx : 0;", profile);
 
             string home = Text("PadForge.App", "Views", "HomePage.xaml.cs");

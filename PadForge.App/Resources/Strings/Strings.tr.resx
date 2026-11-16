@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Sayfa Sağa</value></data>
   <data name="Common_None" xml:space="preserve"><value>Yok</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Atanmamış</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Donanım desteği</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Açılışta motoru otomatik başlat</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Pencere odağı kaybedince yoklamayı sürdür</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Yoklama aralığı (bir profil geçersiz kılmadıkça)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Motor, cihazları bu aralıkla yoklar. Kendi yoklama hızı olan bir profil etkinken onun hızı geçerli olur. Profil devre dışı kalınca bu değer geri gelir.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Yoklama hızı (bir profil geçersiz kılmadıkça)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Motor, tüm cihazları okur ve sanal kontrolcüleri saniyede bu kadar kez günceller, 60 ile 10000 arasında. Daha yüksek bir hız işlemci zamanının daha fazlasını kullanır. Windows motoru saniyede en fazla yaklaşık 2000 kez uyandırır, bu yüzden daha yüksek bir hız her uyanışta birkaç geçiş çalıştırır. Kendi yoklama hızı olan bir profil etkinken onun hızı geçerli olur. Profil devre dışı kalınca bu değer geri gelir.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Cihazları oyunlardan gizle</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide cihaz gizleme ve düşük düzeyli giriş kancaları için ana anahtar. Kapalıyken, cihaz başına ayarlar ne olursa olsun hiçbir cihaz gizlenmez.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Açılışlar arasında cihazları gizli tut</value></data>
@@ -2678,7 +2679,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Yükleyen oyunlar</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Yoklama hızı</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Varsayılan (genel ayar)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>“{0}” profili etkinken geçersiz kılınır: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>“{0}” profili etkinken geçersiz kılınır: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Her kontrolcünün eşlemelerini ve ayarlarını tek bir ad altında kaydeder. Oyunlarından biri öndeyken kendiliğinden yüklenir.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Bir profil, oyunlarından biri öndeyken kendiliğinden yüklenir.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Kontrolcüsüz başlar. Oyunlarından biri öndeyken kendiliğinden yüklenir.</value></data>

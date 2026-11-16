@@ -145,7 +145,7 @@ namespace PadForge.Tests
             {
                 MinimizeToTray = true, CloseToTray = true, AlwaysShowTrayIcon = true, StartMinimized = true, StartAtLogin = true,
                 CheckForUpdatesAutomatically = false, InstallUpdatesAutomatically = true, IncludePreReleaseUpdates = true,
-                AutoStartEngine = false, EnablePollingOnFocusLoss = false, PollingRateMs = 8, HmInactivityDestroyTimeoutSeconds = 5,
+                AutoStartEngine = false, EnablePollingOnFocusLoss = false, PollingRateHz = 125, HmInactivityDestroyTimeoutSeconds = 5,
                 AssignOfferNewDevice = false, AssignOfferEmptySlot = false, AssignOfferHome = false,
                 BatteryNotifyEnabled = false, BatteryNotifyThreshold = 30, BatteryNotifyVibrate = true,
                 BatteryNotifyRepeatMinutes = 10, BatteryNotifyFull = true,
@@ -166,7 +166,7 @@ namespace PadForge.Tests
             Assert.False(vm.IncludePreReleaseUpdates);
             Assert.True(vm.AutoStartEngine);
             Assert.True(vm.EnablePollingOnFocusLoss);
-            Assert.Equal(1, vm.PollingRateMs);
+            Assert.Equal(1000, vm.PollingRateHz);
             Assert.Equal(60, vm.HmInactivityDestroyTimeoutSeconds);
             Assert.True(vm.AssignOfferNewDevice);
             Assert.True(vm.AssignOfferEmptySlot);

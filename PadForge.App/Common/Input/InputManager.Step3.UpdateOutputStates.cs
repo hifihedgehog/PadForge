@@ -701,13 +701,26 @@ namespace PadForge.Common.Input
         // delta-accel and region-easing stacks are deliberate v2 tuning.
         private const float FpsAimDeadzone = 0.042f;
 
-        // Per-(device, slot) last-update timestamps for FPS Mouse, so the
-        // synthesized velocity is pixels-per-second rather than
-        // pixels-per-poll (the poll loop targets 1 kHz but the velocity
-        // must not scale with its actual rate). Stopwatch-based for
-        // sub-millisecond resolution.
+        // Per-(device, slot) last-update timestamps for FPS Mouse, whose
+        // deflection is scaled by the length of the pass
+        // (FpsPassSeconds). Stopwatch-based for sub-millisecond resolution.
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<
             (string Dev, int Slot), long> _fpsLastTick = new();
+
+        /// <summary>The pass length FPS Mouse scales its deflection by: the
+        /// time since the row's last pass, no less than the reference pass
+        /// (<see cref="PadForge.Engine.Common.Mapping.SourceCoercion.ReferencePassSeconds"/>)
+        /// and no more than 50 ms, or the reference pass on the row's first.
+        /// The controller spends the deflection over its own pass length, so
+        /// the cursor's speed goes with this one: without the floor it was a
+        /// tenth as fast at 10000 passes a second as at 1000.</summary>
+        internal static float FpsPassSeconds(long prevTicks, long nowTicks, long ticksPerSecond)
+        {
+            float reference = (float)PadForge.Engine.Common.Mapping.SourceCoercion.ReferencePassSeconds;
+            return prevTicks > 0
+                ? Math.Clamp((float)(nowTicks - prevTicks) / ticksPerSecond, reference, 0.05f)
+                : reference;
+        }
 
         /// <summary>The lineage's three-segment fpsmouse response curve on a
         /// deadzone-normalized magnitude in [0..1]. Shared with the unit
@@ -796,12 +809,10 @@ namespace PadForge.Common.Input
                 // relative lane. The evaluated aim already carries the
                 // Pointer-tab smoothing and per-source sensitivity (the
                 // slot-scoped tuned read), and the KBM VC's sub-pixel
-                // accumulator provides the lineage's remainder carry. Speed
-                // is normalized so the lineage default (35 px per 10 ms
-                // report) lands at the same pixels-per-second here: the VC
-                // moves MouseSensitivity(15) px per poll at full deflection,
-                // polls run ~1 kHz, so full-scale delta * (speed / 150)
-                // yields speed * 100 px/s.
+                // accumulator provides the lineage's remainder carry. The
+                // speed knob is the lineage's pixels per 10 ms report, 35 by
+                // default. What it comes to here is worked out below, where
+                // the deflection is scaled.
                 float ax = raw.MouseAbsValid && irDroveMouseX ? raw.MouseAbsX : 0f;
                 float ay = raw.MouseAbsValid && irDroveMouseY ? raw.MouseAbsY : 0f;
                 raw.MouseAbsX = 0f; raw.MouseAbsY = 0f; raw.MouseAbsValid = false;
@@ -820,20 +831,20 @@ namespace PadForge.Common.Input
                 float norm = Math.Min(1f, (mag - FpsAimDeadzone) / (1f - FpsAimDeadzone));
                 float outMag = FpsResponseCurve(norm);
                 float speed = Math.Clamp(pm?.fpsSpeed ?? 35f, 1f, 200f);
-                // Time-based velocity: the speed knob is the lineage's
-                // pixels per 10 ms report, i.e. speed * 100 px/s at full
-                // deflection. The VC applies MouseSensitivity (15 px at
-                // full scale) per submit, so per-update full-scale counts
-                // = 32767 * (speed * 100 / 15) * dtSeconds. At the poll
-                // loop's nominal 1 kHz this reduces to the lineage-matched
-                // speed / 150 per tick, but measuring dt keeps the cursor
-                // speed correct if the poll cadence ever varies.
+                // The deflection is full scale times (speed * 100 / 15) times
+                // the pass's length, which was written for a controller
+                // that moved 15 px a submit. The controller now spends a
+                // deflection as a rate, 1200 px/s at full scale over its
+                // own pass length, so the two lengths multiply: full aim
+                // asks it for 8 px/s for each unit of the speed knob at
+                // 1000 passes a second, and for less on shorter passes in
+                // proportion. The floor holds a pass under a millisecond to
+                // the millisecond's deflection, so the cursor moves at 4000
+                // or 10000 passes a second as it does at 1000.
                 long nowTicks = System.Diagnostics.Stopwatch.GetTimestamp();
                 long prevTicks = _fpsLastTick.TryGetValue(key, out var pt) ? pt : 0;
                 _fpsLastTick[key] = nowTicks;
-                float dtSec = prevTicks > 0
-                    ? Math.Clamp((float)(nowTicks - prevTicks) / System.Diagnostics.Stopwatch.Frequency, 0f, 0.05f)
-                    : 0.001f;
+                float dtSec = FpsPassSeconds(prevTicks, nowTicks, System.Diagnostics.Stopwatch.Frequency);
                 float scale = outMag * 32767f * (speed * 100f / 15f) * dtSec / mag;
                 if (irDroveMouseX)
                     raw.MouseDeltaX = (short)Math.Clamp((int)(ax * scale), short.MinValue, short.MaxValue);

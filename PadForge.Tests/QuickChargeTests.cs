@@ -79,7 +79,7 @@ namespace PadForge.Tests
 
             // The fresh-connection stamp must NOT touch the edge memory.
             string src = RepoText("PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs");
-            int idle = src.IndexOf("private static void UpdateIdleDisconnect(", StringComparison.Ordinal);
+            int idle = src.IndexOf("internal static void UpdateIdleDisconnect(", StringComparison.Ordinal);
             Assert.True(idle > 0);
             string stamp = src.Substring(idle, src.IndexOf("if (ud.IdleDisconnectSeconds <= 0)", idle) - idle);
             Assert.DoesNotContain("QuickChargePrevCharging = ", stamp);
@@ -115,9 +115,14 @@ namespace PadForge.Tests
             Assert.Contains("DeviceTransport.IsBluetooth(ud.DevicePath", body);
             Assert.Contains("BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath", body);
             Assert.Contains("FireIdleDisconnect(ud);", body);
-            // Wired-rebind shape: radio drop by the record's own MAC.
+            // Wired-rebind shape: radio drop by the record's own MAC. The
+            // drop's lambda captures its serial in a method of its own, so
+            // the check itself captures nothing and allocates nothing a pass
+            // (PollPathAllocationTests).
             Assert.Contains("BluetoothLinkHelper.TryParseAddress(ud.SerialNumber", body);
-            Assert.Contains("BluetoothLinkHelper.TryDisconnect(qcSerial)", body);
+            Assert.Contains("DropRadioByAddress(ud.SerialNumber);", body);
+            Assert.Contains("BluetoothLinkHelper.TryDisconnect(serial)", body);
+            Assert.DoesNotContain("Task.Run", body.Substring(0, body.IndexOf("private static void DropRadioByAddress", StringComparison.Ordinal)));
             // Diagnosability: all four outcomes print.
             Assert.Equal(4, body.Split("QUICKCHARGE ").Length - 1);
             // The cross-record scan stays gone, and so does its latch.

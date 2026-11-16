@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Ikklirja</value></data>
   <data name="Common_None" xml:space="preserve"><value>L-ebda</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Mhux assenjat</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Appoġġ tal-hardware</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Ibda l-magna awtomatikament mat-tnedija</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Kompli l-polling meta t-tieqa titlef il-fokus</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervall tal-polling (sakemm profil ma jbiddlux)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>L-engine jagħmel polling tal-apparati f'dan l-intervall. Waqt li jkun attiv profil b'rata tal-polling tiegħu, tapplika dik ir-rata minflok. Dan il-valur jerġa' japplika meta l-profil jiġi deattivat.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Rata tal-polling (sakemm profil ma jbiddlux)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>L-engine taqra kull apparat u taġġorna l-kontrolluri virtwali dan l-għadd ta' drabi kull sekonda, minn 60 sa 10000. Rata ogħla tuża aktar ħin tal-proċessur. Windows iqajjem l-engine madwar 2000 darba kull sekonda l-aktar, għalhekk rata ogħla tmexxi diversi passi f'kull qawmien. Waqt li jkun attiv profil b'rata tal-polling tiegħu, tapplika dik ir-rata minflok. Dan il-valur jerġa' japplika meta l-profil jiġi deattivat.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Aħbi l-apparati mil-logħob</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Swiċċ ewlieni għall-ħabi tal-apparati b'HidHide u għall-hooks tal-input ta' livell baxx. Meta jkun mitfi, l-ebda apparat ma jinħeba, irrispettivament mis-settings ta' kull apparat.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Żomm l-apparati moħbija bejn sessjoni u oħra</value></data>
@@ -2464,7 +2465,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Logħbiet li jgħabbuh</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Rata ta' polling</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Default (setting globali)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Mibdul waqt li l-profil “{0}” huwa attiv: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Mibdul waqt li l-profil “{0}” huwa attiv: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Jissejvja l-mappjar u s-settings ta' kull kontrollur taħt isem wieħed. Jitgħabba waħdu meta waħda mil-logħbiet tiegħu tkun quddiem.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profil jitgħabba waħdu meta waħda mil-logħbiet tiegħu tkun quddiem.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Jibda mingħajr kontrolluri. Jitgħabba waħdu meta waħda mil-logħbiet tiegħu tkun quddiem.</value></data>

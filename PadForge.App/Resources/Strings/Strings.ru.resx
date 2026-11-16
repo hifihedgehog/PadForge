@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Страница вправо</value></data>
   <data name="Common_None" xml:space="preserve"><value>Нет</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>мс</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Гц</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Не назначено</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Поддержка оборудования</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Автозапуск движка при старте программы</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Продолжать опрос, когда окно теряет фокус</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Интервал опроса (если профиль не задает свой)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Движок опрашивает устройства с этим интервалом. Пока активен профиль с собственной частотой опроса, действует она. Когда профиль перестает быть активным, это значение возвращается.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Частота опроса (если профиль не задает свою)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Движок опрашивает все устройства и обновляет виртуальные контроллеры столько раз в секунду, от 60 до 10000. Чем выше частота, тем больше времени процессора она занимает. Windows пробуждает движок не чаще 2000 раз в секунду, поэтому при более высокой частоте за каждое пробуждение выполняется несколько проходов. Пока активен профиль с собственной частотой опроса, действует она. Когда профиль перестает быть активным, это значение возвращается.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Скрывать устройства от игр</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Главный переключатель скрытия устройств через HidHide и низкоуровневых перехватчиков ввода. Когда он выключен, устройства не скрываются, какими бы ни были настройки отдельных устройств.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Сохранять маскировку устройств между запусками</value></data>
@@ -2678,7 +2679,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Игры, которые его загружают</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Частота опроса</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>По умолчанию (общая настройка)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Переопределено, пока активен профиль «{0}»: {1} мс</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Переопределено, пока активен профиль «{0}»: {1} Гц</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Сохраняет назначения и настройки всех контроллеров под одним названием. Профиль загружается сам, когда на переднем плане одна из его игр.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Профиль загружается сам, когда на переднем плане одна из его игр.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Начинается без контроллеров. Загружается сам, когда на переднем плане одна из его игр.</value></data>

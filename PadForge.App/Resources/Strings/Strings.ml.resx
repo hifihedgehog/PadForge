@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>മായ്ക്കുക</value></data>
   <data name="Common_None" xml:space="preserve"><value>ഒന്നുമില്ല</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>നിയോഗിച്ചിട്ടില്ല</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>ഹാർഡ്വെയർ പിന്തുണ</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>ലോഞ്ചിൽ എഞ്ചിൻ സ്വയം ആരംഭിക്കുക</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>വിൻഡോയ്ക്ക് ഫോക്കസ് നഷ്ടപ്പെടുമ്പോഴും പോളിംഗ് തുടരുക</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>പോളിംഗ് ഇടവേള (പ്രൊഫൈൽ അസാധുവാക്കുന്നില്ലെങ്കിൽ)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>എഞ്ചിൻ ഈ ഇടവേളയിൽ ഉപകരണങ്ങൾ പോൾ ചെയ്യുന്നു. സ്വന്തം പോളിംഗ് നിരക്കുള്ള പ്രൊഫൈൽ സജീവമായിരിക്കുമ്പോൾ ആ നിരക്ക് ബാധകമാകും. പ്രൊഫൈൽ നിർജീവമാകുമ്പോൾ ഈ മൂല്യം തിരികെ വരും.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>പോളിംഗ് നിരക്ക് (പ്രൊഫൈൽ അസാധുവാക്കുന്നില്ലെങ്കിൽ)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>എഞ്ചിൻ എല്ലാ ഉപകരണങ്ങളും വായിക്കുകയും വെർച്വൽ കൺട്രോളറുകൾ അപ്ഡേറ്റ് ചെയ്യുകയും ചെയ്യുന്നത് സെക്കൻഡിൽ ഇത്രയും തവണയാണ്, 60 മുതൽ 10000 വരെ. ഉയർന്ന നിരക്ക് പ്രോസസ്സറിന്റെ കൂടുതൽ സമയം ഉപയോഗിക്കുന്നു. Windows എഞ്ചിനെ സെക്കൻഡിൽ പരമാവധി ഏകദേശം 2000 തവണ മാത്രമേ ഉണർത്തൂ, അതിനാൽ ഉയർന്ന നിരക്കിൽ ഓരോ ഉണർത്തലിലും എഞ്ചിൻ പല പാസുകൾ ഓടിക്കുന്നു. സ്വന്തം പോളിംഗ് നിരക്കുള്ള പ്രൊഫൈൽ സജീവമായിരിക്കുമ്പോൾ ആ നിരക്ക് ബാധകമാകും. പ്രൊഫൈൽ നിർജീവമാകുമ്പോൾ ഈ മൂല്യം തിരികെ വരും.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>ഗെയിമുകളിൽ നിന്ന് ഉപകരണങ്ങൾ മറയ്ക്കുക</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide ഉപകരണം മറയ്ക്കലിനും ലോ-ലെവൽ ഇൻപുട്ട് ഹുക്കുകൾക്കുമുള്ള പ്രധാന സ്വിച്ച്. ഓഫായിരിക്കുമ്പോൾ, ഓരോ ഉപകരണത്തിന്റെയും ക്രമീകരണം പരിഗണിക്കാതെ ഒരു ഉപകരണവും മറയ്ക്കില്ല.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>ലോഞ്ചുകൾക്കിടയിൽ ഉപകരണങ്ങൾ മറച്ചുനിർത്തുക</value></data>
@@ -2482,7 +2483,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>ലോഡ് ചെയ്യുന്ന ഗെയിമുകൾ</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>പോളിംഗ് നിരക്ക്</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>സ്ഥിരസ്ഥിതി (ആഗോള ക്രമീകരണം)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>പ്രൊഫൈൽ “{0}” സജീവമായിരിക്കുമ്പോൾ അസാധുവാക്കിയിരിക്കുന്നു: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>പ്രൊഫൈൽ “{0}” സജീവമായിരിക്കുമ്പോൾ അസാധുവാക്കിയിരിക്കുന്നു: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>ഓരോ കൺട്രോളറിന്റെയും മാപ്പിംഗുകളും ക്രമീകരണങ്ങളും ഒരു പേരിൽ സേവ് ചെയ്യുന്നു. അതിന്റെ ഒരു ഗെയിം മുന്നിലെത്തുമ്പോൾ സ്വയം ലോഡ് ആകും.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>ഒരു പ്രൊഫൈലിന്റെ ഒരു ഗെയിം മുന്നിലെത്തുമ്പോൾ അത് സ്വയം ലോഡ് ആകും.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>കൺട്രോളറുകളില്ലാതെ തുടങ്ങുന്നു. അതിന്റെ ഒരു ഗെയിം മുന്നിലെത്തുമ്പോൾ സ്വയം ലോഡ് ആകും.</value></data>

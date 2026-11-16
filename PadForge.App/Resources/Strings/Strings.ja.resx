@@ -116,6 +116,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>1 ページ右へ</value></data>
   <data name="Common_None" xml:space="preserve"><value>なし</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>未割り当て</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -409,8 +410,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>ハードウェア対応</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>起動時にエンジンを自動開始する</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>ウィンドウがフォーカスを失ってもポーリングを継続する</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>ポーリング間隔（プロファイルが上書きしない限り）</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>エンジンはこの間隔でデバイスをポーリングします。独自のポーリングレートを持つプロファイルが有効な間はそのレートが適用され、無効になるとこの値に戻ります。</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>ポーリングレート（プロファイルが上書きしない限り）</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>エンジンは、すべてのデバイスを読み取って仮想コントローラーを更新する処理を、1秒あたりこの回数（60から10000まで）行います。レートを上げると、プロセッサの使用時間が増えます。Windowsがエンジンを起こすのは多くても毎秒約2000回なので、それより高いレートでは、起こされるたびに複数回のパスを実行します。独自のポーリングレートを持つプロファイルが有効な間はそのレートが適用され、無効になるとこの値に戻ります。</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>ゲームからデバイスを隠す</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide によるデバイス非表示と低レベル入力フックのマスタースイッチです。オフの場合、個別デバイスの設定に関わらずすべてのデバイスが表示されます。</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>ウィンドウ</value></data>
@@ -1302,7 +1303,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>読み込むゲーム</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>ポーリングレート</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>既定（グローバル設定）</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>プロファイル「{0}」が有効な間は上書きされます: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>プロファイル「{0}」が有効な間は上書きされます: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>すべてのコントローラーのマッピングと設定を 1 つの名前で保存します。ゲームのどれかが前面に来ると、自動的に読み込まれます。</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>プロファイルは、ゲームのどれかが前面に来ると自動的に読み込まれます。</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>コントローラーなしで始まります。ゲームのどれかが前面に来ると、自動的に読み込まれます。</value></data>

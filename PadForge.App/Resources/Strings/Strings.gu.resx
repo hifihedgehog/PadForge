@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>સાફ કરો</value></data>
   <data name="Common_None" xml:space="preserve"><value>કોઈ નહીં</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>અસાઇન કરેલ નથી</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>હાર્ડવેર સપોર્ટ</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>લૉન્ચ પર એન્જિન આપોઆપ શરૂ કરો</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>વિન્ડો ફોકસ ગુમાવે ત્યારે પણ પોલિંગ ચાલુ રાખો</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>પોલિંગ અંતરાલ (પ્રોફાઇલ ઓવરરાઇડ ન કરે ત્યારે)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>એન્જિન આ અંતરાલે ઉપકરણોને પોલ કરે છે. પોતાના પોલિંગ દરવાળી પ્રોફાઇલ સક્રિય હોય ત્યારે તે દર લાગુ પડે છે. પ્રોફાઇલ નિષ્ક્રિય થાય ત્યારે આ મૂલ્ય પાછું આવે છે.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>પોલિંગ રેટ (પ્રોફાઇલ ઓવરરાઇડ ન કરે ત્યારે)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>એન્જિન દર સેકન્ડે આટલી વાર દરેક ઉપકરણને વાંચે છે અને વર્ચ્યુઅલ કંટ્રોલર અપડેટ કરે છે, 60 થી 10000 સુધી. ઊંચો રેટ પ્રોસેસરનો વધુ સમય વાપરે છે. Windows એન્જિનને દર સેકન્ડે વધુમાં વધુ લગભગ 2000 વાર જગાડે છે, તેથી તેનાથી ઊંચા રેટ પર દરેક વખતે એન્જિન ઘણા પાસ ચલાવે છે. પોતાના પોલિંગ દરવાળી પ્રોફાઇલ સક્રિય હોય ત્યારે તે દર લાગુ પડે છે. પ્રોફાઇલ નિષ્ક્રિય થાય ત્યારે આ મૂલ્ય પાછું આવે છે.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>ગેમ્સથી ઉપકરણો છુપાવો</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide ઉપકરણ છુપાવવા અને લો-લેવલ ઇનપુટ હુક્સ માટેનું મુખ્ય સ્વિચ. બંધ હોય ત્યારે, ઉપકરણ-દીઠ સેટિંગ્સ ગમે તે હોય, કોઈ ઉપકરણ છુપાવાતું નથી.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>લૉન્ચ વચ્ચે ઉપકરણો ક્લોક રાખો</value></data>
@@ -2486,7 +2487,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>તેને લોડ કરતી ગેમ</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>પોલિંગ રેટ</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>ડિફોલ્ટ (વૈશ્વિક સેટિંગ)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>પ્રોફાઇલ “{0}” સક્રિય હોય ત્યારે ઓવરરાઇડ થયેલ: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>પ્રોફાઇલ “{0}” સક્રિય હોય ત્યારે ઓવરરાઇડ થયેલ: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>દરેક કંટ્રોલરના મેપિંગ અને સેટિંગ્સ એક નામ હેઠળ સાચવે છે. તેની કોઈ ગેમ આગળ હોય ત્યારે તે આપોઆપ લોડ થાય છે.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>પ્રોફાઇલની કોઈ ગેમ આગળ હોય ત્યારે તે આપોઆપ લોડ થાય છે.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>કોઈ કંટ્રોલર વિના શરૂ થાય છે. તેની કોઈ ગેમ આગળ હોય ત્યારે તે આપોઆપ લોડ થાય છે.</value></data>

@@ -22,33 +22,24 @@ namespace PadForge.Views
 
         public ObservableCollection<string> ExecutablePaths { get; } = new();
 
-        /// <summary>The polling override choices, by interval (#365).
-        /// Index 0 is the "follow the global setting" sentinel (0 ms).</summary>
-        private static readonly int[] PollingChoicesMs = { 0, 1, 2, 4, 8, 16 };
+        /// <summary>Chosen polling override in passes a second, 0 = follow
+        /// the global setting (the ProfileData sentinel).</summary>
+        public int PollingOverrideHz
+            => _pollingHz[System.Math.Clamp(PollingRateBox.SelectedIndex, 0, _pollingHz.Count - 1)];
 
-        /// <summary>Chosen polling override in milliseconds, 0 = follow the
-        /// global setting (the ProfileData sentinel).</summary>
-        public int PollingOverrideMs
-            => _pollingMs[System.Math.Clamp(PollingRateBox.SelectedIndex, 0, _pollingMs.Count - 1)];
-
-        /// <summary>The intervals the box holds, entry for entry: the six
-        /// choices, and a profile's own interval when it is none of them.</summary>
-        private readonly System.Collections.Generic.List<int> _pollingMs = new(PollingChoicesMs);
+        /// <summary>The rates the box holds, entry for entry and fastest
+        /// first after the "follow the global setting" entry (0): the
+        /// choices of <see cref="PollingRates.Choices"/> (#365), and a
+        /// profile's own rate when it is none of them.</summary>
+        private readonly List<int> _pollingHz = new() { 0 };
 
         public ProfileDialog()
         {
             InitializeComponent();
 
             ExecutablePaths.CollectionChanged += (_, _) => RebuildGames();
-            PollingRateBox.ItemsSource = new[]
-            {
-                Strings.Instance.ProfileDialog_PollingDefault,
-                "1000 Hz (1 ms)",
-                "500 Hz (2 ms)",
-                "250 Hz (4 ms)",
-                "125 Hz (8 ms)",
-                "62.5 Hz (16 ms)",
-            };
+            _pollingHz.AddRange(PollingRates.Choices);
+            PollingRateBox.ItemsSource = PollingEntries();
             PollingRateBox.SelectedIndex = 0;
             NameBox.Text = Strings.Instance.ProfileDialog_DefaultName;
             NameBox.Focus();
@@ -66,33 +57,45 @@ namespace PadForge.Views
         /// <summary>
         /// Pre-populates the dialog for editing an existing profile.
         /// </summary>
-        public void LoadForEdit(string name, IEnumerable<string> exePaths, int pollingOverrideMs = 0)
+        public void LoadForEdit(string name, IEnumerable<string> exePaths, int pollingOverrideHz = 0)
         {
             NameBox.Text = name;
             ExecutablePaths.Clear();
             foreach (var p in exePaths)
                 ExecutablePaths.Add(p);
-            // The engine holds an override to 1..16 ms, so that is what a
-            // stored one means. An interval the six choices do not hold (a
-            // hand-edited file) gets an entry of its own: shown as "follow
-            // the global setting", a save of this dialog wrote 0 over it.
-            int ms = pollingOverrideMs <= 0 ? 0 : System.Math.Min(pollingOverrideMs, 16);
-            int idx = _pollingMs.IndexOf(ms);
+            // The engine holds an override to the range its loop runs in,
+            // so that is what a stored one means. A rate the choices do not
+            // hold (a profile from before PadForge 6 at 3 ms, a hand-edited
+            // file) gets an entry of its own: shown as "follow the global
+            // setting", a save of this dialog wrote 0 over it.
+            int hz = pollingOverrideHz <= 0 ? 0 : PollingRates.Resolve(pollingOverrideHz, pollingOverrideHz);
+            int idx = _pollingHz.IndexOf(hz);
             if (idx < 0)
             {
-                idx = _pollingMs.FindIndex(held => held > ms);
-                if (idx < 0) idx = _pollingMs.Count;
-                _pollingMs.Insert(idx, ms);
-                var entries = new System.Collections.Generic.List<string>((string[])PollingRateBox.ItemsSource);
-                entries.Insert(idx, string.Format(System.Globalization.CultureInfo.InvariantCulture,
-                    "{0:0.#} Hz ({1} ms)", 1000.0 / ms, ms));
-                PollingRateBox.ItemsSource = entries.ToArray();
+                // After the follow entry, where the list stays fastest first.
+                idx = _pollingHz.FindIndex(1, held => held < hz);
+                if (idx < 0) idx = _pollingHz.Count;
+                _pollingHz.Insert(idx, hz);
+                PollingRateBox.ItemsSource = PollingEntries();
             }
             PollingRateBox.SelectedIndex = idx;
             Title = Strings.Instance.ProfileDialog_Edit;
             Subtitle = Strings.Instance.ProfileDialog_EditDescription;
             // A profile with a rate of its own shows it: More opens on it.
             ProfileMore.IsExpanded = PollingRateBox.SelectedIndex != 0;
+        }
+
+        /// <summary>The box's entries as it shows them: the words for
+        /// following the global setting, then each rate with the time
+        /// between two of its passes.</summary>
+        private string[] PollingEntries()
+        {
+            var entries = new string[_pollingHz.Count];
+            entries[0] = Strings.Instance.ProfileDialog_PollingDefault;
+            for (int i = 1; i < entries.Length; i++)
+                entries[i] = PollingRates.Label(_pollingHz[i], System.Globalization.CultureInfo.CurrentCulture,
+                    Strings.Instance.Common_Hz, Strings.Instance.Common_Ms);
+            return entries;
         }
 
         /// <summary>A game's file name, as its chip shows it. A stored entry

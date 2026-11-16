@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Maak skoon</value></data>
   <data name="Common_None" xml:space="preserve"><value>Geen</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Nie toegewys nie</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Hardeware-ondersteuning</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Begin enjin outomaties by opstart</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Gaan voort met peil wanneer die venster fokus verloor</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Peilinterval (tensy 'n profiel dit oorheers)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Die enjin peil toestelle teen hierdie interval. Terwyl 'n profiel met sy eie peilfrekwensie aktief is, geld daardie frekwensie in die plek. Hierdie waarde kom terug wanneer die profiel deaktiveer.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Pollingfrekwensie (tensy 'n profiel dit oorheers)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Die enjin lees elke toestel en werk die virtuele controllers soveel keer per sekonde op, van 60 tot 10000. 'n Hoër frekwensie gebruik meer verwerkertyd. Windows maak die enjin hoogstens ongeveer 2000 keer per sekonde wakker, so 'n hoër frekwensie voer by elke wakker word etlike rondtes uit. Terwyl 'n profiel met sy eie peilfrekwensie aktief is, geld daardie frekwensie in die plek. Hierdie waarde kom terug wanneer die profiel deaktiveer.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Versteek toestelle vir speletjies</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Hoofskakelaar vir HidHide-toestelversteking en laevlak-invoerhake. Wanneer dit af is, word geen toestelle versteek nie, ongeag per-toestel-instellings.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Hou toestelle versteek tussen lanserings</value></data>
@@ -2458,7 +2459,7 @@
   <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Naam</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Nuwe profiel</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Pollingfrekwensie</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Oorskryf terwyl profiel “{0}” aktief is: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Oorskryf terwyl profiel “{0}” aktief is: {1} Hz</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Kopieer vanaf</value></data>

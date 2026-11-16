@@ -38,9 +38,12 @@ namespace PadForge.Common.Input
     /// </summary>
     internal static class SonyReportPackers
     {
-        /// <summary>Packs the host-frame state into <paramref name="dest"/>
-        /// (must be at least 63 bytes — exactly the data portion of a 64-byte
-        /// USB Report 0x01).</summary>
+        /// <summary>Packs the host-frame state into <paramref name="dest"/>,
+        /// which holds at least 63 bytes, the data portion of a 64-byte USB
+        /// Report 0x01. <paramref name="frameCounter"/> counts the frames
+        /// sent, and <paramref name="micros"/> is the time of this one in
+        /// microseconds (<see cref="ValveReportPackers.MicrosNow"/>), which
+        /// the DualShock 4 frame carries as its timestamp.</summary>
         internal delegate void Packer(
             in Gamepad gp,
             in TouchpadState tp,
@@ -48,6 +51,7 @@ namespace PadForge.Common.Input
             byte batteryPercent,
             bool charging,
             uint frameCounter,
+            uint micros,
             Span<byte> dest);
 
         /// <summary>HM profile ID → packer. Only USB-shape profiles (Report
@@ -110,9 +114,14 @@ namespace PadForge.Common.Input
         private const int Ds4TouchWidth = 1920;
         private const int Ds4TouchHeight = 943;
 
+        /// <summary>The DualShock 4's 16-bit frame timestamp for a time in
+        /// microseconds. Its unit is 16/3 of a microsecond (5.33 µs), and
+        /// it wraps every 349.5 ms as the pad's own does.</summary>
+        internal static ushort Ds4Timestamp(uint micros) => (ushort)((ulong)micros * 3 / 16);
+
         private static void PackDs4UsbReport01(
             in Gamepad gp, in TouchpadState tp, in MotionSnapshot motion,
-            byte batteryPercent, bool charging, uint frameCounter, Span<byte> dest)
+            byte batteryPercent, bool charging, uint frameCounter, uint micros, Span<byte> dest)
         {
             dest.Clear();
 
@@ -165,11 +174,17 @@ namespace PadForge.Common.Input
             dest[7] = (byte)(gp.LeftTrigger  >> 8);
             dest[8] = (byte)(gp.RightTrigger >> 8);
 
-            // Timestamp (bytes 9-10): 16-bit LE, ~187.5 LSB / ms in stock DS4
-            // firmware. Just feed an incrementing 16-bit counter; games use
-            // it to detect duplicate or stale frames, not to derive wall
-            // clock time.
-            ushort ts = (ushort)(frameCounter * 188);
+            // Timestamp (bytes 9-10): 16-bit LE, the time of the frame.
+            // Readers take the difference between two frames as the time
+            // between them: SDL adds it to its sensor clock
+            // (SDL_hidapi_ps4.c, "Sensor timestamp is in 5.33us units") and
+            // DS4Windows hands it to its gyro as the elapsed time
+            // (DS4Device.cs, deltaTimeCurrent = tempDelta * 16u / 3u). The
+            // frame counter times 188 stood here, one millisecond a frame,
+            // which is the pad's clock only at 1000 frames a second: at any
+            // other rate a reader's gyro turned too far or too little by the
+            // ratio, ten times too far at 10000.
+            ushort ts = Ds4Timestamp(micros);
             dest[9]  = (byte)(ts & 0xFF);
             dest[10] = (byte)(ts >> 8);
 
@@ -278,7 +293,7 @@ namespace PadForge.Common.Input
 
         private static void PackDualSenseUsbReport01(
             in Gamepad gp, in TouchpadState tp, in MotionSnapshot motion,
-            byte batteryPercent, bool charging, uint frameCounter, Span<byte> dest)
+            byte batteryPercent, bool charging, uint frameCounter, uint micros, Span<byte> dest)
         {
             dest.Clear();
 

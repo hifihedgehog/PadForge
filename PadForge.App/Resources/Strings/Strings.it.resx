@@ -116,6 +116,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Pagina a destra</value></data>
   <data name="Common_None" xml:space="preserve"><value>Nessuno</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Non assegnato</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -409,8 +410,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Supporto hardware</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Avvia automaticamente il motore all'apertura</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continua il polling quando la finestra perde il focus</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervallo di polling (salvo che un profilo lo sostituisca)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Il motore interroga i dispositivi con questo intervallo. Finché è attivo un profilo con una propria frequenza di polling, si applica quella. Questo valore torna in vigore quando il profilo si disattiva.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Frequenza di polling (salvo che un profilo la sostituisca)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Il motore legge ogni dispositivo e aggiorna i controller virtuali questo numero di volte al secondo, da 60 a 10000. Una frequenza più alta usa più tempo del processore. Windows riattiva il motore al massimo circa 2000 volte al secondo, quindi con una frequenza più alta ogni riattivazione esegue più passaggi. Finché è attivo un profilo con una propria frequenza di polling, si applica quella. Questo valore torna in vigore quando il profilo si disattiva.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Nascondi dispositivi ai giochi</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Interruttore generale per il nascondimento dei dispositivi con HidHide e gli hook di input a basso livello. Quando disattivato, nessun dispositivo viene nascosto indipendentemente dalle impostazioni per dispositivo.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Finestra</value></data>
@@ -1302,7 +1303,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Giochi che lo caricano</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Frequenza di polling</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Predefinita (impostazione globale)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Sostituito mentre il profilo “{0}” è attivo: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Sostituito mentre il profilo “{0}” è attivo: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Salva le mappature e le impostazioni di ogni controller sotto un unico nome. Si carica da solo quando uno dei suoi giochi è in primo piano.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Un profilo si carica da solo quando uno dei suoi giochi è in primo piano.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Parte senza controller. Si carica da solo quando uno dei suoi giochi è in primo piano.</value></data>

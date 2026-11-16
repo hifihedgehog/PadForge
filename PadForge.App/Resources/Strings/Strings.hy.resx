@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Մաքրել</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ոչ մեկը</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>մվ</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Հց</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Չնշանակված</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Սարքավորման աջակցություն</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Մեխանիզմի ինքնամեկնարկ գործարկման ժամանակ</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Շարունակել հարցումը, երբ պատուհանը կորցնում է կիզակետը</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Հարցման միջակայք (եթե պրոֆիլը չի վերագրում)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Մեխանիզմը սարքերին հարցում է կատարում այս միջակայքով։ Եթե ակտիվ է սեփական հարցման հաճախականությամբ պրոֆիլ, գործում է այդ հաճախականությունը։ Այս արժեքը վերադառնում է, երբ պրոֆիլը ապաակտիվանում է։</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Հարցման հաճախականություն (եթե պրոֆիլը չի վերագրում)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Մեխանիզմը կարդում է բոլոր սարքերը և թարմացնում վիրտուալ կառավարիչները վայրկյանում այդքան անգամ՝ 60-ից մինչև 10000։ Ավելի բարձր հաճախականությունը ավելի շատ պրոցեսորային ժամանակ է օգտագործում։ Windows-ը մեխանիզմը արթնացնում է վայրկյանում առավելագույնը մոտ 2000 անգամ, ուստի ավելի բարձր հաճախականության դեպքում մեխանիզմը յուրաքանչյուր արթնացման ժամանակ մի քանի անցում է կատարում։ Եթե ակտիվ է սեփական հարցման հաճախականությամբ պրոֆիլ, գործում է այդ հաճախականությունը։ Այս արժեքը վերադառնում է, երբ պրոֆիլը ապաակտիվանում է։</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Թաքցնել սարքերը խաղերից</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide-ով սարքերի թաքցման և ցածր մակարդակի մուտքի կեռերի գլխավոր անջատիչ։ Երբ անջատված է, ոչ մի սարք չի թաքցվում՝ անկախ սարքի առանձին կարգավորումներից։</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Թողնել սարքերը քողարկված գործարկումների միջև</value></data>
@@ -2478,7 +2479,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Խաղեր, որոնք այն բեռնում են</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Հարցման հաճախականություն</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Լռելյայն (ընդհանուր կարգավորում)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Վերասահմանված է «{0}» պրոֆիլի ակտիվության ընթացքում՝ {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Վերասահմանված է «{0}» պրոֆիլի ակտիվության ընթացքում՝ {1} Հց</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Պահում է յուրաքանչյուր կառավարչի կապակցումներն ու կարգավորումները մեկ անվան տակ։ Այն բեռնվում է ինքնաբերաբար, երբ նրա խաղերից մեկը առջևում է։</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Պրոֆիլը բեռնվում է ինքնաբերաբար, երբ նրա խաղերից մեկը առջևում է։</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Սկսվում է առանց կառավարիչների։ Այն բեռնվում է ինքնաբերաբար, երբ նրա խաղերից մեկը առջևում է։</value></data>

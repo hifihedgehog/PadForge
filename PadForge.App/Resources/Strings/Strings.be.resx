@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Старонка ўправа</value></data>
   <data name="Common_None" xml:space="preserve"><value>Няма</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>мс</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Гц</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Не прызначана</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Падтрымка абсталявання</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Аўтаматычна запускаць рухавік пры старце</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Працягваць апытанне, калі акно губляе фокус</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Інтэрвал апытання (калі профіль не перавызначае яго)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Рухавік апытвае прылады з гэтым інтэрвалам. Пакуль актыўны профіль з уласнай частатой апытання, дзейнічае яго частата. Гэта значэнне вяртаецца, калі профіль дэактывуецца.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Частата апытання (калі профіль не перавызначае яе)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Рухавік счытвае кожную прыладу і абнаўляе віртуальныя кантролеры столькі разоў у секунду, ад 60 да 10000. Чым вышэйшая частата, тым больш часу працэсара яна займае. Windows абуджае рухавік не больш за каля 2000 разоў у секунду, таму пры больш высокай частаце рухавік выконвае некалькі праходаў за кожнае абуджэнне. Пакуль актыўны профіль з уласнай частатой апытання, дзейнічае яго частата. Гэта значэнне вяртаецца, калі профіль дэактывуецца.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Хаваць прылады ад гульняў</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Галоўны перамыкач для хавання прылад праз HidHide і нізкаўзроўневых перахопаў уводу. Калі ён выключаны, ніякія прылады не хаваюцца, незалежна ад налад асобных прылад.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Трымаць прылады схаванымі паміж запускамі</value></data>
@@ -2678,7 +2679,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Гульні, якія яго загружаюць</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Частата апытання</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Па змаўчанні (агульная налада)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Перавызначана, пакуль актыўны профіль «{0}»: {1} мс</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Перавызначана, пакуль актыўны профіль «{0}»: {1} Гц</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Захоўвае прызначэнні і налады ўсіх кантролераў пад адной назвай. Загружаецца сам, калі наперадзе адна з яго гульняў.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Профіль загружаецца сам, калі наперадзе адна з яго гульняў.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Пачынаецца без кантролераў. Загружаецца сам, калі наперадзе адна з яго гульняў.</value></data>

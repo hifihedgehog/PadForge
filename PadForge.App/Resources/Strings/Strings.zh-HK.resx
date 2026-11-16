@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>向右一頁</value></data>
   <data name="Common_None" xml:space="preserve"><value>無</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>毫秒</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>未指派</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>硬件支援</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>啟動時自動執行引擎</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>視窗失去焦點時繼續輪詢</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>輪詢間隔（除非設定檔覆寫）</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>引擎按此間隔輪詢裝置。當設有自訂輪詢率的設定檔生效時，會改用該輪詢率。設定檔停用後會恢復此數值。</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>輪詢率（除非設定檔覆寫）</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>引擎每秒讀取所有裝置並更新虛擬控制器這麼多次，範圍由 60 至 10000。輪詢率越高，佔用的處理器時間越多。Windows 每秒最多喚醒引擎約 2000 次，所以輪詢率較高時，每次喚醒會執行數次運算。當設有自訂輪詢率的設定檔生效時，會改用該輪詢率。設定檔停用後會恢復此數值。</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>對遊戲隱藏裝置</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide 裝置隱藏和低階輸入掛鉤的總開關。關閉時，不論個別裝置的設定如何，都不會隱藏任何裝置。</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>在兩次啟動之間保持裝置遮蔽</value></data>
@@ -2678,7 +2679,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>會載入它的遊戲</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>輪詢率</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>預設（全域設定）</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>設定檔「{0}」生效期間被覆寫：{1} 毫秒</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>設定檔「{0}」生效期間被覆寫：{1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>把每個控制器的對應和設定，以一個名稱儲存。其中一款遊戲位於前台時，設定檔會自動載入。</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>其中一款遊戲位於前台時，設定檔會自動載入。</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>從沒有控制器開始。其中一款遊戲位於前台時，會自動載入。</value></data>

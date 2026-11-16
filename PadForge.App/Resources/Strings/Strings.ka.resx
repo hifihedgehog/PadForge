@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>გასუფთავება</value></data>
   <data name="Common_None" xml:space="preserve"><value>არცერთი</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>მწმ</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>ჰც</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>მიუნიჭებელი</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>აპარატურის მხარდაჭერა</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>ძრავის ავტომატური გაშვება გახსნისას</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>გამოკითხვის გაგრძელება, როცა ფანჯარა ფოკუსს კარგავს</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>გამოკითხვის ინტერვალი (თუ პროფილი არ გადაფარავს)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>ძრავა მოწყობილობებს ამ ინტერვალით კითხულობს. სანამ აქტიურია პროფილი საკუთარი გამოკითხვის სიხშირით, ამის ნაცვლად ის მოქმედებს. ეს მნიშვნელობა ბრუნდება პროფილის დეაქტივაციისას.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>გამოკითხვის სიხშირე (თუ პროფილი არ გადაფარავს)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>ძრავა ყველა მოწყობილობას კითხულობს და ვირტუალურ კონტროლერებს ანახლებს წამში ამდენჯერ, 60-დან 10000-მდე. უფრო მაღალი სიხშირე პროცესორის მეტ დროს იყენებს. Windows ძრავას წამში დაახლოებით 2000-ჯერ აღვიძებს, არაუმეტეს, ამიტომ უფრო მაღალი სიხშირისას ძრავა ყოველ გაღვიძებაზე რამდენიმე გავლას ასრულებს. სანამ აქტიურია პროფილი საკუთარი გამოკითხვის სიხშირით, ამის ნაცვლად ის მოქმედებს. ეს მნიშვნელობა ბრუნდება პროფილის დეაქტივაციისას.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>მოწყობილობების დამალვა თამაშებისგან</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>მთავარი გადამრთველი HidHide-ით მოწყობილობების დამალვისა და დაბალი დონის შეყვანის კაუჭებისთვის. გამორთვისას მოწყობილობა არ იმალება, მოწყობილობის პარამეტრების მიუხედავად.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>მოწყობილობების დაფარვა გაშვებებს შორის</value></data>
@@ -2489,7 +2490,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>თამაშები, რომლებიც მას ტვირთავს</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>გამოკითხვის სიხშირე</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>ნაგულისხმევი (გლობალური პარამეტრი)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>გადაფარულია, სანამ პროფილი „{0}“ აქტიურია: {1} მწმ</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>გადაფარულია, სანამ პროფილი „{0}“ აქტიურია: {1} ჰც</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>ინახავს ყველა კონტროლერის მიბმებსა და პარამეტრებს ერთი სახელით. ის თავისით იტვირთება, როცა მისი რომელიმე თამაში წინა პლანზეა.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>პროფილი თავისით იტვირთება, როცა მისი რომელიმე თამაში წინა პლანზეა.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>იწყება კონტროლერების გარეშე. ის თავისით იტვირთება, როცა მისი რომელიმე თამაში წინა პლანზეა.</value></data>

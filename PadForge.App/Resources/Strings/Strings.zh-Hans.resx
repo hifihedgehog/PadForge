@@ -116,6 +116,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>向右翻页</value></data>
   <data name="Common_None" xml:space="preserve"><value>无</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>未分配</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -409,8 +410,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>硬件支持</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>启动时自动运行引擎</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>窗口失去焦点时继续轮询</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>轮询间隔（除非配置文件覆盖）</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>引擎按此间隔轮询设备。带有自己轮询率的配置文件处于活动状态时，按该轮询率运行。配置文件停用后恢复为此值。</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>轮询率（除非配置文件覆盖）</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>引擎每秒读取所有设备并更新虚拟控制器的次数，范围为 60 到 10000。轮询率越高，占用的处理器时间越多。Windows 每秒最多唤醒引擎约 2000 次，因此轮询率更高时，每次唤醒会运行多个处理周期。带有自己轮询率的配置文件处于活动状态时，按该轮询率运行。配置文件停用后恢复为此值。</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>对游戏隐藏设备</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide 设备隐藏和底层输入钩子的总开关。关闭后，无论单个设备设置如何，所有设备都不会被隐藏。</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>窗口</value></data>
@@ -1302,7 +1303,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>加载它的游戏</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>轮询率</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>默认（全局设置）</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>配置文件“{0}”激活期间被覆盖：{1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>配置文件“{0}”激活期间被覆盖：{1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>将每个控制器的映射和设置以一个名称保存。其中任一游戏位于前台时会自动加载。</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>其中任一游戏位于前台时，配置文件会自动加载。</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>起始时没有控制器。其中任一游戏位于前台时会自动加载。</value></data>

@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Tühjenda</value></data>
   <data name="Common_None" xml:space="preserve"><value>Puudub</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Määramata</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Riistvara tugi</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Käivita mootor programmi avamisel automaatselt</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Jätka küsitlemist, kui aken pole fookuses</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Küsitlusintervall (kui profiil seda ei alista)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Mootor küsitleb seadmeid selle intervalliga. Kui aktiivne on oma küsitlussagedusega profiil, kehtib selle asemel profiili sagedus. See väärtus taastub, kui profiil inaktiveeritakse.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Küsitlussagedus (kui profiil seda ei alista)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Mootor loeb kõiki seadmeid ja värskendab virtuaalseid kontrollereid nii mitu korda sekundis, vahemikus 60 kuni 10000. Kõrgem sagedus kasutab rohkem protsessoriaega. Windows äratab mootori üles kuni umbes 2000 korda sekundis, seega kõrgema sageduse korral tehakse igal äratamisel mitu läbimist. Kui aktiivne on oma küsitlussagedusega profiil, kehtib selle asemel profiili sagedus. See väärtus taastub, kui profiil inaktiveeritakse.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Peida seadmed mängude eest</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Pealüliti HidHide'i seadmete peitmise ja madala taseme sisendikonksude jaoks. Kui see on välja lülitatud, ei peideta ühtegi seadet, olenemata seadmepõhistest sätetest.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Hoia seadmed käivituste vahel varjatuna</value></data>
@@ -2489,7 +2490,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Mängud, mis selle laadivad</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Küsitlussagedus</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Vaikimisi (üldsäte)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Alistatud, kuni profiil „{0}“ on aktiivne: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Alistatud, kuni profiil „{0}“ on aktiivne: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Salvestab kõigi kontrollerite vastendused ja sätted ühe nime alla. See laaditakse ise, kui üks selle mängudest on ees.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profiil laaditakse ise, kui üks selle mängudest on ees.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Algab ilma kontrollerita. See laaditakse ise, kui üks selle mängudest on ees.</value></data>

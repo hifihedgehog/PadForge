@@ -21,6 +21,11 @@ namespace PadForge.Common.Input
         private bool _connected;
         private bool _disposed;
 
+        // The gate of the state this controller sends on every pass, and
+        // the last state it let out.
+        private readonly EveryPassFrameGate _everyPassGate = new();
+        private VrRawState _gatedState;
+
         // Haptic pulses arrive as (hand, amplitude, duration) events and fan
         // into the slot's Vibration entry, the same lane game rumble rides
         // (left hand → left motor, right hand → right motor). A pulse must
@@ -192,6 +197,15 @@ namespace PadForge.Common.Input
         {
             var vr = _vr;
             if (!_connected || vr == null) return;
+
+            // The state goes out on every pass, and is spaced above 1000
+            // passes a second (EveryPassFrameGate).
+            if (EveryPassFrameGate.Engaged)
+            {
+                bool changed = !FrameContent.Same(in raw, in _gatedState);
+                if (!_everyPassGate.Due(changed, System.Diagnostics.Stopwatch.GetTimestamp())) return;
+                if (changed) _gatedState = raw;
+            }
 
             var st = new HMVRState
             {

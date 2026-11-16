@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>ລ້າງ</value></data>
   <data name="Common_None" xml:space="preserve"><value>ບໍ່ມີ</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>ບໍ່ໄດ້ກຳນົດ</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>ການຮອງຮັບຮາດແວ</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>ເລີ່ມເອັນຈິນອັດຕະໂນມັດເມື່ອເປີດໂປຣແກຣມ</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>ອ່ານຕໍ່ເມື່ອໜ້າຕ່າງບໍ່ຢູ່ໃນໂຟກັສ</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>ໄລຍະການອ່ານ (ເວັ້ນເສຍແຕ່ໂປຣໄຟລ໌ຈະກຳນົດແທນ)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>ເອັນຈິນອ່ານອຸປະກອນຕາມໄລຍະນີ້. ໃນຂະນະທີ່ໂປຣໄຟລ໌ທີ່ມີອັດຕາການອ່ານຂອງຕົນເອງເປີດໃຊ້ຢູ່, ຈະໃຊ້ອັດຕານັ້ນແທນ. ຄ່ານີ້ຈະກັບມາເມື່ອໂປຣໄຟລ໌ຖືກປິດໃຊ້.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>ອັດຕາການອ່ານຂໍ້ມູນ (ເວັ້ນເສຍແຕ່ໂປຣໄຟລ໌ຈະກຳນົດແທນ)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>ເອັນຈິນອ່ານທຸກອຸປະກອນ ແລະ ອັບເດດຕົວຄວບຄຸມສະເໝືອນເທົ່າຈຳນວນຄັ້ງນີ້ຕໍ່ວິນາທີ, ຕັ້ງແຕ່ 60 ຫາ 10000. ອັດຕາທີ່ສູງຂຶ້ນຈະໃຊ້ເວລາຂອງໂປຣເຊັສເຊີຫຼາຍຂຶ້ນ. Windows ປຸກເອັນຈິນໄດ້ປະມານ 2000 ຄັ້ງຕໍ່ວິນາທີເປັນຢ່າງຫຼາຍ, ສະນັ້ນອັດຕາທີ່ສູງກວ່ານັ້ນຈະເຮັດວຽກຫຼາຍຮອບໃນແຕ່ລະຄັ້ງທີ່ຖືກປຸກ. ໃນຂະນະທີ່ໂປຣໄຟລ໌ທີ່ມີອັດຕາການອ່ານຂອງຕົນເອງເປີດໃຊ້ຢູ່, ຈະໃຊ້ອັດຕານັ້ນແທນ. ຄ່ານີ້ຈະກັບມາເມື່ອໂປຣໄຟລ໌ຖືກປິດໃຊ້.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>ເຊື່ອງອຸປະກອນຈາກເກມ</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>ສະວິດຫຼັກສຳລັບການເຊື່ອງອຸປະກອນດ້ວຍ HidHide ແລະ ຮຸກອິນພຸດລະດັບຕ່ຳ. ເມື່ອປິດ, ຈະບໍ່ມີອຸປະກອນໃດຖືກເຊື່ອງ ບໍ່ວ່າການຕັ້ງຄ່າຂອງແຕ່ລະອຸປະກອນຈະເປັນແນວໃດ.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>ເຊື່ອງອຸປະກອນໄວ້ລະຫວ່າງການເປີດແຕ່ລະຄັ້ງ</value></data>
@@ -2482,7 +2483,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>ເກມທີ່ໂຫຼດມັນ</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>ອັດຕາການອ່ານຂໍ້ມູນ</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>ຄ່າເລີ່ມຕົ້ນ (ການຕັ້ງຄ່າທົ່ວໄປ)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>ຖືກແທນທີ່ໃນຂະນະທີ່ໂປຣໄຟລ໌ “{0}” ເຮັດວຽກ: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>ຖືກແທນທີ່ໃນຂະນະທີ່ໂປຣໄຟລ໌ “{0}” ເຮັດວຽກ: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>ບັນທຶກການແມັບ ແລະ ການຕັ້ງຄ່າຂອງທຸກຕົວຄວບຄຸມໄວ້ໃນຊື່ດຽວ. ມັນຈະໂຫຼດເອງເມື່ອເກມໃດໜຶ່ງຂອງມັນຢູ່ດ້ານໜ້າ.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>ໂປຣໄຟລ໌ຈະໂຫຼດເອງເມື່ອເກມໃດໜຶ່ງຂອງມັນຢູ່ດ້ານໜ້າ.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>ເລີ່ມຕົ້ນໂດຍບໍ່ມີຕົວຄວບຄຸມ. ມັນຈະໂຫຼດເອງເມື່ອເກມໃດໜຶ່ງຂອງມັນຢູ່ດ້ານໜ້າ.</value></data>

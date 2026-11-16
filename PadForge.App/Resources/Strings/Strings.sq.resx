@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Pastro</value></data>
   <data name="Common_None" xml:space="preserve"><value>Asnjë</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>I pacaktuar</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Mbështetja e harduerit</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Nise motorin automatikisht gjatë hapjes</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Vazhdo sondazhin kur dritarja humb fokusin</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervali i sondazhit (përveç nëse e mbivendos një profil)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Motori sondazhon pajisjet në këtë interval. Ndërsa është aktiv një profil me shpejtësinë e vet të sondazhit, zbatohet ajo shpejtësi. Kjo vlerë kthehet kur profili çaktivizohet.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Frekuenca e leximit (përveç nëse e mbivendos një profil)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Motori lexon çdo pajisje dhe përditëson kontrolluesit virtualë kaq herë në sekondë, nga 60 deri në 10000. Një frekuencë më e lartë përdor më shumë kohë procesori. Windows e zgjon motorin rreth 2000 herë në sekondë në maksimum, ndaj një frekuencë më e lartë kryen disa kalime në çdo zgjim. Ndërsa është aktiv një profil me shpejtësinë e vet të sondazhit, zbatohet ajo shpejtësi. Kjo vlerë kthehet kur profili çaktivizohet.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Fshih pajisjet nga lojërat</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Çelësi kryesor për fshehjen e pajisjeve me HidHide dhe për grepat e hyrjes në nivel të ulët. Kur është çaktivizuar, asnjë pajisje nuk fshihet, pavarësisht cilësimeve për secilën pajisje.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Mbaji pajisjet të fshehura mes hapjeve</value></data>
@@ -2477,7 +2478,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Lojërat që e ngarkojnë</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Frekuenca e leximit</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Parazgjedhje (cilësim global)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Mbishkruar ndërsa profili “{0}” është aktiv: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Mbishkruar ndërsa profili “{0}” është aktiv: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Ruan hartëzimet dhe cilësimet e çdo kontrolluesi nën një emër. Ngarkohet vetë kur një nga lojërat e tij është përpara.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Një profil ngarkohet vetë kur një nga lojërat e tij është përpara.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Fillon pa kontrollues. Ngarkohet vetë kur një nga lojërat e tij është përpara.</value></data>

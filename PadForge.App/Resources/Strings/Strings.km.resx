@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>សម្អាត</value></data>
   <data name="Common_None" xml:space="preserve"><value>គ្មាន</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>មិនទាន់ចាត់តាំង</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>ការគាំទ្រផ្នែករឹង</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>ចាប់ផ្ដើមម៉ាស៊ីនដោយស្វ័យប្រវត្តិពេលបើកកម្មវិធី</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>បន្តស្ទង់ពេលបង្អួចបាត់ការផ្ដោត</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>ចន្លោះពេលស្ទង់ (លើកលែងតែប្រូហ្វាល់កំណត់ផ្សេង)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>ម៉ាស៊ីនស្ទង់ឧបករណ៍តាមចន្លោះពេលនេះ។ ពេលប្រូហ្វាល់ដែលមានអត្រាស្ទង់ផ្ទាល់ខ្លួនកំពុងសកម្ម អត្រានោះត្រូវបានប្រើជំនួសវិញ។ តម្លៃនេះត្រឡប់មកវិញ ពេលប្រូហ្វាល់ឈប់សកម្ម។</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>អត្រាអានទិន្នន័យ (លើកលែងតែប្រូហ្វាល់កំណត់ផ្សេង)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>ម៉ាស៊ីនអានឧបករណ៍នីមួយៗ ហើយធ្វើបច្ចុប្បន្នភាពឧបករណ៍បញ្ជានិម្មិតតាមចំនួនដងនេះក្នុងមួយវិនាទី ពី 60 ដល់ 10000។ អត្រាកាន់តែខ្ពស់ ប្រើពេលវេលាប្រូសេស្ស័រកាន់តែច្រើន។ Windows ដាស់ម៉ាស៊ីនប្រហែល 2000 ដងក្នុងមួយវិនាទីយ៉ាងច្រើនបំផុត ដូច្នេះអត្រាខ្ពស់ជាងនេះដំណើរការជុំច្រើនដងរាល់ពេលដាស់ម្ដង។ ពេលប្រូហ្វាល់ដែលមានអត្រាស្ទង់ផ្ទាល់ខ្លួនកំពុងសកម្ម អត្រានោះត្រូវបានប្រើជំនួសវិញ។ តម្លៃនេះត្រឡប់មកវិញ ពេលប្រូហ្វាល់ឈប់សកម្ម។</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>លាក់ឧបករណ៍ពីហ្គេម</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>កុងតាក់មេសម្រាប់ការលាក់ឧបករណ៍ HidHide និងការចាប់ការបញ្ចូលកម្រិតទាប។ ពេលបិទ គ្មានឧបករណ៍ណាត្រូវបានលាក់ទេ ទោះបីការកំណត់តាមឧបករណ៍យ៉ាងណាក៏ដោយ។</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>រក្សាឧបករណ៍ឲ្យលាក់រវាងការបើកកម្មវិធី</value></data>
@@ -2486,7 +2487,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>ហ្គេមដែលផ្ទុកវា</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>អត្រាអានទិន្នន័យ</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>លំនាំដើម (ការកំណត់សកល)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>ត្រូវបានជំនួស ខណៈពេលប្រូហ្វាល់ “{0}” សកម្ម៖ {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>ត្រូវបានជំនួស ខណៈពេលប្រូហ្វាល់ “{0}” សកម្ម៖ {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>រក្សាទុកការម៉ាប និងការកំណត់របស់ឧបករណ៍បញ្ជានីមួយៗ ក្រោមឈ្មោះតែមួយ។ វាផ្ទុកដោយខ្លួនឯង នៅពេលហ្គេមមួយរបស់វានៅខាងមុខ។</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>ប្រូហ្វាល់ផ្ទុកដោយខ្លួនឯង នៅពេលហ្គេមមួយរបស់វានៅខាងមុខ។</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>ចាប់ផ្ដើមដោយគ្មានឧបករណ៍បញ្ជា។ វាផ្ទុកដោយខ្លួនឯង នៅពេលហ្គេមមួយរបស់វានៅខាងមុខ។</value></data>

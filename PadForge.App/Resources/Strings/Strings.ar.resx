@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>مسح</value></data>
   <data name="Common_None" xml:space="preserve"><value>لا شيء</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>مللي ثانية</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>هرتز</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>غير معين</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>دعم العتاد</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>تشغيل المحرك تلقائيا عند بدء البرنامج</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>متابعة الاستقصاء عندما تفقد النافذة التركيز</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>فاصل الاستقصاء (ما لم يتجاوزه ملف تعريف)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>يستقصي المحرك الأجهزة بهذا الفاصل الزمني. ما دام ملف تعريف له معدل استقصاء خاص نشطا، يسري ذلك المعدل بدلا من هذا الفاصل. تعود هذه القيمة عند إلغاء تفعيل ملف التعريف.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>معدل الاستقصاء (ما لم يتجاوزه ملف تعريف)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>يقرأ المحرك كل جهاز ويحدّث وحدات التحكم الظاهرية بهذا العدد من المرات في الثانية، من 60 إلى 10000. يستهلك المعدل الأعلى وقتا أطول من المعالج. يوقظ Windows المحرك نحو 2000 مرة في الثانية كحد أقصى، لذا يجري المعدل الأعلى عدة دورات عند كل إيقاظ. ما دام ملف تعريف له معدل استقصاء خاص نشطا، يسري ذلك المعدل بدلا منه. تعود هذه القيمة عند إلغاء تفعيل ملف التعريف.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>إخفاء الأجهزة عن الألعاب</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>المفتاح الرئيسي لإخفاء الأجهزة عبر HidHide ولخطافات الإدخال منخفضة المستوى. عند إيقافه لا يتم إخفاء أي جهاز مهما كانت إعدادات كل جهاز.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>إبقاء الأجهزة محجوبة بين مرات التشغيل</value></data>
@@ -2488,7 +2489,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>الألعاب التي تحمّله</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>معدل الاستقصاء</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>افتراضي (الإعداد العام)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>تم تجاوزه ما دام ملف التعريف «{0}» نشطا: {1} مللي ثانية</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>تم تجاوزه ما دام ملف التعريف «{0}» نشطا: {1} هرتز</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>يحفظ تعيينات وإعدادات كل وحدة تحكم تحت اسم واحد. يُحمَّل تلقائيا عندما تكون إحدى ألعابه في المقدمة.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>يُحمَّل ملف التعريف تلقائيا عندما تكون إحدى ألعابه في المقدمة.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>يبدأ بلا وحدات تحكم. يُحمَّل تلقائيا عندما تكون إحدى ألعابه في المقدمة.</value></data>

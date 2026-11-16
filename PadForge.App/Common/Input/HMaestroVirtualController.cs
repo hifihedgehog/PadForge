@@ -749,7 +749,8 @@ namespace PadForge.Common.Input
             if (_controller == null) return;
             // Every per-tick Submit path ticks FFB (see TickFfb doc). This
             // is the ONLY submit on USB Sony slots now that Step 5 skips
-            // the redundant extended leg when a packer exists.
+            // the redundant extended leg when a packer exists. A pass
+            // RawReportDue holds back ticks it there.
             TickFfb();
 
             // A profile that declares its own input report id and is always
@@ -767,6 +768,45 @@ namespace PadForge.Common.Input
                 _controller.SubmitRawExtendedReport(report);
             else
                 _controller.SubmitRawReport(report);
+        }
+
+        // The gate of the frames this controller sends on every pass, and
+        // what the last one it let out said. A controller sends on one
+        // lane, so the three lanes share the gate: a packed report, the
+        // extended PlayStation state, or a raw frame with motion.
+        private readonly EveryPassFrameGate _everyPassGate = new();
+        private byte[] _gatedReport = Array.Empty<byte>();
+        private int _gatedReportLength = -1;
+        private Gamepad _gatedGp;
+        private TouchpadState _gatedTouch;
+        private MotionSnapshot _gatedMotion;
+        private byte _gatedBatteryPercent;
+        private bool _gatedBatteryCharging;
+        private PadForge.Engine.Common.ButtonPressureState _gatedPressure;
+
+        /// <summary>Whether a packer-built frame goes out on this pass,
+        /// asked while <see cref="EveryPassFrameGate.Engaged"/>.
+        /// <paramref name="content"/> is the frame packed with its counter
+        /// and clocks at zero: what it says. A pass held back still ticks
+        /// force feedback, as <see cref="SubmitRawReport"/> does on a pass
+        /// that sends.</summary>
+        internal bool RawReportDue(ReadOnlySpan<byte> content)
+        {
+            if (_controller == null) return false;
+            bool changed = content.Length != _gatedReportLength
+                || !content.SequenceEqual(new ReadOnlySpan<byte>(_gatedReport, 0, _gatedReportLength));
+            if (!_everyPassGate.Due(changed, System.Diagnostics.Stopwatch.GetTimestamp()))
+            {
+                TickFfb();
+                return false;
+            }
+            if (changed)
+            {
+                if (_gatedReport.Length < content.Length) _gatedReport = new byte[content.Length];
+                content.CopyTo(_gatedReport);
+                _gatedReportLength = content.Length;
+            }
+            return true;
         }
 
         /// <summary>True when this profile declares a non-zero input report
@@ -838,19 +878,7 @@ namespace PadForge.Common.Input
             long nowTick = Environment.TickCount64;
             if (_hasSubmitted
                 && nowTick - _lastSubmitTick < SubmitKeepaliveMs
-                && gp.Buttons == _lastSubmittedGp.Buttons
-                && gp.LeftTrigger == _lastSubmittedGp.LeftTrigger
-                && gp.RightTrigger == _lastSubmittedGp.RightTrigger
-                && gp.ThumbLX == _lastSubmittedGp.ThumbLX
-                && gp.ThumbLY == _lastSubmittedGp.ThumbLY
-                && gp.ThumbRX == _lastSubmittedGp.ThumbRX
-                && gp.ThumbRY == _lastSubmittedGp.ThumbRY
-                && gp.Share == _lastSubmittedGp.Share
-                && gp.MicMute == _lastSubmittedGp.MicMute
-                && gp.LeftPaddle == _lastSubmittedGp.LeftPaddle
-                && gp.RightPaddle == _lastSubmittedGp.RightPaddle
-                && gp.LeftFunction == _lastSubmittedGp.LeftFunction
-                && gp.RightFunction == _lastSubmittedGp.RightFunction)
+                && FrameContent.Same(in gp, in _lastSubmittedGp))
             {
                 return;
             }
@@ -945,6 +973,30 @@ namespace PadForge.Common.Input
         {
             if (_controller == null) return;
             TickFfb();
+
+            // The frame carries the sensor's clock, so it goes out on every
+            // pass and is spaced above 1000 passes a second
+            // (EveryPassFrameGate). A pass held back has the fingers the last
+            // frame had, so the tracking IDs below miss no edge.
+            if (EveryPassFrameGate.Engaged)
+            {
+                bool changed = !FrameContent.Same(in gp, in _gatedGp)
+                    || !FrameContent.Same(in tp, in _gatedTouch)
+                    || !FrameContent.Same(in motion, in _gatedMotion)
+                    || batteryPercent != _gatedBatteryPercent
+                    || batteryCharging != _gatedBatteryCharging
+                    || !FrameContent.Same(in pressure, in _gatedPressure);
+                if (!_everyPassGate.Due(changed, System.Diagnostics.Stopwatch.GetTimestamp())) return;
+                if (changed)
+                {
+                    _gatedGp = gp;
+                    _gatedTouch = tp;
+                    _gatedMotion = motion;
+                    _gatedBatteryPercent = batteryPercent;
+                    _gatedBatteryCharging = batteryCharging;
+                    _gatedPressure = pressure;
+                }
+            }
 
             // Tracking-ID synthesis. Bump each finger's ID on rising edge of
             // its down state; keep stable while held; ID stays at last value
@@ -1182,9 +1234,26 @@ namespace PadForge.Common.Input
             }
             if (motion.HasMotion)
             {
-                // While motion streams, dedup can never fire (the next
-                // frame's gate sees _lastRawHadMotion). Skip the three
-                // array copies; only the flags matter. The first frame
+                // A frame with motion carries the sensor's clock, so it goes
+                // out on every pass and is spaced above 1000 passes a second
+                // (EveryPassFrameGate). The frame is stored only there, where
+                // the next pass compares against it.
+                if (EveryPassFrameGate.Engaged)
+                {
+                    bool changed = !_lastRawHadMotion
+                        || !FrameContent.Same(in motion, in _gatedMotion)
+                        || !RawFrameUnchanged(in raw);
+                    if (!_everyPassGate.Due(changed, System.Diagnostics.Stopwatch.GetTimestamp())) return;
+                    if (changed)
+                    {
+                        StoreRawFrame(in raw, hadMotion: true, nowRawTick);
+                        _gatedMotion = motion;
+                    }
+                }
+                // While motion streams, the idle dedup above can never fire
+                // (the next frame's gate sees _lastRawHadMotion). At 1000
+                // passes a second and under, that skips the three array
+                // copies, because only the flags matter. The first frame
                 // AFTER motion clears re-stores a full frame below.
                 _lastRawHadMotion = true;
                 _lastRawSubmitTick = nowRawTick;

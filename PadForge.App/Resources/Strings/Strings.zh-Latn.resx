@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Qīngchú</value></data>
   <data name="Common_None" xml:space="preserve"><value>Wú</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Wèi fēnpèi</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Yìngjiàn zhīchí</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Qǐdòng shí zìdòng yùnxíng yǐnqíng</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Chuāngkǒu shīqù jiāodiǎn shí jìxù lúnxún</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Lúnxún jiàngé (chúfēi pèizhì wénjiàn fùgài)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Yǐnqíng àn cǐ jiàngé lúnxún shèbèi. Dàiyǒu zìjǐ lúnxún sùlǜ de pèizhì wénjiàn chùyú huódòng zhuàngtài shí, àn gāi lúnxún sùlǜ yùnxíng. Pèizhì wénjiàn tíngyòng hòu huīfù wéi cǐ zhí.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Lúnxún lǜ (chúfēi pèizhì wénjiàn fùgài)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Yǐnqíng měi miǎo dúqǔ suǒyǒu shèbèi bìng gēngxīn xūnǐ kòngzhìqì, cìshù wéi cǐ zhí, fànwéi wéi 60 zhì 10000. Lúnxún lǜ yuè gāo, zhànyòng de chǔlǐqì shíjiān yuè duō. Windows měi miǎo zuìduō huànxǐng yǐnqíng yuē 2000 cì, yīncǐ lúnxún lǜ gèng gāo shí, yǐnqíng huì zài měi cì huànxǐng shí yùnxíng duō lún. Dàiyǒu zìjǐ lúnxún sùlǜ de pèizhì wénjiàn chùyú huódòng zhuàngtài shí, àn gāi lúnxún sùlǜ yùnxíng. Pèizhì wénjiàn tíngyòng hòu huīfù wéi cǐ zhí.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Duì yóuxì yǐncáng shèbèi</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide shèbèi yǐncáng hé dǐcéng shūrù gōuzi de zǒng kāiguān. Guānbì hòu, wúlùn dāngè shèbèi shèzhì rúhé, suǒyǒu shèbèi dōu bù huì bèi yǐncáng.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Liǎng cì qǐdòng zhī jiān bǎochí shèbèi yǐncáng</value></data>
@@ -2488,7 +2489,7 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Jiāzài tā de yóuxì</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Lúnxún lǜ</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Mòrèn (quánjú shèzhì)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Pèizhì wénjiàn “{0}” jīhuó qījiān bèi fùgài: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Pèizhì wénjiàn “{0}” jīhuó qījiān bèi fùgài: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Jiāng měi gè kòngzhìqì de yìngshè hé shèzhì yǐ yí gè míngchēng bǎocún. Dāng qí rènyì yóuxì zài qiántái shí, tā huì zìdòng jiāzài.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Dāng pèizhì wénjiàn de rènyì yóuxì zài qiántái shí, tā huì zìdòng jiāzài.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Kāishǐ shí bù hán kòngzhìqì. Dāng qí rènyì yóuxì zài qiántái shí, tā huì zìdòng jiāzài.</value></data>

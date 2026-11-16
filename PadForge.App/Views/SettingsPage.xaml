@@ -638,18 +638,18 @@
                                      value rules. -->
                                 <controls:SettingItem>
                                     <controls:SettingRow MinHeight="44">
-                                        <TextBlock Style="{StaticResource DzLabel}" Text="{Binding Settings_PollingInterval, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ui:NumberBox Value="{Binding PollingRateMs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      Minimum="1" Maximum="16"
-                                                      AutomationProperties.Name="{Binding Settings_PollingInterval, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Settings_PollingIntervalTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <TextBlock Style="{StaticResource DzPercent}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Style="{StaticResource DzLabel}" Text="{Binding Settings_PollingRate, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ui:NumberBox Value="{Binding PollingRateHz, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      Minimum="60" Maximum="10000"
+                                                      AutomationProperties.Name="{Binding Settings_PollingRate, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Settings_PollingRateTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Style="{StaticResource DzPercent}" Text="{Binding Common_Hz, Source={x:Static strings:Strings.Instance}}"/>
                                         <TextBlock Style="{StaticResource RowStatus}" Text="{Binding PollingOverrideNote}"
                                                    Foreground="{DynamicResource WaitBrush}"
                                                    Visibility="{Binding PollingOverrideNote, Converter={StaticResource StringToVisibility}}"/>
-                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="PollingRateMs"
-                                                                  SettingLabel="{Binding Settings_PollingInterval, Source={x:Static strings:Strings.Instance}}"
-                                                                  AutomationProperties.AutomationId="Reset_SettingsViewModel_PollingRateMs_179"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="PollingRateHz"
+                                                                  SettingLabel="{Binding Settings_PollingRate, Source={x:Static strings:Strings.Instance}}"
+                                                                  AutomationProperties.AutomationId="Reset_SettingsViewModel_PollingRateHz_179"/>
                                     </controls:SettingRow>
                                 </controls:SettingItem>
                                 <controls:SettingItem>

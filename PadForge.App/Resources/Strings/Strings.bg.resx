@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Страница надясно</value></data>
   <data name="Common_None" xml:space="preserve"><value>Няма</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>мс</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Хц</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Неназначено</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Поддръжка на хардуер</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Автоматично стартиране на двигателя при пускане</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Продължаване на запитването, когато прозорецът загуби фокус</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Интервал на запитване (освен ако профил не го замени)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Двигателят запитва устройствата на този интервал. Докато е активен профил със собствена честота на запитване, се прилага тя. Тази стойност се връща, когато профилът се деактивира.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Честота на запитване (освен ако профил не я замени)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Двигателят чете всяко устройство и обновява виртуалните контролери толкова пъти в секунда, от 60 до 10000. По-висока честота използва повече процесорно време. Windows събужда двигателя най-много около 2000 пъти в секунда, затова при по-висока честота двигателят извършва по няколко прохода при всяко събуждане. Докато е активен профил със собствена честота на запитване, се прилага тя. Тази стойност се връща, когато профилът се деактивира.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Скриване на устройствата от игрите</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Главен превключвател за скриването на устройства чрез HidHide и за прихващането на вход на ниско ниво. Когато е изключен, никое устройство не се скрива, независимо от настройките на отделните устройства.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Запазване на скриването на устройствата между стартиранията</value></data>
@@ -2678,7 +2679,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Игри, които го зареждат</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Честота на запитване</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>По подразбиране (глобална настройка)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Заменено, докато профилът „{0}“ е активен: {1} мс</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Заменено, докато профилът „{0}“ е активен: {1} Хц</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Записва съпоставянията и настройките на всеки контролер под едно име. Зарежда се автоматично, когато някоя от игрите му е отпред.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Профилът се зарежда автоматично, когато някоя от игрите му е отпред.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Започва без контролери. Зарежда се автоматично, когато някоя от игрите му е отпред.</value></data>

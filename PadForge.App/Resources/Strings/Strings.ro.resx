@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Pagină la dreapta</value></data>
   <data name="Common_None" xml:space="preserve"><value>Fără</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Neatribuit</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Suport hardware</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Pornire automată a motorului la lansare</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continuare interogare când fereastra pierde focalizarea</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Interval de interogare (dacă un profil nu îl înlocuiește)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Motorul interoghează dispozitivele la acest interval. Cât timp este activ un profil cu propria rată de interogare, se aplică acea rată. Această valoare revine când profilul se dezactivează.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Rată de interogare (dacă un profil nu o înlocuiește)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Motorul citește fiecare dispozitiv și actualizează controlerele virtuale de atâtea ori pe secundă, între 60 și 10000. O rată mai mare folosește mai mult timp de procesor. Windows trezește motorul de cel mult 2000 de ori pe secundă, deci o rată mai mare execută mai multe cicluri la fiecare trezire. Cât timp este activ un profil cu propria rată de interogare, se aplică acea rată. Această valoare revine când profilul se dezactivează.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Ascundere dispozitive față de jocuri</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Comutator principal pentru ascunderea dispozitivelor prin HidHide și pentru interceptările de intrare de nivel scăzut. Când este dezactivat, nu se ascunde niciun dispozitiv, indiferent de setările fiecărui dispozitiv.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Păstrare dispozitive ascunse între lansări</value></data>
@@ -2678,7 +2679,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Jocuri care îl încarcă</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Rată de interogare</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Implicit (setare globală)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Înlocuit cât timp profilul „{0}” este activ: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Înlocuit cât timp profilul „{0}” este activ: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Salvează mapările și setările fiecărui controler sub un singur nume. Se încarcă automat când unul dintre jocurile sale este în prim-plan.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Un profil se încarcă automat când unul dintre jocurile sale este în prim-plan.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Pornește fără controlere. Se încarcă automat când unul dintre jocurile sale este în prim-plan.</value></data>

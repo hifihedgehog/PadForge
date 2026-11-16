@@ -580,11 +580,12 @@ namespace PadForge.Engine.Common.Mapping
         /// a tick regardless of how many rows reference gyro.</summary>
         public static Func<int, bool> AimEngageStateProvider { get; set; }
 
-        /// <summary>— current polling frequency (Hz). Used by the
-        /// dual-threshold smoothing buffer to convert
-        /// <c>GyroSmoothingWindowMs</c> into a sample count. App
-        /// returns <c>1000 / Settings.PollingIntervalMs</c>; returns
-        /// 60Hz if unwired.</summary>
+        /// <summary>The polling rate, in passes a second. The
+        /// dual-threshold smoothing buffer turns
+        /// <c>GyroSmoothingWindowMs</c> into a sample count with it. The
+        /// app answers the rate its loop runs at
+        /// (<c>InputManager.PollingRateHz</c>). Unwired, a reader takes
+        /// 60 Hz.</summary>
         public static Func<float> PollHzProvider { get; set; }
 
         /// <summary>Absolute desktop cursor position normalized to the [-1..+1]
@@ -784,20 +785,46 @@ namespace PadForge.Engine.Common.Mapping
             }
         }
 
+        /// <summary>The rate the per-pass rules here were written at: 1000
+        /// passes a second, the fastest the engine ran until its rate was
+        /// set in passes a second (2026-11).</summary>
+        public const int ReferencePassHz = 1000;
+
+        /// <summary>One pass at <see cref="ReferencePassHz"/>. A rule that
+        /// spends a reading once a pass does, over a shorter pass, what it
+        /// did over this one.</summary>
+        public const double ReferencePassSeconds = 1.0 / ReferencePassHz;
+
+        // The length of the frame under way when the app polls faster than
+        // once a ReferencePassSeconds, and 0 at or under that. Poll thread
+        // only, as the caches it serves are.
+        private static double _shortPassSeconds;
+
         /// <summary>Begins a frame outside a poll run: the tests and tools,
         /// which own the bookkeeping outright.</summary>
         public static void BeginPollFrame() => BeginPollFrame(0);
 
+        /// <summary>Begins a poll frame of a millisecond or more for the run
+        /// holding <paramref name="run"/>.</summary>
+        public static void BeginPollFrame(int run) => BeginPollFrame(run, 0);
+
         /// <summary>Begins a poll frame for the run holding
         /// <paramref name="run"/>, or for any caller with 0. A run a newer one
         /// replaced advances no frame, claims no poll thread and applies no
-        /// IR forgets.</summary>
-        public static void BeginPollFrame(int run)
+        /// IR forgets. <paramref name="shortPassSeconds"/> is the frame's
+        /// length when the app polls faster than once a
+        /// <see cref="ReferencePassSeconds"/>, and 0 at or under that: the
+        /// rules that spend a reading once a pass then spend it over the
+        /// reference pass's time (the legacy gyro smoothing, a finger's
+        /// movement on a scroll row).</summary>
+        public static void BeginPollFrame(int run, double shortPassSeconds)
         {
             lock (_pollRunLock)
             {
                 if (run != 0 && run != _pollRun) return;
                 _pollFrameSeq++;
+                _shortPassSeconds = shortPassSeconds > 0 && shortPassSeconds < ReferencePassSeconds
+                    ? shortPassSeconds : 0;
                 System.Threading.Volatile.Write(ref _pollThreadId, Environment.CurrentManagedThreadId);
                 // The IR pointer forgets other threads asked for (PostIrForget),
                 // at the boundary, after this thread's reads of the frame they
@@ -819,9 +846,36 @@ namespace PadForge.Engine.Common.Mapping
         // which is two string allocations per tick per device on the 1 kHz
         // path: exactly the shape the comment on _gyroSmoothingState says
         // earlier rounds banned, in the same file.
-        private static readonly Dictionary<(string, int, bool, int), (float x, float y)[]> _gyroSampleBuffers = new();
-        private static readonly Dictionary<(string, int, bool, int), int> _gyroSampleHeads = new();
-        private static readonly Dictionary<(string, int, bool, int), ulong> _gyroSampleFrames = new();
+        private static readonly Dictionary<(string, int, bool, int), GyroRing> _gyroRings = new();
+
+        /// <summary>One key's smoothing window: its samples, where the next
+        /// goes, and the poll frame that last advanced it. One object a key,
+        /// so a read looks its key up once. The three tables this replaces
+        /// hashed the key's device string up to five times a read.</summary>
+        private sealed class GyroRing
+        {
+            public (float x, float y)[] Samples;
+            public int Head;
+            public ulong FrameSeq;
+
+            /// <summary>The samples' sums, kept as samples come and go, so
+            /// a read costs the same at any window. Summed afresh on every
+            /// read, the default 50 ms window was 50 samples a read at 1000
+            /// passes a second and 500 at 10000.</summary>
+            public double SumX, SumY;
+
+            /// <summary>Takes the sums from the samples again. Once a turn
+            /// of the ring, so the rounding of one add never stays in
+            /// them.</summary>
+            public void Resum()
+            {
+                double x = 0, y = 0;
+                var samples = Samples;
+                for (int i = 0; i < samples.Length; i++) { x += samples[i].x; y += samples[i].y; }
+                SumX = x;
+                SumY = y;
+            }
+        }
 
         // Internal for the poll-frame-gate test pins (PadForge.Tests).
         internal static (float, float) ApplyDualThresholdSmoothing(
@@ -847,11 +901,13 @@ namespace PadForge.Engine.Common.Mapping
             // consume the other's window and its once-per-poll advance.
             // aux rides the key tuple, zero-alloc (audit 2026-07-25, C5).
             var key = (deviceGuid ?? "", slotIndex, aux, channel);
-            if (!_gyroSampleBuffers.TryGetValue(key, out var buf) || buf.Length != N)
+            if (!_gyroRings.TryGetValue(key, out var ring))
+                _gyroRings[key] = ring = new GyroRing();
+            if (ring.Samples == null || ring.Samples.Length != N)
             {
-                buf = new (float x, float y)[N];
-                _gyroSampleBuffers[key] = buf;
-                _gyroSampleHeads[key] = 0;
+                ring.Samples = new (float x, float y)[N];
+                ring.Head = 0;
+                ring.SumX = ring.SumY = 0;
             }
             // Advance the ring once per poll, not once per mapping row: the
             // buffer is sized as window-seconds x polls, so a second row
@@ -859,20 +915,19 @@ namespace PadForge.Engine.Common.Mapping
             // span the window covered. Repeat reads in the same poll refresh
             // the head slot in place (their smooth weighting may differ,
             // e.g. a roll-source row) without advancing.
-            bool firstThisPoll = !_gyroSampleFrames.TryGetValue(key, out ulong seenSeq)
-                || seenSeq != _pollFrameSeq;
-            int head = _gyroSampleHeads[key];
-            if (firstThisPoll)
+            if (ring.FrameSeq != _pollFrameSeq)
             {
-                _gyroSampleFrames[key] = _pollFrameSeq;
-                head = (head + 1) % N;
-                _gyroSampleHeads[key] = head;
+                ring.FrameSeq = _pollFrameSeq;
+                ring.Head = (ring.Head + 1) % N;
+                if (ring.Head == 0) ring.Resum();
             }
-            buf[head] = (yaw * smooth, pitch * smooth);
+            var left = ring.Samples[ring.Head];
+            float sx = yaw * smooth, sy = pitch * smooth;
+            ring.Samples[ring.Head] = (sx, sy);
+            ring.SumX += (double)sx - left.x;
+            ring.SumY += (double)sy - left.y;
 
-            float xSum = 0, ySum = 0;
-            for (int i = 0; i < N; i++) { xSum += buf[i].x; ySum += buf[i].y; }
-            return (xSum / N + yaw * immediate, ySum / N + pitch * immediate);
+            return ((float)(ring.SumX / N) + yaw * immediate, (float)(ring.SumY / N) + pitch * immediate);
         }
 
         /// <summary>Normalizes the gravity vector the space projections
@@ -1000,17 +1055,10 @@ namespace PadForge.Engine.Common.Mapping
         public static void ResetGyroAimStateForSlot(int slotIndex)
         {
             List<(string, int, bool, int)> deadRings = null;
-            foreach (var k in _gyroSampleBuffers.Keys)
+            foreach (var k in _gyroRings.Keys)
                 if (k.Item2 == slotIndex) (deadRings ??= new()).Add(k);
             if (deadRings != null)
-            {
-                foreach (var k in deadRings)
-                {
-                    _gyroSampleBuffers.Remove(k);
-                    _gyroSampleHeads.Remove(k);
-                    _gyroSampleFrames.Remove(k);
-                }
-            }
+                foreach (var k in deadRings) _gyroRings.Remove(k);
 
             List<(string Device, int Slot, int Channel)> deadEma = null;
             foreach (var k in _gyroSmoothingState.Keys)
@@ -1040,6 +1088,12 @@ namespace PadForge.Engine.Common.Mapping
             // squared alpha and weakened smoothing per extra row).
             if (st.Seq[axis] == _pollFrameSeq) return st.Values[axis];
             st.Seq[axis] = _pollFrameSeq;
+            // The weight is what one reference pass keeps. A shorter pass
+            // keeps its share of that, so the filter settles in the same
+            // time: at 10000 passes a second the bare weight settled ten
+            // times sooner and smoothed a tenth as much.
+            if (_shortPassSeconds > 0)
+                alpha = MathF.Pow(alpha, (float)(_shortPassSeconds / ReferencePassSeconds));
             st.Values[axis] = st.Values[axis] * alpha + rawRate * (1f - alpha);
             return st.Values[axis];
         }
@@ -4936,17 +4990,43 @@ namespace PadForge.Engine.Common.Mapping
 
         private sealed class StickBall
         {
-            public const int RingLen = 128;   // ~128 ms of 1 kHz polls
+            public const int RingLen = 128;
+
+            /// <summary>The least time between two entries of the ring: the
+            /// fling window over the ring's steps, so the ring always
+            /// reaches back the whole window. With an entry a pass it reached
+            /// back 128 ms at 1000 passes a second and 12.8 ms at 10000,
+            /// where a release found only the stick's last steps toward
+            /// center and launched on those.</summary>
+            public const float EntrySeconds = StickFlingWindowSeconds / (RingLen - 1);
+
             public readonly float[] Fx = new float[RingLen];
             public readonly float[] Fy = new float[RingLen];
+            /// <summary>When each entry began.</summary>
             public readonly long[] Ticks = new long[RingLen];
             public int RingNext, RingCount;
             public float VelX, VelY;          // counts/s, KBM frame (+Y = up)
             public bool WasEngaged;
             public long LastAdvanceTicks;
 
-            public void Push(float fx, float fy, long ticks)
+            /// <summary>Takes one pass's deflection. A pass that comes
+            /// sooner than <see cref="EntrySeconds"/> after the newest
+            /// entry began joins it, and the entry keeps the stronger of
+            /// the two, which is all <see cref="PeakWithin"/> reads.</summary>
+            public void Push(float fx, float fy, long ticks, long ticksPerSecond)
             {
+                if (RingCount > 0 && ticksPerSecond > 0)
+                {
+                    int newest = (RingNext - 1 + RingLen) % RingLen;
+                    if ((float)(ticks - Ticks[newest]) / ticksPerSecond < EntrySeconds)
+                    {
+                        if (fx * fx + fy * fy > Fx[newest] * Fx[newest] + Fy[newest] * Fy[newest])
+                        {
+                            Fx[newest] = fx; Fy[newest] = fy;
+                        }
+                        return;
+                    }
+                }
                 Fx[RingNext] = fx; Fy[RingNext] = fy; Ticks[RingNext] = ticks;
                 RingNext = (RingNext + 1) % RingLen;
                 if (RingCount < RingLen) RingCount++;
@@ -5042,7 +5122,7 @@ namespace PadForge.Engine.Common.Mapping
                 if (engaged)
                 {
                     ball.VelX = ball.VelY = 0f;
-                    ball.Push(fx, fy, nowTicks);
+                    ball.Push(fx, fy, nowTicks, ticksPerSecond);
                     ball.WasEngaged = true;
                     return (0f, 0f);
                 }
@@ -5567,8 +5647,9 @@ namespace PadForge.Engine.Common.Mapping
         private const float GyroCountsPerUnitAxis = 15.0f;
 
         /// <summary>The poll interval the old fixed per-poll spend silently
-        /// assumed. PollingRateMs defaults to 1, so dividing by this leaves
-        /// the default cadence bit-identical and corrects every other one.</summary>
+        /// assumed. The polling rate defaults to 1000 Hz, so dividing by
+        /// this leaves the default cadence bit-identical and corrects every
+        /// other one.</summary>
         private const float GyroNominalPollSeconds = 0.001f;
 
         /// <summary>Jitter compensation on the curve DS4Windows uses
@@ -7042,6 +7123,40 @@ namespace PadForge.Engine.Common.Mapping
             // read a permanent ~0. Compute once per poll, re-serve within it.
             public ulong FrameSeq;
             public float FrameDelta;
+
+            // A movement being spent over the reference pass's time, and
+            // how much of that time is left to it. Unused at a pass of a
+            // millisecond or more.
+            public float Held;
+            public double HoldSecondsLeft;
+
+            /// <summary>What a pass spends of the finger's movement. A
+            /// scroll row reads the movement as a deflection and its wheel
+            /// turns by deflection times time, so a movement is worth the
+            /// length of the pass that saw it. On a pass of
+            /// <see cref="ReferencePassSeconds"/> or more that is the
+            /// movement itself, as it always was. A shorter pass
+            /// (<paramref name="shortPassSeconds"/> above 0) holds it for
+            /// the reference pass's time: read as it came, a movement at
+            /// 10000 passes a second turned the wheel a tenth as far, or a
+            /// twenty-fifth on a pass that ran straight after
+            /// another.</summary>
+            public float Spend(float moved, double shortPassSeconds)
+            {
+                if (shortPassSeconds <= 0 && HoldSecondsLeft <= 0) return moved;
+                double pass = shortPassSeconds > 0 ? shortPassSeconds : ReferencePassSeconds;
+                if (moved != 0f)
+                {
+                    // What the last movement had left to spend goes on with
+                    // this one, so none of the finger's travel is dropped.
+                    Held = moved + (float)(Held * (HoldSecondsLeft / ReferencePassSeconds));
+                    HoldSecondsLeft = ReferencePassSeconds;
+                }
+                if (HoldSecondsLeft <= 0) return 0f;
+                double spent = Math.Min(HoldSecondsLeft, pass);
+                HoldSecondsLeft -= spent;
+                return (float)(Held * (spent / pass));
+            }
         }
 
         // Tuple key: the composed string version allocated on every
@@ -7198,7 +7313,7 @@ namespace PadForge.Engine.Common.Mapping
                 }
                 else
                 {
-                    delta = raw - prev.PrevValue;
+                    delta = prev.Spend(raw - prev.PrevValue, _shortPassSeconds);
                     prev.PrevValue = raw;
                     prev.FrameSeq = _pollFrameSeq;
                     prev.FrameDelta = delta;

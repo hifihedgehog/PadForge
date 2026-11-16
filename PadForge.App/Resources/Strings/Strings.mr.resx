@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>साफ करा</value></data>
   <data name="Common_None" xml:space="preserve"><value>काहीही नाही</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>नियुक्त नाही</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>हार्डवेअर समर्थन</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>लाँचवर इंजिन आपोआप सुरू करा</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>विंडोचे फोकस गेल्यावरही पोलिंग सुरू ठेवा</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>पोलिंग अंतर (प्रोफाइलने ओव्हरराइड केल्याशिवाय)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>इंजिन या अंतराने डिव्हाइस पोल करते. स्वतःचा पोलिंग दर असलेले प्रोफाइल सक्रिय असताना तो दर लागू होतो. प्रोफाइल निष्क्रिय झाल्यावर ही किंमत परत येते.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>पोलिंग दर (प्रोफाइलने ओव्हरराइड केल्याशिवाय)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>इंजिन प्रत्येक डिव्हाइस वाचते आणि व्हर्च्युअल कंट्रोलर प्रति सेकंद इतक्या वेळा अपडेट करते, ही संख्या 60 ते 10000 पर्यंत असू शकते. जास्त दर प्रोसेसरचा जास्त वेळ वापरतो. Windows इंजिनला प्रति सेकंद जास्तीत जास्त सुमारे 2000 वेळा जागे करते, म्हणून यापेक्षा जास्त दरावर प्रत्येक वेळी जागे झाल्यावर इंजिन अनेक पास चालवते. स्वतःचा पोलिंग दर असलेले प्रोफाइल सक्रिय असताना तो दर लागू होतो. प्रोफाइल निष्क्रिय झाल्यावर ही किंमत परत येते.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>गेमपासून डिव्हाइस लपवा</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide डिव्हाइस लपवणे आणि लो-लेव्हल इनपुट हुकसाठी मुख्य स्विच. बंद असताना, प्रति-डिव्हाइस सेटिंग्ज काहीही असोत, कोणतेही डिव्हाइस लपवले जात नाही.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>लाँचदरम्यान डिव्हाइस क्लोक केलेले ठेवा</value></data>
@@ -2486,7 +2487,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>ते लोड करणारे गेम</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>पोलिंग दर</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>डिफॉल्ट (सर्वसाधारण सेटिंग)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>प्रोफाइल “{0}” सक्रिय असताना अधिलिखित: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>प्रोफाइल “{0}” सक्रिय असताना अधिलिखित: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>प्रत्येक कंट्रोलरचे मॅपिंग आणि सेटिंग्ज एका नावाखाली जतन करते. त्याचा एखादा गेम पुढे असताना ते आपोआप लोड होते.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>प्रोफाइल त्याचा एखादा गेम पुढे असताना आपोआप लोड होते.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>कोणत्याही कंट्रोलरशिवाय सुरू होते. त्याचा एखादा गेम पुढे असताना ते आपोआप लोड होते.</value></data>

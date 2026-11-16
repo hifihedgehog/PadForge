@@ -512,7 +512,7 @@ namespace PadForge.Common.Input
         /// test; everything else uses change detection against the previous
         /// poll. BluetoothLinkHelper decides target eligibility. Charging
         /// does not pause the idle countdown.</summary>
-        private static void UpdateIdleDisconnect(UserDevice ud, CustomInputState state)
+        internal static void UpdateIdleDisconnect(UserDevice ud, CustomInputState state)
         {
             long now = Environment.TickCount64;
 
@@ -644,12 +644,22 @@ namespace PadForge.Common.Input
                     $"QUICKCHARGE {ud.VendorId:X4}:{ud.ProdId:X4} edge on wired path but no parseable address, serial={ud.SerialNumber}");
                 return;
             }
-            string qcSerial = ud.SerialNumber;
             PadForge.Engine.SdlDiagLog.WriteLine(
-                $"QUICKCHARGE {ud.VendorId:X4}:{ud.ProdId:X4} charging on wired rebind, dropping radio by address serial={qcSerial}");
-            System.Threading.Tasks.Task.Run(() =>
-                PadForge.Common.Input.BluetoothLinkHelper.TryDisconnect(qcSerial));
+                $"QUICKCHARGE {ud.VendorId:X4}:{ud.ProdId:X4} charging on wired rebind, dropping radio by address serial={ud.SerialNumber}");
+            DropRadioByAddress(ud.SerialNumber);
         }
+
+        /// <summary>The capturing tail of Quick Charge's wired drop, in a
+        /// method of its own for the reason <see cref="FireIdleDisconnect"/>
+        /// is: a lambda that captures a local of
+        /// <see cref="CheckQuickCharge"/> made Roslyn allocate its display
+        /// class at that method's entry, 24 bytes for every device on every
+        /// pass, though the lambda runs only on a plug edge (measured
+        /// 2026-11-16: 289 bytes a pass with twelve devices, the poll
+        /// thread's whole allocation).</summary>
+        private static void DropRadioByAddress(string serial)
+            => System.Threading.Tasks.Task.Run(() =>
+                PadForge.Common.Input.BluetoothLinkHelper.TryDisconnect(serial));
 
         /// <summary>Pure rising-edge decision for Quick Charge, extracted
         /// for the tests (the GroupNeed arrangement): true exactly when the

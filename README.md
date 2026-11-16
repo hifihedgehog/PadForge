@@ -869,7 +869,7 @@ A local named pipe lets Playnite, LaunchBox, or a script activate a profile and 
 
 ### Per-profile polling rate
 ![The polling rate picker in the profile dialog](screenshots/profile-polling-override.jpg)
-A profile can override the Settings polling interval: 1000, 500, 250, 125, or 62.5 Hz, or Default (Global Setting) to follow Settings.
+A profile can override the Settings polling rate: 10000, 8000, 4000, 2000, 1000, 500, 250, 125, or 60 Hz, or Default (Global Setting) to follow Settings. Windows wakes the engine about 2000 times a second at most, so a higher rate runs several passes at each wake.
 
 ### Steam Workshop config import
 ![Steam Workshop config browser](screenshots/workshop-search.jpg)
@@ -1015,7 +1015,7 @@ Learn a handheld's rear paddles, menu keys, and vendor hotkeys by pressing each 
 
 ### Settings
 ![Settings](screenshots/settings.jpg)
-Language (109 languages, switched live with no restart, and laid out right to left for Arabic, Persian, Urdu, and Central Kurdish). Theme (System Default / Light / Dark). Updates. Polling interval (1-16 ms). Auto-start at login, minimize to tray, master input-hiding toggle. Driver status for HidHide, HIDMaestro, Windows MIDI Services, and SteamVR.
+Language (109 languages, switched live with no restart, and laid out right to left for Arabic, Persian, Urdu, and Central Kurdish). Theme (System Default / Light / Dark). Updates. Polling rate (60 to 10000 Hz). Auto-start at login, minimize to tray, master input-hiding toggle. Driver status for HidHide, HIDMaestro, Windows MIDI Services, and SteamVR.
 
 ### Input Engine
 ![The Input Engine card in Settings](screenshots/settings-input-engine.jpg)

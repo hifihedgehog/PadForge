@@ -284,7 +284,7 @@ namespace PadForge.Tests
             int start = im.IndexOf("private void PollingLoop(int generation, int pollRun)", StringComparison.Ordinal);
             Assert.True(start > 0);
             string loop = im.Substring(start, im.IndexOf("\n        }\n", start, StringComparison.Ordinal) - start);
-            Assert.Contains("Engine.Common.Mapping.SourceCoercion.BeginPollFrame(pollRun);", loop);
+            Assert.Contains("Engine.Common.Mapping.SourceCoercion.BeginPollFrame(pollRun, shortPassSeconds);", loop);
             Assert.DoesNotContain("BeginPollRun", loop);
             string sc = RepoText("PadForge.Engine/Common/Mapping/SourceCoercion.cs");
             Assert.Contains("            lock (_pollRunLock)\n            {\n"

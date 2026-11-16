@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Stran desno</value></data>
   <data name="Common_None" xml:space="preserve"><value>Brez</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Nedodeljeno</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Podpora strojni opremi</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Ob zagonu samodejno zaženi mehanizem</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Nadaljuj poizvedovanje, ko okno ni aktivno</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Interval poizvedovanja (če ga profil ne preglasi)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Mehanizem poizveduje naprave v tem intervalu. Ko je aktiven profil z lastno hitrostjo poizvedovanja, velja ta hitrost. Ta vrednost znova velja, ko se profil deaktivira.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Hitrost poizvedovanja (če je profil ne preglasi)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Mehanizem prebere vsako napravo in posodobi navidezne krmilnike tolikokrat na sekundo, od 60 do 10000. Višja hitrost porabi več procesorskega časa. Windows zbudi mehanizem približno 2000-krat na sekundo, pogosteje ne, zato pri višji hitrosti mehanizem ob vsaki zbuditvi opravi več prehodov. Ko je aktiven profil z lastno hitrostjo poizvedovanja, velja ta hitrost. Ta vrednost znova velja, ko se profil deaktivira.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Skrij naprave pred igrami</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Glavno stikalo za skrivanje naprav s programom HidHide in nizkonivojske kljuke za vnos. Ko je izklopljeno, ni skrita nobena naprava, ne glede na nastavitve posameznih naprav.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Naprave ostanejo skrite med zagoni</value></data>
@@ -2678,7 +2679,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Igre, ki ga naložijo</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Hitrost poizvedovanja</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Privzeto (splošna nastavitev)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Preglašeno, dokler je aktiven profil „{0}“: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Preglašeno, dokler je aktiven profil „{0}“: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Preslikave in nastavitve vseh krmilnikov shrani pod enim imenom. Naloži se samodejno, ko je katera od njegovih iger v ospredju.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profil se naloži samodejno, ko je katera od njegovih iger v ospredju.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Začne brez krmilnikov. Naloži se samodejno, ko je katera od njegovih iger v ospredju.</value></data>

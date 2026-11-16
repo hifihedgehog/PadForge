@@ -1309,9 +1309,9 @@
   },
   {
     "File": "PadForge.App/Views/SettingsPage.xaml",
-    "Id": "Reset_SettingsViewModel_PollingRateMs_179",
+    "Id": "Reset_SettingsViewModel_PollingRateHz_179",
     "Owner": "PadForge.ViewModels.SettingsViewModel",
-    "Property": "PollingRateMs"
+    "Property": "PollingRateHz"
   },
   {
     "File": "PadForge.App/Views/SettingsPage.xaml",

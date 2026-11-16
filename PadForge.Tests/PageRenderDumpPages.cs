@@ -510,7 +510,7 @@ namespace PadForge.Tests
                 {
                     @"C:\Games\Apex\r5apex.exe", @"C:\Games\Halo Infinite\HaloInfinite.exe",
                     @"D:\SteamLibrary\steamapps\common\Counter-Strike Global Offensive\game\bin\win64\cs2.exe",
-                }, pollingOverrideMs: 2);
+                }, pollingOverrideHz: 500);
                 drawing.PictureWindow(games, "dialog-profile-edit-games.png");
                 var fresh = new ProfileDialog();
                 fresh.ForNew();

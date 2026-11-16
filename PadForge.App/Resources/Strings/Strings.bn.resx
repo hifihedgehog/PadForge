@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>পৃষ্ঠা ডানে</value></data>
   <data name="Common_None" xml:space="preserve"><value>কোনোটিই নয়</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>বরাদ্দ নেই</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>হার্ডওয়্যার সমর্থন</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>চালুর সময় ইঞ্জিন স্বয়ংক্রিয়ভাবে চালু করুন</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>উইন্ডো ফোকাস হারালেও পোলিং চালিয়ে যান</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>পোলিং ব্যবধান (কোনো প্রোফাইল এটি ওভাররাইড না করলে)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>ইঞ্জিন এই ব্যবধানে ডিভাইসগুলো পোল করে। নিজস্ব পোলিং রেট আছে এমন প্রোফাইল সক্রিয় থাকলে তার বদলে সেই রেটই প্রযোজ্য হয়। প্রোফাইলটি নিষ্ক্রিয় হলে এই মান ফিরে আসে।</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>পোলিং রেট (কোনো প্রোফাইল এটি ওভাররাইড না করলে)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>ইঞ্জিন প্রতি সেকেন্ডে এতবার প্রতিটি ডিভাইস পোল করে এবং ভার্চুয়াল কন্ট্রোলার আপডেট করে, মান 60 থেকে 10000 পর্যন্ত হতে পারে। রেট বেশি হলে প্রসেসরের সময় বেশি লাগে। Windows ইঞ্জিনকে প্রতি সেকেন্ডে সর্বোচ্চ প্রায় 2000 বার জাগায়, তাই এর চেয়ে বেশি রেটে প্রতিবার জাগানোর সময় ইঞ্জিন কয়েকটি পাস চালায়। নিজস্ব পোলিং রেট আছে এমন প্রোফাইল সক্রিয় থাকলে তার বদলে সেই রেটই প্রযোজ্য হয়। প্রোফাইলটি নিষ্ক্রিয় হলে এই মান ফিরে আসে।</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>গেম থেকে ডিভাইস লুকান</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide দিয়ে ডিভাইস লুকানো ও লো-লেভেল ইনপুট হুকের মূল সুইচ। এটি বন্ধ থাকলে প্রতিটি ডিভাইসের আলাদা সেটিং যা-ই হোক, কোনো ডিভাইস লুকানো হয় না।</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>PadForge বন্ধ থাকলেও ডিভাইস আড়ালে রাখুন</value></data>
@@ -2678,7 +2679,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>যেসব গেম এটি লোড করে</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>পোলিং রেট</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>ডিফল্ট (গ্লোবাল সেটিং)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>প্রোফাইল “{0}” সক্রিয় থাকা অবস্থায় ওভাররাইড করা: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>প্রোফাইল “{0}” সক্রিয় থাকা অবস্থায় ওভাররাইড করা: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>প্রতিটি কন্ট্রোলারের ম্যাপিং ও সেটিংস একটি নামে সংরক্ষণ করে। এর কোনো গেম সামনে এলে এটি নিজে থেকে লোড হয়।</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>প্রোফাইলের কোনো গেম সামনে এলে সেটি নিজে থেকে লোড হয়।</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>কোনো কন্ট্রোলার ছাড়াই শুরু হয়। এর কোনো গেম সামনে এলে এটি নিজে থেকে লোড হয়।</value></data>

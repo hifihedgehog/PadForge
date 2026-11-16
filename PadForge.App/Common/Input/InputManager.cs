@@ -33,9 +33,26 @@ namespace PadForge.Common.Input
         //  Constants
         // ─────────────────────────────────────────────
 
-        /// <summary>Target polling interval in milliseconds. Default 1ms (~1000Hz).
-        /// Higher values reduce CPU usage at the cost of input latency.</summary>
-        public int PollingIntervalMs { get; set; } = 1;
+        /// <summary>The slowest and the fastest rate the poll loop runs at,
+        /// in passes a second.</summary>
+        public const int MinPollingRateHz = 60, MaxPollingRateHz = 10000;
+
+        /// <summary>The rate the loop runs at with nothing set.</summary>
+        public const int DefaultPollingRateHz = 1000;
+
+        private int _pollingRateHz = DefaultPollingRateHz;
+
+        /// <summary>How many passes a second the poll loop runs: each reads
+        /// every device and updates every virtual controller. A higher rate
+        /// shortens the wait between an input and its pass and costs
+        /// processor time. The loop reads this before every pass, so a
+        /// change takes effect at once.</summary>
+        public int PollingRateHz
+        {
+            get => System.Threading.Volatile.Read(ref _pollingRateHz);
+            set => System.Threading.Volatile.Write(ref _pollingRateHz,
+                Math.Clamp(value, MinPollingRateHz, MaxPollingRateHz));
+        }
 
         /// <summary>Seconds of all-mapped-devices-offline before an HM
         /// virtual controller is destroyed and its slot removed.  0 disables
@@ -124,14 +141,24 @@ namespace PadForge.Common.Input
         /// branches go back to the loop's top before the active branch ends,
         /// so they write it too: an idle engine once logged no heartbeat at
         /// all and read as a dead loop. One line per 10 s is ~8.6k lines a
-        /// day, which the mirror carries without trouble.</summary>
+        /// day, which the mirror carries without trouble.
+        ///
+        /// <para>The line ends with what the passes since the last one cost
+        /// (<see cref="PollLoad"/>), when there were any. Writing it takes
+        /// the poll thread's time, a millisecond or two while the log is
+        /// mirrored to a file, so the pass after it starts late. The line
+        /// says how long the one before it took, and the lateness that is
+        /// the meter's own is told from the loop's by it.</para></summary>
         private void WritePollHeartbeat(long cycleMs)
         {
             if (Environment.TickCount64 - _pollHeartbeatTick <= 10_000)
                 return;
             _pollHeartbeatTick = Environment.TickCount64;
+            long before = Stopwatch.GetTimestamp();
             Engine.SdlDiagLog.WriteLine(
-                $"HEARTBEAT poll hz={CurrentFrequency:F0} idle={(IsIdle ? 1 : 0)} cycle={cycleMs}ms");
+                $"HEARTBEAT poll hz={CurrentFrequency:F0} idle={(IsIdle ? 1 : 0)} cycle={cycleMs}ms"
+                + _pollLoad.Report(before));
+            _pollLoad.LineWritten(Stopwatch.GetTimestamp() - before);
         }
         // Injects accumulated macro mouse-move delta with a single SendInput per
         // tick, off the poll thread. See FlushPendingMouseMove: SendInput on the
@@ -788,10 +815,10 @@ namespace PadForge.Common.Input
         private readonly List<TriggerRouteCell> _routeRowScratch = new();
         private long _triggerRouteCfgRefreshTick;
 
-        /// <summary>Monotonic frame counter feeding the Sony Report 0x01
-        /// timestamp / packet-sequence fields. Game-side parsers (e.g. SDL3's
+        /// <summary>Counts the Sony Report 0x01 frames sent, for the frame's
+        /// counter and packet-sequence fields. Game-side parsers (e.g. SDL3's
         /// PS5 driver) reject duplicate packet-sequence values, so this MUST
-        /// advance every frame regardless of input state.</summary>
+        /// advance with every frame sent, whatever the input state.</summary>
         private long _sonyFrameCounter;
 
         /// <summary>Neptune frame counter + scratch for the Deck persona
@@ -2101,16 +2128,23 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Background thread entry point. Runs the 6-step pipeline at ~1000Hz.
+        /// Background thread entry point. Runs the 6-step pipeline
+        /// <see cref="PollingRateHz"/> times a second.
         ///
-        /// Uses a Stopwatch-based spin-wait instead of Thread.Sleep(1) for precise
-        /// timing. Thread.Sleep(1) has ~1.5-2ms latency on Windows even with
-        /// timeBeginPeriod(1), capping the loop at ~500-600Hz. Spin-waiting on
-        /// Stopwatch ticks (backed by QueryPerformanceCounter) achieves true 1000Hz.
+        /// <para>The passes stand on one schedule (<see cref="PollSchedule"/>)
+        /// and the thread sleeps on a high-resolution timer between them.
+        /// It does not spin. An earlier loop slept until 0.1 ms before each
+        /// pass and spun the rest, which held the passes within 0.1 ms of
+        /// their times and kept a core busy for that tenth of every
+        /// millisecond. Windows wakes the sleeper on its clock's tick, so a
+        /// pass now starts up to one tick late, half a millisecond at the
+        /// finest, and the processor rests for the whole wait.</para>
         ///
-        /// CPU impact is minimal: spin-waiting burns one core at ~1-3% utilization
-        /// for sub-millisecond waits, and the thread priority is AboveNormal so it
-        /// doesn't starve other work.
+        /// <para>Above 1000 passes a second the loop asks Windows for its
+        /// finest clock, so the wakes come as often as Windows gives them
+        /// (<see cref="SetFineClock"/>). Above the wakes' own rate, 2000 a
+        /// second on that clock, the passes due at one wake run back to
+        /// back.</para>
         ///
         /// <paramref name="generation"/> retires the loop when Stop moves the
         /// stamp. <paramref name="pollRun"/> is the frame bookkeeping run Start
@@ -2118,42 +2152,20 @@ namespace PadForge.Common.Input
         /// </summary>
         private void PollingLoop(int generation, int pollRun)
         {
-            // Keep timeBeginPeriod(1). It still helps multimedia timers and
-            // other system timing used by SDL, HIDMaestro, and the UI dispatcher.
+            // A one millisecond clock for the loop's life: the timers of SDL,
+            // HIDMaestro and the interface's dispatcher ride it too.
             timeBeginPeriod(1);
 
-            // High-resolution waitable timer for sub-ms sleeps without
-            // burning CPU.  Available on Windows 10 1803+.
+            // The timer the loop sleeps on. Windows 10 1803 and later have
+            // the high-resolution kind, which every Windows PadForge runs on
+            // is. Failing that, an ordinary one, as precise as the clock.
             IntPtr hTimer = CreateWaitableTimerExW(
                 IntPtr.Zero, IntPtr.Zero,
                 CREATE_WAITABLE_TIMER_HIGH_RESOLUTION, TIMER_ALL_ACCESS);
-
-            // Fallback: x360ce-style multimedia timer + ManualResetEvent.
-            // timeSetEvent fires a periodic callback that signals the event,
-            // letting the polling thread block with zero CPU. Precision is
-            // ~1-2ms with timeBeginPeriod(1) — less accurate than the HR
-            // timer but much better than Thread.Sleep(1) alone.
-            ManualResetEvent mmTimerEvent = null;
-            TimerCallback mmTimerCb = null;
-            uint mmTimerId = 0;
             if (hTimer == IntPtr.Zero)
-            {
-                mmTimerEvent = new ManualResetEvent(false);
-                var evt = mmTimerEvent; // capture for lambda
-                mmTimerCb = (id, msg, user, dw1, dw2) =>
-                {
-                    try { evt.Set(); } catch { /* disposed at shutdown */ }
-                };
-                mmTimerId = timeSetEvent((uint)Math.Max(1, PollingIntervalMs), 0,
-                    mmTimerCb, IntPtr.Zero, TIME_PERIODIC);
-                if (mmTimerId == 0)
-                {
-                    // Timer failed — dispose the event to avoid a resource leak.
-                    mmTimerEvent.Dispose();
-                    mmTimerEvent = null;
-                    mmTimerCb = null;
-                }
-            }
+                hTimer = CreateWaitableTimerExW(IntPtr.Zero, IntPtr.Zero, 0, TIMER_ALL_ACCESS);
+
+            bool fineClock = false;
 
             try
             {
@@ -2171,12 +2183,16 @@ namespace PadForge.Common.Input
                 var sleepGuardTimer = new Stopwatch();
                 sleepGuardTimer.Start();
 
-                // Wall-clock drift compensation: track cumulative expected
-                // time vs actual elapsed time.  If we fall behind, shorten
-                // future cycles to catch up so the average rate converges.
-                var wallClock = new Stopwatch();
-                wallClock.Start();
-                long expectedTicks = 0;
+                // When each pass is due. The idle and focus-suspended
+                // branches pace themselves and leave it far behind, which it
+                // takes as a stall: it starts again at the next active pass.
+                var schedule = new PollSchedule(Stopwatch.Frequency, TimerGrid(),
+                    PollingRateHz, Stopwatch.GetTimestamp());
+                _pollLoad.Begin(Stopwatch.GetTimestamp());
+
+                // When the last active pass began, or 0 after a rest (the
+                // start, idle, a focus suspension).
+                long lastPassStart = 0;
 
                 // Run device enumeration immediately on the first cycle so that
                 // controllers are detected, virtual devices are created, and force
@@ -2271,10 +2287,10 @@ namespace PadForge.Common.Input
                         WritePollHeartbeat((Stopwatch.GetTimestamp() - tsIdleCycle) * 1000 / Stopwatch.Frequency);
                         Thread.Sleep(50);
                         firstCycle = true; // Ensure immediate enumeration on wake
-                        // Reset wall-clock drift tracker so stale drift from
-                        // before idle doesn't cause a burst of short cycles.
-                        wallClock.Restart();
-                        expectedTicks = 0;
+                        // The schedule starts again at the first active pass,
+                        // so the time spent idle is followed by no burst.
+                        schedule.Restart(Stopwatch.GetTimestamp());
+                        lastPassStart = 0;
                         continue;
                     }
 
@@ -2289,16 +2305,38 @@ namespace PadForge.Common.Input
                         WritePollHeartbeat(0);
                         Thread.Sleep(100);
                         firstCycle = true;
-                        wallClock.Restart();
-                        expectedTicks = 0;
+                        schedule.Restart(Stopwatch.GetTimestamp());
+                        lastPassStart = 0;
                         continue;
                     }
 
-                    // Calculate target ticks each cycle so PollingIntervalMs can be
-                    // changed at runtime from the Settings UI.
-                    long targetTicks = Stopwatch.Frequency / 1000 * PollingIntervalMs;
+                    // The rate is read before every pass, so a change from
+                    // the Settings page or a profile takes effect at once.
+                    int rateHz = PollingRateHz;
+                    schedule.SetRate(rateHz);
+                    if (fineClock != rateHz > FineClockAboveHz)
+                    {
+                        fineClock = !fineClock;
+                        SetFineClock(fineClock);
+                    }
+                    bool spaceFrames = rateHz > EveryPassFrameGate.EveryPassUpToHz;
+                    if (EveryPassFrameGate.Engaged != spaceFrames)
+                        EveryPassFrameGate.Engaged = spaceFrames;
 
                     cycleTimer.Restart();
+                    long passStart = Stopwatch.GetTimestamp();
+                    _pollLoad.BeginPass(passStart, passStart - schedule.Due);
+
+                    // Above the rate the per-pass rules were written at, the
+                    // evaluator is told how long this pass is, from the
+                    // start of the one before it. The first pass after a
+                    // rest takes the rate's own length.
+                    double shortPassSeconds = 0;
+                    if (rateHz > Engine.Common.Mapping.SourceCoercion.ReferencePassHz)
+                        shortPassSeconds = lastPassStart != 0
+                            ? (passStart - lastPassStart) / (double)Stopwatch.Frequency
+                            : 1.0 / rateHz;
+                    lastPassStart = passStart;
 
                     try
                     {
@@ -2310,13 +2348,14 @@ namespace PadForge.Common.Input
                         long tsSdl = Stopwatch.GetTimestamp();
                         SDL_UpdateJoysticks();
                         long sdlMs = (Stopwatch.GetTimestamp() - tsSdl) * 1000 / Stopwatch.Frequency;
+                        _pollLoad.Mark(PollStep.Sdl);
 
                         // Advance the evaluator's poll-frame gate exactly once
                         // per cycle: SourceCoercion's smoothing/delta caches
                         // step once per poll no matter how many mapping rows
                         // read the same source (the Gyro tab's smoothing is
                         // per-device-per-slot, not per-row).
-                        Engine.Common.Mapping.SourceCoercion.BeginPollFrame(pollRun);
+                        Engine.Common.Mapping.SourceCoercion.BeginPollFrame(pollRun, shortPassSeconds);
 
                         long enumMs = 0;
                         // A change of the Bliss-Box switch runs the sweep now,
@@ -2331,6 +2370,7 @@ namespace PadForge.Common.Input
                         }
                         RetryPendingBlissBoxRows();
                         FlydigiReprobeTick();
+                        _pollLoad.Mark(PollStep.Sweep);
 
                         using (EnterMenuPublication())
                         {
@@ -2342,12 +2382,15 @@ namespace PadForge.Common.Input
                             // never reads the wrappers (destructive mouse / JC2
                             // baseline reads split motion between two callers).
                             RemoteLinkPollTick?.Invoke();
+                            _pollLoad.Mark(PollStep.Read);
                             UpdateGyroEngageStates();
                             UpdateTriggerRouteEngageStates();
                             UpdateHapticMirrorEngageStates();
                             UpdateMotionSnapshots();
+                            _pollLoad.Mark(PollStep.Engage);
                             UpdateOutputStates();
                             CombineOutputStates();
+                            _pollLoad.Mark(PollStep.Map);
                             EvaluateMacros();
                             // The On-Screen Keyboard (#566) runs after the
                             // macro pass, which may switch the layer that
@@ -2359,13 +2402,16 @@ namespace PadForge.Common.Input
                             // its layer gate is open, and a layer row's
                             // inputs only while the engine evaluates the row.
                             PublishLayerGatedHookKeys(evaluating: true);
+                            _pollLoad.Mark(PollStep.Macros);
                             // The Motion Pitch, Yaw and Roll rows (#475) are
                             // evaluated in Step 3, so their motion composes
                             // here, after the macro pass's Gyro Recenter, and
                             // DSU sends the composed frame.
                             ApplyMotionRows();
                             BroadcastDsuMotion();
+                            _pollLoad.Mark(PollStep.Motion);
                             UpdateVirtualDevices();
+                            _pollLoad.Mark(PollStep.Virtual);
                         }
                         RetrieveOutputStates();
                         UpdateDs3PlayerNumber();
@@ -2375,6 +2421,8 @@ namespace PadForge.Common.Input
                         // UpdateVirtualDevices so a slot destroyed this
                         // tick publishes zeros the same tick.
                         UpdateRumbleAudioLane();
+                        _pollLoad.Mark(PollStep.Output);
+                        _pollLoad.EndPass();
 
                         // Stall watchdog report: only outliers write anything.
                         long cycleMs = cycleTimer.ElapsedMilliseconds;
@@ -2408,76 +2456,20 @@ namespace PadForge.Common.Input
                         RaiseError("Polling loop error", ex);
                     }
 
-                    // Wall-clock drift-compensated precision wait.
-                    //
-                    // Instead of per-cycle overshoot tracking, we compare
-                    // cumulative expected time against the wall clock.  If
-                    // we're behind, we shorten this cycle; if ahead, we
-                    // lengthen it.  This converges the average rate exactly.
-                    expectedTicks += targetTicks;
-                    long drift = wallClock.ElapsedTicks - expectedTicks;
-
-                    // If drift exceeds 10 cycles (e.g. after system sleep/resume),
-                    // reset the wall clock instead of sprinting to catch up.
-                    if (drift > targetTicks * 10 || drift < -(targetTicks * 10))
+                    // Until the next pass is due. The schedule answers 0
+                    // while a pass is owed, and those run back to back: after
+                    // a wake that landed late, and at every wake when the
+                    // rate is above the wakes' own. It bounds that itself, so
+                    // a processor that cannot hold the rate still sleeps
+                    // between its bursts (#331).
+                    long tsWait = Stopwatch.GetTimestamp();
+                    long sleepUntil = schedule.Next(tsWait);
+                    if (sleepUntil != 0)
                     {
-                        wallClock.Restart();
-                        expectedTicks = targetTicks;
-                        drift = 0;
+                        SleepOnTimer(hTimer, sleepUntil - tsWait);
+                        schedule.Woke(Stopwatch.GetTimestamp());
+                        _pollLoad.Slept();
                     }
-
-                    long adjustedTarget = targetTicks - drift;
-                    if (adjustedTarget < targetTicks / 4)
-                        adjustedTarget = targetTicks / 4; // safety floor
-
-                    long spinThresholdTicks = Stopwatch.Frequency / 10000; // 0.1ms
-                    long sleepThresholdTicks = Stopwatch.Frequency * 3 / 2000; // 1.5ms
-                    long remaining = adjustedTarget - cycleTimer.ElapsedTicks;
-
-                    if (remaining > spinThresholdTicks && hTimer != IntPtr.Zero)
-                    {
-                        // HR timer: precise sub-ms kernel sleep.
-                        long waitTicks = remaining - spinThresholdTicks;
-                        long dueTime = -(waitTicks * 10_000_000 / Stopwatch.Frequency);
-                        if (dueTime < -1)
-                        {
-                            if (SetWaitableTimerEx(hTimer, ref dueTime, 0,
-                                IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, 0))
-                                WaitForSingleObject(hTimer, INFINITE);
-                            else
-                                // Arm failure would otherwise fall through
-                                // to a FULL-remaining busy spin (~a core).
-                                Thread.Sleep(1);
-                        }
-                    }
-                    else if (remaining > spinThresholdTicks && mmTimerEvent != null)
-                    {
-                        // x360ce-style: block until multimedia timer fires (~1ms).
-                        mmTimerEvent.WaitOne(50);
-                        mmTimerEvent.Reset();
-                    }
-                    else if (remaining > sleepThresholdTicks)
-                    {
-                        // Last resort: Thread.Sleep(1).
-                        Thread.Sleep(1);
-                    }
-                    else if (remaining <= 0)
-                    {
-                        // Overrun: the cycle's work exceeded the interval, so
-                        // no wait ran at all. On a CPU that cannot hold the
-                        // rate this loop otherwise free-runs at AboveNormal
-                        // priority with no scheduling gap, starving the UI
-                        // thread (#331: "every adjustment takes a minute").
-                        // SwitchToThread yields one quantum to ANY ready
-                        // thread on this processor, including lower-priority
-                        // ones, which Thread.Sleep(0) would not. On machines
-                        // that hold the rate this branch never runs.
-                        Thread.Yield();
-                    }
-
-                    // Spin for the final sub-ms portion.
-                    while (cycleTimer.ElapsedTicks < adjustedTarget)
-                        Thread.SpinWait(1);
                 }
             }
             finally
@@ -2490,12 +2482,65 @@ namespace PadForge.Common.Input
 
                 if (hTimer != IntPtr.Zero)
                     CloseHandle(hTimer);
-                if (mmTimerId != 0)
-                    timeKillEvent(mmTimerId);
-                GC.KeepAlive(mmTimerCb); // prevent GC of native callback delegate
-                mmTimerEvent?.Dispose();
+                if (fineClock) SetFineClock(false);
                 timeEndPeriod(1);
             }
+        }
+
+        /// <summary>The rate above which the loop asks Windows for its finest
+        /// clock. At 1000 passes a second and under, a pass is due no more
+        /// often than the one millisecond clock ticks.</summary>
+        internal const int FineClockAboveHz = 1000;
+
+        /// <summary>The time between two wakes Windows can give a sleeping
+        /// thread, in <see cref="Stopwatch"/> ticks: its clock's finest
+        /// period, half a millisecond on the PCs measured (2026-11-16), or one
+        /// millisecond where Windows does not say.</summary>
+        internal static long TimerGrid()
+        {
+            try
+            {
+                if (NtQueryTimerResolution(out _, out uint finest, out _) == 0 && finest > 0)
+                    return Math.Max(1, finest * Stopwatch.Frequency / 10_000_000);
+            }
+            catch (Exception ex) when (ex is DllNotFoundException or EntryPointNotFoundException) { }
+            return Stopwatch.Frequency / 1000;
+        }
+
+        /// <summary>Asks Windows for its finest clock, or gives it back. The
+        /// clock is one for the whole PC and a finer one costs every program
+        /// a little power, so the loop holds it only while it runs faster
+        /// than the one millisecond clock ticks. Measured here with a pass
+        /// due every 0.25 ms: 1,852 wakes a second on the one millisecond
+        /// clock and 1,998 on the finest, with the latest of a hundred 1.0 ms
+        /// and 0.6 ms after the one before.</summary>
+        private static void SetFineClock(bool on)
+        {
+            try
+            {
+                if (NtQueryTimerResolution(out _, out uint finest, out _) == 0 && finest > 0)
+                    NtSetTimerResolution(finest, on, out _);
+            }
+            catch (Exception ex) when (ex is DllNotFoundException or EntryPointNotFoundException) { }
+        }
+
+        /// <summary>Sleeps the poll thread for <paramref name="ticks"/> of
+        /// <see cref="Stopwatch"/> time on its timer. Windows ends the sleep
+        /// on its clock's next tick at or after that, never before.</summary>
+        private static void SleepOnTimer(IntPtr hTimer, long ticks)
+        {
+            // In 100 ns units, and negative for a time from now.
+            long dueTime = -(ticks * 10_000_000 / Stopwatch.Frequency);
+            if (dueTime > -1) dueTime = -1;
+            if (hTimer != IntPtr.Zero
+                && SetWaitableTimerEx(hTimer, ref dueTime, 0, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, 0))
+            {
+                WaitForSingleObject(hTimer, INFINITE);
+                return;
+            }
+            // No timer, or one that would not arm: the thread still has to
+            // give the processor up, or it would run on with no gap.
+            Thread.Sleep((int)Math.Max(1, ticks * 1000 / Stopwatch.Frequency));
         }
 
         // ─────────────────────────────────────────────
@@ -4401,18 +4446,22 @@ namespace PadForge.Common.Input
         [DllImport("winmm.dll", ExactSpelling = true)]
         private static extern uint timeEndPeriod(uint uPeriod);
 
-        // Multimedia timer callback for x360ce-style fallback.
-        private delegate void TimerCallback(uint uTimerID, uint uMsg,
-            IntPtr dwUser, IntPtr dw1, IntPtr dw2);
+        // The clock's periods in 100 ns units: its coarsest, its finest and
+        // the one in force. Windows documents neither call. Both have kept
+        // this shape since Windows NT, and timeBeginPeriod, the documented
+        // one, takes whole milliseconds only.
+        [DllImport("ntdll.dll", ExactSpelling = true)]
+        private static extern int NtQueryTimerResolution(out uint coarsest, out uint finest, out uint current);
 
-        [DllImport("winmm.dll", ExactSpelling = true)]
-        private static extern uint timeSetEvent(uint uDelay, uint uResolution,
-            TimerCallback lpTimeProc, IntPtr dwUser, uint fuEvent);
+        [DllImport("ntdll.dll", ExactSpelling = true)]
+        private static extern int NtSetTimerResolution(uint desired, [MarshalAs(UnmanagedType.U1)] bool set, out uint current);
 
-        [DllImport("winmm.dll", ExactSpelling = true)]
-        private static extern uint timeKillEvent(uint uTimerID);
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GetCurrentThread();
 
-        private const uint TIME_PERIODIC = 1;
+        [DllImport("kernel32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool QueryThreadCycleTime(IntPtr thread, out ulong cycles);
 
         [DllImport("kernel32.dll")]
         private static extern uint SetThreadExecutionState(uint esFlags);

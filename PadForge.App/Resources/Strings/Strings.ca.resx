@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Esborra</value></data>
   <data name="Common_None" xml:space="preserve"><value>Cap</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Sense assignar</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -542,8 +543,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Suport de maquinari</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Inicia el motor automàticament en obrir el programa</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continua el sondeig quan la finestra perd el focus</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Interval de sondeig (tret que un perfil el substitueixi)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>El motor sondeja els dispositius amb aquest interval. Mentre hi ha actiu un perfil amb la seva pròpia freqüència de sondeig, s'aplica aquella freqüència. Aquest valor es recupera quan el perfil es desactiva.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Freqüència de sondeig (tret que un perfil la substitueixi)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>El motor llegeix tots els dispositius i actualitza els comandaments virtuals aquest nombre de vegades per segon, de 60 a 10000. Una freqüència més alta consumeix més temps de processador. El Windows desperta el motor unes 2000 vegades per segon com a màxim, de manera que una freqüència més alta executa diverses passades a cada despertar. Mentre hi ha actiu un perfil amb la seva pròpia freqüència de sondeig, s'aplica aquella freqüència. Aquest valor es recupera quan el perfil es desactiva.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Amaga els dispositius als jocs</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Interruptor general per a l'ocultació de dispositius amb HidHide i els ganxos d'entrada de baix nivell. Quan està desactivat, no s'amaga cap dispositiu, independentment de la configuració de cada dispositiu.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Mantén els dispositius ocults entre execucions</value></data>
@@ -2487,7 +2488,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Jocs que el carreguen</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Freqüència de sondeig</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Per defecte (configuració global)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Substituït mentre el perfil «{0}» està actiu: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Substituït mentre el perfil «{0}» està actiu: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Desa les assignacions i la configuració de tots els comandaments amb un sol nom. Es carrega automàticament quan un dels seus jocs és al davant.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Un perfil es carrega automàticament quan un dels seus jocs és al davant.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Comença sense comandaments. Es carrega automàticament quan un dels seus jocs és al davant.</value></data>

@@ -116,6 +116,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Página a la derecha</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ninguno</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Sin asignar</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -409,8 +410,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Compatibilidad de hardware</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Iniciar motor automáticamente al abrir</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continuar sondeo cuando la ventana pierde el foco</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervalo de sondeo (salvo que un perfil lo anule)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>El motor sondea los dispositivos con este intervalo. Mientras esté activo un perfil con su propia tasa de sondeo, se aplica esa tasa. Este valor vuelve a aplicarse cuando el perfil se desactiva.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Tasa de sondeo (salvo que un perfil la anule)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>El motor lee todos los dispositivos y actualiza los controles virtuales esta cantidad de veces por segundo, de 60 a 10000. Una tasa más alta consume más tiempo del procesador. Windows activa el motor unas 2000 veces por segundo como máximo, así que con una tasa mayor se ejecutan varias pasadas en cada activación. Mientras esté activo un perfil con su propia tasa de sondeo, se aplica esa tasa. Este valor vuelve a aplicarse cuando el perfil se desactiva.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Ocultar dispositivos de los juegos</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Interruptor principal para la ocultación de dispositivos con HidHide y los hooks de entrada de bajo nivel. Cuando está desactivado, no se oculta ningún dispositivo independientemente de la configuración individual.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Ventana</value></data>
@@ -1302,7 +1303,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Juegos que lo cargan</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Tasa de sondeo</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Predeterminada (ajuste global)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Anulado mientras el perfil “{0}” está activo: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Anulado mientras el perfil “{0}” está activo: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Guarda las asignaciones y la configuración de cada control bajo un solo nombre. Se carga solo cuando uno de sus juegos está al frente.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Un perfil se carga solo cuando uno de sus juegos está al frente.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Empieza sin controles. Se carga solo cuando uno de sus juegos está al frente.</value></data>

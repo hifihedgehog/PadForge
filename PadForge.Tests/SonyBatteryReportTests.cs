@@ -47,7 +47,7 @@ namespace PadForge.Tests
             Gamepad gp = default;
             TouchpadState tp = default;
             MotionSnapshot motion = default;
-            packer(in gp, in tp, in motion, percent, charging, 1u, dest);
+            packer(in gp, in tp, in motion, percent, charging, 1u, 0u, dest);
         }
 
         /// <summary>SDL's PS4 decode, verbatim from SDL_hidapi_ps4.c: the low

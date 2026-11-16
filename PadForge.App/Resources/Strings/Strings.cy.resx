@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Clirio</value></data>
   <data name="Common_None" xml:space="preserve"><value>Dim</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Heb ei neilltuo</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Cymorth Caledwedd</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Cychwyn yr Injan yn Awtomatig wrth Lansio</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Parhau i Holi Pan Fydd y Ffenestr yn Colli Ffocws</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Cyfwng Holi (Oni Bai Fod Proffil yn ei Ddiystyru)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Mae'r injan yn holi dyfeisiau ar y cyfwng hwn. Tra bydd proffil â'i gyfradd holi ei hun yn weithredol, mae'r gyfradd honno'n berthnasol yn lle hynny. Daw'r gwerth hwn yn ôl pan fydd y proffil yn dadactifadu.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Cyfradd Holi (Oni Bai Fod Proffil yn ei Ddiystyru)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Mae'r injan yn darllen pob dyfais ac yn diweddaru'r rheolyddion rhithwir gymaint â hyn o weithiau bob eiliad, o 60 i 10000. Mae cyfradd uwch yn defnyddio mwy o amser prosesydd. Mae Windows yn deffro'r injan tua 2000 o weithiau bob eiliad ar y mwyaf, felly mae cyfradd uwch yn rhedeg sawl pàs ar bob deffroad. Tra bydd proffil â'i gyfradd holi ei hun yn weithredol, mae'r gyfradd honno'n berthnasol yn lle hynny. Daw'r gwerth hwn yn ôl pan fydd y proffil yn dadactifadu.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Cuddio Dyfeisiau rhag Gemau</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Prif switsh ar gyfer cuddio dyfeisiau HidHide a bachau mewnbwn lefel isel. Pan fydd i ffwrdd, nid oes unrhyw ddyfeisiau'n cael eu cuddio waeth beth fo'r gosodiadau fesul dyfais.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Cadw Dyfeisiau wedi'u Cuddliwio Rhwng Lansiadau</value></data>
@@ -2487,7 +2488,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Gemau sy'n ei Lwytho</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Cyfradd Holi</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Rhagosodedig (Gosodiad Cyffredinol)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Wedi'i ddiystyru tra bo proffil “{0}” yn weithredol: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Wedi'i ddiystyru tra bo proffil “{0}” yn weithredol: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Mae'n cadw mapiadau a gosodiadau pob rheolydd dan un enw. Mae'n llwytho ei hun pan fydd un o'i gemau o'ch blaen.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Mae proffil yn llwytho ei hun pan fydd un o'i gemau o'ch blaen.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Yn dechrau heb reolyddion. Mae'n llwytho ei hun pan fydd un o'i gemau o'ch blaen.</value></data>

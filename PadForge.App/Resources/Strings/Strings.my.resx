@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>ရှင်းလင်း</value></data>
   <data name="Common_None" xml:space="preserve"><value>မရှိ</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>သတ်မှတ်မထား</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>ဟာ့ဒ်ဝဲ ပံ့ပိုးမှု</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>ဖွင့်လှစ်ချိန်တွင် အင်ဂျင်ကို အလိုအလျောက် စတင်ရန်</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>ဝင်းဒိုး ရှေ့တွင် မရှိတော့သည့်အခါလည်း ဖတ်ယူခြင်း ဆက်လုပ်ရန်</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>ဖတ်ယူမှု ကြားကာလ (ပရိုဖိုင်က အစားထိုးမထားလျှင်)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>အင်ဂျင်သည် ဤကြားကာလဖြင့် စက်ပစ္စည်းများကို ဖတ်ယူသည်။ ကိုယ်ပိုင် ဖတ်ယူနှုန်းပါသော ပရိုဖိုင် အသက်ဝင်နေစဉ် ထိုနှုန်းကို အစားသုံးသည်။ ပရိုဖိုင် ပိတ်သွားသည့်အခါ ဤတန်ဖိုး ပြန်လည် အသက်ဝင်သည်။</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>စစ်ဆေးနှုန်း (ပရိုဖိုင်က အစားထိုးမထားလျှင်)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>အင်ဂျင်သည် တစ်စက္ကန့်လျှင် 60 မှ 10000 အထိရှိသော ဤအကြိမ်ရေအတိုင်း စက်ပစ္စည်းအားလုံးကို ဖတ်ယူပြီး ဗာချွယ်ကွန်ထရိုလာများကို အပ်ဒိတ်လုပ်သည်။ နှုန်း မြင့်လေ ပရိုဆက်ဆာ အချိန်ကို ပိုသုံးလေ ဖြစ်သည်။ Windows သည် အင်ဂျင်ကို တစ်စက္ကန့်လျှင် အများဆုံး 2000 ခန့်သာ နိုးထစေသောကြောင့် ထိုထက်မြင့်သော နှုန်းတွင် နိုးထသည့်အကြိမ်တိုင်း လုပ်ဆောင်မှု အကြိမ်ပတ် အများအပြားကို လုပ်ဆောင်သည်။ ကိုယ်ပိုင် ဖတ်ယူနှုန်းပါသော ပရိုဖိုင် အသက်ဝင်နေစဉ် ထိုနှုန်းကို အစားသုံးသည်။ ပရိုဖိုင် ပိတ်သွားသည့်အခါ ဤတန်ဖိုး ပြန်လည် အသက်ဝင်သည်။</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>ဂိမ်းများမှ စက်ပစ္စည်းများကို ဝှက်ရန်</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide စက်ပစ္စည်းဝှက်ခြင်းနှင့် အဆင့်နိမ့် အဝင် hook များအတွက် ပင်မခလုတ်။ ပိတ်ထားလျှင် စက်ပစ္စည်းတစ်ခုချင်းစီ၏ ဆက်တင်များ မည်သို့ပင်ရှိစေ မည်သည့်စက်ပစ္စည်းကိုမျှ မဝှက်ပါ။</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>ဖွင့်လှစ်မှုများကြားတွင် စက်ပစ္စည်းများကို ဆက်ဝှက်ထားရန်</value></data>
@@ -2486,7 +2487,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>၎င်းကို ဖွင့်သော ဂိမ်းများ</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>စစ်ဆေးနှုန်း</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>မူလ (အထွေထွေ ဆက်တင်)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>ပရိုဖိုင် “{0}” အသက်ဝင်နေစဉ် အစားထိုးထားသည်: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>ပရိုဖိုင် “{0}” အသက်ဝင်နေစဉ် အစားထိုးထားသည်: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>ကွန်ထရိုလာတိုင်း၏ မက်ပင်းများနှင့် ဆက်တင်များကို အမည်တစ်ခုတည်းအောက်တွင် သိမ်းဆည်းသည်။ ၎င်း၏ ဂိမ်းတစ်ခု ရှေ့တွင်ရှိသည့်အခါ အလိုအလျောက် ဖွင့်သည်။</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>ပရိုဖိုင်သည် ၎င်း၏ ဂိမ်းတစ်ခု ရှေ့တွင်ရှိသည့်အခါ အလိုအလျောက် ဖွင့်သည်။</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>ကွန်ထရိုလာ မပါဘဲ စတင်သည်။ ၎င်း၏ ဂိမ်းတစ်ခု ရှေ့တွင်ရှိသည့်အခါ အလိုအလျောက် ဖွင့်သည်။</value></data>

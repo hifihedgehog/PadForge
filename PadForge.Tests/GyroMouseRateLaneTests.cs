@@ -125,7 +125,7 @@ namespace PadForge.Tests
         [Fact]
         public void TheDefaultCadenceIsUnchangedFromTheOldLane()
         {
-            // Calibration contract: at PollingRateMs = 1 and below the old
+            // Calibration contract: at 1000 passes a second and below the old
             // ceiling, the rate lane must spend what the deflection lane
             // spent, or every tuned profile changes feel. Old lane:
             // (rate * GyroScale) clamped, times 15 px.

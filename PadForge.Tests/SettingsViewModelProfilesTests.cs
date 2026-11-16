@@ -375,7 +375,7 @@ namespace PadForge.Tests
                 Id = id,
                 Name = name,
                 ExecutableNames = @"C:\Games\RocketLeague.exe",
-                PollingRateOverrideMs = 4,
+                PollingRateOverrideHz = 250,
                 DreamcastPicture = "vmu.png",
                 KeyboardScreenPicture = "screen.png",
                 SlotCreated = created,
@@ -400,7 +400,7 @@ namespace PadForge.Tests
             Assert.Equal("p1", stored.Id);
             Assert.Equal("Rocket League", stored.Name);
             Assert.Equal(@"C:\Games\RocketLeague.exe", stored.ExecutableNames);
-            Assert.Equal(4, stored.PollingRateOverrideMs);
+            Assert.Equal(250, stored.PollingRateOverrideHz);
             Assert.Equal("vmu.png", stored.DreamcastPicture);
             Assert.Equal("screen.png", stored.KeyboardScreenPicture);
             Assert.Null(stored.WorkshopSource);

@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Σελίδα δεξιά</value></data>
   <data name="Common_None" xml:space="preserve"><value>Κανένα</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Χωρίς ανάθεση</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Υποστήριξη υλικού</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Αυτόματη εκκίνηση της μηχανής κατά την έναρξη</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Συνέχιση δειγματοληψίας όταν το παράθυρο χάνει την εστίαση</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Διάστημα δειγματοληψίας (εκτός αν το παρακάμπτει ένα προφίλ)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Η μηχανή διαβάζει τις συσκευές με αυτό το διάστημα. Όσο είναι ενεργό ένα προφίλ με δικό του ρυθμό δειγματοληψίας, ισχύει εκείνος ο ρυθμός. Αυτή η τιμή επανέρχεται όταν το προφίλ απενεργοποιηθεί.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Ρυθμός δειγματοληψίας (εκτός αν τον παρακάμπτει ένα προφίλ)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Η μηχανή διαβάζει κάθε συσκευή και ενημερώνει τα εικονικά χειριστήρια τόσες φορές το δευτερόλεπτο, από 60 έως 10000. Ένας υψηλότερος ρυθμός καταναλώνει περισσότερο χρόνο επεξεργαστή. Τα Windows ξυπνούν τη μηχανή το πολύ περίπου 2000 φορές το δευτερόλεπτο, οπότε ένας υψηλότερος ρυθμός εκτελεί περισσότερα περάσματα σε κάθε ξύπνημα. Όσο είναι ενεργό ένα προφίλ με δικό του ρυθμό δειγματοληψίας, ισχύει εκείνος ο ρυθμός. Αυτή η τιμή επανέρχεται όταν το προφίλ απενεργοποιηθεί.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Απόκρυψη συσκευών από τα παιχνίδια</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Γενικός διακόπτης για την απόκρυψη συσκευών μέσω HidHide και για τα hooks εισόδου χαμηλού επιπέδου. Όταν είναι κλειστός, καμία συσκευή δεν αποκρύπτεται, ανεξάρτητα από τις ρυθμίσεις ανά συσκευή.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Διατήρηση απόκρυψης συσκευών μεταξύ εκκινήσεων</value></data>
@@ -2678,7 +2679,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Παιχνίδια που το φορτώνουν</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Ρυθμός δειγματοληψίας</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Προεπιλογή (γενική ρύθμιση)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Παρακάμπτεται όσο το προφίλ «{0}» είναι ενεργό: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Παρακάμπτεται όσο το προφίλ «{0}» είναι ενεργό: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Αποθηκεύει τις αντιστοιχίσεις και τις ρυθμίσεις κάθε χειριστηρίου με ένα όνομα. Φορτώνεται από μόνο του όταν ένα από τα παιχνίδια του είναι σε πρώτο πλάνο.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Ένα προφίλ φορτώνεται από μόνο του όταν ένα από τα παιχνίδια του είναι σε πρώτο πλάνο.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Ξεκινά χωρίς χειριστήρια. Φορτώνεται από μόνο του όταν ένα από τα παιχνίδια του είναι σε πρώτο πλάνο.</value></data>

@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Цэвэрлэх</value></data>
   <data name="Common_None" xml:space="preserve"><value>Байхгүй</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>мс</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Гц</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Оноогоогүй</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Техник хангамжийн дэмжлэг</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Нээхэд хөдөлгүүрийг автоматаар эхлүүлэх</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Цонх идэвхгүй болоход уншилтыг үргэлжлүүлэх</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Уншилтын интервал (профайл өөрчлөөгүй бол)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Хөдөлгүүр төхөөрөмжүүдийг энэ интервалаар уншина. Өөрийн уншилтын давтамжтай профайл идэвхтэй үед тэр давтамж үйлчилнэ. Профайл идэвхгүй болоход энэ утга буцаж үйлчилнэ.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Уншилтын давтамж (профайл өөрчлөөгүй бол)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Хөдөлгүүр секундэд энэ тооны удаа (60-аас 10000 хүртэл) төхөөрөмж бүрийг уншиж, виртуал контроллерүүдийг шинэчилнэ. Давтамж өндөр байх тусам процессорын илүү их хугацааг ашиглана. Windows хөдөлгүүрийг секундэд хамгийн ихдээ 2000 орчим удаа сэрээдэг тул үүнээс өндөр давтамжид хөдөлгүүр сэрэх бүртээ хэд хэдэн давталт хийнэ. Өөрийн уншилтын давтамжтай профайл идэвхтэй үед тэр давтамж үйлчилнэ. Профайл идэвхгүй болоход энэ утга буцаж үйлчилнэ.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Төхөөрөмжийг тоглоомоос нуух</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide-ын төхөөрөмж нуух болон доод түвшний оролтын дэгээний ерөнхий унтраалга. Унтраалттай үед төхөөрөмж тус бүрийн тохиргооноос үл хамааран ямар ч төхөөрөмж нуугдахгүй.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Дахин нээх хооронд төхөөрөмжийг нуусан хэвээр үлдээх</value></data>
@@ -2489,7 +2490,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Үүнийг ачаалах тоглоомууд</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Уншилтын давтамж</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Үндсэн (ерөнхий тохиргоо)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>“{0}” профайл идэвхтэй үед өөрчлөгдсөн: {1} мс</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>“{0}” профайл идэвхтэй үед өөрчлөгдсөн: {1} Гц</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Бүх контроллерын оноолт болон тохиргоог нэг нэрийн дор хадгална. Түүний тоглоомуудын аль нэг нь урд гарахад автоматаар ачаалагдана.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Профайл нь түүний тоглоомуудын аль нэг нь урд гарахад автоматаар ачаалагдана.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Контроллергүйгээр эхэлнэ. Түүний тоглоомуудын аль нэг нь урд гарахад автоматаар ачаалагдана.</value></data>

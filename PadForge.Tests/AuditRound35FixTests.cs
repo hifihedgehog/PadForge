@@ -349,11 +349,11 @@ namespace PadForge.Tests
             var motion = new PadForge.Services.MotionSnapshot();
 
             var idle = new byte[63];
-            packer(in gp, in tp, in motion, 100, false, 0, idle);
+            packer(in gp, in tp, in motion, 100, false, 0, 0, idle);
 
             gp.Buttons |= PadForge.Engine.Gamepad.TOUCHPAD;
             var pressed = new byte[63];
-            packer(in gp, in tp, in motion, 100, false, 0, pressed);
+            packer(in gp, in tp, in motion, 100, false, 0, 0, pressed);
 
             Assert.Equal(0, idle[buttonByte] & 0x02);
             Assert.Equal(0x02, pressed[buttonByte] & 0x02);

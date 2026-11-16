@@ -110,6 +110,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>I-clear</value></data>
   <data name="Common_None" xml:space="preserve"><value>Wala</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Hindi nakatalaga</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -544,8 +545,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Suporta sa Hardware</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Awtomatikong simulan ang engine sa paglunsad</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Ituloy ang polling kapag nawalan ng focus ang window</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Polling interval (maliban kung may profile na nag-o-override)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Pino-poll ng engine ang mga device sa interval na ito. Habang aktibo ang profile na may sariling polling rate, iyon ang masusunod. Babalik ang value na ito kapag na-deactivate ang profile.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Polling rate (maliban kung may profile na nag-o-override)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Binabasa ng engine ang bawat device at ina-update ang mga virtual controller nang ganito karaming beses sa isang segundo, mula 60 hanggang 10000. Mas maraming oras ng processor ang ginagamit ng mas mataas na rate. Ginigising ng Windows ang engine nang humigit-kumulang 2000 beses sa isang segundo sa pinakamarami, kaya sa mas mataas na rate ay ilang pass ang pinapatakbo sa bawat paggising. Habang aktibo ang profile na may sariling polling rate, iyon ang masusunod. Babalik ang value na ito kapag na-deactivate ang profile.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Itago ang mga device sa mga laro</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Master switch para sa pagtatago ng device ng HidHide at sa mga low-level na input hook. Kapag naka-off, walang device na itatago anuman ang setting ng bawat device.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Panatilihing naka-cloak ang mga device sa pagitan ng mga paglunsad</value></data>
@@ -2429,7 +2430,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Bagong Profile</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Mga Larong Naglo-load Nito</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Default (Pandaigdigang Setting)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Napapalitan habang aktibo ang profile na “{0}”: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Napapalitan habang aktibo ang profile na “{0}”: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Sine-save ang mga mapping at setting ng bawat controller sa ilalim ng isang pangalan. Kusa itong naglo-load kapag nasa harap ang isa sa mga laro nito.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Kusang naglo-load ang profile kapag nasa harap ang isa sa mga laro nito.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Nagsisimula nang walang controller. Kusa itong naglo-load kapag nasa harap ang isa sa mga laro nito.</value></data>

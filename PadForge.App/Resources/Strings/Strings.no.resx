@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Side til høyre</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ingen</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Ikke tilordnet</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Maskinvarestøtte</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Start motoren automatisk ved programstart</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Fortsett avspørring når vinduet mister fokus</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Avspørringsintervall (med mindre en profil overstyrer det)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Motoren avspør enhetene med dette intervallet. Mens en profil med egen avspørringsfrekvens er aktiv, brukes den frekvensen i stedet. Denne verdien gjelder igjen når profilen deaktiveres.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Avspørringsfrekvens (med mindre en profil overstyrer den)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Motoren leser av alle enheter og oppdaterer de virtuelle kontrollerne så mange ganger i sekundet, fra 60 til 10000. En høyere frekvens bruker mer prosessortid. Windows vekker motoren omtrent 2000 ganger i sekundet som mest, så en høyere frekvens kjører flere runder for hver gang motoren vekkes. Mens en profil med egen avspørringsfrekvens er aktiv, brukes den frekvensen i stedet. Denne verdien gjelder igjen når profilen deaktiveres.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Skjul enheter for spill</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Hovedbryter for skjuling av enheter med HidHide og inndatakroker på lavt nivå. Når den er av, skjules ingen enheter, uansett innstillingene for hver enkelt enhet.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Hold enheter skjult mellom programstarter</value></data>
@@ -2678,7 +2679,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Spill som laster den</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Avspørringsfrekvens</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Standard (global innstilling)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Overstyrt mens profilen «{0}» er aktiv: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Overstyrt mens profilen «{0}» er aktiv: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Lagrer tilordningene og innstillingene til hver kontroller under ett navn. Den lastes av seg selv når et av spillene den hører til, er foran.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>En profil lastes av seg selv når et av spillene den hører til, er foran.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Starter uten kontrollere. Den lastes av seg selv når et av spillene den hører til, er foran.</value></data>

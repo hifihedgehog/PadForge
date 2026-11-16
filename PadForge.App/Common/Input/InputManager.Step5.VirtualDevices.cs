@@ -1669,10 +1669,10 @@ namespace PadForge.Common.Input
                         // the trace and for the "grace ended" report, but
                         // the TIMEOUT is measured in milliseconds: the
                         // thresholds used to convert seconds into cycles
-                        // with the LIVE PollingIntervalMs, so changing the
-                        // polling rate mid-grace rescaled a pending
-                        // timeout (60 s at 1 ms became ~4 s after a switch
-                        // to 16 ms, and the reverse stretched it).
+                        // with the LIVE polling rate, so changing the rate
+                        // mid-grace rescaled a pending timeout (60 s at
+                        // 1000 Hz became ~4 s after a switch to 62.5 Hz,
+                        // and the reverse stretched it).
                         _slotInactiveSinceMs[padIndex] = Environment.TickCount64;
                     }
                     // Saturate rather than wrap. Only the zero/non-zero
@@ -2357,33 +2357,73 @@ namespace PadForge.Common.Input
                             var valvePacker = ValveReportPackers.ForProfile(hmExt.ProfileId);
                             if (valvePacker != null)
                             {
-                                valvePacker.Pack(
-                                    rawOut,
-                                    CombinedTouchpadStates[padIndex],
-                                    MotionSnapshots[padIndex],
-                                    unchecked((uint)_deckFrameCounter++),
-                                    ValveReportPackers.MicrosNow(),
-                                    _deckReportScratch);
-                                hmExt.SubmitRawReport(new ReadOnlySpan<byte>(_deckReportScratch, 0, valvePacker.Size));
+                                var valveFrame = new ReadOnlySpan<byte>(_deckReportScratch, 0, valvePacker.Size);
+                                // The frame carries a packet number and a
+                                // clock, so it goes out on every pass. Above
+                                // 1000 passes a second it is first packed
+                                // with both at zero, and what that says
+                                // decides whether this pass sends
+                                // (EveryPassFrameGate).
+                                bool valveDue = true;
+                                if (EveryPassFrameGate.Engaged)
+                                {
+                                    valvePacker.Pack(
+                                        rawOut,
+                                        CombinedTouchpadStates[padIndex],
+                                        MotionSnapshots[padIndex],
+                                        0,
+                                        0,
+                                        _deckReportScratch);
+                                    valveDue = hmExt.RawReportDue(valveFrame);
+                                }
+                                if (valveDue)
+                                {
+                                    valvePacker.Pack(
+                                        rawOut,
+                                        CombinedTouchpadStates[padIndex],
+                                        MotionSnapshots[padIndex],
+                                        unchecked((uint)_deckFrameCounter++),
+                                        ValveReportPackers.MicrosNow(),
+                                        _deckReportScratch);
+                                    hmExt.SubmitRawReport(valveFrame);
+                                }
                             }
                             // SInput persona (#584): report 0x01 packed whole,
                             // the Valve split, with the slot's battery as the
-                            // Sony packers carry it. Every engine tick submits,
-                            // so the persona reports at the engine's 1 kHz.
+                            // Sony packers carry it. The persona reports on
+                            // every pass up to 1000 passes a second, and as
+                            // the Valve frame above does past that.
                             else if (SInputReportPacker.IsSInputProfile(hmExt.ProfileId))
                             {
                                 int sinputPct = BatteryPercents[padIndex];
-                                SInputReportPacker.Pack(
-                                    rawOut,
-                                    CombinedTouchpadStates[padIndex],
-                                    MotionSnapshots[padIndex],
-                                    sinputPct,
-                                    BatteryCharging[padIndex],
-                                    ValveReportPackers.MicrosNow(),
-                                    _sinputReportScratch);
-                                hmExt.SubmitRawReport(hmExt.RawFramesCarryReportId
+                                var sinputFrame = hmExt.RawFramesCarryReportId
                                     ? new ReadOnlySpan<byte>(_sinputReportScratch, 0, SInputReportPacker.ReportSize)
-                                    : new ReadOnlySpan<byte>(_sinputReportScratch, 1, SInputReportPacker.ReportSize - 1));
+                                    : new ReadOnlySpan<byte>(_sinputReportScratch, 1, SInputReportPacker.ReportSize - 1);
+                                bool sinputDue = true;
+                                if (EveryPassFrameGate.Engaged)
+                                {
+                                    SInputReportPacker.Pack(
+                                        rawOut,
+                                        CombinedTouchpadStates[padIndex],
+                                        MotionSnapshots[padIndex],
+                                        sinputPct,
+                                        BatteryCharging[padIndex],
+                                        0,
+                                        _sinputReportScratch);
+                                    sinputDue = hmExt.RawReportDue(sinputFrame);
+                                }
+                                if (sinputDue)
+                                {
+                                    SInputReportPacker.Pack(
+                                        rawOut,
+                                        CombinedTouchpadStates[padIndex],
+                                        MotionSnapshots[padIndex],
+                                        sinputPct,
+                                        BatteryCharging[padIndex],
+                                        ValveReportPackers.MicrosNow(),
+                                        _sinputReportScratch);
+                                    hmExt.SubmitRawReport(sinputFrame);
+                                }
                             }
                             // A persona that builds its own reports takes no
                             // finished frame, whatever its layout counts say.
@@ -2540,29 +2580,59 @@ namespace PadForge.Common.Input
                                     // does not retain a reference.
                                     int pct = BatteryPercents[padIndex];
                                     byte battery = pct < 0 ? (byte)100 : (byte)Math.Clamp(pct, 0, 100);
-                                    // gpOut, not CombinedOutputStates: the
-                                    // raw frame must carry the same touch-
-                                    // click OR and button-SOCD cleaning the
-                                    // extended leg applied, since it is the
-                                    // sole submission on USB Sony slots.
-                                    packer(
-                                        gpOut,
-                                        CombinedTouchpadStates[padIndex],
-                                        MotionSnapshots[padIndex],
-                                        battery,
-                                        BatteryCharging[padIndex],
-                                        unchecked((uint)_sonyFrameCounter++),
-                                        rawReportScratch);
                                     // (#433) A game with adaptive triggers reads
                                     // the pad's trigger feedback bytes back. Carry
                                     // the assigned physical DualSense's bytes
                                     // 40..47 the way a real pad reports them.
                                     // Zero, and so a no-op, until the SDL fork
                                     // publishes them.
-                                    if (SonyReportPackers.IsDualSenseProfile(hmPs.ProfileId))
-                                        SonyReportPackers.ApplyDualSenseStatusBytes(
-                                            rawReportScratch, Ds5StatusBytes[padIndex]);
-                                    hmPs.SubmitRawReport(rawReportScratch);
+                                    bool carriesStatusBytes = SonyReportPackers.IsDualSenseProfile(hmPs.ProfileId);
+                                    // The frame carries a counter and its
+                                    // clocks, so it goes out on every pass.
+                                    // Above 1000 passes a second it is first
+                                    // packed with those at zero, and what that
+                                    // says decides whether this pass sends
+                                    // (EveryPassFrameGate).
+                                    bool sonyDue = true;
+                                    if (EveryPassFrameGate.Engaged)
+                                    {
+                                        var unclocked = MotionSnapshots[padIndex];
+                                        unclocked.TimestampUs = 0;
+                                        packer(
+                                            gpOut,
+                                            CombinedTouchpadStates[padIndex],
+                                            unclocked,
+                                            battery,
+                                            BatteryCharging[padIndex],
+                                            0,
+                                            0,
+                                            rawReportScratch);
+                                        if (carriesStatusBytes)
+                                            SonyReportPackers.ApplyDualSenseStatusBytes(
+                                                rawReportScratch, Ds5StatusBytes[padIndex]);
+                                        sonyDue = hmPs.RawReportDue(rawReportScratch);
+                                    }
+                                    if (sonyDue)
+                                    {
+                                        // gpOut, not CombinedOutputStates: the
+                                        // raw frame must carry the same touch-
+                                        // click OR and button-SOCD cleaning the
+                                        // extended leg applied, since it is the
+                                        // sole submission on USB Sony slots.
+                                        packer(
+                                            gpOut,
+                                            CombinedTouchpadStates[padIndex],
+                                            MotionSnapshots[padIndex],
+                                            battery,
+                                            BatteryCharging[padIndex],
+                                            unchecked((uint)_sonyFrameCounter++),
+                                            ValveReportPackers.MicrosNow(),
+                                            rawReportScratch);
+                                        if (carriesStatusBytes)
+                                            SonyReportPackers.ApplyDualSenseStatusBytes(
+                                                rawReportScratch, Ds5StatusBytes[padIndex]);
+                                        hmPs.SubmitRawReport(rawReportScratch);
+                                    }
                                 }
                             }
                         }

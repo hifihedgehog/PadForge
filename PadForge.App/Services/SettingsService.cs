@@ -2398,7 +2398,9 @@ namespace PadForge.Services
             Common.DiagnosticsLogControl.Apply(appSettings.DiagnosticsLoggingEnabled);
             vm.StartAtLogin = appSettings.StartAtLogin;
             vm.EnablePollingOnFocusLoss = appSettings.EnablePollingOnFocusLoss;
-            vm.PollingRateMs = appSettings.PollingRateMs;
+            vm.PollingRateHz = appSettings.PollingRateHz > 0
+                ? appSettings.PollingRateHz
+                : PadForge.Common.Input.InputManager.DefaultPollingRateHz;
             vm.HmInactivityDestroyTimeoutSeconds = appSettings.HmInactivityDestroyTimeoutSeconds;
             vm.SelectedThemeIndex = appSettings.ThemeIndex;
             vm.EnableInputHiding = appSettings.EnableInputHiding;
@@ -4499,7 +4501,7 @@ namespace PadForge.Services
         /// runtime flag the engine sweep reads. A null leg leaves the
         /// toggle where it is: the global AppSettings value, or whatever the
         /// last opinionated profile set. The nullable contract mirrors
-        /// <see cref="ProfileData.PollingRateOverrideMs"/> (0 there, null
+        /// <see cref="ProfileData.PollingRateOverrideHz"/> (0 there, null
         /// here) and is why a plain bool would be the wrong shape: it would
         /// read as false in every pre-existing profile, so the first profile
         /// switch would turn head tracking off, the way it turned the Razer
@@ -5101,7 +5103,7 @@ namespace PadForge.Services
                 DiagnosticsLoggingEnabled = vm.DiagnosticsLoggingEnabled,
                 StartAtLogin = vm.StartAtLogin,
                 EnablePollingOnFocusLoss = vm.EnablePollingOnFocusLoss,
-                PollingRateMs = vm.PollingRateMs,
+                PollingRateHz = vm.PollingRateHz,
                 HmInactivityDestroyTimeoutSeconds = vm.HmInactivityDestroyTimeoutSeconds,
                 ThemeIndex = vm.SelectedThemeIndex,
                 Language = vm.LanguageCode,
@@ -7142,8 +7144,20 @@ namespace PadForge.Services
         [XmlElement]
         public bool EnablePollingOnFocusLoss { get; set; } = true;
 
+        /// <summary>How many times a second the engine reads the devices and
+        /// updates the virtual controllers, from 60 to 10000. 0 in a file
+        /// that holds none, which the load reads as the default.</summary>
         [XmlElement]
-        public int PollingRateMs { get; set; } = 1;
+        public int PollingRateHz { get; set; }
+
+        /// <summary>The interval between two passes in milliseconds, 1 to
+        /// 16, which a file saved before PadForge 6 holds in place of the
+        /// rate. Read, turned into the rate
+        /// (<see cref="MigrateLegacySchema"/>) and never written: a
+        /// value of 0 is left out of the file.</summary>
+        [XmlElement("PollingRateMs")]
+        [System.ComponentModel.DefaultValue(0)]
+        public int LegacyPollingIntervalMs { get; set; }
 
         /// <summary>
         /// Seconds an HM virtual controller waits for any mapped device to
@@ -7636,6 +7650,10 @@ namespace PadForge.Services
                 && LegacyDeviceSlotConfigs != null && LegacyDeviceSlotConfigs.Length > 0)
                 DeviceSlotConfigs = LegacyDeviceSlotConfigs;
             LegacyDeviceSlotConfigs = null;
+            // A file that holds the old interval holds no rate.
+            if (PollingRateHz <= 0 && LegacyPollingIntervalMs > 0)
+                PollingRateHz = PollingRates.FromIntervalMs(LegacyPollingIntervalMs);
+            LegacyPollingIntervalMs = 0;
             DefaultProfileSnapshot?.MigrateLegacySchema();
         }
 
@@ -8192,17 +8210,25 @@ namespace PadForge.Services
         [XmlElement]
         public string ExecutableNames { get; set; } = string.Empty;
 
-        /// <summary>Per-profile polling interval override in milliseconds
+        /// <summary>Per-profile polling rate override in passes a second
         /// (#365, asked in discussion #362). SENTINEL CONTRACT: 0 means "no
         /// opinion, follow the global Settings value", which is also what
         /// every profile saved before this field deserializes to. Valid
-        /// overrides are 1..16 like the global knob. AUTHORED, not
+        /// overrides are 60 to 10000, like the global setting. AUTHORED, not
         /// snapshotted: SaveActiveProfileState's field copy deliberately
         /// skips it (like Name and ExecutableNames) so a state save never
         /// clobbers it, and the default profile never carries one, since
         /// the default profile IS the global setting's home.</summary>
         [XmlElement]
-        public int PollingRateOverrideMs { get; set; }
+        public int PollingRateOverrideHz { get; set; }
+
+        /// <summary>The override as an interval in milliseconds, 1 to 16,
+        /// which a profile saved before PadForge 6 holds. Read, turned
+        /// into the rate (<see cref="MigrateLegacySchema"/>) and never
+        /// written: a value of 0 is left out of the file.</summary>
+        [XmlElement("PollingRateOverrideMs")]
+        [System.ComponentModel.DefaultValue(0)]
+        public int LegacyPollingIntervalOverrideMs { get; set; }
 
         /// <summary>The profile's Dreamcast screen picture (#469), 192 bytes
         /// in image order as base64, shown by a Bliss-Box port set to Profile
@@ -8322,6 +8348,10 @@ namespace PadForge.Services
                 && LegacyDeviceSlotConfigs != null && LegacyDeviceSlotConfigs.Length > 0)
                 DeviceSlotConfigs = LegacyDeviceSlotConfigs;
             LegacyDeviceSlotConfigs = null;
+            // A profile that holds the old interval holds no rate.
+            if (PollingRateOverrideHz <= 0 && LegacyPollingIntervalOverrideMs > 0)
+                PollingRateOverrideHz = PollingRates.FromIntervalMs(LegacyPollingIntervalOverrideMs);
+            LegacyPollingIntervalOverrideMs = 0;
         }
 
         /// <summary>

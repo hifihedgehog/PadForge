@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Satu Halaman ke Kanan</value></data>
   <data name="Common_None" xml:space="preserve"><value>Tidak ada</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Belum ditetapkan</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>Dukungan perangkat keras</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Mulai mesin otomatis saat peluncuran</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Lanjutkan polling saat jendela kehilangan fokus</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Interval polling (kecuali profil menggantikannya)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Mesin melakukan polling perangkat pada interval ini. Selama profil yang memiliki laju polling sendiri aktif, laju itulah yang berlaku. Nilai ini kembali berlaku saat profil tersebut nonaktif.</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>Laju polling (kecuali profil menggantikannya)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>Mesin membaca setiap perangkat dan memperbarui kontroler virtual sebanyak ini per detik, dari 60 hingga 10000. Laju yang lebih tinggi memakai lebih banyak waktu prosesor. Windows membangunkan mesin paling sering sekitar 2000 kali per detik, jadi laju yang lebih tinggi menjalankan beberapa putaran pada setiap kali mesin dibangunkan. Selama profil yang memiliki laju polling sendiri aktif, laju itulah yang berlaku. Nilai ini kembali berlaku saat profil tersebut nonaktif.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Sembunyikan perangkat dari game</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Sakelar utama untuk penyembunyian perangkat oleh HidHide dan hook input tingkat rendah. Saat nonaktif, tidak ada perangkat yang disembunyikan, apa pun pengaturan per perangkatnya.</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Tetap sembunyikan perangkat di antara peluncuran</value></data>
@@ -2678,7 +2679,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Game yang memuatnya</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Laju polling</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Default (pengaturan global)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Digantikan selama profil “{0}” aktif: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Digantikan selama profil “{0}” aktif: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Menyimpan pemetaan dan pengaturan setiap kontroler di bawah satu nama. Profil dimuat sendiri saat salah satu gamenya berada di depan.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Profil dimuat sendiri saat salah satu gamenya berada di depan.</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>Dimulai tanpa kontroler. Profil dimuat sendiri saat salah satu gamenya berada di depan.</value></data>

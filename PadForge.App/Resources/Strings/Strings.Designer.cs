@@ -208,6 +208,7 @@ public class Strings : INotifyPropertyChanged
     public string Common_PageRight => Get("Common_PageRight");
     public string Common_None => Get("Common_None");
     public string Common_Ms => Get("Common_Ms");
+    public string Common_Hz => Get("Common_Hz");
     public string Common_Unassigned => Get("Common_Unassigned");
     public string Common_PadForge => Get("Common_PadForge");
     public string ControllerType_Xbox => Get("ControllerType_Xbox");
@@ -740,8 +741,8 @@ public class Strings : INotifyPropertyChanged
     public string Settings_HardwareSupport => Get("Settings_HardwareSupport");
     public string Settings_AutoStart => Get("Settings_AutoStart");
     public string Settings_BackgroundPolling => Get("Settings_BackgroundPolling");
-    public string Settings_PollingInterval => Get("Settings_PollingInterval");
-    public string Settings_PollingIntervalTooltip => Get("Settings_PollingIntervalTooltip");
+    public string Settings_PollingRate => Get("Settings_PollingRate");
+    public string Settings_PollingRateTooltip => Get("Settings_PollingRateTooltip");
     public string Settings_HideDevices => Get("Settings_HideDevices");
     public string Settings_HideDevicesTooltip => Get("Settings_HideDevicesTooltip");
     public string Settings_KeepCloaksBetweenLaunches => Get("Settings_KeepCloaksBetweenLaunches");

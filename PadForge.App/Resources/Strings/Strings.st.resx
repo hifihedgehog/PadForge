@@ -77,6 +77,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Hlakola</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ha ho letho</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
   <!-- ═══ Controller Types ═══ -->

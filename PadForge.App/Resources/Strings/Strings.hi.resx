@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>एक पृष्ठ दाएँ</value></data>
   <data name="Common_None" xml:space="preserve"><value>कोई नहीं</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>असाइन नहीं</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -557,8 +558,8 @@
   <data name="Settings_HardwareSupport" xml:space="preserve"><value>हार्डवेयर सपोर्ट</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>लॉन्च पर इंजन अपने-आप शुरू करें</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>विंडो से फ़ोकस हटने पर भी पोलिंग जारी रखें</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>पोलिंग अंतराल (जब तक कोई प्रोफ़ाइल इसे ओवरराइड न करे)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>इंजन इसी अंतराल पर डिवाइसों को पोल करता है। जब अपनी पोलिंग दर वाली कोई प्रोफ़ाइल सक्रिय होती है, तब इसकी जगह वही दर लागू होती है। प्रोफ़ाइल के निष्क्रिय होने पर यह मान वापस आ जाता है।</value></data>
+  <data name="Settings_PollingRate" xml:space="preserve"><value>पोलिंग दर (जब तक कोई प्रोफ़ाइल इसे ओवरराइड न करे)</value></data>
+  <data name="Settings_PollingRateTooltip" xml:space="preserve"><value>इंजन हर डिवाइस को पढ़ता है और वर्चुअल कंट्रोलर को प्रति सेकंड इतनी बार अपडेट करता है, 60 से 10000 तक। ऊँची दर प्रोसेसर का ज़्यादा समय लेती है। Windows इंजन को एक सेकंड में अधिकतम लगभग 2000 बार जगाता है, इसलिए इससे ऊँची दर पर इंजन हर बार जागने पर कई पास चलाता है। जब अपनी पोलिंग दर वाली कोई प्रोफ़ाइल सक्रिय होती है, तब इसकी जगह वही दर लागू होती है। प्रोफ़ाइल के निष्क्रिय होने पर यह मान वापस आ जाता है।</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>गेम से डिवाइस छिपाएँ</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide से डिवाइस छिपाने और लो-लेवल इनपुट हुक के लिए मास्टर स्विच। बंद होने पर कोई डिवाइस नहीं छिपता, चाहे हर डिवाइस की अपनी सेटिंग कुछ भी हो।</value></data>
   <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>लॉन्च के बीच डिवाइस छिपाए रखें</value></data>
@@ -2678,7 +2679,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>इसे लोड करने वाले गेम</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>पोलिंग दर</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>डिफ़ॉल्ट (ग्लोबल सेटिंग)</value></data>
-  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>प्रोफ़ाइल “{0}” सक्रिय रहने तक ओवरराइड: {1} ms</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>प्रोफ़ाइल “{0}” सक्रिय रहने तक ओवरराइड: {1} Hz</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>हर कंट्रोलर की मैपिंग और सेटिंग्स एक नाम से सहेजता है। इसके किसी गेम के सामने आने पर यह अपने-आप लोड हो जाती है।</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>प्रोफ़ाइल के किसी गेम के सामने आने पर वह अपने-आप लोड हो जाती है।</value></data>
   <data name="ProfileDialog_NewDescription" xml:space="preserve"><value>बिना किसी कंट्रोलर के शुरू होती है। इसके किसी गेम के सामने आने पर यह अपने-आप लोड हो जाती है।</value></data>

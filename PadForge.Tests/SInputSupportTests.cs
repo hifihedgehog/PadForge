@@ -64,7 +64,8 @@ namespace PadForge.Tests
             r[12] = 0xD0; r[13] = 0x07;        // ±2000 deg/s
             r[14] = 0xFF; r[15] = 0xFF; r[16] = 0xFF; r[17] = 0x00;
             r[18] = 0x02; r[19] = 0x01;        // two touchpads, one finger each
-            r[20] = 0x02; r[21] = 0x00; r[22] = 0x5E; r[23] = 0x10; r[24] = 0x00; r[25] = 0x01;
+            // The serial: 2E 8A 10 C6 00, then the controller's index (0 here).
+            r[20] = 0x2E; r[21] = 0x8A; r[22] = 0x10; r[23] = 0xC6; r[24] = 0x00; r[25] = 0x00;
             return r;
         }
 
@@ -589,6 +590,148 @@ namespace PadForge.Tests
             // The Valve pads keep their own names.
             Assert.Equal("Steam", MacroButtonNames.RawButtonLabel("steam-deck-composite",
                 NintendoPreviewMap.IndexOf("steam-deck-composite", "ButtonGuide") + 1));
+        }
+
+        // ── HIDMaestro 2.2.0's personas ────────────────────────────────
+
+        /// <summary>The persona the bundled HIDMaestro.Core ships answers
+        /// the features command with the reply this file ports SDL against,
+        /// read from the profile embedded in the DLL.</summary>
+        [Fact]
+        public void TheBundledPersonaAnswersTheReplyThePortReads()
+        {
+            var asm = typeof(HIDMaestro.HMContext).Assembly;
+            string name = asm.GetManifestResourceNames()
+                .Single(n => n.EndsWith("sinput.json", StringComparison.OrdinalIgnoreCase));
+            using var stream = asm.GetManifestResourceStream(name);
+            using var doc = System.Text.Json.JsonDocument.Parse(stream);
+            var rule = doc.RootElement.GetProperty("protocol").GetProperty("commands").GetProperty("rules")
+                .EnumerateArray().Single(r => r.GetProperty("match").GetString() == "03 02");
+            Assert.Equal(64, rule.GetProperty("replyLength").GetInt32());
+            var reply = new List<byte>();
+            foreach (var part in rule.GetProperty("reply").EnumerateArray())
+            {
+                if (part.TryGetProperty("hex", out var hex)) reply.AddRange(Convert.FromHexString(hex.GetString()));
+                else reply.Add(0);   // the controller's index, controller 0
+            }
+            Assert.Equal(PersonaFeatureReply().Take(reply.Count).ToArray(), reply.ToArray());
+        }
+
+        [Fact]
+        public void TheCatalogOffersTheSInputPersonaUnderExtended()
+        {
+            var sinput = HMaestroProfileCatalog.GetProfileById(P);
+            Assert.NotNull(sinput);
+            Assert.Equal((ushort)0x2E8A, sinput.VendorId);
+            Assert.Equal((ushort)0x10C6, sinput.ProductId);
+            Assert.Equal("SInput Gamepad", sinput.ProductString);
+            Assert.True(sinput.IsDeployable);
+            Assert.False(HMaestroProfileCatalog.IsWithheldProfile(P));
+            Assert.Contains(HMaestroProfileCatalog.ExtendedProfiles, p => p.Id == P);
+            // joypad-steam-input stays a numbered Extended profile.
+            Assert.Contains(HMaestroProfileCatalog.ExtendedProfiles, p => p.Id == "joypad-steam-input");
+        }
+
+        /// <summary>Both personas' haptics arrive decoded, so the Bass Shakers
+        /// gate sees a feedback source with no PID block, while only the Deck
+        /// persona's feature writes go to the Deck decode.</summary>
+        [Fact]
+        public void SInputFeedbackIsClaimedWithoutReachingTheDeckDecode()
+        {
+            foreach (string id in new[] { P, "joypad-steam-input", "JOYPAD-STEAM-INPUT" })
+            {
+                Assert.True(HMaestroVirtualController.DecodesFeedbackWithoutPidBlock(id), id);
+                Assert.True(HMaestroVirtualController.DecodesSInputMotors(id), id);
+                Assert.False(HMaestroVirtualController.DecodesDeckFeatureFeedback(id), id);
+            }
+            Assert.True(HMaestroVirtualController.DecodesDeckFeatureFeedback("steam-deck-composite"));
+            Assert.False(HMaestroVirtualController.DecodesSInputMotors("steam-deck-composite"));
+            Assert.False(HMaestroVirtualController.DecodesSInputMotors("joypad-generic-hid"));
+            Assert.True(HMaestroVirtualController.MotorWriteAllowed(0x2E8A, false));
+        }
+
+        /// <summary>The decoded pair reaches the slot's inbound rumble pack
+        /// (#236) on both personas, the branch the Switch Pro's decode
+        /// takes.</summary>
+        [Fact]
+        public void TheDecodedPairFeedsTheInboundPack()
+        {
+            string vc = Source("PadForge.App", "Common", "Input", "HMaestroVirtualController.cs");
+            Assert.Contains("else if (_profile.VendorId == NintendoVid || DecodesSInputMotors(_profile.Id))", vc);
+            Assert.Contains("&& DecodesDeckFeatureFeedback(_profile.Id)", vc);
+        }
+
+        // ── frames for a live check through SDL ────────────────────────
+
+        /// <summary>SDL_GamepadButton for each role on the SInput wire,
+        /// through the persona's reply and SDL's mapping (the
+        /// FeatureReply_GivesSdlOpenPucksShape list).</summary>
+        internal static readonly (string Role, int SdlButton)[] RoleButtons =
+        {
+            ("ButtonA", 0), ("ButtonB", 1), ("ButtonX", 2), ("ButtonY", 3),
+            ("ButtonBack", 4), ("ButtonGuide", 5), ("ButtonStart", 6),
+            ("LeftThumbButton", 7), ("RightThumbButton", 8),
+            ("LeftShoulder", 9), ("RightShoulder", 10),
+            ("DPadUp", 11), ("DPadDown", 12), ("DPadLeft", 13), ("DPadRight", 14),
+            ("ButtonShare", 15), ("Paddle1", 16), ("Paddle2", 17), ("Paddle3", 18), ("Paddle4", 19),
+            ("LeftTouchpadClick", 20), ("RightTouchpadClick", 24),
+        };
+
+        /// <summary>Writes PadForge's packed frames, each with the SDL state
+        /// it must produce, for a probe that submits them to the live persona
+        /// and reads SDL. Runs only when PADFORGE_SINPUT_FRAMES names the
+        /// output file, the PluginRowFramesDump pattern. One line per case:
+        /// name, the 64-byte frame in hex, then key=value expectations.</summary>
+        [Fact]
+        public void PackedFramesForALiveCheck()
+        {
+            string path = Environment.GetEnvironmentVariable("PADFORGE_SINPUT_FRAMES");
+            if (string.IsNullOrEmpty(path)) return;
+            var sdl = SdlSInput.FromReply(PersonaFeatureReply());
+            var lines = new List<string>();
+            void Case(string name, byte[] frame, string expect) =>
+                lines.Add(name + "|" + Convert.ToHexString(frame) + "|" + expect);
+
+            Case("rest", Pack(RestRaw()), "buttons=;lx=0;ly=0;rx=0;ry=0;lt=0;rt=0");
+            foreach (var (role, button) in RoleButtons)
+            {
+                var raw = RestRaw();
+                raw.SetButton(NintendoPreviewMap.IndexOf(P, role), true);
+                Case("role " + role, Pack(raw), "buttons=" + button);
+            }
+
+            var pulled = RestRaw();
+            pulled.Axes[ValveReportPackers.AxLT] = short.MaxValue;
+            pulled.Axes[ValveReportPackers.AxRT] = short.MaxValue;
+            // Full pulls set the dual-stage clicks, Misc 3 and Misc 4.
+            Case("triggers full", Pack(pulled), "buttons=22,23;lt=32767;rt=32767");
+
+            var sticks = RestRaw();
+            sticks.Axes[ValveReportPackers.AxLX] = -12345;
+            sticks.Axes[ValveReportPackers.AxLY] = 23456;
+            sticks.Axes[ValveReportPackers.AxRX] = 32767;
+            sticks.Axes[ValveReportPackers.AxRY] = -32768;
+            Case("sticks", Pack(sticks), "buttons=;lx=-12345;ly=23456;rx=32767;ry=-32768");
+
+            var motion = new MotionSnapshot
+            {
+                AccelX = 0.25f, AccelY = -1.0f, AccelZ = 0.5f,
+                GyroPitch = 100f, GyroYaw = -250f, GyroRoll = 30f, HasMotion = true,
+            };
+            var m = Pack(RestRaw(), motion: motion, micros: 1000);
+            var g = sdl.Gyro3(m);
+            var a = sdl.Accel3(m);
+            Case("motion", m, FormattableString.Invariant(
+                $"buttons=;gyro={g.x:R},{g.y:R},{g.z:R};accel={a.x:R},{a.y:R},{a.z:R}"));
+
+            var tp = new TouchpadState { Down0 = true, X0 = 0.25f, Y0 = 0.75f, Down1 = true, X1 = 1f, Y1 = 0f };
+            var t = Pack(RestRaw(), tp);
+            var t0 = sdl.Touch(t, 0);
+            var t1 = sdl.Touch(t, 1);
+            Case("touch", t, FormattableString.Invariant(
+                $"buttons=;t0={t0.x:R},{t0.y:R},{t0.pressure:R};t1={t1.x:R},{t1.y:R},{t1.pressure:R}"));
+
+            File.WriteAllLines(path, lines);
         }
 
         // ── the player LED and its relay ───────────────────────────────

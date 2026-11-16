@@ -156,11 +156,28 @@ namespace PadForge.Common.Input
         /// only inspects the descriptor cannot see these, and hiding the
         /// feature for them hides something that works.
         ///
-        /// <para>Declared beside the decode it names so the two cannot drift
-        /// apart: the Deck persona's vendor feature commands are handled in
-        /// this file's output path.</para></summary>
+        /// <para>Declared beside the decodes it names so they cannot drift
+        /// apart: the Deck persona's vendor feature commands, handled in this
+        /// file's output path (<see cref="DecodesDeckFeatureFeedback"/>), and
+        /// the SInput personas' haptics, which arrive as decoded motors
+        /// (<see cref="DecodesSInputMotors"/>).</para></summary>
         public static bool DecodesFeedbackWithoutPidBlock(string profileId) =>
+            DecodesDeckFeatureFeedback(profileId) || DecodesSInputMotors(profileId);
+
+        /// <summary>The Deck persona, whose vendor feature commands (0xEB,
+        /// 0xEA and 0x8F) this file's output path decodes. The decode asks
+        /// this alone: no other profile's feature writes are Deck commands.</summary>
+        internal static bool DecodesDeckFeatureFeedback(string profileId) =>
             string.Equals(profileId, "steam-deck-composite", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>The two SInput personas (#584), whose haptics HIDMaestro
+        /// 2.2.0 decodes into leftMotor and rightMotor (HIDMaestro#75): sinput
+        /// from a type 2 write's bytes 3 and 5 and from a type 1 write's
+        /// louder amplitude per side, joypad-steam-input from a type 2 write.
+        /// Named by profile id, because both are 2E8A:10C6.</summary>
+        internal static bool DecodesSInputMotors(string profileId) =>
+            SInputReportPacker.IsSInputProfile(profileId)
+            || string.Equals(profileId, "joypad-steam-input", StringComparison.OrdinalIgnoreCase);
 
         /// <summary>True for a persona whose device side builds every input
         /// report from a state block, HIDMaestro's own
@@ -1628,7 +1645,7 @@ namespace PadForge.Common.Input
                             Engine.Common.LfeOutputState.Pack(
                                 (ushort)(motorLeft * 257), (ushort)(motorRight * 257), 0, 0));
                     }
-                    else if (_profile.VendorId == NintendoVid)
+                    else if (_profile.VendorId == NintendoVid || DecodesSInputMotors(_profile.Id))
                     {
                         // Switch Pro (HM v1.3.18): the driver decodes the
                         // 0x01/0x10 rumble outputs itself and only emits
@@ -1639,6 +1656,9 @@ namespace PadForge.Common.Input
                         // Switch 2 Pro composite (HM v1.11.0) rides here
                         // too: the SDK decodes its output report 0x02
                         // into the same pair, and a stop arrives as 0, 0.
+                        // So do the SInput personas (HM 2.2.0, #584): their
+                        // haptics decode into the pair on haptic frames
+                        // alone, and a stop is a type 2 write of 0, 0.
                         System.Threading.Volatile.Write(ref _inboundRumblePack,
                             Engine.Common.LfeOutputState.Pack(
                                 (ushort)(left * 257), (ushort)(right * 257), 0, 0));
@@ -1799,10 +1819,11 @@ namespace PadForge.Common.Input
                 // gain at 9). The persona's reports are id-less, so the
                 // command byte is data[0] and pkt.ReportId is 0.
                 // Through the shared predicate, so the profile id is spelled
-                // once. The Bass Shakers gate asks the same question, and two
-                // spellings would let the gate fall behind the decode.
+                // once. The Bass Shakers gate takes the same predicate inside
+                // DecodesFeedbackWithoutPidBlock, and two spellings would let
+                // the gate fall behind the decode.
                 if (pkt.Source == HMOutputSource.HidFeature
-                    && DecodesFeedbackWithoutPidBlock(_profile.Id)
+                    && DecodesDeckFeatureFeedback(_profile.Id)
                     && data.Length >= 1)
                 {
                     switch (data[0])

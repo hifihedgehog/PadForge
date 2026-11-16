@@ -340,7 +340,15 @@
          unstable in-progress work from the HIDMaestro repo. Update by
          copying the Release build of HIDMaestro.Core.dll from the
          HIDMaestro repo into Resources\HIDMaestro\ after tagging a
-         release there. Current: v2.1.0, which delivers each frame once
+         release there. Current: v2.2.0, which adds the sinput persona
+         (HIDMaestro#75, PadForge #584): SInput's 139-byte descriptor at
+         2E8A:10C6, the features answer SDL's SInput driver asks for before
+         it opens a pad, and leftMotor and rightMotor decoded from its
+         haptics. joypad-steam-input answers with joypad-os's own reply. On
+         both, a submit made while the features answer waits for the driver
+         waits with it, at most 200 ms. It embeds the 2.1.0 driver unchanged
+         (2.1.0.1716), so nothing reinstalls.
+         v2.1.0 before it delivers each frame once
          and in order, keeps an Xbox 360 profile's HID device through a
          system sleep, runs each device's driver host at high priority so
          input holds under CPU load, and removes a device only once no

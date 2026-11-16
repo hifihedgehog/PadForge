@@ -26,7 +26,7 @@ Free Windows app. No subscription. No paywall. No nag screens. Built on HelixToo
 
 PadForge is for sim racers running wheels in games that only understand Xbox controllers. For DualSense owners who want adaptive triggers and lightbar effects in Steam games that ignore them. For accessibility users mapping whatever hardware they can use. For anyone whose controller doesn't match what their game expects.
 
-<p align="center"><b>16</b> virtual controllers at once · <b>2,669</b> devices known by USB identity · <b>337</b> device profiles · <b>1000 Hz</b> polling · <b>$0</b> forever</p>
+<p align="center"><b>16</b> virtual controllers at once · <b>2,669</b> devices known by USB identity · <b>338</b> device profiles · <b>1000 Hz</b> polling · <b>$0</b> forever</p>
 
 ![Dashboard](screenshots/dashboard.jpg)
 
@@ -47,7 +47,7 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
     </picture>
   </a>
   <br>
-  <em>Powered by HIDMaestro. One driver, 337 device profiles.</em>
+  <em>Powered by HIDMaestro. One driver, 338 device profiles.</em>
 </p>
 
 <details>
@@ -893,7 +893,7 @@ Hold a mouse button and flick up, down, left, or right. Each direction, plus a c
 
 ### Extended virtual controller
 ![Extended](screenshots/extended.jpg)
-Flight sticks, racing wheels, HOTAS, third-party gamepads. HIDMaestro ships 337 profiles, and PadForge offers the 239 that carry a captured HID descriptor, all but the GameCube adapter's Full persona: 136 controllers across the Xbox, PlayStation, Nintendo and Extended types, and 51 keyboards and 52 mice for the Keyboard + Mouse type. A Custom mode builds a HID descriptor from scratch. Up to 8 axes, 128 buttons, 4 POV hats. Configurable VID, PID, and product string.
+Flight sticks, racing wheels, HOTAS, third-party gamepads. HIDMaestro ships 338 profiles, and PadForge offers the 240 that carry a captured HID descriptor, all but the GameCube adapter's Full persona: 137 controllers across the Xbox, PlayStation, Nintendo and Extended types, and 51 keyboards and 52 mice for the Keyboard + Mouse type. A Custom mode builds a HID descriptor from scratch. Up to 8 axes, 128 buttons, 4 POV hats. Configurable VID, PID, and product string.
 
 ### Steam Deck virtual controller
 ![An Extended slot presenting a Steam Deck](screenshots/pad-extended-steam-deck.jpg)
@@ -1102,7 +1102,7 @@ See [BUILD.md](BUILD.md) for project structure, architecture notes, and develope
 
 ## Don't see your controller in the picker?
 
-PadForge's controller picker is the set of HIDMaestro profiles that ship with a captured HID descriptor. Of HIDMaestro's 337 profiles, 97 are missing their captures, so they don't appear yet. If you own one of those controllers, you can capture it yourself from inside PadForge. No extra tools, no admin.
+PadForge's controller picker is the set of HIDMaestro profiles that ship with a captured HID descriptor. Of HIDMaestro's 338 profiles, 97 are missing their captures, so they don't appear yet. If you own one of those controllers, you can capture it yourself from inside PadForge. No extra tools, no admin.
 
 To capture and use a profile locally:
 
@@ -1195,7 +1195,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 | HID device references | The reports behind the SDL fork's drivers for the Speed Force Wireless, PhoenixRC adapter, SideWinder Game Voice, P5 Glove, Dream Cheeky drum kit, OCZ NIA, Gametrak, Rift DK1, Windows Mixed Reality controllers, SteelSeries Nimbus and Prodikeys, read from [acassis.wordpress.com](https://acassis.wordpress.com/2023/05/04/khobby-phoenixrc-flight-controller-usb-adapter-clone/), [drwho.virtadpt.net](https://drwho.virtadpt.net/archive/2009-03-18/ocz-neural-impulse-actuator-notes-and-roll-up-post/), [Foculus Rift Tracker](https://github.com/michael-betz/Foculus_Rift_Tracker_STM32F3DISCOVERY), [GameTrak-Liberation](https://github.com/CreativeInquiry/GameTrak-Liberation), [libgametrak](https://github.com/casiez/libgametrak), [libp5glove](https://github.com/ezrec/libp5glove), [Linux kernel](https://github.com/torvalds/linux), [Linux VR Adventures wiki](https://vronlinux.org/docs/fossvr/envision/wmr_controllers_on_arch/), [marcusfolkesson.se](https://www.marcusfolkesson.se/blog/hid-report-descriptors/), [MFIGamepadFeeder](https://github.com/Axadiw/MFIGamepadFeeder), [ml-driver](https://github.com/mavam/ml-driver), [Monado](https://gitlab.freedesktop.org/monado/monado), [new-lg4ff](https://github.com/berarma/new-lg4ff), [nia_reaction_lab](https://github.com/zeittresor/nia_reaction_lab), [nia4linux](https://sourceforge.net/projects/nia4linux/), [Oculus SDK](https://github.com/jherico/OculusSDK), [OpenHMD](https://github.com/OpenHMD/OpenHMD), [P5 Glove USB Packet Format](https://web.archive.org/web/20051215112447/http://zzz.com.ru/zzz_original_site/roid/USB%20Packet%20Format.doc), [PCSX2](https://github.com/PCSX2/pcsx2), [pynia](https://github.com/kevinmershon/pynia), [Scratchpad wiki](https://web.archive.org/web/20210729185426/https://scratchpad.fandom.com/wiki/P5_Glove:Specs), [seewald.at](https://www.seewald.at/en/2009/07/ocz_neural_impulse_actuator__linux_driver), [VRPN](https://github.com/vrpn/vrpn), [weewx](https://github.com/weewx/weewx) and [WiiBrew](https://wiibrew.org/). Documentation only. The OpenHMD and Monado code in the fork has its own entries | BSL-1.0, CC BY-SA, GPL-2.0, GPL-2.0-or-later, GPL-3.0, GPL-3.0-or-later, LGPL-2.1-or-later, MIT, Oculus VR SDK License 2.0, none published (acassis.wordpress.com, drwho.virtadpt.net, Foculus Rift Tracker, Linux VR Adventures wiki, marcusfolkesson.se, nia_reaction_lab, P5 Glove USB Packet Format, seewald.at, WiiBrew) |
 | [HIDAPI](https://github.com/libusb/hidapi) | The HID layer compiled into the bundled SDL3.dll, by Alan Ott, Signal 11 Software. PadForge's own raw HID writes follow its Windows backend | BSD-style (LICENSE-bsd.txt) |
 | [HidHide](https://github.com/nefarius/HidHide) | Per-device hiding driver to prevent double input. The x64 setup, and upstream's Microsoft-signed ARM64 driver for Windows on ARM | MIT |
-| [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro) | User-mode UMDF2 virtual HID controller engine with 337 device profiles | MIT |
+| [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro) | User-mode UMDF2 virtual HID controller engine with 338 device profiles | MIT |
 | [hitboxer](https://github.com/valignatev/hitboxer) | SOCD-cleaning semantics reference for the Keyboard & Mouse Snap Tap modes, by valignatev | MIT |
 | I-Force references | The I-Force commands and reports behind the SDL fork's driver for USB and serial I-Force wheels and joysticks, read from [forcers](https://github.com/jeffintheusa/forcers), [iforce-binary-driver](https://github.com/timschumi/iforce-binary-driver), [iforce-feedback-wheel-driver-port](https://github.com/jsmolina/iforce-feedback-wheel-driver-port), [JUa9Win11Driver](https://github.com/spenc302/JUa9Win11Driver), [linuxconsole](https://sourceforge.net/p/linuxconsole/code/) and [Linux kernel](https://github.com/torvalds/linux). Documentation only, no code ships | GPL-2.0-or-later, MIT/GPL-2.0-or-later, none published (forcers, iforce-binary-driver, JUa9Win11Driver) |
 | Icon sources | The flame glyph from [Material Design Icons](https://github.com/Templarian/MaterialDesign) (Pictogrammers), the Extended joystick from [Jam Icons](https://jam-icons.com/) (Michael Amprimo), and the Xbox and PlayStation icons from [SVG Repo](https://www.svgrepo.com/) | Apache-2.0 (Material Design Icons), MIT (Jam Icons), license per icon page (SVG Repo) |

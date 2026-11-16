@@ -319,8 +319,8 @@ namespace PadForge.Common.Input
 
         /// <summary>The combined gen-1 Joy-Con pair (issue #184 sibling): SDL merges
         /// two Joy-Cons into one virtual device with the synthetic path
-        /// "nintendo_joycons_combined" (SDL_hidapijoystick.c:1292) and PID 0x2008
-        /// (controller_list.h:590), so the path predicate cannot see it even though
+        /// "nintendo_joycons_combined" (SDL_hidapijoystick.c:1300) and PID 0x2008
+        /// (controller_list.h:599), so the path predicate cannot see it even though
         /// both halves hold classic-BT links a single Joy-Con would pass with. Its
         /// serial is the two child serials comma-joined (SDL_hidapi_combined.c:82),
         /// which <see cref="TryDisconnect"/> splits to drop both links. The Switch 2
@@ -370,7 +370,7 @@ namespace PadForge.Common.Input
         /// what the all-devices target mode asks for.</para>
         ///
         /// <para>Service and characteristic UUIDs per
-        /// SDL_ble_switch2joystick.c:86,88. The command characteristic is
+        /// SDL_ble_switch2joystick.c:88,88. The command characteristic is
         /// write-without-response per the #153 hardware log. Blocking, worker
         /// thread only.</para></summary>
         private static bool TrySwitch2PowerOff(string serial)
@@ -389,7 +389,7 @@ namespace PadForge.Common.Input
         /// payload...]. The fork's BLE_JoystickSendEffect wraps it in the
         /// 0x91 command header with BLE_BuildCommand and writes it without
         /// waiting for a reply, since the pad powers off instead of
-        /// answering (SDL_ble_switch2joystick.c:2052-2075, BLE_BuildCommand
+        /// answering (SDL_ble_switch2joystick.c:2020-2043, BLE_BuildCommand
         /// at 584-601). Returns false when no gamepad is open, or when SDL
         /// refuses or fails the write.</summary>
         private static bool TrySwitch2EffectPassthrough(IntPtr gamepadHandle)
@@ -512,14 +512,14 @@ namespace PadForge.Common.Input
 
         /// <summary>The XInput user-index space PadForge actually runs in:
         /// SDL enumerates 16 slots (SDL_xinput.h:45 XUSER_MAX_COUNT=16,
-        /// SDL_xinputjoystick.c:385), and the bundled OpenXInput fork is
+        /// SDL_xinputjoystick.c:350), and the bundled OpenXInput fork is
         /// built with OPENXINPUT_XUSER_MAX_COUNT=16, so its ordinals accept
         /// the full range in-process. Microsoft's 4-slot limit does not
         /// apply here.</summary>
         private const uint XInputSlotCount = 16;
 
         /// <summary>Parses SDL's XInput-backend joystick path ("XInput#N",
-        /// SDL_xinputjoystick.c:187, where N is the XInput user index).</summary>
+        /// SDL_xinputjoystick.c:181, where N is the XInput user index).</summary>
         public static bool TryParseXInputSlot(string devicePath, out uint slot)
         {
             slot = 0;
@@ -533,7 +533,7 @@ namespace PadForge.Common.Input
         /// <summary>The Steam power-off feature report: a report id byte, then
         /// protocol id 0x9F (ID_TURN_OFF_CONTROLLER). The report id differs by
         /// generation, measured and cited: the 2026 Triton uses a 64-byte
-        /// buffer with report id 1 (SDL_hidapi_steam_triton.c:130,
+        /// buffer with report id 1 (SDL_hidapi_steam_triton.c:135,
         /// buffer[HID_FEATURE_REPORT_BYTES] = { 1 }, and the pad's BLE
         /// collection reports FeatureReportByteLength=64; report id 0 there
         /// fails with ERROR_INVALID_PARAMETER, traced on hardware), while the

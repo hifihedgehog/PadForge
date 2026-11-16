@@ -108,7 +108,7 @@ namespace PadForge.Common.Input
         /// comment is "Trigger rest is short.MinValue"). Every Valve wire
         /// carries it UNSIGNED, 0 to 32767, which is what SDL's drivers
         /// decode back with * 2 - 32768 (SDL_hidapi_steam.c 1631,
-        /// _steamdeck.c 234, _steam_triton.c 222).</para>
+        /// _steamdeck.c 234, _steam_triton.c 237).</para>
         ///
         /// <para>These packers CLAMPED to [0, 32767] instead of rescaling.
         /// Rest and full pull both came out right by luck, and everything
@@ -181,7 +181,7 @@ namespace PadForge.Common.Input
 
         /// <summary>A pad's analog pressure while a finger is on it or it is
         /// clicked: full scale. SDL reads the word over 32768
-        /// (SDL_hidapi_steamdeck.c 272 and 284, SDL_hidapi_steam_triton.c 258
+        /// (SDL_hidapi_steamdeck.c 272 and 284, SDL_hidapi_steam_triton.c 273
         /// and 270), so 32767 is pressure 1.0, what HIDMaestro's own encoder
         /// sends for a touch that carries no pressure of its own. The packers
         /// once wrote 0xFFFF on a click and 0 on a touch, which SDL read as
@@ -497,7 +497,7 @@ namespace PadForge.Common.Input
         ///
         /// <para>The IMU timestamp counts microseconds: SDL moves its sensor
         /// clock by its difference from the last report
-        /// (SDL_hidapi_steam_triton.c 274 to 277). It carried the frame
+        /// (SDL_hidapi_steam_triton.c 289 to 292). It carried the frame
         /// counter, one count a frame, and SDL's sensor clock ran about a
         /// thousand times slow.</para></summary>
         private static void PackSteamController2026(
@@ -562,7 +562,7 @@ namespace PadForge.Common.Input
             WriteI16(dest, 16, NegateSat(ry));
 
             WriteI16(dest, 18, pads.lTouch ? NormToPad(tp.X0) : (short)0);
-            WriteI16(dest, 20, pads.lTouch ? NormToPadY(tp.Y0) : (short)0);  // SDL decodes both pads as y = -wire/65536 + 0.5 (_steam_triton.c 252 / 264)
+            WriteI16(dest, 20, pads.lTouch ? NormToPadY(tp.Y0) : (short)0);  // SDL decodes both pads as y = -wire/65536 + 0.5 (_steam_triton.c 267 / 279)
             WriteU16(dest, 22, PadPressure(pads.lTouch, pads.lClick));
             WriteI16(dest, 24, pads.rTouch ? NormToPad(tp.X1) : (short)0);
             WriteI16(dest, 26, pads.rTouch ? NormToPadY(tp.Y1) : (short)0);

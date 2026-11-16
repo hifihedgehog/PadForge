@@ -419,7 +419,7 @@ namespace PadForge.Engine
         /// from the GUID's driver-signature byte (SDL_CreateJoystickGUID puts
         /// it at data[14], hex chars 28-29 of the GUID string): 'x' XInput,
         /// 'h' HIDAPI, 'g' GameInput (the Xbox One instruments its raw
-        /// report path lists by default, SDL_gameinputjoystick.cpp:274),
+        /// report path lists by default, SDL_gameinputjoystick.cpp:441),
         /// 'v' a virtual joystick (SDL_virtualjoystick.c, the joysticks
         /// PadForge's own readers attach), and DirectInput leaves it zero.
         /// Any other byte prints as hex.
@@ -796,7 +796,7 @@ namespace PadForge.Engine
             // NFC reader (issue #241/#248, SDL#15). The NFC/IR MCU lives on
             // the classic Switch right Joy-Con (PID 0x2007) and Pro
             // Controller (PID 0x2009). The combined pair (synthetic PID
-            // 0x2008, SDL_hidapijoystick.c:1295) contains a right Joy-Con,
+            // 0x2008, SDL_hidapijoystick.c:1303) contains a right Joy-Con,
             // and SDL propagates the combined joystick to every child
             // (SDL_hidapijoystick.c:989-992), so the right child posts the
             // tag UID onto the pair's joystick exactly like its GYRO_R.
@@ -2152,7 +2152,7 @@ namespace PadForge.Engine
                     // Pressure fallback for a pad whose click SDL's mapping
                     // does not bind. The gen-1 Steam Controller is the case:
                     // its generated mapping is paddle1/paddle2 only, no
-                    // touchpad and no misc2 (SDL_gamepad.c:1458, against the
+                    // touchpad and no misc2 (SDL_gamepad.c:1455, against the
                     // Deck's and Triton's touchpad:b17,misc2:b16 at 1461 and
                     // 1464), while its driver registers two pads and encodes
                     // the click purely in pressure: 0.5 for a finger down,
@@ -2374,19 +2374,19 @@ namespace PadForge.Engine
         //  Rumble (SDL only)
         //
         //  SDL caps the duration of one rumble call at 0xFFFF ms
-        //  (SDL_MAX_RUMBLE_DURATION_MS, SDL_sysjoystick.h:250), and its
+        //  (SDL_MAX_RUMBLE_DURATION_MS, SDL_sysjoystick.h:292), and its
         //  update loop stops the motors once that time runs out
-        //  (SDL_joystick.c:3087-3090, the trigger motors at :3100-3103).
+        //  (SDL_joystick.c:1645-1648, the trigger motors at :3100-3103).
         //  PadForge holds a level until it changes, as XInput does, so a
         //  call made with uint.MaxValue is held here and renewed before the
         //  cap (RenewHeldRumble, #572). A call that repeats the level SDL
         //  holds only moves the end time and never reaches the driver
-        //  (SDL_joystick.c:2298-2301, :2344-2346, and SDL_gamepad.c:4540
+        //  (SDL_joystick.c:3189-3192, :3235-3237, and SDL_gamepad.c:4534
         //  for the trigger motors), so a renewal sends the device nothing.
         // ─────────────────────────────────────────────
 
         /// <summary>SDL's cap on one rumble call in milliseconds,
-        /// SDL_MAX_RUMBLE_DURATION_MS (SDL_sysjoystick.h:250).</summary>
+        /// SDL_MAX_RUMBLE_DURATION_MS (SDL_sysjoystick.h:292).</summary>
         internal const uint SdlRumbleCapMs = 0xFFFF;
 
         /// <summary>How old a held level gets before it is renewed: half of

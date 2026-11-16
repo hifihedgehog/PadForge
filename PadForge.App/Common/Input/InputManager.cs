@@ -55,7 +55,7 @@ namespace PadForge.Common.Input
 
         /// <summary>Devices no SDL joystick backend may enumerate
         /// (SDL_JOYSTICK_BLACKLIST_DEVICES format: comma-separated
-        /// 0xVVVV/0xPPPP, SDL_hints.h:1407-1410). The PS Move family (#277):
+        /// 0xVVVV/0xPPPP, SDL_hints.h:1452-1455). The PS Move family (#277):
         /// a docked Move exposes three HID collections (the col01-col03
         /// Windows quirk psmoveapi documents) and no SDL driver claims the
         /// PIDs, so each collection surfaced through the generic Windows
@@ -63,7 +63,7 @@ namespace PadForge.Common.Input
         /// itself (PsMoveDirectService / the DS3 service's navigation
         /// profile) and feeds SDL VIRTUAL joysticks, which are exempt: the
         /// virtual backend never calls SDL_ShouldIgnoreJoystick
-        /// (SDL_joystick.c:3856). On Windows its callers are the DirectInput,
+        /// (SDL_joystick.c:4724). On Windows its callers are the DirectInput,
         /// XInput, GameInput and HIDAPI backends and the fork's Bluetooth
         /// LE, RFCOMM, serial, DJI network and iCade drivers
         /// (hifihedgehog/SDL#33).
@@ -1860,7 +1860,7 @@ namespace PadForge.Common.Input
             // Virtual-controller filtering happens in the two forks PadForge
             // ships. The SDL3 fork's HIDAPI and DirectInput backends walk
             // each HID's PnP ancestor chain for "HIDMaestro" and skip matches
-            // (hid.c:1344, SDL_dinputjoystick.c:510). XInput slots come from the OpenXInput fork's
+            // (hid.c:1344, SDL_dinputjoystick.c:477). XInput slots come from the OpenXInput fork's
             // xinput1_4.dll, which SDL loads in place of the system one: its
             // enumeration skips XUSB interfaces backed by a HIDMaestro virtual,
             // so they never take a user index. No per-process slot tracking,
@@ -2569,7 +2569,7 @@ namespace PadForge.Common.Input
                             // An Xbox One+ pad's motors take the raw report
                             // (XboxImpulseHidWriter), never SDL's rumble, so SDL
                             // holds no level for it and skips the stop below as
-                            // a repeat (SDL_joystick.c:2298-2301). The pad would
+                            // a repeat (SDL_joystick.c:3189-3192). The pad would
                             // keep the last level for the long pulse the report
                             // asks for, the 0xFF, 0x00, 0xEB tail that xpadneo's
                             // rumble.c also sends. Like Step 2's final zero for an

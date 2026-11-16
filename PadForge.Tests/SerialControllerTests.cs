@@ -118,7 +118,7 @@ namespace PadForge.Tests
 
         /// <summary>What SDL receives: ApplySerialControllers writes both hints
         /// together. Hints need no SDL_Init, and the joystick lock is a no-op
-        /// before it (SDL_LockJoysticks takes SDL_event_lock, null until
+        /// before it (SDL_LockJoysticks takes SDL_joystick_lock, null until
         /// then), so this runs against the shipped SDL3.dll without starting
         /// a joystick driver.</summary>
         [Fact]

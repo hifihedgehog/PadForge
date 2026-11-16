@@ -84,7 +84,7 @@ namespace PadForge.Tests
         public void SteamPowerOffReport_TritonForm_MatchesSdlLizardFraming()
         {
             // The 2026 Triton takes a 64-byte report-id-1 buffer
-            // (SDL_hidapi_steam_triton.c:130, buffer[64] = { 1 }) with the
+            // (SDL_hidapi_steam_triton.c:135, buffer[64] = { 1 }) with the
             // bare protocol id per steam_controller_tools controller.ts:204.
             // Report id 0 on this collection fails with
             // ERROR_INVALID_PARAMETER, traced on hardware 2026-07-02.
@@ -106,7 +106,7 @@ namespace PadForge.Tests
         [InlineData("XInput#15", 15u)]
         public void XInputSlot_ParsesSdlBackendPath(string path, uint expected)
         {
-            // SDL_xinputjoystick.c:187: path = "XInput#%u" with the XInput
+            // SDL_xinputjoystick.c:181: path = "XInput#%u" with the XInput
             // user index. SDL's own XUSER_MAX_COUNT is 16 (SDL_xinput.h:45)
             // and the bundled OpenXInput fork is built to match, so the full
             // range must parse. The user's Xbox Series pad persists as

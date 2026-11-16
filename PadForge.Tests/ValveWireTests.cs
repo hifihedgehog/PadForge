@@ -359,7 +359,7 @@ namespace PadForge.Tests
         /// trigger BIPOLAR, rest at short.MinValue and full pull at
         /// short.MaxValue, while every Valve wire carries it UNSIGNED 0 to
         /// 32767 (SDL_hidapi_steam.c 1631, _steamdeck.c 234,
-        /// _steam_triton.c 222, each decoding back with * 2 - 32768). These
+        /// _steam_triton.c 237, each decoding back with * 2 - 32768). These
         /// packers CLAMPED to [0, 32767] instead of rescaling, so both ends
         /// came out right by luck and everything between did not: the lower
         /// half of the travel read as zero and the upper half swept the

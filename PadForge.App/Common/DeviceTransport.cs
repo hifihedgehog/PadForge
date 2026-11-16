@@ -35,7 +35,7 @@ namespace PadForge.Common
             // Combined gen-1 Joy-Con pair (PID 0x2008): another identity
             // fact, and it must precede the path block because SDL gives the
             // pair a NON-EMPTY synthetic path ("nintendo_joycons_combined",
-            // SDL_hidapijoystick.c:1292) that carries no BT marker, so that
+            // SDL_hidapijoystick.c:1300) that carries no BT marker, so that
             // block would answer false before any tail check ran. Both
             // halves hold the classic-BT links a single Joy-Con passes with
             // (BluetoothLinkHelper.IsJoyConPair documents exactly this
@@ -73,7 +73,7 @@ namespace PadForge.Common
                     return true;
 
                 // Xbox pads over Bluetooth surface as "XInput#N"
-                // (SDL_xinputjoystick.c:187). The path carries no HID GUID
+                // (SDL_xinputjoystick.c:181). The path carries no HID GUID
                 // and no BTHENUM, and an SDL binding would not help either:
                 // the XInput driver never assigns joystick->connection_state
                 // (zero occurrences in SDL_xinputjoystick.c), so
@@ -92,15 +92,17 @@ namespace PadForge.Common
             }
 
             // Fork BLE Switch 2: the SDL fork's BLE GATT driver surfaces no
-            // device path at all (BLE_JoystickGetDevicePath returns NULL,
-            // SDL_ble_switch2joystick.c:1871-1875, and SDL3Minimal.SDL_GetJoystickPath
+            // device path at all (BLE_PublishController records none,
+            // SDL_ble_switch2joystick.c:477-494, so SDL_GetJoystickPath returns NULL,
+            // SDL_joystick.c:3133-3138, and SDL3Minimal.SDL_GetJoystickPath
             // coalesces that to string.Empty). A Switch 2-family VID/PID with
             // an empty path is therefore that driver, which is Bluetooth LE by
             // construction (BLE_JoystickOpen sets
-            // SDL_JOYSTICK_CONNECTION_WIRELESS, SDL_ble_switch2joystick.c:1961).
+            // SDL_JOYSTICK_CONNECTION_WIRELESS, SDL_ble_switch2joystick.c:1924).
             // A wired Switch 2 rides hidapi/libusb and always carries a real
-            // path (HIDAPI_JoystickGetDevicePath returns device->path,
-            // SDL_hidapijoystick.c:1730-1741), and a Remote Link relay carries
+            // path (HIDAPI_CreateJoystickDevice records the HID device's path,
+            // SDL_hidapijoystick.c:1619, which the open copies to the joystick,
+            // SDL_joystick.c:2340-2341), and a Remote Link relay carries
             // peer://, so neither lands in this branch.
             return Input.BluetoothLinkHelper.IsSwitch2(vendorId, productId);
         }
@@ -111,20 +113,20 @@ namespace PadForge.Common
         /// these PIDs exclusively over Bluetooth (wired and Xbox Wireless
         /// Adapter links report different PIDs), so a match is a positive
         /// Bluetooth fact. The 360-era "Wireless" entries
-        /// (controller_list.h:201-206) are the 2.4GHz proprietary receiver,
+        /// (controller_list.h:204-209) are the 2.4GHz proprietary receiver,
         /// not Bluetooth, and are deliberately absent.</summary>
         private static bool IsXboxBluetoothPid(ushort productId)
         {
             switch (productId)
             {
-                case 0x02E0: // Xbox One S Controller (Bluetooth), controller_list.h:366
-                case 0x02FD: // Xbox One S Controller (Bluetooth), controller_list.h:368
-                case 0x0B0C: // Xbox Adaptive Controller (Bluetooth), controller_list.h:371
-                case 0x0B13: // Xbox Series X Controller (BLE), controller_list.h:373
-                case 0x0B20: // Xbox One S Controller (BLE), controller_list.h:374
-                case 0x0B21: // Xbox Adaptive Controller (BLE), controller_list.h:375
-                case 0x0B05: // Xbox One Elite Series 2 Controller (Bluetooth), controller_list.h:648
-                case 0x0B22: // Xbox One Elite Series 2 Controller (BLE), controller_list.h:649
+                case 0x02E0: // Xbox One S Controller (Bluetooth), controller_list.h:370
+                case 0x02FD: // Xbox One S Controller (Bluetooth), controller_list.h:372
+                case 0x0B0C: // Xbox Adaptive Controller (Bluetooth), controller_list.h:375
+                case 0x0B13: // Xbox Series X Controller (BLE), controller_list.h:377
+                case 0x0B20: // Xbox One S Controller (BLE), controller_list.h:378
+                case 0x0B21: // Xbox Adaptive Controller (BLE), controller_list.h:379
+                case 0x0B05: // Xbox One Elite Series 2 Controller (Bluetooth), controller_list.h:657
+                case 0x0B22: // Xbox One Elite Series 2 Controller (BLE), controller_list.h:658
                     return true;
                 default:
                     return false;

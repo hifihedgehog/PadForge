@@ -16,10 +16,10 @@ namespace PadForge.Common.Input
     ///
     /// Why a direct reader at all: a SpaceMouse enumerates as HID usage page
     /// 0x01 Generic Desktop, usage 0x08 Multi-axis Controller. SDL's HIDAPI
-    /// enumeration admits that usage (SDL_hidapi.c:1112-1114) but has no
+    /// enumeration admits that usage (SDL_hidapi.c:1114-1116) but has no
     /// 3Dconnexion driver to open it. SDL's DirectInput backend takes any HID
     /// game controller DirectInput lists that no other driver claims
-    /// (SDL_dinputjoystick.c:497-515), and how DirectInput classes a puck has
+    /// (SDL_dinputjoystick.c:464-480, SDL_joystick.c:1080-1090), and how DirectInput classes a puck has
     /// not been measured. The service follows Ds3DirectService's template
     /// (monitor loop, virtual attach, serialized teardown) with
     /// SonyHeadsetMotionDevice's overlapped-read pattern for the HID

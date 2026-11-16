@@ -16,7 +16,7 @@ namespace PadForge.Common.Input
     /// 0x2A26, UTF-8), for a device whose SDL driver reports no firmware
     /// version. An Xbox pad on Bluetooth reaches SDL through XInput, which
     /// has no firmware query (its joystick carries the vendor id, product
-    /// id and product version, SDL_xinputjoystick.c:188). Since
+    /// id and product version, SDL_xinputjoystick.c:186). Since
     /// hifihedgehog/SDL#44 SDL's XInput driver reads the version from
     /// GameInput's device information, and it still reports 0 for a pad
     /// GameInput does not list or cannot match to the slot. This service
@@ -71,7 +71,7 @@ namespace PadForge.Common.Input
 
         // Keyed by SDL joystick instance, which SDL never hands out twice in
         // one process, across SDL_Quit too (SDL_GetNextObjectID's static
-        // counter, SDL_utils.c:136-145).
+        // counter, SDL_utils.c:146-155).
         private static readonly ConcurrentDictionary<uint, Read> s_reads = new();
 
         /// <summary>The firmware revision the device reports, or null while it

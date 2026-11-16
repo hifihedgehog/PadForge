@@ -54,7 +54,7 @@ namespace PadForge.Tests
         /// and g. Every driver scales a word by 2000 degrees per second or
         /// 2 g over 32768 and sends (X, Z, -Y), but the 2015 driver reads its
         /// gyro Z as +Y (SDL_hidapi_steam.c 1684 to 1691,
-        /// SDL_hidapi_steamdeck.c 250 to 257, SDL_hidapi_steam_triton.c 279
+        /// SDL_hidapi_steamdeck.c 250 to 257, SDL_hidapi_steam_triton.c 294
         /// to 286).</summary>
         private static (float[] gyro, float[] accel) SdlReads(string id, byte[] b)
         {
@@ -141,7 +141,7 @@ namespace PadForge.Tests
 
         /// <summary>A touched or clicked pad reads pressure 1.0 in SDL, which
         /// divides the word by 32768 (SDL_hidapi_steamdeck.c 272 and 284,
-        /// SDL_hidapi_steam_triton.c 258 and 270), and an untouched pad 0.
+        /// SDL_hidapi_steam_triton.c 273 and 285), and an untouched pad 0.
         /// The frames once wrote 0xFFFF on a click, which SDL read as 2.0,
         /// and 0 on a touch.</summary>
         [Theory]
@@ -165,7 +165,7 @@ namespace PadForge.Tests
 
         /// <summary>The 2026 frame's IMU timestamp is the time it is handed,
         /// in microseconds, and SDL moves its sensor clock by the difference
-        /// between two frames' words (SDL_hidapi_steam_triton.c 274 to 277),
+        /// between two frames' words (SDL_hidapi_steam_triton.c 289 to 292),
         /// across the 32-bit wrap too. It carried the frame counter.</summary>
         [Fact]
         public void The2026PadsImuTimestampCountsMicroseconds()

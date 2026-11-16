@@ -144,7 +144,7 @@ namespace PadForge.Tests
         /// <summary>SDL_GAMEPAD_CAPSENSE_* channel bits: a Steam Deck has the
         /// two stick tops, a 2026 Steam Controller the stick tops and the
         /// grips (SDL_hidapi_steamdeck.c 212-215, _steam_triton.c
-        /// 195-203).</summary>
+        /// 210-218).</summary>
         private const int DeckCapSense = 0b0011, TritonCapSense = 0b1111;
 
         private static string Raw(PadSetting ps, string id, string role)
@@ -160,8 +160,8 @@ namespace PadForge.Tests
         /// 11, the rear buttons RP1 LP1 RP2 LP2 at 12-15 (R4 L4 R5 L5), the
         /// pads as touchpad 0 / 1, and the pad clicks as the gamepad buttons
         /// its mapping advertises: touchpad:b17 (left) at position 16 and
-        /// misc2:b16 (right) at 17 (SDL_hidapi_steam_triton.c 48-54,
-        /// 575-576, SDL_gamepad.c 1464).</summary>
+        /// misc2:b16 (right) at 17 (SDL_hidapi_steam_triton.c 49-55,
+        /// 590-591, SDL_gamepad.c 1461).</summary>
         [Fact]
         public void Automap_SteamController2026_RoutesEverythingOneToOne()
         {
@@ -202,7 +202,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>A 2015 Steam Controller (SDL sends its grips as RP1 /
-        /// LP1 at 12 / 13: SDL_gamepad.c 1458, and advertises no touchpad
+        /// LP1 at 12 / 13: SDL_gamepad.c 1455, and advertises no touchpad
         /// or misc2 button, so its clicks ride the wrapper's pressure
         /// descriptors) lands on the 2015 wire's grips, and every slot on
         /// that wire is bound.</summary>

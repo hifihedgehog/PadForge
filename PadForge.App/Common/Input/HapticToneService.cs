@@ -82,9 +82,9 @@ namespace PadForge.Common.Input
                 {
                     case 0x2006: return Family.JoyConL;   // Switch Joy-Con (Left)
                     case 0x2007: return Family.JoyConR;   // Switch Joy-Con (Right)
-                    // Combined gen-1 Joy-Con pair (SwitchJoyConPair, controller_list.h:590).
+                    // Combined gen-1 Joy-Con pair (SwitchJoyConPair, controller_list.h:599).
                     // SDL combines two Joy-Cons by default (HIDAPI_COMBINE_JOY_CONS = "1",
-                    // SDL_hints.h:1650), so a paired set enumerates as 0x2008. Without
+                    // SDL_hints.h:1695), so a paired set enumerates as 0x2008. Without
                     // this it would get no Audio tab. The sink opens BOTH children and
                     // drives both coils, routing the tone by the slot's commanded motor
                     // sides (#223); with one child missing it degrades to that child's
@@ -158,7 +158,7 @@ namespace PadForge.Common.Input
         // values to both children, SDL_hidapi_combined.c:102-122, and each
         // child keeps only its own side: the left child zeroes
         // high_frequency_rumble, the right child zeroes
-        // low_frequency_rumble, SDL_hidapi_switch.c:3279-3287), so "left
+        // low_frequency_rumble, SDL_hidapi_switch.c:3278-3286), so "left
         // motor" = low frequency = left child, "right motor" = high
         // frequency = right child.
         //
@@ -831,7 +831,7 @@ namespace PadForge.Common.Input
                 // Reading an NFC tag kills vibration on the controller until a
                 // power cycle (owner repro 2026-07-24: tap an amiibo, rumble
                 // dies and stays dead). SDL enables vibration exactly once, at
-                // device open (SetVibrationEnabled at SDL_hidapi_switch.c:3005),
+                // device open (SetVibrationEnabled at SDL_hidapi_switch.c:3004),
                 // and its NFC machine never re-enables it, so nothing restores
                 // the state the MCU session clobbers. Re-assert enable-vibration
                 // (subcommand 0x48) on our own sole-writer handle after every
@@ -885,7 +885,7 @@ namespace PadForge.Common.Input
                         // re-run SetVibrationEnabled) always works. That points
                         // at our raw writes not landing on this pad, and rumble
                         // surviving only because SDL enables vibration at open
-                        // (SDL_hidapi_switch.c:3005).
+                        // (SDL_hidapi_switch.c:3004).
                         //
                         // SDL_SendGamepadEffect with a >=2-byte payload is the
                         // driver's subcommand passthrough: payload[0] is the
@@ -1581,7 +1581,7 @@ namespace PadForge.Common.Input
                 else if (!steamViaSdl)
                 {
                     // The combined Joy-Con pair's SDL path is a synthetic placeholder
-                    // ("nintendo_joycons_combined", SDL_hidapijoystick.c:1292), not a
+                    // ("nintendo_joycons_combined", SDL_hidapijoystick.c:1300), not a
                     // real \\?\HID#... path, so CreateFileW fails and the pair gets no
                     // tone (issue #184). Both physical Joy-Cons are still present as
                     // real HID devices (0x057E/0x2006 L, 0x2007 R); resolve BOTH real

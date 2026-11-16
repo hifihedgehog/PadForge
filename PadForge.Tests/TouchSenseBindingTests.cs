@@ -931,9 +931,9 @@ namespace PadForge.Tests
         /// its routing let the interface through, and with the libusb
         /// whitelist on, which is its default where a platform backend
         /// exists, it lets through only devices that need libusb
-        /// (SDL3-build SDL src/hidapi/libusb/hid.c:1164-1168 and
-        /// 1249-1258, SDL_hidapi_vendorusb.c:285-290, SDL_hidapi.c:801-809
-        /// and 1166-1167). No TouchSense mouse is on that list, so SDL
+        /// (SDL3-build SDL src/hidapi/libusb/hid.c:1167-1171 and
+        /// 1259-1268, SDL_hidapi_vendorusb.c:290-295, SDL_hidapi.c:803-811
+        /// and 1168-1169). No TouchSense mouse is on that list, so SDL
         /// never opens one as long as nothing here turns the whitelist
         /// off.</summary>
         [Fact]

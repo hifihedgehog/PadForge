@@ -219,11 +219,11 @@ namespace PadForge.SteamWorkshop.Translation
         /// <summary>True for controller types whose SDL driver registers
         /// exactly ONE touchpad, so Steam's left_trackpad / right_trackpad
         /// tokens address halves of the same physical pad (#9 B-1). Ground
-        /// truth in the SDL fork clone: SDL_hidapi_ps4.c:732 and
-        /// SDL_hidapi_ps5.c:846 each add a single touchpad, while the
+        /// truth in the SDL fork clone: SDL_hidapi_ps4.c:733 and
+        /// SDL_hidapi_ps5.c:847 each add a single touchpad, while the
         /// multi-pad family registers two (SDL_hidapi_steam.c:1273-1274 for
         /// gordon, SDL_hidapi_steamdeck.c:420-421 for neptune,
-        /// SDL_hidapi_steam_triton.c:584-585 for the SC 2026 family, whose
+        /// SDL_hidapi_steam_triton.c:599-600 for the SC 2026 family, whose
         /// configs carry controller_type "controller_triton" in the
         /// corpus). Typeless configs predate controller_type and are Steam
         /// Controller authored: multi-pad.</summary>

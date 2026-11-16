@@ -77,8 +77,8 @@ namespace PadForge.SteamWorkshop.Tests
         [Fact]
         public void SinglePadTypes_GroundedOnSdlTouchpadCounts()
         {
-            // SDL registers ONE touchpad for ps4/ps5 (SDL_hidapi_ps4.c:732,
-            // SDL_hidapi_ps5.c:846) and TWO for the multi-pad family
+            // SDL registers ONE touchpad for ps4/ps5 (SDL_hidapi_ps4.c:733,
+            // SDL_hidapi_ps5.c:847) and TWO for the multi-pad family
             // (SDL_hidapi_steam.c, SDL_hidapi_steamdeck.c,
             // SDL_hidapi_steam_triton.c).
             Assert.True(PhysicalSlotResolver.UsesSinglePadTrackpads("controller_ps4"));

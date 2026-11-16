@@ -2232,7 +2232,7 @@ namespace PadForge.Services
             // no allocation; the pair sink's stream thread calls this once
             // per 10 ms tick. Body motors only: SDL routes exactly the low
             // (left) / high (right) body values to the pair's children
-            // (SDL_hidapi_switch.c:3279-3287), and the Switch has no trigger
+            // (SDL_hidapi_switch.c:3278-3286), and the Switch has no trigger
             // motors, so trigger rumble never vibrates a Joy-Con side.
             PadForge.Common.Input.HapticToneService.SlotRumbleActiveProvider = slotIndex =>
             {
@@ -11237,8 +11237,10 @@ namespace PadForge.Services
                         // Retry burst — SDL3's PS5 driver writes the
                         // player-index DEFAULT color to the lightbar at
                         // multiple points after a fresh open:
-                        //   - Immediately on SDL_SetJoystickIDForPlayerIndex
-                        //     (USB: hits firmware right away).
+                        //   - When the joystick opens, with the player index
+                        //     SDL gave it at connect (SDL_joystick.c:2417-2420),
+                        //     and on any later index change while it is open
+                        //     (:1473-1475). USB hits the firmware right away.
                         //   - On the first SDL_SendGamepadEffect call when
                         //     enhanced_mode is false (sets enhanced mode +
                         //     fires UpdateEffects(LED|PadLights), then
@@ -18765,7 +18767,7 @@ namespace PadForge.Services
                                     return;
                                 }
                                 // SDL's record of a level would be resent every
-                                // 2 s (SDL_joystick.c:3092-3097) over whatever the
+                                // 2 s (SDL_joystick.c:1650-1655) over whatever the
                                 // raw writer holds, so SDL stops and the raw
                                 // report takes the level.
                                 Buzz(0, 0);

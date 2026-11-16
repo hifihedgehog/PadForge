@@ -56,5 +56,19 @@ namespace PadForge.Tests
                          "righty:a5", "lefttrigger:a3", "righttrigger:a4", "dpup:h0.1", "dpright:h0.2", "dpdown:h0.4", "dpleft:h0.8" })
                 Assert.Contains("," + binding + ",", aim);
         }
+
+        /// <summary>The GameSir G7 Pro keeps the Windows mapping it shipped with.
+        /// The SDL fork imported SDL_GameControllerDB's Windows row for it
+        /// (SDL#34) and dropped that row at its upstream sync (91e1a5afa3),
+        /// because upstream SDL maps the pad in its macOS section alone, with
+        /// other axes. This is the imported row, binding for binding.</summary>
+        [Fact]
+        public void TheGameSirG7Pro_KeepsItsWindowsMapping()
+        {
+            string pad = Assert.Single(MappingLines(), l => l.StartsWith("03000000373500002210000000000000,", StringComparison.Ordinal));
+            Assert.Equal("03000000373500002210000000000000,GameSir G7 Pro,a:b0,b:b1,back:b10,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,"
+                + "leftshoulder:b6,leftstick:b13,lefttrigger:b8,leftx:a0,lefty:a1,rightshoulder:b7,rightstick:b14,righttrigger:b9,"
+                + "rightx:a3,righty:a4,start:b11,x:b3,y:b4,platform:Windows,", pad);
+        }
     }
 }

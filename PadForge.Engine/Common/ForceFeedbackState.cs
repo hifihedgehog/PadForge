@@ -254,11 +254,11 @@ namespace PadForge.Engine
         /// joystick rumble again and records them as delivered, for a
         /// Bliss-Box port the switch hands back to SDL, which SDL never opens
         /// as a haptic device (the fork maps all four port IDs as a gamepad,
-        /// SDL_gamepad_db_community.h:289-292, and SDL_IsJoystickHaptic
-        /// refuses a gamepad, SDL_haptic.c:310-311). A Remote Link peer sends
+        /// SDL_gamepad_db_community.h:286-289, and SDL_IsJoystickHaptic
+        /// refuses a gamepad, SDL_haptic.c:347-348). A Remote Link peer sends
         /// a steady level once, so waiting for the next change would leave the
         /// motors stopped. A level goes out after a stop: SDL skips a write
-        /// that repeats the levels it last took (SDL_joystick.c:2298-2301),
+        /// that repeats the levels it last took (SDL_joystick.c:3189-3192),
         /// and a GPA's final stop from the retired port can end a level SDL
         /// took while the port was retiring. A device with no SDL motors takes
         /// no level, so the recorded ones are dropped: kept, they would go
@@ -991,7 +991,7 @@ namespace PadForge.Engine
             effect.condition.type = (ushort)SDL_HAPTIC_SPRING;
             // CARTESIAN +X, not STEERING_AXIS. SDL encodes STEERING_AXIS as
             // DIEFF_CARTESIAN with a ZERO direction vector
-            // (SDL_dinputhaptic.c:578-581), and Moza is the vendor Linux had
+            // (SDL_dinputhaptic.c:591-594), and Moza is the vendor Linux had
             // to special-case for exactly that on CONDITION effects:
             // HID_PIDFF_QUIRK_FIX_CONDITIONAL_DIRECTION (hid-pidff.h:18-19)
             // discards the caller's direction and forces the fixed +X wheel

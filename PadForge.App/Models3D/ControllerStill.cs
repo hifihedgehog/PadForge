@@ -45,7 +45,36 @@ namespace PadForge.Models3D
         /// (StagePictures.StillMarksFor).</para></summary>
         internal static BitmapSource Render(string family, string finish)
         {
-            using var model = ControllerModelBase.Create(family, finish, extraControls: true);
+            var model = ControllerModelBase.Create(family, finish, extraControls: true);
+            bool kept = false;
+            try
+            {
+                var still = Render(model, family, out var live);
+                if (live != null)
+                {
+                    s_live.Add(still, live);
+                    kept = true;
+                }
+                return still;
+            }
+            finally
+            {
+                // The live model holds the model's parts, frozen, and
+                // disposing it would empty them.
+                if (!kept) model.Dispose();
+            }
+        }
+
+        /// <summary>The live model drawn with a still this class drew
+        /// (<see cref="LiveModel"/>), or null: for a picture this class did
+        /// not draw, and for a model whose parts cannot be frozen.</summary>
+        internal static LiveModel LiveModelOf(BitmapSource still)
+            => still != null && s_live.TryGetValue(still, out var live) ? live : null;
+
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<BitmapSource, LiveModel> s_live = new();
+
+        private static BitmapSource Render(ControllerModelBase model, string family, out LiveModel live)
+        {
             Rect3D bounds = model.model3DGroup.Bounds;
             Matrix3D placement = ControllerModelFraming.Placement(bounds, model.ModelScale);
             var outline = ControllerModelFraming.Measure(model.model3DGroup, placement);
@@ -75,7 +104,8 @@ namespace PadForge.Models3D
             lights.Children.Add(new DirectionalLight(HeadLight, ControllerModelFraming.Look));
             lights.Children.Add(new DirectionalLight(RimLight, new Vector3D(0, -0.7, 0.7)));
             viewport.Children.Add(new ModelVisual3D { Content = lights });
-            viewport.Children.Add(new ModelVisual3D { Content = model.model3DGroup, Transform = new MatrixTransform3D(placement) });
+            var shown = new ModelVisual3D { Content = model.model3DGroup, Transform = new MatrixTransform3D(placement) };
+            viewport.Children.Add(shown);
 
             viewport.Measure(new Size(DrawWidth, DrawHeight));
             viewport.Arrange(new Rect(0, 0, DrawWidth, DrawHeight));
@@ -90,6 +120,10 @@ namespace PadForge.Models3D
             toScreen.Append(HelixToolkit.Wpf.Viewport3DHelper.GetTotalTransform(viewport));
             s_marks.Add(bitmap, ReadMarks(model, toScreen));
             s_extraRoles.Add(bitmap, System.Linq.Enumerable.ToArray(model.ExtraControlRoles));
+
+            // The model leaves the drawing's viewport before it is frozen.
+            shown.Content = null;
+            live = LiveModel.From(model, family, placement, ((PerspectiveCamera)viewport.Camera).Position);
             return bitmap;
         }
 

@@ -145,7 +145,7 @@ namespace PadForge.Common
             return (family, ControllerStill.FinishFor(family, finishOf?.Invoke(family)));
         }
 
-        private static readonly ConcurrentDictionary<(string, string), (ImageSource Color, ImageSource Gray, StillMark[] Marks, StillMark[] MarksWithoutExtras)> s_stills = new();
+        private static readonly ConcurrentDictionary<(string, string), (ImageSource Color, ImageSource Gray, StillMark[] Marks, StillMark[] MarksWithoutExtras, LiveModel Live)> s_stills = new();
 
         /// <summary>What draws a model's still. A test puts its own here.</summary>
         internal static Func<string, string, BitmapSource> DrawStill = ControllerStill.Render;
@@ -174,6 +174,12 @@ namespace PadForge.Common
             return marks ?? StillMarks.None;
         }
 
+        /// <summary>The model a still was drawn from, frozen, for a card to
+        /// show moving (<see cref="LiveModel"/>), or null: for a still not
+        /// made yet, and for a model whose parts could not be frozen.</summary>
+        internal static LiveModel LiveModelFor(string family, string finish)
+            => s_stills.TryGetValue((family, finish ?? string.Empty), out var still) ? still.Live : null;
+
         /// <summary>Makes a model's still: draws the model, cuts the
         /// picture to the controller, fits it to the stage and makes its
         /// gray copy, once for each model and finish. A model takes up to
@@ -185,12 +191,15 @@ namespace PadForge.Common
             if (s_stills.ContainsKey(key)) return;
             BitmapSource fit = null;
             StillMark[] marks = StillMarks.None, withoutExtras = StillMarks.None;
+            LiveModel live = null;
             try
             {
                 BitmapSource drawn = DrawStill(family, finish);
                 fit = Fit(drawn, out var cut);
                 if (fit != null)
                 {
+                    live = ControllerStill.LiveModelOf(drawn);
+                    if (live != null) live.Cut = cut;
                     marks = StillMarks.Place(ControllerStill.MarksOf(drawn), cut);
                     var extras = ControllerStill.ExtraRolesOf(drawn);
                     withoutExtras = extras.Count == 0
@@ -202,7 +211,7 @@ namespace PadForge.Common
             {
                 System.Diagnostics.Debug.WriteLine("[StagePictures] no still of " + family + ": " + error.Message);
             }
-            s_stills[key] = (fit, MakeGray(fit), marks, withoutExtras);
+            s_stills[key] = (fit, MakeGray(fit), marks, withoutExtras, live);
         }
 
         /// <summary>Makes a model's still on a thread of its own and then

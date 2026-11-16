@@ -150,8 +150,9 @@ namespace PadForge.Tests
         /// with the language on purpose: in a right-to-left one the hidden
         /// end of a name sits on the left, and the scroll must reveal it.
         /// ControllerStill's viewport is drawn to a bitmap in no window,
-        /// and pins itself. A new one moves a count and sends its author
-        /// here.</summary>
+        /// and pins itself. So does LiveStage's, the moving model on a Home
+        /// card, since a card mirrors with the language. A new one moves a
+        /// count and sends its author here.</summary>
         [Fact]
         public void EveryDrawingBuiltInCodeIsOnTheList()
         {
@@ -173,6 +174,7 @@ namespace PadForge.Tests
                 ["GunCalibrationScreen.cs"] = 1,
                 ["KBMPreviewView.xaml.cs"] = 4,
                 ["KeyLightsView.cs"] = 1,
+                ["LiveStage.cs"] = 1,
                 ["MainWindow.xaml.cs"] = 5,
                 ["MarqueeLabel.cs"] = 1,
                 ["MenuOverlayWindow.xaml.cs"] = 2,
@@ -192,6 +194,8 @@ namespace PadForge.Tests
 
             string still = File.ReadAllText(Path.Combine(AppDirectory(), "Models3D", "ControllerStill.cs"));
             Assert.Matches(new Regex(@"var viewport = new Viewport3D\s*\{\s*FlowDirection = FlowDirection\.LeftToRight,"), still);
+            string stage = File.ReadAllText(Path.Combine(AppDirectory(), "Controls", "LiveStage.cs"));
+            Assert.Matches(new Regex(@"_viewport = new Viewport3D\s*\{\s*// [^\r\n]*\s*FlowDirection = FlowDirection\.LeftToRight,"), stage);
 
             string main = File.ReadAllText(Path.Combine(AppDirectory(), "MainWindow.xaml.cs"));
             int pinned = Regex.Matches(main,

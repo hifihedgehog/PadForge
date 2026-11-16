@@ -2172,7 +2172,7 @@ namespace PadForge.ViewModels
         /// is no picture yet and there will be one.</summary>
         internal void SetPicture(string profileId, VirtualControllerType type, string finishes, bool still,
             System.Windows.Media.ImageSource picture, System.Windows.Media.ImageSource gray, bool coming = false,
-            IReadOnlyList<PadForge.Common.StillMark> marks = null)
+            IReadOnlyList<PadForge.Common.StillMark> marks = null, PadForge.Models3D.LiveModel live = null)
         {
             _pictureMade = true;
             _pictureProfile = profileId;
@@ -2184,6 +2184,17 @@ namespace PadForge.ViewModels
             _picture = picture;
             _pictureGray = gray;
             _pictureComing = coming && picture == null;
+            live = picture == null ? null : live;
+            _liveButtons = live?.ButtonsFor(profileId) ?? 0;
+            if (!ReferenceEquals(live, _liveModel))
+            {
+                bool showed = ShowsLiveModel;
+                _liveModel = live;
+                _stagePose = PadForge.Controls.StagePose.Rest;
+                OnPropertyChanged(nameof(StagePose));
+                OnPropertyChanged(nameof(LiveModel));
+                if (showed != ShowsLiveModel) OnPropertyChanged(nameof(ShowsLiveModel));
+            }
             marks = picture == null || marks == null ? PadForge.Common.StillMarks.None : marks;
             if (!ReferenceEquals(marks, _pictureMarks))
             {
@@ -2215,10 +2226,61 @@ namespace PadForge.ViewModels
         /// controller's page. A new list each time a step changes.</summary>
         public byte[] HeldLevels => _heldLevels;
 
+        private PadForge.Models3D.LiveModel _liveModel;
+        private PadForge.Controls.StagePose _stagePose = PadForge.Controls.StagePose.Rest;
+
+        /// <summary>The buttons this card's model reads for its preset
+        /// (LiveModel.ButtonsFor).</summary>
+        private ulong _liveButtons;
+
+        /// <summary>The 3D model the picture's still was drawn from, which
+        /// the card shows moving in the still's place while the controller
+        /// forges (LiveStage). Null for the 2D art and while none is made.</summary>
+        public PadForge.Models3D.LiveModel LiveModel => _liveModel;
+
+        /// <summary>Whether the card shows its model moving in place of the
+        /// color still: it has one, and the computer draws 3D with its
+        /// graphics card.</summary>
+        public bool ShowsLiveModel => _liveModel != null && PadForge.Controls.LiveStage.DrawsIn3D;
+
+        /// <summary>What is held on the controller now, as the model shows
+        /// it, in steps (<see cref="PoseOf"/>): a new one only when the
+        /// model would move or light.</summary>
+        public PadForge.Controls.StagePose StagePose => _stagePose;
+
+        /// <summary>What is held on a controller, in the steps the model's
+        /// pose is told in: a stick's raw axis in steps of 256, 128 each
+        /// way, a trigger's pull in 64ths, the held buttons among
+        /// <paramref name="buttons"/> (ControllerModelView.HeldButtons) and a
+        /// finger on either stick's top.</summary>
+        internal static PadForge.Controls.StagePose PoseOf(PadViewModel pad, ulong buttons)
+        {
+            if (pad == null) return PadForge.Controls.StagePose.Rest;
+            static short Axis(short raw) => (short)(raw / 256 * 256);
+            static double Pull(double pull) => double.IsNaN(pull) ? 0 : Math.Round(Math.Clamp(pull, 0.0, 1.0) * 64) / 64;
+            return new PadForge.Controls.StagePose(
+                Axis(pad.RawThumbLX), Axis(pad.RawThumbLY), Axis(pad.RawThumbRX), Axis(pad.RawThumbRY),
+                Pull(pad.LeftTrigger), Pull(pad.RightTrigger),
+                PadForge.Views.ControllerModelView.HeldButtons(pad) & buttons,
+                pad.LeftStickTouch, pad.RightStickTouch);
+        }
+
         /// <summary>Reads what is held on the controller now. It tells
-        /// the card only when a step changed.</summary>
+        /// the card only when a step changed. A card that shows its model
+        /// moving lights the model itself, so it reads the model's pose
+        /// alone, and any other card reads its marks' levels (HeldGlow).</summary>
         internal void ReadHeld(PadViewModel pad)
         {
+            if (ShowsLiveModel)
+            {
+                var pose = PoseOf(pad, _liveButtons);
+                if (pose != _stagePose)
+                {
+                    _stagePose = pose;
+                    OnPropertyChanged(nameof(StagePose));
+                }
+                return;
+            }
             var marks = _pictureMarks;
             int count = marks.Count;
             if (count == 0 || count != _heldLevels.Length) return;

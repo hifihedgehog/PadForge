@@ -26,8 +26,10 @@ namespace PadForge.Tests
     /// sending input, the controller's picture on the card's stage, the
     /// flag that tells a part whether what it stands in is live, the
     /// halo's hard rim, the theme's tints for them and the code that wires
-    /// them.
+    /// them. It makes and forgets stills, so it runs apart
+    /// (StagePictureStaticsCollection).
     /// </summary>
+    [Collection("StagePictureStatics")]
     public class HomeCardPartsTests
     {
         private static void RunSta(Action body)
@@ -612,7 +614,7 @@ namespace PadForge.Tests
             Assert.Equal(3, Count(svc, "bool still = PicturesAreStills;"));
             At(svc, "if (!slot.PictureIsFor(padVm.ProfileId, padVm.OutputType, padVm.Model3DAppearances, still))");
             At(svc, "string art = StagePictures.PathFor(profile, type, finishOf);");
-            At(svc, "return (StagePictures.Color(art), StagePictures.Gray(art), StagePictures.ArtMarks(art), false);");
+            At(svc, "return (StagePictures.Color(art), StagePictures.Gray(art), StagePictures.ArtMarks(art), false, null);");
         }
 
         // ── the still of the 3D model ──────────────────────────────────
@@ -691,7 +693,9 @@ namespace PadForge.Tests
             string code = ExtrasPageTests.RepoText("PadForge.App", "Models3D", "ControllerStill.cs");
             At(code, "var (distance, lift) = ControllerModelFraming.Fit(outline, DrawWidth, DrawHeight);");
             At(code, "viewport.Children.Add(new HelixToolkit.Wpf.SunLight());");
-            At(code, "using var model = ControllerModelBase.Create(family, finish, extraControls: true);");
+            At(code, "var model = ControllerModelBase.Create(family, finish, extraControls: true);");
+            // The model is let go unless the live model took it, frozen.
+            At(code, "if (!kept) model.Dispose();");
             // The page's own two other lights.
             string page = ExtrasPageTests.RepoText("PadForge.App", "Views", "ControllerModelView.xaml");
             At(page, "<helix:DirectionalHeadLight Brightness=\"0.35\" />");
@@ -932,16 +936,16 @@ namespace PadForge.Tests
             int at = At(svc, "string profile, VirtualControllerType type, Func<string, string> finishOf, bool still)");
             string body = svc.Substring(at, svc.IndexOf("\n        }", at, StringComparison.Ordinal) - at);
             int ask = At(body, "var (family, finish) = StagePictures.StillFor(profile, type, finishOf);");
-            int waiting = At(body, "return (null, null, StillMarks.None, true);");
-            int made = At(body, "if (color != null) return (color, gray, StagePictures.StillMarksFor(family, finish, profile), false);");
-            int art = At(body, "return (StagePictures.Color(art), StagePictures.Gray(art), StagePictures.ArtMarks(art), false);");
+            int waiting = At(body, "return (null, null, StillMarks.None, true, null);");
+            int made = At(body, "if (color != null) return (color, gray, StagePictures.StillMarksFor(family, finish, profile), false, StagePictures.LiveModelFor(family, finish));");
+            int art = At(body, "return (StagePictures.Color(art), StagePictures.Gray(art), StagePictures.ArtMarks(art), false, null);");
             Assert.True(ask < waiting && waiting < made && made < art);
             At(body, "if (!StagePictures.TryGetStill(family, finish, out var color, out var gray))");
             At(body, "WantStill(family, finish);");
             // Its two callers: a Home card, which keeps the marks, and a
             // profile's card.
             At(svc, "var picture = PictureOf(padVm.ProfileId, padVm.OutputType, padVm.GetModelAppearance, still);");
-            At(svc, "picture.Color, picture.Gray, picture.Coming, picture.Marks);");
+            At(svc, "picture.Color, picture.Gray, picture.Coming, picture.Marks, picture.Live);");
             At(svc, "var picture = PictureOf(controller.PresetId, controller.Type, controller.FinishOf, still);");
             At(svc, "controller.SetPicture(picture.Color, picture.Coming);");
             At(svc, "Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(MakeNextStill));");

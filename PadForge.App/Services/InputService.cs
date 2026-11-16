@@ -3989,7 +3989,7 @@ namespace PadForge.Services
         /// thread of its own. A model that cannot be drawn leaves the 2D
         /// art, as the 2D view does. One rule for a Home card's stage and
         /// a profile's card.</summary>
-        private (System.Windows.Media.ImageSource Color, System.Windows.Media.ImageSource Gray, IReadOnlyList<StillMark> Marks, bool Coming) PictureOf(
+        private (System.Windows.Media.ImageSource Color, System.Windows.Media.ImageSource Gray, IReadOnlyList<StillMark> Marks, bool Coming, PadForge.Models3D.LiveModel Live) PictureOf(
             string profile, VirtualControllerType type, Func<string, string> finishOf, bool still)
         {
             if (still)
@@ -4000,13 +4000,13 @@ namespace PadForge.Services
                     if (!StagePictures.TryGetStill(family, finish, out var color, out var gray))
                     {
                         WantStill(family, finish);
-                        return (null, null, StillMarks.None, true);
+                        return (null, null, StillMarks.None, true, null);
                     }
-                    if (color != null) return (color, gray, StagePictures.StillMarksFor(family, finish, profile), false);
+                    if (color != null) return (color, gray, StagePictures.StillMarksFor(family, finish, profile), false, StagePictures.LiveModelFor(family, finish));
                 }
             }
             string art = StagePictures.PathFor(profile, type, finishOf);
-            return (StagePictures.Color(art), StagePictures.Gray(art), StagePictures.ArtMarks(art), false);
+            return (StagePictures.Color(art), StagePictures.Gray(art), StagePictures.ArtMarks(art), false, null);
         }
 
         /// <summary>Gives a Home card its picture, and where each control
@@ -4015,7 +4015,7 @@ namespace PadForge.Services
         {
             var picture = PictureOf(padVm.ProfileId, padVm.OutputType, padVm.GetModelAppearance, still);
             slot.SetPicture(padVm.ProfileId, padVm.OutputType, padVm.Model3DAppearances, still,
-                picture.Color, picture.Gray, picture.Coming, picture.Marks);
+                picture.Color, picture.Gray, picture.Coming, picture.Marks, picture.Live);
         }
 
         /// <summary>Whether Profiles is the page shown. The page shown asks

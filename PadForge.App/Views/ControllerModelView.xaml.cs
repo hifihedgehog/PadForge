@@ -677,6 +677,23 @@ namespace PadForge.Views
             return true;
         }
 
+        /// <summary>The roles this view lights, in the order it lights
+        /// them. A Home card's model tells what is held by one bit for each
+        /// (<see cref="HeldButtons"/>).</summary>
+        internal static IReadOnlyList<string> ButtonRoles => ButtonProperties;
+
+        /// <summary>The buttons held on a controller now, one bit for each
+        /// role of <see cref="ButtonRoles"/>, the first role the lowest
+        /// bit. A Home card's model lights them as this view does.</summary>
+        internal static ulong HeldButtons(PadViewModel vm)
+        {
+            ulong held = 0;
+            if (vm == null) return held;
+            for (int i = 0; i < ButtonReaders.Length; i++)
+                if (ButtonReaders[i].Read(vm)) held |= 1UL << i;
+            return held;
+        }
+
         private void HighlightButtons()
         {
             // The hovered TARGET is owned by the hover highlight while the
@@ -817,13 +834,10 @@ namespace PadForge.Views
                 || _flashTarget == btnProp;
             if (!buttonOwned)
             {
-                // Visual deadzone: real sticks rarely report exactly zero,
-                // and a drifting stick otherwise keeps its ring permanently
-                // accent-tinted (owner saw the RIGHT cap "off hue" while the
-                // left was fine; atlases were identical, this glow was the
-                // difference). Mapping is unaffected, this gates only the
-                // preview glow.
-                bool moved = Math.Abs(normX) > 0.05f || Math.Abs(normY) > 0.05f;
+                // The glow's own dead zone (ModelGlow.StickGlowsFrom). A
+                // Home card's model grades its caps by the same rule.
+                bool moved = Math.Abs(normX) > ModelGlow.StickGlowsFrom
+                    || Math.Abs(normY) > ModelGlow.StickGlowsFrom;
                 float factor = Math.Max(Math.Abs(normX), Math.Abs(normY));
                 // A finger on the capacitive top (Steam Deck, 2026 Steam
                 // Controller) glows the cap faintly, below a click's full
@@ -843,10 +857,10 @@ namespace PadForge.Views
                     {
                         if (child is not GeometryModel3D g2) continue;
                         if (moved && defMat != null && hlMat != null)
-                            g2.Material = GradientHighlight(g2,
-                                s_riderDefaults.GetValue(g2, _ => g2.Material), hlMat, factor,
+                            g2.Material = ModelGlow.GradientHighlight(g2,
+                                ModelGlow.RiderDefault(g2), hlMat, factor,
                                 _currentModel.RiderDecals.Contains(g2));
-                        else if (s_riderDefaults.TryGetValue(g2, out var d0))
+                        else if (ModelGlow.TryRiderDefault(g2, out var d0))
                             g2.Material = d0;
                     }
                 }
@@ -863,9 +877,8 @@ namespace PadForge.Views
                             Grade(part);
             }
 
-            // Rotation
-            float angleX = maxAngleDeg * normX;
-            float angleY = -maxAngleDeg * normY;
+            // Rotation, by the rule a Home card's model moves by.
+            var (angleX, angleY) = ControllerPose.StickAngles(rawX, rawY, maxAngleDeg);
 
             // Retained per-stick transform: allocating the 5-object
             // transform graph per dirty frame was pure churn. Mutate the
@@ -928,19 +941,18 @@ namespace PadForge.Views
                 foreach (var child in triggerModel.Children)
                 {
                     if (child is not GeometryModel3D g2) continue;
-                    // Same visual deadzone as the sticks: trigger sensor
-                    // noise must not keep the pull glow lit at rest.
-                    if (value > 0.03f && defMat != null && hlMat != null)
-                        g2.Material = GradientHighlight(g2,
-                            s_riderDefaults.GetValue(g2, _ => g2.Material), hlMat, value,
+                    // The glow's own dead zone (ModelGlow.TriggerGlowsFrom).
+                    if (value > ModelGlow.TriggerGlowsFrom && defMat != null && hlMat != null)
+                        g2.Material = ModelGlow.GradientHighlight(g2,
+                            ModelGlow.RiderDefault(g2), hlMat, value,
                             _currentModel.RiderDecals.Contains(g2));
-                    else if (s_riderDefaults.TryGetValue(g2, out var d0))
+                    else if (ModelGlow.TryRiderDefault(g2, out var d0))
                         g2.Material = d0;
                 }
             }
 
-            // Rotation
-            float angle = -maxAngleDeg * value;
+            // Rotation, by the rule a Home card's model moves by.
+            float angle = ControllerPose.TriggerAngle(triggerNorm, maxAngleDeg);
             if (Math.Abs(angle - prevAngle) < 0.01f) return;
             prevAngle = angle;
 
@@ -948,138 +960,6 @@ namespace PadForge.Views
                 new AxisAngleRotation3D(new Vector3D(1, 0, 0), angle),
                 new Point3D(rotationPoint.X, rotationPoint.Y, rotationPoint.Z));
             triggerModel.Transform = rot;
-        }
-
-        // ─────────────────────────────────────────────
-        //  Gradient color interpolation (from HC)
-        // ─────────────────────────────────────────────
-
-        // Per-element retained highlight material (keyed weakly on the
-        // GeometryModel3D so rebuilt models collect): the per-frame
-        // DiffuseMaterial + SolidColorBrush pair was allocated for every
-        // deflected stick / pulled trigger every dirty frame. The brush we
-        // own is never frozen, so mutating its Color is the supported
-        // dependent-animation shape.
-        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, DiffuseMaterial>
-            s_highlightMaterials = new();
-
-        // Textured defaults (ImageBrush atlases) cannot express the lerp
-        // as a solid color: BrushColor's fallback made any deflection show
-        // the FULL accent. Overlay a per-owner translucent accent layer on
-        // top of the texture instead, alpha scaled by the factor, so the
-        // glow grades with stick/trigger intensity while the texture stays
-        // visible underneath.
-        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, MaterialGroup>
-            s_texturedHighlightGroups = new();
-
-        // Per-geometry rest material for graded groups: riders inside a
-        // ring/trigger group carry their own decal material, so restoring
-        // the group default would repaint them wrongly.
-        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, Material>
-            s_riderDefaults = new();
-
-        private static Material GradientHighlight(GeometryModel3D owner,
-            Material defaultMaterial, Material highlightMaterial, float factor,
-            bool riderDecal = false)
-        {
-            factor = Math.Clamp(factor, 0f, 1f);
-            if ((defaultMaterial as DiffuseMaterial)?.Brush is ImageBrush || defaultMaterial is MaterialGroup)
-            {
-                var grp = s_texturedHighlightGroups.GetValue(owner, _ =>
-                {
-                    // Two layers: the art, and a LIT accent overlay. Lit
-                    // diffuse keeps the shading so shape and direction
-                    // read. The overlay must render EXACTLY like a plain
-                    // accent button (accent-colored brush under the same
-                    // rig): for the white-masked rider brush that means
-                    // AmbientColor = accent too. AmbientColor filters the
-                    // RAW brush independently of Color, so left white the
-                    // ambient term is gray (milky wash) and forced black
-                    // it vanishes (dim, harsh shading). Accent-colored,
-                    // every lighting term is accent-proportional: soft
-                    // fill, exact hue, shaded. Rider overlays stay masked
-                    // by the rider's alpha through a WHITE twin of the
-                    // rider brush, so dark art (the XS carbon knurl)
-                    // glows at full accent strength too.
-                    var mg = new MaterialGroup();
-                    mg.Children.Add(defaultMaterial);
-                    mg.Children.Add(riderDecal && (defaultMaterial as DiffuseMaterial)?.Brush is ImageBrush rb
-                        ? new DiffuseMaterial(WhiteMaskBrush(rb))
-                        : new DiffuseMaterial(new SolidColorBrush()));
-                    return mg;
-                });
-                if (!ReferenceEquals(grp.Children[0], defaultMaterial))
-                    grp.Children[0] = defaultMaterial;
-                var accent = BrushColor((highlightMaterial as DiffuseMaterial)?.Brush);
-                var overlay = (DiffuseMaterial)grp.Children[1];
-                var tint = Color.FromArgb((byte)(factor * 255), accent.R, accent.G, accent.B);
-                if (overlay.Brush is SolidColorBrush solid)
-                {
-                    // accent-colored brush: its ambient term is already
-                    // accent-tinted, same as a plain accent button
-                    solid.Color = tint;
-                }
-                else
-                {
-                    overlay.Color = tint;          // diffuse term, alpha included
-                    overlay.AmbientColor = tint;   // ambient term matches the hue
-                }
-                return grp;
-            }
-            // Cast-proof (#175 regression fix): a themed material may carry a
-            // gradient brush; lerp from its first stop instead of crashing
-            // the render loop with an invalid cast.
-            var startColor = BrushColor((defaultMaterial as DiffuseMaterial)?.Brush);
-            var endColor = BrushColor((highlightMaterial as DiffuseMaterial)?.Brush);
-
-            byte a = (byte)(startColor.A * (1 - factor) + endColor.A * factor);
-            byte r = (byte)(startColor.R * (1 - factor) + endColor.R * factor);
-            byte g = (byte)(startColor.G * (1 - factor) + endColor.G * factor);
-            byte b = (byte)(startColor.B * (1 - factor) + endColor.B * factor);
-
-            var mat = s_highlightMaterials.GetValue(owner,
-                _ => new DiffuseMaterial(new SolidColorBrush()));
-            ((SolidColorBrush)mat.Brush).Color = Color.FromArgb(a, r, g, b);
-            return mat;
-        }
-
-        private static Color BrushColor(Brush brush) => brush switch
-        {
-            SolidColorBrush s => s.Color,
-            GradientBrush g when g.GradientStops.Count > 0 => g.GradientStops[0].Color,
-            _ => Color.FromRgb(0xFF, 0x6B, 0x2C),
-        };
-
-        // White-masked twins of rider atlas brushes (RGB forced white,
-        // alpha preserved, viewport settings cloned): the rider glow
-        // overlay multiplies its Color by these, giving full-strength
-        // accent wherever art exists regardless of the art's darkness.
-        // Keyed on the source brush so riders sharing one atlas share
-        // one 16 MB conversion.
-        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<ImageBrush, ImageBrush>
-            s_whiteMaskBrushes = new();
-
-        private static ImageBrush WhiteMaskBrush(ImageBrush rb)
-        {
-            return s_whiteMaskBrushes.GetValue(rb, src =>
-            {
-                if (src.ImageSource is not System.Windows.Media.Imaging.BitmapSource bmp)
-                    return src;
-                var conv = new System.Windows.Media.Imaging.FormatConvertedBitmap(
-                    bmp, PixelFormats.Bgra32, null, 0);
-                int w = conv.PixelWidth, h = conv.PixelHeight, stride = w * 4;
-                var px = new byte[h * stride];
-                conv.CopyPixels(px, stride, 0);
-                for (int i = 0; i < px.Length; i += 4)
-                    px[i] = px[i + 1] = px[i + 2] = 255;
-                var mask = System.Windows.Media.Imaging.BitmapSource.Create(
-                    w, h, conv.DpiX, conv.DpiY, PixelFormats.Bgra32, null, px, stride);
-                mask.Freeze();
-                var brush = src.Clone();
-                brush.ImageSource = mask;
-                brush.Freeze();
-                return brush;
-            });
         }
 
         // ─────────────────────────────────────────────
@@ -2163,17 +2043,6 @@ namespace PadForge.Views
             }
         }
 
-        // Highlight for a group that may carry rider decals. A COVERING
-        // rider (the Xbox guide emblem) gets its own texels tinted accent
-        // through DiffuseMaterial.Color while the host keeps its default
-        // material, so only the glyph art glows (owner-specified look).
-        // Non-covering riders (trigger labels, knurl bands) hide for the
-        // duration and the host takes the solid accent like any other
-        // element. Returns true when a covering rider carried the
-        // highlight (callers must then leave the host material alone).
-        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<GeometryModel3D, DiffuseMaterial>
-            s_riderTints = new();
-
         /// <summary>The L1/R1 (LB/RB) button groups, which carry their
         /// lettering as a rider decal.</summary>
         private bool IsShoulderButtonGroup(Model3DGroup group)
@@ -2186,78 +2055,14 @@ namespace PadForge.Views
         }
 
         private bool SetGroupHighlight(Model3DGroup group, GeometryModel3D primary, Material hlMat)
-        {
-            // Thumb rings glow as a WHOLE at full strength: host takes the
-            // accent and the knurl riders tint through their own texels
-            // (the graded-glow shape at factor 1), so the cap texture
-            // glows just like the rest of the stick (owner ruling).
-            // Bumpers take the same shape, so their L1/R1 lettering
-            // glows on press exactly as L2/R2's does under the trigger's
-            // graded path. Hiding the rider instead (the default branch
-            // below) left the label gray while the button lit up.
-            if (ReferenceEquals(group, _currentModel.LeftThumbRing)
+            => ModelGlow.SetGroupHighlight(group, primary, hlMat,
+                ReferenceEquals(group, _currentModel.LeftThumbRing)
                 || ReferenceEquals(group, _currentModel.RightThumbRing)
-                || IsShoulderButtonGroup(group))
-            {
-                foreach (var child in group.Children)
-                {
-                    if (child is not GeometryModel3D g2) continue;
-                    g2.Material = GradientHighlight(g2,
-                        s_riderDefaults.GetValue(g2, _ => g2.Material), hlMat, 1f,
-                        _currentModel.RiderDecals.Contains(g2));
-                }
-                return true;
-            }
-            bool covering = false;
-            foreach (var child in group.Children)
-            {
-                if (child is not GeometryModel3D g2 || ReferenceEquals(g2, primary)) continue;
-                if (!_currentModel.RiderDecals.Contains(g2)) continue;
-                var rest = s_riderDefaults.GetValue(g2, _ => g2.Material);
-                if (_currentModel.CoveringRiderDecals.Contains(g2)
-                    && (rest as DiffuseMaterial)?.Brush is ImageBrush rb)
-                {
-                    // Lit accent through the art's own texels with the
-                    // ambient term ACCENT-COLORED (white ambient = milky
-                    // wash, black ambient = dim with harsh shading): the
-                    // white art renders like a plain accent button, the
-                    // dark logo cutout stays dark, and the lighting keeps
-                    // the button's shape readable.
-                    var accent = BrushColor((hlMat as DiffuseMaterial)?.Brush);
-                    var tint = s_riderTints.GetValue(g2, _ => new DiffuseMaterial(rb));
-                    tint.Color = Color.FromArgb(255, accent.R, accent.G, accent.B);
-                    tint.AmbientColor = tint.Color;
-                    g2.Material = tint;
-                    g2.BackMaterial = tint;
-                    covering = true;
-                }
-                else
-                {
-                    g2.Material = null;
-                    g2.BackMaterial = null;
-                }
-            }
-            if (!covering)
-            {
-                primary.Material = hlMat;
-                primary.BackMaterial = hlMat;
-            }
-            return covering;
-        }
+                || IsShoulderButtonGroup(group),
+                _currentModel.RiderDecals, _currentModel.CoveringRiderDecals);
 
         private void RestoreRiderFlash(Model3DGroup group, GeometryModel3D primary)
-        {
-            foreach (var child in group.Children)
-            {
-                if (child is not GeometryModel3D g2 || ReferenceEquals(g2, primary)) continue;
-                if (!_currentModel.RiderDecals.Contains(g2)) continue;
-                if (s_riderDefaults.TryGetValue(g2, out var rest))
-                {
-                    g2.Material = rest;
-                    g2.BackMaterial = rest;
-                }
-            }
-        }
+            => ModelGlow.RestoreRiders(group, primary, _currentModel.RiderDecals);
 
         private void StopFlash()
         {

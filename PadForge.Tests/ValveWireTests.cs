@@ -462,6 +462,7 @@ namespace PadForge.Tests
         [InlineData("steam-controller", 2, 2, 1, 14)]
         [InlineData("steam-controller-composite", 2, 2, 1, 14)]
         [InlineData("steam-controller-2", 2, 2, 0, 26)]
+        [InlineData("sinput", 2, 2, 0, 22)]
         public void WireTable_SizesTheRawSurface(string id, int sticks, int triggers, int povs, int buttons)
         {
             Assert.Equal(sticks, NintendoPreviewMap.StickCount(id));

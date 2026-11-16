@@ -772,4 +772,43 @@ namespace PadForge.Tests
             Assert.Contains("SInputControllerIdentity.IsSInput(rpd.VendorId, rpd.ProductId)", send);
         }
     }
+
+    /// <summary>The rows an Extended slot on the SInput persona gets (#584):
+    /// one row per wire-table index, the D-pad on its four buttons, the Share
+    /// row the Valve arrangement now carries, both touchpads' rows and the
+    /// Motion rows, all through InitializeRawSurfaceMappings' Valve branch.</summary>
+    [Collection("SettingsManagerStatics")]
+    public class SInputGridRowTests
+    {
+        private static List<MappingItem> Rows() =>
+            RestoredPad.Build(0, VirtualControllerType.Extended, "sinput").Mappings.ToList();
+
+        [Fact]
+        public void EveryWireIndexHasExactlyOneRow()
+        {
+            var targets = Rows().Select(m => m.TargetSettingName).ToList();
+            int n = NintendoPreviewMap.ButtonCount("sinput");
+            for (int i = 0; i < n; i++)
+                Assert.Equal(1, targets.Count(t => t == $"RawBtn{i}"));
+            Assert.DoesNotContain(targets, t => t == $"RawBtn{n}");
+            Assert.DoesNotContain(targets, t => t.StartsWith("RawPov", StringComparison.Ordinal));
+        }
+
+        [Fact]
+        public void ShareHasItsNamedRow()
+        {
+            var share = Assert.Single(Rows(), m => m.TargetSettingName == NintendoPreviewMap.ToRaw("ButtonShare", "sinput"));
+            Assert.Equal("Share", share.TargetLabel);
+        }
+
+        [Fact]
+        public void BothTouchpadsAndTheMotionRowsArePresent()
+        {
+            var targets = Rows().Select(m => m.TargetSettingName).ToHashSet();
+            foreach (string t in new[] { "TouchpadX1", "TouchpadY1", "TouchpadContact1", "TouchpadX2", "TouchpadY2", "TouchpadContact2", "MotionGyro", "MotionAccel" })
+                Assert.Contains(t, targets);
+            for (int a = 0; a < 6; a++)
+                Assert.Contains($"RawAxis{a}", targets);
+        }
+    }
 }

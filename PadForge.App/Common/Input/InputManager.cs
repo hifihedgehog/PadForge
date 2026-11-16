@@ -2133,12 +2133,14 @@ namespace PadForge.Common.Input
         ///
         /// <para>The passes stand on one schedule (<see cref="PollSchedule"/>)
         /// and the thread sleeps on a high-resolution timer between them.
-        /// It does not spin. An earlier loop slept until 0.1 ms before each
-        /// pass and spun the rest, which held the passes within 0.1 ms of
-        /// their times and kept a core busy for that tenth of every
-        /// millisecond. Windows wakes the sleeper on its clock's tick, so a
-        /// pass now starts up to one tick late, half a millisecond at the
-        /// finest, and the processor rests for the whole wait.</para>
+        /// It does not spin. Windows wakes the sleeper on its clock's tick,
+        /// so a pass starts up to one tick late, half a millisecond at the
+        /// finest, and the processor rests for the whole wait. An earlier
+        /// loop slept until 0.1 ms before each pass and spun the rest, but
+        /// its sleep ended on the same tick, mostly past the pass's time,
+        /// so it seldom spun. Measured side by side at 1000 Hz
+        /// (2026-11-16), the two loops spaced their passes alike, with 80
+        /// to 87 percent of the gaps between 0.95 and 1.1 ms.</para>
         ///
         /// <para>Above 1000 passes a second the loop asks Windows for its
         /// finest clock, so the wakes come as often as Windows gives them

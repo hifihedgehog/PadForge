@@ -97,8 +97,7 @@ namespace PadForge.Models3D
 
             // ── Series-specific meshes ──────────────────
             ShareButton = LoadModel("Share.obj");
-            if (enableShare)
-                RegisterButton("ButtonShare", ShareButton);
+            RegisterExtraButton("ButtonShare", ShareButton, enableShare);
             model3DGroup.Children.Add(ShareButton);
 
             // ── Materials ───────────────────────────────

@@ -37,10 +37,15 @@ namespace PadForge.Models3D
 
         /// <summary>Draws a family's model in a finish. The bitmap is
         /// frozen. Call it on a thread with a dispatcher: StagePictures
-        /// draws it on a thread of its own (MakeStillOnAWorker).</summary>
+        /// draws it on a thread of its own (MakeStillOnAWorker).
+        ///
+        /// <para>One still serves every preset drawn with the model, so the
+        /// model wires its extra controls and the still marks them all. A
+        /// card leaves out the marks of the ones its preset lacks
+        /// (StagePictures.StillMarksFor).</para></summary>
         internal static BitmapSource Render(string family, string finish)
         {
-            using var model = ControllerModelBase.Create(family, finish, extraControls: false);
+            using var model = ControllerModelBase.Create(family, finish, extraControls: true);
             Rect3D bounds = model.model3DGroup.Bounds;
             Matrix3D placement = ControllerModelFraming.Placement(bounds, model.ModelScale);
             var outline = ControllerModelFraming.Measure(model.model3DGroup, placement);
@@ -84,8 +89,17 @@ namespace PadForge.Models3D
             Matrix3D toScreen = placement;
             toScreen.Append(HelixToolkit.Wpf.Viewport3DHelper.GetTotalTransform(viewport));
             s_marks.Add(bitmap, ReadMarks(model, toScreen));
+            s_extraRoles.Add(bitmap, System.Linq.Enumerable.ToArray(model.ExtraControlRoles));
             return bitmap;
         }
+
+        /// <summary>The roles of the model's extra controls
+        /// (ControllerModelBase.ExtraControlRoles) in a still this class
+        /// drew. Nothing for a picture this class did not draw.</summary>
+        internal static System.Collections.Generic.IReadOnlyList<string> ExtraRolesOf(BitmapSource still)
+            => still != null && s_extraRoles.TryGetValue(still, out var roles) ? roles : System.Array.Empty<string>();
+
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<BitmapSource, string[]> s_extraRoles = new();
 
         /// <summary>Where each control is drawn in a still this class
         /// drew, in the still's pixels: the buttons the page's view lights,

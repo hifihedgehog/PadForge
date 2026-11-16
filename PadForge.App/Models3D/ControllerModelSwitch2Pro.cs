@@ -109,12 +109,9 @@ namespace PadForge.Models3D
             CButton = LoadModel("CButton.obj");
             GL      = LoadModel("GL.obj");
             GR      = LoadModel("GR.obj");
-            if (enableSwitch2Controls)
-            {
-                RegisterButton("ButtonC", CButton);
-                RegisterButton("LeftPaddle", GL);
-                RegisterButton("RightPaddle", GR);
-            }
+            RegisterExtraButton("ButtonC", CButton, enableSwitch2Controls);
+            RegisterExtraButton("LeftPaddle", GL, enableSwitch2Controls);
+            RegisterExtraButton("RightPaddle", GR, enableSwitch2Controls);
             model3DGroup.Children.Add(CButton);
             model3DGroup.Children.Add(GL);
             model3DGroup.Children.Add(GR);

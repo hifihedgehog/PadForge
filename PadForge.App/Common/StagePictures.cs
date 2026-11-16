@@ -145,7 +145,7 @@ namespace PadForge.Common
             return (family, ControllerStill.FinishFor(family, finishOf?.Invoke(family)));
         }
 
-        private static readonly ConcurrentDictionary<(string, string), (ImageSource Color, ImageSource Gray, StillMark[] Marks)> s_stills = new();
+        private static readonly ConcurrentDictionary<(string, string), (ImageSource Color, ImageSource Gray, StillMark[] Marks, StillMark[] MarksWithoutExtras)> s_stills = new();
 
         /// <summary>What draws a model's still. A test puts its own here.</summary>
         internal static Func<string, string, BitmapSource> DrawStill = ControllerStill.Render;
@@ -161,12 +161,18 @@ namespace PadForge.Common
             return made;
         }
 
-        /// <summary>Where each control is drawn on a model's still, in
-        /// parts of the still's width and height. Nothing for a still that
-        /// has not been made or could not be.</summary>
-        internal static IReadOnlyList<StillMark> StillMarksOf(string family, string finish)
-            => s_stills.TryGetValue((family, finish ?? string.Empty), out var still) && still.Marks != null
-                ? still.Marks : StillMarks.None;
+        /// <summary>Where each control of a preset is drawn on its model's
+        /// still, in parts of the still's width and height: every control
+        /// the still marks, less the model's extra controls when the preset
+        /// lacks them (ControllerModelBase.HasExtraControls). The same list
+        /// for every ask, so a card that asks again sees no change. Nothing
+        /// for a still that has not been made or could not be.</summary>
+        internal static IReadOnlyList<StillMark> StillMarksFor(string family, string finish, string profileId)
+        {
+            if (!s_stills.TryGetValue((family, finish ?? string.Empty), out var still)) return StillMarks.None;
+            var marks = ControllerModelBase.HasExtraControls(family, profileId) ? still.Marks : still.MarksWithoutExtras;
+            return marks ?? StillMarks.None;
+        }
 
         /// <summary>Makes a model's still: draws the model, cuts the
         /// picture to the controller, fits it to the stage and makes its
@@ -178,18 +184,25 @@ namespace PadForge.Common
             var key = (family, finish ?? string.Empty);
             if (s_stills.ContainsKey(key)) return;
             BitmapSource fit = null;
-            StillMark[] marks = StillMarks.None;
+            StillMark[] marks = StillMarks.None, withoutExtras = StillMarks.None;
             try
             {
                 BitmapSource drawn = DrawStill(family, finish);
                 fit = Fit(drawn, out var cut);
-                if (fit != null) marks = StillMarks.Place(ControllerStill.MarksOf(drawn), cut);
+                if (fit != null)
+                {
+                    marks = StillMarks.Place(ControllerStill.MarksOf(drawn), cut);
+                    var extras = ControllerStill.ExtraRolesOf(drawn);
+                    withoutExtras = extras.Count == 0
+                        ? marks
+                        : System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Where(marks, m => !System.Linq.Enumerable.Contains(extras, m.Role)));
+                }
             }
             catch (Exception error)
             {
                 System.Diagnostics.Debug.WriteLine("[StagePictures] no still of " + family + ": " + error.Message);
             }
-            s_stills[key] = (fit, MakeGray(fit), marks);
+            s_stills[key] = (fit, MakeGray(fit), marks, withoutExtras);
         }
 
         /// <summary>Makes a model's still on a thread of its own and then

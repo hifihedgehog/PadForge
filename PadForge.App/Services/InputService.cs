@@ -4002,7 +4002,7 @@ namespace PadForge.Services
                         WantStill(family, finish);
                         return (null, null, StillMarks.None, true);
                     }
-                    if (color != null) return (color, gray, StagePictures.StillMarksOf(family, finish), false);
+                    if (color != null) return (color, gray, StagePictures.StillMarksFor(family, finish, profile), false);
                 }
             }
             string art = StagePictures.PathFor(profile, type, finishOf);

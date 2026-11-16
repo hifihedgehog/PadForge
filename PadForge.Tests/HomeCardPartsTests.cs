@@ -691,7 +691,7 @@ namespace PadForge.Tests
             string code = ExtrasPageTests.RepoText("PadForge.App", "Models3D", "ControllerStill.cs");
             At(code, "var (distance, lift) = ControllerModelFraming.Fit(outline, DrawWidth, DrawHeight);");
             At(code, "viewport.Children.Add(new HelixToolkit.Wpf.SunLight());");
-            At(code, "using var model = ControllerModelBase.Create(family, finish, extraControls: false);");
+            At(code, "using var model = ControllerModelBase.Create(family, finish, extraControls: true);");
             // The page's own two other lights.
             string page = ExtrasPageTests.RepoText("PadForge.App", "Views", "ControllerModelView.xaml");
             At(page, "<helix:DirectionalHeadLight Brightness=\"0.35\" />");
@@ -699,6 +699,96 @@ namespace PadForge.Tests
             Assert.Equal(Color.FromRgb(89, 89, 89), ControllerStill.HeadLight);
             Assert.Equal((byte)Math.Round(0.35 * 255), ControllerStill.HeadLight.R);
             Assert.Equal(Color.FromRgb(0x5A, 0x32, 0x1C), ControllerStill.RimLight);
+        });
+
+        /// <summary>A mesh can carry controls some of the presets drawn with
+        /// it lack: Share on the Xbox Series mesh, which the Xbox One, Elite
+        /// and Adaptive presets borrow, and C, GL and GR on the Switch 2 Pro
+        /// mesh, which the first Switch Pro preset borrows. A still marks
+        /// them all, and a card keeps their marks only for a preset that has
+        /// them, by the rule the controller page lights them by. Share went
+        /// dark on every Xbox Series card while Guide lit (owner,
+        /// 2026-11-16), because the still was drawn with them left out.</summary>
+        [Fact]
+        public void AStillMarksTheBorrowedControls_AndACardKeepsThemForAPresetThatHasThem() => RunSta(() =>
+        {
+            // The one rule, for the page and for a card.
+            Assert.True(ControllerModelBase.HasExtraControls("XboxSeries", "xbox-series-xs"));
+            Assert.False(ControllerModelBase.HasExtraControls("XboxSeries", "xbox-one-s"));
+            Assert.False(ControllerModelBase.HasExtraControls("XboxSeries", null));
+            Assert.True(ControllerModelBase.HasExtraControls("Switch2Pro", "switch2-pro"));
+            Assert.False(ControllerModelBase.HasExtraControls("Switch2Pro", "switch-pro"));
+            Assert.False(ControllerModelBase.HasExtraControls("DualSense", "dualsense"));
+            string view = ExtrasPageTests.RepoText("PadForge.App", "Views", "ControllerModelView.xaml.cs");
+            At(view, "bool wantExtraControls = ControllerModelBase.HasExtraControls(needed, _vm.ProfileId);");
+
+            var draw = StagePictures.DrawStill;
+            try
+            {
+                StagePictures.ForgetStills();
+                foreach (var (family, finish, has, lacks, extra) in new[]
+                {
+                    ("XboxSeries", "Carbon", "xbox-series-xs", "xbox-one-s", new[] { "ButtonShare" }),
+                    ("Switch2Pro", (string)null, "switch2-pro", "switch-pro", new[] { "ButtonC", "LeftPaddle", "RightPaddle" }),
+                })
+                {
+                    var still = ControllerStill.Render(family, finish);
+                    var roles = ControllerStill.MarksOf(still).Select(m => m.Role).ToList();
+                    Assert.Contains("ButtonGuide", roles);
+                    foreach (var role in extra)
+                    {
+                        Assert.Contains(role, roles);
+                        Assert.Contains(role, ControllerStill.ExtraRolesOf(still));
+                    }
+
+                    StagePictures.MakeStill(family, finish);
+                    var kept = StagePictures.StillMarksFor(family, finish, has).Select(m => m.Role).ToList();
+                    var dropped = StagePictures.StillMarksFor(family, finish, lacks).Select(m => m.Role).ToList();
+                    Assert.Contains("ButtonGuide", kept);
+                    Assert.Contains("ButtonGuide", dropped);
+                    foreach (var role in extra)
+                    {
+                        Assert.Contains(role, kept);
+                        Assert.DoesNotContain(role, dropped);
+                    }
+                    // A card is handed the same list each time it asks, so
+                    // a refresh is no change.
+                    Assert.Same(StagePictures.StillMarksFor(family, finish, has), StagePictures.StillMarksFor(family, finish, has));
+                    Assert.Same(StagePictures.StillMarksFor(family, finish, lacks), StagePictures.StillMarksFor(family, finish, lacks));
+
+                    // The cards themselves: held, each borrowed control
+                    // lights at full on a card whose preset has it, as Guide
+                    // does, and a card whose preset lacks it has nothing
+                    // there to light.
+                    StagePictures.TryGetStill(family, finish, out var color, out var gray);
+                    var type = family == "XboxSeries" ? VirtualControllerType.Xbox : VirtualControllerType.Nintendo;
+                    var pad = new PadViewModel(0) { ButtonGuide = true, ButtonShare = true, ButtonC = true, LeftPaddle = true, RightPaddle = true };
+                    var hasCard = new SlotSummary(0);
+                    hasCard.SetPicture(has, type, "", true, color, gray, false, StagePictures.StillMarksFor(family, finish, has));
+                    hasCard.ReadHeld(pad);
+                    var lacksCard = new SlotSummary(1);
+                    lacksCard.SetPicture(lacks, type, "", true, color, gray, false, StagePictures.StillMarksFor(family, finish, lacks));
+                    lacksCard.ReadHeld(pad);
+                    byte LevelOf(SlotSummary card, string role)
+                    {
+                        int at = card.PictureMarks.Select(m => m.Role).ToList().IndexOf(role);
+                        Assert.True(at >= 0, role + " has no mark");
+                        return card.HeldLevels[at];
+                    }
+                    Assert.Equal(StillMarks.Steps, LevelOf(hasCard, "ButtonGuide"));
+                    Assert.Equal(StillMarks.Steps, LevelOf(lacksCard, "ButtonGuide"));
+                    foreach (var role in extra)
+                    {
+                        Assert.Equal(StillMarks.Steps, LevelOf(hasCard, role));
+                        Assert.DoesNotContain(lacksCard.PictureMarks, m => m.Role == role);
+                    }
+                }
+            }
+            finally
+            {
+                StagePictures.DrawStill = draw;
+                StagePictures.ForgetStills();
+            }
         });
 
         /// <summary>A still is made once for each model and finish, cut and
@@ -843,7 +933,7 @@ namespace PadForge.Tests
             string body = svc.Substring(at, svc.IndexOf("\n        }", at, StringComparison.Ordinal) - at);
             int ask = At(body, "var (family, finish) = StagePictures.StillFor(profile, type, finishOf);");
             int waiting = At(body, "return (null, null, StillMarks.None, true);");
-            int made = At(body, "if (color != null) return (color, gray, StagePictures.StillMarksOf(family, finish), false);");
+            int made = At(body, "if (color != null) return (color, gray, StagePictures.StillMarksFor(family, finish, profile), false);");
             int art = At(body, "return (StagePictures.Color(art), StagePictures.Gray(art), StagePictures.ArtMarks(art), false);");
             Assert.True(ask < waiting && waiting < made && made < art);
             At(body, "if (!StagePictures.TryGetStill(family, finish, out var color, out var gray))");

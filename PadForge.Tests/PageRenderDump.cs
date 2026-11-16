@@ -606,7 +606,7 @@ namespace PadForge.Tests
                     PadForge.Common.StagePictures.MakeStill(family, finish);
                     PadForge.Common.StagePictures.TryGetStill(family, finish, out var color, out var gray);
                     slot.SetPicture(profile, type, string.Empty, true, color, gray,
-                        marks: PadForge.Common.StagePictures.StillMarksOf(family, finish));
+                        marks: PadForge.Common.StagePictures.StillMarksFor(family, finish, profile));
                 }
                 else
                     slot.SetPicture(profile, type, string.Empty, false, PadForge.Common.StagePictures.Color(art), PadForge.Common.StagePictures.Gray(art),

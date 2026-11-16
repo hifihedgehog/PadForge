@@ -591,6 +591,38 @@ namespace PadForge.Models3D
             ClickMap[group] = padSettingName;
         }
 
+        /// <summary>The buttons of this mesh that some presets drawn with it
+        /// lack, by role: Share on the Xbox Series mesh, and C, GL and GR on
+        /// the Switch 2 Pro mesh. Listed whether or not this model wired
+        /// them (<see cref="RegisterExtraButton"/>).</summary>
+        public HashSet<string> ExtraControlRoles { get; } = new(StringComparer.Ordinal);
+
+        /// <summary>A button some presets drawn with this mesh lack: listed
+        /// in <see cref="ExtraControlRoles"/>, and wired as a button only for
+        /// a preset that has it. The mesh is drawn either way.</summary>
+        protected void RegisterExtraButton(string padSettingName, Model3DGroup group, bool wired)
+        {
+            ExtraControlRoles.Add(padSettingName);
+            if (wired) RegisterButton(padSettingName, group);
+        }
+
+        /// <summary>Whether a preset drawn with a family's mesh has the mesh's
+        /// extra controls (<see cref="ExtraControlRoles"/>): an Xbox Series
+        /// preset has Share and the Xbox One, Elite and Adaptive presets do
+        /// not, and a Switch 2 Pro preset has C, GL and GR and the first
+        /// Switch Pro preset does not. The controller page wires them by this
+        /// rule, and a Home card lights them by it.</summary>
+        internal static bool HasExtraControls(string family, string profileId) => family switch
+        {
+            "XboxSeries" => profileId != null && profileId.StartsWith(
+                "xbox-series-", StringComparison.OrdinalIgnoreCase),
+            // Asked of the canonical wire table rather than matched on the
+            // profile id: the mesh is a button exactly when the pad has the
+            // control, so the two cannot drift apart.
+            "Switch2Pro" => Models2D.NintendoPreviewMap.IndexOf(profileId, "ButtonC") >= 0,
+            _ => false,
+        };
+
         // ─────────────────────────────────────────────
         //  Highlight generation
         // ─────────────────────────────────────────────

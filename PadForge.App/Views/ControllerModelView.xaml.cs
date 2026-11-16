@@ -346,16 +346,7 @@ namespace PadForge.Views
             // generations. Wire the borrowed-but-absent controls into the
             // hover / click-to-record / highlight maps ONLY for the profile
             // that actually has them. The meshes draw either way.
-            bool wantExtraControls = needed switch
-            {
-                "XboxSeries" => _vm.ProfileId != null && _vm.ProfileId.StartsWith(
-                    "xbox-series-", System.StringComparison.OrdinalIgnoreCase),
-                // Asked of the canonical wire table rather than matched on
-                // the profile id: the mesh is interactive exactly when the
-                // pad has the control, so the two cannot drift apart.
-                "Switch2Pro" => Models2D.NintendoPreviewMap.IndexOf(_vm.ProfileId, "ButtonC") >= 0,
-                _ => false,
-            };
+            bool wantExtraControls = ControllerModelBase.HasExtraControls(needed, _vm.ProfileId);
 
             string appearance = ResolveAppearance(needed);
             if (_currentModel?.ModelFamily == needed && _currentModelExtraControlsEnabled == wantExtraControls

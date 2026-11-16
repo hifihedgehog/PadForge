@@ -2169,10 +2169,14 @@ namespace PadForge.ViewModels
 
         /// <summary>Sets the picture and what it was made for.
         /// <paramref name="coming"/> says a still is being made, so there
-        /// is no picture yet and there will be one.</summary>
+        /// is no picture yet and there will be one. A still of the 3D model
+        /// comes with the model it was drawn from (<paramref name="live"/>)
+        /// and the 2D art with its layers (<paramref name="art"/>), which the
+        /// card shows moving.</summary>
         internal void SetPicture(string profileId, VirtualControllerType type, string finishes, bool still,
             System.Windows.Media.ImageSource picture, System.Windows.Media.ImageSource gray, bool coming = false,
-            IReadOnlyList<PadForge.Common.StillMark> marks = null, PadForge.Models3D.LiveModel live = null)
+            IReadOnlyList<PadForge.Common.StillMark> marks = null, PadForge.Models3D.LiveModel live = null,
+            PadForge.Models2D.LiveArt art = null)
         {
             _pictureMade = true;
             _pictureProfile = profileId;
@@ -2185,15 +2189,21 @@ namespace PadForge.ViewModels
             _pictureGray = gray;
             _pictureComing = coming && picture == null;
             live = picture == null ? null : live;
-            _liveButtons = live?.ButtonsFor(profileId) ?? 0;
-            if (!ReferenceEquals(live, _liveModel))
+            art = picture == null ? null : art;
+            _liveButtons = live?.ButtonsFor(profileId) ?? art?.Buttons ?? 0;
+            if (!ReferenceEquals(live, _liveModel) || !ReferenceEquals(art, _liveArt))
             {
-                bool showed = ShowsLiveModel;
+                bool showedModel = ShowsLiveModel, showedArt = ShowsLiveArt, moved = PictureMoves;
+                bool newModel = !ReferenceEquals(live, _liveModel), newArt = !ReferenceEquals(art, _liveArt);
                 _liveModel = live;
+                _liveArt = art;
                 _stagePose = PadForge.Controls.StagePose.Rest;
                 OnPropertyChanged(nameof(StagePose));
-                OnPropertyChanged(nameof(LiveModel));
-                if (showed != ShowsLiveModel) OnPropertyChanged(nameof(ShowsLiveModel));
+                if (newModel) OnPropertyChanged(nameof(LiveModel));
+                if (newArt) OnPropertyChanged(nameof(LiveArt));
+                if (showedModel != ShowsLiveModel) OnPropertyChanged(nameof(ShowsLiveModel));
+                if (showedArt != ShowsLiveArt) OnPropertyChanged(nameof(ShowsLiveArt));
+                if (moved != PictureMoves) OnPropertyChanged(nameof(PictureMoves));
             }
             marks = picture == null || marks == null ? PadForge.Common.StillMarks.None : marks;
             if (!ReferenceEquals(marks, _pictureMarks))
@@ -2229,8 +2239,11 @@ namespace PadForge.ViewModels
         private PadForge.Models3D.LiveModel _liveModel;
         private PadForge.Controls.StagePose _stagePose = PadForge.Controls.StagePose.Rest;
 
-        /// <summary>The buttons this card's model reads for its preset
-        /// (LiveModel.ButtonsFor).</summary>
+        private PadForge.Models2D.LiveArt _liveArt;
+
+        /// <summary>The buttons this card's moving picture reads: for its
+        /// preset (LiveModel.ButtonsFor), or those its 2D art shows held
+        /// (LiveArt.Buttons).</summary>
         private ulong _liveButtons;
 
         /// <summary>The 3D model the picture's still was drawn from, which
@@ -2243,9 +2256,23 @@ namespace PadForge.ViewModels
         /// graphics card.</summary>
         public bool ShowsLiveModel => _liveModel != null && PadForge.Controls.LiveStage.DrawsIn3D;
 
-        /// <summary>What is held on the controller now, as the model shows
-        /// it, in steps (<see cref="PoseOf"/>): a new one only when the
-        /// model would move or light.</summary>
+        /// <summary>The layers the picture's 2D art was made of, which the
+        /// card shows moving in the picture's place while the controller
+        /// forges (LiveArtStage). Null for a still of the 3D model.</summary>
+        public PadForge.Models2D.LiveArt LiveArt => _liveArt;
+
+        /// <summary>Whether the card shows its 2D art moving in place of the
+        /// color picture.</summary>
+        public bool ShowsLiveArt => _liveArt != null;
+
+        /// <summary>Whether the card's color picture moves while the
+        /// controller forges, as a 3D model or as 2D art. A picture that
+        /// does not move lights the ember marks over it instead (HeldGlow).</summary>
+        public bool PictureMoves => ShowsLiveModel || ShowsLiveArt;
+
+        /// <summary>What is held on the controller now, as the moving
+        /// picture shows it, in steps (<see cref="PoseOf"/>): a new one only
+        /// when the picture would move or light.</summary>
         public PadForge.Controls.StagePose StagePose => _stagePose;
 
         /// <summary>What is held on a controller, in the steps the model's
@@ -2266,12 +2293,12 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Reads what is held on the controller now. It tells
-        /// the card only when a step changed. A card that shows its model
-        /// moving lights the model itself, so it reads the model's pose
+        /// the card only when a step changed. A card whose picture moves
+        /// shows what is held on the picture itself, so it reads the pose
         /// alone, and any other card reads its marks' levels (HeldGlow).</summary>
         internal void ReadHeld(PadViewModel pad)
         {
-            if (ShowsLiveModel)
+            if (PictureMoves)
             {
                 var pose = PoseOf(pad, _liveButtons);
                 if (pose != _stagePose)

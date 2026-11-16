@@ -115,7 +115,7 @@ namespace PadForge.Tests
                          "STEAMDECK", "STEAMCONTROLLER", "STEAMCONTROLLER2", "XBOX360" })
                 Assert.Equal(folder, StagePictures.FolderOf(StagePictures.BasePath(folder)), ignoreCase: true);
 
-            var (_, width, height, overlays) = StagePictures.LayoutOf("XBOX360");
+            var (_, width, height, overlays, _) = StagePictures.LayoutOf("XBOX360");
             Assert.True(width > 0 && height > 0);
             var marks = StagePictures.LayoutMarks("XBOX360", width, height);
             Assert.NotEmpty(marks);

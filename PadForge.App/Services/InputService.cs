@@ -3988,8 +3988,10 @@ namespace PadForge.Services
         /// moment it takes to make one (Coming), which is then made on a
         /// thread of its own. A model that cannot be drawn leaves the 2D
         /// art, as the 2D view does. One rule for a Home card's stage and
-        /// a profile's card.</summary>
-        private (System.Windows.Media.ImageSource Color, System.Windows.Media.ImageSource Gray, IReadOnlyList<StillMark> Marks, bool Coming, PadForge.Models3D.LiveModel Live) PictureOf(
+        /// a profile's card. A still comes with the model it was drawn from
+        /// and the 2D art with its layers, which a Home card shows moving.</summary>
+        private (System.Windows.Media.ImageSource Color, System.Windows.Media.ImageSource Gray, IReadOnlyList<StillMark> Marks, bool Coming,
+            PadForge.Models3D.LiveModel Live, PadForge.Models2D.LiveArt Art) PictureOf(
             string profile, VirtualControllerType type, Func<string, string> finishOf, bool still)
         {
             if (still)
@@ -4000,13 +4002,13 @@ namespace PadForge.Services
                     if (!StagePictures.TryGetStill(family, finish, out var color, out var gray))
                     {
                         WantStill(family, finish);
-                        return (null, null, StillMarks.None, true, null);
+                        return (null, null, StillMarks.None, true, null, null);
                     }
-                    if (color != null) return (color, gray, StagePictures.StillMarksFor(family, finish, profile), false, StagePictures.LiveModelFor(family, finish));
+                    if (color != null) return (color, gray, StagePictures.StillMarksFor(family, finish, profile), false, StagePictures.LiveModelFor(family, finish), null);
                 }
             }
             string art = StagePictures.PathFor(profile, type, finishOf);
-            return (StagePictures.Color(art), StagePictures.Gray(art), StagePictures.ArtMarks(art), false, null);
+            return (StagePictures.Color(art), StagePictures.Gray(art), StagePictures.ArtMarks(art), false, null, StagePictures.LiveArtFor(art));
         }
 
         /// <summary>Gives a Home card its picture, and where each control
@@ -4015,7 +4017,7 @@ namespace PadForge.Services
         {
             var picture = PictureOf(padVm.ProfileId, padVm.OutputType, padVm.GetModelAppearance, still);
             slot.SetPicture(padVm.ProfileId, padVm.OutputType, padVm.Model3DAppearances, still,
-                picture.Color, picture.Gray, picture.Coming, picture.Marks, picture.Live);
+                picture.Color, picture.Gray, picture.Coming, picture.Marks, picture.Live, picture.Art);
         }
 
         /// <summary>Whether Profiles is the page shown. The page shown asks

@@ -614,7 +614,7 @@ namespace PadForge.Tests
             Assert.Equal(3, Count(svc, "bool still = PicturesAreStills;"));
             At(svc, "if (!slot.PictureIsFor(padVm.ProfileId, padVm.OutputType, padVm.Model3DAppearances, still))");
             At(svc, "string art = StagePictures.PathFor(profile, type, finishOf);");
-            At(svc, "return (StagePictures.Color(art), StagePictures.Gray(art), StagePictures.ArtMarks(art), false, null);");
+            At(svc, "return (StagePictures.Color(art), StagePictures.Gray(art), StagePictures.ArtMarks(art), false, null, StagePictures.LiveArtFor(art));");
         }
 
         // ── the still of the 3D model ──────────────────────────────────
@@ -936,16 +936,16 @@ namespace PadForge.Tests
             int at = At(svc, "string profile, VirtualControllerType type, Func<string, string> finishOf, bool still)");
             string body = svc.Substring(at, svc.IndexOf("\n        }", at, StringComparison.Ordinal) - at);
             int ask = At(body, "var (family, finish) = StagePictures.StillFor(profile, type, finishOf);");
-            int waiting = At(body, "return (null, null, StillMarks.None, true, null);");
-            int made = At(body, "if (color != null) return (color, gray, StagePictures.StillMarksFor(family, finish, profile), false, StagePictures.LiveModelFor(family, finish));");
-            int art = At(body, "return (StagePictures.Color(art), StagePictures.Gray(art), StagePictures.ArtMarks(art), false, null);");
+            int waiting = At(body, "return (null, null, StillMarks.None, true, null, null);");
+            int made = At(body, "if (color != null) return (color, gray, StagePictures.StillMarksFor(family, finish, profile), false, StagePictures.LiveModelFor(family, finish), null);");
+            int art = At(body, "return (StagePictures.Color(art), StagePictures.Gray(art), StagePictures.ArtMarks(art), false, null, StagePictures.LiveArtFor(art));");
             Assert.True(ask < waiting && waiting < made && made < art);
             At(body, "if (!StagePictures.TryGetStill(family, finish, out var color, out var gray))");
             At(body, "WantStill(family, finish);");
             // Its two callers: a Home card, which keeps the marks, and a
             // profile's card.
             At(svc, "var picture = PictureOf(padVm.ProfileId, padVm.OutputType, padVm.GetModelAppearance, still);");
-            At(svc, "picture.Color, picture.Gray, picture.Coming, picture.Marks, picture.Live);");
+            At(svc, "picture.Color, picture.Gray, picture.Coming, picture.Marks, picture.Live, picture.Art);");
             At(svc, "var picture = PictureOf(controller.PresetId, controller.Type, controller.FinishOf, still);");
             At(svc, "controller.SetPicture(picture.Color, picture.Coming);");
             At(svc, "Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(MakeNextStill));");

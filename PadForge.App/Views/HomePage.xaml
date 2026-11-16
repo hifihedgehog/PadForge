@@ -248,13 +248,13 @@
                 <DataTrigger Binding="{Binding Heat}" Value="Waiting">
                     <Setter Property="Opacity" Value="0.6"/>
                 </DataTrigger>
-                <!-- While the controller forges, its model stands here and
-                     moves (CardLiveStage). The still under it would show
-                     past a tilted stick. -->
+                <!-- While the controller forges, its picture stands here and
+                     moves (CardLiveStage, CardLiveArt). The picture under it
+                     would show past a tilted stick. -->
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
                         <Condition Binding="{Binding Heat}" Value="Forging"/>
-                        <Condition Binding="{Binding ShowsLiveModel}" Value="True"/>
+                        <Condition Binding="{Binding PictureMoves}" Value="True"/>
                     </MultiDataTrigger.Conditions>
                     <Setter Property="Visibility" Value="Hidden"/>
                 </MultiDataTrigger>
@@ -283,11 +283,31 @@
             </Style.Triggers>
         </Style>
 
+        <!-- The same for the 2D art: the layers its picture was made of,
+             each stick's art shifted, each trigger's art filled and each
+             held button's art shown as the controller page's 2D view shows
+             them. -->
+        <Style x:Key="CardLiveArt" TargetType="controls:LiveArtStage">
+            <Setter Property="Art" Value="{Binding LiveArt}"/>
+            <Setter Property="Pose" Value="{Binding StagePose}"/>
+            <Setter Property="Picture" Value="{Binding Picture}"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Heat}" Value="Forging"/>
+                        <Condition Binding="{Binding ShowsLiveArt}" Value="True"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Visibility" Value="Visible"/>
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+
         <!-- A picture that does not move is live too: a control held on the
              controller lights on it, as it does on the controller's page.
              Only while the controller forges, since nothing reads a
-             controller that does not, and never over the moving model, which
-             lights its own parts. -->
+             controller that does not, and never over a moving picture, which
+             shows what is held itself. -->
         <Style x:Key="CardHeldGlow" TargetType="controls:HeldGlow">
             <Setter Property="Marks" Value="{Binding PictureMarks}"/>
             <Setter Property="Levels" Value="{Binding HeldLevels}"/>
@@ -297,7 +317,7 @@
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
                         <Condition Binding="{Binding Heat}" Value="Forging"/>
-                        <Condition Binding="{Binding ShowsLiveModel}" Value="False"/>
+                        <Condition Binding="{Binding PictureMoves}" Value="False"/>
                     </MultiDataTrigger.Conditions>
                     <Setter Property="Visibility" Value="Visible"/>
                 </MultiDataTrigger>
@@ -1075,6 +1095,7 @@
                                                 <controls:DecorativeImage Source="{Binding PictureGray}" Style="{StaticResource SlotPictureGray}"/>
                                                 <controls:DecorativeImage Source="{Binding Picture}" Style="{StaticResource SlotPictureColor}"/>
                                                 <controls:LiveStage Style="{StaticResource CardLiveStage}"/>
+                                                <controls:LiveArtStage Style="{StaticResource CardLiveArt}"/>
                                                 <controls:HeldGlow Style="{StaticResource CardHeldGlow}"/>
                                                 <!-- A type with no picture of its
                                                      own shows its symbol. -->
@@ -1247,6 +1268,7 @@
                                             <controls:DecorativeImage Source="{Binding PictureGray}" Style="{StaticResource SlotPictureGray}"/>
                                             <controls:DecorativeImage Source="{Binding Picture}" Style="{StaticResource SlotPictureColor}"/>
                                             <controls:LiveStage Style="{StaticResource CardLiveStage}"/>
+                                            <controls:LiveArtStage Style="{StaticResource CardLiveArt}"/>
                                             <controls:HeldGlow Style="{StaticResource CardHeldGlow}"/>
                                             <!-- A type with no picture of its
                                                  own shows its symbol. -->

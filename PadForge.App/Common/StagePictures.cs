@@ -250,21 +250,22 @@ namespace PadForge.Common
         internal static string BasePath(string folder) => LayoutOf(folder).BasePath;
 
         /// <summary>A folder's 2D art: its base picture, the size the
-        /// places of its controls are given in, and those controls.</summary>
-        internal static (string BasePath, int Width, int Height, OverlayElement[] Overlays) LayoutOf(string folder) => folder switch
+        /// places of its controls are given in, those controls, and how far
+        /// a stick's art shifts at full tilt.</summary>
+        internal static (string BasePath, int Width, int Height, OverlayElement[] Overlays, double StickTravel) LayoutOf(string folder) => folder switch
         {
-            "DS3" => (DualShock3Layout.BasePath, DualShock3Layout.BaseWidth, DualShock3Layout.BaseHeight, DualShock3Layout.Overlays),
-            "DS4" => (DS4Layout.BasePath, DS4Layout.BaseWidth, DS4Layout.BaseHeight, DS4Layout.Overlays),
-            "DualSense" => (DualSenseLayout.BasePath, DualSenseLayout.BaseWidth, DualSenseLayout.BaseHeight, DualSenseLayout.Overlays),
-            "DUALSENSEEDGE" => (DualSenseEdgeLayout.BasePath, DualSenseEdgeLayout.BaseWidth, DualSenseEdgeLayout.BaseHeight, DualSenseEdgeLayout.Overlays),
-            "XBOXONE" => (XboxOneSLayout.BasePath, XboxOneSLayout.BaseWidth, XboxOneSLayout.BaseHeight, XboxOneSLayout.Overlays),
-            "XBOXSERIES" => (XboxSeriesXLayout.BasePath, XboxSeriesXLayout.BaseWidth, XboxSeriesXLayout.BaseHeight, XboxSeriesXLayout.Overlays),
-            "SWITCHPRO" => (SwitchProLayout.BasePath, SwitchProLayout.BaseWidth, SwitchProLayout.BaseHeight, SwitchProLayout.Overlays),
-            "SWITCH2PRO" => (Switch2ProLayout.BasePath, Switch2ProLayout.BaseWidth, Switch2ProLayout.BaseHeight, Switch2ProLayout.Overlays),
-            "STEAMDECK" => (SteamDeckLayout.BasePath, SteamDeckLayout.BaseWidth, SteamDeckLayout.BaseHeight, SteamDeckLayout.Overlays),
-            "STEAMCONTROLLER" => (SteamControllerLayout.BasePath, SteamControllerLayout.BaseWidth, SteamControllerLayout.BaseHeight, SteamControllerLayout.Overlays),
-            "STEAMCONTROLLER2" => (SteamController2Layout.BasePath, SteamController2Layout.BaseWidth, SteamController2Layout.BaseHeight, SteamController2Layout.Overlays),
-            _ => (Xbox360Layout.BasePath, Xbox360Layout.BaseWidth, Xbox360Layout.BaseHeight, Xbox360Layout.Overlays),
+            "DS3" => (DualShock3Layout.BasePath, DualShock3Layout.BaseWidth, DualShock3Layout.BaseHeight, DualShock3Layout.Overlays, DualShock3Layout.StickMaxTravel),
+            "DS4" => (DS4Layout.BasePath, DS4Layout.BaseWidth, DS4Layout.BaseHeight, DS4Layout.Overlays, DS4Layout.StickMaxTravel),
+            "DualSense" => (DualSenseLayout.BasePath, DualSenseLayout.BaseWidth, DualSenseLayout.BaseHeight, DualSenseLayout.Overlays, DualSenseLayout.StickMaxTravel),
+            "DUALSENSEEDGE" => (DualSenseEdgeLayout.BasePath, DualSenseEdgeLayout.BaseWidth, DualSenseEdgeLayout.BaseHeight, DualSenseEdgeLayout.Overlays, DualSenseEdgeLayout.StickMaxTravel),
+            "XBOXONE" => (XboxOneSLayout.BasePath, XboxOneSLayout.BaseWidth, XboxOneSLayout.BaseHeight, XboxOneSLayout.Overlays, XboxOneSLayout.StickMaxTravel),
+            "XBOXSERIES" => (XboxSeriesXLayout.BasePath, XboxSeriesXLayout.BaseWidth, XboxSeriesXLayout.BaseHeight, XboxSeriesXLayout.Overlays, XboxSeriesXLayout.StickMaxTravel),
+            "SWITCHPRO" => (SwitchProLayout.BasePath, SwitchProLayout.BaseWidth, SwitchProLayout.BaseHeight, SwitchProLayout.Overlays, SwitchProLayout.StickMaxTravel),
+            "SWITCH2PRO" => (Switch2ProLayout.BasePath, Switch2ProLayout.BaseWidth, Switch2ProLayout.BaseHeight, Switch2ProLayout.Overlays, Switch2ProLayout.StickMaxTravel),
+            "STEAMDECK" => (SteamDeckLayout.BasePath, SteamDeckLayout.BaseWidth, SteamDeckLayout.BaseHeight, SteamDeckLayout.Overlays, SteamDeckLayout.StickMaxTravel),
+            "STEAMCONTROLLER" => (SteamControllerLayout.BasePath, SteamControllerLayout.BaseWidth, SteamControllerLayout.BaseHeight, SteamControllerLayout.Overlays, SteamControllerLayout.StickMaxTravel),
+            "STEAMCONTROLLER2" => (SteamController2Layout.BasePath, SteamController2Layout.BaseWidth, SteamController2Layout.BaseHeight, SteamController2Layout.Overlays, SteamController2Layout.StickMaxTravel),
+            _ => (Xbox360Layout.BasePath, Xbox360Layout.BaseWidth, Xbox360Layout.BaseHeight, Xbox360Layout.Overlays, Xbox360Layout.StickMaxTravel),
         };
 
         /// <summary>Where each control of a folder's 2D art is drawn, in
@@ -273,7 +274,7 @@ namespace PadForge.Common
         /// role a Home card's picture lights it by.</summary>
         internal static List<StillMark> LayoutMarks(string folder, int pixelWidth, int pixelHeight)
         {
-            var (_, width, height, overlays) = LayoutOf(folder);
+            var (_, width, height, overlays, _) = LayoutOf(folder);
             var marks = new List<StillMark>();
             if (width <= 0 || height <= 0) return marks;
             double sx = pixelWidth / (double)width, sy = pixelHeight / (double)height;
@@ -305,9 +306,11 @@ namespace PadForge.Common
         /// size on screen, so the copy stays sharp on a dense display.</summary>
         internal const int BoxWidth = 352, BoxHeight = 232;
 
-        /// <summary>The art at a path as the stage shows it, made once: cut
-        /// to the controller and no larger than the stage needs. Null when
-        /// there is none.</summary>
+        /// <summary>The art at a path as the stage shows it, made once: the
+        /// 2D view's picture at rest, its body with the triggers, the sticks
+        /// and the printed marks the view draws over it (<see cref="LiveArt"/>),
+        /// cut to the controller and no larger than the stage needs. Null
+        /// when there is none.</summary>
         internal static ImageSource Color(string path)
             => string.IsNullOrEmpty(path) ? null : s_art.GetOrAdd(path, MakeArt).Picture;
 
@@ -316,19 +319,24 @@ namespace PadForge.Common
         internal static IReadOnlyList<StillMark> ArtMarks(string path)
             => string.IsNullOrEmpty(path) ? StillMarks.None : s_art.GetOrAdd(path, MakeArt).Marks;
 
+        /// <summary>The layers that picture is made of, for a card to show
+        /// moving, or null when there is no picture.</summary>
+        internal static LiveArt LiveArtFor(string path)
+            => string.IsNullOrEmpty(path) ? null : s_art.GetOrAdd(path, MakeArt).Art;
+
         /// <summary>The gray copy of that picture, made once.</summary>
         internal static ImageSource Gray(string path)
             => string.IsNullOrEmpty(path) ? null : s_gray.GetOrAdd(path, static p => MakeGray(Color(p) as BitmapSource));
 
-        private static readonly ConcurrentDictionary<string, (ImageSource Picture, StillMark[] Marks)> s_art = new(StringComparer.OrdinalIgnoreCase);
+        private static readonly ConcurrentDictionary<string, (ImageSource Picture, StillMark[] Marks, LiveArt Art)> s_art = new(StringComparer.OrdinalIgnoreCase);
         private static readonly ConcurrentDictionary<string, ImageSource> s_gray = new(StringComparer.OrdinalIgnoreCase);
 
-        private static (ImageSource Picture, StillMark[] Marks) MakeArt(string path)
+        private static (ImageSource Picture, StillMark[] Marks, LiveArt Art) MakeArt(string path)
         {
-            BitmapSource art = Views.EmbeddedBitmaps.Load(path);
-            BitmapSource fit = Fit(art, out var cut);
-            if (fit == null) return (null, StillMarks.None);
-            return (fit, StillMarks.Place(LayoutMarks(FolderOf(path), art.PixelWidth, art.PixelHeight), cut));
+            var art = LiveArt.From(path);
+            if (art == null) return (null, StillMarks.None, null);
+            var (_, width, height, _, _) = LayoutOf(FolderOf(path));
+            return (art.Still, StillMarks.Place(LayoutMarks(FolderOf(path), width, height), art.Cut), art);
         }
 
         /// <summary>A picture cut to what is drawn in it and made to fit

@@ -703,8 +703,8 @@
   <data name="About_ShowAllCredits" xml:space="preserve"><value>Бүх талархлыг харуулах</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>Цөөн талархал харуулах</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>“{0}” гэсэн хайлтад тохирох талархал алга.</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Ажиллах орчин ба WPF фреймворк.</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>Ажиллах орчин ба WPF фреймворк.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Контроллерийн оролт ба илрүүлэлт.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>

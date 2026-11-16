@@ -716,8 +716,8 @@
   <data name="About_ShowAllCredits" xml:space="preserve"><value>Прикажи ги сите заслуги</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>Прикажи помалку заслуги</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Ниедна заслуга не одговара на „{0}“.</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Извршна околина и рамка WPF.</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>Извршна околина и рамка WPF.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Влез и набројување на контролери.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>

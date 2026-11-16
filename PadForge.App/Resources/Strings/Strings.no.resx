@@ -716,8 +716,8 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="About_ShowAllCredits" xml:space="preserve"><value>Vis alle bidragsytere</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>Vis færre bidragsytere</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Ingen bidragsyter samsvarer med «{0}».</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Kjøretidsmiljø og WPF-rammeverk.</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>Kjøretidsmiljø og WPF-rammeverk.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Kontrollerinndata og opplisting.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>

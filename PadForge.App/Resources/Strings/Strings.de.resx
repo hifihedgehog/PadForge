@@ -566,8 +566,8 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="About_ShowAllCredits" xml:space="preserve"><value>Alle Danksagungen anzeigen</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>Weniger Danksagungen anzeigen</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Keine Danksagung passt zu „{0}“.</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Laufzeit und WPF-Framework.</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>Laufzeit und WPF-Framework.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Controller-Eingabe und -Erkennung.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>

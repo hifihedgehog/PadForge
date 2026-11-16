@@ -716,8 +716,8 @@
   <data name="About_ShowAllCredits" xml:space="preserve"><value>Паказаць усе падзякі</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>Паказаць менш</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Падзяк, што адпавядаюць «{0}», не знойдзена.</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Асяроддзе выканання і фрэймворк WPF.</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>Асяроддзе выканання і фрэймворк WPF.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Увод з кантролераў і іх пералік.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>

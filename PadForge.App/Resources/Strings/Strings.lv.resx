@@ -716,8 +716,8 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="About_ShowAllCredits" xml:space="preserve"><value>Rādīt visas atzinības</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>Rādīt mazāk atzinību</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Neviena atzinība neatbilst „{0}”.</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Izpildlaiks un WPF ietvars.</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>Izpildlaiks un WPF ietvars.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Kontrolleru ievade un uzskaitīšana.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>

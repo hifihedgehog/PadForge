@@ -716,8 +716,8 @@
   <data name="About_ShowAllCredits" xml:space="preserve"><value>تمام کریڈٹس دکھائیں</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>کم کریڈٹس دکھائیں</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>کوئی کریڈٹ “{0}” سے مماثل نہیں۔</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>رن ٹائم اور WPF فریم ورک۔</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>رن ٹائم اور WPF فریم ورک۔</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>کنٹرولر ان پٹ اور کنٹرولرز کی فہرست بندی۔</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>

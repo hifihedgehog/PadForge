@@ -716,8 +716,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="About_ShowAllCredits" xml:space="preserve"><value>Összes közreműködő mutatása</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>Kevesebb közreműködő mutatása</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Nincs „{0}” kifejezésre egyező közreműködő.</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Futtatókörnyezet és WPF-keretrendszer.</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>Futtatókörnyezet és WPF-keretrendszer.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Kontrollerbemenet és -felsorolás.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>

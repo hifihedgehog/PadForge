@@ -566,8 +566,8 @@
   <data name="About_ShowAllCredits" xml:space="preserve"><value>显示全部致谢</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>显示较少致谢</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>没有与“{0}”匹配的致谢。</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>运行时和 WPF 框架。</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>运行时和 WPF 框架。</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>控制器输入和枚举。</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>

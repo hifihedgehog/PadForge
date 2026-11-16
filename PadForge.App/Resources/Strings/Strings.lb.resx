@@ -701,8 +701,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="About_ShowAllCredits" xml:space="preserve"><value>All Credits weisen</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>Manner Credits weisen</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Keen Credit passt op „{0}“.</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime a WPF-Framework.</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>Runtime a WPF-Framework.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Controller-Agab an -Erkennung.</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Tastatur- a Mausagab pro Apparat</value></data>

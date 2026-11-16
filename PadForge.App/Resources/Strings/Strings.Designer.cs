@@ -889,8 +889,8 @@ public class Strings : INotifyPropertyChanged
     public string About_ShowAllCredits => Get("About_ShowAllCredits");
     public string About_ShowFewerCredits => Get("About_ShowFewerCredits");
     public string About_NoCreditMatch_Format => Get("About_NoCreditMatch_Format");
-    public string About_DotNet10 => Get("About_DotNet10");
-    public string About_DotNet10Desc => Get("About_DotNet10Desc");
+    public string About_DotNet => Get("About_DotNet");
+    public string About_DotNetDesc => Get("About_DotNetDesc");
     public string About_SDL3 => Get("About_SDL3");
     public string About_SDL3Desc => Get("About_SDL3Desc");
     public string About_RawInput => Get("About_RawInput");

@@ -703,8 +703,8 @@
   <data name="About_ShowAllCredits" xml:space="preserve"><value>បង្ហាញការទទួលស្គាល់ទាំងអស់</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>បង្ហាញការទទួលស្គាល់តិចជាងនេះ</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>គ្មានការទទួលស្គាល់ណាត្រូវនឹង «{0}» ទេ។</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>កម្មវិធីដំណើរការ និងក្របខ័ណ្ឌ WPF។</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>កម្មវិធីដំណើរការ និងក្របខ័ណ្ឌ WPF។</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>ការបញ្ចូល និងការរាប់បញ្ចូលឧបករណ៍បញ្ជា។</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>

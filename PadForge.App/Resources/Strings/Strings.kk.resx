@@ -703,8 +703,8 @@
   <data name="About_ShowAllCredits" xml:space="preserve"><value>Барлық алғыстарды көрсету</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>Азырақ алғыс көрсету</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>«{0}» сұранысына сәйкес алғыс жоқ.</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Орындау ортасы және WPF фреймворкі.</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>Орындау ортасы және WPF фреймворкі.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Контроллер кірісі және құрылғыларды санау.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>

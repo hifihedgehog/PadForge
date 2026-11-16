@@ -716,8 +716,8 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="About_ShowAllCredits" xml:space="preserve"><value>Pokaż wszystkie podziękowania</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>Pokaż mniej podziękowań</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Brak podziękowań pasujących do „{0}”.</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Środowisko uruchomieniowe i framework WPF.</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>Środowisko uruchomieniowe i framework WPF.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Wejście i wykrywanie kontrolerów.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>

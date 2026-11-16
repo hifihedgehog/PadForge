@@ -716,8 +716,8 @@
   <data name="About_ShowAllCredits" xml:space="preserve"><value>అన్ని క్రెడిట్లను చూపు</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>తక్కువ క్రెడిట్లను చూపు</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>“{0}”కు సరిపోలే క్రెడిట్ లేదు.</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>రన్టైమ్, WPF ఫ్రేమ్‌వర్క్.</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>రన్టైమ్, WPF ఫ్రేమ్‌వర్క్.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>కంట్రోలర్ ఇన్పుట్, పరికరాల గణన.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>

@@ -53,7 +53,7 @@ namespace PadForge.Tests
                 "DsBtHaptics", "DsTester", "DualSenseWindows", "EdRefCard2", "Fusion", "GamepadBatteryMonitor",
                 "GamepadAssetPack", "GamepadMotionHelpers", "HelixToolkit", "HidHide", "HIDMaestro", "Hitboxer",
                 "Jc2Mouse", "JoyShockMapper", "Libinput", "MidiServices", "MvvmToolkit", "NAudio", "NefariusDevMgmt",
-                "DotNet10", "Nipplejs", "QrCodeGen", "TriggerEffectGenerator", "TwitchChatRefs", "ViGEmClient",
+                "DotNet", "Nipplejs", "QrCodeGen", "TriggerEffectGenerator", "TwitchChatRefs", "ViGEmClient",
                 "WiimoteLib", "ModernWpf", "X1nput", "Xbledctl", "MouseArt", "ZstdSharp",
             }),
             ("About_License_MitSdkLoader", new[] { "GameInput" }),

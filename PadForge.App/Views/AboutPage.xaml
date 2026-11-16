@@ -965,8 +965,8 @@
                                 <Border DockPanel.Dock="Right" Style="{StaticResource CreditChip}">
                                     <TextBlock common:BidiText.Text="{Binding About_License_Mit, Source={x:Static strings:Strings.Instance}}"/>
                                 </Border>
-                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_DotNet10, Source={x:Static strings:Strings.Instance}}"/>
-                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_DotNet10Desc, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditName}" common:BidiText.Text="{Binding About_DotNet, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Style="{StaticResource CreditDesc}" common:BidiText.Text="{Binding About_DotNetDesc, Source={x:Static strings:Strings.Instance}}"/>
                             </DockPanel>
                         </Border>
                         <Border Style="{StaticResource CreditRow}">

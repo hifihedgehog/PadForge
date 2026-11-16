@@ -566,8 +566,8 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="About_ShowAllCredits" xml:space="preserve"><value>Mostrar todos los créditos</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>Mostrar menos créditos</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Ningún crédito coincide con «{0}».</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Entorno de ejecución y marco WPF.</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>Entorno de ejecución y marco WPF.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Entrada y enumeración de controles.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>

@@ -716,8 +716,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="About_ShowAllCredits" xml:space="preserve"><value>Show All Credits</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>Show Fewer Credits</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>No credit matches “{0}”.</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime and WPF framework.</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>Runtime and WPF framework.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Controller input and enumeration.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>

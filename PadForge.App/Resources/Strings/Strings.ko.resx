@@ -566,8 +566,8 @@
   <data name="About_ShowAllCredits" xml:space="preserve"><value>크레딧 모두 보기</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>크레딧 간단히 보기</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>“{0}”와(과) 일치하는 크레딧이 없습니다.</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>런타임 및 WPF 프레임워크.</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>런타임 및 WPF 프레임워크.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>컨트롤러 입력 및 열거.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>

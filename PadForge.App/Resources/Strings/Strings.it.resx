@@ -566,8 +566,8 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="About_ShowAllCredits" xml:space="preserve"><value>Mostra tutti i crediti</value></data>
   <data name="About_ShowFewerCredits" xml:space="preserve"><value>Mostra meno crediti</value></data>
   <data name="About_NoCreditMatch_Format" xml:space="preserve"><value>Nessun credito corrisponde a «{0}».</value></data>
-  <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime e framework WPF.</value></data>
+  <data name="About_DotNet" xml:space="preserve"><value>.NET 10</value></data>
+  <data name="About_DotNetDesc" xml:space="preserve"><value>Runtime e framework WPF.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
   <data name="About_SDL3Desc" xml:space="preserve"><value>Input e rilevamento controller.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>

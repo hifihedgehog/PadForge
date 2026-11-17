@@ -4863,7 +4863,6 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>ಈ ಸಾಧನದ ಬೆಳಕನ್ನು ನಿಯಂತ್ರಿಸಿ, ಬೆಳಕಿನ ಹಿಡಿತ</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>ಸಂಪರ್ಕಗೊಂಡಿವೆ</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>ಸಂಪರ್ಕವಿಲ್ಲ</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>ಇತರ ಇನ್‌ಪುಟ್‌ಗಳು</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>ಯಾವುದೇ ಸಾಧನ ಹೊಂದಿಕೆಯಾಗುತ್ತಿಲ್ಲ.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>ಬಳಕೆಯಲ್ಲಿಲ್ಲ</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>ಬ್ಯಾಟರಿ {0}</value></data>

@@ -976,7 +976,6 @@
   <data name="Devices_Filter_Other" xml:space="preserve"><value>Другие</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Подключены</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Не подключены</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Другой ввод</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Подходящих устройств нет.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Не используется</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>заряд {0}</value></data>

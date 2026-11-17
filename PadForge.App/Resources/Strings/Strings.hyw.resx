@@ -4847,7 +4847,6 @@
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Կառավարել այս սարքին լուսաւորումը, Լուսաւորման վերահսկում</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Միացած</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Միացած չէ</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Այլ մուտքեր</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Համապատասխան սարք չկայ։</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Չի գործածուիր</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>մարտկոց {0}</value></data>

@@ -3767,7 +3767,6 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Samtang laing programa ang anaa sa unahan, molusot ang mga click sa overlay. Samtang ang PadForge ang anaa sa unahan, guyora kini gamit ang tuo nga button sa mouse ug usba ang gidak-on gikan sa eskina niini. Ang usa ka macro makapakita o makatago og overlay pinaagi sa numero niini.</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Nakakonektar</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Wala makonektar</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Ubang mga input</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Walay device nga motakdo.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Wala gigamit</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>baterya {0}</value></data>

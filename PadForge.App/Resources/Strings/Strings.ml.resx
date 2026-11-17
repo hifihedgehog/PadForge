@@ -4859,7 +4859,6 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>ഈ ഉപകരണത്തിന്റെ ലൈറ്റിംഗ് നിയന്ത്രിക്കുക, ലൈറ്റിംഗ് ഹോൾഡ്</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>കണക്റ്റ് ചെയ്തത്</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>കണക്റ്റ് ചെയ്തിട്ടില്ല</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>മറ്റ് ഇൻപുട്ടുകൾ</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>പൊരുത്തപ്പെടുന്ന ഉപകരണങ്ങളില്ല.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>ഉപയോഗത്തിലില്ല</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>ബാറ്ററി {0}</value></data>

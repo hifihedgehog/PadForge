@@ -1807,7 +1807,6 @@
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Shakisha ibikoresho</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Byose</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Bihujwe</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Ibindi byinjiza</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>bateri {0}</value></data>
   <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>bateri {0}, irimo gusharijwa</value></data>
   <data name="Devices_UsedBy" xml:space="preserve"><value>Bikoreshwa na</value></data>

@@ -4893,7 +4893,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Upravljaj osvjetljenjem ovog uređaja, Preuzimanje osvjetljenja</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Povezano</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Nije povezano</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Drugi ulazi</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Nijedan uređaj ne odgovara.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Nije u upotrebi</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>baterija {0}</value></data>

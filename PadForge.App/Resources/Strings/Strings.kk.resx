@@ -4889,7 +4889,6 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Осы құрылғының жарықтандыруын басқару, Жарықтандыруды ұстау</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Қосылған</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Қосылмаған</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Басқа кірістер</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Сәйкес құрылғылар жоқ.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Пайдаланылмайды</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>батарея {0}</value></data>

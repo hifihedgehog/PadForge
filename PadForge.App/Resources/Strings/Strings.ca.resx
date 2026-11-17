@@ -4901,7 +4901,6 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Controla la il·luminació d'aquest dispositiu, nivell de control de la il·luminació</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Connectats</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>No connectats</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Altres entrades</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Cap dispositiu coincideix.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>No s'utilitza</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>bateria {0}</value></data>

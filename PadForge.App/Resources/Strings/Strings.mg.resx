@@ -2115,7 +2115,6 @@
   <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>Alefaso ny Remote Link ao amin'ny PadForge amin'ilay PC hafa. Hiseho eto izy, ary ampitahainao ny kaody fohy eo amin'ny efijery roa.</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Mifandray</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Tsy mifandray</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Fidirana hafa</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Tsy ampiasaina</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>bateria {0}</value></data>
   <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>bateria {0}, mameno</value></data>

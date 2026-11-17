@@ -4863,7 +4863,6 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>የዚህን መሣሪያ መብራት ተቆጣጠር፣ የመብራት ይዞታ</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>የተገናኙ</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>ያልተገናኙ</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>ሌሎች ግብዓቶች</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>የሚዛመድ መሣሪያ የለም።</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>ጥቅም ላይ አልዋለም</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>ባትሪ {0}</value></data>

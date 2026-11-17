@@ -4890,7 +4890,6 @@
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Керувати підсвічуванням цього пристрою, обсяг керування підсвічуванням</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Підключені</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Не підключені</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Інші входи</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Немає відповідних пристроїв.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Не використовується</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>заряд {0}</value></data>

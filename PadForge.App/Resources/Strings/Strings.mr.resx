@@ -4874,7 +4874,6 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>या डिव्हाइसचे लायटिंग नियंत्रित करा, लायटिंग ताबा</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>जोडलेली</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>जोडलेली नाहीत</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>इतर इनपुट</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>कोणतेही डिव्हाइस जुळत नाही.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>वापरात नाही</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>बॅटरी {0}</value></data>

@@ -4703,7 +4703,6 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Pad_More_ForceFeedback" xml:space="preserve"><value>Gain bawat motor, trigger rumble, Steering Angle Rumble, Constant Force</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Nakakonekta</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Hindi Nakakonekta</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Iba Pang Input</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Walang device na tugma.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Hindi ginagamit</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>baterya {0}</value></data>

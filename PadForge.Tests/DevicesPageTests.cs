@@ -103,28 +103,47 @@ namespace PadForge.Tests
         [InlineData("aggregate://keyboards", "Keyboard", false, DeviceListGroup.NotConnected)]
         [InlineData("aggregate://mice", "Mouse", true, DeviceListGroup.Connected)]
         [InlineData("aggregate://touchpads", "Touchpad", true, DeviceListGroup.Connected)]
-        [InlineData("aggregate://consumercontrols", "ConsumerControl", true, DeviceListGroup.Other)]
-        [InlineData("web://controller/1", "Gamepad", true, DeviceListGroup.Other)]
-        [InlineData("web://controller/1", "Gamepad", false, DeviceListGroup.Other)]
-        [InlineData("peer://pc/1", "Gamepad", true, DeviceListGroup.Other)]
-        [InlineData("peer://pc/1", "Gamepad", false, DeviceListGroup.Other)]
-        [InlineData("mic://x", "Microphone", true, DeviceListGroup.Other)]
-        [InlineData("nfc://x", "Nfc", true, DeviceListGroup.Other)]
-        [InlineData("headtrack://x", "HeadTracker", true, DeviceListGroup.Other)]
-        [InlineData("twitch://x", "TwitchChat", false, DeviceListGroup.Other)]
+        [InlineData("aggregate://consumercontrols", "ConsumerControl", true, DeviceListGroup.Connected)]
+        [InlineData("web://controller/1", "Gamepad", true, DeviceListGroup.Connected)]
+        [InlineData("web://controller/1", "Gamepad", false, DeviceListGroup.NotConnected)]
+        [InlineData("peer://pc/1", "Gamepad", true, DeviceListGroup.Connected)]
+        [InlineData("peer://pc/1", "Gamepad", false, DeviceListGroup.NotConnected)]
+        [InlineData("mic://x", "Microphone", true, DeviceListGroup.Connected)]
+        [InlineData("nfc://x", "Nfc", true, DeviceListGroup.Connected)]
+        [InlineData("headtrack://x", "HeadTracker", true, DeviceListGroup.Connected)]
+        [InlineData("twitch://x", "TwitchChat", false, DeviceListGroup.NotConnected)]
         [InlineData("midi://x", "Midi", true, DeviceListGroup.Connected)]
         [InlineData("midi://x", "Midi", false, DeviceListGroup.NotConnected)]
         [InlineData("falcon://x", "NovintFalcon", true, DeviceListGroup.Connected)]
         [InlineData("falcon://x", "NovintFalcon", false, DeviceListGroup.NotConnected)]
         [InlineData("analogkb://x", "AnalogKeyboard", true, DeviceListGroup.Connected)]
         [InlineData("analogkb://x", "AnalogKeyboard", false, DeviceListGroup.NotConnected)]
-        [InlineData(@"\\?\HID#VID_046D&PID_C33F&MI_01&Col02#8&1&0&0001", "ConsumerControl", true, DeviceListGroup.Other)]
-        public void ARowStandsInTheListItsStateAndPathSay(string path, string typeKey, bool online, DeviceListGroup expected)
+        [InlineData(@"\\?\HID#VID_046D&PID_C33F&MI_01&Col02#8&1&0&0001", "ConsumerControl", true, DeviceListGroup.Connected)]
+        public void ARowStandsInTheListItsConnectionSays(string path, string typeKey, bool online, DeviceListGroup expected)
         {
             var row = new DeviceRowViewModel { DevicePath = path, DeviceTypeKey = typeKey, IsOnline = online };
             Assert.Equal(expected, row.ListGroup);
-            Assert.Equal(expected, DeviceRowViewModel.GroupOf(online, row.IsOtherInput));
+            Assert.Equal(expected, DeviceRowViewModel.GroupOf(online));
         }
+
+        /// <summary>The "N connected" counts the devices a person plugs in,
+        /// once each. A merged row, a keyboard's media keys and the rows
+        /// PadForge and the extras feed stand in the list and are not
+        /// counted. A MIDI device, a Falcon and an analog keyboard are.</summary>
+        [Theory]
+        [InlineData(@"\\?\HID#VID_054C&PID_0CE6&MI_03#8&1&0&0000", "Gamepad", true)]
+        [InlineData("aggregate://keyboards", "Keyboard", false)]
+        [InlineData("aggregate://consumercontrols", "ConsumerControl", false)]
+        [InlineData(@"\\?\HID#VID_046D&PID_C33F&MI_01&Col02#8&1&0&0001", "ConsumerControl", false)]
+        [InlineData("web://controller/1", "Gamepad", false)]
+        [InlineData("peer://pc/1", "Gamepad", false)]
+        [InlineData("mic://x", "Microphone", false)]
+        [InlineData("twitch://x", "TwitchChat", false)]
+        [InlineData("midi://x", "Midi", true)]
+        [InlineData("falcon://x", "NovintFalcon", true)]
+        [InlineData("analogkb://x", "AnalogKeyboard", true)]
+        public void ARowCountsWhenItIsADevice(string path, string typeKey, bool counts)
+            => Assert.Equal(counts, new DeviceRowViewModel { DevicePath = path, DeviceTypeKey = typeKey, IsOnline = true }.CountsAsDevice);
 
         [Fact]
         public void AListGroupIsRaisedOnlyWhenItChanges()
@@ -228,14 +247,13 @@ namespace PadForge.Tests
         {
             var vm = BoardSet();
             // Five devices are connected, and the list shows them with the
-            // two merged rows, which are rows and no devices.
+            // two merged rows and the microphone, which are rows and no
+            // devices.
             Assert.Equal(5, vm.ConnectedTotal);
-            Assert.Equal(7, vm.MainShown);
+            Assert.Equal(8, vm.MainShown);
             Assert.Equal(2, vm.NotConnectedCount);
             Assert.Equal("Logitech G29 Driving Force Racing Wheel, DualShock 3", vm.NotConnectedHint);
-            Assert.Equal(1, vm.OtherInputsCount);
-            Assert.Equal("Headset Microphone", vm.OtherInputsHint);
-            Assert.True(vm.HasNotConnected && vm.HasOtherInputs);
+            Assert.True(vm.HasNotConnected);
             Assert.False(vm.ShowNoMatch);
 
             // A kind's segment shows its devices and its merged row.
@@ -244,8 +262,6 @@ namespace PadForge.Tests
             Assert.Equal(5, vm.ConnectedTotal);
             Assert.Equal(0, vm.NotConnectedCount);
             Assert.False(vm.HasNotConnected);
-            Assert.Equal(0, vm.OtherInputsCount);
-            Assert.False(vm.HasOtherInputs);
             // The wheel is remembered and not connected: its segment finds it.
             vm.Filter = DeviceFilter.Wheel;
             Assert.Equal(0, vm.MainShown);
@@ -272,8 +288,7 @@ namespace PadForge.Tests
             Assert.Equal(vm.RowsOf(DevicePageList.Main, inParts: true), Rows(vm.MainView));
             Assert.Equal(vm.Devices.Where(d => d.ListGroup == DeviceListGroup.Connected).OrderBy(d => (int)d.Section), Rows(vm.MainView));
             Assert.Equal(vm.Devices.Where(d => d.ListGroup == DeviceListGroup.NotConnected), Rows(vm.NotConnectedView));
-            Assert.Equal(vm.Devices.Where(d => d.ListGroup == DeviceListGroup.Other), Rows(vm.OtherInputsView));
-            Assert.Equal(7, Rows(vm.MainView).Length);
+            Assert.Equal(8, Rows(vm.MainView).Length);
 
             // A row going offline leaves the Connected list for Not Connected
             // at the refresh that every place that changes a row calls.
@@ -286,8 +301,7 @@ namespace PadForge.Tests
             // The segment filters every view at once.
             vm.Filter = DeviceFilter.Keyboard;
             Assert.Equal(2, Rows(vm.MainView).Length);
-            Assert.All(Rows(vm.MainView).Concat(Rows(vm.OtherInputsView)),
-                d => Assert.Equal(DeviceFilter.Keyboard, DevicesViewModel.FilterOf(d.DeviceTypeKey)));
+            Assert.All(Rows(vm.MainView), d => Assert.Equal(DeviceFilter.Keyboard, DevicesViewModel.FilterOf(d.DeviceTypeKey)));
             Assert.Empty(Rows(vm.NotConnectedView));
         });
 
@@ -888,8 +902,8 @@ namespace PadForge.Tests
                 "Devices_Pair", "Devices_Refresh", "Devices_Search", "Devices_Filter_All", "Devices_Filter_Gamepad",
                 "Devices_Filter_Joystick", "Devices_Filter_Wheel", "Devices_Filter_Keyboard", "Devices_Filter_Mouse",
                 "Devices_Filter_Other", "Devices_ListScroll", "Devices_PanelScroll",
-                "Devices_List_Main", "Devices_List_NotConnected", "Devices_List_OtherInputs", "Devices_Fold_NotConnected",
-                "Devices_Fold_OtherInputs", "Devices_UseIt", "Devices_TestRumble", "Devices_UsedBy_New", "Devices_ResetAll",
+                "Devices_Connection_All", "Devices_Connection_Connected", "Devices_Connection_NotConnected",
+                "Devices_List_Main", "Devices_List_NotConnected", "Devices_Fold_NotConnected", "Devices_UseIt", "Devices_TestRumble", "Devices_UsedBy_New", "Devices_ResetAll",
                 "Devices_More_TestInputs", "Devices_Details", "Devices_CopyDetails", "Devices_SubmitMapping", "Devices_Remove",
             })
                 Assert.True(ids.Count(v => v == id) == 1, id);
@@ -908,7 +922,7 @@ namespace PadForge.Tests
             }, resets);
 
             var keys = all.Select(e => Attr(e, "StateKey")).Where(v => v != null).OrderBy(v => v, StringComparer.Ordinal);
-            Assert.Equal(new[] { "Devices.Details", "Devices.NotConnected", "Devices.OtherInputs", "Devices.TestInputs.More" }, keys);
+            Assert.Equal(new[] { "Devices.Details", "Devices.NotConnected", "Devices.TestInputs.More" }, keys);
 
             foreach (string gone in new[] { "Effect=\"", "Property=\"Effect\"", "DropShadowEffect", "ClickBorder", "UpperConverter", "SectionEyebrow" })
                 Assert.DoesNotContain(gone, text);

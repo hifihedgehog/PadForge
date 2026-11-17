@@ -4892,7 +4892,6 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Juhi selle seadme valgustust, Valgustuse hõivamine</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Ühendatud</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Ühendamata</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Muud sisendid</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Ühtegi seadet ei leitud.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Kasutamata</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>aku {0}</value></data>

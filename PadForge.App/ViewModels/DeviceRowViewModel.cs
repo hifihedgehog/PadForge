@@ -302,35 +302,35 @@ namespace PadForge.ViewModels
         public bool IsGameControllerType => DeviceTypeKey is "Gamepad" or "Joystick" or "Wheel" or "FlightStick"
             or "FirstPerson" or "Supplemental";
 
-        /// <summary>A row the Devices page keeps under Other Inputs: a
-        /// keyboard's or a remote's consumer-control collection, the merged
-        /// row of those among them, and every row PadForge or an extra feeds
-        /// (IsInternalVirtual), except the three that stand for hardware a
-        /// person plugs in: a MIDI device, a Falcon and an analog keyboard.
-        /// The merged rows of keyboards, mice and touchpads are not here.
-        /// Each stands with the devices it merges, in its type's part of the
-        /// list: under Other Inputs a person who chose Keyboard saw every
-        /// keyboard but the merged one (owner, 2026-11-17).</summary>
-        public bool IsOtherInput => DeviceTypeKey == "ConsumerControl"
-            || (IsInternalVirtual && !_devicePath.StartsWith("midi://", StringComparison.Ordinal)
+        /// <summary>Whether the row counts in the Devices page's
+        /// "N connected": a device a person plugs in, counted once. A merged
+        /// row is no device. A keyboard's or a remote's consumer-control
+        /// collection is part of a keyboard or a remote that is counted. A
+        /// row PadForge or an extra feeds (IsInternalVirtual) is no device a
+        /// person plugs in, except a MIDI device, a Falcon and an analog
+        /// keyboard, which stand for one. Every row stands in the page's
+        /// lists by its connection and its kind, whether it counts or
+        /// not.</summary>
+        public bool CountsAsDevice => !IsAggregate && DeviceTypeKey != "ConsumerControl"
+            && !(IsInternalVirtual && !_devicePath.StartsWith("midi://", StringComparison.Ordinal)
                 && !_devicePath.StartsWith("falcon://", StringComparison.Ordinal)
                 && !_devicePath.StartsWith("analogkb://", StringComparison.Ordinal));
 
-        /// <summary>The list a row stands in, by whether it is connected and
-        /// whether it is an other input.</summary>
-        internal static DeviceListGroup GroupOf(bool online, bool otherInput)
-            => otherInput ? DeviceListGroup.Other : online ? DeviceListGroup.Connected : DeviceListGroup.NotConnected;
+        /// <summary>The group a row stands in, by whether it is connected.</summary>
+        internal static DeviceListGroup GroupOf(bool online)
+            => online ? DeviceListGroup.Connected : DeviceListGroup.NotConnected;
 
         private DeviceListGroup _listGroup = DeviceListGroup.NotConnected;
 
-        /// <summary>Which of the page's three lists the row stands in. Raised
-        /// only when it changes. The lists move a row at the next
-        /// RefreshCounts and do not filter live (DevicesViewModel.MakeView).</summary>
+        /// <summary>Whether the row stands with the devices connected now or
+        /// the ones PadForge remembers. Raised only when it changes. The
+        /// lists move a row at the next RefreshCounts and do not filter live
+        /// (DevicesViewModel.MakeView).</summary>
         public DeviceListGroup ListGroup => _listGroup;
 
         private void UpdateListGroup()
         {
-            var group = GroupOf(_isOnline, IsOtherInput);
+            var group = GroupOf(_isOnline);
             if (group == _listGroup) return;
             _listGroup = group;
             OnPropertyChanged(nameof(ListGroup));
@@ -409,7 +409,7 @@ namespace PadForge.ViewModels
         {
             UpdateListGroup();
             OnPropertyChanged(nameof(IsGameControllerType));
-            OnPropertyChanged(nameof(IsOtherInput));
+            OnPropertyChanged(nameof(CountsAsDevice));
             OnPropertyChanged(nameof(IsAssigned));
             OnPropertyChanged(nameof(OffersUse));
             OnPropertyChanged(nameof(LineLead));

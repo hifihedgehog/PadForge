@@ -315,7 +315,7 @@ public static class W {
     foreach ($p in @('Dashboard:Home', 'Devices:Devices', 'Profiles:Profiles', 'Settings:Settings', 'About:About')) {
         $tag, $label = $p.Split(':')
         if ((Go $tag $label) -and $tag -eq 'Devices') {
-            foreach ($fold in @('Devices_Fold_NotConnected', 'Devices_Fold_OtherInputs')) {
+            foreach ($fold in @('Devices_Fold_NotConnected')) {
                 Note "devices fold ${fold}: $(Expand-El (Find-ByAid $fold))"
             }
             Start-Sleep 1

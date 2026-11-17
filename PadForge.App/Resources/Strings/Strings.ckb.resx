@@ -4886,7 +4886,6 @@
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>کۆنترۆڵکردنی ڕووناککردنەوەی ئەم ئامێرە، دەستگرتن بە ڕووناکی</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>پەیوەستکراو</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>پەیوەست نەکراو</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>تێخستنەکانی تر</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>هیچ ئامێرێک ناگونجێت.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>بەکارنەهاتوو</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>پاتری {0}</value></data>

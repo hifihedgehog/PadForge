@@ -4888,7 +4888,6 @@
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>គ្រប់គ្រងពន្លឺរបស់ឧបករណ៍នេះ, ការកាន់កាប់ពន្លឺ</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>បានភ្ជាប់</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>មិនបានភ្ជាប់</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>ការបញ្ចូលផ្សេងទៀត</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>គ្មានឧបករណ៍ត្រូវគ្នាទេ។</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>មិនកំពុងប្រើ</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>ថ្ម {0}</value></data>

@@ -635,7 +635,6 @@
   <data name="Devices_Filter_Other" xml:space="preserve"><value>その他</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>接続中</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>未接続</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>その他の入力</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>一致するデバイスはありません。</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>未使用</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>バッテリー {0}</value></data>

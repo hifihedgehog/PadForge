@@ -4866,7 +4866,6 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Beliichtung vun dësem Apparat steieren, Beliichtungskontroll</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Verbonnen</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Net verbonnen</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Aner Agaben</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Keen Apparat passt.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Net am Asaz</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>Batterie {0}</value></data>

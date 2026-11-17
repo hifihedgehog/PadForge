@@ -4182,7 +4182,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Pandan yon lòt pwogram devan, klik yo pase atravè sipèpozisyon an. Pandan PadForge devan, trennen l ak bouton dwat sourit la epi chanje gwosè l nan kwen li. Yon makwo ka montre oswa kache yon sipèpozisyon pa nimewo li.</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Konekte</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Pa konekte</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Lòt antre</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Pa gen aparèy ki koresponn.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Pa itilize</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>batri {0}</value></data>

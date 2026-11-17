@@ -4886,7 +4886,6 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Kontrolatu gailu honen argiztapena, Argiztapenaren atxikipena</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Konektatuta</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Konektatu gabe</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Beste sarrerak</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Ez dago bat datorren gailurik.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Erabili gabe</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>bateria {0}</value></data>

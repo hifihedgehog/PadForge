@@ -1326,7 +1326,6 @@ public class Strings : INotifyPropertyChanged
     public string Devices_Filter_Other => Get("Devices_Filter_Other");
     public string Devices_Group_Connected => Get("Devices_Group_Connected");
     public string Devices_Group_NotConnected => Get("Devices_Group_NotConnected");
-    public string Devices_Group_OtherInputs => Get("Devices_Group_OtherInputs");
     public string Devices_NoMatch => Get("Devices_NoMatch");
     public string Devices_NotInUse => Get("Devices_NotInUse");
     public string Devices_Line_Battery_Format => Get("Devices_Line_Battery_Format");

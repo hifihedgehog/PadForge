@@ -4864,7 +4864,6 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Rheoli Goleuo'r Ddyfais Hon, Gafael Goleuo</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Wedi'u Cysylltu</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Heb eu Cysylltu</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Mewnbynnau Eraill</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Dim dyfeisiau'n cyfateb.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Heb ei ddefnyddio</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>batri {0}</value></data>

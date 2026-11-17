@@ -1250,7 +1250,6 @@
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Ti telepono a sumilpo ket agparang ditoy ken iti panid a Dagiti device, a pangisaadam kenkuana iti maysa a controller.</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Agsapul kadagiti device</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Amin</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Dadduma nga input</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Awan ti device a maitutop.</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>baterya {0}</value></data>
   <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>baterya {0}, agkarkarga</value></data>

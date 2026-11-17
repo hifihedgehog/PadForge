@@ -4875,7 +4875,6 @@
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>ამ მოწყობილობის განათების მართვა, განათების დაკავება</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>დაკავშირებული</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>არ არის დაკავშირებული</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>სხვა შეყვანები</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>მოწყობილობები ვერ მოიძებნა.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>არ გამოიყენება</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>ბატარეა {0}</value></data>

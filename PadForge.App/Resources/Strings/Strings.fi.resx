@@ -976,7 +976,6 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Devices_Filter_Other" xml:space="preserve"><value>Muut</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Yhdistetty</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Ei yhdistetty</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Muut syötteet</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Ei hakua vastaavia laitteita.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Ei käytössä</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>akku {0}</value></data>

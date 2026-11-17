@@ -4823,7 +4823,6 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Ikkontrolla d-dawl ta' dan l-apparat, Żamma tad-dawl</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Imqabbdin</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Mhux imqabbdin</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Inputs oħra</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>L-ebda apparat ma jaqbel.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Mhux qed jintuża</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>batterija {0}</value></data>

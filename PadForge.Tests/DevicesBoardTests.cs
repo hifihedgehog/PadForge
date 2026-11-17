@@ -213,9 +213,8 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "Gamepad: B Pad, E Pad", "Keyboard: A Keyboard", "Mouse: D Mouse", "Other: C Midi" }, Parts(vm.MainView));
             Assert.Equal(new[] { padB, padE, keyboard, mouse, midi }, vm.MainView.Cast<DeviceRowViewModel>().ToArray());
             Assert.Equal(vm.RowsOf(DevicePageList.Main, inParts: true), vm.MainView.Cast<DeviceRowViewModel>());
-            // The two folded lists have no parts.
+            // The folded list has no parts.
             Assert.Null(vm.NotConnectedView.Groups);
-            Assert.Null(vm.OtherInputsView.Groups);
 
             // A part's rows all go: the part goes with them.
             padB.IsOnline = false;
@@ -310,24 +309,23 @@ namespace PadForge.Tests
             vm.EnsureListViews();
             static DeviceRowViewModel[] Rows(System.ComponentModel.ICollectionView view) => view.Cast<DeviceRowViewModel>().ToArray();
 
-            Assert.Equal(new[] { "Gamepad: A Pad", "Keyboard: C Keyboard" }, Parts(vm.MainView));
+            // The keyboard's media keys stand in the Other part, and the
+            // count under the title leaves them out: they are the keyboard's.
+            Assert.Equal(new[] { "Gamepad: A Pad", "Keyboard: C Keyboard", "Other: E Media Keys" }, Parts(vm.MainView));
             Assert.Equal(new[] { wheel, mouse }, Rows(vm.NotConnectedView));
-            Assert.Equal(new[] { media }, Rows(vm.OtherInputsView));
             Assert.Equal(2, vm.ConnectedTotal);
 
             vm.Connection = DeviceConnection.Connected;
-            Assert.Equal(new[] { "Gamepad: A Pad", "Keyboard: C Keyboard" }, Parts(vm.MainView));
+            Assert.Equal(new[] { "Gamepad: A Pad", "Keyboard: C Keyboard", "Other: E Media Keys" }, Parts(vm.MainView));
             Assert.Empty(Rows(vm.NotConnectedView));
             Assert.False(vm.HasNotConnected);
-            Assert.Equal(new[] { media }, Rows(vm.OtherInputsView));
 
             vm.Connection = DeviceConnection.NotConnected;
             Assert.Equal(new[] { "Wheel: B Wheel", "Mouse: D Mouse" }, Parts(vm.MainView));
             Assert.Equal(vm.RowsOf(DevicePageList.Main, inParts: true), Rows(vm.MainView));
             Assert.Equal(2, vm.MainShown);
             Assert.Empty(Rows(vm.NotConnectedView));
-            Assert.Empty(Rows(vm.OtherInputsView));
-            Assert.False(vm.HasNotConnected || vm.HasOtherInputs);
+            Assert.False(vm.HasNotConnected);
             Assert.Equal(2, vm.ConnectedTotal);
 
             // The segments and the search narrow one another.
@@ -408,19 +406,18 @@ namespace PadForge.Tests
             vm.RefreshCounts();
             vm.EnsureListViews();
 
+            // The merged consumer controls stand in the Other part, where the
+            // consumer controls stand.
             Assert.Equal(new[]
             {
                 "Gamepad: C Pad", "Keyboard: A Keyboard, All Keyboards (Merged)", "Mouse: B Mouse, All Mice (Merged)",
-                "Other: All Touchpads (Merged)",
+                "Other: All Touchpads (Merged), All Consumer Controls (Merged)",
             }, Parts(vm.MainView));
-            // The merged consumer controls stay with the consumer controls.
-            Assert.Equal(new[] { controls }, vm.OtherInputsView.Cast<DeviceRowViewModel>().ToArray());
             Assert.Equal(3, vm.ConnectedTotal);
-            Assert.Equal(6, vm.MainShown);
+            Assert.Equal(7, vm.MainShown);
 
             vm.Filter = DeviceFilter.Keyboard;
             Assert.Equal(new[] { "Keyboard: A Keyboard, All Keyboards (Merged)" }, Parts(vm.MainView));
-            Assert.False(vm.HasOtherInputs);
             vm.Filter = DeviceFilter.Mouse;
             Assert.Equal(new[] { "Mouse: B Mouse, All Mice (Merged)" }, Parts(vm.MainView));
 
@@ -784,9 +781,12 @@ namespace PadForge.Tests
             Assert.Equal("108", Attr(Named(page, "BatteryCell"), "MinWidth"));
 
             // The list card's parts in order: the head, the connected
-            // devices in their parts, then the two folds.
+            // devices in their parts, then the fold. No other fold stands
+            // beside it: the inputs an Other Inputs fold held stand in their
+            // kinds' parts (owner, 2026-11-17).
             var all = page.Descendants().ToList();
-            var order = new[] { "ListHead", "NoMatchLine", "MainList", "OtherInputsFold", "NotConnectedFold" }
+            Assert.Null(page.Descendants().FirstOrDefault(e => (string)e.Attribute(Xaml + "Name") == "OtherInputsFold"));
+            var order = new[] { "ListHead", "NoMatchLine", "MainList", "NotConnectedFold" }
                 .Select(n => all.IndexOf(Named(page, n))).ToList();
             Assert.Equal(order.OrderBy(i => i), order);
             var groupStyle = Named(page, "MainList").Descendants().Single(e => e.Name.LocalName == "GroupStyle");
@@ -795,7 +795,7 @@ namespace PadForge.Tests
 
             // A fold's chevron stands under the rows' tiles and its title
             // under their names.
-            foreach (string fold in new[] { "OtherInputsFold", "NotConnectedFold" })
+            foreach (string fold in new[] { "NotConnectedFold" })
             {
                 var part = Named(page, fold);
                 Assert.Equal("33,0,16,0", Attr(part, "Padding"));

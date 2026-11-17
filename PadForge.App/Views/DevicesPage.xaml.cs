@@ -13,9 +13,9 @@ using PadForge.Resources.Strings;
 namespace PadForge.Views
 {
     /// <summary>The Devices page (#574): a title with the count of devices
-    /// connected, a search and the Show segments, one list card (a table of
-    /// the devices connected now, then the other inputs and the ones
-    /// PadForge remembers, each folded to a line), and the selected device's
+    /// connected, a search and the Show and connection segments, one list
+    /// card (a table of the devices connected now, then the ones PadForge
+    /// remembers folded to a line), and the selected device's
     /// panel of four cards: the device's picture, facts and the controllers
     /// that use it, its test, its settings and tools, and its details. Wide, the list and the panel scroll
     /// on their own. Narrower than the two need, the panel stands under the
@@ -39,7 +39,7 @@ namespace PadForge.Views
             // binding, when the segment or the search filters it, and when
             // a row moves to another list. The lists live as long as the
             // page.
-            foreach (var list in new[] { MainList, NotConnectedList, OtherInputsList })
+            foreach (var list in new[] { MainList, NotConnectedList })
                 ((INotifyCollectionChanged)list.Items).CollectionChanged += OnListViewChanged;
             // The Used By chips are numbered each time their containers are made.
             UsedByChips.ItemContainerGenerator.StatusChanged += (_, _) =>
@@ -215,7 +215,7 @@ namespace PadForge.Views
 
         private bool _syncingSelection;
 
-        /// <summary>A pick in any of the three lists is the selected device.
+        /// <summary>A pick in either list is the selected device.
         /// In the stacked layout the panel's first card comes into view.</summary>
         private void DeviceList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -227,7 +227,7 @@ namespace PadForge.Views
             }
         }
 
-        /// <summary>The three lists share one selection, the view model's: the
+        /// <summary>The two lists share one selection, the view model's: the
         /// list that holds the selected device shows it picked, and the others
         /// show nothing picked. A list's SelectedItem is set here, never bound
         /// two ways.</summary>
@@ -237,7 +237,7 @@ namespace PadForge.Views
             _syncingSelection = true;
             try
             {
-                foreach (var list in new[] { MainList, NotConnectedList, OtherInputsList })
+                foreach (var list in new[] { MainList, NotConnectedList })
                 {
                     object want = vm.SelectedDevice != null && list.Items.Contains(vm.SelectedDevice) ? vm.SelectedDevice : null;
                     if (!ReferenceEquals(list.SelectedItem, want)) list.SelectedItem = want;
@@ -271,7 +271,6 @@ namespace PadForge.Views
                 var list = ListOf(row);
                 if (list == null) return;
                 if (ReferenceEquals(list, NotConnectedList)) NotConnectedFold.IsExpanded = true;
-                else if (ReferenceEquals(list, OtherInputsList)) OtherInputsFold.IsExpanded = true;
                 SyncListSelection();
                 list.UpdateLayout();
                 list.ScrollIntoView(row);
@@ -282,7 +281,7 @@ namespace PadForge.Views
         /// segment or the search hides it.</summary>
         private ListBox ListOf(ViewModels.DeviceRowViewModel row)
         {
-            foreach (var list in new[] { MainList, NotConnectedList, OtherInputsList })
+            foreach (var list in new[] { MainList, NotConnectedList })
                 if (list.Items.Contains(row)) return list;
             return null;
         }

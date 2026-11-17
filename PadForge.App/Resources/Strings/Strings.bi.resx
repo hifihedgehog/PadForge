@@ -1672,7 +1672,6 @@
   <data name="Devices_Filter_All" xml:space="preserve"><value>Olgeta</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>I konekt</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>I No Konekt</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Narafala Input</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>I no gat divaes we i stret.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>I no stap yusum</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>batri {0}</value></data>

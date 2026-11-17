@@ -976,7 +976,6 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Devices_Filter_Other" xml:space="preserve"><value>Other</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Connected</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Not Connected</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Other Inputs</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>No devices match.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Not in use</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>battery {0}</value></data>

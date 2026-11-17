@@ -635,7 +635,6 @@
   <data name="Devices_Filter_Other" xml:space="preserve"><value>其他</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>已连接</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>未连接</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>其他输入</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>没有匹配的设备。</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>未使用</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>电量 {0}</value></data>

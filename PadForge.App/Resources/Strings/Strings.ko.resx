@@ -635,7 +635,6 @@
   <data name="Devices_Filter_Other" xml:space="preserve"><value>기타</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>연결됨</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>연결 안 됨</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>기타 입력</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>일치하는 장치가 없습니다.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>사용 안 함</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>배터리 {0}</value></data>

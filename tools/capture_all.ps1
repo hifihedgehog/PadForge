@@ -4974,15 +4974,14 @@ function Reset-DeviceFilters {
     return $done
 }
 
-# The Devices page folds the devices PadForge remembers and the other inputs
-# (merged rows, microphones, NFC readers, the rows the extras add) into two
-# lines under the connected rows (#574). A row in a closed fold has no place
-# on screen, so a find opens both first. A recipe closes them after its
-# shots: a fold's state is saved in the staged settings file's OpenCards, so
-# one left open would show in every later Devices frame.
+# The Devices page folds the devices PadForge remembers into a line under
+# the connected rows (#574). A row in a closed fold has no place on screen,
+# so a find opens it first. A recipe closes it after its shots: a fold's
+# state is saved in the staged settings file's OpenCards, so one left open
+# would show in every later Devices frame.
 function Set-DeviceFolds {
     param([bool]$Open)
-    foreach ($aid in @("Devices_Fold_NotConnected", "Devices_Fold_OtherInputs")) {
+    foreach ($aid in @("Devices_Fold_NotConnected")) {
         $fold = Find-UIA -Aid $aid
         if (-not $fold) { continue }
         try {

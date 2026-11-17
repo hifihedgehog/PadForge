@@ -976,7 +976,6 @@
   <data name="Devices_Filter_Other" xml:space="preserve"><value>பிற</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>இணைக்கப்பட்டவை</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>இணைக்கப்படாதவை</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>பிற உள்ளீடுகள்</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>பொருந்தும் சாதனங்கள் இல்லை.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>பயன்பாட்டில் இல்லை</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>பேட்டரி {0}</value></data>

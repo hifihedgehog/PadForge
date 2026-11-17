@@ -4837,7 +4837,6 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Kontrollo ndriçimin e kësaj pajisjeje, Mbajtja e ndriçimit</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Të lidhura</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Të palidhura</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Hyrje të tjera</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Asnjë pajisje nuk përputhet.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Nuk përdoret</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>bateria {0}</value></data>

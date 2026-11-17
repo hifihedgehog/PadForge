@@ -4902,7 +4902,6 @@
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>التحكم في إضاءة هذا الجهاز، الاستحواذ على الإضاءة</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>متصلة</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>غير متصلة</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>مدخلات أخرى</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>لا توجد أجهزة مطابقة.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>غير مستخدم</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>البطارية {0}</value></data>

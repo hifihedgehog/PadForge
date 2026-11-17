@@ -635,7 +635,6 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Devices_Filter_Other" xml:space="preserve"><value>Altri</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Collegati</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Non collegati</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Altri ingressi</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Nessun dispositivo corrisponde.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Non in uso</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>batteria {0}</value></data>

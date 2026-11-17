@@ -4824,7 +4824,6 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Dhibiti Taa za Kifaa Hiki, Ushikiliaji wa Taa</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Vilivyounganishwa</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Visivyounganishwa</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Ingizo Nyingine</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Hakuna vifaa vinavyolingana.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Haitumiki</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>betri {0}</value></data>

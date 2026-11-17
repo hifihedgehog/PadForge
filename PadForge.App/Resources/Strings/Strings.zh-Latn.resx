@@ -4791,7 +4791,6 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Kòngzhì cǐ shèbèi de dēngguāng, Dēngguāng jiēguǎn</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Yǐ liánjiē</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Wèi liánjiē</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Qítā shūrù</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Méiyǒu pǐpèi de shèbèi.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Wèi shǐyòng</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>diànliàng {0}</value></data>

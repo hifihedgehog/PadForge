@@ -568,7 +568,7 @@
             <Setter Property="Padding" Value="12,10"/>
             <Setter Property="Margin" Value="5,0"/>
         </Style>
-        <!-- One of the three lists: its rows only, with no frame and no
+        <!-- One of the two lists: its rows only, with no frame and no
              scroll of its own. The page scrolls the list card. A list over a
              view of its own follows the view's current item unless told
              not to, which picked each list's first row as it filled: the
@@ -753,13 +753,13 @@
                                         AutomationProperties.AutomationId="Devices_ListScroll"
                                         AutomationProperties.Name="{Binding Devices_Title, Source={x:Static strings:Strings.Instance}}">
                     <!-- The list card: a table of the devices connected
-                         now, then a folded line for the other inputs and a
-                         folded line for the ones PadForge remembers, each
-                         hidden while it has no row. Each list shows its
-                         rows through the segment and the search. -->
+                         now, then a folded line for the ones PadForge
+                         remembers, hidden while it has no row. Each list
+                         shows its rows through the segments and the
+                         search. -->
                     <Border x:Name="DeviceListCard" Style="{StaticResource CardBorder}" Padding="0" Margin="0" VerticalAlignment="Top"
                             SizeChanged="ListCard_SizeChanged">
-                        <!-- One scope for the three lists' columns: Link,
+                        <!-- One scope for the two lists' columns: Link,
                              Battery and Used By are as wide in every row as
                              the widest of them needs. -->
                         <StackPanel Grid.IsSharedSizeScope="True">
@@ -848,20 +848,6 @@
                                  the top of its line, which is then the board's
                                  52. Its chevron stands under the rows' tiles
                                  and its title under their names. -->
-                            <Grid Visibility="{Binding HasOtherInputs, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <controls:FoldCard x:Name="OtherInputsFold" StateKey="Devices.OtherInputs"
-                                                   Padding="33,0,16,0" ChevronMargin="0,0,29,0" HeaderMinHeight="52"
-                                                   AutomationProperties.AutomationId="Devices_Fold_OtherInputs"
-                                                   Header="{Binding Devices_Group_OtherInputs, Source={x:Static strings:Strings.Instance}}"
-                                                   Hint="{Binding OtherInputsHint}">
-                                    <ListBox x:Name="OtherInputsList" Style="{StaticResource DeviceList}" Margin="-20,0,-12,-12"
-                                             ItemsSource="{Binding OtherInputsView}" SelectionChanged="DeviceList_SelectionChanged"
-                                             AutomationProperties.AutomationId="Devices_List_OtherInputs"
-                                             AutomationProperties.Name="{Binding Devices_Group_OtherInputs, Source={x:Static strings:Strings.Instance}}"/>
-                                </controls:FoldCard>
-                                <Border Height="1" VerticalAlignment="Top" IsHitTestVisible="False"
-                                        Background="{DynamicResource SteelPaneLineBrush}"/>
-                            </Grid>
                             <Grid Visibility="{Binding HasNotConnected, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <controls:FoldCard x:Name="NotConnectedFold" StateKey="Devices.NotConnected"
                                                    Padding="33,0,16,0" ChevronMargin="0,0,29,0" HeaderMinHeight="52"

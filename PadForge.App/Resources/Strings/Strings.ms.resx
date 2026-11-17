@@ -4890,7 +4890,6 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Kawal Pencahayaan Peranti Ini, Pegangan Pencahayaan</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Bersambung</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Tidak Bersambung</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Input Lain</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Tiada peranti sepadan.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Tidak digunakan</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>bateri {0}</value></data>

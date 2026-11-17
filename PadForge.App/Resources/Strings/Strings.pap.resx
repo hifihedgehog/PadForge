@@ -2684,7 +2684,6 @@
   <data name="Extras_TouchpadOverlay_DragHint" xml:space="preserve"><value>Hal'é ku e boton drechi di mouse òf ku tres dede pa move'é.</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Konektá</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>No konektá</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Otro entrada</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Ningun aparato no ta kuadra.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>No na uso</value></data>
   <data name="Devices_UsedBy" xml:space="preserve"><value>Usá pa</value></data>

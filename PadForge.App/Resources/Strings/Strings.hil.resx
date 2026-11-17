@@ -1608,7 +1608,6 @@
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopyaha ang address</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Ang telepono nga nag-connect makita diri kag sa Mga device nga pahina, diin imo ini i-assign sa controller.</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Naka-connect</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Iban pa nga Input</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Wala sing device nga nagatugma.</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>baterya {0}</value></data>
   <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>baterya {0}, ginacharge</value></data>

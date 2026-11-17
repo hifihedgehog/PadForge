@@ -4693,7 +4693,6 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Beheer hierdie toestel se beligting, Beligtingsgreep</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Gekoppel</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Nie gekoppel nie</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Ander invoere</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Geen toestelle stem ooreen nie.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Nie in gebruik nie</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>battery {0}</value></data>

@@ -1172,7 +1172,7 @@ namespace PadForge.Tests
             Shot("devices-1280.png", PageWidth, 1088, PickDualSense);
             ShotOpen("devices-1280-details.png", 1500, "DetailsFold");
             ShotOpen("devices-1280-more.png", 1800, "TestMore");
-            ShotOpen("devices-1280-folds.png", 1300, "NotConnectedFold", "OtherInputsFold");
+            ShotOpen("devices-1280-folds.png", 1300, "NotConnectedFold");
             Shot("devices-900.png", Narrow, 2300, null);
             // A wide window, where the table has all the room it wants.
             Shot("devices-1440.png", 1176, 1088, null);

@@ -1771,7 +1771,6 @@
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Ifowuni eqhagamshelayo ibonakala apha nakwiphepha leZixhobo, apho uyabela khona kwisilawuli.</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Khangela izixhobo</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Zonke</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Amanye amagalelo</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Akukho zixhobo zihambelanayo.</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>ibhetri {0}</value></data>
   <data name="Devices_Line_BatteryCharging_Format" xml:space="preserve"><value>ibhetri {0}, iyatshaja</value></data>

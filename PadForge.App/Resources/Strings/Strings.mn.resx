@@ -4875,7 +4875,6 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Энэ төхөөрөмжийн гэрэлтүүлгийг удирдах, Гэрэлтүүлгийн хяналт</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Холбогдсон</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Холбогдоогүй</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Бусад оролт</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Тохирох төхөөрөмж алга.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Ашиглагдаагүй</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>батерей {0}</value></data>

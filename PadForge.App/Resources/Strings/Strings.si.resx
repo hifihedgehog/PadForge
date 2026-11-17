@@ -4850,7 +4850,6 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>මෙම උපාංගයේ ආලෝකකරණය පාලනය කරන්න, ආලෝකකරණ රඳවා ගැනීම</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>සම්බන්ධිත</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>සම්බන්ධ නොවූ</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>වෙනත් ආදාන</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>කිසිදු උපාංගයක් නොගැළපේ.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>භාවිතයේ නැත</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>බැටරිය {0}</value></data>

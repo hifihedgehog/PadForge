@@ -976,7 +976,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Devices_Filter_Other" xml:space="preserve"><value>Khác</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Đã kết nối</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Chưa kết nối</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Đầu vào khác</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Không có thiết bị nào khớp.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Chưa dùng</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>pin {0}</value></data>

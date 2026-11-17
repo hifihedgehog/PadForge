@@ -635,7 +635,6 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Devices_Filter_Other" xml:space="preserve"><value>Overig</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Verbonden</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Niet verbonden</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Andere invoer</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Geen apparaten komen overeen.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Niet in gebruik</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>batterij {0}</value></data>

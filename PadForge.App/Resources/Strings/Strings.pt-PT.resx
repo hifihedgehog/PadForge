@@ -4894,7 +4894,6 @@ Pretende que o PadForge os desinstale agora? Esta operação requer elevação e
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Controlar a iluminação deste dispositivo, Nível de controlo da iluminação</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Ligados</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Não ligados</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Outras entradas</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Nenhum dispositivo corresponde.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Não está em uso</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>bateria {0}</value></data>

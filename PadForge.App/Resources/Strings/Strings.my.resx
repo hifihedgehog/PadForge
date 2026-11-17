@@ -4882,7 +4882,6 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>ဤစက်ပစ္စည်း၏ မီးအလင်းကို ထိန်းချုပ်ရန်၊ မီးအလင်း ထိန်းယူမှု</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>ချိတ်ဆက်ထားသည်</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>ချိတ်ဆက်မထားပါ</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>အခြားအဝင်များ</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>ကိုက်ညီသော စက်ပစ္စည်း မရှိပါ။</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>အသုံးမပြုပါ</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>ဘက်ထရီ {0}</value></data>

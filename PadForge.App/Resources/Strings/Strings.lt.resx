@@ -4889,7 +4889,6 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>Valdyti šio įrenginio apšvietimą, apšvietimo perėmimas</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Prijungti</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Neprijungti</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Kitos įvestys</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Joks įrenginys neatitinka.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>Nenaudojamas</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>akumuliatorius {0}</value></data>

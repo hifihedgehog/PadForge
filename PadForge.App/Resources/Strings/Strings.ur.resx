@@ -976,7 +976,6 @@
   <data name="Devices_Filter_Other" xml:space="preserve"><value>دیگر</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>منسلک</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>منسلک نہیں</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>دیگر ان پٹس</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>کوئی آلہ مماثل نہیں۔</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>استعمال میں نہیں</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>بیٹری {0}</value></data>

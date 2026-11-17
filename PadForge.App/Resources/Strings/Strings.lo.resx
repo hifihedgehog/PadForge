@@ -4874,7 +4874,6 @@
   <data name="Pad_LightingControl_FoldHint" xml:space="preserve"><value>ຄວບຄຸມແສງໄຟຂອງອຸປະກອນນີ້, ລະດັບການຄວບຄຸມແສງໄຟ</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>ເຊື່ອມຕໍ່ແລ້ວ</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>ບໍ່ໄດ້ເຊື່ອມຕໍ່</value></data>
-  <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>ອິນພຸດອື່ນໆ</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>ບໍ່ມີອຸປະກອນທີ່ກົງກັນ.</value></data>
   <data name="Devices_NotInUse" xml:space="preserve"><value>ບໍ່ໄດ້ໃຊ້ງານ</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>ແບັດເຕີຣີ {0}</value></data>

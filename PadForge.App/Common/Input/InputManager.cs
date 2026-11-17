@@ -1978,7 +1978,12 @@ namespace PadForge.Common.Input
         /// its ups after this loop may already have seen the stop, so the last
         /// act waits for <paramref name="pollThread"/> to end, then sends
         /// everything queued before the stop, in order.</para>
+        ///
+        /// <para>Compiled optimized at its first call, as the poll loop is
+        /// (<see cref="PollingLoop"/>), so no compile lands between two of
+        /// its sends.</para>
         /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveOptimization)]
         private void MouseInjectorLoop(int generation, Thread pollThread)
         {
             while (_running && System.Threading.Volatile.Read(ref _runGeneration) == generation)
@@ -2149,7 +2154,16 @@ namespace PadForge.Common.Input
         /// <paramref name="generation"/> retires the loop when Stop moves the
         /// stamp. <paramref name="pollRun"/> is the frame bookkeeping run Start
         /// registered for it (SourceCoercion.BeginPollRun).
+        ///
+        /// <para>Compiled optimized at its first call, before any pass is
+        /// due. A method that stays in its loop starts as quick code, and the
+        /// runtime swaps in optimized code mid-loop by compiling it on the
+        /// thread that runs the loop: about 15 to 20 seconds after launch,
+        /// that compile held this thread 9 to 14 ms between two passes
+        /// (measured 2026-11-16, the poll thread's compile events beside
+        /// each late pass).</para>
         /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveOptimization)]
         private void PollingLoop(int generation, int pollRun)
         {
             // A one millisecond clock for the loop's life: the timers of SDL,

@@ -273,23 +273,52 @@ namespace PadForge.Tests
             => Assert.Equal("4000 Гц (0,25 мс)",
                 PollingRates.Label(4000, System.Globalization.CultureInfo.GetCultureInfo("ru-RU"), "Гц", "мс"));
 
-        /// <summary>The rate the Home page and the heartbeat show is the
-        /// passes over the window's own length, which the page shows in
-        /// whole hertz. 1001 passes in 1000.9 ms is 1000 Hz, where the
-        /// window's whole milliseconds read 1001.</summary>
+        /// <summary>The rate Home and the heartbeat show, in whole hertz
+        /// (PollRateMeter), driven by the loop's own schedule on a test
+        /// clock: every second reads the rate though each wake comes up to
+        /// half a millisecond late, and the second with a 20 ms stall reads
+        /// lower, by the passes the stall dropped. Timed by when its passes
+        /// ended, the same loop reads a hertz or more off now and then, as
+        /// Home showed 1001 Hz at 1000.</summary>
         [Theory]
-        [InlineData(1001, 1000.9, 1000)]
-        [InlineData(1000, 1000.4, 1000)]
-        [InlineData(10009, 1000.9, 10000)]
-        [InlineData(4003, 1000.8, 4000)]
-        [InlineData(250, 1000.0, 250)]
-        public void TheShownRateIsThePassesOverTheWindowsOwnLength(int passes, double milliseconds, int shown)
+        [InlineData(250)]
+        [InlineData(1000)]
+        [InlineData(4000)]
+        [InlineData(10000)]
+        public void TheShownRateHoldsThroughLateWakes_AndAStallShowsWhatItDropped(int hz)
         {
-            var window = TimeSpan.FromTicks((long)Math.Round(milliseconds * TimeSpan.TicksPerMillisecond));
-            Assert.Equal(shown + " Hz", string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0:F0} Hz", InputManager.PassRate(passes, window)));
-            Assert.Equal(0, InputManager.PassRate(passes, TimeSpan.Zero));
+            const long Frequency = 10_000_000, Grid = Frequency / 2000, Work = 200;
+            string Shown(double rate) => string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0:F0} Hz", rate);
+            var random = new Random(hz);
+            long now = 0;
+            var schedule = new PollSchedule(Frequency, Grid, hz, now);
+            var byDue = new PollRateMeter();
+            var byEnd = new PollRateMeter();
+            var shown = new List<double>();
+            var ended = new List<double>();
+            for (int pass = 0; pass < hz * 6; pass++)
+            {
+                if (pass == hz * 4) now += Frequency / 50;
+                if (byDue.TryPass(schedule.Due, Frequency, out double rate)) shown.Add(rate);
+                now += Work;
+                if (byEnd.TryPass(now, Frequency, out double endRate)) ended.Add(endRate);
+                long sleepUntil = schedule.Next(now);
+                if (sleepUntil != 0)
+                {
+                    now = sleepUntil + random.Next(0, 5200);
+                    schedule.Woke(now);
+                }
+            }
+
+            Assert.True(shown.Count >= 5, shown.Count + " readings");
+            var off = shown.Where(r => Shown(r) != Shown(hz)).ToList();
+            Assert.Single(off);
+            Assert.True(off[0] < hz * 0.995, $"the stalled second read {off[0]:F1} Hz at {hz}");
+            if (hz >= 1000)
+                Assert.Contains(ended, r => Shown(r) != Shown(hz) && r > hz * 0.995);
+
             string loop = ExtrasPageTests.RepoText("PadForge.App", "Common", "Input", "InputManager.cs");
-            Assert.Contains("CurrentFrequency = PassRate(_frequencyCounter, _frequencyTimer.Elapsed);", loop);
+            Assert.Contains("if (_rateMeter.TryPass(schedule.Due, Stopwatch.Frequency, out double passRate))", loop);
         }
     }
 }

@@ -262,9 +262,8 @@ namespace PadForge.Common.Input
         /// <summary>Stopwatch for timing enumeration intervals.</summary>
         private readonly Stopwatch _enumerationTimer = new Stopwatch();
 
-        /// <summary>Stopwatch for frequency measurement.</summary>
-        private readonly Stopwatch _frequencyTimer = new Stopwatch();
-        private int _frequencyCounter;
+        /// <summary>Measures <see cref="CurrentFrequency"/>.</summary>
+        private readonly PollRateMeter _rateMeter = new();
 
         // ── Pre-allocated snapshot buffers for hot path (avoid LINQ allocations) ──
         private UserDevice[] _deviceSnapshotBuffer = new UserDevice[16];
@@ -863,14 +862,6 @@ namespace PadForge.Common.Input
         /// Current measured polling frequency in Hz.
         /// </summary>
         public double CurrentFrequency { get; private set; }
-
-        /// <summary>The passes a second that a window of passes ran at: the
-        /// passes over the window's own length. Over its length in whole
-        /// milliseconds, a window of 1000.9 ms with its 1001 passes read
-        /// 1001 Hz at a rate of 1000, and 10000 Hz read up to 10 Hz
-        /// high.</summary>
-        internal static double PassRate(int passes, TimeSpan window)
-            => window.Ticks <= 0 ? 0 : passes / window.TotalSeconds;
 
         /// <summary>
         /// Whether the manager is currently running the polling loop.
@@ -1944,8 +1935,7 @@ namespace PadForge.Common.Input
             Array.Clear(_steeringAngleFrames);
             _running = true;
             _enumerationTimer.Restart();
-            _frequencyTimer.Restart();
-            _frequencyCounter = 0;
+            _rateMeter.Reset();
 
             int generation = StampRun();
             // The run owns the evaluator's frame bookkeeping
@@ -2127,7 +2117,7 @@ namespace PadForge.Common.Input
             CloseAllDevices();
 
             _enumerationTimer.Stop();
-            _frequencyTimer.Stop();
+            _rateMeter.Reset();
             CurrentFrequency = 0;
         }
 
@@ -2291,8 +2281,7 @@ namespace PadForge.Common.Input
                         }
 
                         CurrentFrequency = 0;
-                        _frequencyCounter = 0;
-                        _frequencyTimer.Restart();
+                        _rateMeter.Reset();
                         FrequencyUpdated?.Invoke(this, EventArgs.Empty);
                         WritePollHeartbeat((Stopwatch.GetTimestamp() - tsIdleCycle) * 1000 / Stopwatch.Frequency);
                         Thread.Sleep(50);
@@ -2309,8 +2298,7 @@ namespace PadForge.Common.Input
                         try { PublishLayerGatedHookKeys(evaluating: false); }
                         catch (Exception ex) { RaiseError("Focus-suspend hook release", ex); }
                         CurrentFrequency = 0;
-                        _frequencyCounter = 0;
-                        _frequencyTimer.Restart();
+                        _rateMeter.Reset();
                         FrequencyUpdated?.Invoke(this, EventArgs.Empty);
                         WritePollHeartbeat(0);
                         Thread.Sleep(100);
@@ -2443,13 +2431,11 @@ namespace PadForge.Common.Input
                         // Channel heartbeat, every 10 s from every branch.
                         WritePollHeartbeat(cycleMs);
 
-                        // Frequency measurement.
-                        _frequencyCounter++;
-                        if (_frequencyTimer.ElapsedMilliseconds >= 1000)
+                        // The rate the passes run at, over the schedule's
+                        // own time (PollRateMeter).
+                        if (_rateMeter.TryPass(schedule.Due, Stopwatch.Frequency, out double passRate))
                         {
-                            CurrentFrequency = PassRate(_frequencyCounter, _frequencyTimer.Elapsed);
-                            _frequencyCounter = 0;
-                            _frequencyTimer.Restart();
+                            CurrentFrequency = passRate;
                             FrequencyUpdated?.Invoke(this, EventArgs.Empty);
                         }
 

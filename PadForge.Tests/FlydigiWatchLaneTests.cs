@@ -167,7 +167,7 @@ namespace PadForge.Tests
             int idle = loop.IndexOf("if (BeginIdlePoll())", StringComparison.Ordinal);
             int focus = loop.IndexOf("if (ApplyFocusSuspension())", Math.Max(idle, 0), StringComparison.Ordinal);
             int active = loop.IndexOf("cycleTimer.Restart();", Math.Max(focus, 0), StringComparison.Ordinal);
-            int end = loop.IndexOf("// Frequency measurement.", Math.Max(active, 0), StringComparison.Ordinal);
+            int end = loop.IndexOf("// The rate the passes run at, over the schedule's", Math.Max(active, 0), StringComparison.Ordinal);
             Assert.True(idle > 0 && focus > idle && active > focus && end > active, "the poll loop moved");
             Assert.Contains("WritePollHeartbeat((Stopwatch.GetTimestamp() - tsIdleCycle) * 1000 / Stopwatch.Frequency);\n                        Thread.Sleep(50);",
                 loop.Substring(idle, focus - idle));

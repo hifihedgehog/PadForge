@@ -203,6 +203,16 @@ namespace PadForge.Views
         {
             var hwnd = new WindowInteropHelper(this).Handle;
             if (_arranging || hwnd == IntPtr.Zero) return;
+            KeepAboveOthers(hwnd, isOurs);
+        }
+
+        /// <summary>The check behind <see cref="KeepOnTop()"/>, for any of
+        /// PadForge's topmost windows: back on top when another program's
+        /// visible window is above it. The crosshairs and the magnifier
+        /// (#585) keep theirs with it.</summary>
+        internal static void KeepAboveOthers(IntPtr hwnd, Func<IntPtr, bool> isOurs)
+        {
+            if (hwnd == IntPtr.Zero) return;
             for (var above = GetWindow(hwnd, GW_HWNDPREV); above != IntPtr.Zero; above = GetWindow(above, GW_HWNDPREV))
             {
                 if (isOurs(above) || !IsWindowVisible(above)) continue;

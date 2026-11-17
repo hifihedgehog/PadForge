@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>በሚጫወቱበት ጊዜ ምናሌዎችን፣ ንብርብሮችን እና የመገለጫ መቀየሪያዎችን ያሳዩ።</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ለPlayStation መዳሰሻ ሰሌዳ ጨዋታዎች በማያ ገጽ ላይ የሚታይ የንክኪ ገጽ።</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>ከሌሎች መስኮቶች በላይ የሚታይ ምስል፣ ሰዓት ቆጣሪ ወይም ሰዓት።</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>በጨዋታ ላይ የሚታይ የራስዎ ማነጣጠሪያ።</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>የማጉያ ሌንስ፣ ሙሉ ማያ ገጽ ማጉላት ወይም የትኩረት ብርሃን።</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>ወደብ፣ ተራ HTTP፣ የመዳረሻ ኮድ</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ራስ-ሰር ዳግም ግንኙነት፣ ወደብ፣ የማጣመሪያ ማንነት፣ በአድራሻ አገናኝ</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>ወደብ፣ የDSX.exe ተተኪ</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ተደራቢ {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>የሚያሳየው</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>ሌላ ፕሮግራም ፊት ለፊት ሲሆን ጠቅታዎች በተደራቢው ውስጥ ያልፋሉ። PadForge ፊት ለፊት ሲሆን በቀኝ የመዳፊት አዝራር ይጎትቱት እና ከጥጉ መጠኑን ይቀይሩ። ማክሮ ተደራቢን በቁጥሩ ሊያሳይ ወይም ሊደብቅ ይችላል።</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>ማነጣጠሪያ</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>ከሌሎች መስኮቶች በላይ በማሳያ መሃል የሚታዩ ማነጣጠሪያዎች፦ መስቀል፣ ክብ፣ ነጥብ ወይም የራስዎ ምስል።</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>ማነጣጠሪያ አክል</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>ማነጣጠሪያ {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>ማነጣጠሪያን አሳይ</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>ቅጥ</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>መስቀል</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>ክብ</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>ነጥብ</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>ምስል</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>ቅድመ እይታ</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>ከመሃል መፈናቀል</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>አግድም መፈናቀል</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>ቁመታዊ መፈናቀል</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>የክንድ ርዝመት</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>ውፍረት</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>ክፍተት</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>የመሃል ነጥብ</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T ቅርጽ</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>የላይኛው ክንድ የለም።</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>ራዲየስ</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>ጎኖች</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>በ64 ጎኖች ቀለበቱ ክብ ይሆናል።</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>መጠን</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>ምስል</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>ምንም ምስል አልተመረጠም</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>ምስሎች (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|ሁሉም ፋይሎች (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>መጠን</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>ስፋት</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>ቁመት</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>የምስሉ የራሱ መጠን</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>ምጥጥንን ጠብቅ</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>ሲጠፋ ምስሉ ወደ ተዘጋጀው ስፋት እና ቁመት ይለጠጣል።</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>ቀለም</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>የውጪ መስመር</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>የውጪ መስመር ስፋት</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>የውጪ መስመር ቀለም</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>ማሽከርከር</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>ለስላሳ ጠርዞች</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>ሲጠፋ እያንዳንዱ ጠርዝ በሙሉ ፒክሰሎች ላይ ያርፋል እና ጥርት ብሎ ይቆያል።</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>የቀለም መምረጫውን አሳይ ወይም ደብቅ</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>የሚታይ ምስል የለም</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>ከማሳያው ውጭ</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>ማነጣጠሪያዎች በመስኮት እና ያለ ድንበር በሚሄዱ ጨዋታዎች ላይ ይታያሉ፣ ጠቅታዎችም በውስጣቸው ያልፋሉ። በብቸኛ ሙሉ ማያ ገጽ የሚሄድ ጨዋታ ይደብቃቸዋል፣ ስለዚህ በመስኮት ወይም ያለ ድንበር ያሂዱት። ማክሮ ማነጣጠሪያን በቁጥሩ ሊያሳይ ወይም ሊደብቅ ይችላል።</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>ማጉያ</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>እንደ አልሞ ተኳሽ መነጽር ያለ ሌንስ፣ ሙሉ በሙሉ የጎላ ማሳያ ወይም የቀረውን የሚያጨልም የትኩረት ብርሃን።</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>ማጉያን አሳይ</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>የሚያሳየው</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>ሁነታ</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>ሌንስ</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>ሙሉ ማያ ገጽ</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>የትኩረት ብርሃን</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>የሚያተኩርበት</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>የማሳያ መሃል</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>ጠቋሚ</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>ማነጣጠሪያ</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>«ማነጣጠሪያ» ማለት የበራው የመጀመሪያው ማነጣጠሪያ ነው፣ መፈናቀሉንም ጨምሮ።</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>ማጉላት</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>ቅርጽ</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>ክብ</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>አራት ማዕዘን</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>መጠን</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>ስፋት</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>ቁመት</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>ድንበር</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>የድንበር ስፋት</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>የድንበር ቀለም</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>የክቡ መጠን</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>ጨለማነት</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ማጉያውን አላስጀመረም።</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>ሌንሱ እና የትኩረት ብርሃኑ በመስኮት እና ያለ ድንበር በሚሄዱ ጨዋታዎች ላይ ይታያሉ፣ ጠቅታዎችም በውስጣቸው ያልፋሉ። «ሙሉ ማያ ገጽ» መላውን ዴስክቶፕ Windows ባለው የሙሉ ማያ ገጽ ማጉያ ያጎላል። ማክሮ ማጉያውን ሊያሳይ ወይም ሊደብቅ፣ ወይም ተጭኖ ሲያዝ ብቻ ሊያሳየው ይችላል።</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>የእንቅስቃሴ አገልጋይ</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ለጋይሮ እና ለአክስሌሮሜትር ውሂብ የDSU/CemuHook Motion Provider ፕሮቶኮል አገልጋይ።</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>የDSU እንቅስቃሴ አገልጋይን አንቃ (CemuHook Motion Provider Protocol)</value></data>
@@ -4891,4 +4964,6 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>የይለፍ ቃል አዘጋጅ</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>የርቀት ትስስርን ክፈት</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>የይለፍ ቃል</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>ማጉያ (ተጭኖ ሲያዝ)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>ይህ ማክሮ ተጭኖ ሲያዝ በዕይታ መነጽር ለማነጣጠር ማጉያውን ያሳያል። በ«ማጉያ» ገጽ ላይ ያዘጋጁት።</value></data>
 </root>

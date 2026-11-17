@@ -3432,6 +3432,8 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mostra menu, livelli e cambi di profilo durante il gioco.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Una superficie touch su schermo per i giochi con touchpad PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Un'immagine, un timer o un orologio sopra le altre finestre.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Il tuo mirino sopra un gioco.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Una lente, uno zoom a schermo intero o un riflettore.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Porta, HTTP non cifrato, codice di accesso</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Riconnessione automatica, porta, identità di abbinamento, connetti tramite indirizzo</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Porta, sostituto di DSX.exe</value></data>
@@ -3479,6 +3481,77 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Overlay {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Mostra</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Mentre un altro programma è in primo piano, i clic attraversano l'overlay. Mentre PadForge è in primo piano, trascinalo con il pulsante destro del mouse e ridimensionalo dall'angolo. Una macro può mostrare o nascondere un overlay in base al suo numero.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Mirino</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Mirini sopra le altre finestre, al centro di un monitor: una croce, un cerchio, un punto o un'immagine tua.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Aggiungi mirino</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Mirino {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Mostra mirino</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Stile</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Croce</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Cerchio</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Punto</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Immagine</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Anteprima</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Scostamento dal centro</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Scostamento orizzontale</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Scostamento verticale</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Lunghezza dei bracci</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Spessore</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Spazio</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Punto centrale</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Forma a T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Senza braccio superiore.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Raggio</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Lati</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Con 64 lati l'anello è rotondo.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Dimensione</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Immagine</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Nessuna immagine scelta</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Immagini (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Tutti i file (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Dimensione</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Larghezza</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Altezza</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Dimensione originale dell'immagine</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Mantieni le proporzioni</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Se disattivato, l'immagine si adatta alla larghezza e all'altezza impostate.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Colore</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Contorno</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Larghezza del contorno</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Colore del contorno</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Rotazione</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Bordi sfumati</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Se disattivato, ogni bordo cade su pixel interi e resta nitido.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Mostra o nascondi il selettore colore</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Nessuna immagine da mostrare</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Fuori dal monitor</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>I mirini compaiono sopra i giochi in finestra e senza bordi, e i clic li attraversano. Un gioco a schermo intero esclusivo li nasconde, quindi eseguilo in finestra o senza bordi. Una macro può mostrare o nascondere un mirino in base al suo numero.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Lente d'ingrandimento</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Una lente come un mirino da cecchino, l'intero monitor ingrandito o un riflettore che oscura il resto.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Mostra lente d'ingrandimento</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Cosa mostra</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Modalità</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lente</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Schermo intero</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Riflettore</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Centra su</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Centro del monitor</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Puntatore</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Mirino</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Mirino indica il primo mirino attivo, con il suo scostamento.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Zoom</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Forma</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Cerchio</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Rettangolo</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Dimensione</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Larghezza</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Altezza</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Bordo</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Larghezza del bordo</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Colore del bordo</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Dimensione del cerchio</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Oscurità</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows non ha avviato la lente d'ingrandimento.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>La lente e il riflettore compaiono sopra i giochi in finestra e senza bordi, e i clic li attraversano. Schermo intero ingrandisce tutto il desktop con la lente d'ingrandimento a schermo intero di Windows. Una macro può mostrare o nascondere la lente d'ingrandimento, oppure mostrarla solo mentre è tenuta premuta.</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>Annotazioni di mappatura</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
@@ -5207,6 +5280,10 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Overlay schermo PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Non c'è ancora nulla da mostrare. Scegli cosa mostra nella pagina Overlay schermo, sotto Extra.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Attiva/disattiva overlay schermo</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Attiva/disattiva mirino</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Attiva/disattiva lente d'ingrandimento</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Tutti i mirini</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Mirino</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Attiva/disattiva overlay schermo</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Overlay schermo</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>L'overlay non mostra nulla.</value></data>
@@ -5227,6 +5304,11 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Overlay</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Tutti gli overlay</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Attiva/disattiva overlay schermo {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Attiva/disattiva mirino</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Attiva/disattiva mirino {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Attiva/disattiva lente d'ingrandimento</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Lente d'ingrandimento (tenuta premuta)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Mostra la lente d'ingrandimento mentre questa macro è tenuta premuta, per mirare con il mirino ottico. Impostala nella pagina Lente d'ingrandimento.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Mostra immagini su {0}: {1} × {2} ms, fino alla successiva macro Mostra o Modalità</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Importa profilo</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, un file {1}.</value></data>
@@ -5255,7 +5337,7 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge non riconosce questa uscita: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge non ha nessun comando di questo tipo: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Il controller virtuale non ha questo pulsante: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Un mirino esiste solo dentro reWASD. Mostra una tua immagine con un Overlay schermo.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD conserva i suoi mirini nelle proprie impostazioni, non nella configurazione. Imposta i tuoi nella pagina Mirino.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Il jitter e il tremolio dello stick non sono stati importati.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>I punti di attuazione analogici dei tasti non sono stati importati.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD inviava questo controller a un altro dispositivo tramite un adattatore. PadForge lo riproduce su questo PC e Remote Link lo invia a un altro PC con PadForge.</value></data>
@@ -5547,7 +5629,6 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profilo HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Luci dei tasti PadForge (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Una macro non può premere {0}. Una riga nella sezione Mappature sì.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge gestisce otto Overlay schermo, e questo è il nono o il decimo mirino di reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge legge Giroscopio sinistra e destra dal rollio e l'inclinazione dall'imbardata, come da impostazione predefinita di reWASD. Le Preferenze di reWASD possono scambiare i due assi, e questo file non indica se è stato fatto.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>In modalità Tilt, l'inclinazione di reWASD è una rotazione attorno all'asse verticale, e un sensore di movimento non dà alcun angolo per quella rotazione.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge legge una diagonale del touchpad come due direzioni insieme, cosa che il touchpad segnala solo quando la sua Modalità D-Pad nella sezione Movimento e tocco è su 8 Direzioni.</value></data>

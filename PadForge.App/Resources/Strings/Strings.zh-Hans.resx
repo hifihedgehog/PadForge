@@ -3410,6 +3410,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>在游戏过程中显示菜单、层和配置文件切换。</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>为 PlayStation 触控板游戏提供屏幕触摸表面。</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>在其他窗口上方显示图片、计时器或时钟。</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>在游戏上显示你自己的准星。</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>放大镜头、全屏放大或聚光灯。</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>端口、未加密的 HTTP、访问码</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>自动重连、端口、配对身份、通过地址连接</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>端口、DSX.exe 替身程序</value></data>
@@ -3457,6 +3459,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>叠加层 {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>显示内容</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>其他程序位于前台时，点击会穿过叠加层。PadForge 位于前台时，可用鼠标右键拖动它，并从它的角上调整大小。宏可以按编号显示或隐藏叠加层。</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>准星</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>在其他窗口上方、显示器中央显示准星：十字、圆圈、圆点或你自己的图片。</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>添加准星</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>准星 {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>显示准星</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>样式</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>十字</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>圆圈</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>圆点</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>图片</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>预览</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>与中心的偏移</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>水平偏移</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>垂直偏移</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>线段长度</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>粗细</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>间隙</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>中心圆点</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T 形</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>没有上方线段。</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>半径</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>边数</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>边数为 64 时圆环是圆的。</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>大小</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>图片</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>未选择图片</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>图片 (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|所有文件 (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>大小</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>宽度</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>高度</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>图片原始大小</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>保持比例</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>关闭时，图片会拉伸到设定的宽度和高度。</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>颜色</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>轮廓</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>轮廓宽度</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>轮廓颜色</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>旋转</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>平滑边缘</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>关闭时，每条边都落在整像素上，保持锐利。</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>显示或隐藏取色器</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>没有可显示的图片</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>超出其显示器</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>准星会显示在窗口化和无边框的游戏上方，点击会穿过准星。独占全屏的游戏会遮住准星，请改用窗口化或无边框模式运行。宏可以按编号显示或隐藏准星。</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>放大镜</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>类似狙击镜的镜头、放大整个显示器，或让其余部分变暗的聚光灯。</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>显示放大镜</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>显示内容</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>模式</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>镜头</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>全屏</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>聚光灯</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>居中于</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>显示器中心</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>鼠标指针</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>准星</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>选择“准星”时，以第一个已开启的准星为中心，包含其偏移。</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>缩放</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>形状</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>圆形</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>矩形</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>大小</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>宽度</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>高度</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>边框</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>边框宽度</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>边框颜色</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>圆圈大小</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>暗度</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows 未能启动放大镜。</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>镜头和聚光灯会显示在窗口化和无边框的游戏上方，点击会穿过它们。全屏模式使用 Windows 的全屏放大镜放大整个桌面。宏可以显示或隐藏放大镜，也可以只在按住时显示。</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>映射标注</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
@@ -5185,6 +5258,10 @@
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge 屏幕叠加层</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>暂无可显示的内容。请在附加功能下的屏幕叠加层页面上选择显示内容。</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>切换屏幕叠加层</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>切换准星</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>切换放大镜</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>所有准星</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>准星</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>切换屏幕叠加层</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>屏幕叠加层</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>叠加层不显示任何内容。</value></data>
@@ -5205,6 +5282,11 @@
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>叠加层</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>所有叠加层</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>切换屏幕叠加层 {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>切换准星</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>切换准星 {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>切换放大镜</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>放大镜（按住时）</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>按住此宏时显示放大镜，用于开镜瞄准。请在放大镜页面中设置。</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>显示 {0} 图片：{1} × {2} 毫秒，直到下一个显示宏或模式宏</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>导入配置文件</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}，{1} 文件。</value></data>
@@ -5233,7 +5315,7 @@
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge 无法识别此输出：{0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge 没有这个命令：{0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>虚拟控制器没有这个按钮：{0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>准星只存在于 reWASD 内部。请用屏幕叠加层显示你自己的图片。</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD 把准星保存在它自己的设置里，而不是配置文件中。请在准星页面设置你的准星。</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>摇杆抖动和晃动设置未导入。</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>模拟按键触发点未导入。</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD 通过适配器将此控制器发送到了另一台设备。PadForge 会在这台电脑上运行它，而 Remote Link 可将其发送到另一台运行 PadForge 的电脑。</value></data>
@@ -5525,7 +5607,6 @@
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro 配置文件 (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge 按键灯光 (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>宏无法按下 {0}。“映射”中的一行可以。</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge 运行八个屏幕叠加层，而这是 reWASD 的第九个或第十个准星。</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge 按 reWASD 的默认设置，从翻滚读取陀螺仪的左和右，从偏航读取倾斜。reWASD 的首选项可以将两者互换，而此文件没有说明是否互换过。</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>在倾斜模式下，reWASD 的倾斜是绕垂直轴的转动，而运动传感器不提供这种转动的角度。</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge 将触控板对角线读取为同时按下两个方向，只有“体感与触控”中该触控板的方向键模式为 8 方向时，触控板才会报告这种输入。</value></data>

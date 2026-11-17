@@ -2687,4 +2687,5 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Akunini</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Ngesikhathi ungqimba luvuliwe kugcina iwindi libonakala kuze kushintshe ungqimba. Imizuzwana engu-2 ibonisa iwindi uma ungqimba luvuleka, bese liyanyamalala. Ngokuthi Akunini, lolu ngqimba alulibonisi iwindi, futhi isisekelo asilibonisi uma ungqimba luphela.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Imizuzwana engu-2 ibonisa igama lesisekelo uma ungqimba lwe-Shift luphela. Ngokuthi Akunini, isisekelo asibonisi iwindi.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Izithombe (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Wonke amafayela (*.*)|*.*</value></data>
 </root>

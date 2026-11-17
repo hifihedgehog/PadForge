@@ -45,6 +45,8 @@ ALIASES = {
     "screen-color": "pad-lighting-screen-color",
     "twitch-chat": "dashboard-twitch-chat",
     "screen-overlay": "dashboard-screen-overlay",
+    "crosshair": "extras-crosshair",
+    "magnifier": "extras-magnifier",
 }
 
 # Site assets that deliberately have no captured source (brand art, awards).

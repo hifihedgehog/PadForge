@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Menük, rétegek és profilváltások megjelenítése játék közben.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Képernyőn megjelenő érintőfelület a PlayStation-érintőpados játékokhoz.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Kép, időzítő vagy óra a többi ablak felett.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Saját célkereszt a játék felett.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Nagyítólencse, teljes képernyős nagyítás vagy reflektorfény.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, sima HTTP, hozzáférési kód</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Auto-újracsatlakozás, port, párosítási identitás, csatlakozás cím alapján</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe helyettesítő</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Átfedés {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Mutatja</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Amíg egy másik program van előtérben, a kattintások áthatolnak az átfedésen. Amíg a PadForge van előtérben, húzza a jobb egérgombbal, és méretezze át a sarkánál fogva. Egy makró szám szerint megjeleníthet vagy elrejthet egy átfedést.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Célkereszt</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Célkeresztek a többi ablak felett, a kijelző közepére igazítva: kereszt, kör, pont vagy saját kép.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Célkereszt hozzáadása</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Célkereszt {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Célkereszt megjelenítése</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Stílus</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Kereszt</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Kör</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Pont</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Kép</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Előnézet</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Eltolás a középponttól</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Vízszintes eltolás</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Függőleges eltolás</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Szárhossz</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Vastagság</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Rés</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Középső pont</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T alak</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Nincs felső szár.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Sugár</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Oldalak</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64 oldalnál a gyűrű kerek.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Méret</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Kép</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Nincs kép kiválasztva</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Képek (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Minden fájl (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Méret</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Szélesség</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Magasság</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>A kép saját mérete</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Arányok megtartása</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Kikapcsolva a kép a megadott szélességre és magasságra nyúlik.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Szín</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Körvonal</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Körvonal vastagsága</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Körvonal színe</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Elforgatás</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Simított élek</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Kikapcsolva minden él egész képpontra esik, és éles marad.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Színválasztó megjelenítése vagy elrejtése</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Nincs megjeleníthető kép</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>A kijelzőn kívül</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>A célkeresztek ablakos és keret nélküli játékok felett jelennek meg, és a kattintások áthatolnak rajtuk. A kizárólagos teljes képernyős játék elrejti őket, ezért ablakos vagy keret nélküli módban futtassa. Egy makró szám szerint megjeleníthet vagy elrejthet egy célkeresztet.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Nagyító</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Egy távcsőszerű lencse, az egész kijelző felnagyítva, vagy egy reflektorfény, amely elsötétíti a többit.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Nagyító megjelenítése</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Amit mutat</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Mód</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lencse</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Teljes képernyő</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Reflektorfény</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Középpont</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Kijelző közepe</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Mutató</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Célkereszt</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>A Célkereszt az első bekapcsolt célkeresztet jelenti, az eltolással együtt.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Nagyítás</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Alak</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Kör</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Téglalap</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Méret</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Szélesség</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Magasság</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Szegély</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Szegély vastagsága</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Szegély színe</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Kör mérete</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Sötétség</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>A Windows nem indította el a nagyítót.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>A lencse és a reflektorfény ablakos és keret nélküli játékok felett jelenik meg, és a kattintások áthatolnak rajtuk. A Teljes képernyő a Windows teljes képernyős nagyítójával nagyítja fel az egész asztalt. Egy makró megjelenítheti vagy elrejtheti a nagyítót, vagy csak nyomva tartás közben mutathatja.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Mozgáskiszolgáló</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protokollt használó kiszolgáló a giroszkóp és a gyorsulásmérő adataihoz.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU mozgáskiszolgáló engedélyezése (CemuHook Motion Provider protokoll)</value></data>
@@ -5236,6 +5309,10 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge képernyő-átfedés</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Még nincs mit megjeleníteni. Válassza ki a Képernyő-átfedés oldalon, az Extrák alatt, mit mutasson.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Képernyő-átfedés be/ki</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Célkereszt be/ki</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Nagyító be/ki</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Minden célkereszt</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Célkereszt</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Képernyő-átfedés be/ki</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Képernyő-átfedés</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Az átfedés nem mutat semmit.</value></data>
@@ -5256,6 +5333,11 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Átfedés</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Minden átfedés</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Képernyő-átfedés {0} be/ki</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Célkereszt be/ki</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Célkereszt {0} be/ki</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Nagyító be/ki</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Nagyító (nyomva tartás közben)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Megjeleníti a nagyítót, amíg ez a makró le van nyomva, célzáshoz. Állítsa be a Nagyító oldalon.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} képeinek megjelenítése: {1} × {2} ms, a következő megjelenítő vagy módváltó makróig</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Profil importálása</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, {1}-fájl.</value></data>
@@ -5284,7 +5366,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>A PadForge nem ismeri fel ezt a kimenetet: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>A PadForge-ban nincs ilyen parancs: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>A virtuális vezérlőn nincs ilyen gomb: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>A célkereszt a reWASD-on belül él. Saját képet a Képernyő-átfedéssel jeleníthet meg.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>A reWASD a célkereszteket a saját beállításaiban tartja, nem a konfigurációban. Állítsa be a sajátját a Célkereszt oldalon.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>A kar remegése és rázása nem került át.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Az analóg billentyűk aktiválási pontjai nem kerültek át.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>A reWASD ezt a vezérlőt egy adapteren keresztül egy másik eszközre küldte. A PadForge ezen a számítógépen játssza le, a Távoli kapcsolat pedig egy másik, PadForge-ot futtató számítógépre küldi.</value></data>
@@ -5576,7 +5658,6 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-profil (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge-billentyűfények (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>A makró nem tudja megnyomni ezt: {0}. A Hozzárendelések szakaszban egy sor igen.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>A PadForge nyolc Képernyő-átfedést futtat, ez pedig a reWASD kilencedik vagy tizedik célkeresztje.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>A PadForge a Balra és Jobbra irányt az orsózásból, a Dőlést a legyezésből olvassa, a reWASD alapértelmezése szerint. A reWASD Beállításaiban a kettő felcserélhető, és ez a fájl nem mondja meg, felcserélték-e.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Billentés módban a reWASD Dőlése a függőleges tengely körüli fordulat, és a mozgásérzékelő nem ad szöget ehhez a fordulathoz.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>A PadForge az érintőpad átlóját két irányként olvassa egyszerre, amelyet az érintőpad csak akkor jelent, ha a Mozgás és érintés szakaszban a D-pad mód 8 irányú.</value></data>

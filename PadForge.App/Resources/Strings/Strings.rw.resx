@@ -1899,4 +1899,5 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Nta na rimwe</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Ukoresheje Igihe urwego rufunguye, flyout iguma igaragara kugeza urwego ruhindutse. Ukoresheje Amasegonda 2, flyout igaragara iyo urwego rufunguka, hanyuma ikavaho ubwayo. Ukoresheje Nta na rimwe, uru rwego ntirugaragaza flyout, kandi Base nta yo igaragaza iyo uru rwego ruvuyeho.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Ukoresheje Amasegonda 2, flyout igaragaza izina rya Base iyo urwego rwa shift ruvuyeho. Ukoresheje Nta na rimwe, Base ntigaragaza flyout.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Amafoto (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Dosiye zose (*.*)|*.*</value></data>
 </root>

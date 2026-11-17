@@ -1281,4 +1281,5 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Le gatee</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Ge layer e šoma e boloka flyout e bonagala go fihlela layer e fetoga. Metsotswana ye 2 e bontšha flyout ge layer e thoma go šoma, ke moka ya e tlogela e tloga. Ka Le gatee, layer ye ga e bontšhe flyout, gomme Motheo ga o bontšhe flyout ge layer e fela.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Metsotswana ye 2 e bontšha leina la Motheo ge shift layer e fela. Ka Le gatee, Motheo ga o bontšhe flyout.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Diswantšho (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Difaele ka moka (*.*)|*.*</value></data>
 </root>

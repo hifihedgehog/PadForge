@@ -1868,4 +1868,5 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Soze</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Ngelixa umaleko uvuliwe igcina i-flyout isesikrinini de umaleko utshintshe. Imizuzwana eyi-2 iyibonisa xa umaleko uvuleka, emva koko iyayiyeka ihambe. Ukuba ukhetha Soze, lo maleko awubonisi i-flyout, kwaye i-Base ayibonisi nanye xa lo maleko uphela.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Imizuzwana eyi-2 ibonisa igama le-Base xa umaleko wokutshintsha uphela. Ukuba ukhetha Soze, i-Base ayibonisi i-flyout.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Imifanekiso (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Zonke iifayile (*.*)|*.*</value></data>
 </root>

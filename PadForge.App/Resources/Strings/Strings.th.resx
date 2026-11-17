@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>แสดงเมนู เลเยอร์ และการสลับโปรไฟล์ขณะเล่น</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>พื้นผิวสัมผัสบนหน้าจอสำหรับเกมทัชแพดของ PlayStation</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>รูปภาพ ตัวจับเวลา หรือนาฬิกาเหนือหน้าต่างอื่น</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>เป้าเล็งของคุณเองบนเกม</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>เลนส์ขยาย การขยายเต็มหน้าจอ หรือสปอตไลต์</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>พอร์ต, HTTP ธรรมดา, รหัสเข้าใช้</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>เชื่อมต่อใหม่อัตโนมัติ, พอร์ต, ข้อมูลระบุตัวตนการจับคู่, เชื่อมต่อด้วยที่อยู่</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>พอร์ต ตัวแทน DSX.exe</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>โอเวอร์เลย์ {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>แสดง</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>ขณะที่โปรแกรมอื่นอยู่ด้านหน้า การคลิกจะทะลุผ่านโอเวอร์เลย์ไป ขณะที่ PadForge อยู่ด้านหน้า ให้ลากด้วยปุ่มเมาส์ขวาและปรับขนาดจากมุม แมโครสามารถแสดงหรือซ่อนโอเวอร์เลย์ตามหมายเลขได้</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>เป้าเล็ง</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>เป้าเล็งเหนือหน้าต่างอื่น อยู่กึ่งกลางจอภาพ เป็นกากบาท วงกลม จุด หรือรูปภาพของคุณเอง</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>เพิ่มเป้าเล็ง</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>เป้าเล็ง {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>แสดงเป้าเล็ง</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>สไตล์</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>กากบาท</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>วงกลม</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>จุด</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>รูปภาพ</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>ตัวอย่าง</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>ระยะเยื้องจากกึ่งกลาง</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>ระยะเยื้องแนวนอน</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>ระยะเยื้องแนวตั้ง</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>ความยาวแขน</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>ความหนา</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>ช่องว่าง</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>จุดกึ่งกลาง</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>ทรง T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>ไม่มีแขนด้านบน</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>รัศมี</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>จำนวนด้าน</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>ที่ 64 ด้าน วงแหวนจะกลมเรียบ</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>ขนาด</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>รูปภาพ</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>ยังไม่ได้เลือกรูปภาพ</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>รูปภาพ (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|ไฟล์ทั้งหมด (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>ขนาด</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>ความกว้าง</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>ความสูง</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>ขนาดเดิมของรูปภาพ</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>คงสัดส่วน</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>เมื่อปิด รูปภาพจะถูกยืดตามความกว้างและความสูงที่ตั้งไว้</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>สี</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>เส้นขอบ</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>ความกว้างเส้นขอบ</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>สีเส้นขอบ</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>การหมุน</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>ขอบเรียบเนียน</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>เมื่อปิด ทุกขอบจะตรงกับพิกเซลเต็มและคมชัด</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>แสดงหรือซ่อนตัวเลือกสี</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>ไม่มีรูปภาพให้แสดง</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>อยู่นอกจอภาพ</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>เป้าเล็งจะแสดงเหนือเกมแบบหน้าต่างและแบบไร้ขอบ และการคลิกจะทะลุผ่านไป เกมที่ใช้โหมดเต็มหน้าจอแบบเอกสิทธิ์จะซ่อนเป้าเล็ง จึงควรเปิดเกมแบบหน้าต่างหรือแบบไร้ขอบ แมโครสามารถแสดงหรือซ่อนเป้าเล็งตามหมายเลขได้</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>แว่นขยาย</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>เลนส์แบบกล้องเล็งซุ่มยิง การขยายทั้งจอภาพ หรือสปอตไลต์ที่ทำให้ส่วนที่เหลือมืดลง</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>แสดงแว่นขยาย</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>สิ่งที่แสดง</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>โหมด</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>เลนส์</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>เต็มหน้าจอ</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>สปอตไลต์</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>กึ่งกลางอยู่ที่</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>กึ่งกลางจอภาพ</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>ตัวชี้เมาส์</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>เป้าเล็ง</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>เป้าเล็งหมายถึงเป้าเล็งอันแรกที่เปิดอยู่ รวมระยะเยื้องด้วย</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>การซูม</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>รูปทรง</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>วงกลม</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>สี่เหลี่ยมผืนผ้า</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>ขนาด</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>ความกว้าง</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>ความสูง</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>ขอบ</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>ความกว้างขอบ</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>สีขอบ</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>ขนาดวงกลม</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>ความมืด</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ไม่ได้เริ่มแว่นขยาย</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>เลนส์และสปอตไลต์จะแสดงเหนือเกมแบบหน้าต่างและแบบไร้ขอบ และการคลิกจะทะลุผ่านไป โหมดเต็มหน้าจอจะซูมทั้งเดสก์ท็อปด้วยแว่นขยายเต็มหน้าจอของ Windows แมโครสามารถแสดงหรือซ่อนแว่นขยาย หรือแสดงเฉพาะขณะกดค้างได้</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>เซิร์ฟเวอร์การเคลื่อนไหว</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>เซิร์ฟเวอร์โปรโตคอล DSU/CemuHook Motion Provider สำหรับข้อมูลไจโรและเซนเซอร์วัดความเร่ง</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>เปิดใช้งานเซิร์ฟเวอร์การเคลื่อนไหว DSU (โปรโตคอล CemuHook Motion Provider)</value></data>
@@ -5236,6 +5309,10 @@
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>โอเวอร์เลย์หน้าจอ PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>ยังไม่มีสิ่งที่จะแสดง เลือกสิ่งที่แสดงได้ที่หน้าโอเวอร์เลย์หน้าจอ ในส่วนเสริม</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>สลับเปิด/ปิดโอเวอร์เลย์หน้าจอ</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>สลับเปิด/ปิดเป้าเล็ง</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>สลับเปิด/ปิดแว่นขยาย</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>ทุกเป้าเล็ง</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>เป้าเล็ง</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>สลับเปิด/ปิดโอเวอร์เลย์หน้าจอ</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>โอเวอร์เลย์หน้าจอ</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>โอเวอร์เลย์ไม่แสดงอะไร</value></data>
@@ -5256,6 +5333,11 @@
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>โอเวอร์เลย์</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>ทุกโอเวอร์เลย์</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>สลับเปิด/ปิดโอเวอร์เลย์หน้าจอ {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>สลับเปิด/ปิดเป้าเล็ง</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>สลับเปิด/ปิดเป้าเล็ง {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>สลับเปิด/ปิดแว่นขยาย</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>แว่นขยาย (ขณะกดค้าง)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>แสดงแว่นขยายขณะกดแมโครนี้ค้างไว้ สำหรับการเล็งผ่านศูนย์เล็ง ตั้งค่าได้ที่หน้าแว่นขยาย</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>แสดงรูปภาพ {0}: {1} × {2} ms จนกว่าจะมีมาโครแสดงหรือมาโครโหมดถัดไป</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>นำเข้าโปรไฟล์</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0} เป็นไฟล์ {1}</value></data>
@@ -5284,7 +5366,7 @@
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge ไม่รู้จักเอาต์พุตนี้: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge ไม่มีคำสั่งนี้: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>คอนโทรลเลอร์เสมือนไม่มีปุ่มนี้: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>เป้าเล็งอยู่ภายใน reWASD แสดงภาพของคุณเองได้ด้วยโอเวอร์เลย์หน้าจอ</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD เก็บเป้าเล็งไว้ในการตั้งค่าของตัวเอง ไม่ได้อยู่ในคอนฟิก ตั้งค่าเป้าเล็งของคุณได้ที่หน้าเป้าเล็ง</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>การสั่นและการเขย่าของสติ๊กไม่ถูกนำมาด้วย</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>จุดสั่งการของปุ่มอนาล็อกไม่ถูกนำมาด้วย</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD เคยส่งคอนโทรลเลอร์นี้ไปยังอุปกรณ์อื่นผ่านอะแดปเตอร์ PadForge จะเล่นคอนโทรลเลอร์นี้บนพีซีเครื่องนี้ และลิงก์ระยะไกลจะส่งไปยังพีซีอีกเครื่องที่รัน PadForge</value></data>
@@ -5576,7 +5658,6 @@
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>โปรไฟล์ HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>ไฟปุ่ม PadForge (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>แมโครกด {0} ไม่ได้ แต่แถวในส่วนการแมปทำได้</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge รันโอเวอร์เลย์หน้าจอได้แปดอัน และนี่คือเป้าเล็งอันที่เก้าหรือสิบของ reWASD</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge อ่านไจโรซ้ายและขวาจากโรล และการเอนจากยอว์ ซึ่งเป็นค่าเริ่มต้นของ reWASD การตั้งค่าของ reWASD สลับสองอย่างนี้ได้ และไฟล์นี้ไม่ได้บอกว่าสลับไว้หรือไม่</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>ในโหมดเอียง การเอนของ reWASD คือการหมุนรอบแกนตั้ง และเซ็นเซอร์การเคลื่อนไหวไม่ให้มุมของการหมุนนั้น</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge อ่านแนวทแยงของทัชแพดเป็นสองทิศทางพร้อมกัน ซึ่งทัชแพดรายงานเฉพาะเมื่อ “โหมดปุ่มทิศทาง” ของทัชแพดในส่วนการเคลื่อนไหวและสัมผัสเป็น “8 ทิศทาง”</value></data>

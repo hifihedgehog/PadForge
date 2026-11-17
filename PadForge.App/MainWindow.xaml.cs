@@ -690,12 +690,15 @@ namespace PadForge
                      or nameof(DashboardViewModel.TouchpadOverlayWidth)
                      or nameof(DashboardViewModel.TouchpadOverlayHeight)
                      or nameof(DashboardViewModel.ScreenOverlays)
+                     or nameof(DashboardViewModel.Crosshairs)
+                     or nameof(DashboardViewModel.Magnifier)
                      or nameof(DashboardViewModel.EnableMenuOverlay)
                      or nameof(DashboardViewModel.EnableShiftLayerFlyout)
                      or nameof(DashboardViewModel.EnableProfileOverlay)
                      or nameof(DashboardViewModel.HeadTrackingLastSources)
                      or nameof(DashboardViewModel.OverlaysLastShown)
                      or nameof(DashboardViewModel.ScreenOverlaysLastOn)
+                     or nameof(DashboardViewModel.CrosshairsLastOn)
                      or nameof(DashboardViewModel.HomeCards))
                     _settingsService.MarkDirty();
             };

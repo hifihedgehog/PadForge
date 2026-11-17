@@ -1455,4 +1455,5 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Kwete</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Layer ichiri kushanda inochengeta flyout pachiratidziri kusvikira layer yachinja. Kwemasekondi 2 inoiratidza kana layer yabatidzwa, yobva yaenda yoga. Kana wasarudza Kwete, layer iyi hairatidzi flyout, uye Base hairatidzi flyout kana layer yapera.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Kwemasekondi 2 inoratidza zita reBase kana shift layer yapera. Kana wasarudza Kwete, Base hairatidzi flyout.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Mifananidzo (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Mafaira ese (*.*)|*.*</value></data>
 </root>

@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>खेल्दा मेनु, लेयर र प्रोफाइल परिवर्तन देखाउनुहोस्।</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation टचप्याड गेमहरूका लागि स्क्रिनमा देखिने टच सतह।</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>अन्य झ्यालहरूमाथि चित्र, टाइमर वा घडी।</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>खेलमाथि तपाईंको आफ्नै क्रसहेयर।</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>जुम लेन्स, पूरा स्क्रिन जुम वा स्पटलाइट।</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>पोर्ट, सादा HTTP, पहुँच कोड</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>स्वतः पुनः जडान, पोर्ट, जोडा पहिचान, ठेगानाबाट जोड्नुहोस्</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>पोर्ट, DSX.exe को सट्टा चल्ने प्रोग्राम</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ओभरले {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>देखाउँछ</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>अर्को प्रोग्राम अगाडि हुँदा क्लिकहरू ओभरलेबाट आरपार जान्छन्। PadForge अगाडि हुँदा यसलाई माउसको दायाँ बटनले तान्नुहोस् र यसको कुनाबाट आकार मिलाउनुहोस्। म्याक्रोले ओभरलेलाई त्यसको नम्बरबाट देखाउन वा लुकाउन सक्छ।</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>क्रसहेयर</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>अन्य झ्यालहरूमाथि डिस्प्लेको बीचमा क्रसहेयर: क्रस, गोलो घेरा, थोप्लो वा तपाईंको आफ्नै चित्र।</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>क्रसहेयर थप्नुहोस्</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>क्रसहेयर {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>क्रसहेयर देखाउनुहोस्</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>शैली</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>क्रस</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>घेरा</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>थोप्लो</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>चित्र</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>पूर्वावलोकन</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>बीचबाट विस्थापन</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>तेर्सो विस्थापन</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>ठाडो विस्थापन</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>हातको लम्बाइ</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>मोटाइ</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>खाली ठाउँ</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>बीचको थोप्लो</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T आकार</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>माथिको हात छैन।</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>अर्धव्यास</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>भुजाहरू</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64 मा घेरा गोलो हुन्छ।</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>आकार</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>चित्र</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>कुनै चित्र छानिएको छैन</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>चित्रहरू (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|सबै फाइलहरू (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>आकार</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>चौडाइ</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>उचाइ</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>चित्रको आफ्नै आकार</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>अनुपात कायम राख्नुहोस्</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>बन्द हुँदा चित्र चौडाइ र उचाइ अनुसार तन्किन्छ।</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>रङ</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>बाहिरी रेखा</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>बाहिरी रेखाको चौडाइ</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>बाहिरी रेखाको रङ</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>घुमाइ</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>चिल्लो किनारा</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>बन्द हुँदा हरेक किनारा पूरा पिक्सेलमा पर्छ र तिखो रहन्छ।</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>रङ छान्ने साधन देखाउनुहोस् वा लुकाउनुहोस्</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>देखाउन कुनै चित्र छैन</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>आफ्नो डिस्प्लेबाहिर</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>क्रसहेयरहरू विन्डो र बोर्डरलेस मोडका खेलहरूमाथि देखिन्छन् र क्लिकहरू तिनबाट आरपार जान्छन्। एक्स्क्लुसिभ पूरा स्क्रिनमा चल्ने खेलले तिनलाई लुकाउँछ, त्यसैले खेललाई विन्डो वा बोर्डरलेस मोडमा चलाउनुहोस्। म्याक्रोले क्रसहेयरलाई त्यसको नम्बरबाट देखाउन वा लुकाउन सक्छ।</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>म्याग्निफायर</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>स्नाइपर स्कोपजस्तो लेन्स, जुम गरिएको पूरा डिस्प्ले, वा बाँकी भाग अँध्यारो पार्ने स्पटलाइट।</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>म्याग्निफायर देखाउनुहोस्</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>के देखाउँछ</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>मोड</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>लेन्स</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>पूरा स्क्रिन</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>स्पटलाइट</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>केन्द्रमा राख्ने</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>डिस्प्लेको बीच</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>पोइन्टर</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>क्रसहेयर</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>क्रसहेयर भन्नाले विस्थापनसहित सक्रिय पहिलो क्रसहेयर बुझिन्छ।</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>जुम</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>आकृति</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>गोलो</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>आयत</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>आकार</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>चौडाइ</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>उचाइ</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>किनारा</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>किनाराको चौडाइ</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>किनाराको रङ</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>घेराको आकार</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>अँध्यारोपन</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ले म्याग्निफायर सुरु गरेन।</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>लेन्स र स्पटलाइट विन्डो र बोर्डरलेस मोडका खेलहरूमाथि देखिन्छन् र क्लिकहरू तिनबाट आरपार जान्छन्। पूरा स्क्रिन मोडले Windows को पूरा स्क्रिन म्याग्निफायरबाट सम्पूर्ण डेस्कटप जुम गर्छ। म्याक्रोले म्याग्निफायर देखाउन वा लुकाउन सक्छ, वा थिचिराख्दा मात्र देखाउन सक्छ।</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>मोसन सर्भर</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>जाइरो र एक्सेलेरोमिटर डेटाका लागि DSU/CemuHook Motion Provider प्रोटोकल सर्भर।</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU मोसन सर्भर सक्षम गर्नुहोस् (CemuHook Motion Provider Protocol)</value></data>
@@ -5236,6 +5309,10 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge स्क्रिन ओभरले</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>अहिले देखाउन केही छैन। यसले के देखाउने भन्ने अतिरिक्त अन्तर्गतको स्क्रिन ओभरले पेजमा छान्नुहोस्।</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>स्क्रिन ओभरले टगल गर्नुहोस्</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>क्रसहेयर टगल गर्नुहोस्</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>म्याग्निफायर टगल गर्नुहोस्</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>सबै क्रसहेयर</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>क्रसहेयर</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>स्क्रिन ओभरले टगल गर्नुहोस्</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>स्क्रिन ओभरले</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>ओभरलेले केही देखाउँदैन।</value></data>
@@ -5256,6 +5333,11 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>ओभरले</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>सबै ओभरले</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>स्क्रिन ओभरले {0} टगल गर्नुहोस्</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>क्रसहेयर टगल गर्नुहोस्</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>क्रसहेयर {0} टगल गर्नुहोस्</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>म्याग्निफायर टगल गर्नुहोस्</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>म्याग्निफायर (थिचिराख्दा)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>निशाना लगाउन साइट्समा हेर्दा यो म्याक्रो थिचिराखिएको बेला म्याग्निफायर देखाउँछ। यसलाई म्याग्निफायर पृष्ठमा सेट गर्नुहोस्।</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} तस्बिरहरू देखाउनुहोस्: {1} × {2} ms, अर्को देखाउने वा मोड म्याक्रोसम्म</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>प्रोफाइल आयात गर्नुहोस्</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, {1} फाइल।</value></data>
@@ -5284,7 +5366,7 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge ले यो आउटपुट चिन्दैन: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge मा यस्तो आदेश छैन: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>भर्चुअल कन्ट्रोलरमा यस्तो बटन छैन: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>क्रसहेयर reWASD भित्रै रहन्छ। स्क्रिन ओभरले प्रयोग गरेर आफ्नै तस्बिर देखाउनुहोस्।</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD ले आफ्ना क्रसहेयरहरू कन्फिगमा होइन, आफ्नै सेटिङहरूमा राख्छ। आफ्नो क्रसहेयर क्रसहेयर पृष्ठमा सेट गर्नुहोस्।</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>स्टिक जिटर र शेकिङ आयात भएनन्।</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>एनालग कीका एक्चुएसन बिन्दुहरू आयात भएनन्।</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD ले यो कन्ट्रोलरलाई एउटा एडाप्टरमार्फत अर्को यन्त्रमा पठाएको थियो। PadForge ले यसलाई यही PC मा चलाउँछ, र रिमोट लिङ्कले यसलाई PadForge चलिरहेको अर्को PC मा पठाउँछ।</value></data>
@@ -5576,7 +5658,6 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro प्रोफाइल (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge कुञ्जी लाइटहरू (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>म्याक्रोले {0} थिच्न सक्दैन। “म्यापिङहरू” अन्तर्गतको पङ्क्तिले सक्छ।</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge ले आठवटा स्क्रिन ओभरले चलाउँछ, र यो reWASD को नवौँ वा दशौँ क्रसहेयर हो।</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>reWASD को पूर्वनिर्धारित अनुसार, PadForge ले जाइरो बायाँ र दायाँ रोलबाट र झुकाव याउबाट पढ्छ। reWASD को Preferences ले यी दुई साट्न सक्छ, र यो फाइलले ती साटिएका थिए कि थिएनन् भन्दैन।</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>टिल्ट मोडमा, reWASD को झुकाव ठाडो अक्षको वरिपरिको घुमाइ हो, र मोसन सेन्सरले त्यो घुमाइको कुनै कोण दिँदैन।</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge ले टचप्याडको विकर्णलाई एकैपटक दुई दिशाका रूपमा पढ्छ, जुन टचप्याडले “मोसन र टच” अन्तर्गतको आफ्नो डी-प्याड मोड 8-दिशा हुँदा मात्र रिपोर्ट गर्छ।</value></data>

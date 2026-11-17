@@ -399,6 +399,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mostra menús, capes i canvis de perfil mentre jugues.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Una superfície tàctil en pantalla per als jocs amb panell tàctil de PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Una imatge, un temporitzador o un rellotge per sobre d'altres finestres.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>El teu propi punt de mira sobre un joc.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Una lent d'ampliació, un zoom a pantalla completa o un focus.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, HTTP sense xifrar, codi d'accés</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Reconnexió automàtica, port, identitat d'aparellament, connexió per adreça</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, substitut de DSX.exe</value></data>
@@ -446,6 +448,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Superposició {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Mostra</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Mentre un altre programa és al davant, els clics passen a través de la superposició. Mentre PadForge és al davant, arrossega-la amb el botó dret del ratolí i canvia'n la mida des d'una cantonada. Una macro pot mostrar o amagar una superposició pel seu número.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Punt de mira</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Punts de mira sobre altres finestres, centrats en una pantalla: una creu, un cercle, un punt o una imatge pròpia.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Afegeix un punt de mira</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Punt de mira {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Mostra el punt de mira</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Estil</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Creu</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Cercle</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Punt</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Imatge</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Previsualització</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Desplaçament respecte al centre</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Desplaçament horitzontal</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Desplaçament vertical</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Longitud dels braços</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Gruix</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Espai</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Punt central</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Forma de T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Sense braç superior.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Radi</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Costats</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Amb 64 l'anell és rodó.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Mida</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Imatge</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>No s'ha triat cap imatge</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Imatges (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Tots els fitxers (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Mida</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Amplada</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Alçada</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Mida pròpia de la imatge</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Mantén les proporcions</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Desactivat, la imatge s'estira a l'amplada i l'alçada.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Color</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Contorn</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Gruix del contorn</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Color del contorn</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Rotació</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Vores suavitzades</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Desactivat, cada vora cau en píxels sencers i es manté nítida.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Mostra o amaga el selector de color</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>No hi ha cap imatge per mostrar</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Fora de la seva pantalla</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Els punts de mira es mostren sobre jocs en mode finestra i sense vores, i els clics hi passen a través. Un joc en pantalla completa exclusiva els amaga, així que executa'l en mode finestra o sense vores. Una macro pot mostrar o amagar un punt de mira pel seu número.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Lupa</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Una lent com la d'un visor de franctirador, tota la pantalla ampliada o un focus que enfosqueix la resta.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Mostra la lupa</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Què mostra</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lent</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Pantalla completa</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Focus</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Centra en</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Centre de la pantalla</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Punter</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Punt de mira</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Punt de mira vol dir el primer punt de mira activat, amb el seu desplaçament.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Zoom</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Forma</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Cercle</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Rectangle</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Mida</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Amplada</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Alçada</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Vora</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Gruix de la vora</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Color de la vora</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Mida del cercle</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Foscor</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows no ha iniciat la lupa.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>La lent i el focus es mostren sobre jocs en mode finestra i sense vores, i els clics hi passen a través. Pantalla completa amplia tot l'escriptori amb la lupa de pantalla completa de Windows. Una macro pot mostrar o amagar la lupa, o mostrar-la només mentre es manté premuda.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Servidor de moviment</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Servidor del protocol DSU/CemuHook Motion Provider per a dades de giroscopi i acceleròmetre.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Activa el servidor de moviment DSU (protocol CemuHook Motion Provider)</value></data>
@@ -4929,4 +5002,6 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Defineix una contrasenya</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Desbloqueja l'Enllaç remot</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Contrasenya</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Lupa (mentre es manté premut)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Mostra la lupa mentre es manté premuda aquesta macro, per apuntar amb la mira. Configura-la a la pàgina Lupa.</value></data>
 </root>

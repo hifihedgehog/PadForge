@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Tampilkan menu, lapisan, dan pergantian profil selagi Anda bermain.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Permukaan sentuh di layar untuk game panel sentuh PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Gambar, timer, atau jam di atas jendela lain.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Crosshair Anda sendiri di atas game.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Lensa zoom, zoom layar penuh, atau sorotan.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, HTTP biasa, kode akses</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Sambung ulang otomatis, port, identitas penyandingan, sambungkan lewat alamat</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe pengganti</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Overlay {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Menampilkan</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Saat program lain di depan, klik menembus overlay. Saat PadForge di depan, seret overlay dengan tombol kanan mouse dan ubah ukurannya dari sudutnya. Makro dapat menampilkan atau menyembunyikan overlay berdasarkan nomornya.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Crosshair</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Crosshair di atas jendela lain, di tengah layar: tanda silang, lingkaran, titik, atau gambar Anda sendiri.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Tambah crosshair</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Crosshair {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Tampilkan crosshair</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Gaya</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Silang</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Lingkaran</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Titik</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Gambar</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Pratinjau</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Geser dari tengah</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Geser horizontal</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Geser vertikal</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Panjang garis</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Ketebalan</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Celah</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Titik tengah</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Bentuk T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Tanpa garis atas.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Radius</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Jumlah sisi</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Pada 64 cincin tampak bulat.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Ukuran</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Gambar</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Belum ada gambar dipilih</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Gambar (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Semua File (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Ukuran</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Lebar</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Tinggi</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Ukuran asli gambar</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Pertahankan proporsi</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Jika nonaktif, gambar diregangkan sesuai lebar dan tinggi.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Warna</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Garis tepi</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Lebar garis tepi</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Warna garis tepi</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Rotasi</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Haluskan tepi</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Jika nonaktif, setiap tepi jatuh pada piksel utuh dan tetap tajam.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Tampilkan atau sembunyikan pemilih warna</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Tidak ada gambar untuk ditampilkan</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Di luar layarnya</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Crosshair tampil di atas game berjendela dan tanpa bingkai, dan klik menembusnya. Game dalam layar penuh eksklusif menyembunyikannya, jadi jalankan game dalam mode berjendela atau tanpa bingkai. Makro dapat menampilkan atau menyembunyikan crosshair berdasarkan nomornya.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Kaca pembesar</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Lensa seperti teropong sniper, seluruh layar diperbesar, atau sorotan yang menggelapkan sisanya.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Tampilkan kaca pembesar</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Yang ditampilkan</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lensa</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Layar penuh</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Sorotan</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Berpusat di</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Tengah layar</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Penunjuk</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Crosshair</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Crosshair berarti crosshair pertama yang aktif, termasuk gesernya.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Zoom</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Bentuk</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Lingkaran</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Persegi panjang</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Ukuran</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Lebar</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Tinggi</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Bingkai</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Lebar bingkai</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Warna bingkai</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Ukuran lingkaran</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Kegelapan</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows tidak memulai kaca pembesar.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Lensa dan sorotan tampil di atas game berjendela dan tanpa bingkai, dan klik menembusnya. Layar penuh memperbesar seluruh desktop dengan kaca pembesar layar penuh milik Windows. Makro dapat menampilkan atau menyembunyikan kaca pembesar, atau menampilkannya hanya selama ditahan.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Server gerakan</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server protokol DSU/CemuHook Motion Provider untuk data giroskop dan akselerometer.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Aktifkan server gerakan DSU (protokol CemuHook Motion Provider)</value></data>
@@ -5236,6 +5309,10 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Overlay layar PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Belum ada yang ditampilkan. Pilih yang ditampilkan di halaman Overlay layar, di bawah Ekstra.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Alihkan overlay layar</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Alihkan crosshair</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Alihkan kaca pembesar</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Semua crosshair</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Crosshair</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Alihkan overlay layar</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Overlay Layar</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Overlay tidak menampilkan apa pun.</value></data>
@@ -5256,6 +5333,11 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Overlay</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Semua overlay</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Alihkan overlay layar {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Alihkan crosshair</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Alihkan crosshair {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Alihkan kaca pembesar</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Kaca pembesar (selama ditahan)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Menampilkan kaca pembesar selama makro ini ditahan, untuk membidik lewat bidikan senjata. Atur di halaman Kaca pembesar.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Tampilkan gambar {0}: {1} × {2} ms, hingga tampilan atau makro mode berikutnya</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Impor profil</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, file {1}.</value></data>
@@ -5284,7 +5366,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge tidak mengenali output ini: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge tidak memiliki perintah seperti itu: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Kontroler virtual tidak memiliki tombol seperti itu: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Crosshair hanya ada di dalam reWASD. Tampilkan gambar Anda sendiri dengan Overlay layar.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD menyimpan crosshair di pengaturannya sendiri, bukan di konfigurasi. Atur milik Anda di halaman Crosshair.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Jitter dan guncangan stik tidak terbawa.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Titik aktuasi tombol analog tidak terbawa.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD mengirim kontroler ini ke perangkat lain melalui adaptor. PadForge memainkannya di PC ini, dan Tautan Jarak Jauh mengirimkannya ke PC lain yang menjalankan PadForge.</value></data>
@@ -5576,7 +5658,6 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Lampu Tombol PadForge (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro tidak dapat menekan {0}. Baris di bagian Pemetaan bisa.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge menjalankan delapan Overlay layar, dan ini adalah crosshair kesembilan atau kesepuluh milik reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge membaca Condong kiri dan kanan dari roll serta Condong dari yaw, bawaan reWASD. Preferensi reWASD dapat menukar keduanya, dan file ini tidak menyebut apakah keduanya ditukar.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Pada mode Tilt, Lean milik reWASD adalah putaran mengelilingi sumbu vertikal, dan sensor gerak tidak memberi sudut untuk putaran itu.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge membaca diagonal panel sentuh sebagai dua arah sekaligus, yang hanya dilaporkan panel sentuh jika Mode D-pad di bagian Gerak dan sentuhan adalah 8 arah.</value></data>

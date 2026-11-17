@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Rādiet izvēlnes, slāņus un profilu pārslēgšanu spēles laikā.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Ekrāna skārienvirsma PlayStation skārienpaliktņa spēlēm.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Attēls, taimeris vai pulkstenis virs citiem logiem.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Jūsu pašu krustiņš virs spēles.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Palielinātājstikls, pilnekrāna tālummaiņa vai prožektors.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Ports, vienkāršs HTTP, piekļuves kods</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automātiska atkārtota savienošana, ports, savienošanas identitāte, savienoties pēc adreses</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Ports, DSX.exe aizstājējs</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Pārklājums {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Rāda</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Kamēr priekšplānā ir cita programma, klikšķi iet cauri pārklājumam. Kamēr priekšplānā ir PadForge, velciet to ar peles labo pogu un mainiet izmēru no stūra. Makross var parādīt vai paslēpt pārklājumu pēc tā numura.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Krustiņš</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Krustiņi virs citiem logiem displeja centrā: krusts, aplis, punkts vai jūsu pašu attēls.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Pievienot krustiņu</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Krustiņš {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Rādīt krustiņu</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Stils</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Krusts</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Aplis</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Punkts</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Attēls</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Priekšskatījums</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Nobīde no centra</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Horizontālā nobīde</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Vertikālā nobīde</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Līniju garums</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Biezums</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Sprauga</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Punkts centrā</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T veida krustiņš</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Bez augšējās līnijas.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Rādiuss</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Malas</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Ar 64 malām aplis ir apaļš.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Izmērs</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Attēls</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Attēls nav izvēlēts</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Attēli (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Visi faili (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Izmērs</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Platums</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Augstums</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Attēla izmērs</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Saglabāt proporcijas</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Ja izslēgts, attēls tiek izstiepts līdz iestatītajam platumam un augstumam.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Krāsa</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Kontūra</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Kontūras platums</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Kontūras krāsa</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Pagrieziens</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Izlīdzināt malas</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Ja izslēgts, katra mala atrodas uz veseliem pikseļiem un paliek asa.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Rādīt vai slēpt krāsu izvēlni</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Nav attēla, ko rādīt</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Ārpus displeja</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Krustiņi tiek rādīti virs spēlēm logā un bezrāmju režīmā, un klikšķi iet tiem cauri. Spēle ekskluzīvā pilnekrāna režīmā tos paslēpj, tāpēc palaidiet to logā vai bezrāmju režīmā. Makross var parādīt vai paslēpt krustiņu pēc tā numura.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Lupa</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Palielinātājstikls kā snaipera tēmeklis, viss displejs pietuvināts vai prožektors, kas aptumšo pārējo.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Rādīt lupu</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Ko tā rāda</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Režīms</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Palielinātājstikls</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Pilnekrāna režīms</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Prožektors</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Centrēt uz</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Displeja centrs</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Rādītājs</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Krustiņš</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Krustiņš ir pirmais ieslēgtais krustiņš ar visu nobīdi.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Tālummaiņa</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Forma</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Aplis</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Taisnstūris</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Izmērs</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Platums</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Augstums</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Apmale</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Apmales platums</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Apmales krāsa</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Apļa izmērs</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Tumsas pakāpe</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows neuzsāka lupu.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Palielinātājstikls un prožektors tiek rādīti virs spēlēm logā un bezrāmju režīmā, un klikšķi iet tiem cauri. Pilnekrāna režīms pietuvina visu darbvirsmu ar Windows pilnekrāna lupu. Makross var parādīt vai paslēpt lupu vai rādīt to tikai turot.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Kustību serveris</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protokola serveris žiroskopa un akselerometra datiem.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Iespējot DSU kustību serveri (CemuHook Motion Provider protokols)</value></data>
@@ -5236,6 +5309,10 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge ekrāna pārklājums</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Pagaidām nav ko rādīt. Izvēlieties, ko tas rāda, lapā Ekrāna pārklājums sadaļā Papildiespējas.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Pārslēgt ekrāna pārklājumu</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Pārslēgt krustiņu</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Pārslēgt lupu</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Katrs krustiņš</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Krustiņš</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Pārslēgt ekrāna pārklājumu</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Ekrāna pārklājums</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Pārklājums neko nerāda.</value></data>
@@ -5256,6 +5333,11 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Pārklājums</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Katrs pārklājums</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Pārslēgt ekrāna pārklājumu {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Pārslēgt krustiņu</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Pārslēgt krustiņu {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Pārslēgt lupu</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Lupa (turot)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Rāda lupu, kamēr šis makross tiek turēts, mērķējot caur tēmekli. Iestatiet to lapā Lupa.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Rādīt {0} attēlus: {1} × {2} ms, līdz nākamajam rādīšanas vai režīma makro</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Profila importēšana</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, {1} fails.</value></data>
@@ -5284,7 +5366,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge neatpazīst šo izvadi: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge nepazīst šādu komandu: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Virtuālajam kontrolierim nav šādas pogas: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Mērķa krustiņš pastāv tikai reWASD iekšienē. Parādiet savu attēlu, izmantojot ekrāna pārklājumu.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD savus krustiņus glabā savos iestatījumos, nevis konfigurācijā. Iestatiet savus lapā Krustiņš.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Kursorsviras trīcēšana un kratīšana netika pārnesta.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analogo taustiņu aktivizācijas punkti netika pārnesti.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD nosūtīja šo kontrolieri uz citu ierīci, izmantojot adapteri. PadForge to atskaņo šajā datorā, un Attālais savienojums to nosūta uz citu datoru, kurā darbojas PadForge.</value></data>
@@ -5576,7 +5658,6 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro profils (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge taustiņu apgaismojums (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro nevar nospiest {0}. To var izdarīt rinda sadaļā Piesaistes.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge darbina astoņus ekrāna pārklājumus, un šis ir reWASD devītais vai desmitais mērķa krustiņš.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge nolasa žiroskopa kreiso un labo pusi no sānsveres, bet noliekumu no pagrieziena, kā reWASD pēc noklusējuma. reWASD preferencēs šos divus var apmainīt, un šis fails nenorāda, vai tie tika apmainīti.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Režīmā Tilt reWASD noliekums ir pagrieziens ap vertikālo asi, un kustības sensors šādam pagriezienam leņķi nenorāda.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge skārienpaliktņa diagonāli nolasa kā divus virzienus vienlaikus, ko skārienpaliktnis ziņo tikai tad, ja tā D-pad režīms sadaļā Kustība un skāriens ir 8 virzieni.</value></data>

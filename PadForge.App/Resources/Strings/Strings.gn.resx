@@ -1262,4 +1262,5 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Araka'eve</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Capa oñemyendy aja omantene flyout ojehechakuaa capa iñambue peve. 2 segundo aja ohechauka chupe capa oñemyendývo, upéi oheja oho. Araka'eve ndive, ko capa ndohechaukái flyout, ha Base avei ndohechaukái mba'eve capa opávo.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 segundo aja ohechauka Base réra peteĩ shift layer opávo. Araka'eve ndive, Base ndohechaukái flyout.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Ta'angakuéra (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Opaite marandurenda (*.*)|*.*</value></data>
 </root>

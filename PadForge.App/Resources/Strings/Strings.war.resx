@@ -1509,4 +1509,5 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Diri Gud</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>An Samtang Bukas an Layer nagpapabilin han flyout tubtob nga magbag-o an layer. An Ha 2 Segundo nagpapakita hini kon mabukas an layer, katapos nawawara ini hin kalugaringon. Kon Diri Gud, waray flyout nga ipapakita hini nga layer, ngan waray liwat ipapakita an Base kon matapos an layer.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>An Ha 2 Segundo nagpapakita han ngaran han Base kon matapos an shift layer. Kon Diri Gud, waray flyout nga ipapakita an Base.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Mga litrato (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Ngatanan nga file (*.*)|*.*</value></data>
 </root>

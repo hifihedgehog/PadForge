@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>మీరు ఆడుతున్నప్పుడు మెనూలు, లేయర్లు, ప్రొఫైల్ మార్పులను చూపండి.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation టచ్ ప్యాడ్ గేమ్‌ల కోసం తెరపై టచ్ ఉపరితలం.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>ఇతర విండోల పైన ఒక చిత్రం, టైమర్ లేదా గడియారం.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ఆటపై మీ స్వంత క్రాస్‌హెయిర్.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>జూమ్ లెన్స్, పూర్తి స్క్రీన్ జూమ్ లేదా స్పాట్‌లైట్.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>పోర్ట్, సాధారణ HTTP, యాక్సెస్ కోడ్</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ఆటో రీకనెక్ట్, పోర్ట్, జత చేసే గుర్తింపు, చిరునామా ద్వారా కనెక్ట్</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>పోర్ట్, DSX.exe స్టాండ్ ఇన్</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ఓవర్లే {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>చూపేది</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>మరో ప్రోగ్రామ్ ముందున్నప్పుడు, క్లిక్‌లు ఓవర్లే గుండా వెళ్తాయి. PadForge ముందున్నప్పుడు, కుడి మౌస్ బటన్‌తో దాన్ని లాగండి, దాని మూల నుండి పరిమాణం మార్చండి. మాక్రో ఓవర్లేను దాని సంఖ్యతో చూపవచ్చు లేదా దాచవచ్చు.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>క్రాస్‌హెయిర్</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>ఇతర విండోల పైన డిస్‌ప్లే మధ్యలో క్రాస్‌హెయిర్‌లు: ఒక క్రాస్, వృత్తం, చుక్క లేదా మీ స్వంత చిత్రం.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>క్రాస్‌హెయిర్ జోడించు</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>క్రాస్‌హెయిర్ {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>క్రాస్‌హెయిర్ చూపించు</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>శైలి</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>క్రాస్</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>వృత్తం</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>చుక్క</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>చిత్రం</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>ప్రివ్యూ</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>మధ్య నుండి ఆఫ్‌సెట్</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>అడ్డ ఆఫ్‌సెట్</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>నిలువు ఆఫ్‌సెట్</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>చేయి పొడవు</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>మందం</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>ఖాళీ</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>మధ్య చుక్క</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T ఆకారం</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>పై చేయి ఉండదు.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>వ్యాసార్ధం</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>భుజాలు</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64 వద్ద వలయం గుండ్రంగా ఉంటుంది.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>పరిమాణం</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>చిత్రం</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>చిత్రం ఎంచుకోలేదు</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>చిత్రాలు (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|అన్ని ఫైళ్లు (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>పరిమాణం</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>వెడల్పు</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>ఎత్తు</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>చిత్రం సొంత పరిమాణం</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>నిష్పత్తులు ఉంచు</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>ఆఫ్ చేస్తే, చిత్రం ఇచ్చిన వెడల్పు ఎత్తులకు సాగుతుంది.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>రంగు</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>అంచు గీత</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>అంచు గీత వెడల్పు</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>అంచు గీత రంగు</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>తిప్పు కోణం</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>అంచులను మృదువుగా చేయి</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>ఆఫ్ చేస్తే, ప్రతి అంచు పూర్తి పిక్సెల్‌లపై ఉండి పదునుగా ఉంటుంది.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>రంగు ఎంపిక సాధనాన్ని చూపించు లేదా దాచు</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>చూపడానికి చిత్రం లేదు</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>డిస్‌ప్లే బయట ఉంది</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>క్రాస్‌హెయిర్‌లు విండో మరియు బోర్డర్‌లెస్ ఆటల పైన కనిపిస్తాయి, క్లిక్‌లు వాటి గుండా వెళ్తాయి. ప్రత్యేక పూర్తి స్క్రీన్‌లో ఉన్న ఆట వాటిని దాచేస్తుంది, కాబట్టి ఆటను విండోలో లేదా బోర్డర్‌లెస్‌లో నడపండి. మాక్రో క్రాస్‌హెయిర్‌ను దాని సంఖ్యతో చూపవచ్చు లేదా దాచవచ్చు.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>భూతద్దం</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>స్నైపర్ స్కోప్ లాంటి లెన్స్, మొత్తం డిస్‌ప్లే జూమ్, లేదా మిగతాదాన్ని చీకటి చేసే స్పాట్‌లైట్.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>భూతద్దం చూపించు</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>ఏమి చూపుతుంది</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>మోడ్</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>లెన్స్</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>పూర్తి స్క్రీన్</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>స్పాట్‌లైట్</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>కేంద్రం</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>డిస్‌ప్లే మధ్య</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>పాయింటర్</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>క్రాస్‌హెయిర్</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>క్రాస్‌హెయిర్ అంటే ఆన్‌లో ఉన్న మొదటి క్రాస్‌హెయిర్, దాని ఆఫ్‌సెట్‌తో సహా.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>జూమ్</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>ఆకారం</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>వృత్తం</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>దీర్ఘచతురస్రం</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>పరిమాణం</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>వెడల్పు</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>ఎత్తు</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>అంచు</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>అంచు వెడల్పు</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>అంచు రంగు</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>వృత్తం పరిమాణం</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>చీకటి స్థాయి</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows భూతద్దాన్ని ప్రారంభించలేదు.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>లెన్స్ మరియు స్పాట్‌లైట్ విండో మరియు బోర్డర్‌లెస్ ఆటల పైన కనిపిస్తాయి, క్లిక్‌లు వాటి గుండా వెళ్తాయి. పూర్తి స్క్రీన్ మోడ్ Windows పూర్తి స్క్రీన్ భూతద్దంతో మొత్తం డెస్క్‌టాప్‌ను జూమ్ చేస్తుంది. మాక్రో భూతద్దాన్ని చూపవచ్చు లేదా దాచవచ్చు, లేదా నొక్కి ఉంచినంత సేపే చూపవచ్చు.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>మోషన్ సర్వర్</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>గైరో, యాక్సిలరోమీటర్ డేటా కోసం DSU/CemuHook Motion Provider ప్రోటోకాల్ సర్వర్.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU మోషన్ సర్వర్‌ను ప్రారంభించు (CemuHook Motion Provider ప్రోటోకాల్)</value></data>
@@ -5236,6 +5309,10 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge స్క్రీన్ ఓవర్లే</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>ఇంకా చూపడానికి ఏమీ లేదు. ఏమి చూపాలో ఎక్స్‌ట్రాలు కింద స్క్రీన్ ఓవర్లే పేజీలో ఎంచుకోండి.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>స్క్రీన్ ఓవర్లేను టోగుల్ చేయి</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>క్రాస్‌హెయిర్‌ను టోగుల్ చేయి</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>భూతద్దాన్ని టోగుల్ చేయి</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>ప్రతి క్రాస్‌హెయిర్</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>క్రాస్‌హెయిర్</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>స్క్రీన్ ఓవర్లేను టోగుల్ చేయి</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>స్క్రీన్ ఓవర్లే</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>ఓవర్లే ఏమీ చూపదు.</value></data>
@@ -5256,6 +5333,11 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>ఓవర్లే</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>ప్రతి ఓవర్లే</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>స్క్రీన్ ఓవర్లే {0}ను టోగుల్ చేయి</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>క్రాస్‌హెయిర్‌ను టోగుల్ చేయి</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>క్రాస్‌హెయిర్ {0}ను టోగుల్ చేయి</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>భూతద్దాన్ని టోగుల్ చేయి</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>భూతద్దం (నొక్కి ఉంచినప్పుడు)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>ఈ మాక్రోను నొక్కి ఉంచినంత సేపు భూతద్దాన్ని చూపిస్తుంది, సైట్ల ద్వారా గురి పెట్టడానికి. దీన్ని భూతద్దం పేజీలో సెట్ చేయండి.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} చిత్రాలు చూపు: {1} × {2} ms, తదుపరి చూపు లేదా మోడ్ మాక్రో వరకు</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>ప్రొఫైల్ దిగుమతి</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, ఒక {1} ఫైల్.</value></data>
@@ -5284,7 +5366,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge ఈ అవుట్‌పుట్‌ను గుర్తించలేదు: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForgeలో అలాంటి కమాండ్ లేదు: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్‌లో అలాంటి బటన్ లేదు: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>క్రాస్‌హెయిర్ reWASD లోపలే ఉంటుంది. మీ స్వంత చిత్రాన్ని స్క్రీన్ ఓవర్లే తో చూపించండి.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD తన క్రాస్‌హెయిర్‌లను కాన్ఫిగ్‌లో కాక తన స్వంత సెట్టింగ్‌లలో ఉంచుతుంది. మీది క్రాస్‌హెయిర్ పేజీలో సెట్ చేసుకోండి.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>స్టిక్ జిట్టర్, షేకింగ్ రాలేదు.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>అనలాగ్ కీ యాక్చుయేషన్ పాయింట్లు రాలేదు.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD ఈ కంట్రోలర్‌ను అడాప్టర్ ద్వారా మరో పరికరానికి పంపింది. PadForge దాన్ని ఈ PCలో ప్లే చేస్తుంది, మరియు రిమోట్ లింక్ దాన్ని PadForge నడుస్తున్న మరో PCకి పంపుతుంది.</value></data>
@@ -5576,7 +5658,6 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro ప్రొఫైల్ (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge కీ లైట్లు (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>మాక్రో {0} నొక్కలేదు. మ్యాపింగ్లు విభాగంలోని వరుస నొక్కగలదు.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge ఎనిమిది స్క్రీన్ ఓవర్లేలను నడుపుతుంది, ఇది reWASD తొమ్మిదో లేదా పదో క్రాస్‌హెయిర్.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge గైరో ఎడమ, కుడిని రోల్ నుండి, వంపును యా నుండి చదువుతుంది, ఇది reWASD డిఫాల్ట్. reWASD ప్రాధాన్యతలలో ఈ రెండింటినీ మార్చుకోవచ్చు, అవి మార్చబడ్డాయో లేదో ఈ ఫైల్ చెప్పదు.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>టిల్ట్ మోడ్‌లో, reWASD వంపు అంటే నిలువు అక్షం చుట్టూ తిరగడం, దానికి మోషన్ సెన్సార్ కోణాన్ని ఇవ్వదు.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge టచ్ ప్యాడ్ వికర్ణాన్ని ఒకేసారి రెండు దిశలుగా చదువుతుంది, మోషన్ &amp; టచ్ విభాగంలో దాని D-ప్యాడ్ మోడ్ 8-దిశలు అయినప్పుడు మాత్రమే టచ్ ప్యాడ్ దాన్ని నివేదిస్తుంది.</value></data>

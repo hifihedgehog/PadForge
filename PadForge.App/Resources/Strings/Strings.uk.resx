@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Показуйте меню, шари та перемикання профілів під час гри.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Екранна сенсорна поверхня для ігор із сенсорною панеллю PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Зображення, таймер або годинник поверх інших вікон.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Ваш власний приціл поверх гри.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Лінза, збільшення всього екрана або прожектор.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, звичайний HTTP, код доступу</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Автоматичне перепідключення, порт, посвідчення пари, підключення за адресою</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, замінник DSX.exe</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Оверлей {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Показує</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Коли попереду інша програма, кліки проходять крізь оверлей. Коли попереду PadForge, перетягуйте оверлей правою кнопкою миші й змінюйте розмір за кут. Макрос може показати чи сховати оверлей за його номером.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Приціл</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Приціли поверх інших вікон по центру дисплея: хрест, коло, точка або власне зображення.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Додати приціл</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Приціл {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Показати приціл</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Стиль</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Хрест</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Коло</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Точка</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Зображення</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Попередній перегляд</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Зсув від центру</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Зсув по горизонталі</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Зсув по вертикалі</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Довжина променя</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Товщина</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Проміжок</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Точка в центрі</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Т-подібна форма</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Без верхнього променя.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Радіус</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Сторони</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>При 64 сторонах кільце виглядає круглим.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Розмір</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Зображення</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Зображення не вибрано</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Зображення (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Усі файли (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Розмір</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Ширина</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Висота</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Власний розмір зображення</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Зберігати пропорції</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Коли вимкнено, зображення розтягується до заданих ширини й висоти.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Колір</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Контур</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Товщина контуру</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Колір контуру</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Поворот</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Згладжені краї</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Коли вимкнено, кожен край лягає на цілі пікселі й залишається різким.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Показати або сховати вибір кольору</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Немає зображення для показу</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Поза своїм дисплеєм</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Приціли показуються поверх ігор у віконному та безрамковому режимах, а кліки проходять крізь них. Гра в ексклюзивному повноекранному режимі їх ховає, тому запускайте її у віконному або безрамковому режимі. Макрос може показати чи сховати приціл за його номером.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Лупа</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Лінза, як приціл снайперської гвинтівки, збільшення всього дисплея або прожектор, що затемнює решту.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Показати лупу</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Що вона показує</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Режим</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Лінза</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>На весь екран</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Прожектор</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Центрувати на</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Центр дисплея</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Вказівник</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Приціл</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Вибір «Приціл» означає перший увімкнений приціл разом з його зсувом.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Збільшення</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Форма</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Коло</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Прямокутник</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Розмір</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Ширина</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Висота</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Рамка</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Товщина рамки</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Колір рамки</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Розмір кола</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Затемнення</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows не запустила лупу.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Лінза й прожектор показуються поверх ігор у віконному та безрамковому режимах, а кліки проходять крізь них. Режим «На весь екран» збільшує весь робочий стіл за допомогою екранної лупи Windows. Макрос може показати чи сховати лупу або показувати її лише поки утримується.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Сервер руху</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Сервер протоколу DSU/CemuHook Motion Provider для даних гіроскопа й акселерометра.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Увімкнути сервер руху DSU (протокол CemuHook Motion Provider)</value></data>
@@ -4918,4 +4991,6 @@
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Задати пароль</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Розблокувати Віддалений зв'язок</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Пароль</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Лупа (поки утримується)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Показує лупу, поки цей макрос утримується, щоб цілитися через приціл. Налаштуйте її на сторінці «Лупа».</value></data>
 </root>

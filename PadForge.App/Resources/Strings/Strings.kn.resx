@@ -399,6 +399,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>ಆಡುವಾಗ ಮೆನು, ಲೇಯರ್ ಮತ್ತು ಪ್ರೊಫೈಲ್ ಬದಲಾವಣೆಗಳನ್ನು ತೋರಿಸಿ.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation ಟಚ್‌ಪ್ಯಾಡ್ ಆಟಗಳಿಗಾಗಿ ಪರದೆಯ ಮೇಲಿನ ಸ್ಪರ್ಶ ಮೇಲ್ಮೈ.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>ಇತರ ವಿಂಡೋಗಳ ಮೇಲೆ ಚಿತ್ರ, ಟೈಮರ್ ಅಥವಾ ಗಡಿಯಾರ.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ಆಟದ ಮೇಲೆ ನಿಮ್ಮದೇ ಕ್ರಾಸ್‌ಹೇರ್.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>ಜೂಮ್ ಲೆನ್ಸ್, ಪೂರ್ಣ ಪರದೆಯ ಜೂಮ್ ಅಥವಾ ಸ್ಪಾಟ್‌ಲೈಟ್.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>ಪೋರ್ಟ್, ಸರಳ HTTP, ಪ್ರವೇಶ ಕೋಡ್</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ಸ್ವಯಂ ಮರುಸಂಪರ್ಕ, ಪೋರ್ಟ್, ಜೋಡಣೆ ಗುರುತು, ವಿಳಾಸದ ಮೂಲಕ ಸಂಪರ್ಕ</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>ಪೋರ್ಟ್, DSX.exe ಬದಲಿ ಪ್ರೋಗ್ರಾಂ</value></data>
@@ -446,6 +448,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ಓವರ್‌ಲೇ {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>ತೋರಿಸುವುದು</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>ಬೇರೊಂದು ಪ್ರೋಗ್ರಾಂ ಮುಂದಿರುವಾಗ, ಕ್ಲಿಕ್‌ಗಳು ಓವರ್‌ಲೇ ಮೂಲಕ ಹಾದುಹೋಗುತ್ತವೆ. PadForge ಮುಂದಿರುವಾಗ, ಬಲ ಮೌಸ್ ಬಟನ್‌ನಿಂದ ಎಳೆಯಿರಿ ಮತ್ತು ಅದರ ಮೂಲೆಯಿಂದ ಗಾತ್ರ ಬದಲಿಸಿ. ಮ್ಯಾಕ್ರೋ ಓವರ್‌ಲೇಯನ್ನು ಅದರ ಸಂಖ್ಯೆಯಿಂದ ತೋರಿಸಬಹುದು ಅಥವಾ ಮರೆಮಾಡಬಹುದು.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>ಕ್ರಾಸ್‌ಹೇರ್</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>ಇತರ ವಿಂಡೋಗಳ ಮೇಲೆ ಡಿಸ್‌ಪ್ಲೇಯ ಮಧ್ಯದಲ್ಲಿ ಕ್ರಾಸ್‌ಹೇರ್‌ಗಳು: ಅಡ್ಡ ಗುರುತು, ವೃತ್ತ, ಚುಕ್ಕೆ ಅಥವಾ ನಿಮ್ಮದೇ ಚಿತ್ರ.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>ಕ್ರಾಸ್‌ಹೇರ್ ಸೇರಿಸಿ</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>ಕ್ರಾಸ್‌ಹೇರ್ {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>ಕ್ರಾಸ್‌ಹೇರ್ ತೋರಿಸಿ</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>ಶೈಲಿ</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>ಅಡ್ಡ ಗುರುತು</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>ವೃತ್ತ</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>ಚುಕ್ಕೆ</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>ಚಿತ್ರ</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>ಪೂರ್ವವೀಕ್ಷಣೆ</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>ಮಧ್ಯದಿಂದ ಸರಿಸುವಿಕೆ</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>ಅಡ್ಡ ಸರಿಸುವಿಕೆ</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>ಲಂಬ ಸರಿಸುವಿಕೆ</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>ತೋಳಿನ ಉದ್ದ</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>ದಪ್ಪ</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>ಅಂತರ</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>ಮಧ್ಯದ ಚುಕ್ಕೆ</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T ಆಕಾರ</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>ಮೇಲಿನ ತೋಳು ಇಲ್ಲ.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>ತ್ರಿಜ್ಯ</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>ಬದಿಗಳು</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64 ಬದಿಗಳಲ್ಲಿ ಉಂಗುರ ದುಂಡಾಗಿರುತ್ತದೆ.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>ಗಾತ್ರ</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>ಚಿತ್ರ</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>ಚಿತ್ರವನ್ನು ಆರಿಸಿಲ್ಲ</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>ಚಿತ್ರಗಳು (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|ಎಲ್ಲಾ ಫೈಲ್‌ಗಳು (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>ಗಾತ್ರ</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>ಅಗಲ</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>ಎತ್ತರ</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>ಚಿತ್ರದ ಸ್ವಂತ ಗಾತ್ರ</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>ಅನುಪಾತ ಉಳಿಸಿ</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>ಆಫ್ ಆಗಿದ್ದರೆ, ಚಿತ್ರ ಅಗಲ ಮತ್ತು ಎತ್ತರಕ್ಕೆ ಹಿಗ್ಗುತ್ತದೆ.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>ಬಣ್ಣ</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>ಹೊರರೇಖೆ</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>ಹೊರರೇಖೆಯ ಅಗಲ</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>ಹೊರರೇಖೆಯ ಬಣ್ಣ</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>ತಿರುಗುವಿಕೆ</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>ಅಂಚುಗಳನ್ನು ಮೃದುಗೊಳಿಸಿ</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>ಆಫ್ ಆಗಿದ್ದರೆ, ಪ್ರತಿ ಅಂಚು ಪೂರ್ಣ ಪಿಕ್ಸೆಲ್‌ಗಳ ಮೇಲೆ ಬೀಳುತ್ತದೆ ಮತ್ತು ಹರಿತವಾಗಿರುತ್ತದೆ.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>ಬಣ್ಣ ಆಯ್ಕೆಕಾರನನ್ನು ತೋರಿಸಿ ಅಥವಾ ಮರೆಮಾಡಿ</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>ತೋರಿಸಲು ಚಿತ್ರವಿಲ್ಲ</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>ತನ್ನ ಡಿಸ್‌ಪ್ಲೇಯಿಂದ ಹೊರಗೆ</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>ಕ್ರಾಸ್‌ಹೇರ್‌ಗಳು ವಿಂಡೋ ಮತ್ತು ಬಾರ್ಡರ್‌ಲೆಸ್ ಆಟಗಳ ಮೇಲೆ ಕಾಣಿಸುತ್ತವೆ, ಮತ್ತು ಕ್ಲಿಕ್‌ಗಳು ಅವುಗಳ ಮೂಲಕ ಹಾದುಹೋಗುತ್ತವೆ. ಎಕ್ಸ್‌ಕ್ಲೂಸಿವ್ ಪೂರ್ಣ ಪರದೆಯಲ್ಲಿರುವ ಆಟ ಅವುಗಳನ್ನು ಮರೆಮಾಡುತ್ತದೆ, ಆದ್ದರಿಂದ ಅದನ್ನು ವಿಂಡೋ ಅಥವಾ ಬಾರ್ಡರ್‌ಲೆಸ್ ಮೋಡ್‌ನಲ್ಲಿ ಚಲಾಯಿಸಿ. ಮ್ಯಾಕ್ರೋ ಕ್ರಾಸ್‌ಹೇರ್ ಅನ್ನು ಅದರ ಸಂಖ್ಯೆಯಿಂದ ತೋರಿಸಬಹುದು ಅಥವಾ ಮರೆಮಾಡಬಹುದು.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>ಭೂತಗನ್ನಡಿ</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>ಸ್ನೈಪರ್ ಸ್ಕೋಪ್‌ನಂತಹ ಲೆನ್ಸ್, ಇಡೀ ಡಿಸ್‌ಪ್ಲೇಯ ಜೂಮ್, ಅಥವಾ ಉಳಿದುದನ್ನು ಕತ್ತಲಾಗಿಸುವ ಸ್ಪಾಟ್‌ಲೈಟ್.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>ಭೂತಗನ್ನಡಿ ತೋರಿಸಿ</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>ಅದು ಏನು ತೋರಿಸುತ್ತದೆ</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>ಮೋಡ್</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>ಲೆನ್ಸ್</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>ಪೂರ್ಣ ಪರದೆ</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>ಸ್ಪಾಟ್‌ಲೈಟ್</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>ಕೇಂದ್ರೀಕರಿಸಿ</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>ಡಿಸ್‌ಪ್ಲೇಯ ಮಧ್ಯ</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>ಪಾಯಿಂಟರ್</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>ಕ್ರಾಸ್‌ಹೇರ್</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>ಕ್ರಾಸ್‌ಹೇರ್ ಎಂದರೆ ಆನ್ ಇರುವ ಮೊದಲ ಕ್ರಾಸ್‌ಹೇರ್, ಸರಿಸುವಿಕೆ ಸೇರಿ.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>ಜೂಮ್</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>ಆಕಾರ</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>ವೃತ್ತ</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>ಆಯತ</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>ಗಾತ್ರ</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>ಅಗಲ</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>ಎತ್ತರ</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>ಅಂಚು</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>ಅಂಚಿನ ಅಗಲ</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>ಅಂಚಿನ ಬಣ್ಣ</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>ವೃತ್ತದ ಗಾತ್ರ</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>ಕತ್ತಲೆ</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>ವಿಂಡೋಸ್ ಭೂತಗನ್ನಡಿಯನ್ನು ಪ್ರಾರಂಭಿಸಲಿಲ್ಲ.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>ಲೆನ್ಸ್ ಮತ್ತು ಸ್ಪಾಟ್‌ಲೈಟ್ ವಿಂಡೋ ಮತ್ತು ಬಾರ್ಡರ್‌ಲೆಸ್ ಆಟಗಳ ಮೇಲೆ ಕಾಣಿಸುತ್ತವೆ, ಮತ್ತು ಕ್ಲಿಕ್‌ಗಳು ಅವುಗಳ ಮೂಲಕ ಹಾದುಹೋಗುತ್ತವೆ. ಪೂರ್ಣ ಪರದೆ ಮೋಡ್ ವಿಂಡೋಸ್‌ನ ಪೂರ್ಣ ಪರದೆಯ ಭೂತಗನ್ನಡಿಯಿಂದ ಇಡೀ ಡೆಸ್ಕ್‌ಟಾಪ್ ಅನ್ನು ಜೂಮ್ ಮಾಡುತ್ತದೆ. ಮ್ಯಾಕ್ರೋ ಭೂತಗನ್ನಡಿಯನ್ನು ತೋರಿಸಬಹುದು ಅಥವಾ ಮರೆಮಾಡಬಹುದು, ಅಥವಾ ಹಿಡಿದಿರುವಾಗ ಮಾತ್ರ ತೋರಿಸಬಹುದು.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>ಮೋಷನ್ ಸರ್ವರ್</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ಜೈರೋ ಮತ್ತು ಆಕ್ಸೆಲರೋಮೀಟರ್ ಡೇಟಾಗಾಗಿ DSU/CemuHook Motion Provider ಪ್ರೋಟೋಕಾಲ್ ಸರ್ವರ್.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU ಮೋಷನ್ ಸರ್ವರ್ ಸಕ್ರಿಯಗೊಳಿಸಿ (CemuHook Motion Provider Protocol)</value></data>
@@ -4891,4 +4964,6 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>ಪಾಸ್‌ವರ್ಡ್ ಹೊಂದಿಸಿ</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>ರಿಮೋಟ್ ಲಿಂಕ್ ಅನ್‌ಲಾಕ್ ಮಾಡಿ</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>ಪಾಸ್‌ವರ್ಡ್</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>ಭೂತಗನ್ನಡಿ (ಹಿಡಿದಿರುವಾಗ)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>ಈ ಮ್ಯಾಕ್ರೋ ಹಿಡಿದಿರುವಾಗ ಭೂತಗನ್ನಡಿಯನ್ನು ತೋರಿಸುತ್ತದೆ, ಸೈಟ್‌ಗಳ ಮೂಲಕ ಗುರಿ ಇಡಲು. ಭೂತಗನ್ನಡಿ ಪುಟದಲ್ಲಿ ಅದನ್ನು ಹೊಂದಿಸಿ.</value></data>
 </root>

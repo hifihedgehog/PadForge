@@ -56,6 +56,14 @@ namespace PadForge.Tests
         internal static void Set() => PadForge.Common.Input.ScreenColor.ScreenColorSource.OffLimitsForTest = true;
     }
 
+    /// <summary>The desktop is not zoomed: Windows' full-screen magnifier is
+    /// set only through a test's own recorder (#585).</summary>
+    internal static class FullScreenZoomOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Common.Crosshairs.MagnifierNative.OffLimitsForTest = true;
+    }
+
     /// <summary>No socket or listener is bound beyond loopback.</summary>
     internal static class ListenerOffLimits
     {

@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>ສະແດງເມນູ, ຊັ້ນ ແລະ ການປ່ຽນໂປຣໄຟລ໌ໃນຂະນະທີ່ທ່ານຫຼິ້ນ.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ພື້ນຜິວສຳຜັດເທິງໜ້າຈໍ ສຳລັບເກມທັດແພດ PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>ຮູບພາບ, ຕົວຈັບເວລາ ຫຼື ໂມງ ຢູ່ເທິງໜ້າຕ່າງອື່ນ.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ເປົ້າເລັງຂອງທ່ານເອງເທິງເກມ.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>ເລນຂະຫຍາຍ, ການຂະຫຍາຍເຕັມໜ້າຈໍ ຫຼື ໄຟສ່ອງ.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>ພອດ, HTTP ທຳມະດາ, ລະຫັດເຂົ້າເຖິງ</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ການເຊື່ອມຕໍ່ຄືນອັດຕະໂນມັດ, ພອດ, ຕົວຕົນການຈັບຄູ່, ເຊື່ອມຕໍ່ດ້ວຍທີ່ຢູ່</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>ພອດ, DSX.exe ຕົວແທນ</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ໂອເວີເລ {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>ສະແດງ</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>ໃນຂະນະທີ່ໂປຣແກຣມອື່ນຢູ່ດ້ານໜ້າ, ການຄລິກຈະຜ່ານໂອເວີເລໄປ. ໃນຂະນະທີ່ PadForge ຢູ່ດ້ານໜ້າ, ລາກມັນດ້ວຍປຸ່ມຂວາຂອງເມົ້າ ແລະ ປັບຂະໜາດຈາກມຸມຂອງມັນ. ມາໂຄຣສາມາດສະແດງ ຫຼື ເຊື່ອງໂອເວີເລຕາມໝາຍເລກຂອງມັນ.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>ເປົ້າເລັງ</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>ເປົ້າເລັງເທິງໜ້າຕ່າງອື່ນ, ຢູ່ກາງໜ້າຈໍ: ກາກບາດ, ວົງມົນ, ຈຸດ ຫຼື ຮູບຂອງທ່ານເອງ.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>ເພີ່ມເປົ້າເລັງ</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>ເປົ້າເລັງ {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>ສະແດງເປົ້າເລັງ</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>ຮູບແບບ</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>ກາກບາດ</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>ວົງມົນ</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>ຈຸດ</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>ຮູບ</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>ຕົວຢ່າງ</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>ເລື່ອນຈາກຈຸດກາງ</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>ເລື່ອນຕາມລວງນອນ</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>ເລື່ອນຕາມລວງຕັ້ງ</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>ຄວາມຍາວຂາ</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>ຄວາມໜາ</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>ຊ່ອງຫວ່າງ</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>ຈຸດກາງ</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>ຮູບຊົງ T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>ບໍ່ມີຂາເທິງ.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>ລັດສະໝີ</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>ຈຳນວນດ້ານ</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>ເມື່ອເປັນ 64 ວົງຈະມົນ.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>ຂະໜາດ</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>ຮູບ</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>ຍັງບໍ່ໄດ້ເລືອກຮູບ</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>ຮູບ (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|ໄຟລ໌ທັງໝົດ (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>ຂະໜາດ</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>ຄວາມກວ້າງ</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>ຄວາມສູງ</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>ຂະໜາດເດີມຂອງຮູບ</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>ຮັກສາອັດຕາສ່ວນ</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>ເມື່ອປິດ, ຮູບຈະຍືດໃຫ້ເຕັມຄວາມກວ້າງ ແລະ ຄວາມສູງ.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>ສີ</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>ເສັ້ນຂອບ</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>ຄວາມກວ້າງເສັ້ນຂອບ</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>ສີເສັ້ນຂອບ</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>ການໝຸນ</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>ຂອບລຽບ</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>ເມື່ອປິດ, ທຸກຂອບຈະຢູ່ເທິງພິກເຊວເຕັມ ແລະ ຄົມຊັດ.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>ສະແດງ ຫຼື ເຊື່ອງຕົວເລືອກສີ</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>ບໍ່ມີຮູບໃຫ້ສະແດງ</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>ອອກນອກໜ້າຈໍຂອງມັນ</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>ເປົ້າເລັງສະແດງເທິງເກມແບບໜ້າຕ່າງ ແລະ ແບບບໍ່ມີຂອບ, ແລະ ການຄລິກຈະຜ່ານມັນໄປ. ເກມທີ່ເປັນເຕັມໜ້າຈໍແບບສະເພາະຈະບັງມັນໄວ້, ສະນັ້ນໃຫ້ແລ່ນເກມແບບໜ້າຕ່າງ ຫຼື ແບບບໍ່ມີຂອບ. ມາໂຄຣສາມາດສະແດງ ຫຼື ເຊື່ອງເປົ້າເລັງຕາມໝາຍເລກຂອງມັນ.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>ແວ່ນຂະຫຍາຍ</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>ເລນຄືກ້ອງເລັງຂອງປືນສະໄນເປີ, ທັງໜ້າຈໍທີ່ຖືກຂະຫຍາຍ ຫຼື ໄຟສ່ອງທີ່ເຮັດໃຫ້ສ່ວນທີ່ເຫຼືອມືດລົງ.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>ສະແດງແວ່ນຂະຫຍາຍ</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>ສິ່ງທີ່ມັນສະແດງ</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>ໂໝດ</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>ເລນ</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>ເຕັມໜ້າຈໍ</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>ໄຟສ່ອງ</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>ຈັດກາງທີ່</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>ກາງໜ້າຈໍ</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>ຕົວຊີ້ເມົ້າ</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>ເປົ້າເລັງ</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>ເປົ້າເລັງ ໝາຍເຖິງເປົ້າເລັງທຳອິດທີ່ເປີດຢູ່, ລວມທັງການເລື່ອນຂອງມັນ.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>ການຊູມ</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>ຮູບຮ່າງ</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>ວົງມົນ</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>ສີ່ຫຼ່ຽມ</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>ຂະໜາດ</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>ຄວາມກວ້າງ</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>ຄວາມສູງ</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>ຂອບ</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>ຄວາມກວ້າງຂອບ</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>ສີຂອບ</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>ຂະໜາດວົງມົນ</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>ຄວາມມືດ</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ບໍ່ໄດ້ເລີ່ມແວ່ນຂະຫຍາຍ.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>ເລນ ແລະ ໄຟສ່ອງສະແດງເທິງເກມແບບໜ້າຕ່າງ ແລະ ແບບບໍ່ມີຂອບ, ແລະ ການຄລິກຈະຜ່ານມັນໄປ. ເຕັມໜ້າຈໍຈະຂະຫຍາຍເດັສທັອບທັງໝົດດ້ວຍແວ່ນຂະຫຍາຍເຕັມໜ້າຈໍຂອງ Windows. ມາໂຄຣສາມາດສະແດງ ຫຼື ເຊື່ອງແວ່ນຂະຫຍາຍ ຫຼື ສະແດງມັນສະເພາະຂະນະກົດຄ້າງ.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>ເຊີບເວີການເຄື່ອນໄຫວ</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ເຊີບເວີໂປຣໂຕຄອນ DSU/CemuHook Motion Provider ສຳລັບຂໍ້ມູນໄຈໂຣ ແລະ ເຊັນເຊີວັດຄວາມເລັ່ງ.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>ເປີດໃຊ້ເຊີບເວີການເຄື່ອນໄຫວ DSU (ໂປຣໂຕຄອນ CemuHook Motion Provider)</value></data>
@@ -4902,4 +4975,6 @@
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>ຕັ້ງລະຫັດຜ່ານ</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>ປົດລັອກການເຊື່ອມຕໍ່ທາງໄກ</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>ລະຫັດຜ່ານ</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>ແວ່ນຂະຫຍາຍ (ຂະນະກົດຄ້າງ)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>ສະແດງແວ່ນຂະຫຍາຍຂະນະກົດຄ້າງມາໂຄຣນີ້, ສຳລັບການເລັງຜ່ານສູນເລັງຂອງປືນ. ຕັ້ງຄ່າມັນໃນໜ້າແວ່ນຂະຫຍາຍ.</value></data>
 </root>

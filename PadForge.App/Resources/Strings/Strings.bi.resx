@@ -1778,4 +1778,5 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Neva</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Taem Layer i On i holem flyout i stap kasem we layer i jenis. Blong 2 Seken i soem flyout taem layer i stat, afta i letem i go. Wetem Neva, layer ya i no soem flyout, mo Base i no soem wan tu taem layer i finis.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Blong 2 Seken i soem nem blong Base taem wan shift layer i finis. Wetem Neva, Base i no soem flyout.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Ol pikja (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Evri fael (*.*)|*.*</value></data>
 </root>

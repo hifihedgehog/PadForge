@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Tunjukkan menu, lapisan dan pertukaran profil semasa anda bermain.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Permukaan sentuh pada skrin untuk permainan pad sentuh PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Gambar, pemasa atau jam di atas tetingkap lain.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Garis silang anda sendiri di atas permainan.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Kanta zum, zum skrin penuh atau lampu sorot.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, HTTP biasa, kod akses</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Sambung Semula Automatik, port, identiti penggandingan, sambung melalui alamat</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, pengganti DSX.exe</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Tindihan {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Paparan</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Semasa program lain berada di hadapan, klik melalui tindihan. Semasa PadForge berada di hadapan, seret dengan butang kanan tetikus dan ubah saiznya dari sudutnya. Makro boleh menunjukkan atau menyembunyikan tindihan mengikut nombornya.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Garis Silang</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Garis silang di atas tetingkap lain, di tengah paparan: silang, bulatan, titik atau gambar anda sendiri.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Tambah Garis Silang</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Garis Silang {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Tunjukkan Garis Silang</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Gaya</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Silang</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Bulatan</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Titik</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Gambar</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Pratonton</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Anjakan dari Tengah</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Anjakan Mendatar</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Anjakan Menegak</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Panjang Lengan</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Ketebalan</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Jurang</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Titik Tengah</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Bentuk T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Tiada lengan atas.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Jejari</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Sisi</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Pada 64 cincin menjadi bulat.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Saiz</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Gambar</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Tiada gambar dipilih</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Gambar (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Semua Fail (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Saiz</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Lebar</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Tinggi</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Saiz Asal Gambar</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Kekalkan Nisbah</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Jika dimatikan, gambar diregangkan mengikut lebar dan tinggi.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Warna</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Garis Luar</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Lebar Garis Luar</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Warna Garis Luar</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Putaran</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Licinkan Tepi</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Jika dimatikan, setiap tepi jatuh pada piksel penuh dan kekal tajam.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Tunjukkan atau sembunyikan pemilih warna</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Tiada gambar untuk ditunjukkan</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Di luar paparannya</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Garis silang ditunjukkan di atas permainan bertetingkap dan tanpa sempadan, dan klik melaluinya. Permainan dalam skrin penuh eksklusif menyembunyikannya, jadi jalankan permainan dalam mod bertetingkap atau tanpa sempadan. Makro boleh menunjukkan atau menyembunyikan garis silang mengikut nombornya.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Pembesar</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Kanta seperti teleskop penembak tepat, seluruh paparan dizum masuk, atau lampu sorot yang menggelapkan selebihnya.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Tunjukkan Pembesar</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Apa yang Ditunjukkan</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Mod</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Kanta</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Skrin Penuh</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Lampu Sorot</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Berpusat pada</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Tengah Paparan</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Penuding</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Garis Silang</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Garis Silang bermaksud garis silang pertama yang dihidupkan, termasuk anjakannya.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Zum</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Bentuk</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Bulatan</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Segi Empat Tepat</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Saiz</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Lebar</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Tinggi</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Sempadan</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Lebar Sempadan</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Warna Sempadan</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Saiz Bulatan</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Kegelapan</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows tidak memulakan pembesar.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Kanta dan lampu sorot ditunjukkan di atas permainan bertetingkap dan tanpa sempadan, dan klik melaluinya. Skrin Penuh menzum seluruh desktop dengan pembesar skrin penuh Windows. Makro boleh menunjukkan atau menyembunyikan pembesar, atau menunjukkannya hanya semasa ditahan.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Pelayan Gerakan</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Pelayan protokol DSU/CemuHook Motion Provider untuk data giro dan meter pecutan.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Dayakan Pelayan Gerakan DSU (Protokol CemuHook Motion Provider)</value></data>
@@ -4918,4 +4991,6 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Tetapkan Kata Laluan</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Buka Kunci Pautan Jauh</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Kata Laluan</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Pembesar (Semasa Ditahan)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Menunjukkan pembesar semasa makro ini ditahan, untuk membidik melalui alat bidik. Sediakannya pada halaman Pembesar.</value></data>
 </root>

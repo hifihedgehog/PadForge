@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ойын кезінде мәзірлерді, қабаттарды және профиль ауысуларын көрсетіңіз.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation сенсорлық тақтасы бар ойындарға арналған экрандағы сенсорлық бет.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Басқа терезелердің үстінде сурет, таймер немесе сағат.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Ойындағы өзіңіздің прицеліңіз.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Лупа линзасы, бүкіл экранды үлкейту немесе прожектор.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, қарапайым HTTP, кіру коды</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Автоматты қайта қосылу, порт, жұптастыру сәйкестендіруі, мекенжай арқылы қосылу</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, DSX.exe алмастырғышы</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Оверлей {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Көрсетеді</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Басқа бағдарлама алдыңғы қатарда тұрғанда, шерту оверлей арқылы өтіп кетеді. PadForge алдыңғы қатарда тұрғанда, оверлейді тінтуірдің оң жақ түймесімен сүйреп, бұрышынан өлшемін өзгертіңіз. Макрос оверлейді нөмірі бойынша көрсете немесе жасыра алады.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Прицел</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Басқа терезелердің үстінде дисплей ортасында тұратын прицелдер: крест, шеңбер, нүкте немесе өз суретіңіз.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Прицел қосу</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Прицел {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Прицелді көрсету</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Стиль</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Крест</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Шеңбер</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Нүкте</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Сурет</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Алдын ала қарау</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Ортадан ығысу</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Көлденең ығысу</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Тік ығысу</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Сызық ұзындығы</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Қалыңдығы</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Саңылау</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Ортадағы нүкте</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T пішіні</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Жоғарғы сызық жоқ.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Радиус</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Қабырғалар</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64 болғанда шеңбер дөңгелек болады.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Өлшемі</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Сурет</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Сурет таңдалмаған</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Суреттер (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Барлық файлдар (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Өлшемі</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Ені</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Биіктігі</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Суреттің өз өлшемі</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Қатынасты сақтау</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Өшірулі болса, сурет берілген ені мен биіктігіне созылады.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Түсі</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Контур</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Контур қалыңдығы</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Контур түсі</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Бұру</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Жұмсақ жиектер</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Өшірулі болса, әр жиек толық пикселдерге түсіп, өткір болып қалады.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Түс таңдағышты көрсету немесе жасыру</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Көрсететін сурет жоқ</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Дисплейден тыс</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Прицелдер терезелі және жиексіз ойындардың үстінде көрінеді, шерту олар арқылы өтіп кетеді. Эксклюзивті толық экрандағы ойын оларды жасырады, сондықтан ойынды терезелі немесе жиексіз режимде іске қосыңыз. Макрос прицелді нөмірі бойынша көрсете немесе жасыра алады.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Лупа</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Снайпер оптикасы тәрізді линза, бүкіл дисплейді үлкейту немесе қалғанын қараңғылайтын прожектор.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Лупаны көрсету</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Не көрсетіледі</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Режим</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Линза</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Толық экран</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Прожектор</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Орталығы</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Дисплей ортасы</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Меңзер</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Прицел</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Прицел дегеніміз ығысуын қоса алғанда, қосулы бірінші прицел.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Масштаб</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Пішіні</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Шеңбер</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Тіктөртбұрыш</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Өлшемі</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Ені</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Биіктігі</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Жиек</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Жиек қалыңдығы</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Жиек түсі</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Шеңбер өлшемі</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Қараңғылық</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows лупаны іске қоспады.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Линза мен прожектор терезелі және жиексіз ойындардың үстінде көрінеді, шерту олар арқылы өтіп кетеді. Толық экран режимі бүкіл жұмыс үстелін Windows жүйесінің толық экрандық лупасымен үлкейтеді. Макрос лупаны көрсете немесе жасыра алады, не оны тек ұстап тұрғанда көрсете алады.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Қозғалыс сервері</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Гироскоп пен акселерометр деректеріне арналған DSU/CemuHook Motion Provider хаттамасының сервері.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU қозғалыс серверін қосу (CemuHook Motion Provider хаттамасы)</value></data>
@@ -4917,4 +4990,6 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Құпия сөзді орнату</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Қашықтан байланысты ашу</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Құпия сөз</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Лупа (ұстап тұрғанда)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Осы макрос ұсталып тұрғанда лупаны көрсетеді, көздеп атуға арналған. Оны Лупа бетінде баптаңыз.</value></data>
 </root>

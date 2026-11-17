@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Prikazuje izbornike, slojeve i promjene profila dok igrate.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Dodirna površina na zaslonu za igre s dodirnom pločicom kontrolera PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Slika, mjerač vremena ili sat iznad ostalih prozora.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Vlastiti nišan iznad igre.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Leća za povećavanje, povećanje cijelog zaslona ili reflektor.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Priključak, obični HTTP, pristupni kôd</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automatsko ponovno povezivanje, priključak, identitet uparivanja, povezivanje putem adrese</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Priključak, zamjena DSX.exe</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Preklapanje {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Prikazuje</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Dok je ispred drugi program, klikovi prolaze kroz preklapanje. Dok je ispred PadForge, povucite ga desnom tipkom miša i promijenite mu veličinu s kuta. Makro može prikazati ili sakriti preklapanje prema njegovu broju.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Nišan</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Nišani iznad ostalih prozora, centrirani na zaslonu: križ, krug, točka ili vlastita slika.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Dodaj nišan</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Nišan {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Prikaži nišan</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Stil</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Križ</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Krug</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Točka</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Slika</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Pretpregled</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Pomak od sredine</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Vodoravni pomak</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Okomiti pomak</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Duljina kraka</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Debljina</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Razmak</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Središnja točka</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T oblik</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Bez gornjeg kraka.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Polumjer</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Stranice</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Pri 64 prsten je okrugao.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Veličina</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Slika</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Slika nije odabrana</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Slike (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Sve datoteke (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Veličina</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Širina</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Visina</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Izvorna veličina slike</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Zadrži omjer</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Kad je isključeno, slika se razvlači na zadanu širinu i visinu.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Boja</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Obrub</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Širina obruba</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Boja obruba</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Zakretanje</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Glatki rubovi</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Kad je isključeno, svaki rub pada na cijele piksele i ostaje oštar.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Prikaži ili sakrij birač boje</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Nema slike za prikaz</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Izvan svog zaslona</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Nišani se prikazuju iznad igara u prozoru i igara bez okvira, a klikovi prolaze kroz njih. Igra u isključivom cijelom zaslonu ih skriva, zato je pokrenite u prozoru ili bez okvira. Makro može prikazati ili sakriti nišan prema njegovu broju.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Povećalo</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Leća poput optike snajpera, povećan cijeli zaslon ili reflektor koji zatamnjuje ostatak.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Prikaži povećalo</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Što prikazuje</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Način</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Leća</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Cijeli zaslon</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Reflektor</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Centriraj na</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Sredina zaslona</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Pokazivač</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Nišan</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Nišan znači prvi uključeni nišan, zajedno s njegovim pomakom.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Povećanje</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Oblik</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Krug</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Pravokutnik</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Veličina</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Širina</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Visina</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Okvir</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Širina okvira</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Boja okvira</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Veličina kruga</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Zatamnjenje</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows nije pokrenuo povećalo.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Leća i reflektor prikazuju se iznad igara u prozoru i igara bez okvira, a klikovi prolaze kroz njih. Cijeli zaslon povećava cijelu radnu površinu Windowsovim povećalom za cijeli zaslon. Makro može prikazati ili sakriti povećalo, ili ga prikazati samo dok se drži.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Poslužitelj pokreta</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Poslužitelj protokola DSU/CemuHook Motion Provider za podatke žiroskopa i akcelerometra.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Omogući DSU poslužitelj pokreta (protokol CemuHook Motion Provider)</value></data>
@@ -4921,4 +4994,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Postavi lozinku</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Otključaj Udaljenu vezu</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Lozinka</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Povećalo (dok se drži)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Prikazuje povećalo dok se ovaj makro drži, za ciljanje preko nišana. Postavite ga na stranici Povećalo.</value></data>
 </root>

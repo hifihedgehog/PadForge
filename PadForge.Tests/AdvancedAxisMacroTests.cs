@@ -526,9 +526,10 @@ namespace PadForge.Tests
             // Show Dreamcast Screen, 58 to 61 for #519's keyboard screen
             // actions, 62 and 63 for #531's Adaptive Trigger Effect pair,
             // 64 and 65 for #557's key colors pair, 66 for #560's Toggle
-            // Screen Overlay).
+            // Screen Overlay, 67 for #561's Profile Shortcut, 68 to 70 for
+            // #585's crosshair and magnifier actions).
             // The pins above are what this test protects.
-            Assert.Equal(MacroActionType.AxisScale, values[^17]);
+            Assert.Equal(MacroActionType.AxisScale, values[^20]);
         }
     }
 

@@ -5771,7 +5771,8 @@ function Capture-SettingsSearch {
 # open More row is saved to the staged settings file, which the run restores
 # at its end like every other change. The keys are ExtrasPage.Keys:
 # WebController, HeadTracking, GameTelemetry, TwitchChat, RemoteLink,
-# MotionServer, GameMods, Overlays, TouchpadOverlay, ScreenOverlay. A page's
+# MotionServer, GameMods, Overlays, TouchpadOverlay, ScreenOverlay,
+# Crosshair, Magnifier. A page's
 # way back, Extras_Back_ plus the key, is in the tree only while that page
 # shows, so finding it proves the page opened. False when the tile, the page
 # or the More row is not there.
@@ -5882,13 +5883,13 @@ function Capture-ExtrasPages {
     }
 }
 
-# The Extras catalog (#574): the ten tiles in their three groups, from the
+# The Extras catalog (#574): the twelve tiles in their three groups, from the
 # first tile to the last.
 function Capture-ExtrasCatalog {
     if (-not (Want "extras-catalog")) { return }
     Write-Host "[6.0.0] Extras: the catalog"
     Nav "Extras"; Start-Sleep -Milliseconds 700
-    if (Show-ExtraAnchors -Anchors @("Web Controller", "Screen Overlay")) { Cap "extras-catalog" }
+    if (Show-ExtraAnchors -Anchors @("Web Controller", "Magnifier")) { Cap "extras-catalog" }
     else { Refuse-Shots @("extras-catalog") "the Extras catalog never framed its first and last tile" }
 }
 
@@ -7276,6 +7277,25 @@ function Capture-ScreenOverlayCard {
     else { Refuse-Shots @("dashboard-screen-overlay") "the Screen Overlay page never fit one frame" }
 }
 
+# The Crosshair page of Extras (#585) with its first crosshair, framed from
+# the crosshair's Show switch down to its Style row, the card's first rows.
+# Nothing is switched on, so no crosshair draws over the capture.
+function Capture-CrosshairCard {
+    if (-not (Want "extras-crosshair")) { return }
+    Write-Host "[6.0.0] Extras: Crosshair page"
+    if ((Open-Extra "Crosshair") -and (Show-ExtraAnchors -Anchors @("Show Crosshair", "Style"))) { Cap "extras-crosshair" }
+    else { Refuse-Shots @("extras-crosshair") "the Crosshair page never framed [Show Crosshair, Style]" }
+}
+
+# The Magnifier page of Extras (#585), framed from its Show switch down to
+# its Zoom row. The magnifier stays off, so nothing zooms during the capture.
+function Capture-MagnifierCard {
+    if (-not (Want "extras-magnifier")) { return }
+    Write-Host "[6.0.0] Extras: Magnifier page"
+    if ((Open-Extra "Magnifier") -and (Show-ExtraAnchors -Anchors @("Show Magnifier", "Zoom"))) { Cap "extras-magnifier" }
+    else { Refuse-Shots @("extras-magnifier") "the Magnifier page never framed [Show Magnifier, Zoom]" }
+}
+
 # Map Key Lights (#557), opened from the first of this PC's lit keyboards
 # whose row offers it and closed by WM_CLOSE. Nothing in it is pressed, so no
 # light changes. The button needs a live lighting link
@@ -7726,6 +7746,9 @@ if ($Only.Count -gt 0) {
     Capture-ScreenOverlayCard
     Capture-MapKeyLights
     Capture-ImportPreview
+    # The 6.0.0 Crosshair and Magnifier pages. Each checks Want.
+    Capture-CrosshairCard
+    Capture-MagnifierCard
 
     # Unscrolled whole-page shots.
     $pageTargets = @(
@@ -9390,6 +9413,9 @@ Capture-TwitchChatShots
 Capture-ScreenOverlayCard
 Capture-MapKeyLights
 Capture-ImportPreview
+# The 6.0.0 Crosshair and Magnifier pages.
+Capture-CrosshairCard
+Capture-MagnifierCard
 
 # The Pair dialog, every family it offers (Capture-PairDialog).
 Capture-PairDialog

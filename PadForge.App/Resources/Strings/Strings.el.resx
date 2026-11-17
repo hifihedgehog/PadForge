@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Εμφανίστε μενού, επίπεδα και αλλαγές προφίλ ενώ παίζετε.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Επιφάνεια αφής στην οθόνη για παιχνίδια με επιφάνεια αφής PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Εικόνα, χρονόμετρο ή ρολόι πάνω από άλλα παράθυρα.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Το δικό σας σταυρόνημα πάνω από ένα παιχνίδι.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Φακός μεγέθυνσης, μεγέθυνση ολόκληρης της οθόνης ή προβολέας.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Θύρα, απλό HTTP, κωδικός πρόσβασης</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Αυτόματη επανάληψη σύνδεσης, θύρα, ταυτότητα σύζευξης, σύνδεση μέσω διεύθυνσης</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Θύρα, υποκατάστατο DSX.exe</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Επικάλυψη {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Εμφανίζει</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Όσο άλλο πρόγραμμα βρίσκεται μπροστά, τα κλικ περνούν μέσα από την επικάλυψη. Όσο το PadForge βρίσκεται μπροστά, σύρετέ την με το δεξί κουμπί του ποντικιού και αλλάξτε το μέγεθός της από τη γωνία της. Μια μακροεντολή μπορεί να εμφανίσει ή να κρύψει μια επικάλυψη με τον αριθμό της.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Σταυρόνημα</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Σταυρονήματα πάνω από άλλα παράθυρα, στο κέντρο μιας οθόνης: σταυρός, κύκλος, κουκκίδα ή δική σας εικόνα.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Προσθήκη σταυρονήματος</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Σταυρόνημα {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Εμφάνιση σταυρονήματος</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Στυλ</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Σταυρός</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Κύκλος</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Κουκκίδα</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Εικόνα</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Προεπισκόπηση</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Μετατόπιση από το κέντρο</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Οριζόντια μετατόπιση</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Κατακόρυφη μετατόπιση</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Μήκος βραχίονα</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Πάχος</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Κενό</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Κεντρική κουκκίδα</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Σχήμα T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Χωρίς πάνω βραχίονα.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Ακτίνα</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Πλευρές</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Με 64 ο δακτύλιος είναι στρογγυλός.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Μέγεθος</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Εικόνα</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Δεν έχει επιλεγεί εικόνα</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Εικόνες (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Όλα τα αρχεία (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Μέγεθος</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Πλάτος</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Ύψος</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Μέγεθος της εικόνας</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Διατήρηση αναλογιών</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Όταν είναι ανενεργό, η εικόνα τεντώνεται στο πλάτος και το ύψος που ορίσατε.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Χρώμα</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Περίγραμμα</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Πλάτος περιγράμματος</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Χρώμα περιγράμματος</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Περιστροφή</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Ομαλές ακμές</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Όταν είναι ανενεργό, κάθε ακμή πέφτει σε ολόκληρα pixel και μένει καθαρή.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Εμφάνιση ή απόκρυψη του επιλογέα χρώματος</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Δεν υπάρχει εικόνα για εμφάνιση</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Εκτός της οθόνης του</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Τα σταυρονήματα εμφανίζονται πάνω από παιχνίδια σε παράθυρο και χωρίς περιθώριο, και τα κλικ περνούν μέσα από αυτά. Ένα παιχνίδι σε αποκλειστική πλήρη οθόνη τα κρύβει, γι' αυτό εκτελέστε το σε παράθυρο ή χωρίς περιθώριο. Μια μακροεντολή μπορεί να εμφανίσει ή να κρύψει ένα σταυρόνημα με τον αριθμό του.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Μεγεθυντής</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Φακός σαν οπτικό τηλεβόλου, μεγέθυνση ολόκληρης της οθόνης ή προβολέας που σκουραίνει τα υπόλοιπα.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Εμφάνιση μεγεθυντή</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Τι εμφανίζει</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Λειτουργία</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Φακός</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Πλήρης οθόνη</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Προβολέας</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Κεντράρισμα στο</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Κέντρο οθόνης</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Δείκτης</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Σταυρόνημα</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Η επιλογή Σταυρόνημα σημαίνει το πρώτο σταυρόνημα που είναι ενεργό, μαζί με τη μετατόπισή του.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Μεγέθυνση</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Σχήμα</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Κύκλος</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Ορθογώνιο</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Μέγεθος</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Πλάτος</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Ύψος</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Περίγραμμα</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Πλάτος περιγράμματος</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Χρώμα περιγράμματος</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Μέγεθος κύκλου</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Σκοτεινότητα</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Τα Windows δεν ξεκίνησαν τον μεγεθυντή.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Ο φακός και ο προβολέας εμφανίζονται πάνω από παιχνίδια σε παράθυρο και χωρίς περιθώριο, και τα κλικ περνούν μέσα από αυτούς. Η Πλήρης οθόνη μεγεθύνει ολόκληρη την επιφάνεια εργασίας με τον μεγεθυντή πλήρους οθόνης των Windows. Μια μακροεντολή μπορεί να εμφανίσει ή να κρύψει τον μεγεθυντή ή να τον εμφανίσει μόνο όσο κρατιέται.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Διακομιστής κίνησης</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Διακομιστής πρωτοκόλλου DSU/CemuHook Motion Provider για δεδομένα γυροσκοπίου και επιταχυνσιομέτρου.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Ενεργοποίηση διακομιστή κίνησης DSU (πρωτόκολλο CemuHook Motion Provider)</value></data>
@@ -5236,6 +5309,10 @@
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Επικάλυψη οθόνης PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Δεν υπάρχει ακόμα τίποτα για εμφάνιση. Επιλέξτε τι δείχνει στη σελίδα Επικάλυψη οθόνης, στην ενότητα Επιπλέον.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Εναλλαγή επικάλυψης οθόνης</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Εναλλαγή σταυρονήματος</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Εναλλαγή μεγεθυντή</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Κάθε σταυρόνημα</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Σταυρόνημα</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Εναλλαγή επικάλυψης οθόνης</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Επικάλυψη οθόνης</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Η επικάλυψη δεν δείχνει τίποτα.</value></data>
@@ -5256,6 +5333,11 @@
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Επικάλυψη</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Κάθε επικάλυψη</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Εναλλαγή επικάλυψης οθόνης {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Εναλλαγή σταυρονήματος</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Εναλλαγή σταυρονήματος {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Εναλλαγή μεγεθυντή</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Μεγεθυντής (όσο κρατιέται)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Εμφανίζει τον μεγεθυντή όσο κρατιέται αυτή η μακροεντολή, για σκόπευση μέσα από το σκοπευτικό. Ρυθμίστε τον στη σελίδα Μεγεθυντής.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Εμφάνιση εικόνων {0}: {1} × {2} ms, μέχρι την επόμενη μακροεντολή εμφάνισης ή λειτουργίας</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Εισαγωγή προφίλ</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, αρχείο {1}.</value></data>
@@ -5284,7 +5366,7 @@
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>Το PadForge δεν αναγνωρίζει αυτήν την έξοδο: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>Το PadForge δεν έχει τέτοια εντολή: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Το εικονικό χειριστήριο δεν έχει τέτοιο κουμπί: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Το σταυρόνημα υπάρχει μόνο μέσα στο reWASD. Εμφανίστε τη δική σας εικόνα με μια Επικάλυψη οθόνης.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Το reWASD φυλάσσει τα σταυρονήματά του στις δικές του ρυθμίσεις και όχι στη ρύθμιση παραμέτρων. Ορίστε τα δικά σας στη σελίδα Σταυρόνημα.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Το τρέμουλο και ο κραδασμός του μοχλού δεν μεταφέρθηκαν.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Τα αναλογικά σημεία ενεργοποίησης πλήκτρων δεν μεταφέρθηκαν.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>Το reWASD έστελνε αυτό το χειριστήριο σε άλλη συσκευή μέσω προσαρμογέα. Το PadForge το αναπαράγει σε αυτόν τον υπολογιστή και η Απομακρυσμένη σύνδεση το στέλνει σε άλλον υπολογιστή που εκτελεί το PadForge.</value></data>
@@ -5576,7 +5658,6 @@
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Προφίλ HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Φωτισμός πλήκτρων PadForge (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Μια μακροεντολή δεν μπορεί να πατήσει το {0}. Μια γραμμή στην ενότητα Αντιστοιχίσεις μπορεί.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>Το PadForge εκτελεί οκτώ Επικαλύψεις οθόνης, και αυτό είναι το ένατο ή δέκατο σταυρόνημα του reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>Το PadForge διαβάζει το Αριστερά και Δεξιά του γυροσκοπίου από τον διατοιχισμό και το Γέρσιμο από την εκτροπή, την προεπιλογή του reWASD. Οι Προτιμήσεις του reWASD μπορούν να εναλλάξουν τα δύο, και αυτό το αρχείο δεν λέει αν εναλλάχθηκαν.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Στη λειτουργία Κλίσης, το Γέρσιμο του reWASD είναι στροφή γύρω από τον κατακόρυφο άξονα, και ένας αισθητήρας κίνησης δεν δίνει γωνία για αυτή τη στροφή.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>Το PadForge διαβάζει μια διαγώνιο της επιφάνειας αφής ως δύο κατευθύνσεις ταυτόχρονα, κάτι που η επιφάνεια αφής αναφέρει μόνο όταν η Λειτουργία D-pad της, στην ενότητα Κίνηση και αφή, είναι 8 κατευθύνσεις.</value></data>

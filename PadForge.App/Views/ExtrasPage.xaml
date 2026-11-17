@@ -8,7 +8,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="po"
              xmlns:reset="clr-namespace:PadForge.Controls"
-             xmlns:controls="clr-namespace:PadForge.Controls">
+             xmlns:controls="clr-namespace:PadForge.Controls"
+             xmlns:views="clr-namespace:PadForge.Views">
 
     <!-- The Extras page (#574): the optional features that were the ten
          Services cards of the Dashboard. It opens on a catalog of tiles,
@@ -20,7 +21,7 @@
          binding, its AutomationId, its reset button and its tooltip. The
          paragraphs the boards drop are the tooltips of what they explain.
          The data context is DashboardViewModel, Home's too.
-         ExtrasPage.xaml.cs shows one of the eleven panels at a time. -->
+         ExtrasPage.xaml.cs shows one of the thirteen panels at a time. -->
     <UserControl.Resources>
 
         <!-- Hover glow sweep (#175): stock-chrome classes bloom in the same
@@ -306,7 +307,7 @@
                         <TextBlock AutomationProperties.HeadingLevel="Level1" Text="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraTitle}"/>
                         <TextBlock Text="{Binding Extras_Subtitle, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraLine}" Margin="0,2,0,0"/>
                     </StackPanel>
-                    <!-- 2 of 10 on: the number in the code face, large and
+                    <!-- 2 of 12 on: the number in the code face, large and
                          ember, and the words around it as the language puts
                          them. The three runs stay on one line so no space
                          falls between them. A screen reader hears the
@@ -389,6 +390,17 @@
                                         Line="{Binding Extras_Tile_ScreenOverlay, Source={x:Static strings:Strings.Instance}}"
                                         SwitchLabel="{Binding Dashboard_ScreenOverlay, Source={x:Static strings:Strings.Instance}}"
                                         IsOn="{Binding ScreenOverlaysAnyEnabled}"/>
+                    <controls:ExtraTile x:Name="CrosshairTile" Key="Crosshair" Glyph="&#xE81D;"
+                                        Title="{Binding Extras_Crosshair_Title, Source={x:Static strings:Strings.Instance}}"
+                                        Line="{Binding Extras_Tile_Crosshair, Source={x:Static strings:Strings.Instance}}"
+                                        SwitchLabel="{Binding Extras_Crosshair_Title, Source={x:Static strings:Strings.Instance}}"
+                                        IsOn="{Binding CrosshairsAnyEnabled}"/>
+                    <controls:ExtraTile x:Name="MagnifierTile" Key="Magnifier" Glyph="&#xE8A3;"
+                                        Title="{Binding Extras_Magnifier_Title, Source={x:Static strings:Strings.Instance}}"
+                                        Line="{Binding Extras_Tile_Magnifier, Source={x:Static strings:Strings.Instance}}"
+                                        SwitchLabel="{Binding Extras_Magnifier_Show, Source={x:Static strings:Strings.Instance}}"
+                                        IsOn="{Binding MagnifierEnabled}"
+                                        Status="{Binding Magnifier.Status}"/>
                 </controls:TileGridPanel>
             </StackPanel>
 
@@ -1906,6 +1918,584 @@
                 </ItemsControl>
 
                 <TextBlock Text="{Binding Extras_ScreenOverlay_Footer, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraNote}"/>
+            </StackPanel>
+
+
+            <!-- ═══ Crosshair (#585) ═══
+                 One card per crosshair, each with its switch, a preview drawn
+                 by the code that draws its window, its style, display and
+                 offset, the rows of its style, and its color, opacity,
+                 outline, rotation and edges. Each crosshair has its own
+                 switch, so the page has none: Add Crosshair stands in its
+                 place, as on the Screen Overlay page. The Display box lists
+                 the Lighting tab's displays (CrosshairItem.DisplayChoices),
+                 and the page brings them up to date once a second. -->
+            <StackPanel x:Name="CrosshairPage" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
+                            AutomationProperties.AutomationId="Extras_Back_Crosshair"
+                            Content="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Text="/" Style="{StaticResource ExtrasCrumbText}" Margin="4,0,4,0"/>
+                    <TextBlock Text="{Binding Extras_Crosshair_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtrasCrumbText}"/>
+                </StackPanel>
+                <controls:HeadRowPanel LeadingMinWidth="328" Gap="12" Margin="0,10,0,0">
+                    <Grid Margin="0,0,14,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <controls:ExtraBadge Glyph="&#xE81D;" IsOn="{Binding CrosshairsAnyEnabled}"/>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock x:Name="CrosshairTitle" AutomationProperties.HeadingLevel="Level1" Text="{Binding Extras_Crosshair_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraTitle}"/>
+                            <TextBlock Text="{Binding Extras_Crosshair_Description, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraLine}"/>
+                        </StackPanel>
+                    </Grid>
+                    <ui:Button AutomationProperties.AutomationId="Crosshair_Add" MinHeight="36" Padding="14,0" VerticalAlignment="Center" HorizontalAlignment="Left"
+                               Command="{Binding AddCrosshairCommand}" IsEnabled="{Binding CanAddCrosshair}"
+                               Content="{Binding Extras_Crosshair_Add, Source={x:Static strings:Strings.Instance}}">
+                        <ui:Button.Icon>
+                            <controls:DecorativeStrokeIcon Data="{StaticResource PlusLineGeometry}" Size="14" StrokeWidth="2"/>
+                        </ui:Button.Icon>
+                    </ui:Button>
+                </controls:HeadRowPanel>
+
+                <ItemsControl ItemsSource="{Binding Crosshairs}" IsTabStop="False" Margin="0,4,0,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource ExtraCard}">
+                                <StackPanel>
+                                    <!-- The crosshair's number and status, Reset All and,
+                                         while there are several, Remove: the Screen
+                                         Overlay card's head. -->
+                                    <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="False" Margin="0,0,0,4">
+                                        <TextBlock Text="{Binding Title}" Style="{StaticResource ExtraCardTitle}"/>
+                                        <TextBlock common:LiveText.Polite="True" Text="{Binding Status}" FontSize="13" Margin="10,0,0,0"
+                                                   VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        <ui:Button TabIndex="1" Style="{StaticResource ResetAllButton}" Margin="12,0,0,0"
+                                                   AutomationProperties.AutomationId="{Binding ResetAllId}" Command="{Binding ResetAllCommand}"
+                                                   Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}">
+                                            <ui:Button.ToolTip>
+                                                <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                                    <Binding Path="Title"/>
+                                                    <Binding Path="Pad_ResetSection_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                                </MultiBinding>
+                                            </ui:Button.ToolTip>
+                                        </ui:Button>
+                                        <ui:Button TabIndex="0" Style="{StaticResource ResetAllButton}" Margin="12,0,0,0"
+                                                   AutomationProperties.AutomationId="{Binding RemoveId}" Command="{Binding RemoveCommand}"
+                                                   Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"
+                                                   Visibility="{Binding OneOfSeveral, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </DockPanel>
+                                    <controls:SettingRow MinHeight="44">
+                                        <TextBlock Text="{Binding Extras_Crosshair_Show, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <CheckBox Style="{StaticResource SwitchCheckBox}" AutomationProperties.AutomationId="{Binding EnableId}"
+                                                  Content="{Binding Extras_Crosshair_Show, Source={x:Static strings:Strings.Instance}}"
+                                                  IsChecked="{Binding Enabled}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Enabled" SettingLabel="{Binding Extras_Crosshair_Show, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_Enabled_58501"/>
+                                    </controls:SettingRow>
+                                    <!-- The preview: the crosshair at its size in the
+                                         display's pixels, shrunk only when it is larger
+                                         than the well. -->
+                                    <controls:SettingRow MinHeight="44">
+                                        <TextBlock Text="{Binding Extras_Crosshair_Preview, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Border Width="176" Height="112" CornerRadius="6" Margin="0,6,0,6" ClipToBounds="True"
+                                                Background="{DynamicResource SteelFieldBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                                            <controls:CrosshairView Look="{Binding Look}" Fit="True" FlowDirection="LeftToRight"/>
+                                        </Border>
+                                    </controls:SettingRow>
+                                    <controls:SettingRow MinHeight="44">
+                                        <TextBlock Text="{Binding Extras_Crosshair_Style, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <ComboBox MinWidth="180" ItemsSource="{Binding StyleNames}" SelectedIndex="{Binding StyleIndex, Mode=TwoWay}"
+                                                  AutomationProperties.AutomationId="{Binding StyleId}"
+                                                  AutomationProperties.Name="{Binding Extras_Crosshair_Style, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="StyleIndex" SettingLabel="{Binding Extras_Crosshair_Style, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_StyleIndex_58502"/>
+                                    </controls:SettingRow>
+                                    <controls:SettingRow MinHeight="44">
+                                        <TextBlock Text="{Binding Pad_Lighting_ScreenDisplay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <ComboBox MinWidth="220" ItemsSource="{Binding DisplayChoices}" DisplayMemberPath="Label"
+                                                  SelectedValuePath="Id" SelectedValue="{Binding Display, Mode=TwoWay}"
+                                                  AutomationProperties.AutomationId="{Binding DisplayId}"
+                                                  AutomationProperties.Name="{Binding Pad_Lighting_ScreenDisplay, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Display" SettingLabel="{Binding Pad_Lighting_ScreenDisplay, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_Display_58503"/>
+                                    </controls:SettingRow>
+                                    <controls:SettingRow MinHeight="44">
+                                        <TextBlock Text="{Binding Extras_Crosshair_Offset, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <TextBlock Text="{Binding Pad_ConstantForce_X, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,6,0"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                                 Text="{Binding OffsetX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 AutomationProperties.Name="{Binding Extras_Crosshair_OffsetX, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Text="{Binding Pad_ConstantForce_Y, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="16,0,6,0"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                                 Text="{Binding OffsetY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 AutomationProperties.Name="{Binding Extras_Crosshair_OffsetY, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Text="{Binding Common_Pixels, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="OffsetX" SettingLabel="{Binding Extras_Crosshair_Offset, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_OffsetX_58504"/>
+                                    </controls:SettingRow>
+
+                                    <!-- Cross -->
+                                    <controls:SettingRow MinHeight="44" Visibility="{Binding IsCross, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Extras_Crosshair_Length, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Style="{StaticResource EmberSlider}" MaxWidth="240" VerticalAlignment="Center"
+                                                Minimum="0" Maximum="200" SmallChange="1" LargeChange="10" IsSnapToTickEnabled="True" TickFrequency="1"
+                                                Value="{Binding Length, Mode=TwoWay}"
+                                                AutomationProperties.Name="{Binding Extras_Crosshair_Length, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                                 Text="{Binding Length, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 AutomationProperties.Name="{Binding Extras_Crosshair_Length, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Text="{Binding Common_Pixels, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Length" SettingLabel="{Binding Extras_Crosshair_Length, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_Length_58505"/>
+                                    </controls:SettingRow>
+                                    <!-- Circle -->
+                                    <controls:SettingRow MinHeight="44" Visibility="{Binding IsCircle, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Extras_Crosshair_Radius, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Style="{StaticResource EmberSlider}" MaxWidth="240" VerticalAlignment="Center"
+                                                Minimum="2" Maximum="400" SmallChange="1" LargeChange="10" IsSnapToTickEnabled="True" TickFrequency="1"
+                                                Value="{Binding Radius, Mode=TwoWay}"
+                                                AutomationProperties.Name="{Binding Extras_Crosshair_Radius, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                                 Text="{Binding Radius, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 AutomationProperties.Name="{Binding Extras_Crosshair_Radius, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Text="{Binding Common_Pixels, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Radius" SettingLabel="{Binding Extras_Crosshair_Radius, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_Radius_58510"/>
+                                    </controls:SettingRow>
+                                    <controls:SettingRow MinHeight="44" Visibility="{Binding IsCircle, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Extras_Crosshair_Sides, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Style="{StaticResource EmberSlider}" MaxWidth="240" VerticalAlignment="Center"
+                                                Minimum="3" Maximum="64" SmallChange="1" LargeChange="4" IsSnapToTickEnabled="True" TickFrequency="1"
+                                                Value="{Binding Sides, Mode=TwoWay}"
+                                                ToolTip="{Binding Extras_Crosshair_SidesHint, Source={x:Static strings:Strings.Instance}}"
+                                                AutomationProperties.HelpText="{Binding Extras_Crosshair_SidesHint, Source={x:Static strings:Strings.Instance}}"
+                                                AutomationProperties.Name="{Binding Extras_Crosshair_Sides, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                                 Text="{Binding Sides, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 AutomationProperties.Name="{Binding Extras_Crosshair_Sides, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Sides" SettingLabel="{Binding Extras_Crosshair_Sides, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_Sides_58511"/>
+                                    </controls:SettingRow>
+                                    <!-- Cross and Circle -->
+                                    <controls:SettingRow MinHeight="44" Visibility="{Binding HasThickness, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Extras_Crosshair_Thickness, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Style="{StaticResource EmberSlider}" MaxWidth="240" VerticalAlignment="Center"
+                                                Minimum="1" Maximum="40" SmallChange="1" LargeChange="4" IsSnapToTickEnabled="True" TickFrequency="1"
+                                                Value="{Binding Thickness, Mode=TwoWay}"
+                                                AutomationProperties.Name="{Binding Extras_Crosshair_Thickness, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                                 Text="{Binding Thickness, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 AutomationProperties.Name="{Binding Extras_Crosshair_Thickness, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Text="{Binding Common_Pixels, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Thickness" SettingLabel="{Binding Extras_Crosshair_Thickness, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_Thickness_58506"/>
+                                    </controls:SettingRow>
+                                    <controls:SettingRow MinHeight="44" Visibility="{Binding IsCross, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Extras_Crosshair_Gap, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Style="{StaticResource EmberSlider}" MaxWidth="240" VerticalAlignment="Center"
+                                                Minimum="-20" Maximum="200" SmallChange="1" LargeChange="10" IsSnapToTickEnabled="True" TickFrequency="1"
+                                                Value="{Binding Gap, Mode=TwoWay}"
+                                                AutomationProperties.Name="{Binding Extras_Crosshair_Gap, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                                 Text="{Binding Gap, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 AutomationProperties.Name="{Binding Extras_Crosshair_Gap, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Text="{Binding Common_Pixels, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Gap" SettingLabel="{Binding Extras_Crosshair_Gap, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_Gap_58507"/>
+                                    </controls:SettingRow>
+                                    <controls:SettingRow MinHeight="44" Visibility="{Binding HasThickness, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Extras_Crosshair_CenterDot, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <CheckBox Style="{StaticResource SwitchCheckBox}"
+                                                  Content="{Binding Extras_Crosshair_CenterDot, Source={x:Static strings:Strings.Instance}}"
+                                                  IsChecked="{Binding CenterDot}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="CenterDot" SettingLabel="{Binding Extras_Crosshair_CenterDot, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_CenterDot_58508"/>
+                                    </controls:SettingRow>
+                                    <controls:SettingRow MinHeight="44" Visibility="{Binding IsCross, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Extras_Crosshair_TShape, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <CheckBox Style="{StaticResource SwitchCheckBox}"
+                                                  Content="{Binding Extras_Crosshair_TShape, Source={x:Static strings:Strings.Instance}}"
+                                                  IsChecked="{Binding TShape}"/>
+                                        <TextBlock Text="{Binding Extras_Crosshair_TShapeHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowHint}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="TShape" SettingLabel="{Binding Extras_Crosshair_TShape, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_TShape_58509"/>
+                                    </controls:SettingRow>
+                                    <!-- Dot -->
+                                    <controls:SettingRow MinHeight="44" Visibility="{Binding IsDot, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Extras_Crosshair_DotSize, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Style="{StaticResource EmberSlider}" MaxWidth="240" VerticalAlignment="Center"
+                                                Minimum="1" Maximum="100" SmallChange="1" LargeChange="5" IsSnapToTickEnabled="True" TickFrequency="1"
+                                                Value="{Binding DotSize, Mode=TwoWay}"
+                                                AutomationProperties.Name="{Binding Extras_Crosshair_DotSize, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                                 Text="{Binding DotSize, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 AutomationProperties.Name="{Binding Extras_Crosshair_DotSize, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Text="{Binding Common_Pixels, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="DotSize" SettingLabel="{Binding Extras_Crosshair_DotSize, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_DotSize_58512"/>
+                                    </controls:SettingRow>
+                                    <!-- Picture: any picture Windows reads, transparency
+                                         kept, at a width and height of its own, stretched
+                                         to both when Keep Proportions is off. -->
+                                    <controls:SettingRow MinHeight="44" Visibility="{Binding IsImage, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Extras_Crosshair_Picture, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <TextBlock Text="{Binding ImageName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" MaxWidth="240"
+                                                   ToolTip="{Binding ImagePath}" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                        <Button Style="{StaticResource ExtraButton}" Margin="12,0,0,0" Click="CrosshairPicture_Click"
+                                                AutomationProperties.AutomationId="{Binding PictureId}"
+                                                AutomationProperties.HelpText="{Binding Extras_Crosshair_Picture, Source={x:Static strings:Strings.Instance}}"
+                                                Content="{Binding Common_Browse, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ImagePath" SettingLabel="{Binding Extras_Crosshair_Picture, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_ImagePath_58513"/>
+                                    </controls:SettingRow>
+                                    <controls:SettingRow MinHeight="44" Visibility="{Binding IsImage, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Extras_Crosshair_PictureSize, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                                 Text="{Binding ImageWidth, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 AutomationProperties.Name="{Binding Extras_Crosshair_Width, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Text="×" VerticalAlignment="Center" Margin="8,0,8,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                                 Text="{Binding ImageHeight, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 AutomationProperties.Name="{Binding Extras_Crosshair_Height, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Text="{Binding Common_Pixels, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
+                                        <Button Style="{StaticResource ExtraButton}" Margin="12,0,0,0" Command="{Binding OwnSizeCommand}"
+                                                Content="{Binding Extras_Crosshair_OwnSize, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ImageWidth" SettingLabel="{Binding Extras_Crosshair_PictureSize, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_ImageWidth_58514"/>
+                                    </controls:SettingRow>
+                                    <controls:SettingRow MinHeight="44" Visibility="{Binding IsImage, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Extras_Crosshair_KeepProportions, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <CheckBox Style="{StaticResource SwitchCheckBox}"
+                                                  Content="{Binding Extras_Crosshair_KeepProportions, Source={x:Static strings:Strings.Instance}}"
+                                                  IsChecked="{Binding KeepProportions}"/>
+                                        <TextBlock Text="{Binding Extras_Crosshair_KeepProportionsHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowHint}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="KeepProportions" SettingLabel="{Binding Extras_Crosshair_KeepProportions, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_KeepProportions_58515"/>
+                                    </controls:SettingRow>
+
+                                    <!-- Color, for the drawn styles: a swatch that opens the
+                                         picker under its row, and the color as #RRGGBB. -->
+                                    <controls:SettingRow MinHeight="44" Visibility="{Binding IsDrawn, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Extras_Crosshair_Color, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <ToggleButton x:Name="ColorSwatch" Padding="5" VerticalAlignment="Center"
+                                                      AutomationProperties.Name="{Binding Extras_Crosshair_Color, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Extras_Crosshair_PickColor, Source={x:Static strings:Strings.Instance}}">
+                                            <Border Width="44" Height="22" CornerRadius="3" BorderThickness="1" BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                                <Border.Background>
+                                                    <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                        <Binding Path="ColorR"/>
+                                                        <Binding Path="ColorG"/>
+                                                        <Binding Path="ColorB"/>
+                                                    </MultiBinding>
+                                                </Border.Background>
+                                            </Border>
+                                        </ToggleButton>
+                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12" Width="84" Margin="12,0,0,0" FontFamily="{StaticResource TelemetryFontFamily}"
+                                                 Text="{Binding ColorHex, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"
+                                                 AutomationProperties.Name="{Binding Extras_Crosshair_Color, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ColorHex" SettingLabel="{Binding Extras_Crosshair_Color, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_ColorHex_58516"/>
+                                    </controls:SettingRow>
+                                    <views:ColorPickerControl Margin="260,4,0,12" HorizontalAlignment="Left"
+                                                              Visibility="{Binding IsChecked, ElementName=ColorSwatch, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                              Red="{Binding ColorR, Mode=TwoWay}" Green="{Binding ColorG, Mode=TwoWay}" Blue="{Binding ColorB, Mode=TwoWay}"/>
+                                    <controls:SettingRow MinHeight="44">
+                                        <TextBlock Text="{Binding Dashboard_TouchpadOverlayOpacity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Style="{StaticResource EmberSlider}" MaxWidth="240" VerticalAlignment="Center"
+                                                Minimum="0" Maximum="1" SmallChange="0.05" LargeChange="0.1"
+                                                Value="{Binding Opacity, Mode=TwoWay}"
+                                                AutomationProperties.Name="{Binding Dashboard_TouchpadOverlayOpacity, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                                 Text="{Binding OpacityPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 AutomationProperties.Name="{Binding Dashboard_TouchpadOverlayOpacity, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="OpacityPercent" SettingLabel="{Binding Dashboard_TouchpadOverlayOpacity, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_OpacityPercent_58517"/>
+                                    </controls:SettingRow>
+                                    <controls:SettingRow MinHeight="44" Visibility="{Binding IsDrawn, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Extras_Crosshair_Outline, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <CheckBox Style="{StaticResource SwitchCheckBox}"
+                                                  Content="{Binding Extras_Crosshair_Outline, Source={x:Static strings:Strings.Instance}}"
+                                                  IsChecked="{Binding Outline}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Outline" SettingLabel="{Binding Extras_Crosshair_Outline, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_Outline_58518"/>
+                                    </controls:SettingRow>
+                                    <controls:SettingRow MinHeight="44" Visibility="{Binding IsDrawn, Converter={StaticResource BoolToVisibilityConverter}}" IsEnabled="{Binding Outline}">
+                                        <TextBlock Text="{Binding Extras_Crosshair_OutlineWidth, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Style="{StaticResource EmberSlider}" MaxWidth="240" VerticalAlignment="Center"
+                                                Minimum="1" Maximum="10" SmallChange="1" LargeChange="2" IsSnapToTickEnabled="True" TickFrequency="1"
+                                                Value="{Binding OutlineThickness, Mode=TwoWay}"
+                                                AutomationProperties.Name="{Binding Extras_Crosshair_OutlineWidth, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                                 Text="{Binding OutlineThickness, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 AutomationProperties.Name="{Binding Extras_Crosshair_OutlineWidth, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Text="{Binding Common_Pixels, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="OutlineThickness" SettingLabel="{Binding Extras_Crosshair_OutlineWidth, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_OutlineThickness_58519"/>
+                                    </controls:SettingRow>
+                                    <controls:SettingRow MinHeight="44" Visibility="{Binding IsDrawn, Converter={StaticResource BoolToVisibilityConverter}}" IsEnabled="{Binding Outline}">
+                                        <TextBlock Text="{Binding Extras_Crosshair_OutlineColor, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <ToggleButton x:Name="OutlineSwatch" Padding="5" VerticalAlignment="Center"
+                                                      AutomationProperties.Name="{Binding Extras_Crosshair_OutlineColor, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding Extras_Crosshair_PickColor, Source={x:Static strings:Strings.Instance}}">
+                                            <Border Width="44" Height="22" CornerRadius="3" BorderThickness="1" BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                                <Border.Background>
+                                                    <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                        <Binding Path="OutlineR"/>
+                                                        <Binding Path="OutlineG"/>
+                                                        <Binding Path="OutlineB"/>
+                                                    </MultiBinding>
+                                                </Border.Background>
+                                            </Border>
+                                        </ToggleButton>
+                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12" Width="84" Margin="12,0,0,0" FontFamily="{StaticResource TelemetryFontFamily}"
+                                                 Text="{Binding OutlineHex, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"
+                                                 AutomationProperties.Name="{Binding Extras_Crosshair_OutlineColor, Source={x:Static strings:Strings.Instance}}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="OutlineHex" SettingLabel="{Binding Extras_Crosshair_OutlineColor, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_OutlineHex_58520"/>
+                                    </controls:SettingRow>
+                                    <views:ColorPickerControl Margin="260,4,0,12" HorizontalAlignment="Left"
+                                                              Visibility="{Binding IsChecked, ElementName=OutlineSwatch, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                              Red="{Binding OutlineR, Mode=TwoWay}" Green="{Binding OutlineG, Mode=TwoWay}" Blue="{Binding OutlineB, Mode=TwoWay}"/>
+                                    <controls:SettingRow MinHeight="44">
+                                        <TextBlock Text="{Binding Extras_Crosshair_Rotation, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Style="{StaticResource EmberSlider}" MaxWidth="240" VerticalAlignment="Center"
+                                                Minimum="0" Maximum="359" SmallChange="1" LargeChange="15" IsSnapToTickEnabled="True" TickFrequency="1"
+                                                Value="{Binding Rotation, Mode=TwoWay}"
+                                                AutomationProperties.Name="{Binding Extras_Crosshair_Rotation, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                                 Text="{Binding Rotation, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 AutomationProperties.Name="{Binding Extras_Crosshair_Rotation, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Text="°" Style="{StaticResource DzPercent}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Rotation" SettingLabel="{Binding Extras_Crosshair_Rotation, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_Rotation_58521"/>
+                                    </controls:SettingRow>
+                                    <controls:SettingRow MinHeight="44">
+                                        <TextBlock Text="{Binding Extras_Crosshair_SmoothEdges, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <CheckBox Style="{StaticResource SwitchCheckBox}"
+                                                  Content="{Binding Extras_Crosshair_SmoothEdges, Source={x:Static strings:Strings.Instance}}"
+                                                  IsChecked="{Binding SmoothEdges}"/>
+                                        <TextBlock Text="{Binding Extras_Crosshair_SmoothEdgesHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowHint}"/>
+                                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="SmoothEdges" SettingLabel="{Binding Extras_Crosshair_SmoothEdges, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_SmoothEdges_58522"/>
+                                    </controls:SettingRow>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <TextBlock Text="{Binding Extras_Crosshair_Footer, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraNote}"/>
+            </StackPanel>
+
+            <!-- ═══ Magnifier (#585) ═══
+                 The page's head carries the switch, as one extra's page does.
+                 Then the status card, the card of what it shows (mode, what
+                 it centers on, display and zoom), and the card of the mode
+                 that is chosen: the lens's shape, size and border, or the
+                 spotlight's circle and darkness. Full Screen has no card of
+                 its own. The cards' data context is the magnifier. -->
+            <StackPanel x:Name="MagnifierPage" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource ExtrasCrumb}" Click="Back_Click"
+                            AutomationProperties.AutomationId="Extras_Back_Magnifier"
+                            Content="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Text="/" Style="{StaticResource ExtrasCrumbText}" Margin="4,0,4,0"/>
+                    <TextBlock Text="{Binding Extras_Magnifier_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtrasCrumbText}"/>
+                </StackPanel>
+                <controls:HeadRowPanel LeadingMinWidth="328" Gap="12" Margin="0,10,0,0">
+                    <Grid Margin="0,0,14,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <controls:ExtraBadge Glyph="&#xE8A3;" IsOn="{Binding MagnifierEnabled}"/>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock x:Name="MagnifierTitle" AutomationProperties.HeadingLevel="Level1" Text="{Binding Extras_Magnifier_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraTitle}"/>
+                            <TextBlock Text="{Binding Extras_Magnifier_Description, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraLine}"/>
+                        </StackPanel>
+                    </Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" DataContext="{Binding Magnifier}">
+                        <CheckBox Style="{StaticResource SwitchCheckBox}" controls:SwitchLook.ShowState="True"
+                                  AutomationProperties.AutomationId="Magnifier_Enable"
+                                  Content="{Binding Extras_Magnifier_Show, Source={x:Static strings:Strings.Instance}}"
+                                  IsChecked="{Binding Enabled}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Enabled" SettingLabel="{Binding Extras_Magnifier_Show, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MagnifierItem_Enabled_58530" Margin="14,0,0,0"/>
+                    </StackPanel>
+                </controls:HeadRowPanel>
+
+                <!-- Showing = flame: the magnifier's running truth, which
+                     drives the status too. -->
+                <Border x:Name="MagnifierStatusCard" Style="{StaticResource ExtraStatusCard}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <controls:StatusFlame IsOn="{Binding Magnifier.Enabled}" IsLive="{Binding Magnifier.IsRunning}"
+                                              VerticalAlignment="Center" Margin="0,0,14,0"/>
+                        <TextBlock Grid.Column="1" common:LiveText.Polite="True" Text="{Binding Magnifier.Status}"
+                                   Style="{StaticResource ExtraStatusText}" VerticalAlignment="Center"/>
+                    </Grid>
+                </Border>
+
+                <StackPanel DataContext="{Binding Magnifier}">
+                    <Border x:Name="MagnifierMainCard" Style="{StaticResource ExtraCard}">
+                        <StackPanel>
+                            <DockPanel LastChildFill="False" Margin="0,0,0,4">
+                                <TextBlock Text="{Binding Extras_Magnifier_Card_Main, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}"/>
+                                <ui:Button Command="{Binding ResetAllCommand}" Style="{StaticResource ResetAllButton}"
+                                           Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}"
+                                           AutomationProperties.AutomationId="Extras_ResetAll_Magnifier">
+                                    <ui:Button.ToolTip>
+                                        <MultiBinding Converter="{StaticResource FormatTextConverter}">
+                                            <Binding Path="Extras_Magnifier_Title" Source="{x:Static strings:Strings.Instance}"/>
+                                            <Binding Path="Pad_ResetSection_Format" Source="{x:Static strings:Strings.Instance}"/>
+                                        </MultiBinding>
+                                    </ui:Button.ToolTip>
+                                </ui:Button>
+                            </DockPanel>
+                            <controls:SettingRow MinHeight="44">
+                                <TextBlock Text="{Binding Extras_Magnifier_Mode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <ComboBox MinWidth="180" ItemsSource="{Binding ModeNames}" SelectedIndex="{Binding ModeIndex, Mode=TwoWay}"
+                                          AutomationProperties.AutomationId="Magnifier_Mode"
+                                          AutomationProperties.Name="{Binding Extras_Magnifier_Mode, Source={x:Static strings:Strings.Instance}}"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ModeIndex" SettingLabel="{Binding Extras_Magnifier_Mode, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MagnifierItem_ModeIndex_58531"/>
+                            </controls:SettingRow>
+                            <controls:SettingRow MinHeight="44">
+                                <TextBlock Text="{Binding Extras_Magnifier_Follow, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <ComboBox MinWidth="180" ItemsSource="{Binding FollowNames}" SelectedIndex="{Binding FollowIndex, Mode=TwoWay}"
+                                          AutomationProperties.AutomationId="Magnifier_Follow"
+                                          AutomationProperties.Name="{Binding Extras_Magnifier_Follow, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Text="{Binding Extras_Magnifier_FollowHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowHint}"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="FollowIndex" SettingLabel="{Binding Extras_Magnifier_Follow, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MagnifierItem_FollowIndex_58532"/>
+                            </controls:SettingRow>
+                            <controls:SettingRow MinHeight="44" IsEnabled="{Binding FollowsCenter}">
+                                <TextBlock Text="{Binding Pad_Lighting_ScreenDisplay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <ComboBox MinWidth="220" ItemsSource="{Binding DisplayChoices}" DisplayMemberPath="Label"
+                                          SelectedValuePath="Id" SelectedValue="{Binding Display, Mode=TwoWay}"
+                                          AutomationProperties.AutomationId="Magnifier_Display"
+                                          AutomationProperties.Name="{Binding Pad_Lighting_ScreenDisplay, Source={x:Static strings:Strings.Instance}}"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Display" SettingLabel="{Binding Pad_Lighting_ScreenDisplay, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MagnifierItem_Display_58533"/>
+                            </controls:SettingRow>
+                            <controls:SettingRow MinHeight="44" Visibility="{Binding HasZoom, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Text="{Binding Extras_Magnifier_Zoom, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <Slider Style="{StaticResource EmberSlider}" MaxWidth="240" VerticalAlignment="Center"
+                                        Minimum="125" Maximum="1600" SmallChange="25" LargeChange="100" IsSnapToTickEnabled="True" TickFrequency="25"
+                                        Value="{Binding ZoomPercent, Mode=TwoWay}"
+                                        AutomationProperties.AutomationId="Magnifier_Zoom"
+                                        AutomationProperties.Name="{Binding Extras_Magnifier_Zoom, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                         Text="{Binding ZoomPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         AutomationProperties.Name="{Binding Extras_Magnifier_Zoom, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ZoomPercent" SettingLabel="{Binding Extras_Magnifier_Zoom, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MagnifierItem_ZoomPercent_58534"/>
+                            </controls:SettingRow>
+                        </StackPanel>
+                    </Border>
+
+                    <Border x:Name="MagnifierLensCard" Style="{StaticResource ExtraCard}" Visibility="{Binding IsLens, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Extras_Magnifier_Mode_Lens, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}" Margin="0,0,0,4"/>
+                            <controls:SettingRow MinHeight="44">
+                                <TextBlock Text="{Binding Extras_Magnifier_Shape, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <ComboBox MinWidth="180" ItemsSource="{Binding LensShapeNames}" SelectedIndex="{Binding LensShapeIndex, Mode=TwoWay}"
+                                          AutomationProperties.AutomationId="Magnifier_Shape"
+                                          AutomationProperties.Name="{Binding Extras_Magnifier_Shape, Source={x:Static strings:Strings.Instance}}"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="LensShapeIndex" SettingLabel="{Binding Extras_Magnifier_Shape, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MagnifierItem_LensShapeIndex_58535"/>
+                            </controls:SettingRow>
+                            <!-- A circle's one size is its width. A rectangle names its
+                                 width here and its height in the row under it. -->
+                            <controls:SettingRow MinHeight="44">
+                                <TextBlock Text="{Binding Extras_Magnifier_Size, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                           Visibility="{Binding IsRound, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <TextBlock Text="{Binding Extras_Magnifier_Width, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                           Visibility="{Binding IsRound, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                                <Slider Style="{StaticResource EmberSlider}" MaxWidth="240" VerticalAlignment="Center"
+                                        Minimum="80" Maximum="2000" SmallChange="10" LargeChange="100" IsSnapToTickEnabled="True" TickFrequency="10"
+                                        Value="{Binding LensWidth, Mode=TwoWay}"
+                                        AutomationProperties.AutomationId="Magnifier_LensWidth"
+                                        AutomationProperties.Name="{Binding Extras_Magnifier_Width, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                         Text="{Binding LensWidth, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         AutomationProperties.Name="{Binding Extras_Magnifier_Width, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Text="{Binding Common_Pixels, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="LensWidth" SettingLabel="{Binding Extras_Magnifier_Width, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MagnifierItem_LensWidth_58536"/>
+                            </controls:SettingRow>
+                            <controls:SettingRow MinHeight="44" Visibility="{Binding IsRound, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
+                                <TextBlock Text="{Binding Extras_Magnifier_Height, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <Slider Style="{StaticResource EmberSlider}" MaxWidth="240" VerticalAlignment="Center"
+                                        Minimum="80" Maximum="2000" SmallChange="10" LargeChange="100" IsSnapToTickEnabled="True" TickFrequency="10"
+                                        Value="{Binding LensHeight, Mode=TwoWay}"
+                                        AutomationProperties.Name="{Binding Extras_Magnifier_Height, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                         Text="{Binding LensHeight, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         AutomationProperties.Name="{Binding Extras_Magnifier_Height, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Text="{Binding Common_Pixels, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="LensHeight" SettingLabel="{Binding Extras_Magnifier_Height, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MagnifierItem_LensHeight_58538"/>
+                            </controls:SettingRow>
+                            <controls:SettingRow MinHeight="44">
+                                <TextBlock Text="{Binding Extras_Magnifier_Border, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <CheckBox Style="{StaticResource SwitchCheckBox}"
+                                          Content="{Binding Extras_Magnifier_Border, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding Border}"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Border" SettingLabel="{Binding Extras_Magnifier_Border, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MagnifierItem_Border_58539"/>
+                            </controls:SettingRow>
+                            <controls:SettingRow MinHeight="44" IsEnabled="{Binding Border}">
+                                <TextBlock Text="{Binding Extras_Magnifier_BorderWidth, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <Slider Style="{StaticResource EmberSlider}" MaxWidth="240" VerticalAlignment="Center"
+                                        Minimum="1" Maximum="20" SmallChange="1" LargeChange="2" IsSnapToTickEnabled="True" TickFrequency="1"
+                                        Value="{Binding BorderThickness, Mode=TwoWay}"
+                                        AutomationProperties.Name="{Binding Extras_Magnifier_BorderWidth, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                         Text="{Binding BorderThickness, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         AutomationProperties.Name="{Binding Extras_Magnifier_BorderWidth, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Text="{Binding Common_Pixels, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="BorderThickness" SettingLabel="{Binding Extras_Magnifier_BorderWidth, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MagnifierItem_BorderThickness_58540"/>
+                            </controls:SettingRow>
+                            <controls:SettingRow MinHeight="44" IsEnabled="{Binding Border}">
+                                <TextBlock Text="{Binding Extras_Magnifier_BorderColor, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <ToggleButton x:Name="BorderSwatch" Padding="5" VerticalAlignment="Center"
+                                              AutomationProperties.Name="{Binding Extras_Magnifier_BorderColor, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Extras_Crosshair_PickColor, Source={x:Static strings:Strings.Instance}}">
+                                    <Border Width="44" Height="22" CornerRadius="3" BorderThickness="1" BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                        <Border.Background>
+                                            <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                <Binding Path="BorderR"/>
+                                                <Binding Path="BorderG"/>
+                                                <Binding Path="BorderB"/>
+                                            </MultiBinding>
+                                        </Border.Background>
+                                    </Border>
+                                </ToggleButton>
+                                <TextBox Style="{StaticResource DzValueEdit}" FontSize="12" Width="84" Margin="12,0,0,0" FontFamily="{StaticResource TelemetryFontFamily}"
+                                         Text="{Binding BorderHex, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"
+                                         AutomationProperties.Name="{Binding Extras_Magnifier_BorderColor, Source={x:Static strings:Strings.Instance}}"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="BorderHex" SettingLabel="{Binding Extras_Magnifier_BorderColor, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MagnifierItem_BorderHex_58541"/>
+                            </controls:SettingRow>
+                            <views:ColorPickerControl Margin="260,4,0,12" HorizontalAlignment="Left"
+                                                      Visibility="{Binding IsChecked, ElementName=BorderSwatch, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                      Red="{Binding BorderR, Mode=TwoWay}" Green="{Binding BorderG, Mode=TwoWay}" Blue="{Binding BorderB, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border x:Name="MagnifierSpotlightCard" Style="{StaticResource ExtraCard}" Visibility="{Binding IsSpotlight, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Extras_Magnifier_Mode_Spotlight, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}" Margin="0,0,0,4"/>
+                            <controls:SettingRow MinHeight="44">
+                                <TextBlock Text="{Binding Extras_Magnifier_SpotlightSize, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <Slider Style="{StaticResource EmberSlider}" MaxWidth="240" VerticalAlignment="Center"
+                                        Minimum="40" Maximum="2000" SmallChange="10" LargeChange="100" IsSnapToTickEnabled="True" TickFrequency="10"
+                                        Value="{Binding SpotlightSize, Mode=TwoWay}"
+                                        AutomationProperties.Name="{Binding Extras_Magnifier_SpotlightSize, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                         Text="{Binding SpotlightSize, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         AutomationProperties.Name="{Binding Extras_Magnifier_SpotlightSize, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Text="{Binding Common_Pixels, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="SpotlightSize" SettingLabel="{Binding Extras_Magnifier_SpotlightSize, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MagnifierItem_SpotlightSize_58542"/>
+                            </controls:SettingRow>
+                            <controls:SettingRow MinHeight="44">
+                                <TextBlock Text="{Binding Extras_Magnifier_SpotlightDim, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                <Slider Style="{StaticResource EmberSlider}" MaxWidth="240" VerticalAlignment="Center"
+                                        Minimum="10" Maximum="95" SmallChange="1" LargeChange="5" IsSnapToTickEnabled="True" TickFrequency="1"
+                                        Value="{Binding SpotlightDimPercent, Mode=TwoWay}"
+                                        AutomationProperties.Name="{Binding Extras_Magnifier_SpotlightDim, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBox Style="{StaticResource DzValueEdit}" FontSize="12"
+                                         Text="{Binding SpotlightDimPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         AutomationProperties.Name="{Binding Extras_Magnifier_SpotlightDim, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="SpotlightDimPercent" SettingLabel="{Binding Extras_Magnifier_SpotlightDim, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MagnifierItem_SpotlightDimPercent_58543"/>
+                            </controls:SettingRow>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <TextBlock Text="{Binding Extras_Magnifier_Footer, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraNote}"/>
             </StackPanel>
 
         </StackPanel>

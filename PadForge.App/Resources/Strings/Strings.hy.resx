@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ցուցադրեք ընտրացանկեր, շերտեր և պրոֆիլի փոխարկումներ խաղալու ընթացքում։</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Էկրանային հպման մակերես PlayStation-ի հպահարթակով խաղերի համար։</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Նկար, ժմչփ կամ ժամացույց մյուս պատուհանների վրա։</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Ձեր սեփական նշանակետը խաղի վրա։</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Խոշորացնող ոսպնյակ, ամբողջ էկրանի խոշորացում կամ լուսարձակ։</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Պորտ, պարզ HTTP, մուտքի կոդ</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Ինքնավերամիացում, պորտ, զուգակցման ինքնություն, միանալ հասցեով</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Պորտ, DSX.exe փոխարինող</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Վերադիր {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Ցուցադրում</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Երբ մեկ այլ ծրագիր առջևում է, սեղմումները անցնում են վերադիրի միջով։ Երբ PadForge-ը առջևում է, քաշեք այն մկնիկի աջ կոճակով և չափը փոխեք անկյունից։ Մակրոն կարող է ցուցադրել կամ թաքցնել վերադիրը իր համարով։</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Նշանակետ</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Նշանակետեր մյուս պատուհանների վրա, էկրանի կենտրոնում՝ խաչ, շրջան, կետ կամ ձեր սեփական նկարը։</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Ավելացնել նշանակետ</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Նշանակետ {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Ցուցադրել նշանակետը</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Ոճ</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Խաչ</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Շրջան</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Կետ</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Նկար</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Նախադիտում</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Շեղում կենտրոնից</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Հորիզոնական շեղում</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Ուղղահայաց շեղում</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Բազկի երկարություն</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Հաստություն</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Բացվածք</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Կենտրոնական կետ</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T ձև</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Առանց վերևի բազկի։</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Շառավիղ</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Կողմեր</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64 կողմի դեպքում օղակը կլոր է։</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Չափ</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Նկար</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Նկար ընտրված չէ</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Պատկերներ (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Բոլոր ֆայլերը (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Չափ</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Լայնություն</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Բարձրություն</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Նկարի իր չափը</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Պահպանել համամասնությունները</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Անջատված դեպքում նկարը ձգվում է մինչև լայնությունն ու բարձրությունը։</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Գույն</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Եզրագիծ</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Եզրագծի լայնություն</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Եզրագծի գույն</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Պտույտ</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Հարթեցված եզրեր</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Անջատված դեպքում յուրաքանչյուր եզր ընկնում է ամբողջ պիքսելների վրա և մնում է կտրուկ։</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Ցուցադրել կամ թաքցնել գույնի ընտրիչը</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Ցուցադրելու նկար չկա</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Իր էկրանից դուրս</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Նշանակետերը երևում են պատուհանային և առանց շրջանակի խաղերի վրա, իսկ սեղմումները անցնում են դրանց միջով։ Բացառիկ լիաէկրան խաղը թաքցնում է դրանք, ուստի այն գործարկեք պատուհանային կամ առանց շրջանակի ռեժիմով։ Մակրոն կարող է ցուցադրել կամ թաքցնել նշանակետը իր համարով։</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Խոշորացույց</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Դիպուկահարի հայտանիշի նման ոսպնյակ, ամբողջ էկրանի խոշորացում կամ լուսարձակ, որը մթագնում է մնացածը։</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Ցուցադրել խոշորացույցը</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Ինչ է ցուցադրվում</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Ռեժիմ</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Ոսպնյակ</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Ամբողջ էկրանը</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Լուսարձակ</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Կենտրոնանալ</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Էկրանի կենտրոն</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Ցուցիչ</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Նշանակետ</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Նշանակետ նշանակում է առաջին միացված նշանակետը՝ շեղումով հանդերձ։</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Խոշորացում</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Ձև</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Շրջան</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Ուղղանկյուն</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Չափ</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Լայնություն</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Բարձրություն</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Շրջանակ</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Շրջանակի լայնություն</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Շրջանակի գույն</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Շրջանի չափ</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Մթություն</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows-ը չգործարկեց խոշորացույցը։</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Ոսպնյակն ու լուսարձակը երևում են պատուհանային և առանց շրջանակի խաղերի վրա, իսկ սեղմումները անցնում են դրանց միջով։ «Ամբողջ էկրանը» ռեժիմը խոշորացնում է ամբողջ աշխատասեղանը Windows-ի էկրանային խոշորացույցով։ Մակրոն կարող է ցուցադրել կամ թաքցնել խոշորացույցը, կամ ցուցադրել այն միայն պահելիս։</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Շարժման սերվեր</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider արձանագրության սերվեր՝ գիրոյի և արագացուցաչափի տվյալների համար։</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Միացնել DSU շարժման սերվերը (CemuHook Motion Provider Protocol)</value></data>
@@ -4882,4 +4955,6 @@
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Սահմանել գաղտնաբառ</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Ապակողպել Հեռակա կապը</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Գաղտնաբառ</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Խոշորացույց (պահելիս)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Ցուցադրում է խոշորացույցը, քանի դեռ այս մակրոն պահվում է, նշան բռնելու համար։ Կարգավորեք այն Խոշորացույցի էջում։</value></data>
 </root>

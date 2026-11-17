@@ -3430,6 +3430,8 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Toon menu's, lagen en profielwissels tijdens het spelen.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Een touch-oppervlak op het scherm voor PlayStation-touchpadgames.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Een afbeelding, timer of klok boven andere vensters.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Je eigen dradenkruis boven een game.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Een zoomlens, een zoom over het hele scherm of een spotlight.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Poort, onversleuteld HTTP, toegangscode</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automatisch herverbinden, poort, koppelingsidentiteit, verbinden via adres</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Poort, DSX.exe-vervanger</value></data>
@@ -3477,6 +3479,77 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Overlay {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Toont</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Zolang een ander programma vooraan staat, gaan klikken door de overlay heen. Zolang PadForge vooraan staat, sleep je de overlay met de rechtermuisknop en wijzig je de grootte vanaf de hoek. Een macro kan een overlay tonen of verbergen op nummer.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Dradenkruis</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Dradenkruisen boven andere vensters, gecentreerd op een beeldscherm: een kruis, een cirkel, een stip of een eigen afbeelding.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Dradenkruis toevoegen</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Dradenkruis {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Dradenkruis tonen</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Stijl</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Kruis</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Cirkel</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Stip</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Afbeelding</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Voorbeeld</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Afstand tot het midden</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Horizontale verschuiving</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Verticale verschuiving</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Lengte van de armen</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Dikte</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Tussenruimte</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Stip in het midden</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T-vorm</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Geen arm naar boven.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Straal</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Zijden</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Bij 64 is de ring rond.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Grootte</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Afbeelding</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Geen afbeelding gekozen</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Afbeeldingen (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Alle bestanden (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Grootte</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Breedte</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Hoogte</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Eigen grootte van de afbeelding</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Verhoudingen behouden</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Uitgeschakeld wordt de afbeelding uitgerekt tot de breedte en de hoogte.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Kleur</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Omlijning</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Breedte van de omlijning</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Kleur van de omlijning</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Draaiing</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Randen verzachten</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Uitgeschakeld vallen alle randen op hele pixels en blijven ze scherp.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Kleurkiezer tonen of verbergen</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Geen afbeelding om te tonen</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Buiten het beeldscherm</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Dradenkruisen verschijnen boven games in een venster of zonder rand, en klikken gaan erdoorheen. Een game in exclusief volledig scherm verbergt ze, dus draai de game in een venster of zonder rand. Een macro kan een dradenkruis tonen of verbergen op nummer.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Vergrootglas</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Een lens als een richtkijker, het hele beeldscherm ingezoomd, of een spotlight die de rest donker maakt.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Vergrootglas tonen</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Wat het toont</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Modus</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lens</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Volledig scherm</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Spotlight</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Centreren op</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Midden van het scherm</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Aanwijzer</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Dradenkruis</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Dradenkruis is het eerste dradenkruis dat aan staat, met de verschuiving erbij.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Zoom</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Vorm</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Cirkel</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Rechthoek</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Grootte</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Breedte</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Hoogte</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Rand</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Breedte van de rand</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Kleur van de rand</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Grootte van de cirkel</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Donkerte</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows heeft het vergrootglas niet gestart.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>De lens en de spotlight verschijnen boven games in een venster of zonder rand, en klikken gaan erdoorheen. Volledig scherm zoomt het hele bureaublad in met het vergrootglas van Windows. Een macro kan het vergrootglas tonen of verbergen, of het alleen tonen zolang de macro wordt vastgehouden.</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>Toewijzingsannotaties</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
@@ -5205,6 +5278,10 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-schermoverlay</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Nog niets om te tonen. Kies op de pagina Schermoverlay, onder Extra's, wat de overlay toont.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Schermoverlay in-/uitschakelen</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Dradenkruis in-/uitschakelen</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Vergrootglas in-/uitschakelen</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Elk dradenkruis</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Dradenkruis</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Schermoverlay in-/uitschakelen</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Schermoverlay</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>De overlay toont niets.</value></data>
@@ -5225,6 +5302,11 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Overlay</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Elke overlay</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Schermoverlay {0} in-/uitschakelen</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Dradenkruis in-/uitschakelen</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Dradenkruis {0} in-/uitschakelen</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Vergrootglas in-/uitschakelen</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Vergrootglas (vastgehouden)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Toont het vergrootglas zolang deze macro wordt vastgehouden, om door het vizier te richten. Stel het in op de pagina Vergrootglas.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Afbeeldingen tonen op {0}: {1} × {2} ms, tot de volgende macro Tonen of Modus</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Profiel importeren</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, een {1}-bestand.</value></data>
@@ -5253,7 +5335,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge herkent deze uitvoer niet: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge kent dit commando niet: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>De virtuele controller heeft deze knop niet: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Een dradenkruis bestaat alleen binnen reWASD. Toon je eigen afbeelding met een Schermoverlay.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD bewaart zijn dradenkruisen in eigen instellingen, niet in de config. Stel de jouwe in op de pagina Dradenkruis.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Stick-jitter en schudden zijn niet overgenomen.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analoge activeringspunten van toetsen zijn niet overgenomen.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD stuurde deze controller via een adapter naar een ander apparaat. PadForge speelt hem af op deze pc, en Remote Link stuurt hem naar een andere pc waarop PadForge draait.</value></data>
@@ -5545,7 +5627,6 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-profiel (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge Key Lights (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Een macro kan {0} niet indrukken. Een regel onder Toewijzingen kan dat wel.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge draait acht schermoverlays, en dit is het negende of tiende dradenkruis van reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge leest Gyro links en rechts van roll en kanteling van yaw, de standaard van reWASD. In de voorkeuren van reWASD kunnen die twee worden omgewisseld, en dit bestand zegt niet of dat is gebeurd.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>In de modus Tilt is de kanteling van reWASD een draai om de verticale as, en een bewegingssensor geeft voor die draai geen hoek.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge leest een diagonaal op het touchpad als twee richtingen tegelijk, wat het touchpad alleen meldt als zijn D-pad-modus onder Beweging en aanraking op 8-Weg staat.</value></data>

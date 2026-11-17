@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Oynarken menüleri, katmanları ve profil geçişlerini gösterin.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation dokunmatik yüzeyli oyunlar için ekran üstü dokunma yüzeyi.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Diğer pencerelerin üstünde bir resim, zamanlayıcı veya saat.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Oyunun üstünde kendi nişangahınız.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Bir yakınlaştırma merceği, tam ekran yakınlaştırma veya bir spot ışığı.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, düz HTTP, erişim kodu</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Otomatik yeniden bağlan, port, eşleştirme kimliği, adresle bağlan</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe vekili</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Kaplama {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Gösterir</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Başka bir program öndeyken tıklamalar kaplamanın içinden geçer. PadForge öndeyken kaplamayı sağ fare düğmesiyle sürükleyin ve köşesinden boyutlandırın. Bir makro, bir kaplamayı numarasıyla gösterebilir veya gizleyebilir.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Nişangah</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Diğer pencerelerin üstünde, bir ekranın ortasında nişangahlar: artı, daire, nokta veya kendi resminiz.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Nişangah ekle</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Nişangah {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Nişangahı göster</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Stil</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Artı</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Daire</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Nokta</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Resim</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Önizleme</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Merkezden kaydırma</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Yatay kaydırma</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Dikey kaydırma</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Kol uzunluğu</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Kalınlık</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Boşluk</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Orta nokta</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T şekli</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Üst kol yok.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Yarıçap</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Kenar sayısı</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64 kenarda halka yuvarlak görünür.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Boyut</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Resim</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Resim seçilmedi</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Resimler (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Tüm Dosyalar (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Boyut</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Genişlik</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Yükseklik</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Resmin kendi boyutu</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Oranları koru</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Kapalıyken resim, ayarlanan genişliğe ve yüksekliğe uzatılır.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Renk</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Kontur</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Kontur genişliği</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Kontur rengi</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Döndürme</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Kenarları yumuşat</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Kapalıyken her kenar tam piksellere oturur ve keskin kalır.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Renk seçiciyi göster veya gizle</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Gösterilecek resim yok</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Ekranının dışında</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Nişangahlar pencereli ve çerçevesiz oyunların üstünde görünür ve tıklamalar içlerinden geçer. Özel tam ekran modundaki bir oyun onları gizler, bu yüzden oyunu pencereli veya çerçevesiz çalıştırın. Bir makro, bir nişangahı numarasıyla gösterebilir veya gizleyebilir.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Büyüteç</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Keskin nişancı dürbünü gibi bir mercek, tüm ekranın yakınlaştırılması veya geri kalanı karartan bir spot ışığı.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Büyüteci göster</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Gösterdiği şey</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Mod</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Mercek</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Tam ekran</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Spot ışığı</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Odak noktası</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Ekran merkezi</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>İmleç</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Nişangah</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Nişangah, kaydırması dahil, açık olan ilk nişangah demektir.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Yakınlaştırma</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Şekil</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Daire</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Dikdörtgen</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Boyut</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Genişlik</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Yükseklik</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Kenarlık</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Kenarlık genişliği</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Kenarlık rengi</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Daire boyutu</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Karanlık</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows büyüteci başlatmadı.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Mercek ve spot ışığı pencereli ve çerçevesiz oyunların üstünde görünür ve tıklamalar içlerinden geçer. Tam ekran modu, Windows'un tam ekran büyütecini kullanarak masaüstünün tamamını yakınlaştırır. Bir makro büyüteci gösterebilir veya gizleyebilir ya da yalnızca basılı tutulurken gösterebilir.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Hareket sunucusu</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Jiroskop ve ivmeölçer verileri için DSU/CemuHook Motion Provider protokol sunucusu.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU hareket sunucusunu etkinleştir (CemuHook Motion Provider protokolü)</value></data>
@@ -5236,6 +5309,10 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge ekran kaplaması</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Henüz gösterilecek bir şey yok. Neyin gösterileceğini Ekstralar altındaki Ekran kaplaması sayfasından seçin.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Ekran kaplamasını aç/kapat</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Nişangahı aç/kapat</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Büyüteci aç/kapat</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Her nişangah</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Nişangah</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Ekran kaplamasını aç/kapat</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Ekran kaplaması</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Kaplama hiçbir şey göstermez.</value></data>
@@ -5256,6 +5333,11 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Kaplama</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Her kaplama</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Ekran kaplaması {0} aç/kapat</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Nişangahı aç/kapat</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Nişangah {0} aç/kapat</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Büyüteci aç/kapat</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Büyüteç (basılı tutulurken)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Bu makro basılı tutulurken büyüteci gösterir, nişan alırken işe yarar. Büyüteç sayfasında ayarlayın.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} resimlerini göster: {1} × {2} ms, sonraki gösterme veya mod makrosuna kadar</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Profili içe aktar</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, bir {1} dosyası.</value></data>
@@ -5284,7 +5366,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge bu çıkışı tanımıyor: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge'da böyle bir komut yok: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Sanal denetleyicide böyle bir düğme yok: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Artı işareti reWASD'in içinde yaşar. Kendi resminizi Ekran kaplaması ile gösterin.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD nişangahlarını yapılandırmada değil, kendi ayarlarında tutar. Kendi nişangahınızı Nişangah sayfasında ayarlayın.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Çubuk titremesi ve sallanması aktarılmadı.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analog tuş etkinleşme noktaları aktarılmadı.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD bu denetleyiciyi bir adaptör aracılığıyla başka bir cihaza gönderdi. PadForge onu bu bilgisayarda çalar, Uzak Bağlantı ise PadForge çalıştıran başka bir bilgisayara gönderir.</value></data>
@@ -5576,7 +5658,6 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro profili (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge Tuş Işıkları (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Bir makro {0} düğmesine basamaz. Eşlemeler bölümündeki bir satır basabilir.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge sekiz Ekran kaplaması çalıştırır, bu ise reWASD'in dokuzuncu veya onuncu artı işareti.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge, reWASD'in varsayılanı olarak Jiroskop Sol ve Sağ'ı yuvarlanmadan, Yatırmayı sapmadan okur. reWASD'in Tercihleri ikisini değiştirebilir ve bu dosya değiştirilip değiştirilmediğini söylemez.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Eğim modunda reWASD'in Yatırması dikey eksen etrafında bir dönüştür ve hareket sensörü bu dönüş için açı vermez.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge bir dokunmatik yüzey çaprazını aynı anda iki yön olarak okur. Dokunmatik yüzey bunu yalnızca Hareket ve Dokunma bölümündeki kendi Yön tuşları modu 8 yönlü olduğunda bildirir.</value></data>

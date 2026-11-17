@@ -1421,4 +1421,5 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Ọ dịghị mgbe</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Mgbe layer ahụ na-arụ ọrụ na-eme ka flyout ahụ nọrọ ruo mgbe layer ahụ gbanwere. Maka sekọnd 2 na-egosi ya mgbe layer ahụ malitere, wee hapụ ya ka ọ pụọ. Na Ọ dịghị mgbe, layer a anaghị egosi flyout, Base anaghịkwa egosi ya mgbe layer ahụ kwụsịrị.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Maka sekọnd 2 na-egosi aha Base mgbe shift layer kwụsịrị. Na Ọ dịghị mgbe, Base anaghị egosi flyout.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Foto (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Faịlụ niile (*.*)|*.*</value></data>
 </root>

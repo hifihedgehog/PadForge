@@ -1338,6 +1338,7 @@ namespace PadForge.ViewModels
             nameof(DreamcastRepeat) or
             nameof(ScreenKind) or
             nameof(ScreenOverlayNumber) or
+            nameof(CrosshairNumber) or
             nameof(ProfileShortcutMode) or
             nameof(ScreenFrames) or
             nameof(ScreenFrameMs) or
@@ -1688,6 +1689,11 @@ namespace PadForge.ViewModels
                 case nameof(ScreenOverlayNumber):
                 {
                     ScreenOverlayNumber = 0;
+                    break;
+                }
+                case nameof(CrosshairNumber):
+                {
+                    CrosshairNumber = 0;
                     break;
                 }
                 case nameof(ScreenKind):

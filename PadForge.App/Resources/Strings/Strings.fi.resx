@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Näytä valikot, kerrokset ja profiilinvaihdot pelatessasi.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Näytöllä näkyvä kosketuspinta PlayStation-kosketuslevypeleille.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Kuva, ajastin tai kello muiden ikkunoiden päällä.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Oma tähtäin pelin päälle.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Linssi, koko näytön suurennus tai valokeila.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Portti, salaamaton HTTP, pääsykoodi</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automaattinen uudelleenyhdistys, portti, pariliitoksen tunniste, yhdistäminen osoitteella</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Portti, DSX.exe-korvike</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Peittokuva {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Näyttää</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Kun jokin toinen ohjelma on etualalla, napsautukset menevät peittokuvan läpi. Kun PadForge on etualalla, vedä sitä hiiren oikealla painikkeella ja muuta sen kokoa kulmasta. Makro voi näyttää tai piilottaa peittokuvan sen numeron perusteella.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Tähtäin</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Tähtäimet muiden ikkunoiden päällä näytön keskellä: risti, rengas, piste tai oma kuva.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Lisää tähtäin</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Tähtäin {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Näytä tähtäin</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Tyyli</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Risti</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Rengas</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Piste</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Kuva</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Esikatselu</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Siirtymä keskikohdasta</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Vaakasiirtymä</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Pystysiirtymä</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Viivan pituus</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Paksuus</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Väli</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Keskipiste</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T-muoto</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Ei ylälinjaa.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Säde</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Sivut</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Arvolla 64 rengas on pyöreä.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Koko</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Kuva</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Kuvaa ei ole valittu</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Kuvat (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Kaikki tiedostot (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Koko</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Leveys</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Korkeus</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Kuvan oma koko</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Säilytä mittasuhteet</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Pois päältä kuva venyy asetettuun leveyteen ja korkeuteen.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Väri</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Ääriviiva</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Ääriviivan leveys</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Ääriviivan väri</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Kierto</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Pehmeät reunat</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Pois päältä jokainen reuna osuu kokonaisille pikseleille ja pysyy teräväreunaisena.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Näytä tai piilota värinvalitsin</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Ei näytettävää kuvaa</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Näytön ulkopuolella</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Tähtäimet näkyvät ikkuna- ja reunattomassa ikkunatilassa olevien pelien päällä, ja napsautukset menevät niiden läpi. Yksinomaisessa koko näytön tilassa oleva peli piilottaa ne, joten aja peliä ikkunatilassa tai reunattomassa ikkunatilassa. Makro voi näyttää tai piilottaa tähtäimen sen numeron perusteella.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Suurennuslasi</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Linssi kuin kiikaritähtäin, koko näyttö suurennettuna tai valokeila, joka himmentää loput.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Näytä suurennuslasi</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Mitä se näyttää</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Tila</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Linssi</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Koko näyttö</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Valokeila</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Keskitä kohtaan</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Näytön keskikohta</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Osoitin</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Tähtäin</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Tähtäin tarkoittaa ensimmäistä päällä olevaa tähtäintä siirtymä mukaan lukien.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Suurennus</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Muoto</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Ympyrä</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Suorakulmio</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Koko</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Leveys</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Korkeus</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Reunus</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Reunuksen leveys</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Reunuksen väri</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Ympyrän koko</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Tummuus</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ei käynnistänyt suurennuslasia.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Linssi ja valokeila näkyvät ikkuna- ja reunattomassa ikkunatilassa olevien pelien päällä, ja napsautukset menevät niiden läpi. Koko näyttö suurentaa koko työpöydän Windowsin koko näytön suurennuslasilla. Makro voi näyttää tai piilottaa suurennuslasin tai näyttää sen vain pidettäessä.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Liikepalvelin</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider -protokollan palvelin gyro- ja kiihtyvyysanturitiedoille.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Ota DSU-liikepalvelin käyttöön (CemuHook Motion Provider -protokolla)</value></data>
@@ -5236,6 +5309,10 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-näytön peittokuva</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Ei vielä mitään näytettävää. Valitse, mitä se näyttää, Näytön peittokuva -sivulla Lisäosat-kohdan alla.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Näytä/piilota näytön peittokuva</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Näytä/piilota tähtäin</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Näytä/piilota suurennuslasi</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Kaikki tähtäimet</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Tähtäin</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Näytä/piilota näytön peittokuva</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Näytön peittokuva</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Peittokuva ei näytä mitään.</value></data>
@@ -5256,6 +5333,11 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Peittokuva</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Kaikki peittokuvat</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Näytä/piilota näytön peittokuva {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Näytä/piilota tähtäin</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Näytä/piilota tähtäin {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Näytä/piilota suurennuslasi</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Suurennuslasi (pidettäessä)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Näyttää suurennuslasin, kun tätä makroa pidetään, tähtäämiseen kiikaritähtäimellä. Määritä se Suurennuslasi-sivulla.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Näytä kuvat, {0}: {1} × {2} ms, kunnes seuraava näyttö- tai tilamakro</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Tuo profiili</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, {1}-tiedosto.</value></data>
@@ -5284,7 +5366,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge ei tunnista tätä tulostetta: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge-ssa ei ole tällaista komentoa: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Virtuaaliohjaimessa ei ole tällaista painiketta: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Tähtäin on reWASDin sisäinen ominaisuus. Näytä oma kuvasi Näytön peittokuvalla.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD säilyttää tähtäimensä omissa asetuksissaan, ei määrityksessä. Tee omasi Tähtäin-sivulla.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Sauvan tärinää ja ravistusta ei saatu mukaan.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analogisten näppäinten aktivointipisteitä ei saatu mukaan.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD lähetti tämän ohjaimen toiseen laitteeseen sovittimen kautta. PadForge toistaa sen tällä tietokoneella, ja Etälinkki lähettää sen toiselle tietokoneelle, jolla PadForge on käynnissä.</value></data>
@@ -5576,7 +5658,6 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-profiili (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge-näppäinvalot (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro ei voi painaa kohdetta {0}. Määritykset-osion rivi voi.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge näyttää kahdeksan Näytön peittokuvaa, ja tämä on reWASD-in yhdeksäs tai kymmenes tähtäin.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge lukee Gyron vasemman ja oikean suunnan kallistuksesta ja Gyron nojauksen kiertymästä, kuten reWASD oletuksena. reWASD-in Preferences-asetuksissa nämä kaksi voi vaihtaa keskenään, eikä tämä tiedosto kerro, onko niin tehty.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Tilt-tilassa reWASD-in Lean on kierto pystyakselin ympäri, eikä liikeanturi anna kulmaa tälle kierrolle.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge lukee kosketuslevyn viistosuunnan kahtena suuntana yhtä aikaa, minkä kosketuslevy ilmoittaa vain, kun sen Ristiohjaintila Liike ja kosketus -osiossa on 8-suuntainen.</value></data>

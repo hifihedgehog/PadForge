@@ -4,9 +4,10 @@ using CommunityToolkit.Mvvm.Input;
 namespace PadForge.ViewModels
 {
     /// <summary>
-    /// The Extras catalog's switches for the three extras that have several
+    /// The Extras catalog's switches for the four extras that have several
     /// switches and no single one (#574): Head Tracking's three inputs, the
-    /// three overlays and the Screen Overlay list.
+    /// three overlays, the Screen Overlay list and the crosshair list
+    /// (#585).
     ///
     /// <para>Each catalog switch reads on while any of its own is on. Turning
     /// it off turns them all off and remembers which were on. Turning it on
@@ -194,6 +195,56 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
+        //  Crosshair (#585)
+        // ─────────────────────────────────────────────
+
+        private int CrosshairMask
+        {
+            get
+            {
+                int mask = 0;
+                foreach (var item in Crosshairs)
+                    if (item.Enabled) mask |= 1 << (item.Number - 1);
+                return mask;
+            }
+        }
+
+        private int _crosshairsLastOn;
+
+        /// <summary>The crosshairs the Crosshair switch turned off last, a bit
+        /// for each crosshair's number. Zero until it has turned any
+        /// off.</summary>
+        public int CrosshairsLastOn
+        {
+            get => _crosshairsLastOn;
+            set => SetProperty(ref _crosshairsLastOn, value & ((1 << PadForge.Services.CrosshairData.MaxCrosshairs) - 1));
+        }
+
+        /// <summary>The Extras switch of Crosshair: on while any crosshair on
+        /// the list is on. Turned on with none remembered, or with every
+        /// remembered crosshair since removed, it turns on the first, as the
+        /// Screen Overlay switch does.</summary>
+        public bool CrosshairsAnyEnabled
+        {
+            get => CrosshairMask != 0;
+            set
+            {
+                int now = CrosshairMask;
+                if (value == (now != 0)) return;
+                if (!value) CrosshairsLastOn = now;
+                int mask = 0;
+                if (value)
+                {
+                    foreach (var item in Crosshairs)
+                        mask |= _crosshairsLastOn & (1 << (item.Number - 1));
+                    if (mask == 0 && Crosshairs.Count > 0) mask = 1 << (Crosshairs[0].Number - 1);
+                }
+                foreach (var item in Crosshairs)
+                    item.Enabled = (mask & (1 << (item.Number - 1))) != 0;
+            }
+        }
+
+        // ─────────────────────────────────────────────
         //  The catalog switches follow their own
         // ─────────────────────────────────────────────
 
@@ -214,6 +265,12 @@ namespace PadForge.ViewModels
                     break;
                 case nameof(ScreenOverlays):
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(ScreenOverlaysAnyEnabled)));
+                    break;
+                case nameof(Crosshairs):
+                    base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(CrosshairsAnyEnabled)));
+                    break;
+                case nameof(Magnifier):
+                    base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(MagnifierEnabled)));
                     break;
             }
             // Home's own followers: its engine button and its count of the

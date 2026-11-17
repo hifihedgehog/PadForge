@@ -954,6 +954,27 @@ namespace PadForge.Tests
                 Shot("extras-screenoverlay.png", 800, () => page.Show("ScreenOverlay"));
                 dash.AddScreenOverlay();
                 Shot("extras-screenoverlay-two.png", 1100, () => page.Show("ScreenOverlay"));
+
+                // The crosshairs (#585): one on as the generator's cross, then a
+                // second as a six-sided ring and a third as a picture with none
+                // chosen yet.
+                dash.Crosshairs[0].Enabled = true;
+                Shot("extras-crosshair.png", 1500, () => page.Show("Crosshair"));
+                dash.AddCrosshair();
+                dash.Crosshairs[1].Style = PadForge.Services.CrosshairStyle.Circle;
+                dash.Crosshairs[1].Sides = 6;
+                dash.AddCrosshair();
+                dash.Crosshairs[2].Style = PadForge.Services.CrosshairStyle.Image;
+                Shot("extras-crosshair-three.png", 3700, () => page.Show("Crosshair"));
+
+                // The magnifier: the lens, then the spotlight, then Full Screen.
+                dash.MagnifierEnabled = true;
+                dash.Magnifier.IsRunning = true;
+                Shot("extras-magnifier.png", 1000, () => page.Show("Magnifier"));
+                dash.Magnifier.Mode = PadForge.Services.MagnifierMode.Spotlight;
+                Shot("extras-magnifier-spotlight.png", 760, () => page.Show("Magnifier"));
+                dash.Magnifier.Mode = PadForge.Services.MagnifierMode.FullScreen;
+                Shot("extras-magnifier-fullscreen.png", 640, () => page.Show("Magnifier"));
             }
             finally
             {

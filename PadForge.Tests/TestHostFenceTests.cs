@@ -124,7 +124,7 @@ namespace PadForge.Tests
     /// The test process leaves the PC it runs on as it found it: its desktop,
     /// its clipboard, its devices, its radio, its drivers, its certificate
     /// stores, its logon task, its sound, the programs other vendors run on
-    /// it, and the network beyond it. Thirty-one fences hold that
+    /// it, and the network beyond it. Thirty-two fences hold that
     /// (TestHostFences.cs), beside the ones MachineOffLimitsTests,
     /// HidHideOffLimitsTests and their neighbors pin. The listener gate's
     /// tests are in TestHostListenerTests.cs, and the workshop library's own
@@ -205,6 +205,7 @@ namespace PadForge.Tests
         private const string ScreenCapture = Input + "ScreenColor/ScreenColorSource.cs";
         private const string KeyboardLayout = "PadForge.App/Common/ConfigImport/DirectInputKeys.cs";
         private const string SlotIdentity = "PadForge.Engine/Common/XInputSlotIdentity.cs";
+        private const string Magnifier = "PadForge.App/Common/Crosshairs/MagnifierNative.cs";
 
         private const string RefusesHost = "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(host))";
         private const string VendorRefuses = "if (PadForge.Engine.Common.VendorProgramGate.Refuses";
@@ -244,6 +245,7 @@ namespace PadForge.Tests
             (ScreenCapture, "ScreenColorSource"),
             (KeyboardLayout, "DirectInputKeys"),
             (SlotIdentity, "XInputSlotIdentity"),
+            (Magnifier, "MagnifierNative"),
         };
 
         private const string Flag = "OffLimitsForTest";
@@ -291,6 +293,7 @@ namespace PadForge.Tests
             Assert.True(PadForge.Common.Input.ScreenColor.ScreenColorSource.OffLimitsForTest);
             Assert.True(PadForge.Common.ConfigImport.DirectInputKeys.OffLimitsForTest);
             Assert.True(PadForge.Engine.XInputSlotIdentity.OffLimitsForTest);
+            Assert.True(PadForge.Common.Crosshairs.MagnifierNative.OffLimitsForTest);
         }
 
         /// <summary>Each flag is a plain field that starts false, and no
@@ -362,6 +365,9 @@ namespace PadForge.Tests
             new object[] { G19Screen, "public static IG19Link TryOpen(string path)", "if (DirectDeviceAccess.Refuses(path)) return null;" },
             new object[] { DeviceAccess, "internal static bool Refuses(string path)", "OffLimitsForTest && IsDevicePath(path);" },
             new object[] { DeviceAccess, "internal static bool RefusesAll", "OffLimitsForTest;" },
+
+            // The desktop's full-screen zoom (#585).
+            new object[] { Magnifier, "internal static bool SetFullScreen(float zoom, int x, int y)", "if (OffLimitsForTest) return FullScreenSeam?.Invoke(zoom, x, y) ?? false;" },
 
             // The shell and the clipboard.
             new object[] { Shell, "internal static Process Start(ProcessStartInfo psi)", "OffLimitsForTest ? null : Process.Start(psi);" },
@@ -611,6 +617,12 @@ namespace PadForge.Tests
         [Fact]
         public void TheClipboard_IsWrittenInOnePlace()
             => Assert.Equal(Map((Shell, 1)), FenceSource.Census(@"\bClipboard\.(Set[A-Za-z]*|Clear|Flush)\("));
+
+        /// <summary>Windows' full-screen zoom is set in one place, the member
+        /// that asks its fence first (#585).</summary>
+        [Fact]
+        public void TheFullScreenZoom_IsSetInOnePlace()
+            => Assert.Equal(Map((Magnifier, 1)), FenceSource.Census(@"\bMagSetFullscreenTransform\(", callsOnly: true));
 
         /// <summary>Each import that injects input, moves the cursor or
         /// installs a hook is named Native and called once, by the wrapper

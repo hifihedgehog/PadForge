@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita ang mga menu, layer at pagpapalit ng profile habang naglalaro ka.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Touch surface sa screen para sa mga larong touchpad ng PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Isang larawan, timer o orasan sa ibabaw ng ibang mga window.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Sarili mong crosshair sa ibabaw ng laro.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Isang lens na nagpapalaki, pagpapalaki ng buong screen o isang spotlight.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, plain HTTP, access code</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Auto-Reconnect, port, pairing identity, pagkonekta gamit ang address</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe stand-in</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Overlay {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Ipinapakita</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Habang nasa harap ang ibang program, dumadaan sa overlay ang mga click. Habang nasa harap ang PadForge, i-drag ito gamit ang right mouse button at i-resize mula sa sulok nito. Maaaring ipakita o itago ng isang macro ang isang overlay ayon sa numero nito.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Crosshair</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Mga crosshair sa ibabaw ng ibang mga window, nakagitna sa isang display: krus, bilog, tuldok o sarili mong larawan.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Magdagdag ng Crosshair</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Crosshair {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Ipakita ang Crosshair</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Istilo</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Krus</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Bilog</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Tuldok</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Larawan</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Preview</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Layo Mula sa Gitna</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Pahalang na Layo</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Patayong Layo</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Haba ng Guhit</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Kapal</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Puwang</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Tuldok sa Gitna</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Hugis T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Walang guhit sa itaas.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Radius</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Mga Gilid</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Sa 64, bilog na bilog ang singsing.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Laki</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Larawan</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Walang napiling larawan</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Mga Larawan (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Lahat ng File (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Laki</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Lapad</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Taas</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Orihinal na Laki ng Larawan</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Panatilihin ang Proporsyon</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Kapag naka-off, iuunat ang larawan sa lapad at taas.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Kulay</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Balangkas</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Lapad ng Balangkas</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Kulay ng Balangkas</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Pag-ikot</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Pakinisin ang mga Gilid</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Kapag naka-off, nasa buong pixel ang bawat gilid at nananatiling matalas.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Ipakita o itago ang color picker</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Walang larawang maipapakita</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Labas sa display nito</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Lumalabas ang mga crosshair sa ibabaw ng mga larong windowed at borderless, at dumadaan sa mga ito ang mga click. Itinatago ng larong nasa exclusive full screen ang mga ito, kaya patakbuhin ito nang windowed o borderless. Maaaring ipakita o itago ng isang macro ang isang crosshair ayon sa numero nito.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Magnifier</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Isang lens na parang sniper scope, ang buong display na naka-zoom in, o isang spotlight na nagpapadilim sa natitira.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Ipakita ang Magnifier</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Ang Ipinapakita Nito</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lens</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Full Screen</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Spotlight</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Igitna Sa</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Gitna ng Display</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Pointer</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Crosshair</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Ang Crosshair ay ang unang crosshair na naka-on, kasama ang layo nito mula sa gitna.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Zoom</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Hugis</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Bilog</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Parihaba</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Laki</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Lapad</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Taas</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Hangganan</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Lapad ng Hangganan</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Kulay ng Hangganan</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Laki ng Bilog</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Dilim</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Hindi napatakbo ng Windows ang magnifier.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Lumalabas ang lens at ang spotlight sa ibabaw ng mga larong windowed at borderless, at dumadaan sa mga ito ang mga click. Ang Full Screen ay nagza-zoom sa buong desktop gamit ang full screen magnifier ng Windows. Maaaring ipakita o itago ng isang macro ang magnifier, o ipakita ito habang hawak lang.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Motion Server</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Protocol server ng DSU/CemuHook Motion Provider para sa data ng gyro at accelerometer.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>I-enable ang DSU Motion Server (CemuHook Motion Provider Protocol)</value></data>
@@ -4736,4 +4809,6 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Magtakda ng Password</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>I-unlock ang Remote Link</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Password</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Magnifier (Habang Hawak)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Ipinapakita ang magnifier habang hawak ang macro na ito, para sa pag-aim down sights. Itakda ito sa pahina ng Magnifier.</value></data>
 </root>

@@ -1454,4 +1454,5 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Osati konse</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Pamene layer ili yoyatsidwa imasunga flyout pa sikirini mpaka layer isinthe. Kwa masekondi 2 imaiwonetsa pamene layer iyatsidwa, kenako imaisiya ichoke yokha. Ndi Osati konse, layer iyi siwonetsa flyout, ndipo Base siwonetsa flyout pamene layer yatha.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Kwa masekondi 2 imawonetsa dzina la Base pamene shift layer yatha. Ndi Osati konse, Base siwonetsa flyout.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Zithunzi (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Mafayilo onse (*.*)|*.*</value></data>
 </root>

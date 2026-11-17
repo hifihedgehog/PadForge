@@ -10,7 +10,7 @@ namespace PadForge.Views
 {
     /// <summary>
     /// The Extras page (#574): a catalog of the optional features and a page
-    /// for each. The catalog and the ten pages are panels of one scroll view,
+    /// for each. The catalog and the twelve pages are panels of one scroll view,
     /// and this class shows one of them at a time.
     ///
     /// <para>An extra is named by its key (<see cref="Keys"/>). The key names
@@ -32,7 +32,7 @@ namespace PadForge.Views
         {
             "WebController", "HeadTracking", "GameTelemetry", "TwitchChat",
             "RemoteLink", "MotionServer", "GameMods",
-            "Overlays", "TouchpadOverlay", "ScreenOverlay",
+            "Overlays", "TouchpadOverlay", "ScreenOverlay", "Crosshair", "Magnifier",
         };
 
         /// <summary>Back to the catalog from an extra's page: Alt+Left and
@@ -50,6 +50,7 @@ namespace PadForge.Views
             CommandBindings.Add(new CommandBinding(BackCommand,
                 (_, e) => { ShowCatalog(); e.Handled = true; },
                 (_, e) => { e.CanExecute = CurrentExtra != null; e.Handled = true; }));
+            IsVisibleChanged += (_, _) => FollowDisplays();
         }
 
         /// <summary>The key of the extra whose page is showing, or null while
@@ -78,6 +79,7 @@ namespace PadForge.Views
                     page.Visibility = k == key ? Visibility.Visible : Visibility.Collapsed;
             CurrentExtra = key;
             PageScroll.ScrollToTop();
+            FollowDisplays();
             return true;
         }
 
@@ -146,6 +148,50 @@ namespace PadForge.Views
             if ((sender as FrameworkElement)?.Tag is not TextBox box) return;
             box.Focus();
             box.SelectAll();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Crosshair and Magnifier (#585)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Chooses an Image crosshair's picture: any picture Windows
+        /// reads. It shows at its own size until the size is changed.</summary>
+        private void CrosshairPicture_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is not ViewModels.CrosshairItem item) return;
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = PadForge.Resources.Strings.Strings.Instance.Extras_Crosshair_PictureFilter,
+                Title = item.Title,
+                CheckFileExists = true,
+            };
+            if (dialog.ShowDialog(Window.GetWindow(this)) != true) return;
+            item.UsePicture(PadForge.Common.IconPackageManager.MakeStoredPath(dialog.FileName));
+        }
+
+        private DispatcherTimer _displayTimer;
+
+        /// <summary>The Display boxes take in a display plugged in or out, once
+        /// a second while the Crosshair or the Magnifier page is on the
+        /// screen, as the Lighting tab's box does.</summary>
+        private void FollowDisplays()
+        {
+            if (!IsVisible || CurrentExtra is not ("Crosshair" or "Magnifier"))
+            {
+                _displayTimer?.Stop();
+                return;
+            }
+            if (_displayTimer == null)
+            {
+                _displayTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+                _displayTimer.Tick += (_, _) =>
+                {
+                    if (DataContext is not ViewModels.DashboardViewModel dash) return;
+                    foreach (var crosshair in dash.Crosshairs) crosshair.RefreshDisplays();
+                    dash.Magnifier.RefreshDisplays();
+                };
+            }
+            _displayTimer.Start();
         }
 
         /// <summary>Enter keeps a paired PC's new name and Escape puts the old

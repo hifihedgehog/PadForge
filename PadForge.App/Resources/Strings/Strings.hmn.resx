@@ -1554,4 +1554,5 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Tsis qhia li</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Xaiv Thaum txheej qhib yuav cia flyout nyob saum screen mus txog thaum txheej hloov. Xaiv Rau 2 vib nas this yuav qhia nws thaum txheej qhib, ces cia nws ploj mus. Thaum xaiv Tsis qhia li, txheej no tsis qhia flyout, thiab txheej Base kuj tsis qhia thaum txheej no xaus.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Xaiv Rau 2 vib nas this yuav qhia txheej Base lub npe thaum ib txheej shift xaus. Thaum xaiv Tsis qhia li, txheej Base tsis qhia flyout.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Duab (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Txhua cov ntaub ntawv (*.*)|*.*</value></data>
 </root>

@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>விளையாடும்போது மெனுக்கள், அடுக்குகள், சுயவிவர மாற்றங்களைக் காட்டவும்.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation டச்பேட் கேம்களுக்கான திரைமேல் தொடு பரப்பு.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>மற்ற சாளரங்களுக்கு மேலே ஒரு படம், டைமர் அல்லது கடிகாரம்.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ஒரு விளையாட்டின் மேல் உங்கள் சொந்தக் குறுக்குக்கோடு.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>ஒரு பெரிதாக்கும் லென்ஸ், முழுத்திரை பெரிதாக்கம் அல்லது ஒரு ஒளிக்குவியல்.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>போர்ட், சாதாரண HTTP, அணுகல் குறியீடு</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>தானியங்கி மறுஇணைப்பு, போர்ட், இணைசேர்ப்பு அடையாளம், முகவரி மூலம் இணை</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>போர்ட், DSX.exe மாற்றுநிரல்</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ஓவர்லே {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>காட்டுவது</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>வேறொரு நிரல் முன்னணியில் இருக்கும்போது, கிளிக்குகள் ஓவர்லே வழியாகச் செல்லும். PadForge முன்னணியில் இருக்கும்போது, வலது சுட்டி பொத்தானால் இழுக்கவும், அதன் மூலையிலிருந்து அளவை மாற்றவும். ஒரு மேக்ரோ ஓவர்லேயை அதன் எண்ணால் காட்டவோ மறைக்கவோ முடியும்.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>குறுக்குக்கோடு</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>மற்ற சாளரங்களுக்கு மேலே காட்சியின் நடுவில் குறுக்குக்கோடுகள்: ஒரு சிலுவை, ஒரு வட்டம், ஒரு புள்ளி அல்லது உங்கள் சொந்தப் படம்.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>குறுக்குக்கோட்டைச் சேர்</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>குறுக்குக்கோடு {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>குறுக்குக்கோட்டைக் காட்டு</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>பாணி</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>சிலுவை</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>வட்டம்</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>புள்ளி</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>படம்</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>முன்னோட்டம்</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>மையத்திலிருந்து விலகல்</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>கிடைமட்ட விலகல்</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>செங்குத்து விலகல்</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>கோட்டின் நீளம்</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>தடிமன்</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>இடைவெளி</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>மையப் புள்ளி</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T வடிவம்</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>மேல் கோடு இல்லை.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>ஆரம்</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>பக்கங்கள்</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64 இல் வளையம் வட்டமாகத் தெரியும்.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>அளவு</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>படம்</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>படம் தேர்ந்தெடுக்கப்படவில்லை</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>படங்கள் (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|அனைத்துக் கோப்புகள் (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>அளவு</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>அகலம்</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>உயரம்</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>படத்தின் சொந்த அளவு</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>விகிதத்தைப் பேணு</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>அணைத்திருந்தால், படம் அகலத்திற்கும் உயரத்திற்கும் ஏற்ப நீளும்.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>நிறம்</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>வெளிக்கோடு</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>வெளிக்கோட்டின் அகலம்</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>வெளிக்கோட்டின் நிறம்</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>சுழற்சி</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>விளிம்புகளை மென்மையாக்கு</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>அணைத்திருந்தால், ஒவ்வொரு விளிம்பும் முழு பிக்சல்களில் அமைந்து கூர்மையாக இருக்கும்.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>நிறத் தேர்வியைக் காட்டு அல்லது மறை</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>காட்ட படம் இல்லை</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>காட்சிக்கு வெளியே</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>குறுக்குக்கோடுகள் சாளர மற்றும் எல்லையற்ற முறை விளையாட்டுகளின் மேல் தெரியும், கிளிக்குகள் அவற்றின் வழியாகச் செல்லும். பிரத்யேக முழுத்திரையில் உள்ள விளையாட்டு அவற்றை மறைக்கும், எனவே அதை சாளர அல்லது எல்லையற்ற முறையில் இயக்கவும். ஒரு மேக்ரோ குறுக்குக்கோட்டை அதன் எண்ணால் காட்டவோ மறைக்கவோ முடியும்.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>பெரிதாக்கி</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>குறிபார்க்கும் கருவி போன்ற ஒரு லென்ஸ், முழுக் காட்சியும் பெரிதாக்கப்பட்டது, அல்லது மற்றதை இருட்டாக்கும் ஒளிக்குவியல்.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>பெரிதாக்கியைக் காட்டு</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>அது காட்டுவது</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>முறை</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>லென்ஸ்</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>முழுத்திரை</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>ஒளிக்குவியல்</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>மையப்படுத்து</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>காட்சியின் மையம்</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>சுட்டி</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>குறுக்குக்கோடு</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>குறுக்குக்கோடு என்பது இயக்கத்தில் உள்ள முதல் குறுக்குக்கோட்டையும் அதன் விலகலையும் குறிக்கும்.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>பெரிதாக்கம்</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>வடிவம்</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>வட்டம்</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>செவ்வகம்</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>அளவு</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>அகலம்</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>உயரம்</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>எல்லை</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>எல்லையின் அகலம்</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>எல்லையின் நிறம்</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>வட்டத்தின் அளவு</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>இருள் அளவு</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows பெரிதாக்கியைத் தொடங்கவில்லை.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>லென்ஸும் ஒளிக்குவியலும் சாளர மற்றும் எல்லையற்ற முறை விளையாட்டுகளின் மேல் தெரியும், கிளிக்குகள் அவற்றின் வழியாகச் செல்லும். முழுத்திரை முறை, Windows இன் முழுத்திரை பெரிதாக்கியால் முழு டெஸ்க்டாப்பையும் பெரிதாக்கும். ஒரு மேக்ரோ பெரிதாக்கியைக் காட்டவோ மறைக்கவோ முடியும், அல்லது பிடித்திருக்கும்போது மட்டும் காட்ட முடியும்.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>அசைவுச் சேவையகம்</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>கைரோ மற்றும் முடுக்கமானித் தரவுக்கான DSU/CemuHook Motion Provider நெறிமுறைச் சேவையகம்.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU அசைவுச் சேவையகத்தை இயக்கு (CemuHook Motion Provider நெறிமுறை)</value></data>
@@ -5236,6 +5309,10 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge திரை மேலடுக்கு</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>இன்னும் காட்ட எதுவும் இல்லை. கூடுதல் பிரிவில் உள்ள திரை மேலடுக்கு பக்கத்தில் எதைக் காட்டுவது என்பதைத் தேர்ந்தெடுக்கவும்.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>திரை மேலடுக்கை நிலைமாற்று</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>குறுக்குக்கோட்டை நிலைமாற்று</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>பெரிதாக்கியை நிலைமாற்று</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>ஒவ்வொரு குறுக்குக்கோடும்</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>குறுக்குக்கோடு</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>திரை மேலடுக்கை நிலைமாற்று</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>திரை மேலடுக்கு</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>மேலடுக்கு எதையும் காட்டாது.</value></data>
@@ -5256,6 +5333,11 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>மேலடுக்கு</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>ஒவ்வொரு மேலடுக்கும்</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>திரை மேலடுக்கு {0}-ஐ நிலைமாற்று</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>குறுக்குக்கோட்டை நிலைமாற்று</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>குறுக்குக்கோடு {0}-ஐ நிலைமாற்று</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>பெரிதாக்கியை நிலைமாற்று</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>பெரிதாக்கி (பிடித்திருக்கும்போது)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>இந்த மேக்ரோ பிடிக்கப்பட்டிருக்கும்போது பெரிதாக்கியைக் காட்டும், இலக்கைக் குறிபார்க்க உதவும். அதை நீட்டிப்புகளின் பெரிதாக்கி பக்கத்தில் அமைக்கவும்.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} படங்களைக் காட்டு: {1} × {2} ms, அடுத்த காட்டு அல்லது பயன்முறை மேக்ரோ வரை</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>சுயவிவரத்தை இறக்குமதி செய்</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, ஒரு {1} கோப்பு.</value></data>
@@ -5284,7 +5366,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>இந்த வெளியீட்டை PadForge அறியவில்லை: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge-இல் அப்படி ஒரு கட்டளை இல்லை: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>மெய்நிகர் கண்ட்ரோலரில் அப்படி ஒரு பொத்தான் இல்லை: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>குறுக்குக்கோடு reWASD-க்குள்ளேயே இருக்கும். உங்கள் சொந்தப் படத்தைத் திரை மேலடுக்கு மூலம் காட்டுங்கள்.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD தனது குறுக்குக்கோடுகளை கட்டமைப்பில் அல்ல, தனது சொந்த அமைப்புகளில் வைத்திருக்கும். உங்களுடையதை குறுக்குக்கோடு பக்கத்தில் அமைக்கவும்.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>ஸ்டிக் நடுக்கமும் அதிர்வும் இறக்குமதியாகவில்லை.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>அனலாக் விசை இயக்கப் புள்ளிகள் இறக்குமதியாகவில்லை.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD இந்தக் கண்ட்ரோலரை அடாப்டர் வழியாக மற்றொரு சாதனத்துக்கு அனுப்பியது. PadForge அதை இந்தக் கணினியில் இயக்குகிறது, தொலை இணைப்பு அதை PadForge இயங்கும் மற்றொரு கணினிக்கு அனுப்புகிறது.</value></data>
@@ -5576,7 +5658,6 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro சுயவிவரம் (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge விசை விளக்குகள் (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>மேக்ரோவால் {0}-ஐ அழுத்த முடியாது. மேப்பிங்குகள் பிரிவில் உள்ள வரிசையால் முடியும்.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge எட்டு திரை மேலடுக்குகளை இயக்கும், இது reWASD-இன் ஒன்பதாவது அல்லது பத்தாவது குறுக்குக்கோடு.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge இடது, வலது கைரோவை ரோலிலிருந்தும், சாய்வை யா-விலிருந்தும் படிக்கும். இது reWASD-இன் இயல்புநிலை. reWASD-இன் விருப்பத்தேர்வுகளில் இவ்விரண்டையும் மாற்றலாம், மாற்றப்பட்டனவா என்பதை இந்தக் கோப்பு சொல்லவில்லை.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>சாய்வுப் பயன்முறையில், reWASD-இன் சாய்வு என்பது செங்குத்து அச்சைச் சுற்றிய திருப்பம். அந்தத் திருப்பத்துக்கு இயக்க உணரி எந்தக் கோணத்தையும் தருவதில்லை.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge டச்பேட் மூலைவிட்டத்தை ஒரே நேரத்தில் இரு திசைகளாகப் படிக்கும். இயக்கம் &amp; தொடுதல் பிரிவில் டச்பேடின் டி-பேட் பயன்முறை 8-திசை என இருக்கும்போது மட்டுமே அது இதைத் தெரிவிக்கும்.</value></data>

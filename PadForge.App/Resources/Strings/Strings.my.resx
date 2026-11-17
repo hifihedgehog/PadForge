@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>သင် ကစားနေစဉ် မီနူးများ၊ အလွှာများနှင့် ပရိုဖိုင် ပြောင်းခြင်းများကို ပြပါ။</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation တာ့ချ်ပက် ဂိမ်းများအတွက် မျက်နှာပြင်ပေါ်ရှိ ထိတွေ့မျက်နှာပြင်။</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>အခြားဝင်းဒိုးများ၏ အပေါ်တွင် ပုံ၊ အချိန်တိုင်းကိရိယာ သို့မဟုတ် နာရီ။</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ဂိမ်းတစ်ခု၏ အပေါ်တွင် သင့်ကိုယ်ပိုင် ချိန်ရွယ်အမှတ်။</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>ချဲ့ကြည့်မှန်ဘီလူး၊ ဖန်သားပြင်အပြည့် ချဲ့ကြည့်ခြင်း သို့မဟုတ် မီးမောင်း။</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>ပေါ့တ်၊ ရိုးရိုး HTTP၊ ဝင်ရောက်ခွင့်ကုဒ်</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>အလိုအလျောက် ပြန်ချိတ်ဆက်၊ ပေါ့တ်၊ တွဲချိတ်မှု အထောက်အထား၊ လိပ်စာဖြင့် ချိတ်ဆက်ရန်</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>ပေါ့တ်၊ DSX.exe အစားထိုး ပရိုဂရမ်</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ထပ်ဆင့်ပြကွက် {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>ပြသသည်</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>အခြားပရိုဂရမ်တစ်ခု ရှေ့တွင်ရှိစဉ် ကလစ်များသည် ထပ်ဆင့်ပြကွက်ကို ဖြတ်သွားသည်။ PadForge ရှေ့တွင်ရှိစဉ် ညာဘက်မောက်စ်ခလုတ်ဖြင့် ဆွဲရွှေ့ပြီး ထောင့်မှ အရွယ်အစား ပြောင်းပါ။ မက်ခရိုတစ်ခုသည် ထပ်ဆင့်ပြကွက်ကို ၎င်း၏ နံပါတ်ဖြင့် ပြနိုင် သို့မဟုတ် ဖျောက်နိုင်သည်။</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>ချိန်ရွယ်အမှတ်</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>ဖန်သားပြင်တစ်ခု၏ အလယ်တွင် အခြားဝင်းဒိုးများ၏ အပေါ်၌ ပြသော ချိန်ရွယ်အမှတ်များ: ကြက်ခြေခတ်၊ စက်ဝိုင်း၊ အစက် သို့မဟုတ် သင့်ကိုယ်ပိုင်ပုံ။</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>ချိန်ရွယ်အမှတ် ထည့်ရန်</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>ချိန်ရွယ်အမှတ် {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>ချိန်ရွယ်အမှတ်ကို ပြရန်</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>ပုံစံ</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>ကြက်ခြေခတ်</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>စက်ဝိုင်း</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>အစက်</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>ပုံ</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>အစမ်းကြည့်ရှုမှု</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>အလယ်မှ ရွှေ့ထားမှု</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>အလျားလိုက် ရွှေ့ထားမှု</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>ဒေါင်လိုက် ရွှေ့ထားမှု</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>လက်တံ အရှည်</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>အထူ</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>ကွက်လပ်</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>အလယ်အစက်</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T ပုံသဏ္ဌာန်</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>အပေါ်လက်တံ မပါပါ။</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>အချင်းဝက်</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>အနားအရေအတွက်</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64 တွင် ကွင်းသည် လုံးဝိုင်းသည်။</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>အရွယ်အစား</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>ပုံ</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>ပုံ မရွေးရသေးပါ</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>ပုံများ (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|ဖိုင်အားလုံး (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>အရွယ်အစား</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>အကျယ်</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>အမြင့်</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>ပုံ၏ မူလအရွယ်အစား</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>အချိုးအစား ထိန်းထားရန်</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>ပိတ်ထားလျှင် ပုံသည် သတ်မှတ်ထားသော အကျယ်နှင့် အမြင့်အထိ ဆန့်သွားသည်။</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>အရောင်</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>အနားသတ်မျဉ်း</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>အနားသတ်မျဉ်း အကျယ်</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>အနားသတ်မျဉ်း အရောင်</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>လှည့်ထားမှု</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>အနားများကို ချောမွေ့စေရန်</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>ပိတ်ထားလျှင် အနားတိုင်းသည် ပစ်ဆယ်အပြည့်များပေါ်တွင် ကျပြီး ပြတ်သားနေသည်။</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>အရောင်ရွေးကိရိယာကို ပြရန် သို့မဟုတ် ဖျောက်ရန်</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>ပြရန် ပုံမရှိပါ</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>၎င်း၏ ဖန်သားပြင် အပြင်ဘက်တွင်</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>ချိန်ရွယ်အမှတ်များသည် ဝင်းဒိုးမုဒ်နှင့် နယ်စပ်မဲ့မုဒ် ဂိမ်းများ၏ အပေါ်တွင် ပေါ်ပြီး ကလစ်များသည် ၎င်းတို့ကို ဖြတ်သွားသည်။ သီးသန့် ဖန်သားပြင်အပြည့်မုဒ်ရှိ ဂိမ်းက ၎င်းတို့ကို ဖုံးကွယ်သောကြောင့် ဂိမ်းကို ဝင်းဒိုးမုဒ် သို့မဟုတ် နယ်စပ်မဲ့မုဒ်ဖြင့် ဖွင့်ပါ။ မက်ခရိုတစ်ခုသည် ချိန်ရွယ်အမှတ်ကို ၎င်း၏ နံပါတ်ဖြင့် ပြနိုင် သို့မဟုတ် ဖျောက်နိုင်သည်။</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>ချဲ့ကြည့်ကိရိယာ</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>စနိုက်ပါ ချိန်ပြောင်းကဲ့သို့ မှန်ဘီလူး၊ ချဲ့ကြည့်ထားသော ဖန်သားပြင်တစ်ခုလုံး သို့မဟုတ် ကျန်နေရာကို မှောင်စေသော မီးမောင်း။</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>ချဲ့ကြည့်ကိရိယာကို ပြရန်</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>ပြသမည့်အရာ</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>မုဒ်</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>မှန်ဘီလူး</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>ဖန်သားပြင်အပြည့်</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>မီးမောင်း</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>ဗဟိုပြုရာ</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>ဖန်သားပြင် အလယ်</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>မောက်စ်ညွှန်ပြမြား</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>ချိန်ရွယ်အမှတ်</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>“ချိန်ရွယ်အမှတ်” ဆိုသည်မှာ ဖွင့်ထားသော ပထမ ချိန်ရွယ်အမှတ်ကို ဆိုလိုပြီး ၎င်း၏ ရွှေ့ထားမှုလည်း ပါဝင်သည်။</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>ချဲ့မှုအဆင့်</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>ပုံသဏ္ဌာန်</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>စက်ဝိုင်း</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>ထောင့်မှန်စတုဂံ</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>အရွယ်အစား</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>အကျယ်</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>အမြင့်</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>ဘောင်</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>ဘောင် အကျယ်</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>ဘောင် အရောင်</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>စက်ဝိုင်း အရွယ်အစား</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>မှောင်မှု</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows က ချဲ့ကြည့်ကိရိယာကို မစတင်ခဲ့ပါ။</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>မှန်ဘီလူးနှင့် မီးမောင်းသည် ဝင်းဒိုးမုဒ်နှင့် နယ်စပ်မဲ့မုဒ် ဂိမ်းများ၏ အပေါ်တွင် ပေါ်ပြီး ကလစ်များသည် ၎င်းတို့ကို ဖြတ်သွားသည်။ “ဖန်သားပြင်အပြည့်” သည် Windows ၏ ဖန်သားပြင်အပြည့် ချဲ့ကြည့်ကိရိယာဖြင့် ဒက်စ်တော့တစ်ခုလုံးကို ချဲ့သည်။ မက်ခရိုတစ်ခုသည် ချဲ့ကြည့်ကိရိယာကို ပြနိုင်၊ ဖျောက်နိုင် သို့မဟုတ် ဖိထားစဉ်သာ ပြနိုင်သည်။</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>လှုပ်ရှားမှု ဆာဗာ</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ဂိုင်ရိုနှင့် အရှိန်တိုင်းကိရိယာ ဒေတာအတွက် DSU/CemuHook Motion Provider ပရိုတိုကော ဆာဗာ။</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU လှုပ်ရှားမှု ဆာဗာကို ဖွင့်ရန် (CemuHook Motion Provider ပရိုတိုကော)</value></data>
@@ -4910,4 +4983,6 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>စကားဝှက် သတ်မှတ်ရန်</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>အဝေးချိတ်ဆက်မှုကို သော့ဖွင့်ရန်</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>စကားဝှက်</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>ချဲ့ကြည့်ကိရိယာ (ဖိထားစဉ်)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>ပစ်မှတ်ချိန်ရန် ဤမက်ခရိုကို ဖိထားစဉ် ချဲ့ကြည့်ကိရိယာကို ပြသည်။ “ချဲ့ကြည့်ကိရိယာ” စာမျက်နှာတွင် သတ်မှတ်ပါ။</value></data>
 </root>

@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>منوها، لایه‌ها و تعویض پروفایل را هنگام بازی نشان دهید.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>سطح لمسی روی صفحه برای بازی‌های تاچ‌پد PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>تصویر، زمان‌سنج یا ساعت بالای پنجره‌های دیگر.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>نشانه‌گیر دلخواه شما روی بازی.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>ذره‌بین عدسی، بزرگ‌نمایی کل صفحه یا نورافکن.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>پورت، HTTP ساده، کد دسترسی</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>اتصال خودکار دوباره، پورت، هویت جفت‌سازی، اتصال با نشانی</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>پورت، جایگزین DSX.exe</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>اورلی {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>نمایش</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>وقتی برنامه دیگری در جلو باشد، کلیک‌ها از اورلی عبور می‌کنند. وقتی PadForge در جلو باشد، آن را با دکمه راست ماوس بکشید و از گوشه‌اش اندازه‌اش را تغییر دهید. یک ماکرو می‌تواند هر اورلی را با شماره‌اش نشان دهد یا پنهان کند.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>نشانه‌گیر</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>نشانه‌گیرهایی روی پنجره‌های دیگر، در مرکز یک نمایشگر: ضربدر، دایره، نقطه یا تصویر دلخواه شما.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>افزودن نشانه‌گیر</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>نشانه‌گیر {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>نمایش نشانه‌گیر</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>سبک</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>ضربدر</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>دایره</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>نقطه</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>تصویر</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>پیش‌نمایش</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>فاصله از مرکز</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>جابه‌جایی افقی</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>جابه‌جایی عمودی</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>طول بازو</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>ضخامت</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>فاصله</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>نقطه مرکزی</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>شکل T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>بدون بازوی بالا.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>شعاع</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>تعداد ضلع</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>با 64 ضلع حلقه گرد می‌شود.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>اندازه</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>تصویر</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>تصویری انتخاب نشده</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>تصاویر (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|همه فایل‌ها (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>اندازه</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>عرض</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>ارتفاع</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>اندازه اصلی تصویر</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>حفظ تناسب</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>در حالت خاموش، تصویر به عرض و ارتفاع تعیین‌شده کشیده می‌شود.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>رنگ</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>حاشیه</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>عرض حاشیه</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>رنگ حاشیه</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>چرخش</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>لبه‌های نرم</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>در حالت خاموش، هر لبه روی پیکسل کامل می‌نشیند و تیز می‌ماند.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>نمایش یا پنهان کردن انتخاب‌گر رنگ</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>تصویری برای نمایش نیست</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>خارج از نمایشگر</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>نشانه‌گیرها روی بازی‌های پنجره‌ای و بدون کادر نمایش داده می‌شوند و کلیک‌ها از آن‌ها عبور می‌کنند. بازی در حالت تمام‌صفحه انحصاری آن‌ها را پنهان می‌کند، پس بازی را پنجره‌ای یا بدون کادر اجرا کنید. یک ماکرو می‌تواند هر نشانه‌گیر را با شماره‌اش نشان دهد یا پنهان کند.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>ذره‌بین</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>عدسی مانند دوربین تک‌تیرانداز، بزرگ‌نمایی کل نمایشگر، یا نورافکنی که بقیه را تاریک می‌کند.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>نمایش ذره‌بین</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>آنچه نشان می‌دهد</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>حالت</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>عدسی</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>تمام‌صفحه</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>نورافکن</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>تمرکز روی</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>مرکز نمایشگر</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>نشانگر</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>نشانه‌گیر</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>گزینه نشانه‌گیر یعنی اولین نشانه‌گیر روشن، همراه با جابه‌جایی‌اش.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>بزرگ‌نمایی</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>شکل</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>دایره</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>مستطیل</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>اندازه</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>عرض</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>ارتفاع</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>کادر</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>عرض کادر</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>رنگ کادر</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>اندازه دایره</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>تاریکی</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>ویندوز ذره‌بین را راه‌اندازی نکرد.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>عدسی و نورافکن روی بازی‌های پنجره‌ای و بدون کادر نمایش داده می‌شوند و کلیک‌ها از آن‌ها عبور می‌کنند. حالت تمام‌صفحه کل دسکتاپ را با ذره‌بین تمام‌صفحه ویندوز بزرگ می‌کند. یک ماکرو می‌تواند ذره‌بین را نشان دهد یا پنهان کند، یا فقط هنگام نگه داشتن نشانش دهد.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>سرور حرکت</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>سرور پروتکل DSU/CemuHook Motion Provider برای داده‌های ژیروسکوپ و شتاب‌سنج.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>فعال کردن سرور حرکت DSU (پروتکل CemuHook Motion Provider)</value></data>
@@ -5236,6 +5309,10 @@
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>اورلی صفحه‌نمایش PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>هنوز چیزی برای نمایش نیست. در صفحه اورلی صفحه‌نمایش، زیر افزونه‌ها انتخاب کنید که چه چیزی نشان دهد.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>تغییر وضعیت اورلی صفحه‌نمایش</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>تغییر وضعیت نشانه‌گیر</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>تغییر وضعیت ذره‌بین</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>همه نشانه‌گیرها</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>نشانه‌گیر</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>تغییر وضعیت اورلی صفحه‌نمایش</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>اورلی صفحه‌نمایش</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>اورلی چیزی نشان نمی‌دهد.</value></data>
@@ -5256,6 +5333,11 @@
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>اورلی</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>همه اورلی‌ها</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>تغییر وضعیت اورلی صفحه‌نمایش {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>تغییر وضعیت نشانه‌گیر</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>تغییر وضعیت نشانه‌گیر {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>تغییر وضعیت ذره‌بین</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>ذره‌بین (هنگام نگه داشتن)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>ذره‌بین را تا وقتی این ماکرو نگه داشته شده نشان می‌دهد، برای نشانه‌گیری از روی مگسک. آن را در صفحه ذره‌بین تنظیم کنید.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>نمایش تصاویر {0}: {1} × {2} ms، تا نمایش یا ماکروی حالت بعدی</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>وارد کردن پروفایل</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}، یک فایل {1}.</value></data>
@@ -5284,7 +5366,7 @@
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge این خروجی را نمی‌شناسد: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge چنین فرمانی ندارد: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>کنترلر مجازی چنین دکمه‌ای ندارد: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>ضربدر نشانه‌گیری درون reWASD قرار دارد. تصویر خودتان را با اورلی صفحه‌نمایش نشان دهید.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD نشانه‌گیرهایش را در تنظیمات خودش نگه می‌دارد، نه در پیکربندی. نشانه‌گیر خود را در صفحه نشانه‌گیر تنظیم کنید.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>لرزش و تکان استیک منتقل نشد.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>نقاط فعال‌سازی آنالوگ کلیدها منتقل نشد.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD این کنترلر را از طریق یک آداپتور به دستگاه دیگری می‌فرستاد. PadForge آن را روی همین رایانه اجرا می‌کند و پیوند از راه دور آن را به رایانه دیگری که PadForge روی آن اجرا می‌شود می‌فرستد.</value></data>
@@ -5576,7 +5658,6 @@
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>پروفایل HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>نورهای کلید PadForge (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>ماکرو نمی‌تواند {0} را فشار دهد. ردیفی در بخش «نگاشت‌ها» می‌تواند.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge هشت اورلی صفحه‌نمایش اجرا می‌کند و این ضربدر نشانه‌گیری نهم یا دهم reWASD است.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge چپ و راست ژیروسکوپ را از رول و کج کردن را از یاو می‌خواند، که پیش‌فرض reWASD است. تنظیمات reWASD می‌تواند این دو را عوض کند و این فایل نمی‌گوید عوض شده‌اند یا نه.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>در حالت Tilt، کج کردن reWASD چرخشی حول محور عمودی است و حسگر حرکت برای آن چرخش زاویه‌ای نمی‌دهد.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge قطری تاچ‌پد را دو جهت هم‌زمان می‌خواند، که تاچ‌پد فقط وقتی گزارش می‌کند که «حالت دکمه‌های جهتی» آن در بخش «حرکت و لمس» روی «هشت‌جهته» باشد.</value></data>

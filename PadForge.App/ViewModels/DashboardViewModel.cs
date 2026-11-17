@@ -8,7 +8,7 @@ using PadForge.Resources.Strings;
 namespace PadForge.ViewModels
 {
     /// <summary>
-    /// ViewModel of the Home page and of the ten Extras pages (#574). Home
+    /// ViewModel of the Home page and of the twelve Extras pages (#574). Home
     /// shows the engine's state, a card for each virtual controller slot,
     /// the offer for a device not in use and the extras that are on. The
     /// Extras pages hold the settings of the optional features. It keeps
@@ -20,6 +20,7 @@ namespace PadForge.ViewModels
         {
             Title = Strings.Instance.Home_Title;
             ScreenOverlays.Add(new ScreenOverlayItem(this, 1));
+            Crosshairs.Add(new CrosshairItem(this, 1));
             // SlotSummaries starts empty; populated dynamically by RefreshActiveSlots().
             // Home's line under the engine's state counts them, and Home shows
             // its first page while there are none.
@@ -38,6 +39,8 @@ namespace PadForge.ViewModels
             RaisePollingRateParts();
             OnPropertyChanged(nameof(TouchpadOverlayStatus));
             foreach (var overlay in ScreenOverlays) overlay.RefreshText();
+            foreach (var crosshair in Crosshairs) crosshair.RefreshText();
+            Magnifier.RefreshText();
             // The runtime picker's System Default row kept the previous
             // language's word, the audio mirror picker's old defect. A list
             // nobody has read yet is built in the new language anyway.

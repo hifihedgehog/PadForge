@@ -1968,4 +1968,5 @@
   <data name="Pad_Row_Modifier" xml:space="preserve"><value>Ki bilong senisim</value></data>
   <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stik bilong stretim liklik</value></data>
   <data name="Pad_Picked_Row" xml:space="preserve"><value>Autput</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Ol piksa (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Olgeta fail (*.*)|*.*</value></data>
 </root>

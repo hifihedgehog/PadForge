@@ -3404,6 +3404,8 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mostre menus, camadas e trocas de perfil enquanto você joga.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Uma superfície de toque na tela para jogos de touchpad do PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Uma imagem, cronômetro ou relógio acima das outras janelas.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Sua própria mira sobre um jogo.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Uma lente de zoom, um zoom em tela inteira ou um holofote.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Porta, HTTP sem criptografia, código de acesso</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Reconexão Automática, porta, identidade de pareamento, conexão por endereço</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Porta, substituto do DSX.exe</value></data>
@@ -3451,6 +3453,77 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Sobreposição {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Mostra</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Enquanto outro programa está à frente, os cliques passam através da sobreposição. Enquanto o PadForge está à frente, arraste-a com o botão direito do mouse e redimensione-a pelo canto. Uma macro pode mostrar ou ocultar uma sobreposição pelo número dela.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Mira</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Miras sobre outras janelas, centralizadas em um monitor: uma cruz, um círculo, um ponto ou uma imagem sua.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Adicionar Mira</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Mira {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Mostrar Mira</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Estilo</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Cruz</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Círculo</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Ponto</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Imagem</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Prévia</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Deslocamento do Centro</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Deslocamento Horizontal</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Deslocamento Vertical</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Comprimento dos Braços</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Espessura</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Espaço</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Ponto Central</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Formato em T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Sem braço superior.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Raio</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Lados</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Com 64, o anel fica redondo.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Tamanho</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Imagem</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Nenhuma imagem escolhida</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Imagens (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Todos os Arquivos (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Tamanho</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Largura</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Altura</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Tamanho Original da Imagem</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Manter Proporções</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Desativado, a imagem é esticada para a largura e a altura definidas.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Cor</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Contorno</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Largura do Contorno</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Cor do Contorno</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Rotação</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Suavizar Bordas</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Desativado, cada borda fica em pixels inteiros e permanece nítida.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Mostrar ou ocultar o seletor de cores</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Sem imagem para mostrar</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Fora do monitor</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>As miras aparecem sobre jogos em janela e em janela sem bordas, e os cliques passam através delas. Um jogo em tela cheia exclusiva as oculta, então execute-o em janela ou em janela sem bordas. Uma macro pode mostrar ou ocultar uma mira pelo número dela.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Lupa</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Uma lente como a luneta de um sniper, o monitor inteiro ampliado ou um holofote que escurece o resto.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Mostrar Lupa</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>O Que Ela Mostra</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Modo</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lente</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Tela Inteira</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Holofote</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Centralizar Em</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Centro do Monitor</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Ponteiro</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Mira</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Mira significa a primeira mira ativada, com o deslocamento incluído.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Zoom</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Formato</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Círculo</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Retângulo</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Tamanho</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Largura</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Altura</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Borda</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Largura da Borda</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Cor da Borda</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Tamanho do Círculo</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Escuridão</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>O Windows não iniciou a lupa.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>A lente e o holofote aparecem sobre jogos em janela e em janela sem bordas, e os cliques passam através deles. Tela Inteira amplia toda a área de trabalho com a Lupa de tela cheia do Windows. Uma macro pode mostrar ou ocultar a lupa, ou mostrá-la só enquanto é segurada.</value></data>
   <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>Anotações de Mapeamento</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
@@ -5179,6 +5252,10 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Sobreposição de Tela do PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Ainda não há nada para mostrar. Escolha o que ela mostra na página Sobreposição de Tela, em Extras.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Alternar Sobreposição de Tela</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Alternar Mira</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Alternar Lupa</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Todas as Miras</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Mira</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Alternar Sobreposição de Tela</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Sobreposição de Tela</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>A sobreposição não mostra nada.</value></data>
@@ -5199,6 +5276,11 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Sobreposição</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Todas as Sobreposições</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Alternar Sobreposição de Tela {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Alternar Mira</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Alternar Mira {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Alternar Lupa</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Lupa (Enquanto Segura)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Mostra a lupa enquanto esta macro é segurada, para mirar pela mira de arma. Configure-a na página Lupa.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Mostrar imagens de {0}: {1} × {2} ms, até a próxima macro de exibição ou de modo</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Importar Perfil</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, um arquivo do {1}.</value></data>
@@ -5227,7 +5309,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>O PadForge não reconhece esta saída: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>O PadForge não tem este comando: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>O controle virtual não tem este botão: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>A mira fica dentro do reWASD. Mostre sua própria imagem com uma Sobreposição de Tela.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>O reWASD guarda as miras nas próprias configurações, não no arquivo de configuração. Defina as suas na página Mira.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>O tremor e a vibração do analógico não foram trazidos.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Os pontos de acionamento analógico das teclas não foram trazidos.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>O reWASD enviava este controle a outro dispositivo por meio de um adaptador. O PadForge o reproduz neste PC, e o Remote Link o envia a outro PC com o PadForge.</value></data>
@@ -5519,7 +5601,6 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Perfil do HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Luzes das Teclas do PadForge (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Uma macro não pode pressionar {0}. Uma linha em Mapeamentos pode.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>O PadForge executa oito Sobreposições de Tela, e esta é a nona ou décima mira do reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>O PadForge lê Giroscópio Esquerda e Direita a partir do roll e Inclinação a partir do yaw, o padrão do reWASD. As Preferências do reWASD podem trocar os dois, e este arquivo não diz se foram trocados.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>No modo Tilt, a Inclinação do reWASD é uma rotação em torno do eixo vertical, e um sensor de movimento não fornece ângulo para essa rotação.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>O PadForge lê uma diagonal do touchpad como duas direções ao mesmo tempo, o que o touchpad só informa quando seu Modo D-Pad em Movimento e Toque está em 8 Direções.</value></data>

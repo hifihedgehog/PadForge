@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Show menus, layers and profile switches while you play.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>An on-screen touch surface for PlayStation touchpad games.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>A picture, timer or clock above other windows.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Your own crosshair over a game.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>A zoom lens, a full-screen zoom or a spotlight.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, plain HTTP, access code</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Auto-Reconnect, port, pairing identity, connect by address</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe stand-in</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Overlay {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Shows</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>While another program is in front, clicks pass through the overlay. While PadForge is in front, drag it with the right mouse button and size it from its corner. A macro can show or hide an overlay by its number.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Crosshair</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Crosshairs over other windows, centered on a display: a cross, a circle, a dot or a picture of your own.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Add Crosshair</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Crosshair {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Show Crosshair</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Style</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Cross</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Circle</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Dot</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Picture</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Preview</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Offset From Center</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Horizontal Offset</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Vertical Offset</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Arm Length</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Thickness</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Gap</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Center Dot</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T Shape</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>No top arm.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Radius</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Sides</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>At 64 the ring is round.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Size</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Picture</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>No picture chosen</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Pictures (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|All Files (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Size</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Width</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Height</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Picture's Own Size</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Keep Proportions</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Off, the picture stretches to the width and the height.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Color</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Outline</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Outline Width</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Outline Color</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Rotation</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Smooth Edges</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Off, every edge lands on whole pixels and stays sharp.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Show or hide the color picker</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>No picture to show</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Off its display</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Crosshairs show over windowed and borderless games, and clicks pass through them. A game in exclusive full screen hides them, so run it windowed or borderless. A macro can show or hide a crosshair by its number.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Magnifier</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>A lens like a sniper scope, the whole display zoomed in, or a spotlight that darkens the rest.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Show Magnifier</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>What It Shows</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lens</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Full Screen</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Spotlight</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Center On</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Display Center</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Pointer</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Crosshair</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Crosshair means the first crosshair that is on, offset included.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Zoom</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Shape</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Circle</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Rectangle</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Size</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Width</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Height</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Border</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Border Width</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Border Color</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Circle Size</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Darkness</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows did not start the magnifier.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>The lens and the spotlight show over windowed and borderless games, and clicks pass through them. Full Screen zooms the whole desktop with Windows' full-screen magnifier. A macro can show or hide the magnifier, or show it only while held.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Motion Server</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protocol server for gyro and accelerometer data.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Enable DSU Motion Server (CemuHook Motion Provider Protocol)</value></data>
@@ -5283,6 +5356,10 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge Screen Overlay</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Nothing to show yet. Choose what it shows on the Screen Overlay page, under Extras.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Toggle Screen Overlay</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Toggle Crosshair</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Toggle Magnifier</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Every Crosshair</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Crosshair</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Toggle Screen Overlay</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Screen Overlay</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>The overlay shows nothing.</value></data>
@@ -5303,6 +5380,11 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Overlay</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Every Overlay</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Toggle Screen Overlay {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Toggle Crosshair</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Toggle Crosshair {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Toggle Magnifier</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Magnifier (While Held)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Shows the magnifier while this macro is held, for aiming down sights. Set it up on the Magnifier page.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Show {0} pictures: {1} × {2} ms, until the next show or mode macro</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Import Profile</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, a {1} file.</value></data>
@@ -5324,7 +5406,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge has no such command: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>The virtual controller has no such button: {0}</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>A macro cannot press {0}. A row under Mappings can.</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>A crosshair lives inside reWASD. Show your own picture with a Screen Overlay.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD keeps its crosshairs in its own settings, not in the config. Set yours up on the Crosshair page.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Stick jitter and shaking did not come across.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analog key actuation points did not come across.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD sent this controller to another device through an adapter. PadForge plays it on this PC, and Remote Link sends it to another PC running PadForge.</value></data>
@@ -5340,7 +5422,6 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Import_Tr_MoveSpeed" xml:space="preserve"><value>The movement speed or flick did not come across.</value></data>
   <data name="Import_Tr_TouchpadShape" xml:space="preserve"><value>These did not come across. Set them under Motion &amp; Touch.</value></data>
   <data name="Import_Tr_LayerNoInput" xml:space="preserve"><value>Nothing in this file opens this layer. Under Mappings, right-click the layer and pick Configure Activator.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge runs eight Screen Overlays, and this is reWASD's ninth or tenth crosshair.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge reads Gyro Left and Right from roll and Lean from yaw, reWASD's default. reWASD's Preferences can swap the two, and this file does not say whether they were.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>In Tilt mode, reWASD's Lean is a turn around the vertical axis, and a motion sensor gives no angle for that turn.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge reads a touchpad diagonal as two directions at once, which the touchpad reports only when its D-Pad Mode under Motion &amp; Touch is 8-Way.</value></data>

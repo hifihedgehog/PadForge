@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Hiện menu, lớp và việc chuyển hồ sơ trong lúc bạn chơi.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Bề mặt cảm ứng trên màn hình cho trò chơi bàn cảm ứng PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Một hình, bộ đếm giờ hoặc đồng hồ phía trên các cửa sổ khác.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Tâm ngắm của riêng bạn phía trên trò chơi.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Kính lúp dạng thấu kính, thu phóng toàn màn hình hoặc đèn rọi.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Cổng, HTTP thường, mã truy cập</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Tự động kết nối lại, cổng, danh tính ghép đôi, kết nối bằng địa chỉ</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Cổng, DSX.exe thay thế</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Lớp phủ {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Hiển thị</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Khi chương trình khác đang ở phía trước, các cú nhấp chuột xuyên qua lớp phủ. Khi PadForge đang ở phía trước, hãy kéo lớp phủ bằng chuột phải và đổi kích thước từ góc của nó. Macro có thể hiện hoặc ẩn một lớp phủ theo số của nó.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Tâm ngắm</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Tâm ngắm phía trên các cửa sổ khác, đặt ở giữa một màn hình: chữ thập, vòng tròn, chấm hoặc hình của riêng bạn.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Thêm tâm ngắm</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Tâm ngắm {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Hiện tâm ngắm</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Kiểu</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Chữ thập</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Vòng tròn</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Chấm</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Hình</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Xem trước</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Độ lệch so với tâm</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Độ lệch ngang</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Độ lệch dọc</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Độ dài nhánh</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Độ dày</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Khoảng hở</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Chấm ở giữa</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Hình chữ T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Không có nhánh phía trên.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Bán kính</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Số cạnh</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Ở mức 64 vòng sẽ tròn.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Kích thước</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Hình</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Chưa chọn hình</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Hình (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Tất cả tệp (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Kích thước</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Chiều rộng</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Chiều cao</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Kích thước gốc của hình</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Giữ tỷ lệ</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Khi tắt, hình được kéo giãn theo chiều rộng và chiều cao.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Màu</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Viền ngoài</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Độ rộng viền ngoài</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Màu viền ngoài</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Góc xoay</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Làm mịn cạnh</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Khi tắt, mọi cạnh nằm trên các điểm ảnh nguyên và giữ độ sắc nét.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Hiện hoặc ẩn bảng chọn màu</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Không có hình để hiển thị</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Ngoài màn hình của nó</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Tâm ngắm hiển thị trên các trò chơi ở chế độ cửa sổ và không viền, và các cú nhấp chuột xuyên qua chúng. Trò chơi ở chế độ toàn màn hình độc quyền sẽ ẩn chúng, nên hãy chạy trò chơi ở chế độ cửa sổ hoặc không viền. Macro có thể hiện hoặc ẩn một tâm ngắm theo số của nó.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Kính lúp</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Thấu kính như ống ngắm súng bắn tỉa, phóng to toàn màn hình hoặc đèn rọi làm tối phần còn lại.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Hiện kính lúp</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Nội dung hiển thị</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Chế độ</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Thấu kính</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Toàn màn hình</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Đèn rọi</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Lấy tâm tại</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Giữa màn hình</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Con trỏ chuột</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Tâm ngắm</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Tâm ngắm là tâm ngắm đầu tiên đang bật, kể cả độ lệch của nó.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Thu phóng</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Hình dạng</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Hình tròn</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Hình chữ nhật</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Kích thước</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Chiều rộng</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Chiều cao</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Viền</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Độ rộng viền</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Màu viền</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Kích thước vòng tròn</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Độ tối</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows không khởi động được kính lúp.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Thấu kính và đèn rọi hiển thị trên các trò chơi ở chế độ cửa sổ và không viền, và các cú nhấp chuột xuyên qua chúng. Toàn màn hình phóng to toàn bộ màn hình bằng kính lúp toàn màn hình của Windows. Macro có thể hiện hoặc ẩn kính lúp, hoặc chỉ hiện khi đang giữ.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Máy chủ chuyển động</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Máy chủ giao thức DSU/CemuHook Motion Provider cho dữ liệu con quay hồi chuyển và gia tốc kế.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Bật máy chủ chuyển động DSU (giao thức CemuHook Motion Provider)</value></data>
@@ -5236,6 +5309,10 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Lớp phủ màn hình PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Chưa có gì để hiển thị. Hãy chọn nội dung hiển thị trên trang Lớp phủ màn hình, trong mục Tiện ích.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Bật/tắt lớp phủ màn hình</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Bật/tắt tâm ngắm</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Bật/tắt kính lúp</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Mọi tâm ngắm</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Tâm ngắm</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Bật/tắt lớp phủ màn hình</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Lớp phủ màn hình</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Lớp phủ không hiển thị gì.</value></data>
@@ -5256,6 +5333,11 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Lớp phủ</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Mọi lớp phủ</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Bật/tắt lớp phủ màn hình {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Bật/tắt tâm ngắm</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Bật/tắt tâm ngắm {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Bật/tắt kính lúp</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Kính lúp (trong khi giữ)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Hiện kính lúp khi macro này được giữ, để ngắm qua ống ngắm. Hãy thiết lập trên trang Kính lúp.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Hiện hình {0}: {1} × {2} ms, cho đến lần hiện hoặc macro chế độ tiếp theo</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Nhập hồ sơ</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, một tệp {1}.</value></data>
@@ -5284,7 +5366,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge không nhận ra đầu ra này: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge không có lệnh như vậy: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Tay cầm ảo không có nút như vậy: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Tâm ngắm nằm bên trong reWASD. Hãy hiển thị hình của riêng bạn bằng Lớp phủ màn hình.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD giữ tâm ngắm trong phần cài đặt riêng của nó, không phải trong cấu hình. Hãy thiết lập tâm ngắm của bạn trên trang Tâm ngắm.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Độ rung và lắc của cần analog đã không được chuyển sang.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Điểm kích hoạt analog của phím đã không được chuyển sang.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD đã gửi tay cầm này sang một thiết bị khác qua bộ chuyển đổi. PadForge chạy tay cầm đó trên PC này, còn Liên kết từ xa gửi nó sang một PC khác đang chạy PadForge.</value></data>
@@ -5576,7 +5658,6 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Hồ sơ HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Đèn phím PadForge (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Macro không thể nhấn {0}. Một hàng trong mục Ánh xạ thì có thể.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge chạy tám Lớp phủ màn hình, còn đây là tâm ngắm thứ chín hoặc thứ mười của reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge đọc Con quay hồi chuyển trái và phải từ roll, và ngả từ yaw, theo mặc định của reWASD. Preferences của reWASD có thể đổi hai trục này, và tệp này không cho biết có đổi hay không.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Ở chế độ Tilt, ngả của reWASD là một vòng xoay quanh trục thẳng đứng, và cảm biến chuyển động không cho góc nào cho vòng xoay đó.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge đọc đường chéo trên bàn cảm ứng là hai hướng cùng lúc, và bàn cảm ứng chỉ báo như vậy khi Chế độ D-pad của nó trong mục Chuyển động và cảm ứng là 8 hướng.</value></data>

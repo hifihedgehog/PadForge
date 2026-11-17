@@ -2491,6 +2491,9 @@ namespace PadForge.Services
             _screenOverlaysStopped = false;
             ScheduleScreenOverlaySync();
 
+            // The crosshairs and the magnifier that are on (#585).
+            OpenCrosshairs();
+
             // Start audio bass rumble detector if any slot has it enabled.
             SyncAudioBassDetector();
 
@@ -2636,6 +2639,7 @@ namespace PadForge.Services
                     _mainVm.Dashboard.IsTouchpadOverlayRunning = false;
                 }
                 CloseScreenOverlays();
+                CloseCrosshairs();
                 if (_switchOverlay != null)
                 {
                     _switchOverlay.StopTimers();
@@ -2983,6 +2987,10 @@ namespace PadForge.Services
             // ── Handle macro-requested Screen Overlay toggles ──
             if (Volatile.Read(ref _inputManager.ToggleScreenOverlayMask) != 0)
                 ToggleScreenOverlays(Interlocked.Exchange(ref _inputManager.ToggleScreenOverlayMask, 0));
+
+            // ── Crosshairs and the magnifier (#585): their macros, the
+            //    magnifier's hold, and staying above a game ──
+            TickCrosshairs();
 
             // ── Bliss-Box Dreamcast screens (#469): ungated, like the
             //    macro requests above ──
@@ -11684,6 +11692,14 @@ namespace PadForge.Services
             {
                 ScheduleScreenOverlaySync();
             }
+            else if (e.PropertyName == nameof(DashboardViewModel.Crosshairs))
+            {
+                ScheduleCrosshairSync();
+            }
+            else if (e.PropertyName == nameof(DashboardViewModel.Magnifier))
+            {
+                ScheduleMagnifierSync();
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -20086,6 +20102,8 @@ namespace PadForge.Services
                 TouchpadOverlayWidth = _mainVm.Dashboard.TouchpadOverlayWidth,
                 TouchpadOverlayHeight = _mainVm.Dashboard.TouchpadOverlayHeight,
                 ScreenOverlays = _mainVm.Dashboard.SnapshotScreenOverlays(),
+                Crosshairs = _mainVm.Dashboard.SnapshotCrosshairs(),
+                Magnifier = _mainVm.Dashboard.SnapshotMagnifier(),
                 TouchpadGestures = _activeTouchpadGestures.Count > 0
                     ? _activeTouchpadGestures.ToArray()
                     : null
@@ -21135,6 +21153,10 @@ namespace PadForge.Services
             // ── Apply Screen Overlay settings ──
             _mainVm.Dashboard.LoadScreenOverlays(profile.ScreenOverlays);
 
+            // ── The crosshairs and the magnifier (#585) ──
+            _mainVm.Dashboard.LoadCrosshairs(profile.Crosshairs);
+            _mainVm.Dashboard.LoadMagnifier(profile.Magnifier);
+
             // Rebuild pad device lists based on new MapTo values.
             //
             // The ViewModels are KNOWN STALE across this call (round
@@ -21497,6 +21519,8 @@ namespace PadForge.Services
                     profile.TouchpadOverlayWidth = snapshot.TouchpadOverlayWidth;
                     profile.TouchpadOverlayHeight = snapshot.TouchpadOverlayHeight;
                     profile.ScreenOverlays = snapshot.ScreenOverlays;
+                    profile.Crosshairs = snapshot.Crosshairs;
+                    profile.Magnifier = snapshot.Magnifier;
                     profile.TouchpadGestures = snapshot.TouchpadGestures;
                     // Identity members (Id, Name, ExecutableNames, WorkshopSource)
                     // are intentionally NOT copied. SnapshotCurrentProfile never

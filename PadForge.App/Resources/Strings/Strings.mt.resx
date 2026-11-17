@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Uri menus, saffi u bidliet tal-profil waqt li tilgħab.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Wiċċ tal-mess fuq l-iskrin għal logħob tat-touchpad tal-PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Stampa, timer jew arloġġ fuq it-twieqi l-oħra.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Il-mira tiegħek stess fuq logħba.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Lenti ta' zoom, zoom fuq l-iskrin kollu jew spotlight.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, HTTP sempliċi, kodiċi ta' aċċess</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rikonnessjoni awtomatika, port, identità tal-ippearjar, qabbad bl-indirizz</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, sostitut ta' DSX.exe</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Overlay {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Juri</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Waqt li programm ieħor ikun quddiem, il-klikks jgħaddu mill-overlay. Waqt li PadForge ikun quddiem, iġbdu bil-buttuna tal-lemin tal-maws u biddel id-daqs tiegħu mill-kantuniera. Makro jista' juri jew jaħbi overlay bin-numru tiegħu.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Mira</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Mirat fuq it-twieqi l-oħra, f'nofs display: salib, ċirku, tikka jew stampa tiegħek stess.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Żid mira</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Mira {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Uri l-mira</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Stil</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Salib</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Ċirku</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Tikka</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Stampa</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Dehra minn qabel</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Spostament miċ-ċentru</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Spostament orizzontali</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Spostament vertikali</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Tul tal-brazz</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Ħxuna</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Distakk</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Tikka fiċ-ċentru</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Forma T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Mingħajr brazz ta' fuq.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Raġġ</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Ġnub</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>B'64 il-ċirku jkun tondu.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Daqs</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Stampa</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Ma nbdiet l-ebda stampa</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Stampi (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Il-fajls kollha (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Daqs</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Wisa'</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Għoli</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Daqs oriġinali tal-istampa</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Żomm il-proporzjonijiet</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Jekk mitfi, l-istampa titkabbar skont il-wisa' u l-għoli.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Kulur</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Kontorn</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Wisa' tal-kontorn</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Kulur tal-kontorn</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Rotazzjoni</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Truf lixxi</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Jekk mitfi, kull tarf jaqa' fuq pikseli sħaħ u jibqa' ċar.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Uri jew aħbi l-għażla tal-kulur</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Ebda stampa x'turi</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Barra mid-display tagħha</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Il-mirat jidhru fuq logħob b'tieqa u bla fruntiera, u l-klikks jgħaddu minnhom. Logħba fi skrin sħiħ esklussiv taħbihom, għalhekk ħaddmu b'tieqa jew bla fruntiera. Makro jista' juri jew jaħbi mira bin-numru tagħha.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Tkabbir</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Lenti bħal teleskopju ta' sniper, id-display kollu mkabbar, jew spotlight li jdallam il-bqija.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Uri t-tkabbir</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Dak li juri</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Modalità</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lenti</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Skrin sħiħ</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Spotlight</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Iċċentra fuq</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Ċentru tad-display</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Pointer</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Mira</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Mira tfisser l-ewwel mira mixgħula, bl-ispostament inkluż.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Zoom</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Forma</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Ċirku</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Rettangolu</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Daqs</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Wisa'</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Għoli</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Bordura</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Wisa' tal-bordura</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Kulur tal-bordura</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Daqs taċ-ċirku</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Dlam</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ma bediex it-tkabbir.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Il-lenti u l-ispotlight jidhru fuq logħob b'tieqa u bla fruntiera, u l-klikks jgħaddu minnhom. Skrin sħiħ iżżoomja d-desktop kollu bil-magnifier ta' Windows għall-iskrin sħiħ. Makro jista' juri jew jaħbi t-tkabbir, jew juri biss waqt li jinżamm.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Server tal-moviment</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server tal-protokoll DSU/CemuHook Motion Provider għad-data tal-ġiroskopju u tal-aċċelerometru.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Attiva s-server tal-moviment DSU (CemuHook Motion Provider Protocol)</value></data>
@@ -4851,4 +4924,6 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Issettja password</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Iftaħ Remote Link</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Password</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Tkabbir (waqt li jinżamm)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Juri t-tkabbir waqt li dan il-makro jinżamm, biex timmira mill-vista tal-arma. Issettjah fil-paġna Tkabbir.</value></data>
 </root>

@@ -97,9 +97,12 @@ namespace PadForge.Tests
                 Assert.True(Count(page, needle) == 1, id + " is on the Extras page " + Count(page, needle) + " times");
                 Assert.DoesNotContain(needle, dashboard);
             }
-            // The Screen Overlay rows name their controls by the overlay's number.
+            // The Screen Overlay rows name their controls by the overlay's
+            // number, on its own page: the crosshairs' cards (#585) name
+            // theirs the same way.
+            string overlays = PageOf("ScreenOverlay");
             foreach (string bound in new[] { "EnableId", "OpacityId", "ChooseId", "ResetPositionId", "RemoveId" })
-                Assert.Equal(1, Count(page, "AutomationProperties.AutomationId=\"{Binding " + bound + "}\""));
+                Assert.Equal(1, Count(overlays, "AutomationProperties.AutomationId=\"{Binding " + bound + "}\""));
             foreach (string name in new[]
             {
                 "HeadTrackingUdpCheckBox", "HeadTrackingEnabledReset", "HeadTrackingFreeTrackCheckBox", "HeadTrackingFreeTrackReset",
@@ -112,8 +115,10 @@ namespace PadForge.Tests
                 Assert.DoesNotContain("x:Name=\"" + name + "\"", dashboard);
             }
             // The 43 reset buttons of the cards, and the two beside the
-            // switches of Head Tracking and Overlays.
-            Assert.Equal(45, Count(page, "<reset:SettingResetButton "));
+            // switches of Head Tracking and Overlays, on the pages of the ten
+            // extras that were cards. The two added since (#585) have their own.
+            Assert.Equal(45, PadForge.Views.ExtrasPage.Keys.Where(k => k is not ("Crosshair" or "Magnifier"))
+                .Sum(k => Count(PageOf(k), "<reset:SettingResetButton ")));
             Assert.Equal(0, Count(dashboard, "<reset:SettingResetButton "));
             // The format editor's button kept its handler, which moved with it.
             Assert.Contains("Click=\"GameTelemetryFormatsButton_Click\"", page);
@@ -386,7 +391,7 @@ namespace PadForge.Tests
             Assert.Equal("{StaticResource DisplayFontFamily}", Set("FontFamily"));
             Assert.Equal("40.6", Set("LineHeight"));
 
-            // 2 of 10 on: the number large, in the code face and ember, and
+            // 2 of 12 on: the number large, in the code face and ember, and
             // the words around it as the language puts them, all three from
             // the view model that counts the switches. The runs stand on
             // one line of markup so no space falls between them.
@@ -413,7 +418,8 @@ namespace PadForge.Tests
                 headings.Select(h => Regex.Match((string)h.Attribute("Text"), @"\{Binding (\w+),").Groups[1].Value));
             Assert.All(headings, h => Assert.Equal("0,26,0,12", (string)h.Attribute("Margin")));
             var grids = parts.Where(e => e.Name.LocalName == "TileGridPanel").ToList();
-            Assert.Equal(new[] { 4, 3, 3 }, grids.Select(g => g.Elements().Count()));
+            // On Screen took Crosshair and Magnifier after the board's three (#585).
+            Assert.Equal(new[] { 4, 3, 5 }, grids.Select(g => g.Elements().Count()));
             // Tiles at least 240 wide, 14 apart, sharing their row's whole
             // width, and two and two where four do not fit one row.
             Assert.All(grids, g =>
@@ -603,7 +609,7 @@ namespace PadForge.Tests
             Assert.Contains("CommandBindings.Add(new CommandBinding(BackCommand,", code);
             Assert.DoesNotContain("CommandBinding(NavigationCommands.BrowseBack", code);
             Assert.Contains("MouseButton.XButton1", code);
-            Assert.Equal(10, Count(Page(), "Click=\"Back_Click\""));
+            Assert.Equal(DashboardViewModel.ExtrasCount, Count(Page(), "Click=\"Back_Click\""));
 
             string window = RepoText("PadForge.App", "MainWindow.xaml.cs");
             Assert.Contains("<views:ExtrasPage x:Name=\"ExtrasPageView\" Visibility=\"Collapsed\"/>", RepoText("PadForge.App", "MainWindow.xaml"));

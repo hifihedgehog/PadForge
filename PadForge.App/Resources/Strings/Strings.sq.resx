@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Shfaq menytë, shtresat dhe ndërrimet e profilit ndërsa luan.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Një sipërfaqe prekëse në ekran për lojëra me touchpad PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Një figurë, kohëmatës ose orë mbi dritaret e tjera.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Shënjestra jote mbi një lojë.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Një lente zmadhuese, zmadhim në ekran të plotë ose një reflektor.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Porta, HTTP e thjeshtë, kodi i qasjes</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rilidhja automatike, porta, identiteti i çiftimit, lidhja me adresë</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Porta, zëvendësuesi DSX.exe</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Mbivendosja {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Shfaq</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Kur një program tjetër është përpara, klikimet kalojnë përmes mbivendosjes. Kur PadForge është përpara, tërhiqe me butonin e djathtë të mausit dhe ndrysho madhësinë nga këndi. Një makro mund ta shfaqë ose fshehë një mbivendosje me numrin e saj.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Shënjestra</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Shënjestra mbi dritaret e tjera, në qendër të një ekrani: një kryq, një rreth, një pikë ose një imazh i yti.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Shto shënjestër</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Shënjestra {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Shfaq shënjestrën</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Stili</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Kryq</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Rreth</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Pikë</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Imazh</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Pamja paraprake</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Zhvendosja nga qendra</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Zhvendosja horizontale</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Zhvendosja vertikale</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Gjatësia e krahut</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Trashësia</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Hapësira</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Pika në qendër</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Forma T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Pa krahun e sipërm.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Rrezja</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Brinjët</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Me 64 brinjë unaza është e rrumbullakët.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Madhësia</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Imazhi</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Nuk është zgjedhur imazh</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Imazhet (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Të gjithë skedarët (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Madhësia</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Gjerësia</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Lartësia</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Madhësia e vetë imazhit</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Ruaj përmasat</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Kur është joaktiv, imazhi shtrihet sipas gjerësisë dhe lartësisë.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Ngjyra</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Kontura</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Gjerësia e konturës</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Ngjyra e konturës</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Rrotullimi</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Skajet e zbutura</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Kur është joaktiv, çdo skaj bie mbi piksele të plota dhe mbetet i mprehtë.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Shfaq ose fshih zgjedhësin e ngjyrës</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Nuk ka imazh për t'u shfaqur</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Jashtë ekranit të vet</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Shënjestrat shfaqen mbi lojërat në dritare dhe pa kornizë, dhe klikimet kalojnë përmes tyre. Një lojë në ekran të plotë ekskluziv i fsheh ato, ndaj ekzekutoje në dritare ose pa kornizë. Një makro mund ta shfaqë ose fshehë një shënjestër me numrin e saj.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Zmadhuesi</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Një lente si dylbia e snajperit, i gjithë ekrani i zmadhuar, ose një reflektor që errëson pjesën tjetër.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Shfaq zmadhuesin</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Çfarë shfaq</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Modaliteti</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lente</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Ekran i plotë</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Reflektor</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Qendërzo te</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Qendra e ekranit</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Treguesi</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Shënjestra</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Shënjestra do të thotë shënjestra e parë që është aktive, me zhvendosjen e saj.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Zmadhimi</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Forma</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Rreth</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Drejtkëndësh</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Madhësia</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Gjerësia</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Lartësia</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Kufiri</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Gjerësia e kufirit</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Ngjyra e kufirit</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Madhësia e rrethit</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Errësimi</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows nuk e nisi zmadhuesin.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Lenta dhe reflektori shfaqen mbi lojërat në dritare dhe pa kornizë, dhe klikimet kalojnë përmes tyre. Ekrani i plotë zmadhon gjithë tryezën me zmadhuesin e ekranit të plotë të Windows. Një makro mund ta shfaqë ose fshehë zmadhuesin, ose ta shfaqë vetëm ndërsa mbahet.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Serveri i lëvizjes</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server i protokollit DSU/CemuHook Motion Provider për të dhënat e xhiros dhe akselerometrit.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Aktivizo serverin e lëvizjes DSU (protokolli CemuHook Motion Provider)</value></data>
@@ -4865,4 +4938,6 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Cakto një fjalëkalim</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Shkyç Lidhjen në distancë</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Fjalëkalimi</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Zmadhuesi (me mbajtje)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Shfaq zmadhuesin ndërsa mbahet kjo makro, për të shënjestruar nëpërmjet shënjestrës. Cilësoje te faqja Zmadhuesi.</value></data>
 </root>

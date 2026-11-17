@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Näidake mängimise ajal menüüsid, kihte ja profiilivahetusi.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Ekraanil kuvatav puutepind PlayStation-puuteplaadi mängudele.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Pilt, taimer või kell teiste akende kohal.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Teie oma sihik mängu kohal.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Suurendusklaas, kogu ekraani suurendus või prožektor.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, tavaline HTTP, pääsukood</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automaatne taasühendus, port, sidumisidentiteet, ühendamine aadressi järgi</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe asendaja</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Ülekate {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Näitab</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Kui mõni teine programm on ees, liiguvad klõpsud ülekattest läbi. Kui PadForge on ees, lohistage ülekatet hiire parema nupuga ja muutke selle suurust nurgast. Makro saab ülekatet numbri järgi näidata või peita.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Sihik</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Sihikud teiste akende kohal ekraani keskel: rist, ring, täpp või teie oma pilt.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Lisa sihik</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Sihik {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Näita sihikut</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Stiil</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Rist</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Ring</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Täpp</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Pilt</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Eelvaade</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Nihe keskpunktist</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Horisontaalne nihe</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Vertikaalne nihe</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Haru pikkus</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Paksus</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Vahe</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Keskpunkti täpp</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T kuju</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Ülemist haru pole.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Raadius</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Küljed</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64 küljega on ring ümmargune.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Suurus</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Pilt</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Pilti pole valitud</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Pildid (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Kõik failid (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Suurus</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Laius</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Kõrgus</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Pildi enda suurus</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Säilita proportsioonid</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Väljalülitatuna venitatakse pilt määratud laiuse ja kõrguseni.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Värv</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Kontuur</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Kontuuri laius</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Kontuuri värv</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Pööre</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Siledad servad</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Väljalülitatuna jääb iga serv täispikslitele ja püsib terav.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Näita või peida värvivalija</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Näidata pole pilti</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Oma ekraanist väljas</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Sihikud on nähtavad aknas ja ääristeta režiimis mängude kohal ning klõpsud liiguvad neist läbi. Ainult täisekraanil töötav mäng peidab need, seega käivitage mäng aknas või ääristeta režiimis. Makro saab sihikut numbri järgi näidata või peita.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Suurendi</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Sniperi sihikule sarnane luup, kogu ekraani suurendus või prožektor, mis ülejäänu tumedaks teeb.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Näita suurendit</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Mida see näitab</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Režiim</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Luup</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Täisekraan</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Prožektor</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Keskpunkt</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Ekraani keskkoht</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Kursor</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Sihik</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Valik Sihik tähendab esimest sisselülitatud sihikut koos selle nihkega.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Suurendus</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Kuju</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Ring</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Ristkülik</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Suurus</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Laius</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Kõrgus</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Ääris</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Äärise laius</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Äärise värv</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Ringi suurus</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Tumedus</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ei käivitanud suurendit.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Luup ja prožektor on nähtavad aknas ja ääristeta režiimis mängude kohal ning klõpsud liiguvad neist läbi. Täisekraani režiim suurendab kogu töölauda Windowsi enda täisekraani suurendiga. Makro saab suurendit näidata või peita või näidata seda ainult hoidmise ajal.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Liikumisserver</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protokolli server güroskoobi ja kiirendusanduri andmete jaoks.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Luba DSU liikumisserver (CemuHook Motion Provider Protocol)</value></data>
@@ -4920,4 +4993,6 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Määrake parool</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Avage kaugühendus</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Parool</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Suurendi (hoidmise ajal)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Näitab suurendit, kuni seda makrot hoitakse all, sihtimiseks sihikust läbi. Seadistage see suurendi lehel.</value></data>
 </root>

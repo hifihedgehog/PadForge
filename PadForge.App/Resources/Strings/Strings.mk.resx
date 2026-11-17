@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Прикажувајте менија, слоеви и менување профили додека играте.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Допирна површина на екранот за игри со допирна табла на PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Слика, тајмер или часовник над другите прозорци.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Ваш сопствен нишан над играта.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Леќа за зумирање, зум на целиот екран или рефлектор.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Порта, обичен HTTP, код за пристап</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Автоматско повторно поврзување, порта, идентитет за спарување, поврзување преку адреса</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порта, замена за DSX.exe</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Оверлеј {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Прикажува</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Додека друга програма е напред, кликањата минуваат низ оверлејот. Додека PadForge е напред, повлечете го со десното копче на глушецот и променете му ја големината од аголот. Макро може да прикаже или скрие оверлеј според неговиот број.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Нишан</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Нишани над другите прозорци, центрирани на монитор: крст, круг, точка или своја слика.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Додај нишан</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Нишан {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Прикажи нишан</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Стил</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Крст</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Круг</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Точка</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Слика</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Преглед</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Поместување од центарот</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Хоризонтално поместување</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Вертикално поместување</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Должина на краците</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Дебелина</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Растојание</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Точка во центарот</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Облик на T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Без горен крак.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Радиус</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Страни</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Со 64 прстенот е кружен.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Големина</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Слика</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Нема избрана слика</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Слики (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Сите датотеки (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Големина</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Ширина</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Висина</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Сопствена големина на сликата</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Зачувај пропорции</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Ако е исклучено, сликата се растегнува на зададените ширина и висина.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Боја</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Контура</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Ширина на контурата</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Боја на контурата</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Ротација</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Меки рабови</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Ако е исклучено, секој раб паѓа на цели пиксели и останува остар.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Прикажи или скриј го изборникот на боја</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Нема слика за прикажување</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Надвор од мониторот</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Нишаните се прикажуваат над игри во прозорец и без рамка, а кликањата минуваат низ нив. Игра на цел екран во ексклузивен режим ги крие, па извршете ја во прозорец или без рамка. Макро може да прикаже или скрие нишан според неговиот број.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Лупа</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Леќа како оптика на снајпер, зумиран цел монитор или рефлектор што го затемнува остатокот.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Прикажи лупа</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Што прикажува</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Режим</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Леќа</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Цел екран</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Рефлектор</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Центрирај на</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Центар на мониторот</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Покажувач</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Нишан</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Нишан значи првиот вклучен нишан, заедно со неговото поместување.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Зум</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Облик</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Круг</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Правоаголник</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Големина</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Ширина</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Висина</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Раб</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Ширина на работ</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Боја на работ</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Големина на кругот</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Затемнетост</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows не ја стартуваше лупата.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Леќата и рефлекторот се прикажуваат над игри во прозорец и без рамка, а кликањата минуваат низ нив. Цел екран го зумира целиот работен простор со лупата на Windows за цел екран. Макро може да прикаже или скрие лупа, или да ја прикаже само додека се држи.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Сервер за движење</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Сервер за протоколот DSU/CemuHook Motion Provider за податоци од жироскоп и акцелерометар.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Овозможи DSU сервер за движење (протокол CemuHook Motion Provider)</value></data>
@@ -5236,6 +5309,10 @@
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge оверлеј на екранот</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Сè уште нема што да се прикаже. Изберете што прикажува на страницата Оверлеј на екранот, под Додатоци.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Прикажи/скриј оверлеј на екранот</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Прикажи/скриј нишан</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Прикажи/скриј лупа</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Секој нишан</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Нишан</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Прикажи/скриј оверлеј на екранот</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Оверлеј на екранот</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Оверлејот не прикажува ништо.</value></data>
@@ -5256,6 +5333,11 @@
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Оверлеј</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Секој оверлеј</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Прикажи/скриј оверлеј на екранот {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Прикажи/скриј нишан</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Прикажи/скриј нишан {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Прикажи/скриј лупа</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Лупа (додека се држи)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Ја прикажува лупата додека ова макро се држи, за нишанење низ нишанка. Поставете ја на страницата Лупа.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Прикажи слики на {0}: {1} × {2} ms, до следното прикажување или макро за режим</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Увези профил</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, датотека од {1}.</value></data>
@@ -5284,7 +5366,7 @@
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge не го препознава овој излез: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge нема таква команда: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Виртуелниот контролер нема такво копче: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Нишанот живее во reWASD. Прикажете своја слика со Оверлеј на екранот.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD ги чува своите нишани во свои поставки, а не во конфигурацијата. Поставете ги вашите на страницата Нишан.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Треперењето и тресењето на стиковите не се пренесоа.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Точките на активирање на аналогните тастери не се пренесоа.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD го испраќаше овој контролер до друг уред преку адаптер. PadForge го пушта на овој компјутер, а Далечинска врска го испраќа до друг компјутер на кој работи PadForge.</value></data>
@@ -5576,7 +5658,6 @@
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Профил на HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Светла на тастерите на PadForge (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макро не може да притисне {0}. Ред во делот „Мапирања“ може.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge извршува осум оверлеи на екранот, а ова е деветти или десетти нишан на reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge чита Жироскоп: навалување како лево и десно, а Жироскоп: вртење како навалување, што е стандардно кај reWASD. Поставките на reWASD можат да ги заменат двете, а оваа датотека не кажува дали биле заменети.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Во режимот Наклон, навалувањето на reWASD е вртење околу вертикалната оска, а сензорот за движење не дава агол за тоа вртење.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge ја чита дијагоналата на допирната табла како две насоки истовремено, што таблата го пријавува само кога нејзиниот „Режим на D-pad“ во делот „Движење и допир“ е „8 насоки“.</value></data>

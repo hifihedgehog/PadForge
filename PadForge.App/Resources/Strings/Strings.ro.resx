@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Afișați meniuri, straturi și schimbări de profil în timp ce jucați.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>O suprafață tactilă pe ecran pentru jocurile cu touchpad PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>O imagine, un cronometru sau un ceas deasupra celorlalte ferestre.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Propriul reticul peste un joc.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>O lentilă de mărire, o mărire pe tot ecranul sau un reflector.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, HTTP simplu, cod de acces</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Reconectare automată, port, identitate de asociere, conectare după adresă</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, substitut DSX.exe</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Suprapunere {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Afișează</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Cât timp un alt program este în prim-plan, clicurile trec prin suprapunere. Cât timp PadForge este în prim-plan, trageți-o cu butonul din dreapta al mouse-ului și redimensionați-o din colț. O macrocomandă poate afișa sau ascunde o suprapunere după numărul ei.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Reticul</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Reticule peste alte ferestre, centrate pe un afișaj: o cruce, un cerc, un punct sau o imagine proprie.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Adăugare reticul</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Reticul {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Afișare reticul</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Stil</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Cruce</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Cerc</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Punct</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Imagine</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Previzualizare</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Decalaj față de centru</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Decalaj orizontal</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Decalaj vertical</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Lungimea brațului</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Grosime</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Spațiu</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Punct central</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Formă de T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Fără braț în sus.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Rază</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Laturi</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>La 64 inelul este rotund.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Dimensiune</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Imagine</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Nicio imagine aleasă</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Imagini (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Toate fișierele (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Dimensiune</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Lățime</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Înălțime</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Dimensiunea proprie a imaginii</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Păstrare proporții</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Când este dezactivat, imaginea se întinde la lățimea și înălțimea setate.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Culoare</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Contur</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Lățime contur</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Culoare contur</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Rotire</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Margini netezite</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Când este dezactivat, fiecare margine cade pe pixeli întregi și rămâne clară.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Afișare sau ascundere selector de culoare</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Nicio imagine de afișat</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>În afara afișajului</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Reticulele apar peste jocurile în fereastră și fără chenar, iar clicurile trec prin ele. Un joc în ecran complet exclusiv le ascunde, deci rulați-l în fereastră sau fără chenar. O macrocomandă poate afișa sau ascunde un reticul după numărul lui.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Lupă</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>O lentilă ca o lunetă de lunetist, întregul afișaj mărit sau un reflector care întunecă restul.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Afișare lupă</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Ce arată</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Mod</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lentilă</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Ecran complet</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Reflector</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Centrare pe</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Centrul afișajului</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Cursor</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Reticul</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Reticul înseamnă primul reticul activ, cu tot cu decalaj.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Mărire</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Formă</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Cerc</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Dreptunghi</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Dimensiune</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Lățime</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Înălțime</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Bordură</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Lățime bordură</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Culoare bordură</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Dimensiunea cercului</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Întunecare</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows nu a pornit lupa.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Lentila și reflectorul apar peste jocurile în fereastră și fără chenar, iar clicurile trec prin ele. Ecran complet mărește tot desktopul cu lupa pe ecran complet din Windows. O macrocomandă poate afișa sau ascunde lupa, sau o poate afișa doar cât timp este ținută apăsată.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Server de mișcare</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server pentru protocolul DSU/CemuHook Motion Provider, pentru datele giroscopului și ale accelerometrului.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Activare server de mișcare DSU (protocolul CemuHook Motion Provider)</value></data>
@@ -5236,6 +5309,10 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Suprapunere ecran PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Nu există încă nimic de afișat. Alegeți ce afișează pe pagina Suprapunere ecran, din Extra.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Comutare suprapunere ecran</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Comutare reticul</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Comutare lupă</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Toate reticulele</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Reticul</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Comutare suprapunere ecran</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Suprapunere ecran</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Suprapunerea nu afișează nimic.</value></data>
@@ -5256,6 +5333,11 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Suprapunere</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Toate suprapunerile</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Comutare suprapunere ecran {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Comutare reticul</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Comutare reticul {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Comutare lupă</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Lupă (cât timp e ținută)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Afișează lupa cât timp această macrocomandă este ținută, pentru țintire prin lunetă. Configurați-o pe pagina Lupă.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Afișare imagini {0}: {1} × {2} ms, până la următorul macro de afișare sau de mod</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Importare profil</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, un fișier {1}.</value></data>
@@ -5284,7 +5366,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge nu recunoaște această ieșire: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge nu are o astfel de comandă: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Controllerul virtual nu are un astfel de buton: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Un reticul există doar în reWASD. Afișați propria imagine cu o Suprapunere ecran.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD își păstrează reticulele în propriile setări, nu în configurație. Configurați-l pe al dumneavoastră pe pagina Reticul.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Tremurul și scuturarea manetei nu au fost preluate.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Punctele de acționare analogică ale tastelor nu au fost preluate.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD a trimis acest controller către alt dispozitiv printr-un adaptor. PadForge îl redă pe acest PC, iar Legătură la distanță îl trimite către alt PC pe care rulează PadForge.</value></data>
@@ -5576,7 +5658,6 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Luminile tastelor PadForge (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>O macrocomandă nu poate apăsa {0}. Un rând din secțiunea Mapări poate.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge rulează opt suprapuneri ecran, iar aceasta este al nouălea sau al zecelea reticul din reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge citește Giroscop: ruliu ca stânga și dreapta, iar Giroscop: girație ca înclinare, setarea implicită din reWASD. Preferințele reWASD le pot inversa, iar acest fișier nu spune dacă au fost inversate.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>În modul Tilt, înclinarea din reWASD este o rotire în jurul axei verticale, iar un senzor de mișcare nu dă niciun unghi pentru acea rotire.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge citește o diagonală a touchpadului ca două direcții simultan, lucru pe care touchpadul îl raportează doar când setarea sa Mod D-pad din secțiunea Mișcare și atingere este 8 direcții.</value></data>

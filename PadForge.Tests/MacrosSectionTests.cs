@@ -1019,7 +1019,7 @@ namespace PadForge.Tests
             // deadzone, and the point an input with a depth fires at. And
             // the rows of a step's fields, which stand in the steps' list.
             var ofSteps = rows.Where(r => r.Ancestors().Any(a => Name(a) == "ActionsList")).ToList();
-            Assert.Equal(106, ofSteps.Count);
+            Assert.Equal(107, ofSteps.Count);
             Assert.Equal(17, rows.Count - ofSteps.Count);
             // A step's type is the first of its rows, and a check box of the
             // fields became a switch under its own label.
@@ -1189,7 +1189,7 @@ namespace PadForge.Tests
             // fields of its own type and no others: built whole, the fields
             // took about 200 ms each time a step was picked.
             var groups = fieldsRoot.Elements().Where(e => e.Name.LocalName == "ShownPart").ToList();
-            Assert.Equal(52, groups.Count);
+            Assert.Equal(53, groups.Count);
             var groupTemplates = templates.Take(templates.Count - 1).ToList();
             var keys = groupTemplates.Select(t => (string)t.Attribute(X + "Key")).ToList();
             Assert.Equal(keys.Count, keys.Distinct().Count());

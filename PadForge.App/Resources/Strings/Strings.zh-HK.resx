@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>在你遊玩時顯示選單、層和設定檔切換。</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>為 PlayStation 觸控板遊戲提供熒幕上的觸控面。</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>在其他視窗上方顯示圖片、計時器或時鐘。</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>在遊戲上顯示你自己的十字準星。</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>放大鏡片、全熒幕放大或聚光燈。</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>連接埠、未加密的 HTTP、存取碼</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>自動重新連線、連接埠、配對身分、以位址連線</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>連接埠、DSX.exe 替身程式</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>重疊介面 {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>顯示</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>其他程式位於前台時，點擊會穿透重疊介面。PadForge 位於前台時，可用右鍵拖曳移動，並從角落調整大小。巨集可按編號顯示或隱藏重疊介面。</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>十字準星</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>在其他視窗上方、顯示器中央顯示十字準星，可選十字、圓圈、圓點或你自己的圖片。</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>新增十字準星</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>十字準星 {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>顯示十字準星</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>樣式</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>十字</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>圓圈</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>圓點</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>圖片</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>預覽</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>與中心的偏移</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>水平偏移</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>垂直偏移</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>線段長度</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>粗幼</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>間隙</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>中心圓點</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T 形</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>沒有上方線段。</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>半徑</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>邊數</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>設為 64 時圓環是圓滑的。</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>大小</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>圖片</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>未選擇圖片</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>圖片 (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|所有檔案 (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>大小</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>寬度</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>高度</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>圖片原本大小</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>保持比例</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>關閉時，圖片會拉伸至設定的寬度和高度。</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>顏色</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>輪廓</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>輪廓寬度</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>輪廓顏色</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>旋轉</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>平滑邊緣</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>關閉時，所有邊緣都對齊整個像素，保持銳利。</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>顯示或隱藏顏色選擇器</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>沒有可顯示的圖片</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>已超出其顯示器</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>十字準星會顯示在視窗模式和無邊框模式的遊戲上方，點擊會穿透。獨佔全熒幕的遊戲會把它們遮住，所以請改用視窗或無邊框模式執行。巨集可按編號顯示或隱藏十字準星。</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>放大鏡</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>像狙擊鏡的鏡片、放大整個顯示器，或把其餘部分變暗的聚光燈。</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>顯示放大鏡</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>顯示內容</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>模式</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>鏡片</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>全熒幕</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>聚光燈</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>對準位置</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>顯示器中央</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>指標</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>十字準星</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>十字準星是指第一個開啟的十字準星，包括其偏移。</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>放大倍率</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>形狀</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>圓形</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>長方形</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>大小</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>寬度</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>高度</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>邊框</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>邊框寬度</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>邊框顏色</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>圓圈大小</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>暗度</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows 未能啟動放大鏡。</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>鏡片和聚光燈會顯示在視窗模式和無邊框模式的遊戲上方，點擊會穿透。全熒幕模式會用 Windows 的全熒幕放大鏡放大整個桌面。巨集可顯示或隱藏放大鏡，也可只在按住期間顯示。</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>體感伺服器</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>提供陀螺儀和加速度計數據的 DSU/CemuHook Motion Provider 協定伺服器。</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>啟用 DSU 體感伺服器（CemuHook Motion Provider 協定）</value></data>
@@ -5236,6 +5309,10 @@
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge 熒幕重疊介面</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>尚無內容可顯示。請在附加功能下的熒幕重疊介面頁面選擇顯示內容。</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>切換熒幕重疊介面</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>切換十字準星</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>切換放大鏡</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>所有十字準星</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>十字準星</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>切換熒幕重疊介面</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>熒幕重疊介面</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>重疊介面不顯示任何內容。</value></data>
@@ -5256,6 +5333,11 @@
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>重疊介面</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>所有重疊介面</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>切換熒幕重疊介面 {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>切換十字準星</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>切換十字準星 {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>切換放大鏡</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>放大鏡（按住期間）</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>按住此巨集期間顯示放大鏡，用於舉槍瞄準。請在放大鏡頁面設定。</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>顯示 {0} 圖片：{1} × {2} 毫秒，直至下一次顯示或模式巨集</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>匯入設定檔</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}，一個 {1} 檔案。</value></data>
@@ -5284,7 +5366,7 @@
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge 無法辨識此輸出：{0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge 沒有此指令：{0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>虛擬控制器沒有此按鈕：{0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>十字準星存在於 reWASD 內部。請用熒幕重疊介面顯示你自己的圖片。</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD 把十字準星存放在它自己的設定內，而不是設定檔內。請在十字準星頁面設定你的十字準星。</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>搖桿抖動和晃動未能帶過來。</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>類比按鍵觸發點未能帶過來。</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD 曾透過轉接器把此控制器傳送到另一部裝置。PadForge 會在這部電腦上建立並使用它，而遠端連線可把它傳送到另一部執行 PadForge 的電腦。</value></data>
@@ -5576,7 +5658,6 @@
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro 設定檔 (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge 按鍵燈光 (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>巨集無法按下 {0}。「對應」中的一列則可以。</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge 可執行八個熒幕重疊介面，而這是 reWASD 的第九個或第十個十字準星。</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge 以橫滾讀取陀螺儀向左和向右，以偏航讀取傾斜，這是 reWASD 的預設值。reWASD 的偏好設定可以對調兩者，而此檔案沒有說明是否已對調。</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>在傾斜模式下，reWASD 的傾斜是繞垂直軸的轉動，而動作感應器不會提供該轉動的角度。</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge 將觸控板斜向視為同時兩個方向，只有在「體感與觸控」中觸控板的「十字鍵模式」為「8 向」時，觸控板才會回報。</value></data>

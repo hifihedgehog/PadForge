@@ -399,6 +399,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Menüen, Schichten a Profilwiessele weisen, wärend Dir spillt.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Eng Touch-Fläch um Bildschierm fir PlayStation-Touchpad-Spiller.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>E Bild, en Timer oder eng Auer iwwer anere Fënsteren.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Äert eegent Fadekräiz iwwer engem Spill.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Eng Zoomlëns, e Vollbildzoom oder e Spotlight.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, onverschlësselt HTTP, Zougangscode</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automatescht Neiverbannen, Port, Koppelungsidentitéit, iwwer eng Adress verbannen</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe-Ersatz</value></data>
@@ -446,6 +448,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Overlay {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Weist</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Wann en anere Programm am Virdergrond ass, ginn d'Klicken duerch den Overlay. Wann PadForge am Virdergrond ass, zitt en mat der rietser Maustast a passt seng Gréisst um Eck un. E Makro kann en Overlay iwwer seng Nummer weisen oder verstoppen.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Fadekräiz</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Fadekräizer iwwer anere Fënsteren, zentréiert op engem Bildschierm: e Kräiz, e Krees, e Punkt oder en eegent Bild.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Fadekräiz derbäisetzen</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Fadekräiz {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Fadekräiz weisen</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Stil</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Kräiz</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Krees</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Punkt</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Bild</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Virschau</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Ofstand vun der Mëtt</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Horizontalen Ofstand</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Vertikalen Ofstand</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Aarmlängt</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Déckt</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Lück</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Mëttelpunkt</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T-Form</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Keen Aarm uewen.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Radius</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Säiten</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Bei 64 ass de Rank ronn.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Gréisst</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Bild</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Kee Bild gewielt</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Biller (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|All Fichieren (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Gréisst</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Breet</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Héicht</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Originalgréisst vum Bild</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Proportiounen halen</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Wann et aus ass, gëtt d'Bild op d'Breet an d'Héicht gestreckt.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Faarf</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Kontur</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Konturbreet</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Konturfaarf</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Rotatioun</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Glat Kanten</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Wann et aus ass, läit all Kant op ganze Pixelen a bleift schaarf.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Faarfauswiel weisen oder verstoppen</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Kee Bild ze weisen</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Ausserhalb vu sengem Bildschierm</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Fadekräizer ginn iwwer Spiller an enger Fënster oder randlos ugewisen, an d'Klicken ginn duerch si duerch. E Spill am exklusive Vollbild verstoppt se, loosst et also an enger Fënster oder randlos lafen. E Makro kann e Fadekräiz iwwer seng Nummer weisen oder verstoppen.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Lupp</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Eng Lëns wéi e Sniperzilfernrouer, de ganze Bildschierm vergréissert oder e Spotlight, deen de Rescht däischter mécht.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Lupp weisen</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Wat se weist</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Modus</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lëns</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Vollbild</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Spotlight</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Zentréieren op</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Bildschiermmëtt</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Mausweiser</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Fadekräiz</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>„Fadekräiz“ heescht dat éischt Fadekräiz, dat un ass, mat sengem Ofstand.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Zoom</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Form</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Krees</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Rechteck</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Gréisst</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Breet</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Héicht</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Rand</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Randbreet</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Randfaarf</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Kreesgréisst</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Däischtert</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows huet d'Lupp net gestart.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>D'Lëns an de Spotlight ginn iwwer Spiller an enger Fënster oder randlos ugewisen, an d'Klicken ginn duerch si duerch. „Vollbild“ vergréissert de ganzen Desktop mat der Vollbildlupp vu Windows. E Makro kann d'Lupp weisen oder verstoppen, oder se nëmme weisen, soulaang en gehale gëtt.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Beweegungsserver</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook-Motion-Provider-Protokollserver fir Gyro- a Beschleunegungsdaten.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-Beweegungsserver aktivéieren (CemuHook-Motion-Provider-Protokoll)</value></data>
@@ -4894,4 +4967,6 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>E Passwuert festleeën</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Remote Link entspären</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Passwuert</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Lupp (gehalen)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Weist d'Lupp, soulaang dëse Makro gehale gëtt, fir iwwer d'Visier ze zillen. Riicht se op der Säit „Lupp“ an.</value></data>
 </root>

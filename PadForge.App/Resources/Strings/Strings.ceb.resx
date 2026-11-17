@@ -3624,6 +3624,8 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Ipakita ang mga menu, layer ug pagbalhin og profile samtang nagdula ka.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Usa ka touch surface sa screen para sa mga dula nga adunay PlayStation touchpad.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Usa ka hulagway, timer o orasan ibabaw sa ubang mga window.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Imong kaugalingong crosshair ibabaw sa usa ka dula.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Usa ka lente nga mopadako, pagpadako sa tibuok screen o usa ka spotlight.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, plain HTTP, access code</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Awtomatikong pagkonektar pag-usab, port, identidad sa pairing, konektar pinaagi sa address</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, puli nga DSX.exe</value></data>
@@ -3765,6 +3767,77 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Overlay {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Gipakita</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Samtang laing programa ang anaa sa unahan, molusot ang mga click sa overlay. Samtang ang PadForge ang anaa sa unahan, guyora kini gamit ang tuo nga button sa mouse ug usba ang gidak-on gikan sa eskina niini. Ang usa ka macro makapakita o makatago og overlay pinaagi sa numero niini.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Crosshair</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Mga crosshair ibabaw sa ubang mga window, sa tunga sa usa ka display: usa ka krus, usa ka lingin, usa ka tulbok o imong kaugalingong hulagway.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Idugang ang crosshair</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Crosshair {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Ipakita ang crosshair</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Estilo</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Krus</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Lingin</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Tulbok</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Hulagway</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Preview</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Layo gikan sa tunga</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Pinahigdang layo</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Pinatindog nga layo</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Gitas-on sa bukton</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Gibag-on</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Kal-ang</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Tulbok sa tunga</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Porma nga T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Walay bukton sa ibabaw.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Radius</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Mga kilid</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Sa 64 lingin na ang singsing.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Gidak-on</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Hulagway</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Walay napiling hulagway</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Mga hulagway (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Tanang file (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Gidak-on</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Gilapdon</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Gitas-on</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Kaugalingong gidak-on sa hulagway</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Ipabilin ang proporsyon</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Kon patay, ibanat ang hulagway sa gilapdon ug sa gitas-on.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Kolor</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Ngilit</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Gilapdon sa ngilit</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Kolor sa ngilit</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Pagtuyok</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Hamis nga mga ngilit</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Kon patay, ang matag ngilit motugpa sa tibuok nga mga pixel ug magpabilin nga hait.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Ipakita o itago ang pilianan sa kolor</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Walay hulagway nga ipakita</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Gawas sa iyang display</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Makita ang mga crosshair ibabaw sa mga dula nga naka window ug borderless, ug molusot ang mga click niini. Ang dula nga naka exclusive full screen motago niini, busa padagana kini nga naka window o borderless. Ang usa ka macro makapakita o makatago og crosshair pinaagi sa numero niini.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Pampadako</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Usa ka lente sama sa scope sa sniper, ang tibuok display nga gipadako, o usa ka spotlight nga mongitngit sa uban.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Ipakita ang pampadako</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Unsay gipakita niini</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lente</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Tibuok screen</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Spotlight</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Isentro sa</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Tunga sa display</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Pointer</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Crosshair</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Ang Crosshair nagpasabot sa unang crosshair nga naka on, apil ang layo niini gikan sa tunga.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Pagpadako</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Porma</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Lingin</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Rektanggulo</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Gidak-on</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Gilapdon</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Gitas-on</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Ngilit</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Gilapdon sa ngilit</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Kolor sa ngilit</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Gidak-on sa lingin</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Kangitngit</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Wala gisugdi sa Windows ang pampadako.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Makita ang lente ug ang spotlight ibabaw sa mga dula nga naka window ug borderless, ug molusot ang mga click niini. Ang Tibuok screen mopadako sa tibuok desktop gamit ang full screen nga pampadako sa Windows. Ang usa ka macro makapakita o makatago sa pampadako, o makapakita niini samtang gikuptan lamang.</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Nakakonektar</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Wala makonektar</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Walay device nga motakdo.</value></data>
@@ -3850,4 +3923,6 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Gi-tune</value></data>
   <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Basahon sa dula ang na-calibrate nga lihok ug iapply ang kaugalingon niini nga sensitivity ug pagpahapsay.</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Basahon sa dula ang lihok uban ang sensitivity, pagpahapsay ug curve nga gibutang dinhi.</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Pampadako (samtang gikuptan)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Ipakita ang pampadako samtang gikuptan kini nga macro, alang sa pag-asinta pinaagi sa sights. I-set kini sa panid sa Pampadako.</value></data>
 </root>

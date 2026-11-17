@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>ඔබ ක්‍රීඩා කරන අතරතුර මෙනු, ස්ථර සහ පැතිකඩ මාරු කිරීම් පෙන්වන්න.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation ටච්පෑඩ් ක්‍රීඩා සඳහා තිරය මත ස්පර්ශ පෘෂ්ඨයක්.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>වෙනත් කවුළුවලට ඉහළින් පින්තූරයක්, ටයිමරයක් හෝ ඔරලෝසුවක්.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ක්‍රීඩාවක් මත ඔබේම ක්‍රොස්හෙයාර් එකක්.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>විශාලන කාචයක්, සම්පූර්ණ තිර විශාලනයක් හෝ ස්පොට්ලයිට් එකක්.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>තොට, සරල HTTP, ප්‍රවේශ කේතය</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ස්වයංක්‍රීය නැවත සම්බන්ධ වීම, තොට, යුගල කිරීමේ අනන්‍යතාව, ලිපිනයෙන් සම්බන්ධ වන්න</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>තොට, DSX.exe ආදේශකය</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ඕවර්ලේ {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>පෙන්වයි</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>වෙනත් වැඩසටහනක් ඉදිරියෙන් ඇති විට, ක්ලික් ඕවර්ලේ හරහා යයි. PadForge ඉදිරියෙන් ඇති විට, එය දකුණු මූසික බොත්තමෙන් අදින්න, සහ එහි කෙළවරින් ප්‍රමාණය වෙනස් කරන්න. මැක්‍රෝවකට ඕවර්ලේ එකක් එහි අංකයෙන් පෙන්වීමට හෝ සැඟවීමට හැක.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>ක්‍රොස්හෙයාර්</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>වෙනත් කවුළුවලට ඉහළින්, සංදර්ශකයක මැදට පිහිටි ක්‍රොස්හෙයාර්: හරස් ලකුණක්, කවයක්, තිතක් හෝ ඔබේම පින්තූරයක්.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>ක්‍රොස්හෙයාර් එකතු කරන්න</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>ක්‍රොස්හෙයාර් {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>ක්‍රොස්හෙයාර් පෙන්වන්න</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>විලාසය</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>හරස් ලකුණ</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>කවය</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>තිත</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>පින්තූරය</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>පෙරදසුන</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>මැද සිට විස්ථාපනය</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>තිරස් විස්ථාපනය</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>සිරස් විස්ථාපනය</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>බාහුවේ දිග</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>ඝනකම</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>පරතරය</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>මැද තිත</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T හැඩය</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>ඉහළ බාහුවක් නැත.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>අරය</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>පැති</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64 දී වළල්ල වටකුරු වේ.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>ප්‍රමාණය</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>පින්තූරය</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>පින්තූරයක් තෝරා නැත</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>පින්තූර (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|සියලු ගොනු (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>ප්‍රමාණය</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>පළල</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>උස</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>පින්තූරයේම ප්‍රමාණය</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>අනුපාත රඳවා ගන්න</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>අක්‍රිය විට, පින්තූරය පළලට සහ උසට ඇදී යයි.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>වර්ණය</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>බාහිර රේඛාව</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>බාහිර රේඛාවේ පළල</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>බාහිර රේඛාවේ වර්ණය</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>භ්‍රමණය</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>සුමට දාර</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>අක්‍රිය විට, සෑම දාරයක්ම සම්පූර්ණ පික්සල මත පිහිටා තියුණුව පවතී.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>වර්ණ තෝරකය පෙන්වන්න හෝ සඟවන්න</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>පෙන්වීමට පින්තූරයක් නැත</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>එහි සංදර්ශකයෙන් පිටත</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>ක්‍රොස්හෙයාර් කවුළුගත සහ මායිම් රහිත ක්‍රීඩා මත දිස් වන අතර, ක්ලික් ඒවා හරහා යයි. සුවිශේෂී සම්පූර්ණ තිරයේ ධාවනය වන ක්‍රීඩාවක් ඒවා සඟවයි, එබැවින් එය කවුළුගත හෝ මායිම් රහිත ලෙස ධාවනය කරන්න. මැක්‍රෝවකට ක්‍රොස්හෙයාර් එකක් එහි අංකයෙන් පෙන්වීමට හෝ සැඟවීමට හැක.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>විශාලකය</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>ස්නයිපර් දුරේක්ෂයක් වැනි කාචයක්, විශාලනය කළ මුළු සංදර්ශකයම, හෝ ඉතිරි කොටස අඳුරු කරන ස්පොට්ලයිට් එකක්.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>විශාලකය පෙන්වන්න</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>එය පෙන්වන දේ</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>ප්‍රකාරය</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>කාචය</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>සම්පූර්ණ තිරය</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>ස්පොට්ලයිට්</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>කේන්ද්‍ර කරන්නේ</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>සංදර්ශකයේ මැද</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>දර්ශකය</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>ක්‍රොස්හෙයාර්</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>ක්‍රොස්හෙයාර් යනු ක්‍රියාත්මක පළමු ක්‍රොස්හෙයාර් එකයි, එහි විස්ථාපනය ද ඇතුළුව.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>විශාලනය</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>හැඩය</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>කවය</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>සෘජුකෝණාස්‍රය</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>ප්‍රමාණය</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>පළල</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>උස</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>මායිම</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>මායිමේ පළල</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>මායිමේ වර්ණය</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>කවයේ ප්‍රමාණය</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>අඳුර</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows විශාලකය ආරම්භ කළේ නැත.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>කාචය සහ ස්පොට්ලයිට් කවුළුගත සහ මායිම් රහිත ක්‍රීඩා මත දිස් වන අතර, ක්ලික් ඒවා හරහා යයි. සම්පූර්ණ තිරය, Windows හි සම්පූර්ණ තිර විශාලකය මඟින් මුළු ඩෙස්ක්ටොප් එකම විශාලනය කරයි. මැක්‍රෝවකට විශාලකය පෙන්වීමට හෝ සැඟවීමට, නැතහොත් ඔබාගෙන සිටින අතරතුර පමණක් පෙන්වීමට හැක.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>චලන සේවාදායකය</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ගයිරෝ සහ ත්වරණමාන දත්ත සඳහා DSU/CemuHook Motion Provider ප්‍රොටෝකෝල සේවාදායකය.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU චලන සේවාදායකය සබල කරන්න (CemuHook Motion Provider Protocol)</value></data>
@@ -4878,4 +4951,6 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>මුරපදයක් සකසන්න</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>දුරස්ථ සබැඳිය අගුළු අරින්න</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>මුරපදය</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>විශාලකය (ඔබාගෙන සිටින අතරතුර)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>දසුන් හරහා ඉලක්ක කිරීම සඳහා, මෙම මැක්‍රෝව ඔබාගෙන සිටින අතරතුර විශාලකය පෙන්වයි. එය විශාලකය පිටුවේ සකසන්න.</value></data>
 </root>

@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Тоглож байхад цэс, давхарга, профайл солилтыг харуулна.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation мэдрэгч самбартай тоглоомуудад зориулсан дэлгэц дээрх мэдрэгч гадаргуу.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Бусад цонхны дээр харагдах зураг, хугацаа хэмжигч эсвэл цаг.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Тоглоом дээр харагдах өөрийн онилгоо.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Томруулах линз, бүтэн дэлгэцийн томруулалт эсвэл гэрэлтүүлэг.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, энгийн HTTP, нэвтрэх код</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Автомат дахин холболт, порт, хослуулалтын таних мэдээлэл, хаягаар холбогдох</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, DSX.exe орлуулагч</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Оверлей {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Харуулж буй</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Өөр програм урд байх үед товшилт оверлейгээр нэвтэрч өнгөрнө. PadForge урд байх үед түүнийг хулганы баруун товчоор чирч, булангаас нь хэмжээг өөрчилнө үү. Макро оверлейг дугаараар нь харуулах эсвэл нууж чадна.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Онилгоо</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Бусад цонхны дээр, дэлгэцийн төвд харагдах онилгоо: загалмай, дугуй, цэг эсвэл өөрийн зураг.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Онилгоо нэмэх</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Онилгоо {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Онилгоо харуулах</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Загвар</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Загалмай</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Дугуй</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Цэг</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Зураг</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Урьдчилан харах</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Төвөөс зөрөх зай</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Хэвтээ зөрүү</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Босоо зөрүү</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Шугамын урт</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Зузаан</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Завсар</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Төвийн цэг</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T хэлбэр</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Дээд шугамгүй.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Радиус</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Талын тоо</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64 талтай үед цагираг бөөрөнхий болно.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Хэмжээ</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Зураг</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Зураг сонгоогүй</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Зургууд (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Бүх файл (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Хэмжээ</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Өргөн</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Өндөр</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Зургийн жинхэнэ хэмжээ</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Харьцааг хадгалах</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Унтраалттай үед зураг тохируулсан өргөн ба өндрийн дагуу сунана.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Өнгө</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Контур</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Контурын өргөн</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Контурын өнгө</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Эргэлт</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Гөлгөр ирмэг</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Унтраалттай үед ирмэг бүр бүхэл пиксел дээр буух тул хурц хэвээр үлдэнэ.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Өнгө сонгогчийг харуулах эсвэл нуух</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Харуулах зураг алга</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Дэлгэцээсээ гадуур</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Онилгоо цонхон болон хүрээгүй горимтой тоглоомын дээр харагдах бөгөөд товшилт түүгээр нэвтэрч өнгөрнө. Онцгой бүтэн дэлгэцийн горимтой тоглоом онилгоог нуудаг тул тоглоомоо цонхон эсвэл хүрээгүй горимоор ажиллуулна уу. Макро онилгоог дугаараар нь харуулах эсвэл нууж чадна.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Томруулагч</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Снайперын дуран шиг линз, бүхэлдээ томруулсан дэлгэц эсвэл бусад хэсгийг харанхуйлах гэрэлтүүлэг.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Томруулагч харуулах</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Юу харуулах</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Горим</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Линз</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Бүтэн дэлгэц</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Гэрэлтүүлэг</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Төвлөрөх цэг</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Дэлгэцийн төв</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Заагч</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Онилгоо</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Онилгоо гэдэг нь асаалттай эхний онилгоог төвөөс зөрөх зайтай нь хамт хэлнэ.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Томруулалт</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Хэлбэр</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Дугуй</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Тэгш өнцөгт</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Хэмжээ</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Өргөн</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Өндөр</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Хүрээ</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Хүрээний өргөн</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Хүрээний өнгө</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Дугуйн хэмжээ</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Харанхуйлалт</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows томруулагчийг эхлүүлсэнгүй.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Линз ба гэрэлтүүлэг цонхон болон хүрээгүй горимтой тоглоомын дээр харагдах бөгөөд товшилт түүгээр нэвтэрч өнгөрнө. Бүтэн дэлгэц горим нь Windows-ийн бүтэн дэлгэцийн томруулагчаар ажлын талбарыг бүхэлд нь томруулна. Макро томруулагчийг харуулах, нуух эсвэл зөвхөн дарж байх үед харуулж чадна.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Хөдөлгөөний сервер</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Гироскоп болон акселерометрийн өгөгдөлд зориулсан DSU/CemuHook Motion Provider протоколын сервер.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU хөдөлгөөний серверийг идэвхжүүлэх (CemuHook Motion Provider Protocol)</value></data>
@@ -4903,4 +4976,6 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Нууц үг тохируулах</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Алсын холболтын түгжээг тайлах</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Нууц үг</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Томруулагч (дарж байх үед)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Дурангаар онилоход зориулж энэ макро дарагдаж байх үед томруулагчийг харуулна. Үүнийг Томруулагч хуудсанд тохируулна уу.</value></data>
 </root>

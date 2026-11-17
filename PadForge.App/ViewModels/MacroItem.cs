@@ -2885,6 +2885,8 @@ namespace PadForge.ViewModels
             // after, by value.
             OnPropertyChanged(nameof(ScreenOverlayChoices));
             OnPropertyChanged(nameof(ScreenOverlayNumber));
+            OnPropertyChanged(nameof(CrosshairChoices));
+            OnPropertyChanged(nameof(CrosshairNumber));
             // The trigger effect rows outlive a language change (they are
             // rebuilt only with the effect), so each row's caption is raised.
             foreach (var row in _triggerEffectRows) row.RaiseLabelChanged();
@@ -2957,6 +2959,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsPanKeyboardScreenType));
                     OnPropertyChanged(nameof(IsKeyboardScreenKindType));
                     OnPropertyChanged(nameof(IsScreenOverlayTargetType));
+                    OnPropertyChanged(nameof(IsCrosshairTargetType));
                     OnPropertyChanged(nameof(IsGuideLedBrightnessType));
                     OnPropertyChanged(nameof(IsAnyLightbarType));
                     OnPropertyChanged(nameof(IsLightbarReactiveHold));
@@ -3436,6 +3439,10 @@ namespace PadForge.ViewModels
         public bool IsScreenOverlayTargetType => _type == MacroActionType.ToggleScreenOverlay
             || _type == MacroActionType.PanKeyboardScreen
             || (IsKeyboardScreenKindType && _screenKind == PadForge.Common.Input.KeyboardScreens.KeyboardScreenKind.Overlay);
+
+        /// <summary>True when the action names a crosshair (#585).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsCrosshairTargetType => _type == MacroActionType.ToggleCrosshair;
 
         /// <summary>True when Type is PointerModeSet (issue #203 follow-up).</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -5063,6 +5070,25 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public IReadOnlyList<PadForge.Services.ScreenOverlayChoice> ScreenOverlayChoices => PadForge.Services.KeyboardScreenService.OverlayChoices();
 
+        private int _crosshairNumber;
+
+        /// <summary>The crosshair Toggle Crosshair shows or hides (#585): its
+        /// number, or 0 for every crosshair. A macro on any slot reaches
+        /// it.</summary>
+        public int CrosshairNumber
+        {
+            get => _crosshairNumber;
+            set
+            {
+                if (SetProperty(ref _crosshairNumber, Math.Clamp(value, 0, PadForge.Services.CrosshairData.MaxCrosshairs)))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        /// <summary>The editor's list of crosshairs, by number.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public IReadOnlyList<PadForge.Services.CrosshairChoice> CrosshairChoices => PadForge.Services.CrosshairChoice.All();
+
         /// <summary>The kind as the editor's list index, the kinds' own
         /// order.</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -6427,6 +6453,11 @@ namespace PadForge.ViewModels
                     MacroActionType.ToggleScreenOverlay => _screenOverlayNumber == 0
                         ? Strings.Instance.MacroAction_ToggleScreenOverlay
                         : string.Format(Strings.Instance.MacroAction_ToggleScreenOverlay_Format, _screenOverlayNumber),
+                    MacroActionType.ToggleCrosshair => _crosshairNumber == 0
+                        ? Strings.Instance.MacroAction_ToggleCrosshair
+                        : string.Format(Strings.Instance.MacroAction_ToggleCrosshair_Format, _crosshairNumber),
+                    MacroActionType.ToggleMagnifier => Strings.Instance.MacroAction_ToggleMagnifier,
+                    MacroActionType.MagnifierWhileHeld => Strings.Instance.MacroAction_Type_MagnifierWhileHeld,
                     MacroActionType.VoiceListenWhileHeld => Strings.Instance.MacroAction_Type_VoiceListenWhileHeld,
                     MacroActionType.LightbarColor => FormatLightbarColorSummary(),
                     MacroActionType.LightbarColorClear => Strings.Instance.MacroAction_LightbarColorClear,
@@ -7519,7 +7550,23 @@ namespace PadForge.ViewModels
         /// profile. This belongs to the macro's own profile and layer, and it
         /// names its profile by name, so that profile can arrive later. Ordinal
         /// pinned.</summary>
-        ProfileShortcut = 67
+        ProfileShortcut = 67,
+
+        /// <summary>Shows or hides a crosshair (#585), or every crosshair when
+        /// it names none, the way <see cref="ToggleScreenOverlay"/> does a
+        /// Screen Overlay. One-shot. Ordinal pinned.</summary>
+        ToggleCrosshair = 68,
+
+        /// <summary>Shows or hides the magnifier (#585). One-shot. Ordinal
+        /// pinned.</summary>
+        ToggleMagnifier = 69,
+
+        /// <summary>Shows the magnifier while the macro's input is held
+        /// (#585), for aiming down sights: a beat each frame while held,
+        /// lapsing a moment after the last, as
+        /// <see cref="VoiceListenWhileHeld"/> does. Continuous. Ordinal
+        /// pinned.</summary>
+        MagnifierWhileHeld = 70
     }
 
     /// <summary>One parsed part of a <see cref="MacroActionType.CycleTapList"/>

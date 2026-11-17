@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>لە کاتی یاریکردندا مێنیو، چین و گۆڕینی پرۆفایل پیشان بدە.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ڕووکاری دەستلێدان لەسەر شاشە بۆ یارییەکانی تاچپادی PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>وێنە، کاتژمێری پێوانە یان کاتژمێر لەسەرووی پەنجەرەکانی ترەوە.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>نیشانەی تایبەتی خۆت لەسەر یارییەک.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>هاوێنەیەکی زووم، زوومی هەموو شاشە یان ڕووناکییەکی تیشکدار.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>پۆرت، HTTP ی سادە، کۆدی دەستگەیشتن</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>دووبارە پەیوەستبوونەوەی خۆکار، پۆرت، ناسنامەی جووتکردن، پەیوەستبوون بە ناونیشان</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>پۆرت، جێگرەوەی DSX.exe</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ئۆڤەرلەی {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>پیشان دەدات</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>کاتێک بەرنامەیەکی تر لە پێشەوەیە، کرتەکان بە ئۆڤەرلەیەکەدا تێدەپەڕن. کاتێک PadForge لە پێشەوەیە، بە دوگمەی ڕاستی ماوس ڕایبکێشە و لە گۆشەکەیەوە قەبارەکەی بگۆڕە. ماکرۆیەک دەتوانێت ئۆڤەرلەیەک بە ژمارەکەی پیشان بدات یان بیشارێتەوە.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>نیشانە</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>نیشانەکان لەسەرووی پەنجەرەکانی ترەوە، لە ناوەڕاستی شاشەیەکدا: خاچێک، بازنەیەک، خاڵێک یان وێنەیەکی خۆت.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>زیادکردنی نیشانە</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>نیشانەی {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>پیشاندانی نیشانە</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>شێواز</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>خاچ</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>بازنە</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>خاڵ</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>وێنە</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>پێشبینین</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>دووری لە ناوەڕاست</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>دووری ئاسۆیی</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>دووری ستوونی</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>درێژی باسک</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>ئەستووری</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>بۆشایی</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>خاڵی ناوەڕاست</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>شێوەی T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>باسکی سەرەوەی نییە.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>نیوەتیرە</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>لاکان</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>لە 64 دا بازنەکە خڕ دەبێت.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>قەبارە</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>وێنە</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>هیچ وێنەیەک هەڵنەبژێردراوە</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>وێنەکان (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|هەموو پەڕگەکان (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>قەبارە</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>پانی</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>بەرزی</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>قەبارەی ڕەسەنی وێنەکە</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>پاراستنی ڕێژەکان</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>کاتێک ناچالاکە، وێنەکە بەپێی پانی و بەرزییەکە ڕادەکێشرێت.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>ڕەنگ</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>هێڵی دەرەوە</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>پانی هێڵی دەرەوە</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>ڕەنگی هێڵی دەرەوە</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>سووڕانەوە</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>لێوارە نەرمەکان</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>کاتێک ناچالاکە، هەموو لێوارێک لەسەر پیکسڵی تەواو دەکەوێت و تیژ دەمێنێتەوە.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>پیشاندان یان شاردنەوەی هەڵبژێرەری ڕەنگ</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>هیچ وێنەیەک نییە بۆ پیشاندان</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>لە دەرەوەی شاشەکەیەتی</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>نیشانەکان لەسەر یارییە پەنجەرەیی و بێ چوارچێوەکان دەردەکەون و کرتەکان پێیاندا تێدەپەڕن. یارییەک لە دۆخی شاشەی تەواوی تایبەتدا دەیانشارێتەوە، بۆیە بە پەنجەرەیی یان بێ چوارچێوە کاری پێبکە. ماکرۆیەک دەتوانێت نیشانەیەک بە ژمارەکەی پیشان بدات یان بیشارێتەوە.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>گەورەکەر</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>هاوێنەیەک وەک دووربینی تفەنگی نیشانەشکێن، هەموو شاشەکە بە زووم، یان ڕووناکییەکی تیشکدار کە ئەوانی تر تاریک دەکات.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>پیشاندانی گەورەکەر</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>چی پیشان دەدات</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>دۆخ</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>هاوێنە</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>شاشەی تەواو</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>ڕووناکی تیشکدار</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>ناوەندکردن لەسەر</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>ناوەڕاستی شاشە</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>نیشاندەر</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>نیشانە</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>نیشانە واتە یەکەم نیشانە کە چالاکە، لەگەڵ دوورییەکەی.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>زووم</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>شێوە</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>بازنە</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>لاکێشە</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>قەبارە</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>پانی</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>بەرزی</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>چوارچێوە</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>پانی چوارچێوە</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>ڕەنگی چوارچێوە</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>قەبارەی بازنە</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>تاریکی</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows گەورەکەرەکەی دەست پێنەکرد.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>هاوێنەکە و ڕووناکییە تیشکدارەکە لەسەر یارییە پەنجەرەیی و بێ چوارچێوەکان دەردەکەون و کرتەکان پێیاندا تێدەپەڕن. شاشەی تەواو هەموو ڕووی کارەکە بە گەورەکەری شاشەی تەواوی Windows زووم دەکات. ماکرۆیەک دەتوانێت گەورەکەرەکە پیشان بدات یان بیشارێتەوە، یان تەنها لەکاتی ڕاگرتندا پیشانی بدات.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>ڕاژەکاری جووڵە</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ڕاژەکاری پرۆتۆکۆلی DSU/CemuHook Motion Provider بۆ داتای جایرۆ و ئەکسێلەرۆمیتەر.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>چالاککردنی ڕاژەکاری جووڵەی DSU (پرۆتۆکۆلی CemuHook Motion Provider)</value></data>
@@ -4914,4 +4987,6 @@
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>دانانی وشەی نهێنی</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>کردنەوەی قوفڵی بەستەری دوور</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>وشەی نهێنی</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>گەورەکەر (لەکاتی ڕاگرتندا)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>لەکاتێکدا ئەم ماکرۆیە ڕاگیراوە گەورەکەرەکە پیشان دەدات، بۆ نیشانەگرتن بە دووربین. لە پەڕەی گەورەکەر ڕێکی بخە.</value></data>
 </root>

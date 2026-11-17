@@ -1155,4 +1155,5 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Le ka motlha</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Fa layer e ntse e dira e tshola flyout mo sekirining go fitlha layer e fetoga. Metsotswana e le 2 e e bontsha fa layer e simolola, e bo e nyelela ka bosi. Ka Le ka motlha, layer e ga e bontshe flyout, mme Base le yona ga e bontshe flyout fa layer e fela.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Metsotswana e le 2 e bontsha leina la Base fa shift layer e fela. Ka Le ka motlha, Base ga e bontshe flyout.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Ditshwantsho (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Difaele tsotlhe (*.*)|*.*</value></data>
 </root>

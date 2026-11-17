@@ -1662,24 +1662,17 @@ namespace PadForge.Common.ConfigImport
                     return Chord(0xA4, 0x73);   // Alt + F4
                 case >= 101 and <= 110:
                 case 120:
-                    // PadForge runs eight Screen Overlays, and reWASD's ninth
-                    // and tenth crosshairs have none of their own: folded
-                    // onto the eighth, one button would hide another's
-                    // picture.
-                    if (type != 120 && type - 100 > PadForge.Common.Input.KeyboardScreens.KeyboardScreenInfo.MaxOverlays)
-                    {
-                        _b.Skipped(ImportReasons.NinthCrosshair, path, name);
-                        _noted = true;
-                        return null;
-                    }
-                    // The button works: it shows a Screen Overlay, and the
-                    // picture is the user's to give it.
-                    _b.Partial(ImportReasons.Crosshair, path, name, "ToggleScreenOverlay");
+                    // reWASD's ten crosshairs are PadForge's ten (#585), by
+                    // number (reWASD help, Custom Crosshair: "up to 10
+                    // crosshairs available"). The button works, and the look
+                    // is the user's to set, since reWASD keeps it in its own
+                    // settings and not in the config.
+                    _b.Partial(ImportReasons.Crosshair, path, name, "ToggleCrosshair");
                     _noted = true;
                     return new ActionData
                     {
-                        Type = MacroActionType.ToggleScreenOverlay,
-                        ScreenOverlayNumber = type == 120 ? 0 : type - 100,
+                        Type = MacroActionType.ToggleCrosshair,
+                        CrosshairNumber = type == 120 ? 0 : type - 100,
                     };
                 case >= 130 and <= 137:
                     // Radial navigation. PadForge's menu reads its host itself,

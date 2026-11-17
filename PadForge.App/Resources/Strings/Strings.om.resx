@@ -2076,4 +2076,5 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Gonkumaa</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Hamma sadarkaan banaa ta'etti flyout-ii hamma sadarkaan jijjiiramutti mul'isee tursa. Sekondii 2f yeroo sadarkaan banamu ni agarsiisa, booda ofumaan dhabama. Gonkumaa yoo filatame, sadarkaan kun flyout hin agarsiisu, Bu'uurris yeroo sadarkaan kun xumuramu hin agarsiisu.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Sekondii 2f yeroo sadarkaan shift xumuramu maqaa Bu'uuraa ni agarsiisa. Gonkumaa yoo filatame, Bu'uurri flyout hin agarsiisu.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Fakkiiwwan (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Faayiloota hunda (*.*)|*.*</value></data>
 </root>

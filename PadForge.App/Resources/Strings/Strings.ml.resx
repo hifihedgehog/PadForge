@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>കളിക്കുമ്പോൾ മെനുകൾ, ലെയറുകൾ, പ്രൊഫൈൽ മാറ്റങ്ങൾ എന്നിവ കാണിക്കുക.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation ടച്ച്പാഡ് ഗെയിമുകൾക്കുള്ള സ്ക്രീനിലെ ടച്ച് പ്രതലം.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>മറ്റ് വിൻഡോകൾക്ക് മുകളിൽ ഒരു ചിത്രം, ടൈമർ അല്ലെങ്കിൽ ക്ലോക്ക്.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ഒരു ഗെയിമിന് മുകളിൽ നിങ്ങളുടെ സ്വന്തം ക്രോസ്ഹെയർ.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>ഒരു സൂം ലെൻസ്, മുഴുവൻ സ്ക്രീൻ സൂം അല്ലെങ്കിൽ ഒരു സ്പോട്ട്‌ലൈറ്റ്.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>പോർട്ട്, സാധാരണ HTTP, ആക്സസ് കോഡ്</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>സ്വയമേവ വീണ്ടും കണക്റ്റ്, പോർട്ട്, ജോടിയാക്കൽ ഐഡന്റിറ്റി, വിലാസം ഉപയോഗിച്ച് കണക്റ്റ് ചെയ്യുക</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>പോർട്ട്, DSX.exe സ്റ്റാൻഡ്-ഇൻ</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ഓവർലേ {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>കാണിക്കുന്നത്</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>മറ്റൊരു പ്രോഗ്രാം മുന്നിലുള്ളപ്പോൾ ക്ലിക്കുകൾ ഓവർലേയിലൂടെ കടന്നുപോകും. PadForge മുന്നിലുള്ളപ്പോൾ വലത് മൗസ് ബട്ടൺ കൊണ്ട് അത് വലിച്ചിടുക, അതിന്റെ മൂലയിൽ നിന്ന് വലുപ്പം മാറ്റുക. ഒരു മാക്രോയ്ക്ക് ഓവർലേയെ അതിന്റെ നമ്പർ ഉപയോഗിച്ച് കാണിക്കാനോ മറയ്ക്കാനോ കഴിയും.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>ക്രോസ്ഹെയർ</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>മറ്റ് വിൻഡോകൾക്ക് മുകളിൽ ഒരു ഡിസ്പ്ലേയുടെ മധ്യത്തിൽ ക്രോസ്ഹെയറുകൾ: ഒരു ക്രോസ്, ഒരു വൃത്തം, ഒരു ഡോട്ട് അല്ലെങ്കിൽ നിങ്ങളുടെ സ്വന്തം ചിത്രം.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>ക്രോസ്ഹെയർ ചേർക്കുക</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>ക്രോസ്ഹെയർ {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>ക്രോസ്ഹെയർ കാണിക്കുക</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>ശൈലി</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>ക്രോസ്</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>വൃത്തം</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>ഡോട്ട്</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>ചിത്രം</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>പ്രിവ്യൂ</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>മധ്യത്തിൽ നിന്നുള്ള നീക്കം</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>തിരശ്ചീന നീക്കം</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>ലംബ നീക്കം</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>വരയുടെ നീളം</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>കനം</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>വിടവ്</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>മധ്യത്തിലെ ഡോട്ട്</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T ആകൃതി</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>മുകളിലെ വരയില്ല.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>ആരം</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>വശങ്ങൾ</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64 ആകുമ്പോൾ വളയം വൃത്താകൃതിയിലാകും.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>വലുപ്പം</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>ചിത്രം</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>ചിത്രം തിരഞ്ഞെടുത്തിട്ടില്ല</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>ചിത്രങ്ങൾ (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|എല്ലാ ഫയലുകളും (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>വലുപ്പം</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>വീതി</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>ഉയരം</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>ചിത്രത്തിന്റെ സ്വന്തം വലുപ്പം</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>അനുപാതം നിലനിർത്തുക</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>ഓഫ് ആയാൽ ചിത്രം നൽകിയ വീതിയിലേക്കും ഉയരത്തിലേക്കും വലിഞ്ഞുനീളും.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>നിറം</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>ഔട്ട്‌ലൈൻ</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>ഔട്ട്‌ലൈൻ വീതി</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>ഔട്ട്‌ലൈൻ നിറം</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>തിരിവ്</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>അരികുകൾ മൃദുവാക്കുക</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>ഓഫ് ആയാൽ ഓരോ അരികും പൂർണ്ണ പിക്സലുകളിൽ വരികയും കൂർത്തുനിൽക്കുകയും ചെയ്യും.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>കളർ പിക്കർ കാണിക്കുക അല്ലെങ്കിൽ മറയ്ക്കുക</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>കാണിക്കാൻ ചിത്രമില്ല</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>ഡിസ്പ്ലേയ്ക്ക് പുറത്ത്</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>ക്രോസ്ഹെയറുകൾ വിൻഡോഡ്, ബോർഡർലെസ് ഗെയിമുകൾക്ക് മുകളിൽ കാണിക്കും, ക്ലിക്കുകൾ അവയിലൂടെ കടന്നുപോകും. എക്സ്ക്ലൂസീവ് ഫുൾ സ്ക്രീനിലുള്ള ഗെയിം അവയെ മറയ്ക്കും, അതിനാൽ അത് വിൻഡോഡ് അല്ലെങ്കിൽ ബോർഡർലെസ് മോഡിൽ പ്രവർത്തിപ്പിക്കുക. ഒരു മാക്രോയ്ക്ക് ക്രോസ്ഹെയറിനെ അതിന്റെ നമ്പർ ഉപയോഗിച്ച് കാണിക്കാനോ മറയ്ക്കാനോ കഴിയും.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>മാഗ്നിഫയർ</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>ഒരു സ്നൈപ്പർ സ്കോപ്പ് പോലുള്ള ലെൻസ്, മുഴുവൻ ഡിസ്പ്ലേയും സൂം ചെയ്തത്, അല്ലെങ്കിൽ ബാക്കിയുള്ളത് ഇരുണ്ടതാക്കുന്ന സ്പോട്ട്‌ലൈറ്റ്.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>മാഗ്നിഫയർ കാണിക്കുക</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>കാണിക്കുന്നത്</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>മോഡ്</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>ലെൻസ്</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>ഫുൾ സ്ക്രീൻ</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>സ്പോട്ട്‌ലൈറ്റ്</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>കേന്ദ്രമാക്കുക</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>ഡിസ്പ്ലേയുടെ മധ്യം</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>പോയിന്റർ</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>ക്രോസ്ഹെയർ</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>ക്രോസ്ഹെയർ എന്നാൽ ഓൺ ആയിട്ടുള്ള ആദ്യത്തെ ക്രോസ്ഹെയർ, അതിന്റെ നീക്കം ഉൾപ്പെടെ.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>സൂം</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>ആകൃതി</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>വൃത്തം</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>ചതുരം</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>വലുപ്പം</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>വീതി</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>ഉയരം</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>ബോർഡർ</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>ബോർഡർ വീതി</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>ബോർഡർ നിറം</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>വൃത്തത്തിന്റെ വലുപ്പം</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>ഇരുട്ട്</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows മാഗ്നിഫയർ ആരംഭിച്ചില്ല.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>ലെൻസും സ്പോട്ട്‌ലൈറ്റും വിൻഡോഡ്, ബോർഡർലെസ് ഗെയിമുകൾക്ക് മുകളിൽ കാണിക്കും, ക്ലിക്കുകൾ അവയിലൂടെ കടന്നുപോകും. ഫുൾ സ്ക്രീൻ Windows ന്റെ ഫുൾ സ്ക്രീൻ മാഗ്നിഫയർ ഉപയോഗിച്ച് മുഴുവൻ ഡെസ്ക്ടോപ്പും സൂം ചെയ്യും. ഒരു മാക്രോയ്ക്ക് മാഗ്നിഫയറിനെ കാണിക്കാനോ മറയ്ക്കാനോ, അല്ലെങ്കിൽ അമർത്തിപ്പിടിക്കുമ്പോൾ മാത്രം കാണിക്കാനോ കഴിയും.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>മോഷൻ സെർവർ</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ഗൈറോ, ആക്സിലറോമീറ്റർ ഡാറ്റയ്ക്കുള്ള DSU/CemuHook Motion Provider പ്രോട്ടോക്കോൾ സെർവർ.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU മോഷൻ സെർവർ പ്രവർത്തനക്ഷമമാക്കുക (CemuHook Motion Provider പ്രോട്ടോക്കോൾ)</value></data>
@@ -4887,4 +4960,6 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>പാസ്വേഡ് സജ്ജമാക്കുക</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>റിമോട്ട് ലിങ്ക് അൺലോക്ക് ചെയ്യുക</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>പാസ്വേഡ്</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>മാഗ്നിഫയർ (അമർത്തിപ്പിടിക്കുമ്പോൾ)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>ഈ മാക്രോ അമർത്തിപ്പിടിച്ചിരിക്കുമ്പോൾ മാഗ്നിഫയർ കാണിക്കുന്നു, സൈറ്റ് ഉപയോഗിച്ച് ലക്ഷ്യമിടാൻ. മാഗ്നിഫയർ പേജിൽ ഇത് സജ്ജമാക്കുക.</value></data>
 </root>

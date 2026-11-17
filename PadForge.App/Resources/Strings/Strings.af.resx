@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Wys kieslyste, lae en profielwisselings terwyl jy speel.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>'n Raakvlak op die skerm vir PlayStation-raakplaatspeletjies.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>'n Prent, afteller of horlosie bo ander vensters.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Jou eie draadkruis oor 'n speletjie.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>'n Vergrootlens, 'n volskerm-vergroting of 'n kollig.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Poort, gewone HTTP, toegangskode</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Outo-herkoppel, poort, paringsidentiteit, koppel via adres</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Poort, DSX.exe-plaasvervanger</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Oorlegsel {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Wys</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Terwyl 'n ander program voor is, gaan klikke deur die oorlegsel. Terwyl PadForge voor is, sleep dit met die regter muisknoppie en verander die grootte vanaf sy hoek. 'n Makro kan 'n oorlegsel volgens sy nommer wys of versteek.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Draadkruis</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Draadkruise oor ander vensters, gesentreer op 'n skerm: 'n kruis, 'n sirkel, 'n kol of 'n prent van jou eie.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Voeg draadkruis by</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Draadkruis {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Wys draadkruis</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Styl</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Kruis</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Sirkel</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Kol</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Prent</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Voorskou</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Verskuiwing van die middel</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Horisontale verskuiwing</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Vertikale verskuiwing</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Armlengte</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Dikte</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Gaping</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Middelkol</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T-vorm</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Geen boonste arm nie.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Radius</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Sye</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>By 64 is die ring rond.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Grootte</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Prent</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Geen prent gekies nie</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Prente (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Alle lêers (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Grootte</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Breedte</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Hoogte</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Prent se eie grootte</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Behou verhoudings</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Af, rek die prent na die breedte en die hoogte.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Kleur</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Buitelyn</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Buitelynbreedte</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Buitelynkleur</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Draaiing</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Gladde rande</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Af, val elke rand op heel pixels en bly skerp.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Wys of versteek die kleurkieser</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Geen prent om te wys nie</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Buite sy skerm</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Draadkruise wys oor speletjies in 'n venster en randlose speletjies, en klikke gaan daardeur. 'n Speletjie in eksklusiewe volskerm versteek hulle, so laat dit in 'n venster of randloos loop. 'n Makro kan 'n draadkruis volgens sy nommer wys of versteek.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Vergroter</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>'n Lens soos 'n skerpskutterkyker, die hele skerm vergroot, of 'n kollig wat die res verdonker.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Wys vergroter</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Wat dit wys</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Modus</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lens</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Volskerm</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Kollig</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Sentreer op</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Skermmiddel</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Wyser</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Draadkruis</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Draadkruis beteken die eerste draadkruis wat aan is, verskuiwing ingesluit.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Vergroting</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Vorm</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Sirkel</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Reghoek</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Grootte</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Breedte</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Hoogte</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Rand</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Randbreedte</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Randkleur</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Sirkelgrootte</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Donkerte</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows het nie die vergroter begin nie.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Die lens en die kollig wys oor speletjies in 'n venster en randlose speletjies, en klikke gaan daardeur. Volskerm vergroot die hele lessenaar met Windows se volskerm-vergroter. 'n Makro kan die vergroter wys of versteek, of dit net wys terwyl dit vasgehou word.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Bewegingsbediener</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider-protokolbediener vir giro- en versnellingsmeterdata.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Skakel DSU-bewegingsbediener aan (CemuHook Motion Provider-protokol)</value></data>
@@ -4726,4 +4799,6 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Stel 'n wagwoord</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Ontsluit Afstandskakel</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Wagwoord</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Vergroter (vasgehou)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Wys die vergroter terwyl hierdie makro vasgehou word, om deur die visier te mik. Stel dit op by die Vergroter-bladsy.</value></data>
 </root>

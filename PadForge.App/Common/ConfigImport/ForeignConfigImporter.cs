@@ -47,7 +47,6 @@ namespace PadForge.Common.ConfigImport
         public const string MoveSpeed = "Import_Tr_MoveSpeed";
         public const string TouchpadShape = "Import_Tr_TouchpadShape";
         public const string LayerNoInput = "Import_Tr_LayerNoInput";
-        public const string NinthCrosshair = "Import_Tr_NinthCrosshair";
         public const string GyroAxes = "Import_Tr_GyroAxes";
         public const string TiltLean = "Import_Tr_TiltLean";
         public const string TouchpadDiagonal = "Import_Tr_TouchpadDiagonal";

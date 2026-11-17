@@ -2049,4 +2049,5 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Rárá</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Níwọ̀n ìgbà tí ìpele bá tàn máa ń jẹ́ kí flyout wà lójú ìbòjú títí ìpele yóò fi yí padà. Fún ìṣẹ́jú àáyá 2 máa ń fi í hàn nígbà tí ìpele bá tàn, lẹ́yìn náà yóò lọ fúnra rẹ̀. Pẹ̀lú Rárá, ìpele yìí kò ní fi flyout hàn, ìpìlẹ̀ kò sì ní fi flyout hàn nígbà tí ìpele bá parí.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Fún ìṣẹ́jú àáyá 2 máa ń fi orúkọ ìpìlẹ̀ hàn nígbà tí ìpele Shift bá parí. Pẹ̀lú Rárá, ìpìlẹ̀ kò ní fi flyout hàn.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Àwọn àwòrán (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Gbogbo fáìlì (*.*)|*.*</value></data>
 </root>

@@ -181,6 +181,8 @@ $map = @{
     "home-first-run"                = "home-first-run"
     "search"                        = "search"
     "profiles-get-file"             = "profiles-get-file"
+    "extras-crosshair"              = "crosshair"
+    "extras-magnifier"              = "magnifier"
     # Captured before 6.0.0 and encoded one file at a time at a release prep,
     # each under its PNG's own name. Mapped so a full conversion refreshes
     # them with the rest.

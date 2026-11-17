@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Mostre menus, camadas e mudanças de perfil enquanto joga.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Uma superfície tátil no ecrã para jogos com painel tátil da PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Uma imagem, um temporizador ou um relógio por cima das outras janelas.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>A sua própria mira sobre um jogo.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Uma lente de zoom, um zoom de ecrã inteiro ou um foco de luz.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Porta, HTTP simples, código de acesso</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Religação automática, porta, identidade de emparelhamento, ligar por endereço</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Porta, substituto do DSX.exe</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Sobreposição {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Mostra</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Enquanto outro programa está à frente, os cliques atravessam a sobreposição. Enquanto o PadForge está à frente, arraste-a com o botão direito do rato e redimensione-a pelo canto. Uma macro pode mostrar ou ocultar uma sobreposição pelo seu número.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Mira</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Miras por cima das outras janelas, centradas num ecrã: uma cruz, um círculo, um ponto ou uma imagem sua.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Adicionar mira</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Mira {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Mostrar mira</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Estilo</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Cruz</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Círculo</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Ponto</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Imagem</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Pré-visualização</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Desvio do centro</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Desvio horizontal</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Desvio vertical</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Comprimento dos braços</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Espessura</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Espaço</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Ponto central</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Forma em T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Sem braço superior.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Raio</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Lados</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Com 64 o anel fica redondo.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Tamanho</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Imagem</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Nenhuma imagem escolhida</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Imagens (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Todos os ficheiros (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Tamanho</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Largura</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Altura</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Tamanho original da imagem</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Manter proporções</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Desativado, a imagem estica-se à largura e à altura definidas.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Cor</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Contorno</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Largura do contorno</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Cor do contorno</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Rotação</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Suavizar contornos</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Desativado, cada contorno assenta em píxeis inteiros e fica nítido.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Mostrar ou ocultar o seletor de cores</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Sem imagem para mostrar</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Fora do seu ecrã</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>As miras aparecem sobre jogos em janela e sem margens, e os cliques atravessam-nas. Um jogo em ecrã inteiro exclusivo oculta-as, por isso execute-o em janela ou sem margens. Uma macro pode mostrar ou ocultar uma mira pelo seu número.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Lupa</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Uma lente como a mira telescópica de um atirador, o ecrã inteiro ampliado ou um foco de luz que escurece o resto.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Mostrar lupa</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>O que mostra</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Modo</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lente</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Ecrã inteiro</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Foco de luz</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Centrar em</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Centro do ecrã</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Ponteiro</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Mira</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Mira é a primeira mira ativada, com o respetivo desvio.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Zoom</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Forma</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Círculo</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Retângulo</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Tamanho</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Largura</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Altura</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Margem</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Largura da margem</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Cor da margem</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Tamanho do círculo</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Escuridão</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>O Windows não iniciou a lupa.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>A lente e o foco de luz aparecem sobre jogos em janela e sem margens, e os cliques atravessam-nos. O modo Ecrã inteiro amplia todo o ambiente de trabalho com a lupa de ecrã inteiro do Windows. Uma macro pode mostrar ou ocultar a lupa, ou mostrá-la apenas enquanto estiver premida.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Servidor de movimento</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Servidor do protocolo DSU/CemuHook Motion Provider para dados de giroscópio e acelerómetro.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Ativar o servidor de movimento DSU (protocolo CemuHook Motion Provider)</value></data>
@@ -4922,4 +4995,6 @@ Pretende que o PadForge os desinstale agora? Esta operação requer elevação e
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Definir uma palavra-passe</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Desbloquear a Ligação Remota</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Palavra-passe</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Lupa (enquanto premida)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Mostra a lupa enquanto esta macro estiver premida, para mirar com a mira apontada. Configure-a na página Lupa.</value></data>
 </root>

@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>បង្ហាញម៉ឺនុយ ស្រទាប់ និងការប្ដូរប្រូហ្វាល់ខណៈអ្នកលេង។</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ផ្ទៃប៉ះលើអេក្រង់ សម្រាប់ហ្គេមផ្ទាំងប៉ះ PlayStation។</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>រូបភាព កម្មវិធីកំណត់ម៉ោង ឬនាឡិកា នៅពីលើបង្អួចផ្សេងទៀត។</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>សញ្ញាតម្រង់ផ្ទាល់ខ្លួនរបស់អ្នកពីលើហ្គេម។</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>កែវពង្រីក ការពង្រីកពេញអេក្រង់ ឬពន្លឺផ្ដោត។</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>ច្រក, HTTP ធម្មតា, លេខកូដចូលប្រើ</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ភ្ជាប់ឡើងវិញស្វ័យប្រវត្តិ, ច្រក, អត្តសញ្ញាណផ្គូផ្គង, ភ្ជាប់តាមអាសយដ្ឋាន</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>ច្រក កម្មវិធីជំនួស DSX.exe</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ផ្ទាំងត្រួត {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>បង្ហាញ</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>ខណៈកម្មវិធីផ្សេងនៅខាងមុខ ការចុចឆ្លងកាត់ផ្ទាំងត្រួត។ ខណៈ PadForge នៅខាងមុខ អូសវាដោយប៊ូតុងកណ្ដុរខាងស្ដាំ ហើយប្ដូរទំហំវាពីជ្រុងរបស់វា។ ម៉ាក្រូអាចបង្ហាញ ឬលាក់ផ្ទាំងត្រួតតាមលេខរបស់វា។</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>សញ្ញាតម្រង់</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>សញ្ញាតម្រង់នៅពីលើបង្អួចផ្សេងទៀត នៅកណ្ដាលអេក្រង់៖ កាកបាទ រង្វង់ ចំណុច ឬរូបភាពផ្ទាល់ខ្លួនរបស់អ្នក។</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>បន្ថែមសញ្ញាតម្រង់</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>សញ្ញាតម្រង់ {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>បង្ហាញសញ្ញាតម្រង់</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>រចនាប័ទ្ម</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>កាកបាទ</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>រង្វង់</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>ចំណុច</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>រូបភាព</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>មើលជាមុន</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>គម្លាតពីកណ្ដាល</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>គម្លាតផ្ដេក</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>គម្លាតបញ្ឈរ</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>ប្រវែងបន្ទាត់</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>កម្រាស់</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>ចន្លោះ</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>ចំណុចកណ្ដាល</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>រាង T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>គ្មានបន្ទាត់ខាងលើ។</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>កាំ</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>ចំនួនជ្រុង</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>នៅ 64 រង្វង់មានរាងមូល។</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>ទំហំ</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>រូបភាព</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>មិនទាន់បានជ្រើសរើសរូបភាព</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>រូបភាព (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|ឯកសារទាំងអស់ (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>ទំហំ</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>ទទឹង</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>កម្ពស់</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>ទំហំដើមរបស់រូបភាព</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>រក្សាសមាមាត្រ</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>ពេលបិទ រូបភាពលាតតាមទទឹង និងកម្ពស់។</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>ពណ៌</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>បន្ទាត់គែម</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>ទទឹងបន្ទាត់គែម</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>ពណ៌បន្ទាត់គែម</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>ការបង្វិល</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>គែមរលោង</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>ពេលបិទ គែមនីមួយៗស្ថិតលើភីកសែលពេញ ហើយនៅតែមុតច្បាស់។</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>បង្ហាញ ឬលាក់ឧបករណ៍ជ្រើសពណ៌</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>គ្មានរូបភាពសម្រាប់បង្ហាញ</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>នៅក្រៅអេក្រង់របស់វា</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>សញ្ញាតម្រង់បង្ហាញនៅពីលើហ្គេមក្នុងបង្អួច និងគ្មានស៊ុម ហើយការចុចឆ្លងកាត់វា។ ហ្គេមក្នុងរបៀបពេញអេក្រង់ផ្ដាច់មុខលាក់វា ដូច្នេះសូមដំណើរការហ្គេមក្នុងបង្អួច ឬគ្មានស៊ុម។ ម៉ាក្រូអាចបង្ហាញ ឬលាក់សញ្ញាតម្រង់តាមលេខរបស់វា។</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>កែវពង្រីក</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>កែវដូចកែវយឹតកាំភ្លើង អេក្រង់ទាំងមូលដែលបានពង្រីក ឬពន្លឺផ្ដោតដែលធ្វើឲ្យផ្នែកផ្សេងទៀតងងឹត។</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>បង្ហាញកែវពង្រីក</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>អ្វីដែលវាបង្ហាញ</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>របៀប</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>កែវ</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>ពេញអេក្រង់</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>ពន្លឺផ្ដោត</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>ផ្ដោតលើ</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>កណ្ដាលអេក្រង់</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>ទ្រនិចកណ្ដុរ</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>សញ្ញាតម្រង់</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>«សញ្ញាតម្រង់» មានន័យថាសញ្ញាតម្រង់ទីមួយដែលកំពុងបើក រួមទាំងគម្លាតរបស់វា។</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>ការពង្រីក</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>រាង</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>រង្វង់</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>ចតុកោណកែង</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>ទំហំ</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>ទទឹង</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>កម្ពស់</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>ស៊ុម</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>ទទឹងស៊ុម</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>ពណ៌ស៊ុម</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>ទំហំរង្វង់</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>ភាពងងឹត</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows មិនបានចាប់ផ្ដើមកែវពង្រីកទេ។</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>កែវ និងពន្លឺផ្ដោតបង្ហាញនៅពីលើហ្គេមក្នុងបង្អួច និងគ្មានស៊ុម ហើយការចុចឆ្លងកាត់វា។ «ពេញអេក្រង់» ពង្រីកផ្ទៃតុទាំងមូលដោយកែវពង្រីកពេញអេក្រង់របស់ Windows ។ ម៉ាក្រូអាចបង្ហាញ ឬលាក់កែវពង្រីក ឬបង្ហាញវាតែពេលសង្កត់ជាប់ប៉ុណ្ណោះ។</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>ម៉ាស៊ីនមេចលនា</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>ម៉ាស៊ីនមេពិធីការ DSU/CemuHook Motion Provider សម្រាប់ទិន្នន័យហ្ស៊ីរ៉ូ និងឧបករណ៍វាស់សំទុះ។</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>បើកម៉ាស៊ីនមេចលនា DSU (CemuHook Motion Provider Protocol)</value></data>
@@ -4916,4 +4989,6 @@
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>កំណត់ពាក្យសម្ងាត់</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>ដោះសោតំណពីចម្ងាយ</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>ពាក្យសម្ងាត់</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>កែវពង្រីក (ពេលសង្កត់ជាប់)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>បង្ហាញកែវពង្រីកខណៈម៉ាក្រូនេះត្រូវបានសង្កត់ជាប់ សម្រាប់ការតម្រង់មើលតាមកែវយឹត។ កំណត់វានៅលើទំព័រ «កែវពង្រីក»។</value></data>
 </root>

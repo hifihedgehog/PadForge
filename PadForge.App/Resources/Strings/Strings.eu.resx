@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Erakutsi menuak, geruzak eta profil-aldaketak jokatzen duzun bitartean.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Pantailako ukipen-azalera, PlayStation-eko ukipen-paneleko jokoetarako.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Irudi, tenporizadore edo erloju bat beste leihoen gainean.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Zure ikusmira propioa jokoaren gainean.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Lupa bat, pantaila osoko zooma edo fokua.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Ataka, HTTP arrunta, sarbide-kodea</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Birkonexio automatikoa, ataka, parekatze-identitatea, helbidearen bidez konektatzea</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Ataka, DSX.exe ordezkoa</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Gainjartzea {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Erakusten du</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Beste programa bat aurrealdean dagoenean, klikak gainjartzetik igarotzen dira. PadForge aurrealdean dagoenean, arrastatu eskuineko saguaren botoiarekin eta aldatu tamaina bere ertzetik. Makro batek gainjartze bat erakutsi edo ezkutatu dezake bere zenbakiaren bidez.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Ikusmira</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Ikusmirak beste leihoen gainean, pantaila baten erdian: gurutze bat, zirkulu bat, puntu bat edo zure irudi propioa.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Gehitu ikusmira</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Ikusmira {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Erakutsi ikusmira</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Estiloa</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Gurutzea</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Zirkulua</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Puntua</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Irudia</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Aurrebista</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Erditik desplazamendua</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Desplazamendu horizontala</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Desplazamendu bertikala</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Besoaren luzera</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Lodiera</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Tartea</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Erdiko puntua</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T forma</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Goiko besorik gabe.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Erradioa</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Aldeak</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64rekin eraztuna borobila da.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Tamaina</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Irudia</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Ez da irudirik hautatu</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Irudiak (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Fitxategi guztiak (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Tamaina</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Zabalera</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Altuera</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Irudiaren berezko tamaina</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Mantendu proportzioak</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Desaktibatuta, irudia zabalerara eta altuerara luzatzen da.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Kolorea</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Ertza</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Ertzaren zabalera</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Ertzaren kolorea</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Biraketa</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Ertz leunak</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Desaktibatuta, ertz bakoitza pixel osoetan kokatzen da eta zorrotz geratzen da.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Erakutsi edo ezkutatu kolore hautatzailea</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Ez dago irudirik erakusteko</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Bere pantailatik kanpo</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Ikusmirak leiho moduko eta ertzik gabeko jokoen gainean agertzen dira, eta klikak haietatik igarotzen dira. Pantaila oso esklusiboko jokoek ezkutatzen dituzte, beraz exekutatu leiho moduan edo ertzik gabe. Makro batek ikusmira bat erakutsi edo ezkutatu dezake bere zenbakiaren bidez.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Lupa</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Tiratzaile baten ikuskailua bezalako lente bat, pantaila osoa handituta edo gainerakoa ilunten duen fokua.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Erakutsi lupa</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Zer erakusten duen</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Modua</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lentea</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Pantaila osoa</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Fokua</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Erdian jarri</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Pantailaren erdia</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Erakuslea</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Ikusmira</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Ikusmira aktibatuta dagoen lehen ikusmira da, desplazamendua barne.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Zooma</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Forma</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Zirkulua</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Laukizuzena</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Tamaina</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Zabalera</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Altuera</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Ertza</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Ertzaren zabalera</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Ertzaren kolorea</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Zirkuluaren tamaina</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Iluntasuna</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windowsek ez du lupa abiarazi.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Lenteak eta fokuak leiho moduko eta ertzik gabeko jokoen gainean agertzen dira, eta klikak haietatik igarotzen dira. Pantaila osoak mahaigain osoa handitzen du Windowsen pantaila osoko lupa erabiliz. Makro batek lupa erakutsi edo ezkutatu dezake, edo eutsita dagoen bitartean soilik erakutsi.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Mugimendu-zerbitzaria</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protokoloaren zerbitzaria, giroskopio- eta azelerometro-datuetarako.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Gaitu DSU mugimendu-zerbitzaria (CemuHook Motion Provider protokoloa)</value></data>
@@ -4914,4 +4987,6 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Ezarri pasahitza</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Desblokeatu Urruneko lotura</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Pasahitza</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Lupa (eutsita)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Lupa erakusten du makro honi eutsita dagoen bitartean, ikuskailuarekin apuntatzeko. Ezarri Lupa orrian.</value></data>
 </root>

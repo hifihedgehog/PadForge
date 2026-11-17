@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Prikažite menije, plasti in zamenjave profilov med igranjem.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Zaslonska površina na dotik za igre s sledilno ploščico PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Slika, časovnik ali ura nad drugimi okni.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Svoj merilni križ nad igro.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Povečevalna leča, povečava celotnega zaslona ali reflektor.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Vrata, navaden HTTP, koda za dostop</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Samodejna ponovna povezava, vrata, identiteta seznanjanja, povezava prek naslova</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Vrata, nadomestek DSX.exe</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Prekrivni prikaz {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Prikaz</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Medtem ko je v ospredju drug program, kliki potekajo skozi prekrivni prikaz. Medtem ko je v ospredju PadForge, ga povlecite z desnim gumbom miške in mu spremenite velikost z vogala. Makro lahko prekrivni prikaz pokaže ali skrije po njegovi številki.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Merilni križ</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Merilni križi nad drugimi okni, na sredini zaslona: križ, krog, pika ali vaša slika.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Dodaj merilni križ</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Merilni križ {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Pokaži merilni križ</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Slog</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Križ</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Krog</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Pika</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Slika</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Predogled</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Odmik od sredine</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Vodoravni odmik</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Navpični odmik</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Dolžina krakov</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Debelina</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Reža</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Središčna pika</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Oblika T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Brez zgornjega kraka.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Polmer</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Stranice</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Pri 64 je obroč okrogel.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Velikost</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Slika</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Slika ni izbrana</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Slike (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Vse datoteke (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Velikost</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Širina</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Višina</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Izvirna velikost slike</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Ohrani razmerje</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Če je izklopljeno, se slika raztegne na nastavljeno širino in višino.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Barva</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Obroba</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Širina obrobe</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Barva obrobe</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Zasuk</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Zglajeni robovi</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Če je izklopljeno, vsak rob leži na celih slikovnih pikah in ostane oster.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Pokaži ali skrij izbirnik barve</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Ni slike za prikaz</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Zunaj svojega zaslona</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Merilni križi se prikažejo nad igrami v oknu in brez obrobe, kliki pa gredo skoznje. Igra v izključnem celozaslonskem načinu jih skrije, zato jo zaženite v oknu ali brez obrobe. Makro lahko merilni križ pokaže ali skrije po njegovi številki.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Povečevalnik</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Leča kot puškin ciljnik, povečava celotnega zaslona ali reflektor, ki zatemni preostanek.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Pokaži povečevalnik</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Kaj prikazuje</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Način</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Leča</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Cel zaslon</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Reflektor</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Osredotoči na</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Sredina zaslona</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Kazalec</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Merilni križ</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Merilni križ pomeni prvi vklopljeni merilni križ z njegovim odmikom vred.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Povečava</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Oblika</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Krog</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Pravokotnik</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Velikost</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Širina</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Višina</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Okvir</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Širina okvirja</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Barva okvirja</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Velikost kroga</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Temnost</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ni zagnal povečevalnika.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Leča in reflektor se prikažeta nad igrami v oknu in brez obrobe, kliki pa gredo skoznje. Celozaslonski način poveča celotno namizje z Windowsovim celozaslonskim povečevalnikom. Makro lahko povečevalnik pokaže ali skrije ali pa ga pokaže le med držanjem.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Strežnik gibanja</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Strežnik protokola DSU/CemuHook Motion Provider za podatke žiroskopa in merilnika pospeška.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Omogoči strežnik gibanja DSU (protokol CemuHook Motion Provider)</value></data>
@@ -5236,6 +5309,10 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Prekrivni prikaz zaslona PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Še ni ničesar za prikaz. Na strani Prekrivni prikaz zaslona, pod Dodatki, izberite, kaj prikazuje.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Preklopi prekrivni prikaz zaslona</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Preklopi merilni križ</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Preklopi povečevalnik</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Vsi merilni križi</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Merilni križ</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Preklopi prekrivni prikaz zaslona</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Prekrivni prikaz zaslona</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Prekrivni prikaz ne prikazuje ničesar.</value></data>
@@ -5256,6 +5333,11 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Prekrivni prikaz</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Vsi prekrivni prikazi</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Preklopi prekrivni prikaz zaslona {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Preklopi merilni križ</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Preklopi merilni križ {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Preklopi povečevalnik</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Povečevalnik (med držanjem)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Pokaže povečevalnik, dokler je ta makro pridržan, za ciljanje skozi merek. Nastavite ga na strani Povečevalnik.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Prikaži slike {0}: {1} × {2} ms, do naslednjega makra za prikaz ali način</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Uvoz profila</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, datoteka {1}.</value></data>
@@ -5284,7 +5366,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge tega izhoda ne prepozna: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge nima takega ukaza: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Virtualni krmilnik nima takega gumba: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Merilni križ obstaja samo znotraj reWASD. Svojo sliko prikažite s prekrivnim prikazom zaslona.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD hrani svoje merilne križe v lastnih nastavitvah, ne v konfiguraciji. Svojega nastavite na strani Merilni križ.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Tresenje in drhtenje palčke se ni preneslo.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analogne točke aktivacije tipk se niso prenesle.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD je ta krmilnik prek adapterja poslal na drugo napravo. PadForge ga predvaja na tem računalniku, Oddaljena povezava pa ga pošlje na drug računalnik, na katerem teče PadForge.</value></data>
@@ -5576,7 +5658,6 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Osvetlitev tipk PadForge (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro ne more pritisniti {0}. Vrstica v razdelku Preslikave lahko.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge izvaja osem prekrivnih prikazov zaslona, to pa je deveti ali deseti merilni križ iz reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge bere Žiroskop levo in desno iz nagiba, Nagnjenost pa iz zasuka, kot je privzeto v reWASD. Nastavitve reWASD lahko to dvoje zamenjajo, ta datoteka pa ne pove, ali so bile zamenjani.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>V načinu Nagib je Nagnjenost v reWASD vrtenje okoli navpične osi, senzor gibanja pa za to vrtenje ne daje kota.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge bere diagonalo sledilne ploščice kot dve smeri hkrati, kar ploščica sporoči samo, kadar je njen Način smernega križa v razdelku Gibanje in dotik nastavljen na 8 smeri.</value></data>

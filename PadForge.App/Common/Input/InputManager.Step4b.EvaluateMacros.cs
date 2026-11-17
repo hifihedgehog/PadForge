@@ -2662,7 +2662,8 @@ namespace PadForge.Common.Input
                  or MacroActionType.RepeatKeyWhileHeld
                  or MacroActionType.RepeatVcButtonWhileHeld
                  or MacroActionType.RepeatVcAxisWhileHeld
-                 or MacroActionType.VoiceListenWhileHeld;
+                 or MacroActionType.VoiceListenWhileHeld
+                 or MacroActionType.MagnifierWhileHeld;
 
         /// <summary>True when every action in the macro is continuous, i.e.
         /// the run can never complete a sequence pass and only a release can
@@ -2838,6 +2839,11 @@ namespace PadForge.Common.Input
                     // held. Release needs no callback because the gate decays
                     // ~100 ms after the last beat.
                     PadForge.Services.VoiceMacroService.NoteListenHeld();
+                    break;
+                case MacroActionType.MagnifierWhileHeld:
+                    // The magnifier while held (#585): Voice Listen While
+                    // Held's heartbeat, which lapses after the last beat.
+                    NoteMagnifierHeld();
                     break;
                 case MacroActionType.RepeatVcButtonWhileHeld:
                     // Turbo for a VC button (issue #9 wave 1b): the ON half of
@@ -3399,6 +3405,16 @@ namespace PadForge.Common.Input
 
                 case MacroActionType.ToggleScreenOverlay:
                     RequestScreenOverlayToggle(action.ScreenOverlayNumber);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleCrosshair:
+                    RequestCrosshairToggle(action.CrosshairNumber);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleMagnifier:
+                    RequestMagnifierToggle();
                     AdvanceAction(macro);
                     break;
 
@@ -5840,6 +5856,10 @@ namespace PadForge.Common.Input
                     // dispatch above: same heartbeat, same decay contract.
                     PadForge.Services.VoiceMacroService.NoteListenHeld();
                     break;
+                case MacroActionType.MagnifierWhileHeld:
+                    // The twin of the slot-macro dispatch above (#585).
+                    NoteMagnifierHeld();
+                    break;
                 case MacroActionType.RepeatVcButtonWhileHeld:
                     // Extended twin of the Gamepad-path turbo (issue #9 wave
                     // 1b): the ON half ORs the action's wide button words in,
@@ -6377,6 +6397,16 @@ namespace PadForge.Common.Input
 
                 case MacroActionType.ToggleScreenOverlay:
                     RequestScreenOverlayToggle(action.ScreenOverlayNumber);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleCrosshair:
+                    RequestCrosshairToggle(action.CrosshairNumber);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleMagnifier:
+                    RequestMagnifierToggle();
                     AdvanceAction(macro);
                     break;
 

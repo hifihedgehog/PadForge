@@ -1934,4 +1934,5 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Ata mokolo te</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Tango couche ezali kosala etikaka flyout na écran kino couche ebongwana. Mpo na sekondi 2 elakisaka yango tango couche ebandi kosala, sima etikaka yango ekende. Na Ata mokolo te, couche oyo elakisaka flyout te, mpe Base elakisaka yango te tango couche esili.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Mpo na sekondi 2 elakisaka nkombo ya Base tango couche Shift esili. Na Ata mokolo te, Base elakisaka flyout te.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Bilili (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Ba fichier nyonso (*.*)|*.*</value></data>
 </root>

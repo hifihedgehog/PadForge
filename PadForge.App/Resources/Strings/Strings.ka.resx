@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>აჩვენეთ მენიუები, შრეები და პროფილის გადართვები თამაშისას.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>ეკრანული სენსორული ზედაპირი PlayStation-ის ტაჩპედის თამაშებისთვის.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>სურათი, ტაიმერი ან საათი სხვა ფანჯრების თავზე.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>თქვენი საკუთარი სამიზნე თამაშის თავზე.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>ლინზა, მთელი ეკრანის გადიდება ან პროჟექტორი.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>პორტი, უბრალო HTTP, წვდომის კოდი</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ავტომატური გადაკავშირება, პორტი, დაწყვილების პირადობა, დაკავშირება მისამართით</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>პორტი, DSX.exe-ის შემცვლელი</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>გადაფარვა {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>აჩვენებს</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>სანამ სხვა პროგრამაა წინა პლანზე, დაწკაპუნებები გადაფარვას გაივლის. სანამ PadForge არის წინა პლანზე, გადაათრიეთ ის მაუსის მარჯვენა ღილაკით და ზომა შეცვალეთ მისი კუთხიდან. მაკროს შეუძლია გადაფარვის ჩვენება ან დამალვა მისი ნომრით.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>სამიზნე</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>სამიზნეები სხვა ფანჯრების თავზე, ეკრანის ცენტრში: ჯვარი, წრე, წერტილი ან თქვენი საკუთარი სურათი.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>სამიზნის დამატება</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>სამიზნე {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>სამიზნის ჩვენება</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>სტილი</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>ჯვარი</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>წრე</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>წერტილი</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>სურათი</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>გადახედვა</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>ცენტრიდან გადაწევა</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>ჰორიზონტალური გადაწევა</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>ვერტიკალური გადაწევა</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>მკლავის სიგრძე</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>სისქე</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>დაშორება</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>ცენტრალური წერტილი</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T ფორმა</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>ზედა მკლავის გარეშე.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>რადიუსი</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>გვერდები</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64 გვერდზე რგოლი მრგვალია.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>ზომა</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>სურათი</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>სურათი არჩეული არ არის</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>სურათები (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|ყველა ფაილი (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>ზომა</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>სიგანე</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>სიმაღლე</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>სურათის საკუთარი ზომა</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>პროპორციების შენარჩუნება</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>გამორთულზე სურათი იჭიმება მითითებულ სიგანემდე და სიმაღლემდე.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>ფერი</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>კონტური</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>კონტურის სისქე</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>კონტურის ფერი</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>მობრუნება</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>გლუვი კიდეები</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>გამორთულზე ყველა კიდე მთელ პიქსელებზე მოდის და მკვეთრი რჩება.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>ფერის ამრჩევის ჩვენება ან დამალვა</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>ნაჩვენები სურათი არ არის</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>ეკრანს გარეთაა</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>სამიზნეები ჩანს ფანჯრულ და უჩარჩოო თამაშებზე და დაწკაპუნებები მათ გაივლის. განსაკუთრებულ სრულეკრანიან რეჟიმში მყოფ თამაშს ისინი დაფარული აქვს, ამიტომ გაუშვით ის ფანჯრულ ან უჩარჩოო რეჟიმში. მაკროს შეუძლია სამიზნის ჩვენება ან დამალვა მისი ნომრით.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>გამადიდებელი</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>ლინზა სნაიპერული ოპტიკის მსგავსად, მთელი ეკრანის გადიდება ან პროჟექტორი, რომელიც დანარჩენს ბნელს ხდის.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>გამადიდებლის ჩვენება</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>რას აჩვენებს</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>რეჟიმი</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>ლინზა</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>მთელი ეკრანი</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>პროჟექტორი</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>ცენტრირება</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>ეკრანის ცენტრი</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>მაჩვენებელი</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>სამიზნე</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>სამიზნე ნიშნავს პირველ ჩართულ სამიზნეს, გადაწევის ჩათვლით.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>მასშტაბი</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>ფორმა</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>წრე</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>მართკუთხედი</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>ზომა</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>სიგანე</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>სიმაღლე</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>ჩარჩო</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>ჩარჩოს სისქე</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>ჩარჩოს ფერი</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>წრის ზომა</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>სიბნელე</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ვერ გაუშვა გამადიდებელი.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>ლინზა და პროჟექტორი ჩანს ფანჯრულ და უჩარჩოო თამაშებზე და დაწკაპუნებები მათ გაივლის. მთელი ეკრანის რეჟიმი ზრდის მთელ სამუშაო მაგიდას Windows გამადიდებლის სრულეკრანიანი რეჟიმით. მაკროს შეუძლია გამადიდებლის ჩვენება ან დამალვა, ან ჩვენება მხოლოდ დაჭერისას.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>მოძრაობის სერვერი</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider პროტოკოლის სერვერი გიროსკოპისა და აქსელერომეტრის მონაცემებისთვის.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU მოძრაობის სერვერის ჩართვა (CemuHook Motion Provider Protocol)</value></data>
@@ -4903,4 +4976,6 @@
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>პაროლის დაყენება</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>დისტანციური კავშირის განბლოკვა</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>პაროლი</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>გამადიდებელი (დაჭერისას)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>აჩვენებს გამადიდებელს, სანამ ეს მაკრო დაჭერილია, სამიზნით დასამიზნებლად. დააყენეთ ის გამადიდებლის გვერდზე.</value></data>
 </root>

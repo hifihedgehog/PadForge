@@ -1325,21 +1325,28 @@ namespace PadForge.Tests
             Assert.Single(icons.Descendants(), e => (string)e.Attributes().FirstOrDefault(a => a.Name.LocalName == "Key") == "ChipSteel");
         }
 
-        /// <summary>On Extras: Tab reaches a Screen Overlay card's Remove
-        /// before the Reset All at its right, and the hint to point a game
-        /// at a port shows for a game that is read from one.</summary>
+        /// <summary>On Extras: Tab reaches a Screen Overlay card's or a
+        /// crosshair card's Remove before the Reset All at its right, and the
+        /// hint to point a game at a port shows for a game that is read from
+        /// one.</summary>
         [Fact]
         public void ExtrasRows_FollowTheEyeAndTheGame()
         {
             var page = Xml("PadForge.App", "Views", "ExtrasPage.xaml");
-            var remove = page.Descendants().Single(e => At(e, "AutomationProperties.AutomationId") == "{Binding RemoveId}");
-            var resetAll = page.Descendants().Single(e => At(e, "AutomationProperties.AutomationId") == "{Binding ResetAllId}");
-            Assert.Same(remove.Parent, resetAll.Parent);
-            Assert.Equal("Local", At(remove.Parent, "KeyboardNavigation.TabNavigation"));
-            Assert.Equal("0", At(remove, "TabIndex"));
-            Assert.Equal("1", At(resetAll, "TabIndex"));
-            // Reset All is written first: the head docks from its end.
-            Assert.Contains(remove, resetAll.ElementsAfterSelf());
+            var removes = page.Descendants().Where(e => At(e, "AutomationProperties.AutomationId") == "{Binding RemoveId}").ToList();
+            var resets = page.Descendants().Where(e => At(e, "AutomationProperties.AutomationId") == "{Binding ResetAllId}").ToList();
+            // The Screen Overlay card's head and the crosshair card's.
+            Assert.Equal(2, removes.Count);
+            Assert.Equal(2, resets.Count);
+            foreach (var remove in removes)
+            {
+                var resetAll = Assert.Single(resets, r => r.Parent == remove.Parent);
+                Assert.Equal("Local", At(remove.Parent, "KeyboardNavigation.TabNavigation"));
+                Assert.Equal("0", At(remove, "TabIndex"));
+                Assert.Equal("1", At(resetAll, "TabIndex"));
+                // Reset All is written first: the head docks from its end.
+                Assert.Contains(remove, resetAll.ElementsAfterSelf());
+            }
 
             var hint = page.Descendants().Single(e => At(e, "Text") == "{Binding Extras_StatusHint_GameTelemetry" + S);
             Assert.Equal("{Binding GameTelemetryReadsUdp, Converter={StaticResource BoolToVisibilityConverter}}", At(hint, "Visibility"));

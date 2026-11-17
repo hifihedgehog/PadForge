@@ -116,6 +116,8 @@ namespace PadForge.Tests
             "Dashboard_Overlays",
             "Dashboard_TouchpadOverlay",
             "Dashboard_ScreenOverlay",
+            "Extras_Crosshair_Title",
+            "Extras_Magnifier_Title",
         };
 
         /// <summary>The Extras page carries the ten extras in the decided
@@ -149,14 +151,18 @@ namespace PadForge.Tests
             int play = At("{Binding Extras_Group_Play,"), send = At("{Binding Extras_Group_Send,"), screen = At("{Binding Extras_Group_Screen,");
             int web = At("x:Name=\"WebControllerTile\""), twitch = At("x:Name=\"TwitchChatTile\"");
             int remote = At("x:Name=\"RemoteLinkTile\""), mods = At("x:Name=\"GameModsTile\"");
-            int overlays = At("x:Name=\"OverlaysTile\""), last = At("x:Name=\"ScreenOverlayTile\"");
+            int overlays = At("x:Name=\"OverlaysTile\""), last = At("x:Name=\"MagnifierTile\"");
             Assert.True(play < web && twitch < send && send < remote && mods < screen && screen < overlays && overlays < last,
                 "a group heading is not over its own tiles");
 
-            // The code's list is the same ten keys in the same order, and
-            // each names a tile, a page and a way back.
+            // The code's list is the same twelve keys in the same order, and
+            // each names a tile, a page and a way back. The ten that were the
+            // Dashboard's cards keep its title strings, and the two added
+            // since (#585) have Extras_ ones.
             string[] keys = PadForge.Views.ExtrasPage.Keys.ToArray();
-            Assert.Equal(ExtrasTitleKeys.Select(k => k.Substring("Dashboard_".Length)), keys);
+            Assert.Equal(ExtrasTitleKeys.Select(k => k.StartsWith("Dashboard_", StringComparison.Ordinal)
+                ? k.Substring("Dashboard_".Length)
+                : System.Text.RegularExpressions.Regex.Match(k, @"^Extras_(\w+)_Title$").Groups[1].Value), keys);
             int before = -1;
             foreach (string key in keys)
             {

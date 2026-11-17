@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>खेळताना मेनू, लेयर आणि प्रोफाइल बदल दाखवा.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation टचपॅड गेमसाठी स्क्रीनवरील स्पर्श पृष्ठभाग.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>इतर विंडोच्या वर चित्र, टाइमर किंवा घड्याळ.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>गेमवर तुमचा स्वतःचा क्रॉसहेअर.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>झूम लेन्स, पूर्ण स्क्रीन झूम किंवा स्पॉटलाइट.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>पोर्ट, साधा HTTP, ॲक्सेस कोड</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>आपोआप पुन्हा कनेक्ट, पोर्ट, पेअरिंग ओळख, पत्त्याद्वारे कनेक्ट करा</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>पोर्ट, DSX.exe स्टँड इन</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ओव्हरले {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>दाखवते</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>दुसरा प्रोग्राम पुढे असताना क्लिक ओव्हरलेमधून आरपार जातात. PadForge पुढे असताना ते उजव्या माउस बटणाने ड्रॅग करा आणि त्याच्या कोपऱ्यातून आकार बदला. मॅक्रो ओव्हरले त्याच्या क्रमांकाने दाखवू किंवा लपवू शकतो.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>क्रॉसहेअर</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>इतर विंडोच्या वर डिस्प्लेच्या मध्यभागी क्रॉसहेअर: क्रॉस, वर्तुळ, बिंदू किंवा तुमचे स्वतःचे चित्र.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>क्रॉसहेअर जोडा</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>क्रॉसहेअर {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>क्रॉसहेअर दाखवा</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>शैली</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>क्रॉस</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>वर्तुळ</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>बिंदू</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>चित्र</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>पूर्वावलोकन</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>मध्यापासूनचे अंतर</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>आडवे अंतर</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>उभे अंतर</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>रेषेची लांबी</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>जाडी</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>फट</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>मध्यभागी बिंदू</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T आकार</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>वरची रेषा नाही.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>त्रिज्या</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>बाजू</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64 वर कडा गोल दिसते.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>आकार</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>चित्र</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>चित्र निवडलेले नाही</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>चित्रे (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|सर्व फाइल (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>आकार</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>रुंदी</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>उंची</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>चित्राचा मूळ आकार</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>प्रमाण कायम ठेवा</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>बंद असताना चित्र रुंदी आणि उंचीनुसार ताणले जाते.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>रंग</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>बाह्यरेषा</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>बाह्यरेषेची रुंदी</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>बाह्यरेषेचा रंग</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>फिरवणे</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>कडा गुळगुळीत करा</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>बंद असताना प्रत्येक कडा पूर्ण पिक्सेलवर बसते आणि धारदार राहते.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>रंग निवडक दाखवा किंवा लपवा</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>दाखवण्यासाठी चित्र नाही</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>डिस्प्लेबाहेर</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>क्रॉसहेअर विंडो आणि बॉर्डरलेस गेमवर दिसतात आणि क्लिक त्यांच्यामधून आरपार जातात. एक्सक्लूसिव्ह फुल स्क्रीनमधील गेम त्यांना लपवतो, म्हणून तो विंडो किंवा बॉर्डरलेस मोडमध्ये चालवा. मॅक्रो क्रॉसहेअर त्याच्या क्रमांकाने दाखवू किंवा लपवू शकतो.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>मॅग्निफायर</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>स्निपर स्कोपसारखी लेन्स, संपूर्ण डिस्प्ले झूम केलेला किंवा बाकीचा भाग गडद करणारा स्पॉटलाइट.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>मॅग्निफायर दाखवा</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>काय दिसते</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>मोड</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>लेन्स</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>पूर्ण स्क्रीन</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>स्पॉटलाइट</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>यावर केंद्रित करा</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>डिस्प्लेचा मध्य</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>पॉइंटर</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>क्रॉसहेअर</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>क्रॉसहेअर म्हणजे चालू असलेला पहिला क्रॉसहेअर, त्याच्या अंतरासह.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>झूम</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>आकार</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>वर्तुळ</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>आयत</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>आकारमान</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>रुंदी</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>उंची</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>किनार</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>किनारीची रुंदी</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>किनारीचा रंग</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>वर्तुळाचा आकार</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>गडदपणा</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ने मॅग्निफायर सुरू केला नाही.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>लेन्स आणि स्पॉटलाइट विंडो आणि बॉर्डरलेस गेमवर दिसतात आणि क्लिक त्यांच्यामधून आरपार जातात. पूर्ण स्क्रीन Windows च्या फुल स्क्रीन मॅग्निफायरने संपूर्ण डेस्कटॉप झूम करते. मॅक्रो मॅग्निफायर दाखवू किंवा लपवू शकतो, किंवा तो फक्त दाबून ठेवताना दाखवू शकतो.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>मोशन सर्व्हर</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>जायरो आणि ॲक्सेलेरोमीटर डेटासाठी DSU/CemuHook Motion Provider प्रोटोकॉल सर्व्हर.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU मोशन सर्व्हर सक्षम करा (CemuHook Motion Provider प्रोटोकॉल)</value></data>
@@ -4902,4 +4975,6 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>पासवर्ड सेट करा</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>रिमोट लिंक अनलॉक करा</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>पासवर्ड</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>मॅग्निफायर (दाबून ठेवताना)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>हा मॅक्रो दाबून ठेवला असताना मॅग्निफायर दाखवतो, दृश्यावर नेम धरण्यासाठी. तो मॅग्निफायर पानावर सेट करा.</value></data>
 </root>

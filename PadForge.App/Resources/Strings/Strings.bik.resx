@@ -1351,4 +1351,5 @@
   <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
   <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
   <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Mga litrato (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Gabos na file (*.*)|*.*</value></data>
 </root>

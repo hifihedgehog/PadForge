@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>খেলার সময় মেনু, লেয়ার ও প্রোফাইল বদল দেখান।</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation টাচপ্যাড গেমের জন্য অন-স্ক্রিন টাচ সারফেস।</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>অন্য উইন্ডোর ওপরে ছবি, টাইমার বা ঘড়ি।</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>গেমের ওপরে আপনার নিজের ক্রসহেয়ার।</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>জুম লেন্স, পূর্ণ স্ক্রিন জুম বা স্পটলাইট।</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>পোর্ট, সাধারণ HTTP, অ্যাক্সেস কোড</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>স্বয়ংক্রিয় পুনঃসংযোগ, পোর্ট, পেয়ারিংয়ের পরিচয়, ঠিকানা দিয়ে সংযোগ</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>পোর্ট, DSX.exe বদলি</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ওভারলে {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>দেখায়</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>অন্য কোনো প্রোগ্রাম সামনে থাকলে ক্লিক ওভারলে ভেদ করে চলে যায়। PadForge সামনে থাকলে মাউসের ডান বোতাম দিয়ে এটি টেনে সরান এবং এর কোণ থেকে মাপ বদলান। ম্যাক্রো নম্বর ধরে একটি ওভারলে দেখাতে বা লুকাতে পারে।</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>ক্রসহেয়ার</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>অন্য উইন্ডোর ওপরে ডিসপ্লের মাঝখানে ক্রসহেয়ার: ক্রস, বৃত্ত, বিন্দু বা আপনার নিজের ছবি।</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>ক্রসহেয়ার যোগ করুন</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>ক্রসহেয়ার {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>ক্রসহেয়ার দেখান</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>ধরন</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>ক্রস</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>বৃত্ত</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>বিন্দু</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>ছবি</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>প্রিভিউ</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>কেন্দ্র থেকে সরানো</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>অনুভূমিক সরানো</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>উল্লম্ব সরানো</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>বাহুর দৈর্ঘ্য</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>পুরুত্ব</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>ফাঁক</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>মাঝের বিন্দু</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T আকৃতি</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>ওপরের বাহু নেই।</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>ব্যাসার্ধ</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>বাহুর সংখ্যা</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64 হলে রিংটি গোল হয়।</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>মাপ</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>ছবি</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>কোনো ছবি বাছাই করা হয়নি</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>ছবি (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|সব ফাইল (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>মাপ</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>প্রস্থ</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>উচ্চতা</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>ছবির নিজস্ব মাপ</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>অনুপাত ঠিক রাখুন</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>বন্ধ থাকলে ছবি প্রস্থ ও উচ্চতা অনুযায়ী টেনে বড় বা ছোট হয়।</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>রং</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>বাইরের রেখা</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>বাইরের রেখার প্রস্থ</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>বাইরের রেখার রং</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>ঘোরানো</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>মসৃণ কিনারা</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>বন্ধ থাকলে প্রতিটি কিনারা পূর্ণ পিক্সেলে বসে এবং ধারালো থাকে।</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>রং বাছাইয়ের অংশ দেখান বা লুকান</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>দেখানোর মতো ছবি নেই</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>ডিসপ্লের বাইরে</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>ক্রসহেয়ার উইন্ডোড ও বর্ডারলেস গেমের ওপরে দেখা যায় এবং ক্লিক এর ভেতর দিয়ে চলে যায়। এক্সক্লুসিভ ফুল স্ক্রিনে চলা গেম এগুলো ঢেকে দেয়, তাই গেমটি উইন্ডোড বা বর্ডারলেস মোডে চালান। ম্যাক্রো নম্বর ধরে একটি ক্রসহেয়ার দেখাতে বা লুকাতে পারে।</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>ম্যাগনিফায়ার</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>স্নাইপার স্কোপের মতো লেন্স, পুরো ডিসপ্লে জুম করা, বা বাকি অংশ অন্ধকার করা স্পটলাইট।</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>ম্যাগনিফায়ার দেখান</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>যা দেখানো হয়</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>মোড</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>লেন্স</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>পূর্ণ স্ক্রিন</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>স্পটলাইট</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>কেন্দ্র</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>ডিসপ্লের কেন্দ্র</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>পয়েন্টার</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>ক্রসহেয়ার</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>ক্রসহেয়ার বলতে সরানো অবস্থানসহ চালু থাকা প্রথম ক্রসহেয়ার বোঝায়।</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>জুম</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>আকৃতি</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>বৃত্ত</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>আয়তক্ষেত্র</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>মাপ</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>প্রস্থ</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>উচ্চতা</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>বর্ডার</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>বর্ডারের প্রস্থ</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>বর্ডারের রং</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>বৃত্তের মাপ</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>অন্ধকারের মাত্রা</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ম্যাগনিফায়ার চালু করেনি।</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>লেন্স ও স্পটলাইট উইন্ডোড ও বর্ডারলেস গেমের ওপরে দেখা যায় এবং ক্লিক এগুলোর ভেতর দিয়ে চলে যায়। পূর্ণ স্ক্রিন মোড Windowsের পূর্ণ স্ক্রিন ম্যাগনিফায়ার দিয়ে পুরো ডেস্কটপ জুম করে। ম্যাক্রো ম্যাগনিফায়ার দেখাতে বা লুকাতে পারে, অথবা শুধু ধরে রাখা অবস্থায় দেখাতে পারে।</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>মোশন সার্ভার</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>জাইরো ও অ্যাক্সিলেরোমিটার ডেটার জন্য DSU/CemuHook Motion Provider প্রোটোকল সার্ভার।</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU মোশন সার্ভার সক্ষম করুন (CemuHook Motion Provider প্রোটোকল)</value></data>
@@ -5236,6 +5309,10 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge স্ক্রিন ওভারলে</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>এখনও দেখানোর কিছু নেই। এক্সট্রার অধীনে স্ক্রিন ওভারলে পাতায় গিয়ে কী দেখাবে তা বেছে নিন।</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>স্ক্রিন ওভারলে টগল করুন</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>ক্রসহেয়ার টগল করুন</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>ম্যাগনিফায়ার টগল করুন</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>প্রতিটি ক্রসহেয়ার</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>ক্রসহেয়ার</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>স্ক্রিন ওভারলে টগল করুন</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>স্ক্রিন ওভারলে</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>ওভারলে কিছু দেখায় না।</value></data>
@@ -5256,6 +5333,11 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>ওভারলে</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>প্রতিটি ওভারলে</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>স্ক্রিন ওভারলে {0} টগল করুন</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>ক্রসহেয়ার টগল করুন</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>ক্রসহেয়ার {0} টগল করুন</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>ম্যাগনিফায়ার টগল করুন</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>ম্যাগনিফায়ার (ধরে রাখা অবস্থায়)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>এই ম্যাক্রো ধরে রাখা অবস্থায় ম্যাগনিফায়ার দেখায়, এইম ডাউন সাইটসের জন্য। এটি ম্যাগনিফায়ার পেজে সেট করুন।</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>{0} ছবি দেখান: {1} × {2} ms, পরের দেখান বা মোড ম্যাক্রো পর্যন্ত</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>প্রোফাইল ইমপোর্ট</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, একটি {1} ফাইল।</value></data>
@@ -5284,7 +5366,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge এই আউটপুটটি চিনতে পারে না: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge-এ এমন কোনো কমান্ড নেই: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলারে এমন কোনো বোতাম নেই: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>ক্রসহেয়ার reWASD-এর ভেতরেই থাকে। নিজের ছবি দেখাতে স্ক্রিন ওভারলে ব্যবহার করুন।</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD তার ক্রসহেয়ার নিজের সেটিংসে রাখে, কনফিগে নয়। আপনার ক্রসহেয়ার ক্রসহেয়ার পেজে সেট করুন।</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>স্টিকের কাঁপুনি ও ঝাঁকুনি আনা যায়নি।</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>অ্যানালগ কী অ্যাকচুয়েশন পয়েন্ট আনা যায়নি।</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD এই কন্ট্রোলারটিকে একটি অ্যাডাপ্টারের মাধ্যমে অন্য ডিভাইসে পাঠাত। PadForge এটি এই পিসিতে চালায়, আর রিমোট লিংক এটিকে PadForge চালানো অন্য পিসিতে পাঠায়।</value></data>
@@ -5576,7 +5658,6 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro প্রোফাইল (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge কী লাইট (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>ম্যাক্রো {0} চাপতে পারে না। “ম্যাপিং” অংশের একটি সারি পারে।</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge আটটি স্ক্রিন ওভারলে চালায়, আর এটি reWASD-এর নবম বা দশম ক্রসহেয়ার।</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge জাইরোর বাম ও ডান রোল থেকে এবং হেলানো ইয়ো থেকে পড়ে, যা reWASD-এর ডিফল্ট। reWASD-এর পছন্দ থেকে এ দুটি অদলবদল করা যায়, আর এই ফাইল বলে না অদলবদল হয়েছিল কি না।</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>টিল্ট মোডে reWASD-এর হেলানো হলো উল্লম্ব অক্ষ ঘিরে ঘোরা, আর মোশন সেন্সর সেই ঘোরার কোনো কোণ দেয় না।</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge টাচপ্যাডের কোণাকুণি দিককে একসঙ্গে দুটি দিক হিসেবে পড়ে, যা টাচপ্যাড শুধু তখনই জানায় যখন “মোশন ও টাচ” অংশে এর ডি-প্যাড মোড 8-দিক থাকে।</value></data>

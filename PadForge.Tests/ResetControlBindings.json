@@ -697,6 +697,12 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_CrosshairNumber_14090",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "CrosshairNumber"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_MacroAction_ScreenFrames_13102",
     "Owner": "PadForge.ViewModels.MacroAction",
     "Property": "ScreenFrames"
@@ -1420,5 +1426,215 @@
     "Id": "Reset_SettingsViewModel_NovintFalconEnabled_13110",
     "Owner": "PadForge.ViewModels.SettingsViewModel",
     "Property": "NovintFalconEnabled"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_Enabled_58501",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "Enabled"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_StyleIndex_58502",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "StyleIndex"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_Display_58503",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "Display"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_OffsetX_58504",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "OffsetX"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_Length_58505",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "Length"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_Radius_58510",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "Radius"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_Sides_58511",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "Sides"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_Thickness_58506",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "Thickness"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_Gap_58507",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "Gap"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_CenterDot_58508",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "CenterDot"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_TShape_58509",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "TShape"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_DotSize_58512",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "DotSize"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_ImagePath_58513",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "ImagePath"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_ImageWidth_58514",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "ImageWidth"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_KeepProportions_58515",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "KeepProportions"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_ColorHex_58516",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "ColorHex"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_OpacityPercent_58517",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "OpacityPercent"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_Outline_58518",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "Outline"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_OutlineThickness_58519",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "OutlineThickness"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_OutlineHex_58520",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "OutlineHex"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_Rotation_58521",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "Rotation"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_CrosshairItem_SmoothEdges_58522",
+    "Owner": "PadForge.ViewModels.CrosshairItem",
+    "Property": "SmoothEdges"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_MagnifierItem_Enabled_58530",
+    "Owner": "PadForge.ViewModels.MagnifierItem",
+    "Property": "Enabled"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_MagnifierItem_ModeIndex_58531",
+    "Owner": "PadForge.ViewModels.MagnifierItem",
+    "Property": "ModeIndex"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_MagnifierItem_FollowIndex_58532",
+    "Owner": "PadForge.ViewModels.MagnifierItem",
+    "Property": "FollowIndex"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_MagnifierItem_Display_58533",
+    "Owner": "PadForge.ViewModels.MagnifierItem",
+    "Property": "Display"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_MagnifierItem_ZoomPercent_58534",
+    "Owner": "PadForge.ViewModels.MagnifierItem",
+    "Property": "ZoomPercent"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_MagnifierItem_LensShapeIndex_58535",
+    "Owner": "PadForge.ViewModels.MagnifierItem",
+    "Property": "LensShapeIndex"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_MagnifierItem_LensWidth_58536",
+    "Owner": "PadForge.ViewModels.MagnifierItem",
+    "Property": "LensWidth"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_MagnifierItem_LensHeight_58538",
+    "Owner": "PadForge.ViewModels.MagnifierItem",
+    "Property": "LensHeight"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_MagnifierItem_Border_58539",
+    "Owner": "PadForge.ViewModels.MagnifierItem",
+    "Property": "Border"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_MagnifierItem_BorderThickness_58540",
+    "Owner": "PadForge.ViewModels.MagnifierItem",
+    "Property": "BorderThickness"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_MagnifierItem_BorderHex_58541",
+    "Owner": "PadForge.ViewModels.MagnifierItem",
+    "Property": "BorderHex"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_MagnifierItem_SpotlightSize_58542",
+    "Owner": "PadForge.ViewModels.MagnifierItem",
+    "Property": "SpotlightSize"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_MagnifierItem_SpotlightDimPercent_58543",
+    "Owner": "PadForge.ViewModels.MagnifierItem",
+    "Property": "SpotlightDimPercent"
   }
 ]

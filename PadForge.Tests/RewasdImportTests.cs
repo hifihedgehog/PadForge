@@ -956,16 +956,22 @@ namespace PadForge.Tests
             Assert.Equal(0, r.Report.PartialCount + r.Report.SkippedCount);
         }
 
+        /// <summary>reWASD's ten crosshairs are PadForge's ten (#585): a button
+        /// imports as Toggle Crosshair of the same number, 120 as every
+        /// crosshair, and the look is the user's to set, since reWASD keeps it
+        /// in its own settings.</summary>
         [Theory]
         [InlineData(101, 1)]
         [InlineData(103, 3)]
+        [InlineData(110, 10)]
         [InlineData(120, 0)]
-        public void CrosshairCommand_TogglesAScreenOverlay_AndSaysThePictureIsYours(int type, int overlay)
+        public void CrosshairCommand_TogglesThatCrosshair_AndSaysTheLookIsYours(int type, int crosshair)
         {
             var r = Command(type, "x");
             var a = Only(Assert.Single(r.Profile.Macros));
-            Assert.Equal(MacroActionType.ToggleScreenOverlay, a.Type);
-            Assert.Equal(overlay, a.ScreenOverlayNumber);
+            Assert.Equal(MacroActionType.ToggleCrosshair, a.Type);
+            Assert.Equal(crosshair, a.CrosshairNumber);
+            Assert.Equal(0, a.ScreenOverlayNumber);
             Assert.Contains(r.Report.Entries, e => e.Status == TranslationStatus.Partial && e.ReasonKey == ImportReasons.Crosshair);
         }
 
@@ -2462,17 +2468,21 @@ namespace PadForge.Tests
             Assert.False(Import(File(masks: "[{\"id\":1,\"set\":" + Set(4) + "}]")).Refused);
         }
 
+        /// <summary>The eighth, ninth and tenth crosshairs are three crosshairs,
+        /// where they had folded onto the Screen Overlays and the last two were
+        /// skipped.</summary>
         [Fact]
-        public void CrosshairsNineAndTen_DoNotShareOverlayEight()
+        public void CrosshairsEightNineAndTen_AreThreeCrosshairs()
         {
             static string Cmd(int id) => "{\"command\":{\"id\":" + id + "}}";
             var r = Import(File(commands: """[{"id":1,"type":108,"name":"c8"},{"id":2,"type":109,"name":"c9"},{"id":3,"type":110,"name":"c10"}]""",
                 masks: "[" + Mask(1, 1, 1) + "," + Mask(2, 1, 2) + "," + Mask(3, 1, 3) + "]",
                 mappings: "[" + Map(1, "[" + Cmd(1) + "]", mode: "onetime") + "," + Map(2, "[" + Cmd(2) + "]", mode: "onetime")
                     + "," + Map(3, "[" + Cmd(3) + "]", mode: "onetime") + "]"));
-            var overlays = r.Profile.Macros.SelectMany(m => m.Actions).Where(a => a.Type == MacroActionType.ToggleScreenOverlay).ToList();
-            Assert.Equal(8, Assert.Single(overlays).ScreenOverlayNumber);
-            Assert.Equal(2, r.Report.Entries.Count(e => e.ReasonKey == ImportReasons.NinthCrosshair));
+            var crosshairs = r.Profile.Macros.SelectMany(m => m.Actions).Where(a => a.Type == MacroActionType.ToggleCrosshair).ToList();
+            Assert.Equal(new[] { 8, 9, 10 }, crosshairs.Select(a => a.CrosshairNumber).OrderBy(n => n));
+            Assert.DoesNotContain(r.Profile.Macros.SelectMany(m => m.Actions), a => a.Type == MacroActionType.ToggleScreenOverlay);
+            Assert.Equal(3, r.Report.Entries.Count(e => e.ReasonKey == ImportReasons.Crosshair));
         }
 
         [Fact]

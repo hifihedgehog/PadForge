@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>اعرض القوائم والطبقات وتبديل ملفات التعريف أثناء اللعب.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>سطح لمس على الشاشة لألعاب لوحة اللمس في PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>صورة أو مؤقت أو ساعة فوق النوافذ الأخرى.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>مؤشر التصويب الخاص بك فوق اللعبة.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>عدسة تكبير أو تكبير للشاشة كاملة أو بقعة ضوء.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>المنفذ، HTTP عادي، رمز الوصول</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>إعادة اتصال تلقائي، المنفذ، هوية الإقران، الاتصال بالعنوان</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>المنفذ، بديل DSX.exe</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>تراكب {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>يعرض</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>عندما يكون برنامج آخر في المقدمة، تمر النقرات عبر التراكب. وعندما يكون PadForge في المقدمة، اسحبه بزر الماوس الأيمن وغيّر حجمه من زاويته. يمكن لماكرو إظهار تراكب أو إخفاؤه برقمه.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>مؤشر التصويب</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>مؤشرات تصويب فوق النوافذ الأخرى في منتصف الشاشة: صليب أو دائرة أو نقطة أو صورة من اختيارك.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>إضافة مؤشر تصويب</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>مؤشر التصويب {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>إظهار مؤشر التصويب</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>النمط</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>صليب</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>دائرة</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>نقطة</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>صورة</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>معاينة</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>الإزاحة عن المنتصف</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>الإزاحة الأفقية</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>الإزاحة الرأسية</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>طول الذراع</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>السماكة</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>الفراغ</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>نقطة المنتصف</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>شكل T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>دون الذراع العلوية.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>نصف القطر</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>الأضلاع</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>عند 64 تصبح الحلقة مستديرة.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>الحجم</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>الصورة</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>لم تُختر صورة</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>الصور (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|جميع الملفات (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>الحجم</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>العرض</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>الارتفاع</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>حجم الصورة الأصلي</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>الحفاظ على النسب</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>عند الإيقاف تُمدد الصورة إلى العرض والارتفاع المحددين.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>اللون</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>الحدود</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>عرض الحدود</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>لون الحدود</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>التدوير</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>تنعيم الحواف</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>عند الإيقاف تقع كل حافة على بكسلات كاملة وتبقى حادة.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>إظهار أداة اختيار اللون أو إخفاؤها</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>لا توجد صورة للعرض</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>خارج شاشته</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>تظهر مؤشرات التصويب فوق الألعاب في وضع النافذة وبلا إطار، وتمر النقرات عبرها. اللعبة في وضع ملء الشاشة الحصري تخفيها، لذا شغّلها في وضع النافذة أو بلا إطار. يمكن لماكرو إظهار مؤشر تصويب أو إخفاؤه برقمه.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>المكبر</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>عدسة مثل منظار القنص، أو الشاشة كاملة مكبرة، أو بقعة ضوء تعتّم الباقي.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>إظهار المكبر</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>ما يعرضه</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>الوضع</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>عدسة</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>ملء الشاشة</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>بقعة ضوء</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>التمركز على</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>منتصف الشاشة</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>المؤشر</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>مؤشر التصويب</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>يعني مؤشر التصويب أول مؤشر تصويب قيد التشغيل، مع إزاحته.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>التكبير</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>الشكل</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>دائرة</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>مستطيل</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>الحجم</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>العرض</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>الارتفاع</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>الإطار</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>عرض الإطار</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>لون الإطار</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>حجم الدائرة</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>درجة العتمة</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>لم يشغّل Windows المكبر.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>تظهر العدسة وبقعة الضوء فوق الألعاب في وضع النافذة وبلا إطار، وتمر النقرات عبرهما. يكبّر ملء الشاشة سطح المكتب كله بمكبر ملء الشاشة في Windows. يمكن لماكرو إظهار المكبر أو إخفاؤه، أو إظهاره فقط أثناء الضغط المستمر.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>خادم الحركة</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>خادم بروتوكول DSU/CemuHook Motion Provider لبيانات الجيروسكوب ومقياس التسارع.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>تفعيل خادم الحركة DSU (بروتوكول CemuHook Motion Provider)</value></data>
@@ -4930,4 +5003,6 @@
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>تعيين كلمة مرور</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>فتح قفل الربط عن بعد</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>كلمة المرور</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>المكبر (أثناء الضغط المستمر)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>يُظهر المكبر ما دام هذا الماكرو مضغوطا، للتصويب عبر المنظار. اضبطه في صفحة المكبر.</value></data>
 </root>

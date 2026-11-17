@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Показывайте меню, слои и смену профиля во время игры.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Экранная сенсорная область для игр с тачпадом PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Картинка, таймер или часы поверх других окон.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Собственный прицел поверх игры.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Линза, увеличение всего экрана или прожектор.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, обычный HTTP, код доступа</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Автопереподключение, порт, удостоверение сопряжения, подключение по адресу</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, заглушка DSX.exe</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Оверлей {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Показывает</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Пока впереди другая программа, щелчки проходят сквозь оверлей. Пока впереди PadForge, перетаскивайте его правой кнопкой мыши, а размер меняйте за угол. Макрос может показать или скрыть оверлей по его номеру.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Прицел</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Прицелы поверх других окон по центру дисплея: крест, круг, точка или собственная картинка.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Добавить прицел</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Прицел {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Показать прицел</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Стиль</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Крест</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Круг</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Точка</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Картинка</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Предпросмотр</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Смещение от центра</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Смещение по горизонтали</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Смещение по вертикали</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Длина луча</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Толщина</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Зазор</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Точка в центре</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Форма T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Без верхнего луча.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Радиус</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Стороны</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>При 64 кольцо круглое.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Размер</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Картинка</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Картинка не выбрана</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Картинки (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Все файлы (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Размер</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Ширина</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Высота</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Собственный размер картинки</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Сохранять пропорции</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Если выключено, картинка растягивается до заданных ширины и высоты.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Цвет</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Контур</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Ширина контура</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Цвет контура</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Поворот</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Сглаживание краев</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Если выключено, каждый край ложится на целые пиксели и остается четким.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Показать или скрыть выбор цвета</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Нет картинки для показа</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>За пределами дисплея</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Прицелы показываются поверх игр в оконном режиме и без рамки, а щелчки проходят сквозь них. Игра в монопольном полноэкранном режиме скрывает их, поэтому запускайте ее в оконном режиме или без рамки. Макрос может показать или скрыть прицел по его номеру.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Лупа</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Линза как оптический прицел, увеличение всего дисплея или прожектор, затемняющий остальное.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Показать лупу</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Что она показывает</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Режим</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Линза</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Весь экран</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Прожектор</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Центр на</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Центр дисплея</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Указатель</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Прицел</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Прицел означает первый включенный прицел с учетом его смещения.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Увеличение</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Форма</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Круг</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Прямоугольник</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Размер</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Ширина</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Высота</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Рамка</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Ширина рамки</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Цвет рамки</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Размер круга</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Затемнение</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows не запустила лупу.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Линза и прожектор показываются поверх игр в оконном режиме и без рамки, а щелчки проходят сквозь них. Режим «Весь экран» увеличивает весь рабочий стол экранной лупой Windows. Макрос может показать или скрыть лупу либо показать ее только пока удерживается кнопка.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Сервер движения</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Сервер протокола DSU/CemuHook Motion Provider для данных гироскопа и акселерометра.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Включить сервер движения DSU (протокол CemuHook Motion Provider)</value></data>
@@ -5236,6 +5309,10 @@
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Оверлей экрана PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Пока нечего показывать. Выберите, что он показывает, на странице «Оверлей экрана» в разделе «Дополнения».</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Переключить оверлей экрана</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Переключить прицел</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Переключить лупу</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Все прицелы</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Прицел</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Переключить оверлей экрана</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Оверлей экрана</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Оверлей ничего не показывает.</value></data>
@@ -5256,6 +5333,11 @@
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Оверлей</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Все оверлеи</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Переключить оверлей экрана {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Переключить прицел</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Переключить прицел {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Переключить лупу</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Лупа (пока удерживается)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Показывает лупу, пока этот макрос удерживается, для прицеливания через оптику. Настройте ее на странице «Лупа».</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Показать картинки {0}: {1} × {2} мс, до следующего показа или макроса режима</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Импорт профиля</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, файл {1}.</value></data>
@@ -5284,7 +5366,7 @@
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge не распознает этот выход: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>В PadForge нет такой команды: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>У виртуального контроллера нет такой кнопки: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Перекрестие существует только внутри reWASD. Покажите свою картинку через Оверлей экрана.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD хранит прицелы в собственных настройках, а не в конфигурации. Настройте свой на странице «Прицел».</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Дрожание и тряска стика не были перенесены.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Точки срабатывания аналоговых клавиш не были перенесены.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD отправлял этот контроллер на другое устройство через адаптер. PadForge воспроизводит его на этом ПК, а Удаленная связь отправляет его на другой ПК с PadForge.</value></data>
@@ -5576,7 +5658,6 @@
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Профиль HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Подсветка клавиш PadForge (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макрос не может нажать {0}. Строка в разделе «Назначения» может.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge запускает восемь оверлеев экрана, а это девятое или десятое перекрестие reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge читает «Гироскоп» влево и вправо по крену, а наклон по рысканию, как по умолчанию в reWASD. В настройках reWASD эти оси можно поменять местами, а этот файл не говорит, меняли ли их.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>В режиме Tilt наклон в reWASD это поворот вокруг вертикальной оси, а датчик движения не дает угла для такого поворота.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge читает диагональ тачпада как два направления одновременно, а тачпад сообщает такое, только когда его «Режим крестовины» в разделе «Движение и касание» стоит в положении «8 направлений».</value></data>

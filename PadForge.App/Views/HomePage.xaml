@@ -1504,6 +1504,17 @@
                                     Line="{Binding Extras_Tile_ScreenOverlay, Source={x:Static strings:Strings.Instance}}"
                                     IsOn="{Binding ScreenOverlaysAnyEnabled, Mode=OneWay}"
                                     Visibility="{Binding ScreenOverlaysAnyEnabled, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <controls:ExtraTile Style="{StaticResource HomeExtraTile}" Key="Crosshair" Glyph="&#xE81D;"
+                                    Title="{Binding Extras_Crosshair_Title, Source={x:Static strings:Strings.Instance}}"
+                                    Line="{Binding Extras_Tile_Crosshair, Source={x:Static strings:Strings.Instance}}"
+                                    IsOn="{Binding CrosshairsAnyEnabled, Mode=OneWay}"
+                                    Visibility="{Binding CrosshairsAnyEnabled, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <controls:ExtraTile Style="{StaticResource HomeExtraTile}" Key="Magnifier" Glyph="&#xE8A3;"
+                                    Title="{Binding Extras_Magnifier_Title, Source={x:Static strings:Strings.Instance}}"
+                                    Line="{Binding Extras_Tile_Magnifier, Source={x:Static strings:Strings.Instance}}"
+                                    IsOn="{Binding MagnifierEnabled, Mode=OneWay}"
+                                    Status="{Binding Magnifier.Status}"
+                                    Visibility="{Binding MagnifierEnabled, Converter={StaticResource BoolToVisibilityConverter}}"/>
             </controls:TileGridPanel>
 
             <!-- Under the tiles. With some extras on and some off: how many

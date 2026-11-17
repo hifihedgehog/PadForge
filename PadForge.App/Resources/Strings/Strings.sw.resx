@@ -399,6 +399,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Onyesha menyu, tabaka na ubadilishaji wa wasifu unapocheza.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Sehemu ya mguso kwenye skrini kwa michezo ya touchpad ya PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Picha, kipima muda au saa juu ya madirisha mengine.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Shabaha yako mwenyewe juu ya mchezo.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Lenzi ya kukuza, ukuzaji wa skrini nzima au mwanga wa mwelekeo.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Mlango, HTTP ya kawaida, msimbo wa ufikiaji</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Unganisha upya kiotomatiki, mlango, utambulisho wa kuoanisha, unganisha kwa anwani</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Mlango, mbadala wa DSX.exe</value></data>
@@ -446,6 +448,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Overlay {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Huonyesha</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Programu nyingine ikiwa mbele, mibofyo hupita kwenye overlay. PadForge ikiwa mbele, iburute kwa kitufe cha kulia cha kipanya na ubadilishe ukubwa kutoka kona yake. Makro inaweza kuonyesha au kuficha overlay kwa nambari yake.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Shabaha</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Shabaha juu ya madirisha mengine, katikati ya skrini: msalaba, duara, nukta au picha yako mwenyewe.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Ongeza Shabaha</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Shabaha {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Onyesha Shabaha</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Mtindo</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Msalaba</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Duara</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Nukta</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Picha</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Hakikisho</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Umbali Kutoka Katikati</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Umbali wa Mlalo</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Umbali wa Wima</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Urefu wa Mkono</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Unene</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Pengo</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Nukta ya Katikati</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Umbo la T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Hakuna mkono wa juu.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Kipenyo cha nusu</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Pande</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Kwa pande 64 pete huwa duara kamili.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Ukubwa</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Picha</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Hakuna picha iliyochaguliwa</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Picha (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Faili Zote (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Ukubwa</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Upana</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Urefu</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Ukubwa Asili wa Picha</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Hifadhi Uwiano</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Ikizimwa, picha hunyooshwa hadi upana na urefu uliowekwa.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Rangi</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Mstari wa Nje</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Upana wa Mstari wa Nje</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Rangi ya Mstari wa Nje</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Mzunguko</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Kingo Laini</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Ikizimwa, kila ukingo hukaa kwenye pikseli nzima na hubaki makali.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Onyesha au ficha kiteua rangi</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Hakuna picha ya kuonyesha</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Nje ya skrini yake</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Shabaha huonekana juu ya michezo ya dirisha na isiyo na mipaka, na mibofyo hupita kwenye shabaha. Mchezo wa skrini nzima ya kipekee huzificha, kwa hiyo uendeshe kwa dirisha au bila mipaka. Makro inaweza kuonyesha au kuficha shabaha kwa nambari yake.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Kikuza</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Lenzi kama darubini ya mpiga risasi, skrini nzima iliyokuzwa, au mwanga wa mwelekeo unaotia giza sehemu iliyobaki.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Onyesha Kikuza</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Kinachoonyeshwa</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Hali</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lenzi</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Skrini Nzima</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Mwanga wa Mwelekeo</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Weka Katikati Kwenye</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Katikati ya Skrini</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Kielekezi</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Shabaha</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Shabaha inamaanisha shabaha ya kwanza iliyowashwa, pamoja na umbali wake.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Ukuzaji</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Umbo</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Duara</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Mstatili</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Ukubwa</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Upana</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Urefu</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Mpaka</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Upana wa Mpaka</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Rangi ya Mpaka</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Ukubwa wa Duara</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Giza</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows haikuanzisha kikuza.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Lenzi na mwanga wa mwelekeo huonekana juu ya michezo ya dirisha na isiyo na mipaka, na mibofyo hupita kwenye vyote viwili. Skrini Nzima hukuza eneo-kazi lote kwa kikuza cha skrini nzima cha Windows. Makro inaweza kuonyesha au kuficha kikuza, au kukionyesha tu kinaposhikiliwa.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Seva ya mwendo</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Seva ya itifaki ya DSU/CemuHook Motion Provider ya data ya gyro na accelerometer.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Washa seva ya mwendo ya DSU (Itifaki ya CemuHook Motion Provider)</value></data>
@@ -4852,4 +4925,6 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Weka Nenosiri</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Fungua Remote Link</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Nenosiri</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Kikuza (Inaposhikiliwa)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Huonyesha kikuza makro hii inaposhikiliwa, kwa kulenga kupitia kifaa cha kulenga. Kiweke kwenye ukurasa wa Kikuza.</value></data>
 </root>

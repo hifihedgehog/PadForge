@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Vis menyer, lag og profilbytter mens du spiller.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>En berøringsflate på skjermen for PlayStation-spill med berøringsplate.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Et bilde, en tidtaker eller en klokke oppå andre vinduer.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Ditt eget trådkors over et spill.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>En zoomlinse, en zoom for hele skjermen eller et søkelys.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, vanlig HTTP, tilgangskode</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automatisk gjenkobling, port, sammenkoblingsidentitet, tilkobling med adresse</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe-stedfortreder</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Overlegg {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Viser</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Mens et annet program er foran, går klikk rett gjennom overlegget. Mens PadForge er foran, drar du det med høyre museknapp og endrer størrelsen fra hjørnet. En makro kan vise eller skjule et overlegg etter nummeret.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Trådkors</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Trådkors over andre vinduer, sentrert på en skjerm: et kors, en sirkel, en prikk eller et eget bilde.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Legg til trådkors</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Trådkors {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Vis trådkors</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Stil</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Kors</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Sirkel</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Prikk</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Bilde</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Forhåndsvisning</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Forskyvning fra midten</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Vannrett forskyvning</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Loddrett forskyvning</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Armlengde</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Tykkelse</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Mellomrom</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Prikk i midten</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T-form</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Ingen øvre arm.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Radius</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Sider</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Med 64 er ringen rund.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Størrelse</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Bilde</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Ingen bilde valgt</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Bilder (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Alle filer (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Størrelse</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Bredde</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Høyde</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Bildets egen størrelse</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Behold proporsjoner</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Er den av, strekkes bildet til den angitte bredden og høyden.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Farge</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Omriss</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Omrissbredde</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Omrissfarge</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Rotasjon</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Myke kanter</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Er den av, treffer hver kant hele piksler og forblir skarp.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Vis eller skjul fargevelgeren</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Ingen bilde å vise</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Utenfor skjermen</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Trådkors vises over spill i vindu og spill uten ramme, og klikk går rett gjennom dem. Et spill i eksklusiv fullskjerm skjuler dem, så kjør det i vindu eller uten ramme. En makro kan vise eller skjule et trådkors etter nummeret.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Forstørrelsesglass</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>En linse som en kikkertsikte, hele skjermen zoomet inn, eller et søkelys som mørklegger resten.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Vis forstørrelsesglass</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Det den viser</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Modus</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Linse</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Hele skjermen</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Søkelys</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Sentrer på</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Midt på skjermen</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Peker</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Trådkors</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Trådkors betyr det første trådkorset som er på, med forskyvning.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Zoom</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Form</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Sirkel</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Rektangel</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Størrelse</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Bredde</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Høyde</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Kantlinje</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Kantlinjebredde</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Kantlinjefarge</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Sirkelstørrelse</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Mørkhet</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows startet ikke forstørrelsesglasset.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Linsen og søkelyset vises over spill i vindu og spill uten ramme, og klikk går rett gjennom dem. Hele skjermen zoomer hele skrivebordet med forstørrelsesglasset i Windows for hele skjermen. En makro kan vise eller skjule forstørrelsesglasset, eller vise det bare mens den holdes inne.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Bevegelsesserver</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Protokollserver for DSU/CemuHook Motion Provider, for gyro- og akselerometerdata.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Aktiver DSU-bevegelsesserver (CemuHook Motion Provider Protocol)</value></data>
@@ -5236,6 +5309,10 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-skjermoverlegg</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Ingenting å vise ennå. Velg hva det viser på siden Skjermoverlegg under Ekstra.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Vis/skjul skjermoverlegg</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Vis/skjul trådkors</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Vis/skjul forstørrelsesglass</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Alle trådkors</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Trådkors</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Vis/skjul skjermoverlegg</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Skjermoverlegg</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Overlegget viser ingenting.</value></data>
@@ -5256,6 +5333,11 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Overlegg</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Alle overlegg</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Vis/skjul skjermoverlegg {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Vis/skjul trådkors</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Vis/skjul trådkors {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Vis/skjul forstørrelsesglass</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Forstørrelsesglass (mens holdt inne)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Viser forstørrelsesglasset mens denne makroen holdes inne, for sikting over siktet. Sett det opp på siden Forstørrelsesglass.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Vis bilder på {0}: {1} × {2} ms, til neste visning eller modusmakro</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Importer profil</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, en {1}-fil.</value></data>
@@ -5284,7 +5366,7 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge kjenner ikke igjen denne utdataen: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge har ingen slik kommando: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Den virtuelle kontrolleren har ingen slik knapp: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Et trådkors finnes bare inne i reWASD. Vis ditt eget bilde med et Skjermoverlegg.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD har trådkorsene sine i egne innstillinger, ikke i konfigurasjonen. Sett opp ditt på siden Trådkors.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Stikkens risting og risting med kontrolleren kom ikke med.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analoge aktiveringspunkter for taster kom ikke med.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD sendte denne kontrolleren til en annen enhet via en adapter. PadForge spiller den av på denne PC-en, og Fjernkobling sender den til en annen PC som kjører PadForge.</value></data>
@@ -5576,7 +5658,6 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-profil (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge-tastelys (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>En makro kan ikke trykke {0}. En rad under Tilordninger kan.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge kjører åtte skjermoverlegg, og dette er reWASDs niende eller tiende trådkors.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge leser Gyro venstre og høyre fra rulling og Helning fra giring, som er standard i reWASD. reWASDs innstillinger kan bytte de to, og denne filen sier ikke om de ble byttet.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>I Tilt-modus er reWASDs Lean en dreining rundt den vertikale aksen, og en bevegelsessensor gir ingen vinkel for den dreiningen.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge leser en diagonal på berøringsplaten som to retninger samtidig, noe berøringsplaten bare melder når D-pad-modus under Bevegelse og berøring er 8 retninger.</value></data>

@@ -1990,4 +1990,5 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Kore rawa</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Ki te I te wā e kā ana te paparanga, ka noho tonu te flyout kia huri rā anō te paparanga. Ki te Mō ngā hēkona 2, ka whakaaturia ina kā te paparanga, kātahi ka ngaro noa. Ki te Kore rawa, kāore he flyout mō tēnei paparanga, ā, kāore hoki te Base e whakaatu flyout ina mutu te paparanga.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Ki te Mō ngā hēkona 2, ka whakaaturia te ingoa o te Base ina mutu tētahi paparanga Shift. Ki te Kore rawa, kāore te Base e whakaatu flyout.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Ngā pikitia (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Ngā kōnae katoa (*.*)|*.*</value></data>
 </root>

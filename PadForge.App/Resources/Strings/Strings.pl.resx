@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Pokazuj menu, warstwy i zmiany profilu podczas gry.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Ekranowa powierzchnia dotykowa do gier z panelem dotykowym PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Obraz, minutnik lub zegar nad innymi oknami.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Własny celownik nad grą.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Soczewka, powiększenie całego ekranu lub reflektor.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, zwykły HTTP, kod dostępu</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automatyczne ponowne łączenie, port, tożsamość parowania, połącz przez adres</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, zastępnik DSX.exe</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Nakładka {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Pokazuje</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Gdy na wierzchu jest inny program, kliknięcia przechodzą przez nakładkę. Gdy na wierzchu jest PadForge, przeciągaj ją prawym przyciskiem myszy i zmieniaj rozmiar za pomocą rogu. Makro może pokazać lub ukryć nakładkę według jej numeru.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Celownik</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Celowniki nad innymi oknami, wyśrodkowane na wyświetlaczu: krzyż, okrąg, kropka lub własny obraz.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Dodaj celownik</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Celownik {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Pokaż celownik</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Styl</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Krzyż</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Okrąg</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Kropka</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Obraz</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Podgląd</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Przesunięcie od środka</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Przesunięcie w poziomie</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Przesunięcie w pionie</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Długość ramienia</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Grubość</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Odstęp</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Środkowa kropka</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Kształt T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Bez górnego ramienia.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Promień</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Boki</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Przy 64 bokach pierścień jest okrągły.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Rozmiar</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Obraz</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Nie wybrano obrazu</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Obrazy (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Wszystkie pliki (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Rozmiar</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Szerokość</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Wysokość</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Własny rozmiar obrazu</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Zachowaj proporcje</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Po wyłączeniu obraz rozciąga się do szerokości i wysokości.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Kolor</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Obrys</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Szerokość obrysu</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Kolor obrysu</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Obrót</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Wygładzone krawędzie</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Po wyłączeniu każda krawędź leży na pełnych pikselach i pozostaje ostra.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Pokaż lub ukryj próbnik kolorów</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Brak obrazu do pokazania</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Poza swoim wyświetlaczem</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Celowniki pokazują się nad grami w oknie i w oknie bez obramowania, a kliknięcia przez nie przechodzą. Gra w trybie wyłącznego pełnego ekranu je ukrywa, więc uruchom ją w oknie lub w oknie bez obramowania. Makro może pokazać lub ukryć celownik według jego numeru.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Lupa</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Soczewka jak luneta snajperska, powiększony cały ekran lub reflektor, który przyciemnia resztę.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Pokaż lupę</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Co pokazuje</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Tryb</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Soczewka</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Pełny ekran</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Reflektor</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Wyśrodkuj na</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Środek wyświetlacza</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Wskaźnik</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Celownik</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Celownik oznacza pierwszy włączony celownik, razem z jego przesunięciem.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Powiększenie</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Kształt</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Okrąg</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Prostokąt</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Rozmiar</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Szerokość</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Wysokość</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Ramka</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Szerokość ramki</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Kolor ramki</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Rozmiar koła</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Ciemność</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>System Windows nie uruchomił lupy.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Soczewka i reflektor pokazują się nad grami w oknie i w oknie bez obramowania, a kliknięcia przez nie przechodzą. Tryb pełnego ekranu powiększa cały pulpit za pomocą lupy pełnoekranowej systemu Windows. Makro może pokazać lub ukryć lupę albo pokazać ją tylko podczas przytrzymania.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Serwer ruchu</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Serwer protokołu DSU/CemuHook Motion Provider dla danych żyroskopu i akcelerometru.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Włącz serwer ruchu DSU (protokół CemuHook Motion Provider)</value></data>
@@ -5236,6 +5309,10 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Nakładka ekranowa PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Nie ma jeszcze nic do pokazania. Wybierz, co pokazuje nakładka, na stronie Nakładka ekranowa w sekcji Dodatki.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Przełącz nakładkę ekranową</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Przełącz celownik</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Przełącz lupę</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Każdy celownik</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Celownik</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Przełącz nakładkę ekranową</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Nakładka ekranowa</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Nakładka niczego nie pokazuje.</value></data>
@@ -5256,6 +5333,11 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Nakładka</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Każda nakładka</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Przełącz nakładkę ekranową {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Przełącz celownik</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Przełącz celownik {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Przełącz lupę</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Lupa (podczas przytrzymania)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Pokazuje lupę, gdy to makro jest przytrzymane, do celowania przez przyrządy celownicze. Skonfiguruj ją na stronie Lupa.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Pokaż obrazy {0}: {1} × {2} ms, do następnego makra pokazu lub trybu</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Importuj profil</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, plik {1}.</value></data>
@@ -5284,7 +5366,7 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge nie rozpoznaje tego wyjścia: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge nie zna takiego polecenia: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Wirtualny kontroler nie ma takiego przycisku: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Celownik działa wewnątrz reWASD. Pokaż własny obraz za pomocą Nakładki ekranowej.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD przechowuje swoje celowniki we własnych ustawieniach, a nie w konfiguracji. Skonfiguruj własny na stronie Celownik.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Drżenie i potrząsanie drążka nie zostały przeniesione.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Analogowe punkty aktywacji klawiszy nie zostały przeniesione.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD wysyłał ten kontroler na inne urządzenie przez adapter. PadForge odtwarza go na tym komputerze, a Łącze zdalne wysyła go na inny komputer z PadForge.</value></data>
@@ -5576,7 +5658,6 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Podświetlenie klawiszy PadForge (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro nie może nacisnąć {0}. Może to zrobić wiersz w sekcji Mapowania.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge obsługuje osiem Nakładek ekranowych, a to dziewiąty lub dziesiąty celownik z reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge odczytuje Żyroskop: przechylenie jako lewo i prawo, a Żyroskop: nachylenie X i Y z odchylenia, jak domyślnie reWASD. W Preferencjach reWASD można zamienić te dwie osie, a ten plik nie mówi, czy to zrobiono.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>W trybie Tilt nachylenie w reWASD to obrót wokół osi pionowej, a czujnik ruchu nie podaje kąta takiego obrotu.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge odczytuje przekątną panelu dotykowego jako dwa kierunki naraz, które panel zgłasza tylko wtedy, gdy jego Tryb krzyżaka w sekcji Ruch i dotyk ma wartość 8 kierunków.</value></data>

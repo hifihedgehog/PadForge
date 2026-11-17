@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Zobrazuje ponuky, vrstvy a prepnutia profilu počas hrania.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Dotyková plocha na obrazovke pre hry s touchpadom PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Obrázok, časovač alebo hodiny nad ostatnými oknami.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Vlastný zameriavač nad hrou.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Zväčšovacia šošovka, zväčšenie celej obrazovky alebo reflektor.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Port, obyčajné HTTP, prístupový kód</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automatické pripojenie, port, identita párovania, pripojenie cez adresu</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, náhrada DSX.exe</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Prekrytie {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Zobrazuje</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Kým je vpredu iný program, kliknutia prechádzajú cez prekrytie. Kým je vpredu PadForge, presúvajte ho pravým tlačidlom myši a veľkosť meňte z jeho rohu. Makro môže zobraziť alebo skryť prekrytie podľa jeho čísla.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Zameriavač</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Zameriavače nad ostatnými oknami, vycentrované na displeji: kríž, kruh, bodka alebo vlastný obrázok.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Pridať zameriavač</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Zameriavač {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Zobraziť zameriavač</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Štýl</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Kríž</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Kruh</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Bodka</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Obrázok</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Ukážka</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Posun od stredu</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Vodorovný posun</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Zvislý posun</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Dĺžka ramena</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Hrúbka</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Medzera</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Stredová bodka</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Tvar T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Bez horného ramena.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Polomer</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Strany</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Pri 64 je prstenec okrúhly.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Veľkosť</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Obrázok</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Nie je vybraný žiadny obrázok</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Obrázky (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Všetky súbory (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Veľkosť</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Šírka</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Výška</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Pôvodná veľkosť obrázka</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Zachovať pomer strán</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Keď je vypnuté, obrázok sa roztiahne na nastavenú šírku a výšku.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Farba</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Obrys</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Šírka obrysu</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Farba obrysu</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Otočenie</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Vyhladiť hrany</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Keď je vypnuté, každá hrana leží na celých pixeloch a zostáva ostrá.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Zobraziť alebo skryť výber farby</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Nie je čo zobraziť</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Mimo svojho displeja</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Zameriavače sa zobrazujú nad hrami v okne aj bez okraja a kliknutia cez ne prechádzajú. Hra v exkluzívnom režime na celú obrazovku ich skryje, preto ju spustite v okne alebo bez okraja. Makro môže zobraziť alebo skryť zameriavač podľa jeho čísla.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Lupa</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Šošovka ako puškohľad, priblížený celý displej alebo reflektor, ktorý zatemní zvyšok.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Zobraziť lupu</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Čo zobrazuje</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Režim</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Šošovka</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Celá obrazovka</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Reflektor</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Vystrediť na</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Stred displeja</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Ukazovateľ</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Zameriavač</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Zameriavač znamená prvý zapnutý zameriavač vrátane jeho posunu.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Priblíženie</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Tvar</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Kruh</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Obdĺžnik</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Veľkosť</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Šírka</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Výška</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Okraj</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Šírka okraja</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Farba okraja</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Veľkosť kruhu</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Tmavosť</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows nespustil lupu.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Šošovka a reflektor sa zobrazujú nad hrami v okne aj bez okraja a kliknutia cez ne prechádzajú. Celá obrazovka priblíži celú plochu pomocou lupy Windows na celú obrazovku. Makro môže lupu zobraziť alebo skryť, prípadne ju zobraziť len počas podržania.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Server pohybu</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server protokolu DSU/CemuHook Motion Provider pre údaje gyroskopu a akcelerometra.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Povoliť server pohybu DSU (protokol CemuHook Motion Provider)</value></data>
@@ -5236,6 +5309,10 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Prekrytie obrazovky PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Zatiaľ nie je čo zobraziť. Na stránke Prekrytie obrazovky v časti Doplnky vyberte, čo sa má zobrazovať.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Prepnúť prekrytie obrazovky</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Prepnúť zameriavač</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Prepnúť lupu</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Každý zameriavač</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Zameriavač</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Prepnúť prekrytie obrazovky</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Prekrytie obrazovky</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Prekrytie nezobrazuje nič.</value></data>
@@ -5256,6 +5333,11 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Prekrytie</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Každé prekrytie</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Prepnúť prekrytie obrazovky {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Prepnúť zameriavač</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Prepnúť zameriavač {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Prepnúť lupu</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Lupa (počas podržania)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Zobrazí lupu, kým je toto makro podržané, na mierenie cez mieridlá. Nastavíte ju na stránke Lupa.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Zobraziť obrázky {0}: {1} × {2} ms, do ďalšieho makra zobrazenia alebo režimu</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Import profilu</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, súbor {1}.</value></data>
@@ -5284,7 +5366,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge nepozná tento výstup: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge nemá taký príkaz: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Virtuálny ovládač nemá také tlačidlo: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Zameriavač existuje len vo vnútri reWASD. Vlastný obrázok zobrazíte cez Prekrytie obrazovky.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD si ukladá zameriavače vo vlastných nastaveniach, nie v konfigurácii. Svoj nastavíte na stránke Zameriavač.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Chvenie a trasenie páčky sa neprenieslo.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Body aktivácie analógových klávesov sa nepreniesli.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD poslal tento ovládač cez adaptér do iného zariadenia. PadForge ho prehráva na tomto počítači a Vzdialené prepojenie ho posiela do iného počítača so spusteným PadForge.</value></data>
@@ -5576,7 +5658,6 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Profil HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Podsvietenie klávesov PadForge (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Makro nedokáže stlačiť {0}. Riadok v časti Mapovania to dokáže.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge spúšťa osem prekrytí obrazovky a toto je deviaty alebo desiaty zameriavač z reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge číta Gyroskop – nakláňanie X z náklonu a nakláňanie Y z otáčania, ako je to predvolené v reWASD. Predvoľby reWASD môžu tieto dve osi vymeniť a tento súbor neuvádza, či sa tak stalo.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>V režime Tilt je nakláňanie v reWASD otáčanie okolo zvislej osi a pohybový snímač pre takéto otáčanie neposkytuje uhol.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge číta uhlopriečku touchpadu ako dva smery naraz, čo touchpad hlási iba vtedy, keď je jeho Režim D-padu v časti Pohyb a dotyk nastavený na 8 smerov.</value></data>

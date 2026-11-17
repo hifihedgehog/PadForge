@@ -1709,4 +1709,5 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Indi Gid</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Ang Samtang Aktibo ang Layer nagapabilin sang flyout sa screen tubtob magbaylo ang layer. Ang Sa Sulod sang 2 Segundo nagapakita sini kon mag-on ang layer, dayon kusa ini nga nagadula. Kon Indi Gid, wala sing flyout nga ginapakita ining layer, kag wala man sing ginapakita ang Base kon matapos ang layer.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Ang Sa Sulod sang 2 Segundo nagapakita sang ngalan sang Base kon matapos ang isa ka shift layer. Kon Indi Gid, wala sing flyout nga ginapakita ang Base.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Mga litrato (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Tanan nga file (*.*)|*.*</value></data>
 </root>

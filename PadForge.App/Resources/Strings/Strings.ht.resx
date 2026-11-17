@@ -391,6 +391,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Montre meni, kouch ak chanjman pwofil pandan w ap jwe.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Yon sifas manyen sou ekran pou jwèt touchpad PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Yon imaj, yon kwonomèt oswa yon revèy anlè lòt fenèt yo.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Pwòp viz ou anlè yon jwèt.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Yon lantiy zoum, yon zoum sou tout ekran an oswa yon pwojektè.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Pò, HTTP senp, kòd aksè</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rekoneksyon otomatik, pò, idantite asosyasyon, konekte ak adrès</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Pò, ranplasan DSX.exe</value></data>
@@ -4180,6 +4182,77 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Sipèpozisyon {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Montre</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Pandan yon lòt pwogram devan, klik yo pase atravè sipèpozisyon an. Pandan PadForge devan, trennen l ak bouton dwat sourit la epi chanje gwosè l nan kwen li. Yon makwo ka montre oswa kache yon sipèpozisyon pa nimewo li.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Viz</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Viz anlè lòt fenèt yo, santre sou yon ekran: yon kwa, yon sèk, yon pwen oswa yon imaj pa w.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Ajoute viz</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Viz {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Montre viz</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Stil</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Kwa</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Sèk</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Pwen</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Imaj</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Apèsi</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Dekalaj soti nan sant</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Dekalaj orizontal</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Dekalaj vètikal</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Longè branch</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Epesè</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Espas</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Pwen nan mitan</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Fòm T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>San branch anlè.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Reyon</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Kote</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Ak 64 kote, bag la won.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Gwosè</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Imaj</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Pa gen imaj chwazi</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Imaj (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Tout fichye (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Gwosè</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Lajè</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Wotè</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Pwòp gwosè imaj la</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Kenbe pwopòsyon yo</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Lè l etenn, imaj la detire pou l pran lajè a ak wotè a.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Koulè</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Kontou</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Lajè kontou</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Koulè kontou</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Wotasyon</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Bò lis</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Lè l etenn, chak bò tonbe sou piksèl antye epi li rete nèt.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Montre oswa kache seleksyonè koulè a</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Pa gen imaj pou montre</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Andeyò ekran li</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Viz yo parèt anlè jwèt an mòd fenèt ak san bòdi, epi klik yo pase atravè yo. Yon jwèt an plen ekran eksklizif kache yo, kidonk mete l an mòd fenèt oswa san bòdi. Yon makwo ka montre oswa kache yon viz pa nimewo li.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Loup</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Yon lantiy tankou lunèt yon tirè elit, tout ekran an grandi, oswa yon pwojektè ki fè rès la vin nwa.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Montre loup</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Sa li montre</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Mòd</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lantiy</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Plen ekran</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Pwojektè</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Santre sou</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Sant ekran an</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Pwentè</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Viz</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Viz vle di premye viz ki limen an, ak dekalaj li ladan.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Zoum</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Fòm</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Sèk</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Rektang</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Gwosè</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Lajè</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Wotè</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Bòdi</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Lajè bòdi</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Koulè bòdi</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Gwosè sèk</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Fènwa</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows pa t demare loup la.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Lantiy la ak pwojektè a parèt anlè jwèt an mòd fenèt ak san bòdi, epi klik yo pase atravè yo. Plen ekran grandi tout biwo a ak loup plen ekran Windows la. Yon makwo ka montre oswa kache loup la, oswa montre l sèlman pandan w kenbe l.</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Konekte</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Pa konekte</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Pa gen aparèy ki koresponn.</value></data>
@@ -4257,4 +4330,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Gyro_Passthrough_Tuned" xml:space="preserve"><value>Ajiste</value></data>
   <data name="Pad_Gyro_Passthrough_RawLine" xml:space="preserve"><value>Jwèt la li mouvman kalibre a epi li aplike pwòp sansiblite ak adousisman pa li.</value></data>
   <data name="Pad_Gyro_Passthrough_TunedLine" xml:space="preserve"><value>Jwèt la li mouvman an ak sansiblite, adousisman ak koub ki regle isit la.</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Loup (pandan w kenbe)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Montre loup la pandan w kenbe makwo sa a, pou vize ak mir zam nan. Konfigire l nan paj Loup la.</value></data>
 </root>

@@ -595,4 +595,14 @@
   <data name="About_OpenRgbDesc" xml:space="preserve"><value>Detection rules, report frames, LED tables and key layouts for the lighting families PadForge drives directly, ported and generated from OpenRGB, and the DualSense and DualShock 4 lightbar bytes.</value></data>
   <data name="Pad_Shift_BaseSubtitle_Flyout" xml:space="preserve"><value>The Base layer's name, icon and colour on the Shift Layer Flyout and in the row of layers, and how long the flyout shows them.</value></data>
   <data name="Pad_Shift_MoreHint_Flyout" xml:space="preserve"><value>Mode, input kind, timing, flyout and colour</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Crosshairs over other windows, centred on a display: a cross, a circle, a dot or a picture of your own.</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Offset From Centre</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Centre Dot</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Colour</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Outline Colour</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Show or hide the colour picker</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>A lens like a sniper scope, the whole display zoomed in or a spotlight that darkens the rest.</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Centre On</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Display Centre</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Border Colour</value></data>
 </root>

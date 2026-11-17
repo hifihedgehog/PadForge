@@ -2689,6 +2689,9 @@ namespace PadForge.Services
 
             // Load Screen Overlay settings.
             _mainVm.Dashboard.LoadScreenOverlays(appSettings.ScreenOverlays);
+            // The crosshairs and the magnifier (#585).
+            _mainVm.Dashboard.LoadCrosshairs(appSettings.Crosshairs);
+            _mainVm.Dashboard.LoadMagnifier(appSettings.Magnifier);
 
             vm.Use2DControllerView = appSettings.Use2DControllerView;
             vm.LegacyDriverCleanupOffered = appSettings.LegacyDriverCleanupOffered;
@@ -2702,6 +2705,7 @@ namespace PadForge.Services
             _mainVm.Dashboard.HeadTrackingLastSources = appSettings.HeadTrackingLastSources;
             _mainVm.Dashboard.OverlaysLastShown = appSettings.OverlaysLastShown;
             _mainVm.Dashboard.ScreenOverlaysLastOn = appSettings.ScreenOverlaysLastOn;
+            _mainVm.Dashboard.CrosshairsLastOn = appSettings.CrosshairsLastOn;
 
             // Restore main window position/size (profile-independent).
             vm.MainWindowLeft = appSettings.MainWindowLeft;
@@ -4224,6 +4228,7 @@ namespace PadForge.Services
                 ScreenFrameMs = ad.ScreenFrameMs,
                 ScreenRepeat = ad.ScreenRepeat,
                 ScreenOverlayNumber = ad.ScreenOverlayNumber,
+                CrosshairNumber = ad.CrosshairNumber,
                 ScreenMode = ad.ScreenMode,
                 StopwatchAction = ad.StopwatchAction,
                 PanDirection = ad.PanDirection,
@@ -4484,6 +4489,8 @@ namespace PadForge.Services
                 _mainVm.Dashboard.TouchpadOverlayHeight = active.TouchpadOverlayHeight > 0
                     ? active.TouchpadOverlayHeight : 250;
                 _mainVm.Dashboard.LoadScreenOverlays(active.ScreenOverlays);
+                _mainVm.Dashboard.LoadCrosshairs(active.Crosshairs);
+                _mainVm.Dashboard.LoadMagnifier(active.Magnifier);
                 // The service toggles ride profiles too, as nullable
                 // legs: only a profile with an opinion moves the toggle.
                 ApplyProfileServiceToggles(active);
@@ -4672,6 +4679,8 @@ namespace PadForge.Services
             profile.TouchpadOverlayWidth = _mainVm.Dashboard.TouchpadOverlayWidth;
             profile.TouchpadOverlayHeight = _mainVm.Dashboard.TouchpadOverlayHeight;
             profile.ScreenOverlays = _mainVm.Dashboard.SnapshotScreenOverlays();
+            profile.Crosshairs = _mainVm.Dashboard.SnapshotCrosshairs();
+            profile.Magnifier = _mainVm.Dashboard.SnapshotMagnifier();
 
             // Custom touchpad gestures live in InputService's working
             // list; pull through the provider hook so the 250 ms
@@ -5178,6 +5187,8 @@ namespace PadForge.Services
                 TouchpadOverlayWidth = _mainVm.Dashboard.TouchpadOverlayWidth,
                 TouchpadOverlayHeight = _mainVm.Dashboard.TouchpadOverlayHeight,
                 ScreenOverlays = _mainVm.Dashboard.SnapshotScreenOverlays(),
+                Crosshairs = _mainVm.Dashboard.SnapshotCrosshairs(),
+                Magnifier = _mainVm.Dashboard.SnapshotMagnifier(),
                 MainWindowLeft = vm.MainWindowLeft,
                 MainWindowTop = vm.MainWindowTop,
                 MainWindowWidth = vm.MainWindowWidth,
@@ -5191,6 +5202,7 @@ namespace PadForge.Services
                 HeadTrackingLastSources = _mainVm.Dashboard.HeadTrackingLastSources,
                 OverlaysLastShown = _mainVm.Dashboard.OverlaysLastShown,
                 ScreenOverlaysLastOn = _mainVm.Dashboard.ScreenOverlaysLastOn,
+                CrosshairsLastOn = _mainVm.Dashboard.CrosshairsLastOn,
                 EnableInputHiding = vm.EnableInputHiding,
                 KeepHidHideCloaksBetweenLaunches = vm.KeepHidHideCloaksBetweenLaunches,
                 FlydigiEnhancedProtocol = vm.FlydigiEnhancedProtocol,
@@ -5681,6 +5693,7 @@ namespace PadForge.Services
                 ScreenFrameMs = a.ScreenFrameMs,
                 ScreenRepeat = a.ScreenRepeat,
                 ScreenOverlayNumber = a.ScreenOverlayNumber,
+                CrosshairNumber = a.CrosshairNumber,
                 ScreenMode = a.ScreenMode,
                 StopwatchAction = a.StopwatchAction,
                 PanDirection = a.PanDirection,
@@ -7456,6 +7469,18 @@ namespace PadForge.Services
         [XmlArrayItem("Overlay")]
         public ScreenOverlayData[] ScreenOverlays { get; set; }
 
+        /// <summary>The crosshairs (#585): each one's switch, style, display,
+        /// offset and look. Null in a file from before they existed, which
+        /// reads as one crosshair, off.</summary>
+        [XmlArray("Crosshairs")]
+        [XmlArrayItem("Crosshair")]
+        public CrosshairData[] Crosshairs { get; set; }
+
+        /// <summary>The magnifier (#585). Null in a file from before it
+        /// existed, which reads as the defaults, off.</summary>
+        [XmlElement]
+        public MagnifierData Magnifier { get; set; }
+
         [XmlElement]
         public double MainWindowLeft { get; set; } = -1;
 
@@ -7527,6 +7552,12 @@ namespace PadForge.Services
         [XmlElement]
         public int ScreenOverlaysLastOn { get; set; }
         public bool ShouldSerializeScreenOverlaysLastOn() => ScreenOverlaysLastOn != 0;
+
+        /// <summary>The same for the Extras switch of Crosshair (#585), a bit
+        /// for each crosshair's number.</summary>
+        [XmlElement]
+        public int CrosshairsLastOn { get; set; }
+        public bool ShouldSerializeCrosshairsLastOn() => CrosshairsLastOn != 0;
 
         /// <summary>
         /// Global master switch for device hiding (HidHide + input hooks).
@@ -8109,6 +8140,9 @@ namespace PadForge.Services
         /// another Show Keyboard Screen or a Keyboard Screen Mode macro.</summary>
         [XmlElement] public int ScreenRepeat { get; set; } = 1;
         [XmlElement] public int ScreenOverlayNumber { get; set; }
+        /// <summary>Toggle Crosshair (#585): the crosshair's number, or 0 for
+        /// every crosshair.</summary>
+        [XmlElement] public int CrosshairNumber { get; set; }
         /// <summary>Keyboard Screen Mode (#519): the mode to switch to.</summary>
         [XmlElement] public KeyboardScreenMode ScreenMode { get; set; } = KeyboardScreenData.DefaultMode;
         /// <summary>Stopwatch (#519): start or pause, or reset.</summary>
@@ -8533,6 +8567,18 @@ namespace PadForge.Services
         [XmlArray("ScreenOverlays")]
         [XmlArrayItem("Overlay")]
         public ScreenOverlayData[] ScreenOverlays { get; set; }
+
+        /// <summary>The crosshairs (#585), per profile as the Screen Overlays
+        /// are. Null in a profile from before they existed, which reads as one
+        /// crosshair, off.</summary>
+        [XmlArray("Crosshairs")]
+        [XmlArrayItem("Crosshair")]
+        public CrosshairData[] Crosshairs { get; set; }
+
+        /// <summary>The magnifier (#585), per profile. Null in a profile from
+        /// before it existed, which reads as the defaults, off.</summary>
+        [XmlElement]
+        public MagnifierData Magnifier { get; set; }
 
         /// <summary>Steam Workshop provenance for profiles imported from
         /// Get Profiles' Community tab (#9). Null on every other profile.

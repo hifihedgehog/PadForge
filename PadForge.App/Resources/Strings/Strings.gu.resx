@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>રમતી વખતે મેનૂ, લેયર અને પ્રોફાઇલ સ્વિચ બતાવો.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>PlayStation ટચપેડ ગેમ માટે ઑન-સ્ક્રીન ટચ સપાટી.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>અન્ય વિન્ડોની ઉપર ચિત્ર, ટાઇમર કે ઘડિયાળ.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>ગેમ પર તમારો પોતાનો ક્રોસહેર.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>ઝૂમ લેન્સ, આખી સ્ક્રીનનું ઝૂમ અથવા સ્પૉટલાઇટ.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>પોર્ટ, સાદું HTTP, ઍક્સેસ કોડ</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>આપોઆપ ફરી જોડાવું, પોર્ટ, પેરિંગ ઓળખ, સરનામાથી જોડાવું</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>પોર્ટ, DSX.exe સ્ટેન્ડઇન</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>ઓવરલે {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>દર્શાવે છે</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>બીજો પ્રોગ્રામ આગળ હોય ત્યારે ક્લિક ઓવરલેમાંથી પસાર થઈ જાય છે. PadForge આગળ હોય ત્યારે તેને જમણા માઉસ બટનથી ખેંચો અને તેના ખૂણેથી કદ બદલો. મેક્રો ઓવરલેને તેના નંબરથી બતાવી કે છુપાવી શકે છે.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>ક્રોસહેર</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>અન્ય વિન્ડોની ઉપર ડિસ્પ્લેના કેન્દ્રમાં ક્રોસહેર: ક્રોસ, વર્તુળ, ટપકું અથવા તમારું પોતાનું ચિત્ર.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>ક્રોસહેર ઉમેરો</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>ક્રોસહેર {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>ક્રોસહેર બતાવો</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>શૈલી</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>ક્રોસ</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>વર્તુળ</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>ટપકું</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>ચિત્ર</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>પૂર્વાવલોકન</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>કેન્દ્રથી અંતર</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>આડું અંતર</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>ઊભું અંતર</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>રેખાની લંબાઈ</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>જાડાઈ</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>અંતર</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>કેન્દ્રનું ટપકું</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T આકાર</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>ઉપરની રેખા નથી.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>ત્રિજ્યા</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>બાજુઓ</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>64 પર રિંગ ગોળ બને છે.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>કદ</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>ચિત્ર</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>કોઈ ચિત્ર પસંદ કર્યું નથી</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>ચિત્રો (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|બધી ફાઇલો (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>કદ</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>પહોળાઈ</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>ઊંચાઈ</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>ચિત્રનું પોતાનું કદ</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>પ્રમાણ જાળવો</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>બંધ હોય તો ચિત્ર પહોળાઈ અને ઊંચાઈ મુજબ ખેંચાય છે.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>રંગ</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>રૂપરેખા</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>રૂપરેખાની પહોળાઈ</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>રૂપરેખાનો રંગ</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>ફેરવણી</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>સુંવાળી ધાર</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>બંધ હોય તો દરેક ધાર પૂરા પિક્સેલ પર આવે છે અને તીક્ષ્ણ રહે છે.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>કલર પીકર બતાવો અથવા છુપાવો</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>બતાવવા માટે ચિત્ર નથી</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>ડિસ્પ્લેની બહાર</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>ક્રોસહેર વિન્ડો અને બૉર્ડરલેસ ગેમ પર દેખાય છે અને ક્લિક તેમાંથી પસાર થઈ જાય છે. એક્સક્લૂઝિવ ફુલ સ્ક્રીનમાં ગેમ તેમને છુપાવી દે છે, તેથી ગેમને વિન્ડો અથવા બૉર્ડરલેસ મોડમાં ચલાવો. મેક્રો ક્રોસહેરને તેના નંબરથી બતાવી કે છુપાવી શકે છે.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>મેગ્નિફાયર</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>સ્નાઇપર સ્કોપ જેવો લેન્સ, આખું ડિસ્પ્લે ઝૂમ કરેલું, અથવા બાકીનાને ઘેરું કરતી સ્પૉટલાઇટ.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>મેગ્નિફાયર બતાવો</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>તે શું બતાવે છે</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>મોડ</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>લેન્સ</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>ફુલ સ્ક્રીન</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>સ્પૉટલાઇટ</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>કેન્દ્ર રાખો</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>ડિસ્પ્લેનું કેન્દ્ર</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>પોઇન્ટર</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>ક્રોસહેર</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>ક્રોસહેર એટલે ચાલુ હોય તેવો પહેલો ક્રોસહેર, અંતર સહિત.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>ઝૂમ</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>આકાર</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>વર્તુળ</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>લંબચોરસ</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>કદ</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>પહોળાઈ</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>ઊંચાઈ</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>કિનારી</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>કિનારીની પહોળાઈ</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>કિનારીનો રંગ</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>વર્તુળનું કદ</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>ઘેરાશ</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows એ મેગ્નિફાયર શરૂ કર્યું નહીં.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>લેન્સ અને સ્પૉટલાઇટ વિન્ડો અને બૉર્ડરલેસ ગેમ પર દેખાય છે અને ક્લિક તેમાંથી પસાર થઈ જાય છે. ફુલ સ્ક્રીન Windowsના ફુલ સ્ક્રીન મેગ્નિફાયર વડે આખા ડેસ્કટૉપને ઝૂમ કરે છે. મેક્રો મેગ્નિફાયરને બતાવી કે છુપાવી શકે છે, અથવા ફક્ત પકડી રાખો ત્યાં સુધી બતાવી શકે છે.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>મોશન સર્વર</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>જાયરો અને એક્સેલરોમીટર ડેટા માટે DSU/CemuHook Motion Provider પ્રોટોકોલ સર્વર.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU મોશન સર્વર સક્ષમ કરો (CemuHook Motion Provider Protocol)</value></data>
@@ -4912,4 +4985,6 @@
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>પાસવર્ડ સેટ કરો</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>રિમોટ લિંક અનલૉક કરો</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>પાસવર્ડ</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>મેગ્નિફાયર (પકડી રાખતી વખતે)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>આ મેક્રો પકડી રાખો ત્યાં સુધી મેગ્નિફાયર બતાવે છે, સાઇટ્સ ઉપર લઈને નિશાન લેવા માટે. તેને મેગ્નિફાયર પેજ પર સેટ કરો.</value></data>
 </root>

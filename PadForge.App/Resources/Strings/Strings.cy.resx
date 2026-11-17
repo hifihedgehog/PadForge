@@ -401,6 +401,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Dangoswch ddewislenni, haenau a newidiadau proffil wrth i chi chwarae.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Arwyneb cyffwrdd ar y sgrin ar gyfer gemau pad cyffwrdd PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Llun, amserydd neu gloc uwchben ffenestri eraill.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Eich croesflew eich hun dros gêm.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Lens chwyddo, chwyddo sgrin lawn neu sbotolau.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Porth, HTTP plaen, cod mynediad</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Ailgysylltu Awtomatig, porth, hunaniaeth paru, cysylltu drwy gyfeiriad</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Porth, dirprwy DSX.exe</value></data>
@@ -448,6 +450,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Troshaen {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Yn Dangos</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Tra bydd rhaglen arall o'ch blaen, mae clicio'n mynd drwy'r troshaen. Tra bydd PadForge o'ch blaen, llusgwch ef gyda'r botwm llygoden dde a newidiwch ei faint o'i gornel. Gall macro ddangos neu guddio troshaen yn ôl ei rhif.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Croesflew</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Croesflew dros ffenestri eraill, wedi'u canoli ar sgrin: croes, cylch, dot neu lun eich hun.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Ychwanegu Croesflew</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Croesflew {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Dangos Croesflew</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Arddull</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Croes</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Cylch</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Dot</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Llun</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Rhagolwg</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Gwrthbwynt o'r Canol</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Gwrthbwynt Llorweddol</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Gwrthbwynt Fertigol</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Hyd y Fraich</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Trwch</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Bwlch</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Dot Canol</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Siâp T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Dim braich uchaf.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Radiws</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Ochrau</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Ar 64 mae'r cylch yn grwn.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Maint</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Llun</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Dim llun wedi'i ddewis</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Lluniau (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Pob Ffeil (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Maint</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Lled</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Uchder</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Maint Gwreiddiol y Llun</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Cadw'r Cyfrannedd</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Os yw wedi'i ddiffodd, mae'r llun yn ymestyn i'r lled a'r uchder.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Lliw</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Amlinell</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Lled yr Amlinell</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Lliw'r Amlinell</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Cylchdro</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Ymylon Llyfn</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Os yw wedi'i ddiffodd, mae pob ymyl yn glanio ar bicseli cyfan ac yn aros yn finiog.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Dangos neu guddio'r dewisydd lliw</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Dim llun i'w ddangos</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Oddi ar ei sgrin</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Mae croesflew yn dangos dros gemau ffenestr a gemau heb ymyl, ac mae clicio'n mynd drwyddynt. Mae gêm sgrin lawn neilltuedig yn eu cuddio, felly rhedwch hi mewn ffenestr neu heb ymyl. Gall macro ddangos neu guddio croesflew yn ôl ei rhif.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Chwyddwr</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Lens fel cwmpas sniper, y sgrin gyfan wedi'i chwyddo, neu sbotolau sy'n tywyllu'r gweddill.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Dangos Chwyddwr</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Beth Mae'n ei Ddangos</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Modd</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lens</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Sgrin Lawn</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Sbotolau</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Canoli ar</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Canol y Sgrin</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Pwyntydd</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Croesflew</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Ystyr Croesflew yw'r croesflew cyntaf sydd ymlaen, gan gynnwys ei wrthbwynt.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Chwyddo</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Siâp</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Cylch</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Petryal</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Maint</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Lled</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Uchder</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Ffin</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Lled y Ffin</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Lliw'r Ffin</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Maint y Cylch</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Tywyllwch</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Ni wnaeth Windows gychwyn y chwyddwr.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Mae'r lens a'r sbotolau yn dangos dros gemau ffenestr a gemau heb ymyl, ac mae clicio'n mynd drwyddynt. Mae Sgrin Lawn yn chwyddo'r bwrdd gwaith cyfan gyda chwyddwr sgrin lawn Windows. Gall macro ddangos neu guddio'r chwyddwr, neu ei ddangos dim ond tra bydd yn cael ei ddal.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Gweinydd Symudiad</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Gweinydd protocol DSU/CemuHook Motion Provider ar gyfer data gyrosgop a chyflymiadur.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Galluogi Gweinydd Symudiad DSU (Protocol CemuHook Motion Provider)</value></data>
@@ -4892,4 +4965,6 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Gosod Cyfrinair</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Datgloi Dolen Bell</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Cyfrinair</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Chwyddwr (Tra'n Cael ei Ddal)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Yn dangos y chwyddwr tra bydd y macro hwn yn cael ei ddal, ar gyfer anelu drwy'r cwmpas. Gosodwch ef ar dudalen y Chwyddwr.</value></data>
 </root>

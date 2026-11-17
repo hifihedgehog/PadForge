@@ -103,10 +103,11 @@ namespace PadForge.Tests
             // No longer the tail: Set Chroma Color appended 56 (#468),
             // Show Dreamcast Screen 57 (#469), the keyboard screen
             // actions 58 to 61 (#519), the Adaptive Trigger Effect pair
-            // 62 and 63 (#531), the key colors pair 64 and 65 (#557) and
-            // Toggle Screen Overlay 66 (#560).
+            // 62 and 63 (#531), the key colors pair 64 and 65 (#557),
+            // Toggle Screen Overlay 66 (#560), Profile Shortcut 67 (#561)
+            // and the crosshair and magnifier actions 68 to 70 (#585).
             var values = Enum.GetValues<MacroActionType>();
-            Assert.Equal(MacroActionType.SwitchLayer, values[^13]);
+            Assert.Equal(MacroActionType.SwitchLayer, values[^16]);
             Assert.Equal(55, (int)MacroActionType.SwitchLayer);
             Assert.Equal(54, (int)MacroActionType.VoiceListenWhileHeld);
         }

@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Показвайте менюта, слоеве и смени на профил, докато играете.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Сензорна повърхност на екрана за игри с тъчпада на PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Картинка, таймер или часовник над другите прозорци.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Собствен мерник върху играта.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Увеличителна леща, увеличение на целия екран или прожектор.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Порт, обикновен HTTP, код за достъп</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Автоматично повторно свързване, порт, идентичност при сдвояване, свързване по адрес</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, заместник DSX.exe</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Наслагване {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Показва</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Докато друга програма е отпред, щракванията минават през наслагването. Докато PadForge е отпред, го плъзгайте с десния бутон на мишката и променяйте размера му от ъгъла. Макрос може да показва или скрива наслагване по неговия номер.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Мерник</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Мерници върху другите прозорци, в средата на дисплей: кръст, кръг, точка или собствена картинка.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Добавяне на мерник</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Мерник {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Показване на мерника</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Стил</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Кръст</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Кръг</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Точка</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Картинка</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Преглед</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Отместване от центъра</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Хоризонтално отместване</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Вертикално отместване</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Дължина на рамото</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Дебелина</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Разстояние</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Точка в центъра</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>Форма T</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Без горно рамо.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Радиус</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Страни</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>При 64 пръстенът е кръгъл.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Размер</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Картинка</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Не е избрана картинка</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Картинки (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Всички файлове (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Размер</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Ширина</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Височина</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Собствен размер на картинката</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Запазване на пропорциите</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Когато е изключено, картинката се разтяга до зададените ширина и височина.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Цвят</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Контур</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Ширина на контура</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Цвят на контура</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Завъртане</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Изглаждане на краищата</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Когато е изключено, всеки край е върху цели пиксели и остава остър.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Показване или скриване на избора на цвят</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Няма картинка за показване</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Извън дисплея си</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Мерниците се показват върху игри в прозорец и без рамка, а щракванията минават през тях. Игра на цял екран в изключителен режим ги скрива, затова я пускайте в прозорец или без рамка. Макрос може да показва или скрива мерник по неговия номер.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Лупа</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Леща като оптичен мерник, увеличен целият дисплей или прожектор, който затъмнява останалото.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Показване на лупата</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Какво показва</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Режим</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Леща</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Цял екран</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Прожектор</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Центриране върху</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Центъра на дисплея</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Показалеца</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Мерник</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Изборът Мерник означава първия включен мерник заедно с отместването му.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Увеличение</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Форма</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Кръг</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Правоъгълник</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Размер</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Ширина</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Височина</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Рамка</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Ширина на рамката</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Цвят на рамката</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Размер на кръга</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Затъмнение</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows не стартира лупата.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Лещата и прожекторът се показват върху игри в прозорец и без рамка, а щракванията минават през тях. Режимът Цял екран увеличава целия работен плот с лупата на Windows за цял екран. Макрос може да показва или скрива лупата, или да я показва само докато е задържан.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Сървър за движение</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Сървър по протокола DSU/CemuHook Motion Provider за данни от жироскопа и акселерометъра.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Включи DSU сървъра за движение (протокол CemuHook Motion Provider)</value></data>
@@ -5236,6 +5309,10 @@
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>Наслагване на екрана на PadForge</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Още няма какво да се покаже. Изберете какво да показва от страницата Наслагване на екрана, под Допълнения.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Превключване на наслагването на екрана</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Превключване на мерника</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Превключване на лупата</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Всеки мерник</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Мерник</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Превключване на наслагването на екрана</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Наслагване на екрана</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Наслагването не показва нищо.</value></data>
@@ -5256,6 +5333,11 @@
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Наслагване</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Всяко наслагване</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Превключване на наслагването на екрана {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Превключване на мерника</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Превключване на мерник {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Превключване на лупата</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Лупа (докато е задържан)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Показва лупата, докато този макрос е задържан, за прицелване през мерника на оръжието. Настройте я на страницата Лупа.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Показване на картинки на {0}: {1} × {2} мс, до следващото показване или макрос за режим</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Импортиране на профил</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, файл на {1}.</value></data>
@@ -5284,7 +5366,7 @@
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge не разпознава този изход: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge няма такава команда: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Виртуалният контролер няма такъв бутон: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Мерникът живее вътре в reWASD. Покажете своя картина с Наслагване на екрана.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD пази мерниците си в собствените си настройки, а не в конфигурацията. Настройте своя на страницата Мерник.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Треперенето и разклащането на стика не бяха пренесени.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Точките на задействане на аналоговите клавиши не бяха пренесени.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD изпращаше този контролер към друго устройство чрез адаптер. PadForge го пуска на този компютър, а Отдалечена връзка го изпраща към друг компютър с PadForge.</value></data>
@@ -5576,7 +5658,6 @@
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>Профил на HIDMaestro (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>Осветление на клавишите за PadForge (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Макрос не може да натисне {0}. Ред в „Съпоставяния“ може.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge поддържа осем Наслагвания на екрана, а това е деветият или десетият мерник на reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge чете Жироскоп наляво и надясно от крена, а навеждането от завъртането, както е по подразбиране в reWASD. Предпочитанията на reWASD могат да ги разменят, а този файл не показва дали са били разменени.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>В режим Наклон навеждането на reWASD е завъртане около вертикалната ос, а сензорът за движение не дава ъгъл за такова завъртане.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge чете диагонал на тъчпада като две посоки едновременно, което тъчпадът отчита само когато неговият „Режим на кръстачката“ в „Движение и докосване“ е „8 посоки“.</value></data>

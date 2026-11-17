@@ -399,6 +399,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Rodykite meniu, sluoksnius ir profilių perjungimus žaidžiant.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Ekrane rodomas jutiklinis paviršius „PlayStation“ jutiklinio skydelio žaidimams.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Paveikslėlis, laikmatis ar laikrodis virš kitų langų.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Jūsų pačių taikiklis virš žaidimo.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Didinamasis lęšis, viso ekrano didinimas ar prožektorius.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Prievadas, paprastas HTTP, prieigos kodas</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automatinis prisijungimas iš naujo, prievadas, susiejimo tapatybė, prisijungimas adresu</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Prievadas, DSX.exe pakaitalas</value></data>
@@ -446,6 +448,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Perdanga {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Rodo</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Kol priekyje kita programa, spustelėjimai praeina pro perdangą. Kol priekyje „PadForge“, vilkite ją dešiniuoju pelės mygtuku ir keiskite dydį už kampo. Makrokomanda gali parodyti ar paslėpti perdangą pagal jos numerį.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Taikiklis</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Taikikliai virš kitų langų, ekrano centre: kryželis, apskritimas, taškas ar jūsų paveikslėlis.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Pridėti taikiklį</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Taikiklis {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Rodyti taikiklį</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Stilius</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Kryželis</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Apskritimas</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Taškas</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Paveikslėlis</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Peržiūra</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Poslinkis nuo centro</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Horizontalus poslinkis</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Vertikalus poslinkis</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Atšakos ilgis</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Storis</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Tarpas</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Centrinis taškas</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T forma</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Be viršutinės atšakos.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Spindulys</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Kraštinės</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Su 64 žiedas yra apvalus.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Dydis</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Paveikslėlis</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Paveikslėlis nepasirinktas</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Paveikslėliai (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Visi failai (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Dydis</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Plotis</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Aukštis</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Paties paveikslėlio dydis</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Išlaikyti proporcijas</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Išjungus, paveikslėlis ištempiamas iki nustatyto pločio ir aukščio.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Spalva</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Kontūras</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Kontūro plotis</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Kontūro spalva</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Pasukimas</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Glotnūs kraštai</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Išjungus, kiekvienas kraštas patenka ant sveikų pikselių ir lieka aštrus.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Rodyti arba slėpti spalvų parinktuvą</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Nėra rodomo paveikslėlio</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Už savo ekrano ribų</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Taikikliai rodomi virš langų režimu ir be rėmelių veikiančių žaidimų, o spustelėjimai pro juos praeina. Žaidimas išskirtiniu viso ekrano režimu jų nerodo, todėl paleiskite jį lango ar be rėmelių režimu. Makrokomanda gali parodyti ar paslėpti taikiklį pagal jo numerį.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Didintuvas</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Lęšis kaip snaiperio taikiklis, visas priartintas ekranas arba prožektorius, kuris aptemdo likusią dalį.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Rodyti didintuvą</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Ką rodo</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Režimas</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Lęšis</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Visas ekranas</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Prožektorius</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Centruoti pagal</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Ekrano centras</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Žymeklis</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Taikiklis</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Taikiklis reiškia pirmą įjungtą taikiklį kartu su poslinkiu.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Priartinimas</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Forma</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Apskritimas</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Stačiakampis</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Dydis</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Plotis</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Aukštis</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Rėmelis</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Rėmelio plotis</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Rėmelio spalva</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Apskritimo dydis</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Tamsumas</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows nepaleido didintuvo.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Lęšis ir prožektorius rodomi virš langų režimu ir be rėmelių veikiančių žaidimų, o spustelėjimai pro juos praeina. Visas ekranas priartina visą darbalaukį naudodamas Windows viso ekrano didintuvą. Makrokomanda gali parodyti ar paslėpti didintuvą arba rodyti jį tik kol laikoma.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Judesio serveris</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook judesio teikėjo protokolo serveris giroskopo ir akselerometro duomenims.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Įjungti DSU judesio serverį (CemuHook judesio teikėjo protokolas)</value></data>
@@ -4917,4 +4990,6 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="RemoteLink_PasswordSetTitle" xml:space="preserve"><value>Nustatyti slaptažodį</value></data>
   <data name="RemoteLink_PasswordUnlockTitle" xml:space="preserve"><value>Atrakinti nuotolinį ryšį</value></data>
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Slaptažodis</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Didintuvas (kol laikoma)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Rodo didintuvą, kol ši makrokomanda laikoma, taikymuisi per taikiklį. Nustatykite jį puslapyje „Didintuvas“.</value></data>
 </root>

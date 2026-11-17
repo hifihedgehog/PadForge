@@ -414,6 +414,8 @@
   <data name="Extras_Tile_Overlays" xml:space="preserve"><value>Sýndu valmyndir, lög og sniðaskipti á meðan þú spilar.</value></data>
   <data name="Extras_Tile_TouchpadOverlay" xml:space="preserve"><value>Snertiflötur á skjánum fyrir snertiflatarleiki PlayStation.</value></data>
   <data name="Extras_Tile_ScreenOverlay" xml:space="preserve"><value>Mynd, tímamælir eða klukka ofan á öðrum gluggum.</value></data>
+  <data name="Extras_Tile_Crosshair" xml:space="preserve"><value>Þinn eigin miðunarkross yfir leik.</value></data>
+  <data name="Extras_Tile_Magnifier" xml:space="preserve"><value>Aðdráttarlinsa, aðdráttur á allan skjáinn eða kastljós.</value></data>
   <data name="Extras_More_WebController" xml:space="preserve"><value>Gátt, ódulkóðað HTTP, aðgangskóði</value></data>
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Sjálfvirk endurtenging, gátt, paraauðkenni, tengjast með vistfangi</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Gátt, staðgengill DSX.exe</value></data>
@@ -461,6 +463,77 @@
   <data name="Extras_ScreenOverlay_Number_Format" xml:space="preserve"><value>Yfirlag {0}</value></data>
   <data name="Extras_ScreenOverlay_Shows" xml:space="preserve"><value>Sýnir</value></data>
   <data name="Extras_ScreenOverlay_Footer" xml:space="preserve"><value>Á meðan annað forrit er fremst fara smellir í gegnum yfirlagið. Á meðan PadForge er fremst skaltu draga það með hægri músarhnappi og breyta stærð þess frá horninu. Fjölvi getur sýnt eða falið yfirlag eftir númeri þess.</value></data>
+  <data name="Extras_Crosshair_Title" xml:space="preserve"><value>Miðunarkross</value></data>
+  <data name="Extras_Crosshair_Description" xml:space="preserve"><value>Miðunarkrossar ofan á öðrum gluggum, miðjaðir á skjá: kross, hringur, punktur eða þín eigin mynd.</value></data>
+  <data name="Extras_Crosshair_Add" xml:space="preserve"><value>Bæta við miðunarkrossi</value></data>
+  <data name="Extras_Crosshair_Number_Format" xml:space="preserve"><value>Miðunarkross {0}</value></data>
+  <data name="Extras_Crosshair_Show" xml:space="preserve"><value>Sýna miðunarkross</value></data>
+  <data name="Extras_Crosshair_Style" xml:space="preserve"><value>Stíll</value></data>
+  <data name="Extras_Crosshair_Style_Cross" xml:space="preserve"><value>Kross</value></data>
+  <data name="Extras_Crosshair_Style_Circle" xml:space="preserve"><value>Hringur</value></data>
+  <data name="Extras_Crosshair_Style_Dot" xml:space="preserve"><value>Punktur</value></data>
+  <data name="Extras_Crosshair_Style_Image" xml:space="preserve"><value>Mynd</value></data>
+  <data name="Extras_Crosshair_Preview" xml:space="preserve"><value>Forskoðun</value></data>
+  <data name="Extras_Crosshair_Offset" xml:space="preserve"><value>Frávik frá miðju</value></data>
+  <data name="Extras_Crosshair_OffsetX" xml:space="preserve"><value>Lárétt frávik</value></data>
+  <data name="Extras_Crosshair_OffsetY" xml:space="preserve"><value>Lóðrétt frávik</value></data>
+  <data name="Extras_Crosshair_Length" xml:space="preserve"><value>Lengd arma</value></data>
+  <data name="Extras_Crosshair_Thickness" xml:space="preserve"><value>Þykkt</value></data>
+  <data name="Extras_Crosshair_Gap" xml:space="preserve"><value>Bil</value></data>
+  <data name="Extras_Crosshair_CenterDot" xml:space="preserve"><value>Miðjupunktur</value></data>
+  <data name="Extras_Crosshair_TShape" xml:space="preserve"><value>T lögun</value></data>
+  <data name="Extras_Crosshair_TShapeHint" xml:space="preserve"><value>Enginn efri armur.</value></data>
+  <data name="Extras_Crosshair_Radius" xml:space="preserve"><value>Radíus</value></data>
+  <data name="Extras_Crosshair_Sides" xml:space="preserve"><value>Hliðar</value></data>
+  <data name="Extras_Crosshair_SidesHint" xml:space="preserve"><value>Við 64 er hringurinn kringlóttur.</value></data>
+  <data name="Extras_Crosshair_DotSize" xml:space="preserve"><value>Stærð</value></data>
+  <data name="Extras_Crosshair_Picture" xml:space="preserve"><value>Mynd</value></data>
+  <data name="Extras_Crosshair_NoPictureChosen" xml:space="preserve"><value>Engin mynd valin</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Myndir (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Allar skrár (*.*)|*.*</value></data>
+  <data name="Extras_Crosshair_PictureSize" xml:space="preserve"><value>Stærð</value></data>
+  <data name="Extras_Crosshair_Width" xml:space="preserve"><value>Breidd</value></data>
+  <data name="Extras_Crosshair_Height" xml:space="preserve"><value>Hæð</value></data>
+  <data name="Extras_Crosshair_OwnSize" xml:space="preserve"><value>Eigin stærð myndar</value></data>
+  <data name="Extras_Crosshair_KeepProportions" xml:space="preserve"><value>Halda hlutföllum</value></data>
+  <data name="Extras_Crosshair_KeepProportionsHint" xml:space="preserve"><value>Þegar slökkt er teygist myndin í setta breidd og hæð.</value></data>
+  <data name="Extras_Crosshair_Color" xml:space="preserve"><value>Litur</value></data>
+  <data name="Extras_Crosshair_Outline" xml:space="preserve"><value>Útlína</value></data>
+  <data name="Extras_Crosshair_OutlineWidth" xml:space="preserve"><value>Breidd útlínu</value></data>
+  <data name="Extras_Crosshair_OutlineColor" xml:space="preserve"><value>Litur útlínu</value></data>
+  <data name="Extras_Crosshair_Rotation" xml:space="preserve"><value>Snúningur</value></data>
+  <data name="Extras_Crosshair_SmoothEdges" xml:space="preserve"><value>Mjúkar brúnir</value></data>
+  <data name="Extras_Crosshair_SmoothEdgesHint" xml:space="preserve"><value>Þegar slökkt er lenda allar brúnir á heilum pixlum og haldast skarpar.</value></data>
+  <data name="Extras_Crosshair_PickColor" xml:space="preserve"><value>Sýna eða fela litaval</value></data>
+  <data name="Extras_Crosshair_Status_NoPicture" xml:space="preserve"><value>Engin mynd til að sýna</value></data>
+  <data name="Extras_Crosshair_Status_OffDisplay" xml:space="preserve"><value>Utan síns skjás</value></data>
+  <data name="Extras_Crosshair_Footer" xml:space="preserve"><value>Miðunarkrossar birtast yfir leikjum í glugga og rammalausum leikjum og smellir fara í gegnum þá. Leikur í einkaheilskjá felur þá, svo keyrðu hann í glugga eða rammalausan. Fjölvi getur sýnt eða falið miðunarkross eftir númeri hans.</value></data>
+  <data name="Extras_Magnifier_Title" xml:space="preserve"><value>Skjástækkari</value></data>
+  <data name="Extras_Magnifier_Description" xml:space="preserve"><value>Linsa eins og í leyniskyttusjónauka, allur skjárinn stækkaður eða kastljós sem myrkvar restina.</value></data>
+  <data name="Extras_Magnifier_Show" xml:space="preserve"><value>Sýna skjástækkara</value></data>
+  <data name="Extras_Magnifier_Card_Main" xml:space="preserve"><value>Hvað hann sýnir</value></data>
+  <data name="Extras_Magnifier_Mode" xml:space="preserve"><value>Hamur</value></data>
+  <data name="Extras_Magnifier_Mode_Lens" xml:space="preserve"><value>Linsa</value></data>
+  <data name="Extras_Magnifier_Mode_FullScreen" xml:space="preserve"><value>Allur skjárinn</value></data>
+  <data name="Extras_Magnifier_Mode_Spotlight" xml:space="preserve"><value>Kastljós</value></data>
+  <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Miðjað á</value></data>
+  <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Miðja skjás</value></data>
+  <data name="Extras_Magnifier_Follow_Pointer" xml:space="preserve"><value>Bendill</value></data>
+  <data name="Extras_Magnifier_Follow_Crosshair" xml:space="preserve"><value>Miðunarkross</value></data>
+  <data name="Extras_Magnifier_FollowHint" xml:space="preserve"><value>Miðunarkross merkir fyrsta miðunarkrossinn sem er virkur, ásamt fráviki hans.</value></data>
+  <data name="Extras_Magnifier_Zoom" xml:space="preserve"><value>Aðdráttur</value></data>
+  <data name="Extras_Magnifier_Shape" xml:space="preserve"><value>Lögun</value></data>
+  <data name="Extras_Magnifier_Shape_Circle" xml:space="preserve"><value>Hringur</value></data>
+  <data name="Extras_Magnifier_Shape_Rectangle" xml:space="preserve"><value>Rétthyrningur</value></data>
+  <data name="Extras_Magnifier_Size" xml:space="preserve"><value>Stærð</value></data>
+  <data name="Extras_Magnifier_Width" xml:space="preserve"><value>Breidd</value></data>
+  <data name="Extras_Magnifier_Height" xml:space="preserve"><value>Hæð</value></data>
+  <data name="Extras_Magnifier_Border" xml:space="preserve"><value>Rammi</value></data>
+  <data name="Extras_Magnifier_BorderWidth" xml:space="preserve"><value>Breidd ramma</value></data>
+  <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Litur ramma</value></data>
+  <data name="Extras_Magnifier_SpotlightSize" xml:space="preserve"><value>Stærð hrings</value></data>
+  <data name="Extras_Magnifier_SpotlightDim" xml:space="preserve"><value>Myrkvun</value></data>
+  <data name="Extras_Magnifier_Failed" xml:space="preserve"><value>Windows ræsti ekki skjástækkarann.</value></data>
+  <data name="Extras_Magnifier_Footer" xml:space="preserve"><value>Linsan og kastljósið birtast yfir leikjum í glugga og rammalausum leikjum og smellir fara í gegnum þau. Allur skjárinn stækkar allt skjáborðið með skjástækkara Windows. Fjölvi getur sýnt eða falið skjástækkarann, eða sýnt hann aðeins á meðan haldið er.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Hreyfiþjónn</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Þjónn fyrir DSU/CemuHook Motion Provider-samskiptareglurnar, fyrir gögn úr snúningsskynjara og hröðunarmæli.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Virkja DSU-hreyfiþjón (CemuHook Motion Provider-samskiptareglur)</value></data>
@@ -5236,6 +5309,10 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Dashboard_ScreenOverlayWindowTitle" xml:space="preserve"><value>PadForge-yfirlag skjás</value></data>
   <data name="ScreenOverlay_Empty" xml:space="preserve"><value>Ekkert að sýna enn. Veldu hvað það sýnir á síðunni Yfirlag skjás, undir Aukaeiginleikar.</value></data>
   <data name="Macro_ToggleScreenOverlay" xml:space="preserve"><value>Víxla yfirlagi skjás</value></data>
+  <data name="Macro_ToggleCrosshair" xml:space="preserve"><value>Víxla miðunarkrossi</value></data>
+  <data name="Macro_ToggleMagnifier" xml:space="preserve"><value>Víxla skjástækkara</value></data>
+  <data name="Macro_EveryCrosshair" xml:space="preserve"><value>Allir miðunarkrossar</value></data>
+  <data name="Macro_Crosshair" xml:space="preserve"><value>Miðunarkross</value></data>
   <data name="MacroAction_ToggleScreenOverlay" xml:space="preserve"><value>Víxla yfirlagi skjás</value></data>
   <data name="KeyboardScreens_Kind_Overlay" xml:space="preserve"><value>Yfirlag skjás</value></data>
   <data name="KeyboardScreen_Hint_Off_Overlay" xml:space="preserve"><value>Yfirlagið sýnir ekkert.</value></data>
@@ -5256,6 +5333,11 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Macro_KeyboardScreen_Overlay" xml:space="preserve"><value>Yfirlag</value></data>
   <data name="Macro_KeyboardScreen_EveryOverlay" xml:space="preserve"><value>Öll yfirlög</value></data>
   <data name="MacroAction_ToggleScreenOverlay_Format" xml:space="preserve"><value>Víxla yfirlagi skjás {0}</value></data>
+  <data name="MacroAction_ToggleCrosshair" xml:space="preserve"><value>Víxla miðunarkrossi</value></data>
+  <data name="MacroAction_ToggleCrosshair_Format" xml:space="preserve"><value>Víxla miðunarkrossi {0}</value></data>
+  <data name="MacroAction_ToggleMagnifier" xml:space="preserve"><value>Víxla skjástækkara</value></data>
+  <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Skjástækkari (á meðan haldið er)</value></data>
+  <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Sýnir skjástækkarann á meðan þessum fjölva er haldið, til að miða í gegnum sigti. Stilltu hann upp á síðunni Skjástækkari.</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Hold_Format" xml:space="preserve"><value>Sýna {0} myndir: {1} × {2} ms, þar til næsta sýning eða hamfjölvi tekur við</value></data>
   <data name="Import_DialogTitle" xml:space="preserve"><value>Flytja inn snið</value></data>
   <data name="Import_Source_Format" xml:space="preserve"><value>{0}, {1}-skrá.</value></data>
@@ -5284,7 +5366,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="Import_Tr_UnknownOutput" xml:space="preserve"><value>PadForge þekkir ekki þetta úttak: {0}</value></data>
   <data name="Import_Tr_UnknownCommand" xml:space="preserve"><value>PadForge hefur enga slíka skipun: {0}</value></data>
   <data name="Import_Tr_NoSuchPadButton" xml:space="preserve"><value>Sýndarstýripinninn hefur engan slíkan hnapp: {0}</value></data>
-  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>Miðunarkross er hluti af reWASD. Sýndu þína eigin mynd með Yfirlagi skjás.</value></data>
+  <data name="Import_Tr_Crosshair" xml:space="preserve"><value>reWASD geymir miðunarkrossa sína í eigin stillingum, ekki í stillingaskránni. Settu þinn upp á síðunni Miðunarkross.</value></data>
   <data name="Import_Tr_JitterShaking" xml:space="preserve"><value>Skjálfti og hristingur stýripinna fluttist ekki með.</value></data>
   <data name="Import_Tr_AnalogActuation" xml:space="preserve"><value>Greiningarpunktar hliðrænna lykla fluttust ekki með.</value></data>
   <data name="Import_Tr_RemoteTarget" xml:space="preserve"><value>reWASD sendi þennan stýripinna í annað tæki í gegnum millistykki. PadForge spilar hann á þessari tölvu og Fjartenging sendir hann í aðra tölvu sem keyrir PadForge.</value></data>
@@ -5576,7 +5658,6 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="FileDialog_HidMaestroProfileFilter" xml:space="preserve"><value>HIDMaestro-snið (*.json)|*.json</value></data>
   <data name="FileDialog_KeyLightsFilter" xml:space="preserve"><value>PadForge-lyklaljós (*.json)|*.json</value></data>
   <data name="Import_Tr_MacroCannotPress" xml:space="preserve"><value>Fjölvi getur ekki ýtt á {0}. Lína undir „Varpanir“ getur það.</value></data>
-  <data name="Import_Tr_NinthCrosshair" xml:space="preserve"><value>PadForge keyrir átta yfirlög skjás og þetta er níundi eða tíundi miðunarkross reWASD.</value></data>
   <data name="Import_Tr_GyroAxes" xml:space="preserve"><value>PadForge les vinstri og hægri hreyfingu snúningsskynjara úr veltu og hneigingu úr snúningi, sem er sjálfgefið í reWASD. Stillingar reWASD geta víxlað þessu tvennu og skráin segir ekki hvort það var gert.</value></data>
   <data name="Import_Tr_TiltLean" xml:space="preserve"><value>Í hallahami er hneiging í reWASD snúningur um lóðréttan ás og hreyfiskynjari gefur ekkert horn fyrir þann snúning.</value></data>
   <data name="Import_Tr_TouchpadDiagonal" xml:space="preserve"><value>PadForge les skáhreyfingu á snertifleti sem tvær áttir í einu, en snertiflöturinn skilar því aðeins þegar „Hamur stefnuhnappa“ hans undir „Hreyfing og snerting“ er stilltur á „8 áttir“.</value></data>

@@ -2767,4 +2767,5 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Nunka</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Miéntras e kapa ta aktivo ta tene e flyout riba pantaya te ora e kapa kambia. Pa 2 sekònde ta mustra e flyout ora e kapa aktivá, i despues e ta disparsé su so. Ku Nunka, e kapa aki no ta mustra ningun flyout, i Base tampoko no ta mustra un ora e kapa kaba.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Pa 2 sekònde ta mustra e nòmber di Base ora un kapa shift kaba. Ku Nunka, Base no ta mustra ningun flyout.</value></data>
+  <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Potrètnan (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Tur archivo (*.*)|*.*</value></data>
 </root>

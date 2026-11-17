@@ -86,10 +86,10 @@ namespace PadForge.Tests
         public void Ring_DpadEdge_HoldsAChangeFor120thOfASecond()
         {
             string edge = BoundedReads.Ring(86.3, 66.3, false, 1000.0 / 120, BoundedGate.None, Stick);
-            StickAt(0, 90);
-            Assert.True(Read(edge));
-            StickAt(0, 10);
-            Assert.True(Read(edge));
+            // The ring's hold in clock ticks, as BoundedReads works it out
+            // from the debounce.
+            HoldWindow.AssertHeld(() => { StickAt(0, 90); return Read(edge); }, () => StickAt(0, 10), () => Read(edge),
+                (long)(1000.0 / 120 * System.Diagnostics.Stopwatch.Frequency / 1000.0));
             Thread.Sleep(15);
             Assert.False(Read(edge));
         }

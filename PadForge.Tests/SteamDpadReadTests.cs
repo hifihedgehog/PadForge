@@ -82,10 +82,10 @@ namespace PadForge.Tests
         [Fact]
         public void Wedge_HoldsAChangeFor120thOfASecond()
         {
-            Stick(90, 33);
-            Assert.True(Read(North()));
-            Stick(90, 10);
-            Assert.True(Read(North()));
+            // A wedge's hold is Steam's 1/120 s in clock ticks, as BoundedReads
+            // works it out.
+            HoldWindow.AssertHeld(() => { Stick(90, 33); return Read(North()); }, () => Stick(90, 10), () => Read(North()),
+                System.Diagnostics.Stopwatch.Frequency / 120);
             Thread.Sleep(15);
             Assert.False(Read(North()));
         }

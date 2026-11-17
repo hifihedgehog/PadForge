@@ -864,6 +864,14 @@ namespace PadForge.Common.Input
         /// </summary>
         public double CurrentFrequency { get; private set; }
 
+        /// <summary>The passes a second that a window of passes ran at: the
+        /// passes over the window's own length. Over its length in whole
+        /// milliseconds, a window of 1000.9 ms with its 1001 passes read
+        /// 1001 Hz at a rate of 1000, and 10000 Hz read up to 10 Hz
+        /// high.</summary>
+        internal static double PassRate(int passes, TimeSpan window)
+            => window.Ticks <= 0 ? 0 : passes / window.TotalSeconds;
+
         /// <summary>
         /// Whether the manager is currently running the polling loop.
         /// </summary>
@@ -2439,7 +2447,7 @@ namespace PadForge.Common.Input
                         _frequencyCounter++;
                         if (_frequencyTimer.ElapsedMilliseconds >= 1000)
                         {
-                            CurrentFrequency = _frequencyCounter * 1000.0 / _frequencyTimer.ElapsedMilliseconds;
+                            CurrentFrequency = PassRate(_frequencyCounter, _frequencyTimer.Elapsed);
                             _frequencyCounter = 0;
                             _frequencyTimer.Restart();
                             FrequencyUpdated?.Invoke(this, EventArgs.Empty);

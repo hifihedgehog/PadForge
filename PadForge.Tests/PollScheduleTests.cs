@@ -272,5 +272,24 @@ namespace PadForge.Tests
         public void ARatesLabelTakesItsUnitsFromTheInterfaceLanguage()
             => Assert.Equal("4000 Гц (0,25 мс)",
                 PollingRates.Label(4000, System.Globalization.CultureInfo.GetCultureInfo("ru-RU"), "Гц", "мс"));
+
+        /// <summary>The rate the Home page and the heartbeat show is the
+        /// passes over the window's own length, which the page shows in
+        /// whole hertz. 1001 passes in 1000.9 ms is 1000 Hz, where the
+        /// window's whole milliseconds read 1001.</summary>
+        [Theory]
+        [InlineData(1001, 1000.9, 1000)]
+        [InlineData(1000, 1000.4, 1000)]
+        [InlineData(10009, 1000.9, 10000)]
+        [InlineData(4003, 1000.8, 4000)]
+        [InlineData(250, 1000.0, 250)]
+        public void TheShownRateIsThePassesOverTheWindowsOwnLength(int passes, double milliseconds, int shown)
+        {
+            var window = TimeSpan.FromTicks((long)Math.Round(milliseconds * TimeSpan.TicksPerMillisecond));
+            Assert.Equal(shown + " Hz", string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0:F0} Hz", InputManager.PassRate(passes, window)));
+            Assert.Equal(0, InputManager.PassRate(passes, TimeSpan.Zero));
+            string loop = ExtrasPageTests.RepoText("PadForge.App", "Common", "Input", "InputManager.cs");
+            Assert.Contains("CurrentFrequency = PassRate(_frequencyCounter, _frequencyTimer.Elapsed);", loop);
+        }
     }
 }

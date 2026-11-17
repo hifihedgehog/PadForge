@@ -714,27 +714,31 @@ namespace PadForge.Common.Input
                 validFlag2 |= AllowColorLightFadeAnimation;
 
             // BT DS5 spec adds "btTag" at byte 1 (USB spec ignores it).
-            // The encoder writes only the fields its profile declares.
-            return new Dictionary<string, object>
+            // The encoder writes only the fields its profile declares. Sized
+            // for its sixteen fields, so filling it never grows it, and each
+            // byte goes in as its one shared box (BoxedBytes): a dictionary
+            // grown twice and a box per field were most of this frame's
+            // garbage at 30 frames a second (measured 2026-11-16).
+            return new Dictionary<string, object>(16)
             {
-                { "btTag",            NextBtSeqTag() },
-                { "validFlag0",       (byte)(enableBits & 0xFF) },
-                { "validFlag1",       (byte)((enableBits >> 8) & 0xFF) },
-                { "rightMotor",       effectiveRumbleR },
-                { "leftMotor",        effectiveRumbleL },
-                { "muteLed",          muteLed },
+                { "btTag",            BoxedBytes.Of(NextBtSeqTag()) },
+                { "validFlag0",       BoxedBytes.Of((byte)(enableBits & 0xFF)) },
+                { "validFlag1",       BoxedBytes.Of((byte)((enableBits >> 8) & 0xFF)) },
+                { "rightMotor",       BoxedBytes.Of(effectiveRumbleR) },
+                { "leftMotor",        BoxedBytes.Of(effectiveRumbleL) },
+                { "muteLed",          BoxedBytes.Of(muteLed) },
                 { "rightTriggerEffect", rightTrig },
                 { "leftTriggerEffect",  leftTrig  },
-                { "micVolume",        MicVolumeMax },
-                { "headphoneVolume",  headphoneByte },
-                { "audioControlFlags", audioControlFlags },
-                { "validFlag2",       validFlag2 },
+                { "micVolume",        BoxedBytes.Of(MicVolumeMax) },
+                { "headphoneVolume",  BoxedBytes.Of(headphoneByte) },
+                { "audioControlFlags", BoxedBytes.Of(audioControlFlags) },
+                { "validFlag2",       BoxedBytes.Of(validFlag2) },
                 // The connect one-shot fades the firmware's default blue
                 // out (FadeOut = 2); an external writer's own fade request
                 // still wins the byte when both land on the same tick.
-                { "lightbarSetup",    overrides.LightbarSetup ?? (btConnectRelease ? (byte)0x02 : (byte)0x00) },
-                { "ledBrightness",    ledBrightness },
-                { "playerIndicator",  playerIndicator },
+                { "lightbarSetup",    BoxedBytes.Of(overrides.LightbarSetup ?? (btConnectRelease ? (byte)0x02 : (byte)0x00)) },
+                { "ledBrightness",    BoxedBytes.Of(ledBrightness) },
+                { "playerIndicator",  BoxedBytes.Of(playerIndicator) },
                 { "lightbar",         new byte[] { ledR, ledG, ledB } },
             };
         }

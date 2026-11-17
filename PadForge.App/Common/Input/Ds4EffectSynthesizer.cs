@@ -173,25 +173,27 @@ namespace PadForge.Common.Input
                 validFlag0 |= Ds4BtAudio.FlagSpeaker;
 
             // No user-configurable flash for now. Leave on/off zeroed so
-            // the firmware holds the chosen color without blinking.
-            var fields = new Dictionary<string, object>
+            // the firmware holds the chosen color without blinking. Sized
+            // for every field it can carry and filled with shared boxes, as
+            // the DualSense frame is (Ds5EffectSynthesizer.BuildFields).
+            var fields = new Dictionary<string, object>(15)
             {
-                { "btTag",       BtFramingTag      },  // BT only
-                { "btReserved",  audioMode         },  // BT only
-                { "validFlag0",  validFlag0        },
-                { "validFlag1",  (byte)0           },
-                { "rightMotor",  effectiveRumbleR  },
-                { "leftMotor",   effectiveRumbleL  },
+                { "btTag",       BoxedBytes.Of(BtFramingTag) },  // BT only
+                { "btReserved",  BoxedBytes.Of(audioMode) },     // BT only
+                { "validFlag0",  BoxedBytes.Of(validFlag0) },
+                { "validFlag1",  BoxedBytes.Of(0) },
+                { "rightMotor",  BoxedBytes.Of(effectiveRumbleR) },
+                { "leftMotor",   BoxedBytes.Of(effectiveRumbleL) },
                 { "lightbar",    new byte[] { r, g, bRgb } },
-                { "flashOn",     (byte)0           },
-                { "flashOff",    (byte)0           },
-                { "headphoneVolumeLeft",  headphoneVolume },
-                { "headphoneVolumeRight", headphoneVolume },
-                { "micVolume",   Ds4BtAudio.MicGainMax },
-                { "speakerVolume", usbSpeaker ? Ds4BtAudio.VolumeMax : speakerVolume },
+                { "flashOn",     BoxedBytes.Of(0) },
+                { "flashOff",    BoxedBytes.Of(0) },
+                { "headphoneVolumeLeft",  BoxedBytes.Of(headphoneVolume) },
+                { "headphoneVolumeRight", BoxedBytes.Of(headphoneVolume) },
+                { "micVolume",   BoxedBytes.Of(Ds4BtAudio.MicGainMax) },
+                { "speakerVolume", BoxedBytes.Of(usbSpeaker ? Ds4BtAudio.VolumeMax : speakerVolume) },
             };
             if (usbRoute >= 0)
-                fields["ds4UsbRoute"] = (byte)usbRoute;
+                fields["ds4UsbRoute"] = BoxedBytes.Of((byte)usbRoute);
             if (usbSpeaker)
                 fields["ds4UsbAudioConfig"] = Ds4UsbAudio.SpeakerAudioConfig;
             return fields;

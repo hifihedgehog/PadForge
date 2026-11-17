@@ -862,6 +862,11 @@ namespace PadForge.Models3D
                 string name = FindResource(suffixes);
                 if (name != null)
                 {
+                    lock (s_texturesGate)
+                    {
+                        if (s_textures.TryGetValue((name, opacity), out var held) && held.TryGetTarget(out var cached))
+                            return cached;
+                    }
                     using var stream = assembly.GetManifestResourceStream(name);
                     if (stream == null) return null;
                     var ms = new MemoryStream();
@@ -904,6 +909,8 @@ namespace PadForge.Models3D
                     brush.Freeze();
                     var mat = new DiffuseMaterial(brush);
                     mat.Freeze();
+                    lock (s_texturesGate)
+                        s_textures[(name, opacity)] = new WeakReference<Material>(mat);
                     return mat;
                 }
             }
@@ -914,6 +921,15 @@ namespace PadForge.Models3D
             }
             return null;
         }
+
+        /// <summary>Each texture as a frozen material, decoded once while any
+        /// model uses it: a model holds its materials, so the weak reference
+        /// holds as long as one does. Every model decoded every one of its
+        /// atlases again, about 90 MB of buffers a model at launch for the
+        /// controller's page and as much for a Home card's still (measured
+        /// 2026-11-16).</summary>
+        private static readonly Dictionary<(string Name, double Opacity), WeakReference<Material>> s_textures = new();
+        private static readonly object s_texturesGate = new();
 
         /// <summary>Rider decal geometries appended into moving groups.
         /// The view's graded glow masks its accent overlay by the rider's
@@ -1045,11 +1061,15 @@ namespace PadForge.Models3D
             // the set, which the bundle's own deflate takes to 49.2 MB and
             // Brotli to 32.4 MB.
             string suffix = $".{modelName}.{Path.GetFileNameWithoutExtension(filename)}.objbr";
-            string resourceName = null;
-
-            resourceName = FindResource(new[] { suffix });
+            string resourceName = FindResource(new[] { suffix });
             if (resourceName == null)
                 return null;
+
+            lock (s_parsedGate)
+            {
+                if (s_parsed.TryGetValue(resourceName, out var held) && held.TryGetTarget(out var cached))
+                    return Instance(cached);
+            }
 
             using var stream = assembly.GetManifestResourceStream(resourceName);
             if (stream == null)
@@ -1065,7 +1085,53 @@ namespace PadForge.Models3D
 
             var reader = new ObjReader();
             var model = reader.Read(text);
-            return model;
+            if (model == null || !model.CanFreeze)
+                return model;
+            model.Freeze();
+            lock (s_parsedGate)
+                s_parsed[resourceName] = new WeakReference<Model3DGroup>(model);
+            return Instance(model);
+        }
+
+        /// <summary>Each mesh file as ObjReader reads it, frozen, kept while
+        /// any model built from it lives (<see cref="s_parsedBy"/>). A file
+        /// is read once for all of them: the controller's page and a Home
+        /// card's still each built the same model at launch and each read
+        /// every one of its files, some 250 MB of garbage a model, and the
+        /// collections that followed held the poll loop up to 40 ms at a
+        /// time in its first half minute (measured 2026-11-16).</summary>
+        private static readonly Dictionary<string, WeakReference<Model3DGroup>> s_parsed = new();
+        private static readonly object s_parsedGate = new();
+
+        /// <summary>The file a model's group was built from, held for as
+        /// long as the group is.</summary>
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Model3DGroup, Model3DGroup> s_parsedBy = new();
+
+        /// <summary>A model's own groups and parts around a file's frozen
+        /// meshes and materials: the model paints its parts and moves its
+        /// groups, and never changes a mesh, so the meshes are shared.</summary>
+        private static Model3DGroup Instance(Model3DGroup parsed)
+        {
+            var copy = Copy(parsed);
+            s_parsedBy.AddOrUpdate(copy, parsed);
+            return copy;
+
+            static Model3DGroup Copy(Model3DGroup source)
+            {
+                var group = new Model3DGroup { Transform = source.Transform };
+                foreach (var child in source.Children)
+                    group.Children.Add(child switch
+                    {
+                        Model3DGroup inner => Copy(inner),
+                        GeometryModel3D part => new GeometryModel3D(part.Geometry, part.Material)
+                        {
+                            BackMaterial = part.BackMaterial,
+                            Transform = part.Transform,
+                        },
+                        _ => child,
+                    });
+                return group;
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -1094,7 +1160,5 @@ namespace PadForge.Models3D
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        ~ControllerModelBase() => Dispose(false);
     }
 }

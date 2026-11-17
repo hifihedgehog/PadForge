@@ -1351,10 +1351,11 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <ContentPresenter Content="{Binding FirstDevice}" ContentTemplate="{StaticResource DeviceLight}"/>
-                                        <controls:GlyphText Grid.Column="1" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="6,0,0,0"
-                                                            Text="{Binding FirstDevice.TypeGlyph, FallbackValue=&#xE7FC;, TargetNullValue=&#xE7FC;}"
-                                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                            VerticalAlignment="Center"/>
+                                        <controls:KindIcon Grid.Column="1" FontSize="13" Margin="6,0,0,0"
+                                                           Glyph="{Binding FirstDevice.TypeGlyph, FallbackValue=&#xE7FC;, TargetNullValue=&#xE7FC;}"
+                                                           Shape="{Binding FirstDevice.TypeShape}"
+                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                           VerticalAlignment="Center"/>
                                         <TextBlock Grid.Column="2" Margin="6,0,6,0" DataContext="{Binding FirstDevice}"
                                                    Text="{Binding Name}" Style="{StaticResource DeviceNameText}"/>
                                         <TextBlock Grid.Column="3" FontSize="12" VerticalAlignment="Center"

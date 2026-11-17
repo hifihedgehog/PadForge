@@ -527,8 +527,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} ang nakakonektar</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Pangitaa ang mga device</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Tanan</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Mga controller</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Keyboard ug mouse</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Basaha ang chatpad</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Basaha ang mga chatpad ug uDraw nga tablet</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Basaha ang mga gamepad</value></data>
@@ -3677,6 +3675,9 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga macro ug menu</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Idugang og device</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Ubos</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Hulagway</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>

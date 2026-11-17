@@ -146,6 +146,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Orísun</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Fi ẹ̀rọ kún</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Ó lọ sílẹ̀</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Àwòrán</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Àkójọ</value></data>

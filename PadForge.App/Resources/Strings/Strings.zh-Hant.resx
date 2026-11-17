@@ -356,6 +356,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>輸入來源</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>新增裝置</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>藍牙</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>偏低</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>圖片</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>清單</value></data>
@@ -970,8 +973,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>已連接 {0} 個</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>搜尋裝置</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>全部</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>控制器</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>鍵盤與滑鼠</value></data>
   <data name="Devices_Filter_Other" xml:space="preserve"><value>其他</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>已連接</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>未連接</value></data>

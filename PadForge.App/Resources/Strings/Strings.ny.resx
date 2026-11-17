@@ -119,6 +119,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Kuchokera ku</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Onjezani chipangizo</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Yatsika</value></data>
   <data name="GameMods_SendingPastControllers_Format" xml:space="preserve"><value>Ikumvetsera pa :{0}. {1} ikutumiza ku nambala {2} ya kontrola, koma palibe kontrola ya pakompyuta yokhala ndi kontrola ya PlayStation yomwe ili ndi nambala imeneyo.</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Lumikizani</value></data>

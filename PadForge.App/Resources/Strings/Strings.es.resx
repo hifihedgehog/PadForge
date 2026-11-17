@@ -632,8 +632,6 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>conectados: {0}</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Buscar dispositivos</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Todos</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Controles</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Teclados y ratones</value></data>
   <data name="Devices_Filter_Other" xml:space="preserve"><value>Otros</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Conectados</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>No conectados</value></data>
@@ -3361,6 +3359,9 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Controlado por</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Agregar dispositivo</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Baja</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Imagen</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>

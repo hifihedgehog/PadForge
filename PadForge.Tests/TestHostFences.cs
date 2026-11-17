@@ -145,6 +145,15 @@ namespace PadForge.Tests
         internal static void Set() => TabletNative.OffLimitsForTest = true;
     }
 
+    /// <summary>The PC's device tree is not read for a device's link, so a
+    /// row's link is what its path and ids say, whatever devices the test
+    /// machine holds.</summary>
+    internal static class DeviceTreeOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Common.DeviceTransport.OffLimitsForTest = true;
+    }
+
     /// <summary>No sound is played on an audio endpoint of the PC, and its
     /// volume, its mixer, its endpoints and its default output are left as
     /// they are.</summary>

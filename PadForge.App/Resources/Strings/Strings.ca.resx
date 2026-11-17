@@ -343,6 +343,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Entrada de</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Afegeix un dispositiu</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Baixa</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Imatge</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Llista</value></data>
@@ -955,8 +958,6 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>Connectats: {0}</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Cerca dispositius</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Tots</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Comandaments</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Teclats i ratolins</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Llegeix el chatpad</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Llegeix els chatpads i les tauletes uDraw</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Llegeix els comandaments</value></data>

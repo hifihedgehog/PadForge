@@ -356,6 +356,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Inntak frá</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Bæta við tæki</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Lág</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Mynd</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Listi</value></data>
@@ -970,8 +973,6 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>tengd tæki: {0}</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Leita að tækjum</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Öll</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Leikjastýringar</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Lyklaborð og mýs</value></data>
   <data name="Devices_Filter_Other" xml:space="preserve"><value>Annað</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Tengd</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Ekki tengd</value></data>

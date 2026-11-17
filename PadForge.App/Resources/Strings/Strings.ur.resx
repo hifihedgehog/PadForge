@@ -356,6 +356,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ان پٹ ماخذ</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>آلہ شامل کریں</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>بلوٹوتھ</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>کم</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>تصویر</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>فہرست</value></data>
@@ -970,8 +973,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} منسلک</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>آلات تلاش کریں</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>سب</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>کنٹرولرز</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>کی بورڈ اور ماؤس</value></data>
   <data name="Devices_Filter_Other" xml:space="preserve"><value>دیگر</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>منسلک</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>منسلک نہیں</value></data>

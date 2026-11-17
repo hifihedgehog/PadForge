@@ -1,7 +1,14 @@
 using System;
+using System.Collections.Generic;
+using PadForge.Engine;
 
 namespace PadForge.Common
 {
+    /// <summary>How a device reaches the PC, where PadForge knows it
+    /// (<see cref="DeviceTransport.LinkOf(string, ushort, ushort)"/>). None
+    /// makes no claim.</summary>
+    public enum DeviceLink { None, Bluetooth, Usb, Ps2, I2c }
+
     /// <summary>
     /// Shared link-transport classifier for display surfaces (#175): the
     /// dossier LINK row and the slot-card transport glyph ask one question,
@@ -105,6 +112,117 @@ namespace PadForge.Common
             // SDL_joystick.c:2340-2341), and a Remote Link relay carries
             // peer://, so neither lands in this branch.
             return Input.BluetoothLinkHelper.IsSwitch2(vendorId, productId);
+        }
+
+        /// <summary>The device's link, from its path and ids: Bluetooth where
+        /// <see cref="IsBluetooth"/> says so, and otherwise what the device
+        /// tree shows (<see cref="LinkOf(IEnumerable{AncestryHop})"/>), read
+        /// once for each path. A path the tree does not hold makes no claim
+        /// and is read again the next time, so a device first seen while it
+        /// is away is named once it is back.</summary>
+        internal static DeviceLink LinkOf(string devicePath, ushort vendorId, ushort productId)
+            => LinkOf(devicePath, vendorId, productId, TreeWalk, s_links);
+
+        /// <summary><see cref="LinkOf(string, ushort, ushort)"/> with the walk
+        /// and the paths already read handed in, for the tests.</summary>
+        internal static DeviceLink LinkOf(string devicePath, ushort vendorId, ushort productId,
+            Func<string, IEnumerable<AncestryHop>> walk, Dictionary<string, DeviceLink> known)
+        {
+            if (IsBluetooth(devicePath, vendorId, productId)) return DeviceLink.Bluetooth;
+            // Only a Windows device path names a node: XInput#N, an SDL
+            // driver's own name and PadForge's own schemes (midi://, web://)
+            // do not.
+            if (devicePath == null || !devicePath.StartsWith(@"\\?\", StringComparison.Ordinal))
+                return DeviceLink.None;
+            lock (known)
+                if (known.TryGetValue(devicePath, out var link)) return link;
+            var hops = walk(devicePath);
+            if (hops == null) return DeviceLink.None;
+            var read = LinkOf(hops);
+            lock (known) known[devicePath] = read;
+            return read;
+        }
+
+        /// <summary>The walk <see cref="LinkOf(string, ushort, ushort)"/>
+        /// reads the device tree with. The page pictures stand a walk of
+        /// their own in for it.</summary>
+        internal static Func<string, IEnumerable<AncestryHop>> TreeWalk = WalkTheTree;
+
+        /// <summary>Set by the test host: the PC's device tree is not read,
+        /// so a row's link is what its path and ids say, whatever devices
+        /// the test machine holds. False in production.</summary>
+        internal static bool OffLimitsForTest;
+
+        private static IEnumerable<AncestryHop> WalkTheTree(string devicePath)
+            => OffLimitsForTest ? null : Input.InputManager.AncestryHopsOf(devicePath);
+
+        private static readonly Dictionary<string, DeviceLink> s_links = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Forgets every path's link, for the page pictures, which
+        /// read their devices through a walk of their own.</summary>
+        internal static void ForgetLinks()
+        {
+            lock (s_links) s_links.Clear();
+        }
+
+        /// <summary>The link the device tree shows, from the walk up from a
+        /// device's node: its own node first, then each node above it, as
+        /// Step 1's guard reads them (<see cref="HidMaestroAncestry.MaxHops"/>
+        /// at most). The driver Windows loads names a device's transport, and
+        /// the node a USB device hangs from tells hardware from software.
+        ///
+        /// <para>i8042prt drives a PS/2 keyboard or mouse. hidi2c is HID over
+        /// I2C, a laptop's touchpad or keyboard. A node the Bluetooth stack
+        /// enumerates, BTHENUM for classic HID and BTHLEDevice for HID over
+        /// GATT, is Bluetooth. A USB node is USB once the walk reaches the
+        /// hardware its host controller hangs from, a PCI or ACPI node. A node
+        /// ROOT or SWD enumerates is software: a virtual controller, a remote
+        /// desktop's mouse, or the host controller usbip-win2 or ViGEmBus
+        /// puts a virtual USB device under. Software makes no claim, and
+        /// neither does a walk that ends before it settles.</para>
+        ///
+        /// <para>Measured 2026-11-17 on a laptop: its keyboard
+        /// HID\VID_048D&amp;PID_C197 under USB\VID_048D&amp;PID_C197 (HidUsb),
+        /// two USB hubs and PCI. Its PS/2 keyboard ACPI\KBC8042 (i8042prt).
+        /// Its touchpad HID\GXTP5100 under ACPI\GXTP5100 (hidi2c). A
+        /// DualSense under BTHENUM (HidBth), an Xbox Series X controller
+        /// under BTHLEDevice, a HIDMaestro controller under SWD, and a remote
+        /// desktop's mouse under ROOT\HIDCLASS.</para></summary>
+        internal static DeviceLink LinkOf(IEnumerable<AncestryHop> hops)
+        {
+            if (hops == null) return DeviceLink.None;
+            bool usb = false;
+            int read = 0;
+            foreach (var hop in hops)
+            {
+                if (string.Equals(hop.Service, "i8042prt", StringComparison.OrdinalIgnoreCase)) return DeviceLink.Ps2;
+                if (string.Equals(hop.Service, "hidi2c", StringComparison.OrdinalIgnoreCase)) return DeviceLink.I2c;
+                ReadOnlySpan<char> enumerator = EnumeratorOf(hop.InstanceId);
+                if (enumerator.Equals("BTHENUM", StringComparison.OrdinalIgnoreCase)
+                    || enumerator.Equals("BTHLEDEVICE", StringComparison.OrdinalIgnoreCase)
+                    || enumerator.Equals("BTHLE", StringComparison.OrdinalIgnoreCase)
+                    || enumerator.Equals("BTH", StringComparison.OrdinalIgnoreCase))
+                    return DeviceLink.Bluetooth;
+                if (enumerator.Equals("ROOT", StringComparison.OrdinalIgnoreCase)
+                    || enumerator.Equals("SWD", StringComparison.OrdinalIgnoreCase))
+                    return DeviceLink.None;
+                if (enumerator.Equals("USB", StringComparison.OrdinalIgnoreCase))
+                    usb = true;
+                else if (enumerator.Equals("PCI", StringComparison.OrdinalIgnoreCase)
+                    || enumerator.Equals("ACPI", StringComparison.OrdinalIgnoreCase))
+                    return usb ? DeviceLink.Usb : DeviceLink.None;
+                if (++read == HidMaestroAncestry.MaxHops) break;
+            }
+            return DeviceLink.None;
+        }
+
+        /// <summary>The bus that enumerated a node: its instance id up to the
+        /// first backslash ("USB" of USB\VID_046D&amp;PID_C547\...).</summary>
+        private static ReadOnlySpan<char> EnumeratorOf(string instanceId)
+        {
+            if (string.IsNullOrEmpty(instanceId)) return ReadOnlySpan<char>.Empty;
+            int end = instanceId.IndexOf('\\');
+            return end < 0 ? instanceId.AsSpan() : instanceId.AsSpan(0, end);
         }
 
         /// <summary>Bluetooth-mode product IDs on VID 0x045E, mirroring every

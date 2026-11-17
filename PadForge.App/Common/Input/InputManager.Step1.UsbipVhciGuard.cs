@@ -412,6 +412,13 @@ namespace PadForge.Common.Input
                 ? HidMaestroAncestry.Classify(ReadAncestryHops(devInst))
                 : UsbipAncestry.None;
 
+        /// <summary>The walk up from the node behind a device path, as
+        /// <see cref="ReadAncestryHops"/> reads it, or null when the device
+        /// tree does not hold the node. The Devices page names a device's
+        /// link from it (Common.DeviceTransport.LinkOf).</summary>
+        internal static IEnumerable<AncestryHop> AncestryHopsOf(string devicePath)
+            => TryLocateDevNode(devicePath, out uint devInst) ? ReadAncestryHops(devInst) : null;
+
         /// <summary>The device's own node, then its parents in turn, up to
         /// <see cref="HidMaestroAncestry.MaxHops"/> nodes in all, each read
         /// as it is asked for, so the walk stops at the node that settles

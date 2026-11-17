@@ -634,6 +634,9 @@
   <data name="Telemetry_Formats_KindJson" xml:space="preserve"><value>JSON</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Apachaatá eú device</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Kúkkún</value></data>
   <data name="Pad_AudioRumble_FoldHint" xml:space="preserve"><value>Chechchech seni bass lon ngingiin ewe system</value></data>
   <data name="Pad_TriggerRouting_FoldHint" xml:space="preserve"><value>Atoto chechchechen ekkewe motor mi lap ngeni ekkewe trigger</value></data>

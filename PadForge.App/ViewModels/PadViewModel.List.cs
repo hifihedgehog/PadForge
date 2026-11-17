@@ -76,6 +76,7 @@ namespace PadForge.ViewModels
         {
             if (e.PropertyName is nameof(MappedDeviceInfo.Name) or nameof(MappedDeviceInfo.InstanceGuid)
                 or nameof(MappedDeviceInfo.IsOnline) or nameof(MappedDeviceInfo.TypeGlyph)
+                or nameof(MappedDeviceInfo.TypeShape)
                 or nameof(MappedDeviceInfo.TypeName))
                 MarkListDirty();
         }
@@ -190,12 +191,14 @@ namespace PadForge.ViewModels
                         case ListColumnKind.Device:
                             column.Name = column.Device.Name;
                             column.TypeGlyph = column.Device.TypeGlyph;
+                            column.TypeShape = column.Device.TypeShape;
                             column.TypeName = column.Device.TypeName;
                             column.IsAway = !column.Device.IsOnline;
                             break;
                         case ListColumnKind.Gone:
                             column.Name = wanted[i].Name;
                             column.TypeGlyph = "";
+                            column.TypeShape = null;
                             column.IsAway = true;
                             break;
                         case ListColumnKind.AnyDevice:

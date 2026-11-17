@@ -970,10 +970,11 @@
                                AutomationProperties.Name="{Binding LineDeviceLabel, TargetNullValue=''}">
                         <Ellipse x:Name="DeviceLight" DockPanel.Dock="Left" Width="7" Height="7" Margin="0,0,10,0" VerticalAlignment="Center"
                                  FlowDirection="LeftToRight" Fill="{DynamicResource SteelLineBrush}"/>
-                        <controls:GlyphText x:Name="DeviceKind" DockPanel.Dock="Left" FontFamily="Segoe MDL2 Assets" FontSize="14"
-                                            Text="{Binding LineDevice.TypeGlyph, FallbackValue=&#xE7FC;, TargetNullValue=&#xE7FC;}"
-                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                            VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <controls:KindIcon x:Name="DeviceKind" DockPanel.Dock="Left" FontSize="14"
+                                           Glyph="{Binding LineDevice.TypeGlyph, FallbackValue=&#xE7FC;, TargetNullValue=&#xE7FC;}"
+                                           Shape="{Binding LineDevice.TypeShape}"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <!-- The name takes what the marks leave and wraps there, and
                              the marks stand right after it: the grid is only as wide
                              as the two need. -->
@@ -1879,9 +1880,9 @@
                                        TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
                             <StackPanel Orientation="Horizontal"
                                         Visibility="{Binding ShowsType, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <controls:GlyphText Text="{Binding TypeGlyph}" FontFamily="Segoe MDL2 Assets" FontSize="12"
-                                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                    VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                <controls:KindIcon Glyph="{Binding TypeGlyph}" Shape="{Binding TypeShape}" FontSize="12"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                   VerticalAlignment="Center" Margin="0,0,6,0"/>
                                 <TextBlock Text="{Binding TypeName}" FontSize="12"
                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                             </StackPanel>

@@ -80,6 +80,16 @@ namespace PadForge.ViewModels
             internal set => SetProperty(ref _typeGlyph, value ?? string.Empty);
         }
 
+        private System.Windows.Media.Geometry _typeShape;
+
+        /// <summary>A wheel's or a joystick's drawing in place of the glyph,
+        /// or null.</summary>
+        public System.Windows.Media.Geometry TypeShape
+        {
+            get => _typeShape;
+            internal set => SetProperty(ref _typeShape, value);
+        }
+
         private string _typeName = string.Empty;
 
         /// <summary>The kind of device ("Gamepad", "Wheel"), under its name.</summary>

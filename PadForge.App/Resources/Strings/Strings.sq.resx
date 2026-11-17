@@ -343,6 +343,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Drejtuar nga</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Shto pajisje</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>E ulët</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Imazh</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Listë</value></data>
@@ -956,8 +959,6 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>të lidhura: {0}</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Kërko pajisje</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Të gjitha</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Kontrolluesit</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Tastiera &amp; mausa</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Lexo Chatpad</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Lexo Chatpad dhe tabletat uDraw</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Lexo kontrolluesit</value></data>

@@ -9,15 +9,21 @@ namespace PadForge.ViewModels
     /// <summary>Which of the Devices page's three lists a row stands in (#574).</summary>
     public enum DeviceListGroup { Connected, NotConnected, Other }
 
-    /// <summary>The Devices page's Show segments (#574).</summary>
-    public enum DeviceFilter { All, Controllers, KeyboardsMice, Other }
+    /// <summary>The Devices page's Show segments, which are also the parts
+    /// of its connected list, in this order (#574): the kinds the page
+    /// sorted devices by before PadForge 6. That page had a chip for each,
+    /// PadForge 6 first cut them to Controllers, Keyboards &amp; Mice and
+    /// Other, and people with a wheel beside a flight stick and three
+    /// keyboards lost the way to one kind (owner, 2026-11-17).</summary>
+    public enum DeviceFilter { All, Gamepad, Joystick, Wheel, Keyboard, Mouse, Other }
 
     /// <summary>
     /// The Devices page's lists (#574): the devices connected now, the ones
-    /// PadForge remembers and cannot see, and the other inputs (merged rows,
-    /// consumer controls and the rows PadForge and the extras feed), each
-    /// through the Show segment and the search, with their counts and the
-    /// names the folded lines list.
+    /// PadForge remembers and cannot see, and the other inputs (consumer
+    /// controls and the rows PadForge and the extras feed), each through
+    /// the Show segment and the search, with their counts and the names the
+    /// folded lines list. A merged row stands where a device of its type
+    /// stands.
     /// </summary>
     public partial class DevicesViewModel
     {
@@ -84,10 +90,11 @@ namespace PadForge.ViewModels
         /// and showed every connected device twice (2026-11-12). A row it
         /// took in late also stood at the list's end, out of order.</para>
         ///
-        /// <para>The Connected list stands in parts, Controllers, Keyboards
-        /// &amp; Mice and Other, in that order whatever part a device first
-        /// turned up in, and its rows keep the collection's order within
-        /// each part. A part with no row is not there.</para></summary>
+        /// <para>The Connected list stands in parts, one for each kind a
+        /// Show segment names, in the segments' order whatever part a device
+        /// first turned up in, and its rows keep the collection's order
+        /// within each part, so a kind's merged row is its part's last. A
+        /// part with no row is not there.</para></summary>
         private ListCollectionView MakeView(DeviceListGroup group)
         {
             var view = new ListCollectionView(Devices)
@@ -132,7 +139,7 @@ namespace PadForge.ViewModels
                     if (d != null && d.ListGroup == group && Matches(d)) yield return d;
                 yield break;
             }
-            foreach (DeviceFilter part in new[] { DeviceFilter.Controllers, DeviceFilter.KeyboardsMice, DeviceFilter.Other })
+            foreach (DeviceFilter part in Parts)
                 foreach (var d in Devices)
                     if (d != null && d.ListGroup == group && d.Section == part && Matches(d)) yield return d;
         }
@@ -170,15 +177,29 @@ namespace PadForge.ViewModels
             return !want.MoveNext();
         }
 
-        /// <summary>The segment a type falls in. Controllers are the game
-        /// controllers, a Falcon and a VR controller. Keyboards &amp; Mice
-        /// are keyboards, analog keyboards, mice and touchpads. Every other
-        /// type is Other.</summary>
+        /// <summary>The connected list's parts, in order: every segment
+        /// but All.</summary>
+        internal static readonly DeviceFilter[] Parts =
+        {
+            DeviceFilter.Gamepad, DeviceFilter.Joystick, DeviceFilter.Wheel,
+            DeviceFilter.Keyboard, DeviceFilter.Mouse, DeviceFilter.Other,
+        };
+
+        /// <summary>The segment a type falls in, as the page's chips sorted
+        /// the types before PadForge 6 (5.3.1's DevicesViewModel.FacetOf).
+        /// Gamepads are the gamepad-shaped classes. Joysticks take flight
+        /// sticks with them. A wheel, a keyboard and a mouse each have their
+        /// own. Every other type is Other: a touchpad, a tablet, a MIDI
+        /// device, a Falcon, a VR controller and the rest. One change from
+        /// 5.3.1: an analog keyboard is a keyboard here, where the chips put
+        /// it under Other.</summary>
         internal static DeviceFilter FilterOf(string typeKey) => typeKey switch
         {
-            "Gamepad" or "Joystick" or "Wheel" or "FlightStick" or "FirstPerson" or "Supplemental"
-                or "NovintFalcon" or "VrController" => DeviceFilter.Controllers,
-            "Keyboard" or "AnalogKeyboard" or "Mouse" or "Touchpad" => DeviceFilter.KeyboardsMice,
+            "Gamepad" or "FirstPerson" or "Supplemental" => DeviceFilter.Gamepad,
+            "Joystick" or "FlightStick" => DeviceFilter.Joystick,
+            "Wheel" => DeviceFilter.Wheel,
+            "Keyboard" or "AnalogKeyboard" => DeviceFilter.Keyboard,
+            "Mouse" => DeviceFilter.Mouse,
             _ => DeviceFilter.Other,
         };
 
@@ -201,7 +222,9 @@ namespace PadForge.ViewModels
         private int _connectedTotal;
 
         /// <summary>The devices connected now, whatever the segment and the
-        /// search: the "N connected" under the page's title.</summary>
+        /// search: the "N connected" under the page's title. A merged row
+        /// stands in the connected list and is no device, so it is not
+        /// counted.</summary>
         public int ConnectedTotal
         {
             get => _connectedTotal;
@@ -301,7 +324,7 @@ namespace PadForge.ViewModels
             {
                 if (d == null) continue;
                 var group = d.ListGroup;
-                if (group == DeviceListGroup.Connected) total++;
+                if (group == DeviceListGroup.Connected && !d.IsAggregate) total++;
                 if (!Matches(d)) continue;
                 switch (group)
                 {

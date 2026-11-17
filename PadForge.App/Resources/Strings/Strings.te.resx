@@ -356,6 +356,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ఇన్పుట్ మూలం</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>పరికరం జోడించు</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>బ్లూటూత్</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>తక్కువ</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>చిత్రం</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>జాబితా</value></data>
@@ -970,8 +973,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>కనెక్ట్ అయినవి: {0}</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>పరికరాలను శోధించు</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>అన్నీ</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>కంట్రోలర్లు</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>కీబోర్డ్‌లు &amp; మౌస్‌లు</value></data>
   <data name="Devices_Filter_Other" xml:space="preserve"><value>ఇతరాలు</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>కనెక్ట్ అయినవి</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>కనెక్ట్ కానివి</value></data>

@@ -632,8 +632,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0}개 연결됨</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>장치 검색</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>전체</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>컨트롤러</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>키보드 및 마우스</value></data>
   <data name="Devices_Filter_Other" xml:space="preserve"><value>기타</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>연결됨</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>연결 안 됨</value></data>
@@ -3361,6 +3359,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>입력 장치</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>장치 추가</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>부족</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>그림</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>목록</value></data>

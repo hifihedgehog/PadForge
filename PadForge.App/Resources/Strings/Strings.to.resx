@@ -816,4 +816,7 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>ʻIkai ʻaupito</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>ʻOku tauhi ʻe he Lolotonga ʻoku ngāue ʻa e laea ʻa e Flyout kae ʻoua kuo liliu ʻa e laea. ʻOku fakahā ʻe he ʻI he sekoni ʻe 2 ʻa e Flyout ʻi he kamata ngāue ʻa e laea pea mole leva ia. ʻI he ʻIkai ʻaupito, ʻoku ʻikai ha Flyout ʻa e laea ni, pea ʻoku ʻikai fakahā ʻe Base ha Flyout ʻi he ngata ʻa e laea.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>ʻOku fakahā ʻe he ʻI he sekoni ʻe 2 ʻa e hingoa ʻo Base ʻi he ngata ha laea. ʻI he ʻIkai ʻaupito, ʻoku ʻikai ha Flyout ʻa Base.</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
 </root>

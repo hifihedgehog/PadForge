@@ -1348,4 +1348,7 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Nungka</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Kun "Mantang aktibo an layer", nagdadanay an flyout sa screen sagkod na magbago an layer. Kun "Sa laog nin 2 segundo", ipinapahiling ini pag nag-on an layer, dangan kusang nawawara. Kun "Nungka", mayong flyout na ipinapahiling an layer na ini, asin mayo man an Base pag natapos an layer.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Kun "Sa laog nin 2 segundo", ipinapahiling an pangaran kan Base pag natapos an sarong shift layer. Kun "Nungka", mayong flyout na ipinapahiling an Base.</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
 </root>

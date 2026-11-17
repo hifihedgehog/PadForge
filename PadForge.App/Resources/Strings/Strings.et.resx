@@ -343,6 +343,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Sisend seadmelt</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Lisa seade</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Madal</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Pilt</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Loend</value></data>
@@ -957,8 +960,6 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} ühendatud</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Otsi seadmeid</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Kõik</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Kontrollerid</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Klaviatuur ja hiir</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Loe Chatpadi</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Loe Chatpade ja uDraw-tahvleid</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Loe mängupulte</value></data>

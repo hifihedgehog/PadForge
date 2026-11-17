@@ -356,6 +356,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Nguồn đầu vào</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Thêm thiết bị</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Yếu</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Hình ảnh</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Danh sách</value></data>
@@ -970,8 +973,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} đã kết nối</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Tìm thiết bị</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Tất cả</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Tay cầm</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Bàn phím và chuột</value></data>
   <data name="Devices_Filter_Other" xml:space="preserve"><value>Khác</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Đã kết nối</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Chưa kết nối</value></data>

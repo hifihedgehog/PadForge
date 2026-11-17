@@ -343,6 +343,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Մուտքի աղբիւր</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Աւելցնել սարք</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Տկար</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Պատկեր</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Ցանկ</value></data>
@@ -955,8 +958,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} միացած</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Փնտռել սարքեր</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Բոլորը</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Կառավարիչներ</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Ստեղնաշար եւ մուկ</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Կարդալ Chatpad-ը</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Կարդալ Chatpad-ները եւ uDraw պլանշէտները</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Կարդալ խաղային կառավարիչները</value></data>

@@ -242,17 +242,23 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <!-- A device's link, where it is a known fact: the Bluetooth mark
-             and the word. It stands in the table's Link column, or after
-             the device's type where the list is too narrow for the
-             column. -->
+        <!-- A device's link, where PadForge knows it: the word, after the
+             Bluetooth mark for a Bluetooth device. It stands in the table's
+             Link column, or after the device's type where the list is too
+             narrow for the column. -->
         <DataTemplate x:Key="DeviceLinkFact" DataType="{x:Type vm:DeviceRowViewModel}">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <controls:DecorativeStrokeIcon Data="{StaticResource BluetoothLineGeometry}" Size="13" StrokeWidth="2"
+                <controls:DecorativeStrokeIcon x:Name="Mark" Data="{StaticResource BluetoothLineGeometry}" Size="13" StrokeWidth="2"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
-                <TextBlock Text="{Binding LinkText}" Margin="7,0,0,0" FontSize="13" VerticalAlignment="Center"
+                <TextBlock x:Name="Words" Text="{Binding LinkText}" Margin="7,0,0,0" FontSize="13" VerticalAlignment="Center"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
             </StackPanel>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsBluetoothLink}" Value="False">
+                    <Setter TargetName="Mark" Property="Visibility" Value="Collapsed"/>
+                    <Setter TargetName="Words" Property="Margin" Value="0"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
         </DataTemplate>
         <!-- A device's battery: the meter, the percentage, and Low at or
              under the level Settings names. In the Battery column, or
@@ -324,9 +330,9 @@
                         <Border x:Name="Tile" Width="32" Height="32" CornerRadius="8" BorderThickness="1"
                                 Background="{DynamicResource SteelFieldBrush}"
                                 BorderBrush="{DynamicResource SteelLineSoftBrush}">
-                            <controls:GlyphText x:Name="Glyph" Text="{Binding KindGlyph}" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <controls:KindIcon x:Name="Glyph" Glyph="{Binding KindGlyph}" Shape="{Binding KindShape}" FontSize="16"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </controls:Halo>
                     <!-- One line: the name, then the type, then the link
@@ -370,7 +376,8 @@
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
-                    <!-- Link: Bluetooth where that is known. -->
+                    <!-- Link: Bluetooth, USB, PS/2 or I2C where PadForge
+                         knows it. -->
                     <ContentPresenter x:Name="LinkCell" Grid.Column="2" Content="{Binding}" ContentTemplate="{StaticResource DeviceLinkFact}"
                                       Margin="14,0,0,0" MinWidth="104" VerticalAlignment="Center"
                                       Visibility="{Binding HasLink, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -491,8 +498,9 @@
             </DataTemplate.Triggers>
         </DataTemplate>
         <!-- A part of the connected list: its name and how many rows it
-             shows, over its rows. The names are the Show segments' own, and
-             a screen reader hears the part by its name. -->
+             shows, over its rows. The names are the Show segments' own, a
+             kind of device in the word its rows carry as their type, and a
+             screen reader hears the part by its name. -->
         <Style x:Key="DeviceGroup" TargetType="GroupItem">
             <Setter Property="AutomationProperties.Name" Value="{Binding Devices_Filter_Other, Source={x:Static strings:Strings.Instance}}"/>
             <Setter Property="Template">
@@ -512,13 +520,25 @@
                             <ItemsPresenter/>
                         </StackPanel>
                         <ControlTemplate.Triggers>
-                            <DataTrigger Binding="{Binding Name}" Value="{x:Static vm:DeviceFilter.Controllers}">
-                                <Setter TargetName="GroupName" Property="Text" Value="{Binding Devices_Filter_Controllers, Source={x:Static strings:Strings.Instance}}"/>
-                                <Setter Property="AutomationProperties.Name" Value="{Binding Devices_Filter_Controllers, Source={x:Static strings:Strings.Instance}}"/>
+                            <DataTrigger Binding="{Binding Name}" Value="{x:Static vm:DeviceFilter.Gamepad}">
+                                <Setter TargetName="GroupName" Property="Text" Value="{Binding DeviceType_Gamepad, Source={x:Static strings:Strings.Instance}}"/>
+                                <Setter Property="AutomationProperties.Name" Value="{Binding DeviceType_Gamepad, Source={x:Static strings:Strings.Instance}}"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Name}" Value="{x:Static vm:DeviceFilter.KeyboardsMice}">
-                                <Setter TargetName="GroupName" Property="Text" Value="{Binding Devices_Filter_KeyboardsMice, Source={x:Static strings:Strings.Instance}}"/>
-                                <Setter Property="AutomationProperties.Name" Value="{Binding Devices_Filter_KeyboardsMice, Source={x:Static strings:Strings.Instance}}"/>
+                            <DataTrigger Binding="{Binding Name}" Value="{x:Static vm:DeviceFilter.Joystick}">
+                                <Setter TargetName="GroupName" Property="Text" Value="{Binding DeviceType_Joystick, Source={x:Static strings:Strings.Instance}}"/>
+                                <Setter Property="AutomationProperties.Name" Value="{Binding DeviceType_Joystick, Source={x:Static strings:Strings.Instance}}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Name}" Value="{x:Static vm:DeviceFilter.Wheel}">
+                                <Setter TargetName="GroupName" Property="Text" Value="{Binding DeviceType_Wheel, Source={x:Static strings:Strings.Instance}}"/>
+                                <Setter Property="AutomationProperties.Name" Value="{Binding DeviceType_Wheel, Source={x:Static strings:Strings.Instance}}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Name}" Value="{x:Static vm:DeviceFilter.Keyboard}">
+                                <Setter TargetName="GroupName" Property="Text" Value="{Binding DeviceType_Keyboard, Source={x:Static strings:Strings.Instance}}"/>
+                                <Setter Property="AutomationProperties.Name" Value="{Binding DeviceType_Keyboard, Source={x:Static strings:Strings.Instance}}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Name}" Value="{x:Static vm:DeviceFilter.Mouse}">
+                                <Setter TargetName="GroupName" Property="Text" Value="{Binding DeviceType_Mouse, Source={x:Static strings:Strings.Instance}}"/>
+                                <Setter Property="AutomationProperties.Name" Value="{Binding DeviceType_Mouse, Source={x:Static strings:Strings.Instance}}"/>
                             </DataTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -648,15 +668,30 @@
                                  AutomationProperties.AutomationId="Devices_Filter_All">
                         <TextBlock Text="{Binding Devices_Filter_All, Source={x:Static strings:Strings.Instance}}"/>
                     </RadioButton>
-                    <RadioButton GroupName="DeviceFilter" Style="{StaticResource SegmentRadio}" Tag="Controllers" Checked="Filter_Checked"
-                                 IsChecked="{Binding Filter, Mode=OneWay, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=Controllers}"
-                                 AutomationProperties.AutomationId="Devices_Filter_Controllers">
-                        <TextBlock Text="{Binding Devices_Filter_Controllers, Source={x:Static strings:Strings.Instance}}"/>
+                    <RadioButton GroupName="DeviceFilter" Style="{StaticResource SegmentRadio}" Tag="Gamepad" Checked="Filter_Checked"
+                                 IsChecked="{Binding Filter, Mode=OneWay, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=Gamepad}"
+                                 AutomationProperties.AutomationId="Devices_Filter_Gamepad">
+                        <TextBlock Text="{Binding DeviceType_Gamepad, Source={x:Static strings:Strings.Instance}}"/>
                     </RadioButton>
-                    <RadioButton GroupName="DeviceFilter" Style="{StaticResource SegmentRadio}" Tag="KeyboardsMice" Checked="Filter_Checked"
-                                 IsChecked="{Binding Filter, Mode=OneWay, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=KeyboardsMice}"
-                                 AutomationProperties.AutomationId="Devices_Filter_KeyboardsMice">
-                        <TextBlock Text="{Binding Devices_Filter_KeyboardsMice, Source={x:Static strings:Strings.Instance}}"/>
+                    <RadioButton GroupName="DeviceFilter" Style="{StaticResource SegmentRadio}" Tag="Joystick" Checked="Filter_Checked"
+                                 IsChecked="{Binding Filter, Mode=OneWay, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=Joystick}"
+                                 AutomationProperties.AutomationId="Devices_Filter_Joystick">
+                        <TextBlock Text="{Binding DeviceType_Joystick, Source={x:Static strings:Strings.Instance}}"/>
+                    </RadioButton>
+                    <RadioButton GroupName="DeviceFilter" Style="{StaticResource SegmentRadio}" Tag="Wheel" Checked="Filter_Checked"
+                                 IsChecked="{Binding Filter, Mode=OneWay, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=Wheel}"
+                                 AutomationProperties.AutomationId="Devices_Filter_Wheel">
+                        <TextBlock Text="{Binding DeviceType_Wheel, Source={x:Static strings:Strings.Instance}}"/>
+                    </RadioButton>
+                    <RadioButton GroupName="DeviceFilter" Style="{StaticResource SegmentRadio}" Tag="Keyboard" Checked="Filter_Checked"
+                                 IsChecked="{Binding Filter, Mode=OneWay, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=Keyboard}"
+                                 AutomationProperties.AutomationId="Devices_Filter_Keyboard">
+                        <TextBlock Text="{Binding DeviceType_Keyboard, Source={x:Static strings:Strings.Instance}}"/>
+                    </RadioButton>
+                    <RadioButton GroupName="DeviceFilter" Style="{StaticResource SegmentRadio}" Tag="Mouse" Checked="Filter_Checked"
+                                 IsChecked="{Binding Filter, Mode=OneWay, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=Mouse}"
+                                 AutomationProperties.AutomationId="Devices_Filter_Mouse">
+                        <TextBlock Text="{Binding DeviceType_Mouse, Source={x:Static strings:Strings.Instance}}"/>
                     </RadioButton>
                     <RadioButton GroupName="DeviceFilter" Style="{StaticResource SegmentRadio}" Tag="Other" Checked="Filter_Checked"
                                  IsChecked="{Binding Filter, Mode=OneWay, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=Other}"
@@ -755,9 +790,9 @@
                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                        Text="{Binding Devices_NoMatch, Source={x:Static strings:Strings.Instance}}"
                                        Visibility="{Binding ShowNoMatch, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                            <!-- The connected devices in three parts,
-                                 Controllers, Keyboards & Mice and Other, each
-                                 under its name and its count. -->
+                            <!-- The connected devices in a part for each kind
+                                 a Show segment names, each under its name and
+                                 its count. -->
                             <ListBox x:Name="ConnectedList" Style="{StaticResource DeviceList}" ItemsSource="{Binding ConnectedView}"
                                      SelectionChanged="DeviceList_SelectionChanged"
                                      AutomationProperties.AutomationId="Devices_List_Connected"
@@ -913,12 +948,12 @@
                                             </Grid>
                                             <!-- A device with no picture of its
                                                  own shows its kind. -->
-                                            <controls:GlyphText x:Name="StageKind" Text="{Binding SelectedDevice.KindGlyph}"
-                                                                FontFamily="Segoe MDL2 Assets" FontSize="60"
-                                                                HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                                Visibility="{Binding ShowSelectedKind, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <controls:GlyphText.Style>
-                                                    <Style TargetType="{x:Type controls:GlyphText}">
+                                            <controls:KindIcon x:Name="StageKind" Glyph="{Binding SelectedDevice.KindGlyph}"
+                                                               Shape="{Binding SelectedDevice.KindShape}" FontSize="60"
+                                                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                               Visibility="{Binding ShowSelectedKind, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <controls:KindIcon.Style>
+                                                    <Style TargetType="{x:Type controls:KindIcon}">
                                                         <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding SelectedDevice.IsOnline}" Value="False">
@@ -926,8 +961,8 @@
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
-                                                </controls:GlyphText.Style>
-                                            </controls:GlyphText>
+                                                </controls:KindIcon.Style>
+                                            </controls:KindIcon>
                                         </Grid>
                                     </Border>
 
@@ -1025,10 +1060,13 @@
                                                 <StackPanel>
                                                     <TextBlock Style="{StaticResource DeviceLabel}"
                                                                Text="{Binding Devices_Detail_Link, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <!-- The Bluetooth mark leads a
+                                                         Bluetooth device's word. -->
                                                     <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
                                                         <controls:DecorativeStrokeIcon Data="{StaticResource BluetoothLineGeometry}" Size="15" StrokeWidth="2"
-                                                                                       Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center"/>
-                                                        <TextBlock Text="{Binding SelectedDevice.LinkText}" Margin="8,0,0,0" FontSize="14" FontWeight="SemiBold"
+                                                                                       Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center" Margin="0,0,8,0"
+                                                                                       Visibility="{Binding SelectedDevice.IsBluetoothLink, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                        <TextBlock Text="{Binding SelectedDevice.LinkText}" FontSize="14" FontWeight="SemiBold"
                                                                    VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                                                     </StackPanel>
                                                 </StackPanel>

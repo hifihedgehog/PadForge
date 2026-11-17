@@ -343,6 +343,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>سەرچاوەی تێخستن</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>زیادکردنی ئامێر</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>بلووتوس</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>کەم</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>وێنە</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>لیست</value></data>
@@ -954,8 +957,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} پەیوەستکراو</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>گەڕان لە ئامێرەکان</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>هەموو</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>کۆنترۆڵەرەکان</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>تەختەکلیل و ماوس</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>خوێندنەوەی Chatpad</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>خوێندنەوەی Chatpad و تابلێتەکانی uDraw</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>خوێندنەوەی گەیمپادەکان</value></data>

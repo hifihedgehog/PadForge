@@ -1259,4 +1259,7 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Leai lava</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>O le Aʻo galue le layer e tumau ai le flyout seʻia suia le layer. O le Mo sekone e 2 e faʻaali ai pe a amata le layer, ona mou ese ai lea. Pe a filifilia le Leai lava, e lē faʻaalia e lenei layer se flyout, ma e lē faʻaalia foʻi e le Base se flyout pe a uma le layer.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>O le Mo sekone e 2 e faʻaali ai le igoa o le Base pe a uma se shift layer. Pe a filifilia le Leai lava, e lē faʻaalia e le Base se flyout.</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
 </root>

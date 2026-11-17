@@ -1157,4 +1157,7 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Le ka mohla</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>"Ha layer e ntse e sebetsa" e boloka flyout skrineng ho fihlela layer e fetoha. "Metsotswana e 2" e e bontsha ha layer e qala, ebe e a e tlohela. Ka "Le ka mohla", layer ena ha e bontshe flyout, mme Motheo ha o bontshe letho ha layer e fela.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>"Metsotswana e 2" e bontsha lebitso la Motheo ha shift layer e fela. Ka "Le ka mohla", Motheo ha o bontshe flyout.</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
 </root>

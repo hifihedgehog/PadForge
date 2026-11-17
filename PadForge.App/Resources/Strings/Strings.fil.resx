@@ -343,6 +343,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Pinapagana ng</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Magdagdag ng device</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Mahina</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Larawan</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Listahan</value></data>
@@ -957,8 +960,6 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} ang nakakonekta</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Maghanap ng device</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Lahat</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Mga Controller</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Keyboard at Mouse</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Basahin ang Chatpad</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Basahin ang mga Chatpad at uDraw Tablet</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Basahin ang mga Gamepad</value></data>

@@ -192,6 +192,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Madda galtee</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Meeshaa ida'i</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Gadi aanaa</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Poortii</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Poortiin {0} sagantaa biraatiin, kan akka DSX, hojii irra jira. Cufi ykn poortii biraa filadhu.</value></data>

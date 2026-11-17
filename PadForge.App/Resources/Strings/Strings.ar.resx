@@ -343,6 +343,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>يتحكم به</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>إضافة جهاز</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>منخفضة</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>صورة</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>قائمة</value></data>
@@ -957,8 +960,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} متصل</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>البحث في الأجهزة</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>الكل</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>وحدات التحكم</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>المفاتيح والماوس</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>قراءة Chatpad</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>قراءة أجهزة Chatpad وأجهزة uDraw اللوحية</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>قراءة أذرع التحكم</value></data>

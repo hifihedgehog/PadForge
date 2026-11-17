@@ -1311,6 +1311,9 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga macro ngan menu</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Dugangi hin device</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Ubos</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Litrato</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
@@ -1384,7 +1387,6 @@
   <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>Bukasi an Remote Link ha PadForge ha iba nga PC. Makikita ini dinhi, ngan imo ikukumparar an halipot nga code ha duha nga screen.</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Bilnga an mga device</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Ngatanan</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Mga controller</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Nakakonek</value></data>
   <data name="Devices_UsedBy" xml:space="preserve"><value>Gingagamit han</value></data>
   <data name="Devices_UsedBy_New" xml:space="preserve"><value>Bag-o nga Controller</value></data>

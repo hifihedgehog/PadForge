@@ -252,6 +252,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Umthombo</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Engeza idivayisi</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>I-Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Liphansi</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Isithombe</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Uhlu</value></data>
@@ -532,7 +535,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>okungu-{0} kuxhunyiwe</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Sesha amadivayisi</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Konke</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Izilawuli</value></data>
   <data name="Devices_DriverRestore" xml:space="preserve"><value>Buyisela umshayeli we-Windows</value></data>
   <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Shintshela kumshayeli we-PadForge</value></data>
   <data name="Devices_DriverSwitch" xml:space="preserve"><value>Shintsha umshayeli</value></data>

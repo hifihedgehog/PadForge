@@ -356,6 +356,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Controlat de</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Adăugare dispozitiv</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Scăzută</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Imagine</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Listă</value></data>
@@ -970,8 +973,6 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>conectate: {0}</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Căutare dispozitive</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Toate</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Controlere</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Tastaturi și mouse</value></data>
   <data name="Devices_Filter_Other" xml:space="preserve"><value>Altele</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Conectate</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Neconectate</value></data>

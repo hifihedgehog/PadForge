@@ -950,6 +950,7 @@ namespace PadForge.Tests
                     {
                         InstanceGuid = id, Name = name, TypeKey = type, IsOnline = online,
                         TypeGlyph = PadForge.Common.DeviceTypeGlyph.For(cap),
+                        TypeShape = PadForge.Common.DeviceTypeGlyph.ShapeFor(cap),
                     };
                 vm.MappedDevices.Add(Device(ds, "DualSense Wireless Controller", "Gamepad", InputDeviceType.Gamepad, true));
                 vm.MappedDevices.Add(Device(kb, "Keyboard", "Keyboard", InputDeviceType.Keyboard, true));

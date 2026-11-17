@@ -356,6 +356,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Είσοδος από</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Προσθήκη συσκευής</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Χαμηλή</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Εικόνα</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Λίστα</value></data>
@@ -970,8 +973,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>συνδεδεμένες: {0}</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Αναζήτηση συσκευών</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Όλες</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Χειριστήρια</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Πληκτρολόγια και ποντίκια</value></data>
   <data name="Devices_Filter_Other" xml:space="preserve"><value>Άλλες</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Συνδεδεμένες</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Μη συνδεδεμένες</value></data>

@@ -343,6 +343,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ഇൻപുട്ട് ഉറവിടം</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>ഉപകരണം ചേർക്കുക</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>ബ്ലൂടൂത്ത്</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>കുറവ്</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>ചിത്രം</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>പട്ടിക</value></data>
@@ -955,8 +958,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} കണക്റ്റ് ചെയ്തു</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>ഉപകരണങ്ങൾ തിരയുക</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>എല്ലാം</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>കൺട്രോളറുകൾ</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>കീബോർഡുകളും മൗസുകളും</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>ചാറ്റ്പാഡ് വായിക്കുക</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>ചാറ്റ്പാഡുകളും uDraw ടാബ്ലെറ്റുകളും വായിക്കുക</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>ഗെയിംപാഡുകൾ വായിക്കുക</value></data>

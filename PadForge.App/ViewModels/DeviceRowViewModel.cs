@@ -286,17 +286,32 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _kindGlyph, value ?? "\uE7FC");
         }
 
+        private System.Windows.Media.Geometry _kindShape;
+
+        /// <summary>The line drawing a wheel or a joystick shows in place of
+        /// a glyph (Common.DeviceTypeGlyph.ShapeFor), or null. Set with
+        /// <see cref="KindGlyph"/>.</summary>
+        public System.Windows.Media.Geometry KindShape
+        {
+            get => _kindShape;
+            set => SetProperty(ref _kindShape, value);
+        }
+
         /// <summary>A game controller's type, the six Home offers a
         /// controller for (InputService.IsHomeOfferEligible).</summary>
         public bool IsGameControllerType => DeviceTypeKey is "Gamepad" or "Joystick" or "Wheel" or "FlightStick"
             or "FirstPerson" or "Supplemental";
 
-        /// <summary>A row the Devices page keeps under Other Inputs: a merged
-        /// row, a keyboard's or a remote's consumer-control collection, and
-        /// every row PadForge or an extra feeds (IsInternalVirtual), except
-        /// the three that stand for hardware a person plugs in: a MIDI
-        /// device, a Falcon and an analog keyboard.</summary>
-        public bool IsOtherInput => IsAggregate || DeviceTypeKey == "ConsumerControl"
+        /// <summary>A row the Devices page keeps under Other Inputs: a
+        /// keyboard's or a remote's consumer-control collection, the merged
+        /// row of those among them, and every row PadForge or an extra feeds
+        /// (IsInternalVirtual), except the three that stand for hardware a
+        /// person plugs in: a MIDI device, a Falcon and an analog keyboard.
+        /// The merged rows of keyboards, mice and touchpads are not here.
+        /// Each stands with the devices it merges, in its type's part of the
+        /// list: under Other Inputs a person who chose Keyboard saw every
+        /// keyboard but the merged one (owner, 2026-11-17).</summary>
+        public bool IsOtherInput => DeviceTypeKey == "ConsumerControl"
             || (IsInternalVirtual && !_devicePath.StartsWith("midi://", StringComparison.Ordinal)
                 && !_devicePath.StartsWith("falcon://", StringComparison.Ordinal)
                 && !_devicePath.StartsWith("analogkb://", StringComparison.Ordinal));
@@ -1410,13 +1425,20 @@ namespace PadForge.ViewModels
         /// Bluetooth (classic {00001124}/BTHENUM, BLE {00001812}, the SDL
         /// fork's BLE Switch 2 driver identified by VID/PID plus empty path,
         /// or a Microsoft Xbox pad wearing a Bluetooth-mode PID), the same
-        /// classifier the slot-card transport glyph uses. Drives the dossier
-        /// LINK line, which renders only when Bluetooth is a positive fact:
-        /// a non-BT path may be USB, a wireless dongle, or a virtual source,
-        /// so no transport is claimed for those (#175 item 7). Xbox pads
-        /// over BT (XInput#N paths) answer by PID, see
+        /// classifier the slot-card transport glyph uses. The Devices page
+        /// names the link from <see cref="Link"/>, which is Bluetooth exactly
+        /// when this is true and reads the device tree for the rest. Xbox
+        /// pads over BT (XInput#N paths) answer by PID, see
         /// <see cref="Common.DeviceTransport"/>.</summary>
         public bool IsBluetoothLink => Common.DeviceTransport.IsBluetooth(_devicePath, _vendorId, _productId);
+
+        /// <summary>How the device reaches the PC where PadForge knows it:
+        /// Bluetooth as <see cref="IsBluetoothLink"/> says, or USB, PS/2 or
+        /// I2C as the device tree shows (Common.DeviceTransport.LinkOf).
+        /// None for a virtual device and one the tree does not hold. Read
+        /// again when the device comes back, since a device first seen while
+        /// it was away is not in the tree then.</summary>
+        public Common.DeviceLink Link => Common.DeviceTransport.LinkOf(_devicePath, _vendorId, _productId);
 
         private string _hidHideInstancePath = string.Empty;
 

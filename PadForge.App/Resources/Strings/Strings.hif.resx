@@ -969,6 +969,9 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Macro aur Menu</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Device add karo</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Kam</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Tasveer</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>List</value></data>

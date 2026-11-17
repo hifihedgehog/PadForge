@@ -88,7 +88,7 @@ namespace PadForge.Tests
         {
             var s = Strings.Instance;
             var pad = Row("DualSense Wireless Controller", "Gamepad", DualSenseBluetooth, true, 0x054C, 0x0CE6);
-            Assert.Equal(DeviceFilter.Controllers, pad.Section);
+            Assert.Equal(DeviceFilter.Gamepad, pad.Section);
             Assert.True(pad.IsControllerRow);
             Assert.True(pad.IsBluetoothLink, "control: the Bluetooth path is a Bluetooth link");
             Assert.True(pad.HasLink);
@@ -104,9 +104,23 @@ namespace PadForge.Tests
             Assert.True(usb.HasLinkOrBattery);
 
             var mouse = Row("Mouse", "Mouse", MousePath, true, 0x046D, 0xC08B);
-            Assert.Equal(DeviceFilter.KeyboardsMice, mouse.Section);
+            Assert.Equal(DeviceFilter.Mouse, mouse.Section);
             Assert.False(mouse.IsControllerRow);
             Assert.Equal(DeviceFilter.Other, Row("Microphone", "Microphone", "mic://capture/0", true).Section);
+
+            // A wheel and a flight stick have parts of their own, and each
+            // is a controller's row. So are a Falcon and a VR controller,
+            // from the Other part: the row's height goes by the type, and
+            // not by the part.
+            var wheel = Row("G29", "Wheel", @"\\?\HID#VID_046D&PID_C24F#8&6&0&0000", true, 0x046D, 0xC24F);
+            Assert.Equal((DeviceFilter.Wheel, true), (wheel.Section, wheel.IsControllerRow));
+            var stick = Row("T.16000M", "FlightStick", @"\\?\HID#VID_044F&PID_B10A#8&7&0&0000", true, 0x044F, 0xB10A);
+            Assert.Equal((DeviceFilter.Joystick, true), (stick.Section, stick.IsControllerRow));
+            var falcon = Row("Falcon", "NovintFalcon", "falcon://0", true);
+            Assert.Equal((DeviceFilter.Other, true), (falcon.Section, falcon.IsControllerRow));
+            Assert.True(Row("Left Hand", "VrController", "openxr://left", true).IsControllerRow);
+            Assert.False(Row("Keyboard", "Keyboard", KeyboardPath, true).IsControllerRow);
+            Assert.False(Row("Touchpad", "Touchpad", "aggregate://touchpads", true).IsControllerRow);
 
             // Low is at or under the level, and never while charging.
             Assert.False(pad.BatteryLow);
@@ -196,7 +210,7 @@ namespace PadForge.Tests
             vm.EnsureListViews();
             Assert.Equal(DeviceListGroup.Connected, midi.ListGroup);
 
-            Assert.Equal(new[] { "Controllers: B Pad, E Pad", "KeyboardsMice: A Keyboard, D Mouse", "Other: C Midi" }, Parts(vm.ConnectedView));
+            Assert.Equal(new[] { "Gamepad: B Pad, E Pad", "Keyboard: A Keyboard", "Mouse: D Mouse", "Other: C Midi" }, Parts(vm.ConnectedView));
             Assert.Equal(new[] { padB, padE, keyboard, mouse, midi }, vm.ConnectedView.Cast<DeviceRowViewModel>().ToArray());
             Assert.Equal(vm.RowsOf(DeviceListGroup.Connected, inParts: true), vm.ConnectedView.Cast<DeviceRowViewModel>());
             // The two folded lists have no parts.
@@ -207,21 +221,21 @@ namespace PadForge.Tests
             padB.IsOnline = false;
             padE.IsOnline = false;
             vm.RefreshCounts();
-            Assert.Equal(new[] { "KeyboardsMice: A Keyboard, D Mouse", "Other: C Midi" }, Parts(vm.ConnectedView));
+            Assert.Equal(new[] { "Keyboard: A Keyboard", "Mouse: D Mouse", "Other: C Midi" }, Parts(vm.ConnectedView));
             // And comes back first, though it is the last to arrive.
             padE.IsOnline = true;
             vm.RefreshCounts();
-            Assert.Equal(new[] { "Controllers: E Pad", "KeyboardsMice: A Keyboard, D Mouse", "Other: C Midi" }, Parts(vm.ConnectedView));
+            Assert.Equal(new[] { "Gamepad: E Pad", "Keyboard: A Keyboard", "Mouse: D Mouse", "Other: C Midi" }, Parts(vm.ConnectedView));
 
             // The segment leaves one part.
-            vm.Filter = DeviceFilter.KeyboardsMice;
-            Assert.Equal(new[] { "KeyboardsMice: A Keyboard, D Mouse" }, Parts(vm.ConnectedView));
+            vm.Filter = DeviceFilter.Mouse;
+            Assert.Equal(new[] { "Mouse: D Mouse" }, Parts(vm.ConnectedView));
             vm.Filter = DeviceFilter.All;
 
             // A row whose type changes moves to its new part.
             mouse.DeviceTypeKey = "Midi";
             vm.RefreshCounts();
-            Assert.Equal(new[] { "Controllers: E Pad", "KeyboardsMice: A Keyboard", "Other: C Midi, D Mouse" }, Parts(vm.ConnectedView));
+            Assert.Equal(new[] { "Gamepad: E Pad", "Keyboard: A Keyboard", "Other: C Midi, D Mouse" }, Parts(vm.ConnectedView));
 
             // It moves also where the rows' order from first to last stays
             // what it was: the keyboard is the one row of its part, right
@@ -233,20 +247,106 @@ namespace PadForge.Tests
             two.Devices.Add(second);
             two.RefreshCounts();
             two.EnsureListViews();
-            Assert.Equal(new[] { "Controllers: X Pad", "KeyboardsMice: Y Keyboard" }, Parts(two.ConnectedView));
+            Assert.Equal(new[] { "Gamepad: X Pad", "Keyboard: Y Keyboard" }, Parts(two.ConnectedView));
             second.DeviceTypeKey = "Gamepad";
             Assert.Equal(new[] { first, second }, two.ConnectedView.Cast<DeviceRowViewModel>().ToArray());
             Assert.Equal(new[] { first, second }, two.RowsOf(DeviceListGroup.Connected, inParts: true).ToArray());
             two.RefreshCounts();
-            Assert.Equal(new[] { "Controllers: X Pad, Y Keyboard" }, Parts(two.ConnectedView));
+            Assert.Equal(new[] { "Gamepad: X Pad, Y Keyboard" }, Parts(two.ConnectedView));
+        });
+
+        /// <summary>Every kind the page sorted devices by before PadForge 6
+        /// has its part again, in the segments' order: a wheel beside a
+        /// flight stick, a keyboard apart from a mouse. Three parts stood
+        /// for all of them, Controllers, Keyboards &amp; Mice and Other
+        /// (owner, 2026-11-17).</summary>
+        [Fact]
+        public void EachKindOfDeviceHasItsOwnPart() => RunSta(() =>
+        {
+            var vm = new DevicesViewModel();
+            foreach (var row in new[]
+                     {
+                         Row("A Wheel", "Wheel", @"\\?\HID#VID_046D&PID_C24F#8&6&0&0000", true, 0x046D, 0xC24F),
+                         Row("B Flight Stick", "FlightStick", @"\\?\HID#VID_044F&PID_B10A#8&7&0&0000", true, 0x044F, 0xB10A),
+                         Row("C Pad", "Gamepad", DualSenseUsb, true, 0x054C, 0x0CE6),
+                         Row("D Mouse", "Mouse", MousePath, true, 0x046D, 0xC08B),
+                         Row("E Keyboard", "Keyboard", KeyboardPath, true, 0x046D, 0xC33F),
+                         Row("F Joystick", "Joystick", @"\\?\HID#VID_046D&PID_C215#8&8&0&0000", true, 0x046D, 0xC215),
+                         Row("G Midi", "Midi", "midi://in/0", true),
+                         Row("H Analog Keyboard", "AnalogKeyboard", "analogkb://0", true),
+                     })
+                vm.Devices.Add(row);
+            vm.RefreshCounts();
+            vm.EnsureListViews();
+            Assert.Equal(new[]
+            {
+                "Gamepad: C Pad", "Joystick: B Flight Stick, F Joystick", "Wheel: A Wheel",
+                "Keyboard: E Keyboard, H Analog Keyboard", "Mouse: D Mouse", "Other: G Midi",
+            }, Parts(vm.ConnectedView));
+
+            vm.Filter = DeviceFilter.Wheel;
+            Assert.Equal(new[] { "Wheel: A Wheel" }, Parts(vm.ConnectedView));
+            vm.Filter = DeviceFilter.Joystick;
+            Assert.Equal(new[] { "Joystick: B Flight Stick, F Joystick" }, Parts(vm.ConnectedView));
+        });
+
+        /// <summary>A merged row stands with the devices it merges: in its
+        /// type's part of the connected list, after them. Under Other
+        /// Inputs, a person who chose a kind saw every device of it but the
+        /// merged one (owner, 2026-11-17). It is a row and no device, so
+        /// the count of connected devices leaves it out.</summary>
+        [Fact]
+        public void AMergedRowStandsInItsTypesPart() => RunSta(() =>
+        {
+            var vm = new DevicesViewModel();
+            var keyboard = Row("A Keyboard", "Keyboard", KeyboardPath, true, 0x046D, 0xC33F);
+            var mouse = Row("B Mouse", "Mouse", MousePath, true, 0x046D, 0xC08B);
+            var pad = Row("C Pad", "Gamepad", DualSenseUsb, true, 0x054C, 0x0CE6);
+            var keyboards = Row("All Keyboards (Merged)", "Keyboard", "aggregate://keyboards", true);
+            var mice = Row("All Mice (Merged)", "Mouse", "aggregate://mice", true);
+            var touchpads = Row("All Touchpads (Merged)", "Touchpad", "aggregate://touchpads", true);
+            var controls = Row("All Consumer Controls (Merged)", "ConsumerControl", "aggregate://consumercontrols", true);
+            foreach (var row in new[] { keyboard, mouse, pad, keyboards, mice, touchpads, controls }) vm.Devices.Add(row);
+            vm.RefreshCounts();
+            vm.EnsureListViews();
+
+            Assert.Equal(new[]
+            {
+                "Gamepad: C Pad", "Keyboard: A Keyboard, All Keyboards (Merged)", "Mouse: B Mouse, All Mice (Merged)",
+                "Other: All Touchpads (Merged)",
+            }, Parts(vm.ConnectedView));
+            // The merged consumer controls stay with the consumer controls.
+            Assert.Equal(new[] { controls }, vm.OtherInputsView.Cast<DeviceRowViewModel>().ToArray());
+            Assert.Equal(3, vm.ConnectedTotal);
+            Assert.Equal(6, vm.ConnectedShown);
+
+            vm.Filter = DeviceFilter.Keyboard;
+            Assert.Equal(new[] { "Keyboard: A Keyboard, All Keyboards (Merged)" }, Parts(vm.ConnectedView));
+            Assert.False(vm.HasOtherInputs);
+            vm.Filter = DeviceFilter.Mouse;
+            Assert.Equal(new[] { "Mouse: B Mouse, All Mice (Merged)" }, Parts(vm.ConnectedView));
+
+            // With no device of its kind connected, a merged row is not
+            // connected either.
+            vm.Filter = DeviceFilter.All;
+            mice.IsOnline = false;
+            vm.RefreshCounts();
+            Assert.Contains(mice, vm.NotConnectedView.Cast<DeviceRowViewModel>());
+            Assert.DoesNotContain(mice, vm.ConnectedView.Cast<DeviceRowViewModel>());
         });
 
         [Fact]
         public void ThePartsAreOrderedByTheShowSegments()
         {
             var order = DevicesViewModel.SectionOrder.Instance;
-            Assert.Equal(new[] { DeviceFilter.All, DeviceFilter.Controllers, DeviceFilter.KeyboardsMice, DeviceFilter.Other },
+            Assert.Equal(new[]
+                {
+                    DeviceFilter.All, DeviceFilter.Gamepad, DeviceFilter.Joystick, DeviceFilter.Wheel,
+                    DeviceFilter.Keyboard, DeviceFilter.Mouse, DeviceFilter.Other,
+                },
                 Enum.GetValues<DeviceFilter>());
+            // The list's parts are every segment but All, in the same order.
+            Assert.Equal(Enum.GetValues<DeviceFilter>().Skip(1), DevicesViewModel.Parts);
             string view = RepoText("PadForge.App", "ViewModels", "DevicesViewModel.List.cs");
             Assert.Contains("view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(DeviceRowViewModel.Section))", view);
             Assert.Contains("CustomSort = SectionOrder.Instance,", view);
@@ -281,7 +381,7 @@ namespace PadForge.Tests
             Assert.True(vm.ShowBatteryColumn);
 
             // A segment that hides the rows hides their columns.
-            vm.Filter = DeviceFilter.KeyboardsMice;
+            vm.Filter = DeviceFilter.Keyboard;
             Assert.False(vm.ShowLinkColumn);
             Assert.False(vm.ShowBatteryColumn);
             vm.Filter = DeviceFilter.All;
@@ -705,9 +805,11 @@ namespace PadForge.Tests
             Assert.Equal("{Binding ItemCount}", Attr(name.ElementsAfterSelf().Single(), "Text"));
             // Each part reads and is named by its Show segment's own word.
             var triggers = group.Descendants().Where(e => e.Name.LocalName == "DataTrigger").ToList();
-            Assert.Equal(new[] { "{x:Static vm:DeviceFilter.Controllers}", "{x:Static vm:DeviceFilter.KeyboardsMice}" },
+            Assert.Equal(new[] { "Gamepad", "Joystick", "Wheel", "Keyboard", "Mouse" }.Select(k => "{x:Static vm:DeviceFilter." + k + "}"),
                 triggers.Select(t => Attr(t, "Value")).ToArray());
-            foreach (var (trigger, key) in triggers.Zip(new[] { "Devices_Filter_Controllers", "Devices_Filter_KeyboardsMice" }))
+            // A kind's name is the word its rows carry as their type.
+            foreach (var (trigger, key) in triggers.Zip(new[]
+                     { "DeviceType_Gamepad", "DeviceType_Joystick", "DeviceType_Wheel", "DeviceType_Keyboard", "DeviceType_Mouse" }))
             {
                 Assert.Equal("{Binding Name}", Attr(trigger, "Binding"));
                 Assert.Equal(new[] { S(key), S(key) }, trigger.Elements().Select(s => Attr(s, "Value")).ToArray());
@@ -740,7 +842,8 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "{Binding SelectedPictureGray}", "{Binding SelectedPicture}" },
                 picture.Elements().Where(e => e.Name.LocalName == "DecorativeImage").Select(i => Attr(i, "Source")).ToArray());
             Assert.Equal("{Binding ShowSelectedKind, Converter={StaticResource BoolToVisibilityConverter}}", Attr(Named(page, "StageKind"), "Visibility"));
-            Assert.Equal("{Binding SelectedDevice.KindGlyph}", Attr(Named(page, "StageKind"), "Text"));
+            Assert.Equal("{Binding SelectedDevice.KindGlyph}", Attr(Named(page, "StageKind"), "Glyph"));
+            Assert.Equal("{Binding SelectedDevice.KindShape}", Attr(Named(page, "StageKind"), "Shape"));
 
             var heading = Named(page, "DeviceNameHeading");
             Assert.Equal("20", Attr(heading, "FontSize"));

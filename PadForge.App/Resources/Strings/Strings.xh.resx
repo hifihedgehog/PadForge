@@ -103,6 +103,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Umthombo</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Yongeza isixhobo</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>I-Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Iphantsi</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Umfanekiso</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Uluhlu</value></data>
@@ -1768,7 +1771,6 @@
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Ifowuni eqhagamshelayo ibonakala apha nakwiphepha leZixhobo, apho uyabela khona kwisilawuli.</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Khangela izixhobo</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Zonke</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Iikhibhodi &amp; Iimpuku</value></data>
   <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Amanye amagalelo</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Akukho zixhobo zihambelanayo.</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>ibhetri {0}</value></data>

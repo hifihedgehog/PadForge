@@ -343,6 +343,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Didorong oleh</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Tambah Peranti</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Rendah</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Gambar</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Senarai</value></data>
@@ -957,8 +960,6 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} bersambung</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Cari peranti</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Semua</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Pengawal</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Papan Kekunci &amp; Tetikus</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Baca Chatpad</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Baca Chatpad dan Tablet uDraw</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Baca Pad Permainan</value></data>

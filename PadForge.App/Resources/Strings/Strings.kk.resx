@@ -343,6 +343,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Енгізу көзі</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Құрылғы қосу</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Төмен</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Сурет</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Тізім</value></data>
@@ -957,8 +960,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} қосылған</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Құрылғыларды іздеу</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Барлығы</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Контроллерлер</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Пернетақта және тінтуір</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Chatpad пернетақтасын оқу</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Chatpad пен uDraw планшеттерін оқу</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Геймпадтарды оқу</value></data>

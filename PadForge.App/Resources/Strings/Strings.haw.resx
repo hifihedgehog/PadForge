@@ -150,6 +150,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Hoʻokele ʻia e</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Hoʻohui i hāmeʻa</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Haʻahaʻa</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Kiʻi</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Papa inoa</value></data>

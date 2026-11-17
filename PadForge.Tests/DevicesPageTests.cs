@@ -74,8 +74,9 @@ namespace PadForge.Tests
                 DeviceTypeKey = typeKey, DevicePath = path, VendorId = vid, ProductId = pid, IsOnline = online,
             };
 
-        /// <summary>The board's ten rows: five connected, two remembered and
-        /// three other inputs.</summary>
+        /// <summary>The board's ten rows: five connected devices and the
+        /// merged rows of two of their kinds, two remembered devices and one
+        /// other input.</summary>
         private static DevicesViewModel BoardSet()
         {
             var vm = new DevicesViewModel();
@@ -98,8 +99,11 @@ namespace PadForge.Tests
         [Theory]
         [InlineData(@"\\?\HID#VID_054C&PID_0CE6&MI_03#8&1&0&0000", "Gamepad", true, DeviceListGroup.Connected)]
         [InlineData(@"\\?\HID#VID_054C&PID_0CE6&MI_03#8&1&0&0000", "Gamepad", false, DeviceListGroup.NotConnected)]
-        [InlineData("aggregate://keyboards", "Keyboard", true, DeviceListGroup.Other)]
-        [InlineData("aggregate://keyboards", "Keyboard", false, DeviceListGroup.Other)]
+        [InlineData("aggregate://keyboards", "Keyboard", true, DeviceListGroup.Connected)]
+        [InlineData("aggregate://keyboards", "Keyboard", false, DeviceListGroup.NotConnected)]
+        [InlineData("aggregate://mice", "Mouse", true, DeviceListGroup.Connected)]
+        [InlineData("aggregate://touchpads", "Touchpad", true, DeviceListGroup.Connected)]
+        [InlineData("aggregate://consumercontrols", "ConsumerControl", true, DeviceListGroup.Other)]
         [InlineData("web://controller/1", "Gamepad", true, DeviceListGroup.Other)]
         [InlineData("web://controller/1", "Gamepad", false, DeviceListGroup.Other)]
         [InlineData("peer://pc/1", "Gamepad", true, DeviceListGroup.Other)]
@@ -140,12 +144,14 @@ namespace PadForge.Tests
         /// <summary>The segment of every type key PopulateDeviceRow writes.</summary>
         private static readonly Dictionary<string, DeviceFilter> Segments = new()
         {
-            ["Gamepad"] = DeviceFilter.Controllers, ["Joystick"] = DeviceFilter.Controllers,
-            ["Wheel"] = DeviceFilter.Controllers, ["FlightStick"] = DeviceFilter.Controllers,
-            ["FirstPerson"] = DeviceFilter.Controllers, ["Supplemental"] = DeviceFilter.Controllers,
-            ["NovintFalcon"] = DeviceFilter.Controllers, ["VrController"] = DeviceFilter.Controllers,
-            ["Keyboard"] = DeviceFilter.KeyboardsMice, ["AnalogKeyboard"] = DeviceFilter.KeyboardsMice,
-            ["Mouse"] = DeviceFilter.KeyboardsMice, ["Touchpad"] = DeviceFilter.KeyboardsMice,
+            ["Gamepad"] = DeviceFilter.Gamepad, ["FirstPerson"] = DeviceFilter.Gamepad,
+            ["Supplemental"] = DeviceFilter.Gamepad,
+            ["Joystick"] = DeviceFilter.Joystick, ["FlightStick"] = DeviceFilter.Joystick,
+            ["Wheel"] = DeviceFilter.Wheel,
+            ["Keyboard"] = DeviceFilter.Keyboard, ["AnalogKeyboard"] = DeviceFilter.Keyboard,
+            ["Mouse"] = DeviceFilter.Mouse,
+            ["Touchpad"] = DeviceFilter.Other, ["NovintFalcon"] = DeviceFilter.Other,
+            ["VrController"] = DeviceFilter.Other,
             ["Tablet"] = DeviceFilter.Other, ["Midi"] = DeviceFilter.Other, ["Nfc"] = DeviceFilter.Other,
             ["Microphone"] = DeviceFilter.Other, ["ConsumerControl"] = DeviceFilter.Other,
             ["HeadsetMotion"] = DeviceFilter.Other, ["HandheldButtons"] = DeviceFilter.Other,
@@ -209,10 +215,10 @@ namespace PadForge.Tests
             Assert.True(vm.Matches(mouse), "the product's name");
             // A segment and a search together.
             vm.SearchText = "dual";
-            vm.Filter = DeviceFilter.KeyboardsMice;
+            vm.Filter = DeviceFilter.Mouse;
             Assert.False(vm.Matches(dualSense));
             Assert.True(vm.ShowNoMatch);
-            vm.Filter = DeviceFilter.Controllers;
+            vm.Filter = DeviceFilter.Gamepad;
             Assert.True(vm.Matches(dualSense));
             Assert.False(vm.ShowNoMatch);
         }
@@ -221,21 +227,30 @@ namespace PadForge.Tests
         public void TheCountsAndHintsFollowTheFilter()
         {
             var vm = BoardSet();
+            // Five devices are connected, and the list shows them with the
+            // two merged rows, which are rows and no devices.
             Assert.Equal(5, vm.ConnectedTotal);
-            Assert.Equal(5, vm.ConnectedShown);
+            Assert.Equal(7, vm.ConnectedShown);
             Assert.Equal(2, vm.NotConnectedCount);
             Assert.Equal("Logitech G29 Driving Force Racing Wheel, DualShock 3", vm.NotConnectedHint);
-            Assert.Equal(3, vm.OtherInputsCount);
-            Assert.Equal("All Keyboards (Merged), All Mice (Merged), Headset Microphone", vm.OtherInputsHint);
+            Assert.Equal(1, vm.OtherInputsCount);
+            Assert.Equal("Headset Microphone", vm.OtherInputsHint);
             Assert.True(vm.HasNotConnected && vm.HasOtherInputs);
             Assert.False(vm.ShowNoMatch);
 
-            vm.Filter = DeviceFilter.KeyboardsMice;
+            // A kind's segment shows its devices and its merged row.
+            vm.Filter = DeviceFilter.Keyboard;
             Assert.Equal(2, vm.ConnectedShown);
             Assert.Equal(5, vm.ConnectedTotal);
             Assert.Equal(0, vm.NotConnectedCount);
             Assert.False(vm.HasNotConnected);
-            Assert.Equal(2, vm.OtherInputsCount);
+            Assert.Equal(0, vm.OtherInputsCount);
+            Assert.False(vm.HasOtherInputs);
+            // The wheel is remembered and not connected: its segment finds it.
+            vm.Filter = DeviceFilter.Wheel;
+            Assert.Equal(0, vm.ConnectedShown);
+            Assert.Equal(1, vm.NotConnectedCount);
+            Assert.Equal("Logitech G29 Driving Force Racing Wheel", vm.NotConnectedHint);
 
             vm.Filter = DeviceFilter.All;
             vm.SearchText = "no device is called this";
@@ -258,7 +273,7 @@ namespace PadForge.Tests
             Assert.Equal(vm.Devices.Where(d => d.ListGroup == DeviceListGroup.Connected).OrderBy(d => (int)d.Section), Rows(vm.ConnectedView));
             Assert.Equal(vm.Devices.Where(d => d.ListGroup == DeviceListGroup.NotConnected), Rows(vm.NotConnectedView));
             Assert.Equal(vm.Devices.Where(d => d.ListGroup == DeviceListGroup.Other), Rows(vm.OtherInputsView));
-            Assert.Equal(5, Rows(vm.ConnectedView).Length);
+            Assert.Equal(7, Rows(vm.ConnectedView).Length);
 
             // A row going offline leaves the Connected list for Not Connected
             // at the refresh that every place that changes a row calls.
@@ -269,9 +284,10 @@ namespace PadForge.Tests
             Assert.Contains(pro, Rows(vm.NotConnectedView));
 
             // The segment filters every view at once.
-            vm.Filter = DeviceFilter.KeyboardsMice;
+            vm.Filter = DeviceFilter.Keyboard;
+            Assert.Equal(2, Rows(vm.ConnectedView).Length);
             Assert.All(Rows(vm.ConnectedView).Concat(Rows(vm.OtherInputsView)),
-                d => Assert.Equal(DeviceFilter.KeyboardsMice, DevicesViewModel.FilterOf(d.DeviceTypeKey)));
+                d => Assert.Equal(DeviceFilter.Keyboard, DevicesViewModel.FilterOf(d.DeviceTypeKey)));
             Assert.Empty(Rows(vm.NotConnectedView));
         });
 
@@ -869,8 +885,9 @@ namespace PadForge.Tests
             var ids = all.Select(e => Attr(e, "AutomationProperties.AutomationId")).Where(v => v != null).ToList();
             foreach (string id in new[]
             {
-                "Devices_Pair", "Devices_Refresh", "Devices_Search", "Devices_Filter_All", "Devices_Filter_Controllers",
-                "Devices_Filter_KeyboardsMice", "Devices_Filter_Other", "Devices_ListScroll", "Devices_PanelScroll",
+                "Devices_Pair", "Devices_Refresh", "Devices_Search", "Devices_Filter_All", "Devices_Filter_Gamepad",
+                "Devices_Filter_Joystick", "Devices_Filter_Wheel", "Devices_Filter_Keyboard", "Devices_Filter_Mouse",
+                "Devices_Filter_Other", "Devices_ListScroll", "Devices_PanelScroll",
                 "Devices_List_Connected", "Devices_List_NotConnected", "Devices_List_OtherInputs", "Devices_Fold_NotConnected",
                 "Devices_Fold_OtherInputs", "Devices_UseIt", "Devices_TestRumble", "Devices_UsedBy_New", "Devices_ResetAll",
                 "Devices_More_TestInputs", "Devices_Details", "Devices_CopyDetails", "Devices_SubmitMapping", "Devices_Remove",

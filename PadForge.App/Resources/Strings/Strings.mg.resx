@@ -148,6 +148,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Entin'ny</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Hanampy fitaovana</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Ambany</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Sary</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lisitra</value></data>
@@ -2110,7 +2113,6 @@
   <data name="Extras_RemoteLink_PairAnother" xml:space="preserve"><value>Ampifandraiso PC hafa</value></data>
   <data name="Extras_RemoteLink_NoNearby" xml:space="preserve"><value>Tsy misy PC tsy mbola mifandray eo akaiky.</value></data>
   <data name="Extras_RemoteLink_PairHowTo" xml:space="preserve"><value>Alefaso ny Remote Link ao amin'ny PadForge amin'ilay PC hafa. Hiseho eto izy, ary ampitahainao ny kaody fohy eo amin'ny efijery roa.</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Fitendry sy totozy</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Mifandray</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Tsy mifandray</value></data>
   <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Fidirana hafa</value></data>

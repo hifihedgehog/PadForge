@@ -333,7 +333,7 @@
                 <ItemsControl ItemsSource="{Binding SummaryLines}" MaxWidth="400">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock TextWrapping="Wrap" Margin="0,1,0,1"><Run Text="{Binding DeviceGlyph, Mode=OneWay}" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding DeviceName, Mode=OneWay}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding Tokens, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/></TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0,1,0,1"><InlineUIContainer BaselineAlignment="Center"><controls:KindIcon Shape="{Binding DeviceShape, Mode=OneWay}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/></InlineUIContainer><Run Text="{Binding DeviceGlyph, Mode=OneWay}" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding DeviceName, Mode=OneWay}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding Tokens, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/></TextBlock>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

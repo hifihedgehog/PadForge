@@ -442,6 +442,9 @@ public class Strings : INotifyPropertyChanged
     public string Pad_DrivenBy => Get("Pad_DrivenBy");
     public string Pad_AddDevice => Get("Pad_AddDevice");
     public string Pad_Transport_Bluetooth => Get("Pad_Transport_Bluetooth");
+    public string Pad_Transport_Usb => Get("Pad_Transport_Usb");
+    public string Pad_Transport_Ps2 => Get("Pad_Transport_Ps2");
+    public string Pad_Transport_I2c => Get("Pad_Transport_I2c");
     public string Pad_Battery_Low => Get("Pad_Battery_Low");
     public string Pad_View_Picture => Get("Pad_View_Picture");
     public string Pad_View_List => Get("Pad_View_List");
@@ -1320,8 +1323,6 @@ public class Strings : INotifyPropertyChanged
     public string Devices_ConnectedCount_Format => Get("Devices_ConnectedCount_Format");
     public string Devices_SearchPlaceholder => Get("Devices_SearchPlaceholder");
     public string Devices_Filter_All => Get("Devices_Filter_All");
-    public string Devices_Filter_Controllers => Get("Devices_Filter_Controllers");
-    public string Devices_Filter_KeyboardsMice => Get("Devices_Filter_KeyboardsMice");
     public string Devices_Filter_Other => Get("Devices_Filter_Other");
     public string Devices_Group_Connected => Get("Devices_Group_Connected");
     public string Devices_Group_NotConnected => Get("Devices_Group_NotConnected");

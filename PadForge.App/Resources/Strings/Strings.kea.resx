@@ -285,6 +285,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Entrada di</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Djunta dispozitivu</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Baxu</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Imajen</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lista</value></data>
@@ -558,8 +561,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} konektadu</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Buska dispozitivus</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Tudu</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Komandus</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Tekladus i Mouse</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Lê Chatpad</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Lê komandus</value></data>
   <data name="Devices_DriverBind_TouchSenseMouse" xml:space="preserve"><value>Toka vibrason na es mouse</value></data>

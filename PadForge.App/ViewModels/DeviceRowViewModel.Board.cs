@@ -11,23 +11,31 @@ namespace PadForge.ViewModels
     /// </summary>
     public partial class DeviceRowViewModel
     {
-        /// <summary>The part of the connected list the row stands in:
-        /// Controllers, Keyboards &amp; Mice or Other, by its type, as the
-        /// Show segments sort the types.</summary>
+        /// <summary>The part of the connected list the row stands in, by
+        /// its type, as the Show segments sort the types.</summary>
         public DeviceFilter Section => DevicesViewModel.FilterOf(DeviceTypeKey);
 
         /// <summary>Whether the row is a controller's: a taller row, with
-        /// its type under its name.</summary>
-        public bool IsControllerRow => Section == DeviceFilter.Controllers;
+        /// its type under its name. The game controllers, a Falcon and a VR
+        /// controller, whichever part each stands in.</summary>
+        public bool IsControllerRow => IsGameControllerType || DeviceTypeKey is "NovintFalcon" or "VrController";
 
-        /// <summary>The link in words where it is a known fact, which is
-        /// Bluetooth alone (Common.DeviceTransport): a path with no mark of
-        /// its transport may be USB, a wireless receiver or a virtual
-        /// source, so nothing is said of it.</summary>
-        public string LinkText => IsBluetoothLink ? Strings.Instance.Pad_Transport_Bluetooth : string.Empty;
+        /// <summary>The link in words where PadForge knows it
+        /// (<see cref="Link"/>): Bluetooth, USB, PS/2 or I2C, for a keyboard
+        /// and a mouse as for a controller (owner, 2026-11-17). A wireless
+        /// receiver is the USB device it is. A virtual device, and one the
+        /// device tree does not hold, has none.</summary>
+        public string LinkText => Link switch
+        {
+            Common.DeviceLink.Bluetooth => Strings.Instance.Pad_Transport_Bluetooth,
+            Common.DeviceLink.Usb => Strings.Instance.Pad_Transport_Usb,
+            Common.DeviceLink.Ps2 => Strings.Instance.Pad_Transport_Ps2,
+            Common.DeviceLink.I2c => Strings.Instance.Pad_Transport_I2c,
+            _ => string.Empty,
+        };
 
         /// <summary>Whether the row has a link to name.</summary>
-        public bool HasLink => IsBluetoothLink;
+        public bool HasLink => Link != Common.DeviceLink.None;
 
         /// <summary>Whether the panel has a Link or a Battery tile to show.</summary>
         public bool HasLinkOrBattery => HasLink || HasBattery;
@@ -88,7 +96,9 @@ namespace PadForge.ViewModels
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(Section)));
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(IsControllerRow)));
                     break;
+                case nameof(IsOnline):
                 case nameof(IsBluetoothLink):
+                    base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(Link)));
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(HasLink)));
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(LinkText)));
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(HasLinkOrBattery)));

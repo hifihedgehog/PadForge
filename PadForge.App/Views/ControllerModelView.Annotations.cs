@@ -294,6 +294,7 @@ namespace PadForge.Views
             public string DeviceKey;
             public string DeviceName;
             public string DeviceGlyph;
+            public Geometry DeviceShape;
             public string SourceName;
         }
 
@@ -304,9 +305,10 @@ namespace PadForge.Views
         /// (the localized "(Any device)" sentinel for unbound, truncated
         /// GUID for unknown).</summary>
         private void ResolveAnnotationDevice(string deviceGuid, string storedLabel,
-            out string name, out string glyph)
+            out string name, out string glyph, out Geometry shape)
         {
             glyph = "\uE7FC"; // controller class, the roster's own default
+            shape = null;
             name = storedLabel ?? string.Empty;
             if (!string.IsNullOrEmpty(deviceGuid) && _vm != null
                 && Guid.TryParse(deviceGuid, out var g))
@@ -316,6 +318,7 @@ namespace PadForge.Views
                     if (dev == null || dev.InstanceGuid != g)
                         continue;
                     glyph = dev.TypeGlyph;
+                    shape = dev.TypeShape;
                     if (name.Length == 0)
                         name = dev.Name ?? string.Empty;
                     break;
@@ -350,12 +353,13 @@ namespace PadForge.Views
                     primary = PadForge.Resources.Strings.Strings.Instance.Pad_Mapping_Kind_RapidTrigger + " " + primary;
                 ResolveAnnotationDevice(row.PrimarySourceDeviceGuid,
                     (row.PrimarySourceDeviceLabel ?? string.Empty).Trim(),
-                    out string dn, out string dg);
+                    out string dn, out string dg, out Geometry ds);
                 rows.Add(new AnnotationWireRow
                 {
                     DeviceKey = (row.PrimarySourceDeviceGuid ?? string.Empty).ToLowerInvariant(),
                     DeviceName = dn,
                     DeviceGlyph = dg,
+                    DeviceShape = ds,
                     SourceName = primary,
                 });
             }
@@ -426,12 +430,13 @@ namespace PadForge.Views
             string deviceGuid, string storedLabel, string sourceName)
         {
             ResolveAnnotationDevice(deviceGuid, (storedLabel ?? string.Empty).Trim(),
-                out string dn, out string dg);
+                out string dn, out string dg, out Geometry ds);
             rows.Add(new AnnotationWireRow
             {
                 DeviceKey = (deviceGuid ?? string.Empty).ToLowerInvariant(),
                 DeviceName = dn,
                 DeviceGlyph = dg,
+                DeviceShape = ds,
                 SourceName = sourceName,
             });
         }
@@ -494,15 +499,15 @@ namespace PadForge.Views
                     Orientation = Orientation.Horizontal,
                     Margin = new Thickness(0, shown == 0 ? 0 : 2, 0, 0),
                 };
-                var glyph = new PadForge.Controls.GlyphText
+                var glyph = new PadForge.Controls.KindIcon
                 {
-                    FontFamily = new FontFamily("Segoe MDL2 Assets"),
                     FontSize = 10,
-                    Text = wire.DeviceGlyph,
+                    Glyph = wire.DeviceGlyph,
+                    Shape = wire.DeviceShape,
                     VerticalAlignment = VerticalAlignment.Center,
                     Margin = new Thickness(0, 0, 5, 0),
                 };
-                glyph.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
+                glyph.SetResourceReference(PadForge.Controls.KindIcon.ForegroundProperty, "TextFillColorTertiaryBrush");
                 // Source (cold mono) and its device (Body, tertiary) share
                 // one wrapping paragraph so a long pair folds as a unit.
                 var text = new TextBlock

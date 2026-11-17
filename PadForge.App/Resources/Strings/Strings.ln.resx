@@ -1766,6 +1766,9 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Ba macro na ba menu</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Kobakisa appareil</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Ekiti</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Elilingi</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Liste</value></data>

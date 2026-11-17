@@ -152,7 +152,8 @@ namespace PadForge.Tests
             var device = parts[1];
             Assert.StartsWith("{Binding LineDeviceLabel,", (string)device.Attribute("AutomationProperties.Name"));
             Assert.Equal("LeftToRight", (string)Named(device, "DeviceLight").Attribute("FlowDirection"));
-            Assert.StartsWith("{Binding LineDevice.TypeGlyph,", (string)Named(device, "DeviceKind").Attribute("Text"));
+            Assert.StartsWith("{Binding LineDevice.TypeGlyph,", (string)Named(device, "DeviceKind").Attribute("Glyph"));
+            Assert.Equal("{Binding LineDevice.TypeShape}", (string)Named(device, "DeviceKind").Attribute("Shape"));
             Assert.Equal("{Binding LineDeviceLabel}", (string)Named(device, "DeviceName").Attribute("Text"));
             var away = Named(device, "AwayNote");
             Assert.Equal("{Binding Home_Device_NotConnected" + S, (string)away.Attribute("Text"));
@@ -869,7 +870,8 @@ namespace PadForge.Tests
             var device = Named(head, "DeviceHead");
             Assert.Equal("LeftToRight", (string)Named(device, "Light").Attribute("FlowDirection"));
             Assert.Equal("{Binding Name}", (string)Named(device, "Name").Attribute("Text"));
-            Assert.Contains(device.Descendants(), e => (string)e.Attribute("Text") == "{Binding TypeGlyph}");
+            Assert.Contains(device.Descendants(), e => e.Name.LocalName == "KindIcon"
+                && (string)e.Attribute("Glyph") == "{Binding TypeGlyph}" && (string)e.Attribute("Shape") == "{Binding TypeShape}");
             Assert.Contains(device.Descendants(), e => (string)e.Attribute("Text") == "{Binding TypeName}");
             Assert.Contains(device.Descendants(), e => (string)e.Attribute("Visibility") == "{Binding ShowsType" + Shown);
             var away = Named(device, "Away");

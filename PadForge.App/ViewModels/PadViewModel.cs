@@ -1261,7 +1261,18 @@ namespace PadForge.ViewModels
             public string TypeGlyph
             {
                 get => _typeGlyph;
-                set => SetProperty(ref _typeGlyph, string.IsNullOrEmpty(value) ? "\uE7FC" : value);
+                set => SetProperty(ref _typeGlyph, value ?? "\uE7FC");
+            }
+
+            private System.Windows.Media.Geometry _typeShape;
+
+            /// <summary>The line drawing a wheel or a joystick shows in place
+            /// of a glyph (DeviceTypeGlyph.ShapeFor), or null. Its
+            /// <see cref="TypeGlyph"/> is empty then.</summary>
+            public System.Windows.Media.Geometry TypeShape
+            {
+                get => _typeShape;
+                set => SetProperty(ref _typeShape, value);
             }
 
             private string _typeKey = string.Empty;

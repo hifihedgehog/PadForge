@@ -343,6 +343,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ಇನ್‌ಪುಟ್ ಮೂಲ</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>ಸಾಧನ ಸೇರಿಸಿ</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>ಬ್ಲೂಟೂತ್</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>ಕಡಿಮೆ</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>ಚಿತ್ರ</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>ಪಟ್ಟಿ</value></data>
@@ -952,8 +955,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} ಸಂಪರ್ಕಗೊಂಡಿವೆ</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>ಸಾಧನಗಳನ್ನು ಹುಡುಕಿ</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>ಎಲ್ಲವೂ</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್‌ಗಳು</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>ಕೀಬೋರ್ಡ್ &amp; ಮೌಸ್</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>ಚಾಟ್‌ಪ್ಯಾಡ್ ಓದು</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>ಚಾಟ್‌ಪ್ಯಾಡ್‌ಗಳು ಮತ್ತು uDraw ಟ್ಯಾಬ್ಲೆಟ್‌ಗಳನ್ನು ಓದು</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>ಗೇಮ್‌ಪ್ಯಾಡ್‌ಗಳನ್ನು ಓದು</value></data>

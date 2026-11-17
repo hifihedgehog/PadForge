@@ -343,6 +343,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>បញ្ចូលពី</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>បន្ថែមឧបករណ៍</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>ខ្សោយ</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>រូបភាព</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>បញ្ជី</value></data>
@@ -957,8 +960,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>បានភ្ជាប់៖ {0}</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>ស្វែងរកឧបករណ៍</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>ទាំងអស់</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>ឧបករណ៍បញ្ជា</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>ក្ដារចុច និងកណ្ដុរ</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>អាន Chatpad</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>អាន Chatpad និងបន្ទះ uDraw</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>អានឧបករណ៍បញ្ជាហ្គេម</value></data>

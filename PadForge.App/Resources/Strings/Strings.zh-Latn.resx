@@ -343,6 +343,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Shūrù láiyuán</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Tiānjiā shèbèi</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Lányá</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Dī</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Túpiàn</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Lièbiǎo</value></data>
@@ -956,8 +959,6 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>yǐ liánjiē: {0}</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Sōusuǒ shèbèi</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Quánbù</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>Kòngzhìqì</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Jiànpán yǔ shǔbiāo</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Dúqǔ liáotiān jiànpán</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Dúqǔ liáotiān jiànpán hé uDraw huìtúbǎn</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Dúqǔ shǒubǐng</value></data>

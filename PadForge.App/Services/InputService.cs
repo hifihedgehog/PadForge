@@ -4429,28 +4429,30 @@ namespace PadForge.Services
             // still at defaults read STOCK so every assigned device is
             // accounted for. Attribution comes from the card roster,
             // which keeps offline devices' stored names.
-            (string Glyph, string Name) Attr(Guid g)
+            (string Glyph, System.Windows.Media.Geometry Shape, string Name) Attr(Guid g)
             {
                 var roster = slot.MappedDevices;
                 if (roster != null)
                 {
                     foreach (var mi in roster)
                         if (mi != null && mi.InstanceGuid == g)
-                            return (mi.TypeGlyph, mi.Name);
+                            return (mi.TypeGlyph, mi.TypeShape, mi.Name);
                 }
                 string s = g.ToString();
-                return ("", s.Length > 8 ? s.Substring(0, 8) + "…" : s);
+                return ("", null, s.Length > 8 ? s.Substring(0, 8) + "…" : s);
             }
 
             void AddLine(List<StageSummaryLine> lines, ref bool hot, Guid g, List<string> parts)
             {
                 hot |= parts.Count > 0;
-                var (gl, name) = Attr(g);
+                var (gl, shape, name) = Attr(g);
                 lines.Add(new StageSummaryLine
                 {
                     // Trailing space rides the glyph so glyph-less lines
-                    // (slot-level VOL) don't start with a stray indent.
-                    DeviceGlyph = gl.Length > 0 ? gl + " " : string.Empty,
+                    // (slot-level VOL) don't start with a stray indent. A
+                    // wheel's or a joystick's drawing takes the space too.
+                    DeviceGlyph = gl.Length > 0 ? gl + " " : shape != null ? " " : string.Empty,
+                    DeviceShape = shape,
                     // Icon, NAME, then settings (user direction 2026-07-06),
                     // the same order as the card's main device label. The
                     // name carries the separator so slot-level lines with
@@ -16997,6 +16999,7 @@ namespace PadForge.Services
             row.DeviceTypeKey = Common.DeviceTypeGlyph.KeyFor(ud.CapType);
             // The list row's kind (#574), the glyph Home's offer draws.
             row.KindGlyph = Common.DeviceTypeGlyph.For(ud.CapType);
+            row.KindShape = Common.DeviceTypeGlyph.ShapeFor(ud.CapType);
             // Vendor daemon notice (#343): the sweep scans on its cadence;
             // the row carries the latest answer for the details pane.
             row.HandheldDaemonRunning = ud.CapType == InputDeviceType.HandheldButtons
@@ -18011,6 +18014,7 @@ namespace PadForge.Services
                             // Device-class glyph (#175): the roster icon
                             // matches the device type, not a blanket gamepad.
                             TypeGlyph = DeviceTypeGlyph.For(ud?.CapType ?? 0),
+                            TypeShape = DeviceTypeGlyph.ShapeFor(ud?.CapType ?? 0),
                             // The kind in words, under the device's name in
                             // the mappings list's head.
                             TypeKey = DeviceTypeGlyph.KeyFor(ud?.CapType ?? 0),
@@ -18164,6 +18168,7 @@ namespace PadForge.Services
                     collection[i].InstanceGuid = newItems[i].InstanceGuid;
                     collection[i].IsOnline = newItems[i].IsOnline;
                     collection[i].TypeGlyph = newItems[i].TypeGlyph;
+                    collection[i].TypeShape = newItems[i].TypeShape;
                     collection[i].TypeKey = newItems[i].TypeKey;
                     collection[i].TransportGlyph = newItems[i].TransportGlyph;
                 }

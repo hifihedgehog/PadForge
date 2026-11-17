@@ -213,8 +213,8 @@ namespace PadForge.ViewModels
         /// <paramref name="batteryFormat"/>, Bluetooth alone
         /// Pad_Transport_Bluetooth, neither nothing. A format is split at
         /// {0}, the battery's place, and a format without {0} is all lead.
-        /// No transport is claimed off Bluetooth, as the device pill and the
-        /// dossier claim none (DeviceRowViewModel.IsBluetoothLink).</summary>
+        /// Bluetooth is the only link this line names
+        /// (DeviceRowViewModel.IsBluetoothLink).</summary>
         internal static (string Lead, string Battery, string Tail) Parts(bool bluetooth, string battery,
             string bothFormat, string batteryFormat)
         {

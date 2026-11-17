@@ -150,6 +150,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Iyoborwa na</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Ongeraho igikoresho</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Iri hasi</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Ishusho</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Urutonde</value></data>
@@ -1803,7 +1806,6 @@
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Telefone ihuye igaragara hano no ku rupapuro rwa Ibikoresho, aho uyiha kontorola.</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Shakisha ibikoresho</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Byose</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Mwandikisho n'imbeba</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Bihujwe</value></data>
   <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Ibindi byinjiza</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>bateri {0}</value></data>

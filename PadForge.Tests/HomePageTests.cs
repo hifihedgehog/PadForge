@@ -518,7 +518,8 @@ namespace PadForge.Tests
             At(round, "<Setter Property=\"Padding\" Value=\"0\"/>");
             // The one device: its light, its kind, its name and the note.
             int light = At(card, "<ContentPresenter Content=\"{Binding FirstDevice}\" ContentTemplate=\"{StaticResource DeviceLight}\"/>");
-            int kind = At(card, "Text=\"{Binding FirstDevice.TypeGlyph, FallbackValue=&#xE7FC;, TargetNullValue=&#xE7FC;}\"");
+            int kind = At(card, "Glyph=\"{Binding FirstDevice.TypeGlyph, FallbackValue=&#xE7FC;, TargetNullValue=&#xE7FC;}\"");
+            At(card, "Shape=\"{Binding FirstDevice.TypeShape}\"");
             int device = At(card, "<TextBlock Grid.Column=\"2\" Margin=\"6,0,6,0\" DataContext=\"{Binding FirstDevice}\"");
             At(card, "Text=\"{Binding Name}\" Style=\"{StaticResource DeviceNameText}\"/>");
             int note = At(card, "Text=\"{Binding FirstDeviceNote}\"");

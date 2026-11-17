@@ -343,6 +343,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>წყარო</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>მოწყობილობის დამატება</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>დაბალი</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>სურათი</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>სია</value></data>
@@ -957,8 +960,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} დაკავშირებულია</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>მოწყობილობების ძებნა</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>ყველა</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>კონტროლერები</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>კლავიატურები და მაუსები</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Chatpad-ის წაკითხვა</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Chatpad-ებისა და uDraw პლანშეტების წაკითხვა</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>გეიმპადების წაკითხვა</value></data>

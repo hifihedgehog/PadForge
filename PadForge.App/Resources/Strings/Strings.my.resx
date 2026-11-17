@@ -343,6 +343,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>အဝင်ရင်းမြစ်</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>စက်ပစ္စည်း ထည့်ရန်</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>နည်း</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>ပုံ</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>စာရင်း</value></data>
@@ -957,8 +960,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} ခု ချိတ်ဆက်ထားသည်</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>စက်ပစ္စည်းများ ရှာရန်</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>အားလုံး</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>ကွန်ထရိုလာများ</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>ကီးဘုတ်နှင့် မောက်စ်</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Chatpad ကို ဖတ်ရန်</value></data>
   <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Chatpad များနှင့် uDraw တက်ဘလက်များကို ဖတ်ရန်</value></data>
   <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>ဂိမ်းပက်ဒ်များကို ဖတ်ရန်</value></data>

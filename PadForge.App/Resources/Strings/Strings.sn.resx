@@ -113,6 +113,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Inodzorwa na</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Wedzera Mudziyo</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Riri pasi</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>Pota {0} iri kushandiswa nechimwe chirongwa, somuenzaniso DSX. Chivhare kana usarudze imwe pota.</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Batanidza</value></data>

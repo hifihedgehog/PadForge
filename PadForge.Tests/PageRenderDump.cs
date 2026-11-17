@@ -128,7 +128,7 @@ namespace PadForge.Tests
                     if (Draws("header")) DrawPadHeader(app, dispatcher, dir, scale, Step);
                     if (Draws("stills")) DrawStills(dir, Step);
                     if (Draws("extras")) DrawExtrasPages(app, dispatcher, dir, scale, Step);
-                    if (Draws("devices")) DrawDevicesPage(app, dispatcher, dir, scale, Step);
+                    if (Draws("devices")) WithBoardLinks(() => DrawDevicesPage(app, dispatcher, dir, scale, Step));
                     if (Draws("sticks")) DrawSticksSection(app, dispatcher, dir, scale, Step);
                     if (!Draws("pad")) return;
 
@@ -588,6 +588,13 @@ namespace PadForge.Tests
                 device.SetBattery(online ? battery : -1, false, 15);
                 return device;
             }
+            // A joystick draws its own kind on the card, as a wheel does.
+            static PadViewModel.MappedDeviceInfo Joystick(PadViewModel.MappedDeviceInfo device)
+            {
+                device.TypeGlyph = PadForge.Common.DeviceTypeGlyph.For(PadForge.Engine.InputDeviceType.Joystick);
+                device.TypeShape = PadForge.Common.DeviceTypeGlyph.ShapeFor(PadForge.Engine.InputDeviceType.Joystick);
+                return device;
+            }
             // The finish the next card's still is drawn in.
             string stillFinish = null;
             SlotSummary Slot(int index, PadForge.Engine.VirtualControllerType type, string profile, string preset,
@@ -716,7 +723,7 @@ namespace PadForge.Tests
                 Slot(4, PadForge.Engine.VirtualControllerType.Xbox, "xbox-series-xs-bluetooth", "Xbox Series X|S Controller (Bluetooth)",
                     Device("Keyboard", true, false, -1, sending: true), Device("Mouse", true, false, -1)),
                 Slot(5, PadForge.Engine.VirtualControllerType.Xbox, "xbox-360-wired", "Xbox 360 Controller",
-                    Device("T.16000M", true, false, -1)),
+                    Joystick(Device("T.16000M", true, false, -1))),
                 Slot(6, PadForge.Engine.VirtualControllerType.PlayStation, "dualsense-composite", "DualSense (PS5): Full",
                     Device("DualSense Edge Wireless Controller", true, true, 65)),
                 Slot(7, PadForge.Engine.VirtualControllerType.PlayStation, "dualshock-4-v2", "DualShock 4 (PS4)",
@@ -989,6 +996,34 @@ namespace PadForge.Tests
         /// slots' chips are put in after each pick, since a pick builds them again from the slot
         /// statics, which nothing here touches. A picture with a fold open closes it again after,
         /// since its state is the app's.</summary>
+        /// <summary>Draws the Devices board's pictures with its devices'
+        /// walks standing in for the device tree, which does not hold them,
+        /// and puts the walk back after: a USB device under a host
+        /// controller on PCI, a PS/2 keyboard on i8042prt, and a remote
+        /// desktop's mouse under ROOT.</summary>
+        private static void WithBoardLinks(Action draw)
+        {
+            static PadForge.Engine.AncestryHop Hop(string id, string service)
+                => new(id, Array.Empty<string>(), service);
+            var walk = PadForge.Common.DeviceTransport.TreeWalk;
+            PadForge.Common.DeviceTransport.TreeWalk = path =>
+            {
+                if (path.Contains("#VID_FFFF", StringComparison.OrdinalIgnoreCase))
+                    return new[] { Hop(@"HID\HIDCLASS\1", "mouhid"), Hop(@"ROOT\HIDCLASS\0000", "mshidkmdf") };
+                if (path.Contains("#VID_", StringComparison.OrdinalIgnoreCase))
+                    return new[] { Hop(@"HID\VID\1", "kbdhid"), Hop(@"USB\VID\1", "HidUsb"), Hop(@"PCI\VEN\1", "USBXHCI") };
+                if (path.Contains("#PNP0303#", StringComparison.OrdinalIgnoreCase))
+                    return new[] { Hop(@"ACPI\PNP0303\1", "i8042prt") };
+                return null;
+            };
+            try { draw(); }
+            finally
+            {
+                PadForge.Common.DeviceTransport.TreeWalk = walk;
+                PadForge.Common.DeviceTransport.ForgetLinks();
+            }
+        }
+
         private static void DrawDevicesPage(App app, Dispatcher dispatcher, string dir, double scale, Action<string> step)
         {
             const double PageWidth = 1016, Narrow = 636;
@@ -1001,6 +1036,7 @@ namespace PadForge.Tests
                     InstanceGuid = Guid.NewGuid(), DeviceName = name, ProductName = name, DeviceTypeKey = typeKey,
                     DevicePath = path, VendorId = vid, ProductId = pid, IsOnline = online, BatteryPercent = battery,
                     KindGlyph = PadForge.Common.DeviceTypeGlyph.For(capType),
+                    KindShape = PadForge.Common.DeviceTypeGlyph.ShapeFor(capType),
                 };
                 vm.Devices.Add(row);
                 return row;
@@ -1033,6 +1069,8 @@ namespace PadForge.Tests
                 @"\\?\HID#VID_048D&PID_8258&MI_00#8&5&0&0000#{884b96c3-56ef-11d1-bc8c-00a0c91405dd}", true, 0x048D, 0x8258);
             Add("USB Receiver", "Keyboard", PadForge.Engine.InputDeviceType.Keyboard,
                 @"\\?\HID#VID_046D&PID_C547&MI_00#8&6&0&0000#{884b96c3-56ef-11d1-bc8c-00a0c91405dd}", true, 0x046D, 0xC547);
+            Add("T.16000M", "Joystick", PadForge.Engine.InputDeviceType.Joystick,
+                @"\\?\HID#VID_044F&PID_B10A#8&8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}", true, 0x044F, 0xB10A);
             Add("Jump Desktop Virtual Mouse Driver", "Mouse", PadForge.Engine.InputDeviceType.Mouse,
                 @"\\?\HID#VID_FFFF&PID_0001#8&7&0&0000#{378de44c-56ef-11d1-bc8c-00a0c91405dd}", true, 0xFFFF, 0x0001);
             // A wheel a controller is to use, which is not here: its pill is quiet.
@@ -1156,6 +1194,19 @@ namespace PadForge.Tests
                 vm.HasRawData = true;
                 vm.HasGyroData = vm.HasAccelData = vm.HasTouchpadData = false;
             });
+            // A joystick and a wheel, which draw their own kind in place of
+            // the gamepad (owner, 2026-11-17).
+            Shot("devices-1280-joystick.png", PageWidth, 1088, () =>
+            {
+                vm.ClearRawState();
+                Pick(vm.Devices.Single(d => d.DeviceName == "T.16000M"));
+            });
+            Shot("devices-1280-wheel.png", PageWidth, 1088, () =>
+            {
+                Pick(wheel);
+                ((System.Windows.Controls.Expander)page.FindName("NotConnectedFold")).IsExpanded = true;
+            });
+            ((System.Windows.Controls.Expander)page.FindName("NotConnectedFold")).IsExpanded = false;
             Shot("devices-1280-none.png", PageWidth, 1088, () =>
             {
                 vm.ClearRawState();

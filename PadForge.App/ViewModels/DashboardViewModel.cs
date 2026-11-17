@@ -2500,6 +2500,9 @@ namespace PadForge.ViewModels
     public class StageSummaryLine
     {
         public string DeviceGlyph { get; set; } = string.Empty;
+        /// <summary>A wheel's or a joystick's drawing, which stands before
+        /// the line in place of a glyph, or null.</summary>
+        public System.Windows.Media.Geometry DeviceShape { get; set; }
         public string DeviceName { get; set; } = string.Empty;
         public string Tokens { get; set; } = string.Empty;
     }

@@ -356,6 +356,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>ควบคุมโดย</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>เพิ่มอุปกรณ์</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>ต่ำ</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>ภาพ</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>รายการ</value></data>
@@ -970,8 +973,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>เชื่อมต่ออยู่ {0}</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>ค้นหาอุปกรณ์</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>ทั้งหมด</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>คอนโทรลเลอร์</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>คีย์บอร์ดและเมาส์</value></data>
   <data name="Devices_Filter_Other" xml:space="preserve"><value>อื่น ๆ</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>เชื่อมต่ออยู่</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>ไม่ได้เชื่อมต่อ</value></data>

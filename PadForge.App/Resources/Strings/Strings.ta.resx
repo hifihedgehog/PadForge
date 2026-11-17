@@ -356,6 +356,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>உள்ளீட்டு மூலம்</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>சாதனத்தைச் சேர்</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>குறைவு</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>படம்</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>பட்டியல்</value></data>
@@ -970,8 +973,6 @@
   <data name="Devices_ConnectedCount_Format" xml:space="preserve"><value>{0} இணைக்கப்பட்டுள்ளன</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>சாதனங்களைத் தேடு</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>அனைத்தும்</value></data>
-  <data name="Devices_Filter_Controllers" xml:space="preserve"><value>கட்டுப்படுத்திகள்</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>விசைப்பலகை &amp; சுட்டி</value></data>
   <data name="Devices_Filter_Other" xml:space="preserve"><value>பிற</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>இணைக்கப்பட்டவை</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>இணைக்கப்படாதவை</value></data>

@@ -1534,6 +1534,9 @@
   <data name="Pad_Section_Macros" xml:space="preserve"><value>Mga macro kag menu</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Magdugang sang device</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Manubo</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Larawan</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Listahan</value></data>
@@ -1604,7 +1607,6 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ang ring, grid ukon bar sang menu samtang bukas ini</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopyaha ang address</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Ang telepono nga nag-connect makita diri kag sa Mga device nga pahina, diin imo ini i-assign sa controller.</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Keyboard kag mouse</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Naka-connect</value></data>
   <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Iban pa nga Input</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Wala sing device nga nagatugma.</value></data>

@@ -157,6 +157,9 @@
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Tāuru mai i</value></data>
   <data name="Pad_AddDevice" xml:space="preserve"><value>Tāpiri pūrere</value></data>
   <data name="Pad_Transport_Bluetooth" xml:space="preserve"><value>Bluetooth</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Battery_Low" xml:space="preserve"><value>Iti</value></data>
   <data name="Pad_View_Picture" xml:space="preserve"><value>Pikitia</value></data>
   <data name="Pad_View_List" xml:space="preserve"><value>Rārangi</value></data>
@@ -1893,7 +1896,6 @@
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Tāruatia te wāhitau</value></data>
   <data name="Extras_PlaceOnScreen" xml:space="preserve"><value>Tūnga ki te mata</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Ka puta mai tētahi waea ka hono ki konei, ki te whārangi Ngā pūrere hoki, ki reira tautapa ai ki tētahi controller.</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Papapātuhi me ngā kiore</value></data>
   <data name="Devices_Group_Connected" xml:space="preserve"><value>Kua hono</value></data>
   <data name="Devices_Group_NotConnected" xml:space="preserve"><value>Kāore i hono</value></data>
   <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Ētahi atu tāuru</value></data>

@@ -1250,7 +1250,6 @@
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Ti telepono a sumilpo ket agparang ditoy ken iti panid a Dagiti device, a pangisaadam kenkuana iti maysa a controller.</value></data>
   <data name="Devices_SearchPlaceholder" xml:space="preserve"><value>Agsapul kadagiti device</value></data>
   <data name="Devices_Filter_All" xml:space="preserve"><value>Amin</value></data>
-  <data name="Devices_Filter_KeyboardsMice" xml:space="preserve"><value>Keyboard ken mouse</value></data>
   <data name="Devices_Group_OtherInputs" xml:space="preserve"><value>Dadduma nga input</value></data>
   <data name="Devices_NoMatch" xml:space="preserve"><value>Awan ti device a maitutop.</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>baterya {0}</value></data>
@@ -1337,4 +1336,7 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Saan pulos</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>No Bayat a nakasindi ti layer, agtalinaed ti flyout agingga nga agbaliw ti layer. No Iti 2 a segundo, agparang ti flyout inton agsindi ti layer, sa mapukaw a bukodna. No Saan pulos, awan ti flyout daytoy a layer, ken awan met ti ipakita ti Base inton maiddep ti layer.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>No Iti 2 a segundo, ipakita ti flyout ti nagan ti Base inton maiddep ti maysa a shift layer. No Saan pulos, awan ti flyout ti Base.</value></data>
+  <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
+  <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
+  <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
 </root>

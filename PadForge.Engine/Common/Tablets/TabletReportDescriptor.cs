@@ -71,13 +71,22 @@ internal sealed class TabletReportDescriptor : IDisposable
         currentInRange = !inRange.HasValue;
     }
 
-    internal static TabletReportDescriptor TryOpen(string path, string instance)
+    /// <summary>The collection at <paramref name="path"/> as a tablet, or
+    /// null. <paramref name="notATablet"/> says the null is for good: the
+    /// collection's own descriptor is not a pen or touch digitizer this
+    /// reader can read, which stays true for as long as the path is there.
+    /// A null with it false is a read that failed and is worth another
+    /// try.</summary>
+    internal static TabletReportDescriptor TryOpen(string path, string instance, out bool notATablet)
     {
+        notATablet = false;
         using var handle = TabletNative.OpenMetadata(path);
         if (handle.IsInvalid || !TabletNative.HidD_GetPreparsedData(handle, out IntPtr data)) return null;
         try
         {
-            if (TabletNative.HidP_GetCaps(data, out var caps) != TabletNative.Success || caps.UsagePage != 13 || caps.Usage is not (1 or 2)) return null;
+            if (TabletNative.HidP_GetCaps(data, out var caps) != TabletNative.Success) return null;
+            notATablet = true;
+            if (caps.UsagePage != 13 || caps.Usage is not (1 or 2)) return null;
             if (caps.InputLength is < 2 or > 4096 || caps.InputValues > 512 || caps.InputButtons > 512) return null;
             var values = new TabletNative.ValueCap[caps.InputValues];
             var buttonCaps = new TabletNative.ButtonCap[caps.InputButtons];
@@ -116,7 +125,11 @@ internal sealed class TabletReportDescriptor : IDisposable
                     .OrderBy(f => f.Page == 13 ? f.Usage switch { 0x44 => 0, 0x5A => 1, 0x45 => 2, 0x3C => 3, _ => 4 } : 5)
                     .ThenBy(f => f.Usage).Take(64).ToArray();
                 var attributes = new TabletNative.Attributes { Size = Marshal.SizeOf<TabletNative.Attributes>() };
-                if (!TabletNative.HidD_GetAttributes(handle, ref attributes)) return null;
+                if (!TabletNative.HidD_GetAttributes(handle, ref attributes))
+                {
+                    notATablet = false;
+                    return null;
+                }
                 string name = TabletNative.ReadString(handle, false);
                 if (string.IsNullOrWhiteSpace(name)) name = $"HID {attributes.Vendor:X4}:{attributes.Product:X4}";
                 var result = new TabletReportDescriptor(path, instance, name, TabletNative.ReadString(handle, true), attributes.Vendor, attributes.Product,

@@ -85,6 +85,8 @@ internal static class TabletNative
         Guid hid = HidInterface;
         IntPtr set = SetupDiGetClassDevs(ref hid, null, IntPtr.Zero, 0x12);
         if (set == new IntPtr(-1)) throw new Win32Exception(Marshal.GetLastWin32Error());
+        // One buffer for every collection's instance ID in the walk.
+        var instance = new StringBuilder(1024);
         try
         {
             for (uint index = 0; ; index++)
@@ -106,7 +108,7 @@ internal static class TabletNative
                     Marshal.WriteInt32(detail, IntPtr.Size == 8 ? 8 : 6);
                     if (!SetupDiGetDeviceInterfaceDetail(set, ref item, detail, required, out _, ref device)) continue;
                     string path = Marshal.PtrToStringUni(detail + 4);
-                    var instance = new StringBuilder(1024);
+                    instance.Clear();
                     if (!SetupDiGetDeviceInstanceId(set, ref device, instance, instance.Capacity, out _)) continue;
                     if (!string.IsNullOrEmpty(path)) yield return (path, instance.ToString());
                 }

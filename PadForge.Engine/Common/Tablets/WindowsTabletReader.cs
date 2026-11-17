@@ -46,9 +46,36 @@ public sealed class WindowsTabletReader : IDisposable
         lock (gate) return devices.Values.ToArray();
     }
 
-    private void ScheduleEnumeration()
+    /// <summary>How often the timer alone walks the HID collections, for a
+    /// change no message told the window about. A device change, a raw input
+    /// change, a request that came during a walk and a collection that could
+    /// not be read each owe a walk, which the next tick of the two-second
+    /// timer makes. The timer walked every two seconds with nothing owed,
+    /// and each walk opened every collection that is not a tablet to read
+    /// its descriptor again (measured 2026-11-16).</summary>
+    internal const int FallbackWalkMs = 30000;
+
+    /// <summary>1 while a walk is owed.</summary>
+    private int owed = 1;
+    private long lastWalk;
+
+    /// <summary>The collections whose own descriptor is no tablet, which a
+    /// walk does not open again while they stay present. Read and written
+    /// by one walk at a time.</summary>
+    private readonly HashSet<string> notTablets = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>Walks the HID collections now, unless a walk is running:
+    /// <paramref name="owe"/> then leaves it owed for the timer's next tick.
+    /// The timer passes false and walks only when a walk is owed or
+    /// <see cref="FallbackWalkMs"/> has passed since the last.</summary>
+    private void ScheduleEnumeration(bool owe = true)
     {
-        if (!running || Interlocked.CompareExchange(ref enumerating, 1, 0) != 0) return;
+        if (!running) return;
+        if (owe) Volatile.Write(ref owed, 1);
+        else if (Volatile.Read(ref owed) == 0 && Environment.TickCount64 - Volatile.Read(ref lastWalk) < FallbackWalkMs) return;
+        if (Interlocked.CompareExchange(ref enumerating, 1, 0) != 0) return;
+        Volatile.Write(ref owed, 0);
+        Volatile.Write(ref lastWalk, Environment.TickCount64);
         enumeration = Task.Run(() =>
         {
             try
@@ -58,12 +85,18 @@ public sealed class WindowsTabletReader : IDisposable
                 {
                     if (!running) return;
                     present.Add(item.Path);
+                    if (notTablets.Contains(item.Path)) continue;
                     lock (gate) { if (devices.ContainsKey(item.Path)) continue; }
                     TabletReportDescriptor descriptor = null;
                     try
                     {
-                        descriptor = TabletReportDescriptor.TryOpen(item.Path, item.Instance);
-                        if (descriptor == null) continue;
+                        descriptor = TabletReportDescriptor.TryOpen(item.Path, item.Instance, out bool notATablet);
+                        if (descriptor == null)
+                        {
+                            if (notATablet) notTablets.Add(item.Path);
+                            else Volatile.Write(ref owed, 1);
+                            continue;
+                        }
                         if (excludeInstance?.Invoke(item.Instance) == true) continue;
                         var device = new WindowsTabletDevice(descriptor, OnCaptureChanged);
                         lock (gate)
@@ -75,9 +108,15 @@ public sealed class WindowsTabletReader : IDisposable
                         SdlDiagLog.WriteLine($"TABLET + {device.VendorId:X4}:{device.ProductId:X4} {device.Name} pressure={device.TouchpadPressureSupported} path={device.DevicePath}");
                         DevicesChanged?.Invoke();
                     }
-                    catch (Exception error) { SdlDiagLog.WriteLine($"TABLET metadata failed: {item.Path}: {error.Message}"); }
+                    catch (Exception error)
+                    {
+                        Volatile.Write(ref owed, 1);
+                        SdlDiagLog.WriteLine($"TABLET metadata failed: {item.Path}: {error.Message}");
+                    }
                     finally { descriptor?.Dispose(); }
                 }
+                // A path that left is read again if it comes back.
+                notTablets.IntersectWith(present);
                 List<WindowsTabletDevice> removed = new();
                 WindowsTabletDevice[] candidates;
                 lock (gate) candidates = devices.Values.Where(d => !present.Contains(d.DevicePath)).ToArray();
@@ -88,8 +127,14 @@ public sealed class WindowsTabletReader : IDisposable
                     if (!running) return;
                     foreach (var device in absent)
                     {
-                        if (device.CaptureState == TabletCaptureState.Switching
-                            || !devices.TryGetValue(device.DevicePath, out var current) || !ReferenceEquals(current, device)) continue;
+                        // A device gone while its capture switches is taken
+                        // off by a later walk, which it owes.
+                        if (device.CaptureState == TabletCaptureState.Switching)
+                        {
+                            Volatile.Write(ref owed, 1);
+                            continue;
+                        }
+                        if (!devices.TryGetValue(device.DevicePath, out var current) || !ReferenceEquals(current, device)) continue;
                         devices.Remove(device.DevicePath);
                         removed.Add(device);
                     }
@@ -101,7 +146,11 @@ public sealed class WindowsTabletReader : IDisposable
                 }
                 if (removed.Count > 0) DevicesChanged?.Invoke();
             }
-            catch (Exception error) { if (running) SdlDiagLog.WriteLine($"TABLET enumeration failed: {error.Message}"); }
+            catch (Exception error)
+            {
+                Volatile.Write(ref owed, 1);
+                if (running) SdlDiagLog.WriteLine($"TABLET enumeration failed: {error.Message}");
+            }
             finally { Volatile.Write(ref enumerating, 0); }
         });
     }
@@ -134,7 +183,7 @@ public sealed class WindowsTabletReader : IDisposable
             if (!RegisterRawInputDevices(registration, 2, (uint)Marshal.SizeOf<RawDevice>())) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
             var filter = new NotificationFilter { Size = Marshal.SizeOf<NotificationFilter>(), Type = 5, ClassGuid = TabletNative.HidInterface };
             notification = RegisterDeviceNotification(window, ref filter, 0);
-            timer = new Timer(_ => ScheduleEnumeration(), null, 0, 2000);
+            timer = new Timer(_ => ScheduleEnumeration(owe: false), null, 0, 2000);
             while (running && GetMessage(out var message, IntPtr.Zero, 0, 0) > 0)
             {
                 TranslateMessage(ref message);

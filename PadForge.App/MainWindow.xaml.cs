@@ -6448,6 +6448,9 @@ namespace PadForge
         private IntPtr OnDeviceChangeMessage(
             IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
+            // Every device change, whatever its kind, for the threads that
+            // look for a device only when one changed (DeviceChanges).
+            if (msg == WM_DEVICECHANGE) PadForge.Common.Input.DeviceChanges.Changed();
             // Arrival only. Removal cannot un-hide anything, and the blacklist
             // keeps stale entries harmlessly: they name paths that no longer
             // resolve. Re-applying is idempotent, SyncManagedDevices writes

@@ -551,6 +551,14 @@ namespace PadForge.Common.Input
             return true;
         }
 
+        /// <summary>When to look for this pad on USB still in need of
+        /// WinUSB. The look walks every device of each class a DS3 can sit in
+        /// and reads each one's hardware ids. It ran on every pass of the
+        /// loop, twice a second on each of the two DS3 threads with no pad
+        /// present, and that was the program's largest steady source of
+        /// garbage for the collector (measured 2026-11-16).</summary>
+        private readonly DeviceScanGate _usbScan = new(15000);
+
         /// <summary>Open this instance's WinUSB-bound pad if it is on USB.
         /// Binds WinUSB first if the pad is present but unbound (throttled),
         /// so a plug-in works without the user having gone through the
@@ -572,6 +580,7 @@ namespace PadForge.Common.Input
                 // bind failure doesn't spin pnputil.
                 long now = Environment.TickCount64;
                 if (now - _lastUsbBindAttempt >= 15000
+                    && _usbScan.Due(now)
                     && PadForge.Services.Ds3DriverInstaller.IsUsbPadNeedingWinUsb(
                         m => _log($"{Tag}(USB): " + m), PidHwToken))
                 {

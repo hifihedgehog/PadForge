@@ -912,10 +912,30 @@ namespace PadForge.Tests
             Assert.Equal("LeftToRight", (string)texts[2].Attribute("FlowDirection"));
             var level = Assert.Single(tag.Descendants(), e => e.Name.LocalName == "LevelBar");
             Assert.Equal(("{Binding Level, Mode=OneWay}", "{Binding IsCentered, Mode=OneWay}"), ((string)level.Attribute("Level"), (string)level.Attribute("IsCentered")));
-            Assert.Equal("{Binding ShowsLevel" + Shown, (string)level.Parent.Attribute("Visibility"));
+            // The bar and the number show together, and each is a part of the
+            // tag's line: in a column short of room the bar gives way and the
+            // name trims, and the number is never cut (ListTagPanel).
+            Assert.Equal("{Binding ShowsLevel" + Shown, (string)level.Attribute("Visibility"));
+            Assert.Equal("{Binding ShowsLevel" + Shown, (string)texts[3].Attribute("Visibility"));
+            Assert.Equal("ListTagPanel", level.Parent.Name.LocalName);
+            Assert.Same(level.Parent, texts[3].Parent);
+            static string PartOf(XElement e) => e.Attributes().SingleOrDefault(a => a.Name.LocalName == "ListTagPanel.Part")?.Value;
+            Assert.Equal("Bar", PartOf(level));
+            Assert.Null(level.Attribute("Width"));
+            var name = Assert.Single(level.Parent.Elements(), e => PartOf(e) == "Name");
+            Assert.Contains(texts[1], name.Descendants());
+            Assert.Equal("CharacterEllipsis", (string)texts[1].Attribute("TextTrimming"));
+            Assert.Null(PartOf(texts[3]));
 
             var cell = Keyed(page, "ListCell");
             var box = Named(cell, "Cell");
+            // Every column stands behind a hairline at its left, connected or
+            // not: no trigger gives it to some columns alone.
+            Assert.Equal(("1,0,0,0", "14,0,6,0"), ((string)box.Attribute("BorderThickness"), (string)box.Attribute("Padding")));
+            Assert.DoesNotContain(TriggersOf(cell).SelectMany(Setters), s => s.Target == "Cell" && s.Property is "BorderThickness" or "Padding");
+            var headBox = Named(Keyed(page, "ListColumnHead"), "Head");
+            Assert.Equal(("1,0,0,0", "14,0,10,0"), ((string)headBox.Attribute("BorderThickness"), (string)headBox.Attribute("Padding")));
+            Assert.DoesNotContain(TriggersOf(Keyed(page, "ListColumnHead")).SelectMany(Setters), s => s.Target == "Head" && s.Property is "BorderThickness" or "Padding");
             Assert.Equal(("ListCell_MouseLeftButtonDown", "ListCell_MouseLeftButtonUp", "Hand", "Transparent"),
                 ((string)box.Attribute("MouseLeftButtonDown"), (string)box.Attribute("MouseLeftButtonUp"), (string)box.Attribute("Cursor"), (string)box.Attribute("Background")));
             var tip = Assert.Single(box.Descendants(), e => e.Name.LocalName == "MultiBinding");

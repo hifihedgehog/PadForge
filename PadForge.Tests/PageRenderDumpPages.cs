@@ -1106,6 +1106,20 @@ namespace PadForge.Tests
                     vm.OpenAwayColumnsCommand.Execute(null);
                     Levels();
                 });
+
+                // Seven columns at their least width, and the widest numbers:
+                // the bar gives way, and each number is whole (ListTagPanel).
+                drawing.Picture(ground, "list-tight-levels.png", Board, 1500, () =>
+                {
+                    Levels();
+                    foreach (var row in vm.Mappings)
+                        foreach (var tag in row.LiveTags)
+                        {
+                            tag.Level = tag.IsCentered ? 0 : 1;
+                            tag.LevelText = tag.IsCentered ? "-100%" : "100%";
+                        }
+                    table.ScrollIntoView(Row("RightThumbAxisY"));
+                });
             });
         }
 

@@ -1767,48 +1767,57 @@
              that reads keys carries its word before the name, and a button
              that pushes a stick's axis its direction after it. An axis of a
              connected device shows its live level beside the tag. The last
-             tag of a source names the source's mode when it is not Direct. -->
+             tag of a source names the source's mode when it is not Direct.
+             In a column short of room the level's number keeps its place:
+             the bar gives way first, then the mode's word, and the name
+             trims last (ListTagPanel). -->
         <DataTemplate x:Key="ListTag">
-            <StackPanel Orientation="Horizontal" Margin="0,3,8,3" VerticalAlignment="Center">
-                <Border MinHeight="26" Padding="10,0" CornerRadius="6" BorderThickness="1"
+            <controls:ListTagPanel Margin="0,3,8,3" VerticalAlignment="Center">
+                <Border controls:ListTagPanel.Part="Name" MinHeight="26" Padding="10,0" CornerRadius="6" BorderThickness="1"
                         Background="{DynamicResource SteelRaisedBrush}"
                         BorderBrush="{DynamicResource SteelPillLineBrush}">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding Word}" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    Visibility="{Binding Word, Converter={StaticResource StringToVisibility}}"/>
-                        <TextBlock Text="{Binding Text}" FontFamily="{StaticResource BodyFontFamily}" FontSize="14" MaxWidth="190"
+                        <TextBlock Grid.Column="1" Text="{Binding Text}" FontFamily="{StaticResource BodyFontFamily}" FontSize="14" MaxWidth="190"
                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                    VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-                        <TextBlock Text="{Binding Direction}" FontSize="12" FontWeight="SemiBold" Margin="6,0,0,0" VerticalAlignment="Center"
+                        <TextBlock Grid.Column="2" Text="{Binding Direction}" FontSize="12" FontWeight="SemiBold" Margin="6,0,0,0" VerticalAlignment="Center"
                                    FlowDirection="LeftToRight"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    Visibility="{Binding Direction, Converter={StaticResource StringToVisibility}}"/>
-                    </StackPanel>
+                    </Grid>
                 </Border>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
-                            Visibility="{Binding ShowsLevel, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <controls:LevelBar Width="84" Margin="8,0,0,0" VerticalAlignment="Center"
-                                       Level="{Binding Level, Mode=OneWay}" IsCentered="{Binding IsCentered, Mode=OneWay}"
-                                       Track="{DynamicResource SteelLineBrush}" Fill="{DynamicResource ColdBrush}"
-                                       Tick="{DynamicResource TextFillColorTertiaryBrush}"/>
-                    <TextBlock Text="{Binding LevelText, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
-                               Foreground="{DynamicResource ColdBrush}" MinWidth="38" Margin="8,0,0,0" VerticalAlignment="Center"/>
-                </StackPanel>
-                <TextBlock Text="{Binding Mode}" FontSize="13" Margin="8,0,0,0" VerticalAlignment="Center"
+                <controls:LevelBar controls:ListTagPanel.Part="Bar" Margin="8,0,0,0" VerticalAlignment="Center"
+                                   Level="{Binding Level, Mode=OneWay}" IsCentered="{Binding IsCentered, Mode=OneWay}"
+                                   Track="{DynamicResource SteelLineBrush}" Fill="{DynamicResource ColdBrush}"
+                                   Tick="{DynamicResource TextFillColorTertiaryBrush}"
+                                   Visibility="{Binding ShowsLevel, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <TextBlock Text="{Binding LevelText, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                           Foreground="{DynamicResource ColdBrush}" MinWidth="38" Margin="8,0,0,0" VerticalAlignment="Center"
+                           Visibility="{Binding ShowsLevel, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <TextBlock controls:ListTagPanel.Part="Mode" Text="{Binding Mode}" FontSize="13" Margin="8,0,0,0" VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                            Visibility="{Binding Mode, Converter={StaticResource StringToVisibility}}"/>
-            </StackPanel>
+            </controls:ListTagPanel>
         </DataTemplate>
 
-        <!-- One device's part in a row. A click on the cell records for the
-             row from that device: on a tag it records that input again, and
-             beside the tags it records another. A device that is not
-             connected keeps its tags, dimmed, behind a hairline. The fold's
+        <!-- One device's part in a row, behind the hairline at its column's
+             left, which every column has, connected or not. A click on the
+             cell records for the row from that device: on a tag it records
+             that input again, and beside the tags it records another. A
+             device that is not connected keeps its tags, dimmed. The fold's
              cell counts the inputs on the devices it holds. -->
         <DataTemplate x:Key="ListCell">
-            <Border x:Name="Cell" Background="Transparent" MinHeight="38" Padding="0,0,6,0" Cursor="Hand"
-                    BorderBrush="{DynamicResource SteelLineSoftBrush}"
+            <Border x:Name="Cell" Background="Transparent" MinHeight="38" Padding="14,0,6,0" Cursor="Hand"
+                    BorderThickness="1,0,0,0" BorderBrush="{DynamicResource SteelLineSoftBrush}"
                     MouseLeftButtonDown="ListCell_MouseLeftButtonDown" MouseLeftButtonUp="ListCell_MouseLeftButtonUp">
                 <Border.ToolTip>
                     <TextBlock>
@@ -1840,14 +1849,10 @@
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Column.IsAway}" Value="True">
                     <Setter TargetName="Tags" Property="Opacity" Value="0.45"/>
-                    <Setter TargetName="Cell" Property="BorderThickness" Value="1,0,0,0"/>
-                    <Setter TargetName="Cell" Property="Padding" Value="14,0,6,0"/>
                     <Setter TargetName="Cell" Property="Cursor" Value="Arrow"/>
                     <Setter TargetName="Cell" Property="ToolTip" Value="{x:Null}"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Column.IsFold}" Value="True">
-                    <Setter TargetName="Cell" Property="BorderThickness" Value="1,0,0,0"/>
-                    <Setter TargetName="Cell" Property="Padding" Value="14,0,6,0"/>
                     <Setter TargetName="Cell" Property="Cursor" Value="Arrow"/>
                     <Setter TargetName="Cell" Property="ToolTip" Value="{x:Null}"/>
                 </DataTrigger>
@@ -1857,12 +1862,13 @@
             </DataTemplate.Triggers>
         </DataTemplate>
 
-        <!-- A column's head: the device's light, its name, and under it its
-             kind or that it is not connected. The fold's head says how many
-             devices it holds, and a click on it gives each its column back. -->
+        <!-- A column's head, behind the same hairline as its cells: the
+             device's light, its name, and under it its kind or that it is
+             not connected. The fold's head says how many devices it holds,
+             and a click on it gives each its column back. -->
         <DataTemplate x:Key="ListColumnHead">
-            <Border x:Name="Head" MinHeight="56" Padding="0,0,10,0" Background="Transparent"
-                    BorderBrush="{DynamicResource SteelLineSoftBrush}">
+            <Border x:Name="Head" MinHeight="56" Padding="14,0,10,0" Background="Transparent"
+                    BorderThickness="1,0,0,0" BorderBrush="{DynamicResource SteelLineSoftBrush}">
                 <Grid VerticalAlignment="Center">
                     <DockPanel x:Name="DeviceHead">
                         <Ellipse x:Name="Light" DockPanel.Dock="Left" Width="7" Height="7" Margin="0,5,10,0" VerticalAlignment="Top"
@@ -1909,14 +1915,10 @@
                     <Setter TargetName="Light" Property="Fill" Value="Transparent"/>
                     <Setter TargetName="Light" Property="Stroke" Value="{DynamicResource SteelLineBrush}"/>
                     <Setter TargetName="Light" Property="StrokeThickness" Value="1"/>
-                    <Setter TargetName="Head" Property="BorderThickness" Value="1,0,0,0"/>
-                    <Setter TargetName="Head" Property="Padding" Value="14,0,10,0"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding IsFold}" Value="True">
                     <Setter TargetName="DeviceHead" Property="Visibility" Value="Collapsed"/>
                     <Setter TargetName="FoldHead" Property="Visibility" Value="Visible"/>
-                    <Setter TargetName="Head" Property="BorderThickness" Value="1,0,0,0"/>
-                    <Setter TargetName="Head" Property="Padding" Value="14,0,10,0"/>
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>

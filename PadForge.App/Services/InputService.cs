@@ -3485,9 +3485,7 @@ namespace PadForge.Services
             var setsForIdle = SettingsManager.UserSettings;
             if (devsForIdle != null && setsForIdle != null)
             {
-                UserDevice[] devArr;
-                lock (devsForIdle.SyncRoot)
-                    devArr = devsForIdle.Items.ToArray();
+                UserDevice[] devArr = CopyDeviceRows(devsForIdle, ref _idleRows);
                 lock (setsForIdle.SyncRoot)
                 {
                     foreach (var us in setsForIdle.Items)
@@ -3906,14 +3904,13 @@ namespace PadForge.Services
             // thread takes for device-state lookups. An earlier shape held it
             // through LINQ counts and a nested settings lock, which profiled as
             // Monitor.Enter_Slowpath contention on the poll thread. The lock
-            // holds only long enough to ToArray, and the count runs on the
-            // snapshot outside it.
+            // holds only long enough to copy the list (CopyDeviceRows), and
+            // the count runs on the copy outside it.
             UserDevice[] deviceSnapshot = null;
             var ud = SettingsManager.UserDevices;
             if (ud != null)
             {
-                lock (ud.SyncRoot)
-                    deviceSnapshot = ud.Items.ToArray();
+                deviceSnapshot = CopyDeviceRows(ud, ref _dashboardRows);
 
                 // The one count the interface prints: Home's engine card.
                 int online = 0;
@@ -3925,6 +3922,26 @@ namespace PadForge.Services
             RefreshSlotSummaryProperties(deviceSnapshot);
             RefreshNavItemConnectedCounts(deviceSnapshot);
         }
+
+        /// <summary>The device list copied for one reader on the UI thread,
+        /// into the array that reader kept from its last turn. Exactly as
+        /// long as the list, so a reader takes it as it took a copy of its
+        /// own, and new only when the list's length changes. The 30 Hz
+        /// dashboard and idle lanes each made a new copy every tick (measured
+        /// 2026-11-16). A reader keeps its array to itself and only for its
+        /// own turn: the next copy fills the same array.</summary>
+        private static UserDevice[] CopyDeviceRows(DeviceCollection devices, ref UserDevice[] rows)
+        {
+            lock (devices.SyncRoot)
+            {
+                var items = devices.Items;
+                if (rows == null || rows.Length != items.Count) rows = new UserDevice[items.Count];
+                items.CopyTo(rows);
+            }
+            return rows;
+        }
+
+        private UserDevice[] _dashboardRows, _idleRows;
 
         // Reusable buffer for the non-allocating FindByPadIndex overload,
         // grown to the live UserSettings count so a per-slot query never

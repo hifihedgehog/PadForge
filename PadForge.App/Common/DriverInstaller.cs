@@ -238,33 +238,19 @@ namespace PadForge.Common
         /// </summary>
         private static string FindUninstallProductCode(string displayNameSubstring)
         {
-            var views = new[] { RegistryView.Registry64, RegistryView.Registry32 };
-            foreach (var view in views)
+            foreach (var entry in UninstallRegistry.Machine.Entries)
             {
-                try
-                {
-                    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
-                    using var uninstallKey = baseKey.OpenSubKey(
-                        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false);
-                    if (uninstallKey == null) continue;
+                var name = entry.DisplayName;
+                if (string.IsNullOrEmpty(name)) continue;
+                if (name.IndexOf(displayNameSubstring, StringComparison.OrdinalIgnoreCase) < 0) continue;
 
-                    foreach (var subName in uninstallKey.GetSubKeyNames())
-                    {
-                        using var sub = uninstallKey.OpenSubKey(subName, false);
-                        var name = sub?.GetValue("DisplayName") as string;
-                        if (string.IsNullOrEmpty(name)) continue;
-                        if (name.IndexOf(displayNameSubstring, StringComparison.OrdinalIgnoreCase) < 0) continue;
-
-                        // Only a Windows Installer product has a ProductCode
-                        // msiexec can act on. A bootstrapper registers its
-                        // own entry under a brace GUID too, and that GUID
-                        // names a bundle msiexec has never heard of, so the
-                        // shape of the key alone does not decide it.
-                        string code = MsiProductCodeOrNull(subName, sub.GetValue("WindowsInstaller"));
-                        if (code != null) return code;
-                    }
-                }
-                catch { }
+                // Only a Windows Installer product has a ProductCode
+                // msiexec can act on. A bootstrapper registers its
+                // own entry under a brace GUID too, and that GUID
+                // names a bundle msiexec has never heard of, so the
+                // shape of the key alone does not decide it.
+                string code = MsiProductCodeOrNull(entry.SubKeyName, entry.WindowsInstaller);
+                if (code != null) return code;
             }
             return null;
         }
@@ -627,31 +613,15 @@ namespace PadForge.Common
 
         private static string GetVJoyVersionFromRegistry()
         {
-            var views = new[] { RegistryView.Registry64, RegistryView.Registry32 };
-
-            foreach (var view in views)
+            foreach (var entry in UninstallRegistry.Machine.Entries)
             {
-                try
-                {
-                    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
-                    using var uninstallKey = baseKey.OpenSubKey(
-                        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false);
+                var name = entry.DisplayName;
+                if (string.IsNullOrEmpty(name)) continue;
 
-                    if (uninstallKey == null) continue;
+                if (name.IndexOf("vJoy", StringComparison.OrdinalIgnoreCase) < 0)
+                    continue;
 
-                    foreach (var subName in uninstallKey.GetSubKeyNames())
-                    {
-                        using var sub = uninstallKey.OpenSubKey(subName, false);
-                        var name = sub?.GetValue("DisplayName") as string;
-                        if (string.IsNullOrEmpty(name)) continue;
-
-                        if (name.IndexOf("vJoy", StringComparison.OrdinalIgnoreCase) < 0)
-                            continue;
-
-                        return sub.GetValue("DisplayVersion") as string ?? "Installed";
-                    }
-                }
-                catch { }
+                return entry.DisplayVersion ?? "Installed";
             }
 
             return null;
@@ -992,34 +962,21 @@ namespace PadForge.Common
         /// Services bundle and returns its UninstallString value.
         /// </summary>
         private static string FindMidiServicesUninstallString()
-            => FindMidiBundleValue("UninstallString");
+            => FindMidiBundle()?.UninstallString;
 
         /// <summary>The bundle's DisplayVersion, the way the HidHide and ViGEm
         /// cards read theirs.</summary>
         private static string GetMidiBundleVersion()
-            => FindMidiBundleValue("DisplayVersion");
+            => FindMidiBundle()?.DisplayVersion;
 
-        private static string FindMidiBundleValue(string valueName)
+        /// <summary>The WiX Burn bootstrapper's own registration, not those
+        /// of the MSI packages it installed, or null.</summary>
+        private static UninstallRegistry.Entry? FindMidiBundle()
         {
-            foreach (var view in new[] { RegistryView.Registry64, RegistryView.Registry32 })
-            {
-                try
-                {
-                    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
-                    using var uninstallKey = baseKey.OpenSubKey(
-                        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false);
-                    if (uninstallKey == null) continue;
-                    foreach (var subName in uninstallKey.GetSubKeyNames())
-                    {
-                        using var sub = uninstallKey.OpenSubKey(subName, false);
-                        // The WiX Burn bootstrapper's entry, not the MSI packages it installed.
-                        if (sub?.GetValue("DisplayName") as string is string name
-                            && name.Equals(MicrosoftMidiBundleName, StringComparison.OrdinalIgnoreCase))
-                            return sub.GetValue(valueName) as string;
-                    }
-                }
-                catch { }
-            }
+            foreach (var entry in UninstallRegistry.Machine.Entries)
+                if (entry.DisplayName is string name
+                    && name.Equals(MicrosoftMidiBundleName, StringComparison.OrdinalIgnoreCase))
+                    return entry;
             return null;
         }
 
@@ -1723,31 +1680,15 @@ namespace PadForge.Common
         /// </summary>
         public static string GetViGEmVersion()
         {
-            var views = new[] { RegistryView.Registry64, RegistryView.Registry32 };
-
-            foreach (var view in views)
+            foreach (var entry in UninstallRegistry.Machine.Entries)
             {
-                try
-                {
-                    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
-                    using var uninstallKey = baseKey.OpenSubKey(
-                        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false);
+                var name = entry.DisplayName;
+                if (string.IsNullOrEmpty(name)) continue;
 
-                    if (uninstallKey == null) continue;
+                if (name.IndexOf("ViGEm", StringComparison.OrdinalIgnoreCase) < 0)
+                    continue;
 
-                    foreach (var subName in uninstallKey.GetSubKeyNames())
-                    {
-                        using var sub = uninstallKey.OpenSubKey(subName, false);
-                        var name = sub?.GetValue("DisplayName") as string;
-                        if (string.IsNullOrEmpty(name)) continue;
-
-                        if (name.IndexOf("ViGEm", StringComparison.OrdinalIgnoreCase) < 0)
-                            continue;
-
-                        return sub.GetValue("DisplayVersion") as string;
-                    }
-                }
-                catch { }
+                return entry.DisplayVersion;
             }
 
             return null;
@@ -1792,49 +1733,30 @@ namespace PadForge.Common
             productCode = null;
             bool found = false;
 
-            var views = new[] { RegistryView.Registry64, RegistryView.Registry32 };
-
-            foreach (var view in views)
+            foreach (var entry in UninstallRegistry.Machine.Entries)
             {
-                try
+                var name = entry.DisplayName;
+                if (string.IsNullOrEmpty(name)) continue;
+
+                if (name.IndexOf("HidHide", StringComparison.OrdinalIgnoreCase) < 0 &&
+                    name.IndexOf("HID Hide", StringComparison.OrdinalIgnoreCase) < 0)
+                    continue;
+
+                // "Installed" is any registration that names it, as
+                // it always was. The ProductCode is narrower: only a
+                // Windows Installer product has one msiexec can act
+                // on, and a bootstrapper's own entry can sit in front
+                // of it under a brace GUID that is not a ProductCode.
+                // So the walk carries on past a match that has no
+                // code, and stops at the first one that does.
+                found = true;
+                string code = MsiProductCodeOrNull(entry.SubKeyName, entry.WindowsInstaller);
+                if (displayVersion == null || code != null)
+                    displayVersion = entry.DisplayVersion ?? displayVersion;
+                if (code != null)
                 {
-                    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
-                    using var uninstallKey = baseKey.OpenSubKey(
-                        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false);
-
-                    if (uninstallKey == null) continue;
-
-                    foreach (var subName in uninstallKey.GetSubKeyNames())
-                    {
-                        using var sub = uninstallKey.OpenSubKey(subName, false);
-                        var name = sub?.GetValue("DisplayName") as string;
-                        if (string.IsNullOrEmpty(name)) continue;
-
-                        if (name.IndexOf("HidHide", StringComparison.OrdinalIgnoreCase) < 0 &&
-                            name.IndexOf("HID Hide", StringComparison.OrdinalIgnoreCase) < 0)
-                            continue;
-
-                        // "Installed" is any registration that names it, as
-                        // it always was. The ProductCode is narrower: only a
-                        // Windows Installer product has one msiexec can act
-                        // on, and a bootstrapper's own entry can sit in front
-                        // of it under a brace GUID that is not a ProductCode.
-                        // So the walk carries on past a match that has no
-                        // code, and stops at the first one that does.
-                        found = true;
-                        string code = MsiProductCodeOrNull(subName, sub.GetValue("WindowsInstaller"));
-                        if (displayVersion == null || code != null)
-                            displayVersion = sub.GetValue("DisplayVersion") as string ?? displayVersion;
-                        if (code != null)
-                        {
-                            productCode = code;
-                            return true;
-                        }
-                    }
-                }
-                catch
-                {
-                    // Ignore and try the other registry view.
+                    productCode = code;
+                    return true;
                 }
             }
 

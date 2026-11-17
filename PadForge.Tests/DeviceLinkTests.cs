@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using PadForge.Common;
 using PadForge.Engine;
 using PadForge.ViewModels;
@@ -132,6 +133,22 @@ namespace PadForge.Tests
             Assert.Equal(DeviceLink.None, DeviceTransport.LinkOf("midi://1", 0, 0, Walk, known));
             Assert.Equal(DeviceLink.None, DeviceTransport.LinkOf(null, 0, 0, Walk, known));
             Assert.Equal(new[] { Keyboard, Away, Away }, walked);
+        }
+
+        /// <summary>Both walks that find the node Windows keeps for a
+        /// device that has left the tree pass cfgmgr32.h's
+        /// CM_LOCATE_DEVNODE_PHANTOM, which is 1. The headset repair passed
+        /// 4, CM_LOCATE_DEVNODE_NOVALIDATION, which Windows does not use,
+        /// so its fallback found no such node.</summary>
+        [Fact]
+        public void TheRememberedNodeFlagIsCfgmgr32s()
+        {
+            foreach (var type in new[] { typeof(PadForge.Services.HeadsetTrackerRepair), typeof(PadForge.Common.Input.InputManager) })
+            {
+                var field = type.GetField("CM_LOCATE_DEVNODE_PHANTOM", BindingFlags.NonPublic | BindingFlags.Static);
+                Assert.NotNull(field);
+                Assert.Equal(1u, (uint)field.GetRawConstantValue());
+            }
         }
 
         [Fact]

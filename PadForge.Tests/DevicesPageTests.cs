@@ -230,7 +230,7 @@ namespace PadForge.Tests
             // Five devices are connected, and the list shows them with the
             // two merged rows, which are rows and no devices.
             Assert.Equal(5, vm.ConnectedTotal);
-            Assert.Equal(7, vm.ConnectedShown);
+            Assert.Equal(7, vm.MainShown);
             Assert.Equal(2, vm.NotConnectedCount);
             Assert.Equal("Logitech G29 Driving Force Racing Wheel, DualShock 3", vm.NotConnectedHint);
             Assert.Equal(1, vm.OtherInputsCount);
@@ -240,7 +240,7 @@ namespace PadForge.Tests
 
             // A kind's segment shows its devices and its merged row.
             vm.Filter = DeviceFilter.Keyboard;
-            Assert.Equal(2, vm.ConnectedShown);
+            Assert.Equal(2, vm.MainShown);
             Assert.Equal(5, vm.ConnectedTotal);
             Assert.Equal(0, vm.NotConnectedCount);
             Assert.False(vm.HasNotConnected);
@@ -248,14 +248,14 @@ namespace PadForge.Tests
             Assert.False(vm.HasOtherInputs);
             // The wheel is remembered and not connected: its segment finds it.
             vm.Filter = DeviceFilter.Wheel;
-            Assert.Equal(0, vm.ConnectedShown);
+            Assert.Equal(0, vm.MainShown);
             Assert.Equal(1, vm.NotConnectedCount);
             Assert.Equal("Logitech G29 Driving Force Racing Wheel", vm.NotConnectedHint);
 
             vm.Filter = DeviceFilter.All;
             vm.SearchText = "no device is called this";
             Assert.True(vm.ShowNoMatch);
-            Assert.Equal(0, vm.ConnectedShown);
+            Assert.Equal(0, vm.MainShown);
             Assert.Equal(5, vm.ConnectedTotal);
         }
 
@@ -269,24 +269,24 @@ namespace PadForge.Tests
             DeviceRowViewModel[] Rows(System.ComponentModel.ICollectionView view) => view.Cast<DeviceRowViewModel>().ToArray();
             // The connected rows stand in their parts, each part's rows in
             // the collection's order (DevicesBoardTests).
-            Assert.Equal(vm.RowsOf(DeviceListGroup.Connected, inParts: true), Rows(vm.ConnectedView));
-            Assert.Equal(vm.Devices.Where(d => d.ListGroup == DeviceListGroup.Connected).OrderBy(d => (int)d.Section), Rows(vm.ConnectedView));
+            Assert.Equal(vm.RowsOf(DevicePageList.Main, inParts: true), Rows(vm.MainView));
+            Assert.Equal(vm.Devices.Where(d => d.ListGroup == DeviceListGroup.Connected).OrderBy(d => (int)d.Section), Rows(vm.MainView));
             Assert.Equal(vm.Devices.Where(d => d.ListGroup == DeviceListGroup.NotConnected), Rows(vm.NotConnectedView));
             Assert.Equal(vm.Devices.Where(d => d.ListGroup == DeviceListGroup.Other), Rows(vm.OtherInputsView));
-            Assert.Equal(7, Rows(vm.ConnectedView).Length);
+            Assert.Equal(7, Rows(vm.MainView).Length);
 
             // A row going offline leaves the Connected list for Not Connected
             // at the refresh that every place that changes a row calls.
             var pro = vm.Devices.Single(d => d.DeviceName == "Nintendo Switch Pro Controller");
             pro.IsOnline = false;
             vm.RefreshCounts();
-            Assert.DoesNotContain(pro, Rows(vm.ConnectedView));
+            Assert.DoesNotContain(pro, Rows(vm.MainView));
             Assert.Contains(pro, Rows(vm.NotConnectedView));
 
             // The segment filters every view at once.
             vm.Filter = DeviceFilter.Keyboard;
-            Assert.Equal(2, Rows(vm.ConnectedView).Length);
-            Assert.All(Rows(vm.ConnectedView).Concat(Rows(vm.OtherInputsView)),
+            Assert.Equal(2, Rows(vm.MainView).Length);
+            Assert.All(Rows(vm.MainView).Concat(Rows(vm.OtherInputsView)),
                 d => Assert.Equal(DeviceFilter.Keyboard, DevicesViewModel.FilterOf(d.DeviceTypeKey)));
             Assert.Empty(Rows(vm.NotConnectedView));
         });
@@ -316,7 +316,7 @@ namespace PadForge.Tests
             DeviceRowViewModel[] Rows(System.ComponentModel.ICollectionView view) => view.Cast<DeviceRowViewModel>().ToArray();
             void Settle() => Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Background, new Action(() => { }));
             Settle();
-            Assert.Empty(Rows(vm.ConnectedView));
+            Assert.Empty(Rows(vm.MainView));
             Assert.Equal(new[] { mouse, keyboard, gamepad }, Rows(vm.NotConnectedView));
 
             // The sync's next pass: each comes online, and then the rows are
@@ -334,20 +334,20 @@ namespace PadForge.Tests
             foreach (var row in vm.Devices) row.IsOnline = true;
             SortAsTheSyncDoes();
             Settle();
-            Assert.Equal(new[] { gamepad, keyboard, mouse }, Rows(vm.ConnectedView));
-            Assert.Equal(3, vm.ConnectedShown);
+            Assert.Equal(new[] { gamepad, keyboard, mouse }, Rows(vm.MainView));
+            Assert.Equal(3, vm.MainShown);
             Assert.Empty(Rows(vm.NotConnectedView));
 
             // One goes away and comes back: it stands where its name puts it.
             gamepad.IsOnline = false;
             SortAsTheSyncDoes();
             Settle();
-            Assert.Equal(new[] { keyboard, mouse }, Rows(vm.ConnectedView));
+            Assert.Equal(new[] { keyboard, mouse }, Rows(vm.MainView));
             Assert.Equal(new[] { gamepad }, Rows(vm.NotConnectedView));
             gamepad.IsOnline = true;
             SortAsTheSyncDoes();
             Settle();
-            Assert.Equal(new[] { gamepad, keyboard, mouse }, Rows(vm.ConnectedView));
+            Assert.Equal(new[] { gamepad, keyboard, mouse }, Rows(vm.MainView));
         });
 
         // ── 7, 8: a row's line and its Use It ──
@@ -888,7 +888,7 @@ namespace PadForge.Tests
                 "Devices_Pair", "Devices_Refresh", "Devices_Search", "Devices_Filter_All", "Devices_Filter_Gamepad",
                 "Devices_Filter_Joystick", "Devices_Filter_Wheel", "Devices_Filter_Keyboard", "Devices_Filter_Mouse",
                 "Devices_Filter_Other", "Devices_ListScroll", "Devices_PanelScroll",
-                "Devices_List_Connected", "Devices_List_NotConnected", "Devices_List_OtherInputs", "Devices_Fold_NotConnected",
+                "Devices_List_Main", "Devices_List_NotConnected", "Devices_List_OtherInputs", "Devices_Fold_NotConnected",
                 "Devices_Fold_OtherInputs", "Devices_UseIt", "Devices_TestRumble", "Devices_UsedBy_New", "Devices_ResetAll",
                 "Devices_More_TestInputs", "Devices_Details", "Devices_CopyDetails", "Devices_SubmitMapping", "Devices_Remove",
             })

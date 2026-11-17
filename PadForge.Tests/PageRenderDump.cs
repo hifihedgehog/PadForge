@@ -1008,6 +1008,8 @@ namespace PadForge.Tests
             var walk = PadForge.Common.DeviceTransport.TreeWalk;
             PadForge.Common.DeviceTransport.TreeWalk = path =>
             {
+                if (path.Contains("#GXTP5100", StringComparison.OrdinalIgnoreCase))
+                    return new[] { Hop(@"HID\GXTP5100\1", "mouhid"), Hop(@"ACPI\GXTP5100\1", "hidi2c") };
                 if (path.Contains("#VID_FFFF", StringComparison.OrdinalIgnoreCase))
                     return new[] { Hop(@"HID\HIDCLASS\1", "mouhid"), Hop(@"ROOT\HIDCLASS\0000", "mshidkmdf") };
                 if (path.Contains("#VID_", StringComparison.OrdinalIgnoreCase))
@@ -1071,6 +1073,8 @@ namespace PadForge.Tests
                 @"\\?\HID#VID_046D&PID_C547&MI_00#8&6&0&0000#{884b96c3-56ef-11d1-bc8c-00a0c91405dd}", true, 0x046D, 0xC547);
             Add("T.16000M", "Joystick", PadForge.Engine.InputDeviceType.Joystick,
                 @"\\?\HID#VID_044F&PID_B10A#8&8&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}", true, 0x044F, 0xB10A);
+            Add("HIDI2C Device", "Touchpad", PadForge.Engine.InputDeviceType.Touchpad,
+                @"\\?\HID#GXTP5100&Col01#4&c834cd3&0&0000#{378de44c-56ef-11d1-bc8c-00a0c91405dd}", true, 0, 0);
             Add("Jump Desktop Virtual Mouse Driver", "Mouse", PadForge.Engine.InputDeviceType.Mouse,
                 @"\\?\HID#VID_FFFF&PID_0001#8&7&0&0000#{378de44c-56ef-11d1-bc8c-00a0c91405dd}", true, 0xFFFF, 0x0001);
             // A wheel a controller is to use, which is not here: its pill is quiet.
@@ -1207,6 +1211,10 @@ namespace PadForge.Tests
                 ((System.Windows.Controls.Expander)page.FindName("NotConnectedFold")).IsExpanded = true;
             });
             ((System.Windows.Controls.Expander)page.FindName("NotConnectedFold")).IsExpanded = false;
+            // The Not Connected segment: the devices PadForge remembers, in
+            // the list in parts by kind.
+            Shot("devices-1280-notconnected.png", PageWidth, 1088, () => vm.Connection = DeviceConnection.NotConnected);
+            vm.Connection = DeviceConnection.All;
             Shot("devices-1280-none.png", PageWidth, 1088, () =>
             {
                 vm.ClearRawState();

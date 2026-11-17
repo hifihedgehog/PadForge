@@ -242,21 +242,29 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <!-- A device's link, where PadForge knows it: the word, after the
-             Bluetooth mark for a Bluetooth device. It stands in the table's
+        <!-- A device's link, where PadForge knows it: the link's mark and
+             its word (Shell.xaml draws the marks). It stands in the table's
              Link column, or after the device's type where the list is too
              narrow for the column. -->
         <DataTemplate x:Key="DeviceLinkFact" DataType="{x:Type vm:DeviceRowViewModel}">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <controls:DecorativeStrokeIcon x:Name="Mark" Data="{StaticResource BluetoothLineGeometry}" Size="13" StrokeWidth="2"
+                <controls:DecorativeStrokeIcon x:Name="Mark" Size="15" StrokeWidth="2"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
-                <TextBlock x:Name="Words" Text="{Binding LinkText}" Margin="7,0,0,0" FontSize="13" VerticalAlignment="Center"
+                <TextBlock Text="{Binding LinkText}" Margin="7,0,0,0" FontSize="13" VerticalAlignment="Center"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
             </StackPanel>
             <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding IsBluetoothLink}" Value="False">
-                    <Setter TargetName="Mark" Property="Visibility" Value="Collapsed"/>
-                    <Setter TargetName="Words" Property="Margin" Value="0"/>
+                <DataTrigger Binding="{Binding Link}" Value="{x:Static common:DeviceLink.Bluetooth}">
+                    <Setter TargetName="Mark" Property="Data" Value="{StaticResource BluetoothLineGeometry}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Link}" Value="{x:Static common:DeviceLink.Usb}">
+                    <Setter TargetName="Mark" Property="Data" Value="{StaticResource UsbLineGeometry}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Link}" Value="{x:Static common:DeviceLink.I2c}">
+                    <Setter TargetName="Mark" Property="Data" Value="{StaticResource I2cLineGeometry}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Link}" Value="{x:Static common:DeviceLink.Ps2}">
+                    <Setter TargetName="Mark" Property="Data" Value="{StaticResource Ps2LineGeometry}"/>
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
@@ -324,13 +332,15 @@
                     </Grid.ColumnDefinitions>
                     <!-- The kind, on a tile that lights while the device
                          sends input. Ember is for what is live, so the
-                         picked row's tile stays steel. -->
-                    <controls:Halo CornerRadius="10" Radius="17.5" Strength="0.2" IsLit="{Binding IsSending}"
+                         picked row's tile stays steel. Every row's tile is
+                         one size, a controller's taller row's too (owner,
+                         2026-11-17). -->
+                    <controls:Halo CornerRadius="11" Radius="19.5" Strength="0.2" IsLit="{Binding IsSending}"
                                    HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Border x:Name="Tile" Width="32" Height="32" CornerRadius="8" BorderThickness="1"
+                        <Border x:Name="Tile" Width="36" Height="36" CornerRadius="9" BorderThickness="1"
                                 Background="{DynamicResource SteelFieldBrush}"
                                 BorderBrush="{DynamicResource SteelLineSoftBrush}">
-                            <controls:KindIcon x:Name="Glyph" Glyph="{Binding KindGlyph}" Shape="{Binding KindShape}" FontSize="16"
+                            <controls:KindIcon x:Name="Glyph" Glyph="{Binding KindGlyph}" Shape="{Binding KindShape}" FontSize="18"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
@@ -459,10 +469,6 @@
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding IsControllerRow}" Value="True">
                     <Setter TargetName="Row" Property="MinHeight" Value="63"/>
-                    <Setter TargetName="Tile" Property="Width" Value="40"/>
-                    <Setter TargetName="Tile" Property="Height" Value="40"/>
-                    <Setter TargetName="Tile" Property="CornerRadius" Value="10"/>
-                    <Setter TargetName="Glyph" Property="FontSize" Value="20"/>
                     <Setter TargetName="OneLine" Property="Visibility" Value="Collapsed"/>
                     <Setter TargetName="TwoLines" Property="Visibility" Value="Visible"/>
                 </DataTrigger>
@@ -639,10 +645,12 @@
             </ui:Button>
         </controls:FlexLinePanel>
 
-        <!-- The search box and the Show segments. The box takes what the
-             line leaves beside the segments, 320 at most, and the line
-             wraps before the box is narrower than 220
-             (DevicesPage.SearchWidth). -->
+        <!-- The search box, the Show segments and the connection
+             segments. The box takes what the line leaves beside the
+             segments, 320 at most. The connection segments go to the next
+             line when this one has no room for them beside a box of 220,
+             and the line wraps before the box is narrower than 220
+             (DevicesPage.SearchWidth and SegmentsWidth). -->
         <controls:FlexLinePanel x:Name="FilterRow" Grid.Row="1" Margin="36,16,36,16" Gap="14" LineGap="10"
                                 SizeChanged="FilterRow_SizeChanged">
             <ui:TextBox x:Name="DeviceSearchBox" Width="320" VerticalAlignment="Center" MinHeight="36" Padding="10,0"
@@ -700,6 +708,27 @@
                     </RadioButton>
                 </StackPanel>
             </Border>
+            <!-- Every device, the connected ones, or the ones that are not:
+                 the main list shows what this picks. -->
+            <Border x:Name="ConnectionSegments" Style="{StaticResource SegmentTrack}" SizeChanged="FilterRow_SizeChanged">
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton GroupName="DeviceConnection" Style="{StaticResource SegmentRadio}" Tag="All" Checked="Connection_Checked"
+                                 IsChecked="{Binding Connection, Mode=OneWay, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=All}"
+                                 AutomationProperties.AutomationId="Devices_Connection_All">
+                        <TextBlock Text="{Binding Devices_Filter_All, Source={x:Static strings:Strings.Instance}}"/>
+                    </RadioButton>
+                    <RadioButton GroupName="DeviceConnection" Style="{StaticResource SegmentRadio}" Tag="Connected" Checked="Connection_Checked"
+                                 IsChecked="{Binding Connection, Mode=OneWay, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=Connected}"
+                                 AutomationProperties.AutomationId="Devices_Connection_Connected">
+                        <TextBlock Text="{Binding Devices_Group_Connected, Source={x:Static strings:Strings.Instance}}"/>
+                    </RadioButton>
+                    <RadioButton GroupName="DeviceConnection" Style="{StaticResource SegmentRadio}" Tag="NotConnected" Checked="Connection_Checked"
+                                 IsChecked="{Binding Connection, Mode=OneWay, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=NotConnected}"
+                                 AutomationProperties.AutomationId="Devices_Connection_NotConnected">
+                        <TextBlock Text="{Binding Devices_Group_NotConnected, Source={x:Static strings:Strings.Instance}}"/>
+                    </RadioButton>
+                </StackPanel>
+            </Border>
         </controls:FlexLinePanel>
 
         <!-- The body. A wpf-ui scroll bar lies over its content's right
@@ -747,8 +776,20 @@
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="DeviceBattery"/>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="DeviceUsedBy"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="1" Margin="14,0,0,0" Style="{StaticResource DeviceLabel}"
-                                           Text="{Binding Devices_Group_Connected, Source={x:Static strings:Strings.Instance}}"/>
+                                <!-- The main list's name: Connected, or Not
+                                     Connected under that segment. -->
+                                <TextBlock x:Name="MainHeading" Grid.Column="1" Margin="14,0,0,0">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource DeviceLabel}">
+                                            <Setter Property="Text" Value="{Binding Devices_Group_Connected, Source={x:Static strings:Strings.Instance}}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Connection}" Value="{x:Static vm:DeviceConnection.NotConnected}">
+                                                    <Setter Property="Text" Value="{Binding Devices_Group_NotConnected, Source={x:Static strings:Strings.Instance}}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                                 <TextBlock Grid.Column="2" Margin="14,0,0,0" MinWidth="104"
                                            Text="{Binding Devices_Detail_Link, Source={x:Static strings:Strings.Instance}}">
                                     <TextBlock.Style>
@@ -790,13 +831,13 @@
                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                        Text="{Binding Devices_NoMatch, Source={x:Static strings:Strings.Instance}}"
                                        Visibility="{Binding ShowNoMatch, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                            <!-- The connected devices in a part for each kind
-                                 a Show segment names, each under its name and
-                                 its count. -->
-                            <ListBox x:Name="ConnectedList" Style="{StaticResource DeviceList}" ItemsSource="{Binding ConnectedView}"
+                            <!-- The devices the connection segment picks, in
+                                 a part for each kind a Show segment names,
+                                 each under its name and its count. -->
+                            <ListBox x:Name="MainList" Style="{StaticResource DeviceList}" ItemsSource="{Binding MainView}"
                                      SelectionChanged="DeviceList_SelectionChanged"
-                                     AutomationProperties.AutomationId="Devices_List_Connected"
-                                     AutomationProperties.Name="{Binding Devices_Group_Connected, Source={x:Static strings:Strings.Instance}}">
+                                     AutomationProperties.AutomationId="Devices_List_Main"
+                                     AutomationProperties.Name="{Binding Text, ElementName=MainHeading, TargetNullValue='', FallbackValue=''}">
                                 <ListBox.GroupStyle>
                                     <GroupStyle ContainerStyle="{StaticResource DeviceGroup}"/>
                                 </ListBox.GroupStyle>
@@ -1060,12 +1101,29 @@
                                                 <StackPanel>
                                                     <TextBlock Style="{StaticResource DeviceLabel}"
                                                                Text="{Binding Devices_Detail_Link, Source={x:Static strings:Strings.Instance}}"/>
-                                                    <!-- The Bluetooth mark leads a
-                                                         Bluetooth device's word. -->
+                                                    <!-- The link's mark leads its word. -->
                                                     <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-                                                        <controls:DecorativeStrokeIcon Data="{StaticResource BluetoothLineGeometry}" Size="15" StrokeWidth="2"
-                                                                                       Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center" Margin="0,0,8,0"
-                                                                                       Visibility="{Binding SelectedDevice.IsBluetoothLink, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                        <controls:DecorativeStrokeIcon x:Name="StageLinkMark" Size="17" StrokeWidth="2"
+                                                                                       Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center" Margin="0,0,8,0">
+                                                            <controls:DecorativeStrokeIcon.Style>
+                                                                <Style TargetType="controls:DecorativeStrokeIcon">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding SelectedDevice.Link}" Value="{x:Static common:DeviceLink.Bluetooth}">
+                                                                            <Setter Property="Data" Value="{StaticResource BluetoothLineGeometry}"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding SelectedDevice.Link}" Value="{x:Static common:DeviceLink.Usb}">
+                                                                            <Setter Property="Data" Value="{StaticResource UsbLineGeometry}"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding SelectedDevice.Link}" Value="{x:Static common:DeviceLink.I2c}">
+                                                                            <Setter Property="Data" Value="{StaticResource I2cLineGeometry}"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding SelectedDevice.Link}" Value="{x:Static common:DeviceLink.Ps2}">
+                                                                            <Setter Property="Data" Value="{StaticResource Ps2LineGeometry}"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </controls:DecorativeStrokeIcon.Style>
+                                                        </controls:DecorativeStrokeIcon>
                                                         <TextBlock Text="{Binding SelectedDevice.LinkText}" FontSize="14" FontWeight="SemiBold"
                                                                    VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                                                     </StackPanel>

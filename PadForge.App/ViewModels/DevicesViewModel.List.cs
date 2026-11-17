@@ -17,13 +17,25 @@ namespace PadForge.ViewModels
     /// keyboards lost the way to one kind (owner, 2026-11-17).</summary>
     public enum DeviceFilter { All, Gamepad, Joystick, Wheel, Keyboard, Mouse, Other }
 
+    /// <summary>The Devices page's connection segments: every device, the
+    /// ones connected now, or the ones PadForge remembers and cannot see.
+    /// The main list shows the devices the segment picks (owner,
+    /// 2026-11-17).</summary>
+    public enum DeviceConnection { All, Connected, NotConnected }
+
+    /// <summary>The Devices page's three lists: the main list, in parts by
+    /// kind, the Other Inputs fold and the Not Connected fold.</summary>
+    public enum DevicePageList { Main, OtherInputs, NotConnected }
+
     /// <summary>
-    /// The Devices page's lists (#574): the devices connected now, the ones
-    /// PadForge remembers and cannot see, and the other inputs (consumer
-    /// controls and the rows PadForge and the extras feed), each through
-    /// the Show segment and the search, with their counts and the names the
-    /// folded lines list. A merged row stands where a device of its type
-    /// stands.
+    /// The Devices page's lists (#574). The main list shows the devices
+    /// connected now, or under the Not Connected segment the ones PadForge
+    /// remembers and cannot see. The Not Connected fold holds those under
+    /// the other two segments, and the Other Inputs fold holds the consumer
+    /// controls and the rows PadForge and the extras feed. Each list passes
+    /// the Show segment, the connection segment and the search, with its
+    /// count and the names a folded line lists. A merged row stands where a
+    /// device of its type stands.
     /// </summary>
     public partial class DevicesViewModel
     {
@@ -40,6 +52,25 @@ namespace PadForge.ViewModels
             }
         }
 
+        private DeviceConnection _connection = DeviceConnection.All;
+
+        /// <summary>The connection segment: whether the lists show every
+        /// device, the connected ones, or the ones that are not.</summary>
+        public DeviceConnection Connection
+        {
+            get => _connection;
+            set
+            {
+                if (!SetProperty(ref _connection, value)) return;
+                RefreshCounts();
+            }
+        }
+
+        /// <summary>The rows the main list holds: the connected ones, or
+        /// under the Not Connected segment the ones that are not.</summary>
+        internal DeviceListGroup MainGroup => _connection == DeviceConnection.NotConnected
+            ? DeviceListGroup.NotConnected : DeviceListGroup.Connected;
+
         private string _searchText = string.Empty;
 
         /// <summary>What the search box holds. It finds a device by its name,
@@ -54,8 +85,9 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>The Connected list's view of <see cref="Devices"/>.</summary>
-        public ICollectionView ConnectedView { get; private set; }
+        /// <summary>The main list's view of <see cref="Devices"/>, in parts
+        /// by kind.</summary>
+        public ICollectionView MainView { get; private set; }
 
         /// <summary>The Not Connected list's view.</summary>
         public ICollectionView NotConnectedView { get; private set; }
@@ -68,17 +100,17 @@ namespace PadForge.ViewModels
         /// that makes it, and view models built in tests need none.</summary>
         internal void EnsureListViews()
         {
-            if (ConnectedView != null) return;
-            ConnectedView = MakeView(DeviceListGroup.Connected);
-            NotConnectedView = MakeView(DeviceListGroup.NotConnected);
-            OtherInputsView = MakeView(DeviceListGroup.Other);
-            OnPropertyChanged(nameof(ConnectedView));
+            if (MainView != null) return;
+            MainView = MakeView(DevicePageList.Main);
+            NotConnectedView = MakeView(DevicePageList.NotConnected);
+            OtherInputsView = MakeView(DevicePageList.OtherInputs);
+            OnPropertyChanged(nameof(MainView));
             OnPropertyChanged(nameof(NotConnectedView));
             OnPropertyChanged(nameof(OtherInputsView));
         }
 
-        /// <summary>One list's view: the rows of its group that pass the
-        /// segment and the search, in the collection's order (name, then
+        /// <summary>One list's view: the rows it shows
+        /// (<see cref="Shows"/>), in the collection's order (name, then
         /// VID, PID, merged rows last). A row that goes offline or comes back
         /// moves between the lists at the next <see cref="RefreshCounts"/>,
         /// which every place that changes a row calls.
@@ -90,18 +122,18 @@ namespace PadForge.ViewModels
         /// and showed every connected device twice (2026-11-12). A row it
         /// took in late also stood at the list's end, out of order.</para>
         ///
-        /// <para>The Connected list stands in parts, one for each kind a
+        /// <para>The main list stands in parts, one for each kind a
         /// Show segment names, in the segments' order whatever part a device
         /// first turned up in, and its rows keep the collection's order
         /// within each part, so a kind's merged row is its part's last. A
         /// part with no row is not there.</para></summary>
-        private ListCollectionView MakeView(DeviceListGroup group)
+        private ListCollectionView MakeView(DevicePageList list)
         {
             var view = new ListCollectionView(Devices)
             {
-                Filter = o => o is DeviceRowViewModel d && d.ListGroup == group && Matches(d),
+                Filter = o => o is DeviceRowViewModel d && Shows(list, d),
             };
-            if (group == DeviceListGroup.Connected)
+            if (list == DevicePageList.Main)
                 view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(DeviceRowViewModel.Section))
                 {
                     CustomSort = SectionOrder.Instance,
@@ -110,41 +142,59 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Puts each list's view in step with the rows: a view is
-        /// read again when the rows it shows are not exactly its group's
-        /// rows that pass the segment and the search, in the collection's
-        /// order, and for the Connected list each under its own part. A
-        /// view that is already right is left alone, so its list keeps its
-        /// rows and its selection.</summary>
+        /// read again when the rows it shows are not exactly the rows it
+        /// should show (<see cref="Shows"/>), in the collection's order, and
+        /// for the main list each under its own part. A view that is
+        /// already right is left alone, so its list keeps its rows and its
+        /// selection.</summary>
         private void SyncViews()
         {
-            SyncView(ConnectedView, DeviceListGroup.Connected);
-            SyncView(NotConnectedView, DeviceListGroup.NotConnected);
-            SyncView(OtherInputsView, DeviceListGroup.Other);
+            SyncView(MainView, DevicePageList.Main);
+            SyncView(NotConnectedView, DevicePageList.NotConnected);
+            SyncView(OtherInputsView, DevicePageList.OtherInputs);
         }
 
-        private void SyncView(ICollectionView view, DeviceListGroup group)
+        private void SyncView(ICollectionView view, DevicePageList list)
         {
             if (view == null) return;
-            if (!IsInStep(view, group)) view.Refresh();
+            if (!IsInStep(view, list)) view.Refresh();
+        }
+
+        /// <summary>Whether a list shows a row: the row passes the segments
+        /// and the search and stands in that list. The main list holds the
+        /// rows of <see cref="MainGroup"/>. The Not Connected fold holds the
+        /// rows that are not connected while the main list holds the
+        /// connected ones, and the Other Inputs fold holds the other
+        /// inputs.</summary>
+        internal bool Shows(DevicePageList list, DeviceRowViewModel d)
+        {
+            if (d == null || !Matches(d)) return false;
+            return list switch
+            {
+                DevicePageList.Main => d.ListGroup == MainGroup,
+                DevicePageList.NotConnected => d.ListGroup == DeviceListGroup.NotConnected
+                    && MainGroup == DeviceListGroup.Connected,
+                _ => d.ListGroup == DeviceListGroup.Other,
+            };
         }
 
         /// <summary>The rows a list should show, in the order it shows
         /// them: the collection's, and for a list in parts each part's rows
         /// together, the parts in the Show segments' order.</summary>
-        internal IEnumerable<DeviceRowViewModel> RowsOf(DeviceListGroup group, bool inParts)
+        internal IEnumerable<DeviceRowViewModel> RowsOf(DevicePageList list, bool inParts)
         {
             if (!inParts)
             {
                 foreach (var d in Devices)
-                    if (d != null && d.ListGroup == group && Matches(d)) yield return d;
+                    if (Shows(list, d)) yield return d;
                 yield break;
             }
             foreach (DeviceFilter part in Parts)
                 foreach (var d in Devices)
-                    if (d != null && d.ListGroup == group && d.Section == part && Matches(d)) yield return d;
+                    if (d != null && d.Section == part && Shows(list, d)) yield return d;
         }
 
-        private bool IsInStep(ICollectionView view, DeviceListGroup group)
+        private bool IsInStep(ICollectionView view, DevicePageList list)
         {
             var parts = view.Groups;
             if (parts == null)
@@ -152,7 +202,7 @@ namespace PadForge.ViewModels
                 var shown = view.GetEnumerator();
                 try
                 {
-                    foreach (var d in RowsOf(group, inParts: false))
+                    foreach (var d in RowsOf(list, inParts: false))
                         if (!shown.MoveNext() || !ReferenceEquals(shown.Current, d)) return false;
                     return !shown.MoveNext();
                 }
@@ -164,7 +214,7 @@ namespace PadForge.ViewModels
 
             // A list in parts: each row under the part its type names now,
             // the parts in order and none of them empty.
-            var want = RowsOf(group, inParts: true).GetEnumerator();
+            var want = RowsOf(list, inParts: true).GetEnumerator();
             int last = -1;
             foreach (object item in parts)
             {
@@ -203,14 +253,16 @@ namespace PadForge.ViewModels
             _ => DeviceFilter.Other,
         };
 
-        /// <summary>Whether a row passes the segment and the search. The
-        /// search reads the name, the product's name, the type in the
-        /// language and VID:PID, ignoring case in the current
-        /// culture.</summary>
+        /// <summary>Whether a row passes the Show segment, the connection
+        /// segment and the search. The search reads the name, the product's
+        /// name, the type in the language and VID:PID, ignoring case in the
+        /// current culture.</summary>
         internal bool Matches(DeviceRowViewModel d)
         {
             if (d == null) return false;
             if (_filter != DeviceFilter.All && FilterOf(d.DeviceTypeKey) != _filter) return false;
+            if (_connection == DeviceConnection.Connected && !d.IsOnline) return false;
+            if (_connection == DeviceConnection.NotConnected && d.IsOnline) return false;
             string query = _searchText.Trim();
             if (query.Length == 0) return true;
             var compare = CultureInfo.CurrentCulture.CompareInfo;
@@ -231,13 +283,13 @@ namespace PadForge.ViewModels
             private set => SetProperty(ref _connectedTotal, value);
         }
 
-        private int _connectedShown;
+        private int _mainShown;
 
-        /// <summary>The Connected list's count, after the segment and the search.</summary>
-        public int ConnectedShown
+        /// <summary>The main list's count, after the segments and the search.</summary>
+        public int MainShown
         {
-            get => _connectedShown;
-            private set => SetProperty(ref _connectedShown, value);
+            get => _mainShown;
+            private set => SetProperty(ref _mainShown, value);
         }
 
         private int _notConnectedCount;
@@ -292,7 +344,7 @@ namespace PadForge.ViewModels
 
         private bool _showNoMatch;
 
-        /// <summary>Whether the list says no device matches: the segment or
+        /// <summary>Whether the list says no device matches: a segment or
         /// the search leaves no row in any of the three lists.</summary>
         public bool ShowNoMatch
         {
@@ -314,7 +366,7 @@ namespace PadForge.ViewModels
         /// <see cref="Devices"/>, and the three lists' views put in step
         /// with the rows. It needs no view, so a test needs none. It runs
         /// where the rows change (SyncDevicesList, the engine's stop, Remove
-        /// Device) and when the segment or the search does.</summary>
+        /// Device) and when a segment or the search does.</summary>
         public void RefreshCounts()
         {
             int total = 0, shown = 0, notConnected = 0, other = 0;
@@ -323,24 +375,20 @@ namespace PadForge.ViewModels
             foreach (var d in Devices)
             {
                 if (d == null) continue;
-                var group = d.ListGroup;
-                if (group == DeviceListGroup.Connected && !d.IsAggregate) total++;
-                if (!Matches(d)) continue;
-                switch (group)
-                {
-                    case DeviceListGroup.Connected: shown++; break;
-                    case DeviceListGroup.NotConnected: notConnected++; notConnectedNames.Add(d.DeviceName); break;
-                    default: other++; otherNames.Add(d.DeviceName); break;
-                }
+                if (d.ListGroup == DeviceListGroup.Connected && !d.IsAggregate) total++;
+                if (Shows(DevicePageList.Main, d)) shown++;
+                else if (Shows(DevicePageList.NotConnected, d)) { notConnected++; notConnectedNames.Add(d.DeviceName); }
+                else if (Shows(DevicePageList.OtherInputs, d)) { other++; otherNames.Add(d.DeviceName); }
             }
             ConnectedTotal = total;
-            ConnectedShown = shown;
+            MainShown = shown;
             NotConnectedCount = notConnected;
             OtherInputsCount = other;
             NotConnectedHint = string.Join(", ", notConnectedNames);
             OtherInputsHint = string.Join(", ", otherNames);
             ShowNoMatch = shown + notConnected + other == 0
-                && (_filter != DeviceFilter.All || !string.IsNullOrWhiteSpace(_searchText));
+                && (_filter != DeviceFilter.All || _connection != DeviceConnection.All
+                    || !string.IsNullOrWhiteSpace(_searchText));
             RefreshColumns();
             SyncViews();
         }

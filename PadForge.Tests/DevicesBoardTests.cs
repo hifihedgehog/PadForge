@@ -210,9 +210,9 @@ namespace PadForge.Tests
             vm.EnsureListViews();
             Assert.Equal(DeviceListGroup.Connected, midi.ListGroup);
 
-            Assert.Equal(new[] { "Gamepad: B Pad, E Pad", "Keyboard: A Keyboard", "Mouse: D Mouse", "Other: C Midi" }, Parts(vm.ConnectedView));
-            Assert.Equal(new[] { padB, padE, keyboard, mouse, midi }, vm.ConnectedView.Cast<DeviceRowViewModel>().ToArray());
-            Assert.Equal(vm.RowsOf(DeviceListGroup.Connected, inParts: true), vm.ConnectedView.Cast<DeviceRowViewModel>());
+            Assert.Equal(new[] { "Gamepad: B Pad, E Pad", "Keyboard: A Keyboard", "Mouse: D Mouse", "Other: C Midi" }, Parts(vm.MainView));
+            Assert.Equal(new[] { padB, padE, keyboard, mouse, midi }, vm.MainView.Cast<DeviceRowViewModel>().ToArray());
+            Assert.Equal(vm.RowsOf(DevicePageList.Main, inParts: true), vm.MainView.Cast<DeviceRowViewModel>());
             // The two folded lists have no parts.
             Assert.Null(vm.NotConnectedView.Groups);
             Assert.Null(vm.OtherInputsView.Groups);
@@ -221,21 +221,21 @@ namespace PadForge.Tests
             padB.IsOnline = false;
             padE.IsOnline = false;
             vm.RefreshCounts();
-            Assert.Equal(new[] { "Keyboard: A Keyboard", "Mouse: D Mouse", "Other: C Midi" }, Parts(vm.ConnectedView));
+            Assert.Equal(new[] { "Keyboard: A Keyboard", "Mouse: D Mouse", "Other: C Midi" }, Parts(vm.MainView));
             // And comes back first, though it is the last to arrive.
             padE.IsOnline = true;
             vm.RefreshCounts();
-            Assert.Equal(new[] { "Gamepad: E Pad", "Keyboard: A Keyboard", "Mouse: D Mouse", "Other: C Midi" }, Parts(vm.ConnectedView));
+            Assert.Equal(new[] { "Gamepad: E Pad", "Keyboard: A Keyboard", "Mouse: D Mouse", "Other: C Midi" }, Parts(vm.MainView));
 
             // The segment leaves one part.
             vm.Filter = DeviceFilter.Mouse;
-            Assert.Equal(new[] { "Mouse: D Mouse" }, Parts(vm.ConnectedView));
+            Assert.Equal(new[] { "Mouse: D Mouse" }, Parts(vm.MainView));
             vm.Filter = DeviceFilter.All;
 
             // A row whose type changes moves to its new part.
             mouse.DeviceTypeKey = "Midi";
             vm.RefreshCounts();
-            Assert.Equal(new[] { "Gamepad: E Pad", "Keyboard: A Keyboard", "Other: C Midi, D Mouse" }, Parts(vm.ConnectedView));
+            Assert.Equal(new[] { "Gamepad: E Pad", "Keyboard: A Keyboard", "Other: C Midi, D Mouse" }, Parts(vm.MainView));
 
             // It moves also where the rows' order from first to last stays
             // what it was: the keyboard is the one row of its part, right
@@ -247,12 +247,12 @@ namespace PadForge.Tests
             two.Devices.Add(second);
             two.RefreshCounts();
             two.EnsureListViews();
-            Assert.Equal(new[] { "Gamepad: X Pad", "Keyboard: Y Keyboard" }, Parts(two.ConnectedView));
+            Assert.Equal(new[] { "Gamepad: X Pad", "Keyboard: Y Keyboard" }, Parts(two.MainView));
             second.DeviceTypeKey = "Gamepad";
-            Assert.Equal(new[] { first, second }, two.ConnectedView.Cast<DeviceRowViewModel>().ToArray());
-            Assert.Equal(new[] { first, second }, two.RowsOf(DeviceListGroup.Connected, inParts: true).ToArray());
+            Assert.Equal(new[] { first, second }, two.MainView.Cast<DeviceRowViewModel>().ToArray());
+            Assert.Equal(new[] { first, second }, two.RowsOf(DevicePageList.Main, inParts: true).ToArray());
             two.RefreshCounts();
-            Assert.Equal(new[] { "Gamepad: X Pad, Y Keyboard" }, Parts(two.ConnectedView));
+            Assert.Equal(new[] { "Gamepad: X Pad, Y Keyboard" }, Parts(two.MainView));
         });
 
         /// <summary>Every kind the page sorted devices by before PadForge 6
@@ -282,13 +282,111 @@ namespace PadForge.Tests
             {
                 "Gamepad: C Pad", "Joystick: B Flight Stick, F Joystick", "Wheel: A Wheel",
                 "Keyboard: E Keyboard, H Analog Keyboard", "Mouse: D Mouse", "Other: G Midi",
-            }, Parts(vm.ConnectedView));
+            }, Parts(vm.MainView));
 
             vm.Filter = DeviceFilter.Wheel;
-            Assert.Equal(new[] { "Wheel: A Wheel" }, Parts(vm.ConnectedView));
+            Assert.Equal(new[] { "Wheel: A Wheel" }, Parts(vm.MainView));
             vm.Filter = DeviceFilter.Joystick;
-            Assert.Equal(new[] { "Joystick: B Flight Stick, F Joystick" }, Parts(vm.ConnectedView));
+            Assert.Equal(new[] { "Joystick: B Flight Stick, F Joystick" }, Parts(vm.MainView));
         });
+
+        /// <summary>The connection segments pick what the main list shows:
+        /// every device, with the connected ones in the list and the rest in
+        /// the Not Connected fold, the connected ones alone, or the ones
+        /// that are not connected, in the list in parts by kind (owner,
+        /// 2026-11-17). The count under the title stays the connected
+        /// devices, whatever the segment.</summary>
+        [Fact]
+        public void TheConnectionSegmentsPickWhatTheListShows() => RunSta(() =>
+        {
+            var vm = new DevicesViewModel();
+            var pad = Row("A Pad", "Gamepad", DualSenseUsb, true, 0x054C, 0x0CE6);
+            var wheel = Row("B Wheel", "Wheel", @"\\?\HID#VID_046D&PID_C24F#8&6&0&0000", false, 0x046D, 0xC24F);
+            var keyboard = Row("C Keyboard", "Keyboard", KeyboardPath, true, 0x046D, 0xC33F);
+            var mouse = Row("D Mouse", "Mouse", MousePath, false, 0x046D, 0xC08B);
+            var media = Row("E Media Keys", "ConsumerControl", @"\\?\HID#VID_046D&PID_C33F&MI_01&Col02#8&9&0&0001", true, 0x046D, 0xC33F);
+            foreach (var row in new[] { pad, wheel, keyboard, mouse, media }) vm.Devices.Add(row);
+            vm.RefreshCounts();
+            vm.EnsureListViews();
+            static DeviceRowViewModel[] Rows(System.ComponentModel.ICollectionView view) => view.Cast<DeviceRowViewModel>().ToArray();
+
+            Assert.Equal(new[] { "Gamepad: A Pad", "Keyboard: C Keyboard" }, Parts(vm.MainView));
+            Assert.Equal(new[] { wheel, mouse }, Rows(vm.NotConnectedView));
+            Assert.Equal(new[] { media }, Rows(vm.OtherInputsView));
+            Assert.Equal(2, vm.ConnectedTotal);
+
+            vm.Connection = DeviceConnection.Connected;
+            Assert.Equal(new[] { "Gamepad: A Pad", "Keyboard: C Keyboard" }, Parts(vm.MainView));
+            Assert.Empty(Rows(vm.NotConnectedView));
+            Assert.False(vm.HasNotConnected);
+            Assert.Equal(new[] { media }, Rows(vm.OtherInputsView));
+
+            vm.Connection = DeviceConnection.NotConnected;
+            Assert.Equal(new[] { "Wheel: B Wheel", "Mouse: D Mouse" }, Parts(vm.MainView));
+            Assert.Equal(vm.RowsOf(DevicePageList.Main, inParts: true), Rows(vm.MainView));
+            Assert.Equal(2, vm.MainShown);
+            Assert.Empty(Rows(vm.NotConnectedView));
+            Assert.Empty(Rows(vm.OtherInputsView));
+            Assert.False(vm.HasNotConnected || vm.HasOtherInputs);
+            Assert.Equal(2, vm.ConnectedTotal);
+
+            // The segments and the search narrow one another.
+            vm.Filter = DeviceFilter.Gamepad;
+            Assert.Empty(Rows(vm.MainView));
+            Assert.True(vm.ShowNoMatch);
+            vm.Filter = DeviceFilter.All;
+            vm.Connection = DeviceConnection.All;
+            Assert.False(vm.ShowNoMatch);
+            Assert.Equal(new[] { wheel, mouse }, Rows(vm.NotConnectedView));
+        });
+
+        /// <summary>The connection segments share the search box's line
+        /// when it holds them beside a box of 220, and go to the next line
+        /// when it does not.</summary>
+        [Fact]
+        public void TheConnectionSegmentsShareTheSearchLineWhenItHasRoom()
+        {
+            Assert.Equal(540 + 16 + 260, DevicesPage.SegmentsWidth(1052, 540, 260));
+            Assert.Equal(540, DevicesPage.SegmentsWidth(1051, 540, 260));
+            Assert.Equal(220, DevicesPage.SearchWidth(1052, DevicesPage.SegmentsWidth(1052, 540, 260)));
+            Assert.Equal(320, DevicesPage.SearchWidth(1200, DevicesPage.SegmentsWidth(1200, 540, 260)));
+            Assert.Equal(320, DevicesPage.SearchWidth(1051, DevicesPage.SegmentsWidth(1051, 540, 260)));
+        }
+
+        /// <summary>Every link a device can have shows its mark beside its
+        /// word, in the list and on the device's Link tile: Bluetooth's
+        /// rune, USB's trident, the I2C bus logo and the PS/2 socket's face
+        /// (owner, 2026-11-17).</summary>
+        [Fact]
+        public void EveryLinkHasItsMark()
+        {
+            var page = Page();
+            string shell = RepoText("PadForge.App", "Resources", "Shell.xaml");
+            var marks = new Dictionary<string, string>
+            {
+                ["Bluetooth"] = "BluetoothLineGeometry", ["Usb"] = "UsbLineGeometry",
+                ["I2c"] = "I2cLineGeometry", ["Ps2"] = "Ps2LineGeometry",
+            };
+            Assert.Equal(Enum.GetNames<PadForge.Common.DeviceLink>().Where(n => n != "None").OrderBy(n => n), marks.Keys.OrderBy(n => n));
+            foreach (string key in marks.Values) Assert.Contains("<Geometry x:Key=\"" + key + "\">", shell);
+
+            void Drawn(IEnumerable<XElement> triggers, string binding, string target)
+            {
+                var list = triggers.ToList();
+                Assert.Equal(marks.Count, list.Count);
+                foreach (var trigger in list)
+                {
+                    Assert.Equal(binding, Attr(trigger, "Binding"));
+                    string link = Attr(trigger, "Value")["{x:Static common:DeviceLink.".Length..^1];
+                    var setter = trigger.Elements().Single();
+                    Assert.Equal(target, Attr(setter, "TargetName"));
+                    Assert.Equal("Data", Attr(setter, "Property"));
+                    Assert.Equal("{StaticResource " + marks[link] + "}", Attr(setter, "Value"));
+                }
+            }
+            Drawn(Keyed(page, "DeviceLinkFact").Descendants().Where(e => e.Name.LocalName == "DataTrigger"), "{Binding Link}", "Mark");
+            Drawn(Named(page, "StageLinkMark").Descendants().Where(e => e.Name.LocalName == "DataTrigger"), "{Binding SelectedDevice.Link}", null);
+        }
 
         /// <summary>A merged row stands with the devices it merges: in its
         /// type's part of the connected list, after them. Under Other
@@ -314,17 +412,17 @@ namespace PadForge.Tests
             {
                 "Gamepad: C Pad", "Keyboard: A Keyboard, All Keyboards (Merged)", "Mouse: B Mouse, All Mice (Merged)",
                 "Other: All Touchpads (Merged)",
-            }, Parts(vm.ConnectedView));
+            }, Parts(vm.MainView));
             // The merged consumer controls stay with the consumer controls.
             Assert.Equal(new[] { controls }, vm.OtherInputsView.Cast<DeviceRowViewModel>().ToArray());
             Assert.Equal(3, vm.ConnectedTotal);
-            Assert.Equal(6, vm.ConnectedShown);
+            Assert.Equal(6, vm.MainShown);
 
             vm.Filter = DeviceFilter.Keyboard;
-            Assert.Equal(new[] { "Keyboard: A Keyboard, All Keyboards (Merged)" }, Parts(vm.ConnectedView));
+            Assert.Equal(new[] { "Keyboard: A Keyboard, All Keyboards (Merged)" }, Parts(vm.MainView));
             Assert.False(vm.HasOtherInputs);
             vm.Filter = DeviceFilter.Mouse;
-            Assert.Equal(new[] { "Mouse: B Mouse, All Mice (Merged)" }, Parts(vm.ConnectedView));
+            Assert.Equal(new[] { "Mouse: B Mouse, All Mice (Merged)" }, Parts(vm.MainView));
 
             // With no device of its kind connected, a merged row is not
             // connected either.
@@ -332,7 +430,7 @@ namespace PadForge.Tests
             mice.IsOnline = false;
             vm.RefreshCounts();
             Assert.Contains(mice, vm.NotConnectedView.Cast<DeviceRowViewModel>());
-            Assert.DoesNotContain(mice, vm.ConnectedView.Cast<DeviceRowViewModel>());
+            Assert.DoesNotContain(mice, vm.MainView.Cast<DeviceRowViewModel>());
         });
 
         [Fact]
@@ -655,8 +753,22 @@ namespace PadForge.Tests
             Assert.Equal("18,0,16,0", Attr(row, "Padding"));
 
             var labels = head.Elements().Where(e => e.Name.LocalName == "TextBlock").ToList();
-            Assert.Equal(new[] { S("Devices_Group_Connected"), S("Devices_Detail_Link"), S("Devices_Detail_Battery"), S("Devices_UsedBy") },
+            Assert.Equal(new[] { null, S("Devices_Detail_Link"), S("Devices_Detail_Battery"), S("Devices_UsedBy") },
                 labels.Select(l => Attr(l, "Text")).ToArray());
+            // The main list's name follows the connection segment: Connected,
+            // or Not Connected under that segment, and a screen reader hears
+            // the list by it.
+            var heading = Named(page, "MainHeading");
+            Assert.Same(labels[0], heading);
+            var headingStyle = heading.Descendants().Single(e => e.Name.LocalName == "Style");
+            Assert.Equal(S("Devices_Group_Connected"), headingStyle.Elements().Where(e => e.Name.LocalName == "Setter")
+                .Single(s => Attr(s, "Property") == "Text").Attribute("Value").Value);
+            var notConnected = headingStyle.Descendants().Single(e => e.Name.LocalName == "DataTrigger");
+            Assert.Equal("{Binding Connection}", Attr(notConnected, "Binding"));
+            Assert.Equal("{x:Static vm:DeviceConnection.NotConnected}", Attr(notConnected, "Value"));
+            Assert.Equal(S("Devices_Group_NotConnected"), Attr(notConnected.Elements().Single(), "Value"));
+            Assert.Equal("{Binding Text, ElementName=MainHeading, TargetNullValue='', FallbackValue=''}",
+                Attr(Named(page, "MainList"), "AutomationProperties.Name"));
             Assert.Equal(new[] { "1", "2", "3", "4" }, labels.Select(l => Attr(l, "Grid.Column")).ToArray());
             // Link and Battery are named while a row has the fact and the
             // list is wide.
@@ -674,10 +786,10 @@ namespace PadForge.Tests
             // The list card's parts in order: the head, the connected
             // devices in their parts, then the two folds.
             var all = page.Descendants().ToList();
-            var order = new[] { "ListHead", "NoMatchLine", "ConnectedList", "OtherInputsFold", "NotConnectedFold" }
+            var order = new[] { "ListHead", "NoMatchLine", "MainList", "OtherInputsFold", "NotConnectedFold" }
                 .Select(n => all.IndexOf(Named(page, n))).ToList();
             Assert.Equal(order.OrderBy(i => i), order);
-            var groupStyle = Named(page, "ConnectedList").Descendants().Single(e => e.Name.LocalName == "GroupStyle");
+            var groupStyle = Named(page, "MainList").Descendants().Single(e => e.Name.LocalName == "GroupStyle");
             Assert.Equal("{StaticResource DeviceGroup}", Attr(groupStyle, "ContainerStyle"));
             Assert.DoesNotContain(Named(page, "NotConnectedList").Descendants(), e => e.Name.LocalName == "GroupStyle");
 
@@ -696,7 +808,7 @@ namespace PadForge.Tests
             Assert.Equal(18 + 40 + 14.0, 33 + chevron + 29);
 
             string text = RepoText("PadForge.App", "Views", "DevicesPage.xaml");
-            Assert.DoesNotContain("ConnectedShown", text);
+            Assert.DoesNotContain("MainShown", text);
             Assert.DoesNotContain("{Binding Devices_NotInUse", text);
         }
 
@@ -712,17 +824,22 @@ namespace PadForge.Tests
 
             var controller = Setters(triggers.Single(t => Attr(t, "Binding") == "{Binding IsControllerRow}"));
             Assert.Equal("63", controller["Row.MinHeight"]);
-            Assert.Equal("40", controller["Tile.Width"]);
-            Assert.Equal("40", controller["Tile.Height"]);
             Assert.Equal("Collapsed", controller["OneLine.Visibility"]);
             Assert.Equal("Visible", controller["TwoLines.Visibility"]);
+            // Every row's tile is one size, a controller's taller row's too
+            // (owner, 2026-11-17): no trigger sizes the tile or its kind.
+            var tile = Named(page, "Tile");
+            Assert.Equal(("36", "36", "9"), (Attr(tile, "Width"), Attr(tile, "Height"), Attr(tile, "CornerRadius")));
+            Assert.Equal("18", Attr(Named(page, "Glyph"), "FontSize"));
+            Assert.DoesNotContain(triggers.SelectMany(t => t.Elements()), s => Attr(s, "TargetName") is "Tile" or "Glyph"
+                && Attr(s, "Property") is "Width" or "Height" or "CornerRadius" or "FontSize");
 
             // The tile's light is the device's input, and ember is for that
             // alone: the picked row's glyph is the text's own color.
             var halo = Named(page, "Tile").Parent;
             Assert.Equal("Halo", halo.Name.LocalName);
             Assert.Equal("{Binding IsSending}", Attr(halo, "IsLit"));
-            Assert.Equal("17.5", Attr(halo, "Radius"));
+            Assert.Equal("19.5", Attr(halo, "Radius"));
             Assert.Equal("0.2", Attr(halo, "Strength"));
             var sending = Setters(triggers.Single(t => Attr(t, "Binding") == "{Binding IsSending}"));
             Assert.Equal("{DynamicResource EmberRingBrush}", sending["Tile.BorderBrush"]);

@@ -22,6 +22,20 @@
     <Geometry x:Key="CloseLineGeometry">M6 6 L18 18 M18 6 L6 18</Geometry>
     <!-- The Bluetooth rune, for a device that is linked that way. -->
     <Geometry x:Key="BluetoothLineGeometry">M7 7 L17 17 L12 22 V2 L17 7 L7 17</Geometry>
+    <!-- The marks of the other links a device takes, as the Devices page
+         names them (owner, 2026-11-17). USB's trident stands upright: the
+         shaft under its arrow, the round foot, the ring's arm on the left
+         leaving the shaft nearer the foot and the square's arm on the right
+         farther along, as the USB icon has them. Its arrow, foot and ends
+         are small shapes the line covers, so they draw solid, as the icon
+         draws them. The I2C bus logo is NXP's
+         frame round a tall I, a small 2 and a C, over the word BUS, which
+         a line stands for at this size. The PS/2 port is its mini-DIN
+         socket's face: the round shell with its notch, the key in the
+         middle and the six pins round it. -->
+    <Geometry x:Key="UsbLineGeometry">M10.5 5.5 L12 3 L13.5 5.5 Z M12 5.5 V18.5 M10.75 19.5 a1.25 1.25 0 1 0 2.5 0 a1.25 1.25 0 1 0 -2.5 0 M12 15.5 L7 11.5 V9.5 M6.25 8.25 a0.75 0.75 0 1 0 1.5 0 a0.75 0.75 0 1 0 -1.5 0 M12 12.5 L17 9 V7.5 M16.25 5.75 h1.5 v1.5 h-1.5 z</Geometry>
+    <Geometry x:Key="I2cLineGeometry">M6 2.5 h12 a2.5 2.5 0 0 1 2.5 2.5 v14 a2.5 2.5 0 0 1 -2.5 2.5 h-12 a2.5 2.5 0 0 1 -2.5 -2.5 v-14 a2.5 2.5 0 0 1 2.5 -2.5 z M7.5 6.5 v8.5 M10.3 6.7 a1.2 1.2 0 1 1 2 1.1 l-2 1.8 h2.6 M17 6.5 h-3 v8.5 h3 M7.5 18.3 h9</Geometry>
+    <Geometry x:Key="Ps2LineGeometry">M3 12 a9 9 0 1 0 18 0 a9 9 0 1 0 -18 0 M10.75 3.2 v1.6 h2.5 v-1.6 M10.75 7.5 h2.5 v5.5 h-2.5 z M7.75 8.5 h0.01 M16.25 8.5 h0.01 M6.75 12.5 h0.01 M17.25 12.5 h0.01 M9.5 16.5 h0.01 M14.5 16.5 h0.01</Geometry>
     <!-- The controller page's sections: a button with its letter, a
          rumble motor with its waves, a turn for motion, a lamp and a
          bolt. Sticks & Triggers wears the stick's own shape, which is

@@ -39,7 +39,7 @@ namespace PadForge.Views
             // binding, when the segment or the search filters it, and when
             // a row moves to another list. The lists live as long as the
             // page.
-            foreach (var list in new[] { ConnectedList, NotConnectedList, OtherInputsList })
+            foreach (var list in new[] { MainList, NotConnectedList, OtherInputsList })
                 ((INotifyCollectionChanged)list.Items).CollectionChanged += OnListViewChanged;
             // The Used By chips are numbered each time their containers are made.
             UsedByChips.ItemContainerGenerator.StatusChanged += (_, _) =>
@@ -169,7 +169,16 @@ namespace PadForge.Views
         }
 
         private void FilterRow_SizeChanged(object sender, SizeChangedEventArgs e)
-            => DeviceSearchBox.Width = SearchWidth(FilterRow.ActualWidth, ShowSegments.ActualWidth);
+            => DeviceSearchBox.Width = SearchWidth(FilterRow.ActualWidth,
+                SegmentsWidth(FilterRow.ActualWidth, ShowSegments.ActualWidth, ConnectionSegments.ActualWidth));
+
+        /// <summary>What the segments take beside the search box on its
+        /// line: the Show segments and the connection segments where the
+        /// line holds both beside a box of 220, and the Show segments alone
+        /// where it does not, so the connection segments go to the next
+        /// line.</summary>
+        internal static double SegmentsWidth(double rowWidth, double showWidth, double connectionWidth)
+            => rowWidth >= 220 + 16 + showWidth + 16 + connectionWidth ? showWidth + 16 + connectionWidth : showWidth;
 
         private void IdleRow_SizeChanged(object sender, SizeChangedEventArgs e) => ShareIdleRow(e.NewSize.Width);
 
@@ -193,6 +202,15 @@ namespace PadForge.Views
                 && Enum.TryParse(tag, out ViewModels.DeviceFilter filter)
                 && DataContext is ViewModels.DevicesViewModel vm)
                 vm.Filter = filter;
+        }
+
+        /// <summary>A connection segment's Tag is the connection it picks.</summary>
+        private void Connection_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement segment && segment.Tag is string tag
+                && Enum.TryParse(tag, out ViewModels.DeviceConnection connection)
+                && DataContext is ViewModels.DevicesViewModel vm)
+                vm.Connection = connection;
         }
 
         private bool _syncingSelection;
@@ -219,7 +237,7 @@ namespace PadForge.Views
             _syncingSelection = true;
             try
             {
-                foreach (var list in new[] { ConnectedList, NotConnectedList, OtherInputsList })
+                foreach (var list in new[] { MainList, NotConnectedList, OtherInputsList })
                 {
                     object want = vm.SelectedDevice != null && list.Items.Contains(vm.SelectedDevice) ? vm.SelectedDevice : null;
                     if (!ReferenceEquals(list.SelectedItem, want)) list.SelectedItem = want;
@@ -232,7 +250,7 @@ namespace PadForge.Views
         }
 
         /// <summary>Brings a device to the page, for a search result that
-        /// names it (#574): the segment and the search box stop hiding it,
+        /// names it (#574): the segments and the search box stop hiding it,
         /// it becomes the selected device, the folded list that holds it
         /// opens, and its row comes into view.</summary>
         internal void ShowDevice(ViewModels.DeviceRowViewModel row)
@@ -243,6 +261,7 @@ namespace PadForge.Views
             {
                 vm.SearchText = string.Empty;
                 vm.Filter = ViewModels.DeviceFilter.All;
+                vm.Connection = ViewModels.DeviceConnection.All;
             }
             vm.SelectedDevice = row;
             // The lists take a changed filter at the next layout, so the
@@ -263,7 +282,7 @@ namespace PadForge.Views
         /// segment or the search hides it.</summary>
         private ListBox ListOf(ViewModels.DeviceRowViewModel row)
         {
-            foreach (var list in new[] { ConnectedList, NotConnectedList, OtherInputsList })
+            foreach (var list in new[] { MainList, NotConnectedList, OtherInputsList })
                 if (list.Items.Contains(row)) return list;
             return null;
         }
@@ -280,9 +299,9 @@ namespace PadForge.Views
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue is not true || DataContext is not ViewModels.DevicesViewModel vm
-                || vm.SelectedDevice != null || vm.ConnectedView == null)
+                || vm.SelectedDevice != null || vm.MainView == null)
                 return;
-            foreach (object item in vm.ConnectedView)
+            foreach (object item in vm.MainView)
             {
                 if (item is ViewModels.DeviceRowViewModel row)
                 {

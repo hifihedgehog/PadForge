@@ -471,7 +471,10 @@ namespace PadForge.Services
         private const uint SPDRP_HARDWAREID = 0x01;
         private const uint CM_PROB_FAILED_START = 10;
         private const uint CR_SUCCESS = 0;
-        private const uint CM_LOCATE_DEVNODE_PHANTOM = 4;
+        // cfgmgr32.h's value. It was 4, CM_LOCATE_DEVNODE_NOVALIDATION,
+        // which Windows does not use, so the fallback found no node that
+        // had left the tree.
+        private const uint CM_LOCATE_DEVNODE_PHANTOM = 1;
         private const int MAX_DEVICE_ID_LEN = 200;
         private const uint INSTALLFLAG_FORCE = 0x01;
         private const uint INSTALLFLAG_NONINTERACTIVE = 0x04;

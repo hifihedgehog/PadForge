@@ -415,9 +415,15 @@ namespace PadForge.Common.Input
         /// <summary>The walk up from the node behind a device path, as
         /// <see cref="ReadAncestryHops"/> reads it, or null when the device
         /// tree does not hold the node. The Devices page names a device's
-        /// link from it (Common.DeviceTransport.LinkOf).</summary>
+        /// link from it (Common.DeviceTransport.LinkOf). A device that is
+        /// not connected is found as the node Windows keeps for it, whose
+        /// place in the tree stays recorded (CM_LOCATE_DEVNODE_PHANTOM, as
+        /// HeadsetTrackerRepair finds a headset), so it shows the link it
+        /// last had.</summary>
         internal static IEnumerable<AncestryHop> AncestryHopsOf(string devicePath)
-            => TryLocateDevNode(devicePath, out uint devInst) ? ReadAncestryHops(devInst) : null;
+            => TryLocateDevNode(devicePath, out uint devInst)
+                || TryLocateDevNode(devicePath, out devInst, CM_LOCATE_DEVNODE_PHANTOM)
+                ? ReadAncestryHops(devInst) : null;
 
         /// <summary>The device's own node, then its parents in turn, up to
         /// <see cref="HidMaestroAncestry.MaxHops"/> nodes in all, each read
@@ -438,8 +444,9 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>The device node behind a HID interface path, when it is
-        /// in the device tree.</summary>
-        private static bool TryLocateDevNode(string hidDevicePath, out uint devInst)
+        /// in the device tree, or with <see cref="CM_LOCATE_DEVNODE_PHANTOM"/>
+        /// when Windows keeps a node for it that has left the tree.</summary>
+        private static bool TryLocateDevNode(string hidDevicePath, out uint devInst, uint flags = 0)
         {
             devInst = 0;
             if (string.IsNullOrEmpty(hidDevicePath)) return false;
@@ -454,7 +461,7 @@ namespace PadForge.Common.Input
 
             // Flags 0 is CM_LOCATE_DEVNODE_NORMAL: a node that has left the
             // tree is not found.
-            return CM_Locate_DevNodeW(out devInst, instanceId, 0) == CR_SUCCESS;
+            return CM_Locate_DevNodeW(out devInst, instanceId, flags) == CR_SUCCESS;
         }
 
         /// <summary>True while the device behind
@@ -505,6 +512,10 @@ namespace PadForge.Common.Input
         }
 
         private const int CR_SUCCESS = 0;
+
+        /// <summary>Finds a node Windows keeps for a device that has left the
+        /// tree (cfgmgr32.h).</summary>
+        private const uint CM_LOCATE_DEVNODE_PHANTOM = 0x1;
         private const uint DEVPROP_TYPE_STRING = 0x12;
         private const uint DEVPROP_TYPE_STRING_LIST = 0x2012;
 

@@ -150,9 +150,16 @@ namespace PadForge.Common.Input
         {
             if (string.IsNullOrEmpty(id)) return null;
             EnsureInitialized();
-            return _allProfiles.FirstOrDefault(p =>
-                string.Equals(p.Id, id, StringComparison.OrdinalIgnoreCase));
+            return _profilesById.TryGetValue(id, out var profile) ? profile : null;
         }
+
+        /// <summary>Every loaded profile by its ID slug, the first in
+        /// <see cref="AllProfiles"/> order where two share one, built with the
+        /// lists. The UI timer looks up each slot's profile 30 times a second,
+        /// and a scan of the list with a lambda made a closure and a delegate
+        /// each time, the most numerous garbage in the program at rest
+        /// (measured 2026-11-16).</summary>
+        private static Dictionary<string, HMProfile> _profilesById = new(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>Why the user profile with this JSON, as
         /// <see cref="UserProfilesProvider"/> handed it in, is not in the
@@ -290,6 +297,7 @@ namespace PadForge.Common.Input
                 _extendedProfiles = new();
                 _keyboardProfiles = new();
                 _mouseProfiles = new();
+                _profilesById = new(StringComparer.OrdinalIgnoreCase);
                 _userProfileProblems = new(StringComparer.Ordinal);
             }
             EnsureInitialized();
@@ -409,6 +417,11 @@ namespace PadForge.Common.Input
                     // The engine's own HMContext will surface the real error.
                 }
 
+                var byId = new Dictionary<string, HMProfile>(StringComparer.OrdinalIgnoreCase);
+                foreach (var profile in _allProfiles)
+                    if (profile?.Id != null)
+                        byId.TryAdd(profile.Id, profile);
+                _profilesById = byId;
                 _initialized = true;
             }
         }

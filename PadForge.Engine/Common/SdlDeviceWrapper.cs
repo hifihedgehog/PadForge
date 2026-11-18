@@ -74,6 +74,47 @@ namespace PadForge.Engine
 
         private bool _hasRumble;
 
+        /// <summary>Whether SDL says a joystick rumbles: its properties'
+        /// SDL_PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN. A test stands its own
+        /// answer in.</summary>
+        internal static Func<IntPtr, bool> RumbleCapabilityReader = ReadRumbleCapability;
+
+        private static bool ReadRumbleCapability(IntPtr joystick)
+        {
+            uint props = SDL_GetJoystickProperties(joystick);
+            return props != 0 && SDL_GetBooleanProperty(props, SDL_PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN, false);
+        }
+
+        /// <summary>How long a joystick without rumble waits before SDL is
+        /// asked again whether it has it.</summary>
+        internal const long RumbleCapabilityRereadMs = 5000;
+
+        private long _lastRumbleCapabilityReadTick;
+
+        /// <summary>Takes a rumble capability SDL found after the open. SDL
+        /// sets the property on a joystick that is already open: the fork's
+        /// Bluetooth Switch 2 driver when a recovery finds the vibration
+        /// characteristic the connect could not, as when the link dropped
+        /// during the setup (BLE_FinishRestore,
+        /// SDL_ble_switch2joystick.c:2424-2445), and the HID drivers through
+        /// HIDAPI_UpdateDeviceProperties (SDL_hidapijoystick.c:1076-1090),
+        /// as the PS5 driver does when enhanced mode becomes available
+        /// (SDL_hidapi_ps5.c:847-883). The open read the property once, so
+        /// a pad SDL rumbles that got the capability late had none in
+        /// PadForge until it was opened again. A joystick without rumble is
+        /// asked again every <see cref="RumbleCapabilityRereadMs"/>. A
+        /// capability already found is kept. True when this call found it.</summary>
+        internal bool TakeLateRumbleCapability(long now)
+        {
+            if (_hasRumble || Joystick == IntPtr.Zero) return false;
+            if (now - _lastRumbleCapabilityReadTick < RumbleCapabilityRereadMs) return false;
+            _lastRumbleCapabilityReadTick = now;
+            if (!RumbleCapabilityReader(Joystick)) return false;
+            _hasRumble = true;
+            SdlDiagLog.WriteLine($"Rumble found after the open: vid={VendorId:X4} pid={ProductId:X4}");
+            return true;
+        }
+
         /// <summary>Whether the device exposes per-trigger ("impulse") rumble motors
         /// (Xbox One / Elite / Series).</summary>
         public bool HasRumbleTriggers { get; private set; }
@@ -1128,6 +1169,10 @@ namespace PadForge.Engine
                 FirmwareVersion = SDL_GetJoystickFirmwareVersion(Joystick);
                 FirmwareText = ReadFirmwareText(Joystick);
             }
+
+            // Rumble, for the same reason and on both read paths: a driver
+            // can find it after the open.
+            TakeLateRumbleCapability(now);
 
             return state;
         }

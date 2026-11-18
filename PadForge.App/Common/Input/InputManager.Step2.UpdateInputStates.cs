@@ -726,6 +726,13 @@ namespace PadForge.Common.Input
         //  Force feedback
         // ─────────────────────────────────────────────
 
+        /// <summary>Whether a device with no rumble cache now has what
+        /// UserDevice.LoadFromDevice makes one for: SDL rumble or SDL
+        /// haptics. Loading made none, since the device had neither then.</summary>
+        internal static bool NeedsARumbleCache(UserDevice ud)
+            => ud != null && ud.ForceFeedbackState == null && ud.Device != null
+               && (ud.Device.HasRumble || ud.Device.HasHaptic);
+
         /// <summary>
         /// Applies force feedback (rumble) to a device based on the vibration
         /// state received from games through the virtual controller. The v2 bus
@@ -753,10 +760,17 @@ namespace PadForge.Common.Input
                 // UserDevice.LoadFromDevice).
                 // A Falcon (#521) reports no SDL rumble either: its haptic
                 // thread renders the force this pass hands it.
+                // A pad whose rumble SDL found after the open
+                // (SdlDeviceWrapper.TakeLateRumbleCapability) had none when
+                // it was loaded, so its cache is made here too.
                 bool falconRow = ud.Device is PadForge.Common.Input.Falcon.FalconDevice;
-                if (ud.Device == null || (!falconRow && !PadForge.Common.Input.Peripherals.PeripheralOutputs.TakesHaptics(ud)))
+                bool gainedRumble = NeedsARumbleCache(ud);
+                if (ud.Device == null || (!falconRow && !gainedRumble && !PadForge.Common.Input.Peripherals.PeripheralOutputs.TakesHaptics(ud)))
                     return;
-                if (!falconRow) PadForge.Common.Input.Peripherals.PeripheralOutputs.StopHaptics(ud.InstanceGuid);
+                // A haptic row's stored level is zeroed with its new cache,
+                // whether or not the row gained SDL rumble as well.
+                if (!falconRow && PadForge.Common.Input.Peripherals.PeripheralOutputs.TakesHaptics(ud))
+                    PadForge.Common.Input.Peripherals.PeripheralOutputs.StopHaptics(ud.InstanceGuid);
                 ud.ForceFeedbackState = new ForceFeedbackState();
             }
 

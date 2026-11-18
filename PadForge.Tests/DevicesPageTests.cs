@@ -969,6 +969,10 @@ namespace PadForge.Tests
             var style = page.Descendants().Single(e => e.Name.LocalName == "Style" && (string)e.Attribute(Xaml + "Key") == "DeviceRowRemoveButton");
             Assert.Equal("{StaticResource CardCloseButton}", Attr(style, "BasedOn"));
             Assert.Contains(style.Elements(), s => Attr(s, "Property") == "Opacity" && Attr(s, "Value") == "0");
+            // It stands as a button whenever it shows: the plain button's
+            // fill and edge.
+            Assert.Contains(style.Elements(), s => Attr(s, "Property") == "Background" && Attr(s, "Value") == "{DynamicResource SteelRaisedBrush}");
+            Assert.Contains(style.Elements(), s => Attr(s, "Property") == "BorderBrush" && Attr(s, "Value") == "{DynamicResource SteelLineBrush}");
             var shows = style.Descendants().Where(e => e.Name.LocalName is "Trigger" or "DataTrigger").ToList();
             Assert.Equal(new[] { "{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}", null },
                 shows.Select(t => Attr(t, "Binding")).ToArray());

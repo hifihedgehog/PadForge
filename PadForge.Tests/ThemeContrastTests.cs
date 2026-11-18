@@ -143,5 +143,83 @@ namespace PadForge.Tests
             Assert.True(read > 40, "only " + read + " files were read");
             Assert.True(found.Count == 0, "words in the raw ember:\n" + string.Join("\n", found));
         }
+
+        /// <summary>What a button's shape needs against the ground it stands
+        /// on. No standard sets these, since the X inside the button
+        /// carries its meaning and reads far over what a mark needs. They
+        /// are the plain button's own steps, measured on the dark theme: its
+        /// edge reads 1.32 to 1 on its fill, and its fill under the pointer
+        /// 1.16 to 1 on its fill at rest. An edge that has to show a button
+        /// where there was none a moment before needs more.</summary>
+        private const double EdgeNeeds = 1.3, FillNeeds = 1.15, EdgeUnderThePointerNeeds = 1.5;
+
+        /// <summary>The X that removes a controller's card or a device's row
+        /// shows its shape on every ground it stands on, in both themes.
+        /// Owner, 2026-11-18: "The outline of the close / delete button for
+        /// a device in the Devices list is almost imperceptible". Under the
+        /// pointer it had the icon button's raised fill and no edge, which
+        /// read 1.08 to 1 on a card and 1.02 to 1 on a row under the
+        /// pointer.</summary>
+        [Fact]
+        public void TheCloseButtonShowsItsShapeOnEveryGround()
+        {
+            PageRenderDumpPages.WithApp((app, dispatcher) =>
+            {
+                Color Of(string key) => ((SolidColorBrush)app.FindResource(key)).Color;
+                static Color Fill(Brush brush) => ((SolidColorBrush)brush).Color;
+
+                // A button made after a theme is applied has that theme's
+                // colors. One made before keeps the colors it was made
+                // with, since it stands in no window that is told.
+                void Check(string theme, Color[] grounds)
+                {
+                    var page = new PadForge.Views.DevicesPage();
+                    var onACard = new Wpf.Ui.Controls.Button { Style = (System.Windows.Style)app.FindResource("CardCloseButton") };
+                    var onARow = new Wpf.Ui.Controls.Button { Style = (System.Windows.Style)page.FindResource("DeviceRowRemoveButton") };
+                    foreach (var (button, where) in new[] { (onACard, "a card's X"), (onARow, "a row's X") })
+                    {
+                        Color fill = Fill(button.MouseOverBackground), edge = Fill(button.MouseOverBorderBrush), pressedEdge = Fill(button.PressedBorderBrush);
+                        Assert.True(Contrast(edge, fill) >= EdgeNeeds, theme + ", " + where + ": the edge on its own fill reads " + Contrast(edge, fill));
+                        foreach (Color ground in grounds)
+                        {
+                            string on = theme + ", " + where + " on " + ground + ": ";
+                            Assert.True(Contrast(fill, ground) >= FillNeeds, on + "the fill under the pointer reads " + Contrast(fill, ground));
+                            Assert.True(Contrast(edge, ground) >= EdgeUnderThePointerNeeds, on + "the edge under the pointer reads " + Contrast(edge, ground));
+                            Assert.True(Contrast(pressedEdge, ground) >= EdgeUnderThePointerNeeds, on + "the edge while pressed reads " + Contrast(pressedEdge, ground));
+                        }
+                    }
+                    // A card's X has no edge at rest. A row's X comes and
+                    // goes with the pointer, so it has the plain button's
+                    // edge whenever it shows.
+                    Assert.Equal(Colors.Transparent, Fill(onACard.BorderBrush));
+                    Assert.Equal(Of("SteelLineBrush"), Fill(onARow.BorderBrush));
+                    Assert.Equal(Of("SteelRaisedBrush"), Fill(onARow.Background));
+                    foreach (Color ground in grounds)
+                        Assert.True(Contrast(Fill(onARow.BorderBrush), ground) >= EdgeNeeds,
+                            theme + ", a row's X at rest on " + ground + ": the edge reads " + Contrast(Fill(onARow.BorderBrush), ground));
+                }
+
+                try
+                {
+                    Color card = Of("CardBackgroundFillColorDefaultBrush"), rowUnderThePointer = Of("SteelCardHoverBrush");
+                    // Control: the fill the X had under the pointer, on the
+                    // two grounds it stands on.
+                    Assert.Equal(1.08, Contrast(Of("SteelRaisedBrush"), card), 2);
+                    Assert.Equal(1.02, Contrast(Of("SteelRaisedBrush"), rowUnderThePointer), 2);
+                    Check("dark", new[] { card, rowUnderThePointer });
+
+                    PageRenderDump.ApplyTheme(ApplicationTheme.Light);
+                    PadForge.Common.EmberTheme.ApplyAccent();
+                    // White is the lightest ground a light card can be, and
+                    // a row under the pointer the darkest the X stands on.
+                    Check("light", new[] { Colors.White, Of("SteelCardHoverBrush") });
+                }
+                finally
+                {
+                    PageRenderDump.ApplyTheme(ApplicationTheme.Dark);
+                    PadForge.Common.EmberTheme.ApplyAccent();
+                }
+            }, TimeSpan.FromMinutes(2), "the close button contrast test timed out");
+        }
     }
 }

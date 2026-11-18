@@ -1167,10 +1167,16 @@ namespace PadForge.Tests
             Assert.Equal("Cold", SlotSummary.HeatCold);
 
             // The X in a card's corner: no edge, in the secondary text color
-            // as the board draws it, and brighter under the pointer.
+            // as the board draws it, and brighter under the pointer, where
+            // it takes a fill and an edge that show on a card and on a row
+            // (ThemeContrastTests.TheCloseButtonShowsItsShapeOnEveryGround).
             int closeAt = At(app, "<Style x:Key=\"CardCloseButton\" TargetType=\"uictrl:Button\" BasedOn=\"{StaticResource EmberIconButton}\">");
             string close = app.Substring(closeAt, app.IndexOf("</Style>", closeAt, StringComparison.Ordinal) - closeAt);
             At(close, "<Setter Property=\"BorderBrush\" Value=\"Transparent\"/>");
+            At(close, "<Setter Property=\"MouseOverBackground\" Value=\"{DynamicResource SteelLiftBrush}\"/>");
+            At(close, "<Setter Property=\"MouseOverBorderBrush\" Value=\"{DynamicResource SteelMarkBrush}\"/>");
+            At(close, "<Setter Property=\"PressedBackground\" Value=\"{DynamicResource SteelRaisedBrush}\"/>");
+            At(close, "<Setter Property=\"PressedBorderBrush\" Value=\"{DynamicResource SteelMarkBrush}\"/>");
             At(close, "<Setter Property=\"Foreground\" Value=\"{DynamicResource TextFillColorSecondaryBrush}\"/>");
             Assert.Matches(new Regex("<Trigger Property=\"IsMouseOver\" Value=\"True\">\\s*"
                 + "<Setter Property=\"Foreground\" Value=\"\\{DynamicResource TextFillColorPrimaryBrush\\}\"/>"), close);

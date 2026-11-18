@@ -715,15 +715,28 @@
             </Style>
 
             <!-- The X in a card's corner (#574, the world-class pass): no
-                 edge and a mark in the secondary text color at rest, the
-                 raised fill and the text's own color under the pointer. -->
+                 edge and a mark in the secondary text color at rest. Under
+                 the pointer it is a button a person can see: the lifted
+                 fill, an edge in the mark's steel and the text's own
+                 color. Pressed, it keeps the edge over the raised fill.
+
+                 Until 2026-11-18 it took the icon button's raised fill
+                 under the pointer and no edge. That fill is a step from a
+                 card's ground and the color of a row under the pointer, so
+                 the button's shape read 1.08 to 1 on a card and 1.02 to 1
+                 on such a row: there to the pixel and to no eye. The
+                 lifted fill reads 1.25 and 1.19 to 1 on the two, and the
+                 edge 1.87 and 1.78 to 1 (ThemeContrastTests). -->
             <Style x:Key="CardCloseButton" TargetType="uictrl:Button" BasedOn="{StaticResource EmberIconButton}">
                 <Setter Property="Width" Value="32"/>
                 <Setter Property="Height" Value="32"/>
                 <Setter Property="CornerRadius" Value="8"/>
                 <Setter Property="Margin" Value="0"/>
                 <Setter Property="BorderBrush" Value="Transparent"/>
-                <Setter Property="MouseOverBorderBrush" Value="Transparent"/>
+                <Setter Property="MouseOverBackground" Value="{DynamicResource SteelLiftBrush}"/>
+                <Setter Property="MouseOverBorderBrush" Value="{DynamicResource SteelMarkBrush}"/>
+                <Setter Property="PressedBackground" Value="{DynamicResource SteelRaisedBrush}"/>
+                <Setter Property="PressedBorderBrush" Value="{DynamicResource SteelMarkBrush}"/>
                 <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Style.Triggers>

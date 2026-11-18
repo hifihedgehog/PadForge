@@ -295,10 +295,16 @@
         <!-- The X at a row's end removes the row's device, as the list did
              before PadForge 6: Home's card X, shown while the pointer is on
              the row or the X has the keyboard. It asks first, since the
-             device's settings go with it. -->
+             device's settings go with it. A card's X stands on its card
+             all the time and has no edge at rest. This one comes and goes
+             with the pointer, so it stands as a button whenever it shows,
+             with the plain button's fill and edge (owner, 2026-11-18: its
+             outline could not be seen). -->
         <Style x:Key="DeviceRowRemoveButton" TargetType="ui:Button" BasedOn="{StaticResource CardCloseButton}">
             <Setter Property="Width" Value="28"/>
             <Setter Property="Height" Value="28"/>
+            <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
             <Setter Property="Opacity" Value="0"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">

@@ -327,13 +327,16 @@ namespace PadForge.Tests
             var face = Assert.Single(toggle.Elements());
             Assert.Equal("StackPanel", face.Name.LocalName);
             var parts = face.Elements().ToList();
-            Assert.Equal(new[] { "TextBlock", "Path" }, parts.Select(p => p.Name.LocalName));
-            Assert.Contains("Settings_WhatIsSent,", (string)parts[0].Attribute("Text"));
-            Assert.Equal("WhatIsSentChevron", (string)parts[1].Attribute(X + "Name"));
-            var turn = Assert.Single(parts[1].Descendants(), e => e.Name.LocalName == "DataTrigger");
+            // The chevron leads, as every fold on the page has it, pointing
+            // at the words while closed and down while open.
+            Assert.Equal(new[] { "Path", "TextBlock" }, parts.Select(p => p.Name.LocalName));
+            Assert.Equal("WhatIsSentChevron", (string)parts[0].Attribute(X + "Name"));
+            Assert.Equal("M 3,1 L 7,5 L 3,9", (string)parts[0].Attribute("Data"));
+            Assert.Contains("Settings_WhatIsSent,", (string)parts[1].Attribute("Text"));
+            var turn = Assert.Single(parts[0].Descendants(), e => e.Name.LocalName == "DataTrigger");
             Assert.Equal("{Binding IsChecked, ElementName=WhatIsSentToggle}", (string)turn.Attribute("Binding"));
             Assert.Equal("True", (string)turn.Attribute("Value"));
-            Assert.Equal("180", (string)Assert.Single(turn.Descendants(), e => e.Name.LocalName == "RotateTransform").Attribute("Angle"));
+            Assert.Equal("90", (string)Assert.Single(turn.Descendants(), e => e.Name.LocalName == "RotateTransform").Attribute("Angle"));
 
             // The line, the disclosure, what it opens, the buttons.
             var item = toggle.Parent;
@@ -404,13 +407,14 @@ namespace PadForge.Tests
             Assert.Equal(1040, 190 + 28 + 822);
 
             // A card has no padding of its own and 14 under it, and its
-            // title is the board's 15.
+            // title is the app's card title, the board's 16
+            // (Settings.dc.html, .hd h2).
             var resources = Assert.Single(page.Descendants(), e => e.Name.LocalName == "ScrollViewer.Resources");
             string Set(string key, string property) => (string)resources.Elements().Single(s => (string)s.Attribute(X + "Key") == key)
                 .Elements().Single(s => (string)s.Attribute("Property") == property).Attribute("Value");
             Assert.Equal("0", Set("CardBorder", "Padding"));
             Assert.Equal("0,0,0,14", Set("CardBorder", "Margin"));
-            Assert.Equal("15", Set("CardTitle", "FontSize"));
+            Assert.DoesNotContain(resources.Elements(), s => (string)s.Attribute(X + "Key") == "CardTitle");
 
             // A row stands 20 in and 10 from the end, 48 tall with its 44,
             // under a hairline its item draws. Its label has no width of
@@ -513,7 +517,10 @@ namespace PadForge.Tests
             Assert.Equal("56", (string)row.Attribute("MinHeight"));
             Assert.Equal("20,2,20,2", (string)row.Attribute("Margin"));
             var kids = row.Elements().ToList();
-            Assert.Equal(new[] { "DockPanel", "WrapPanel" }, kids.Select(k => k.Name.LocalName));
+            Assert.Equal(new[] { "DockPanel", "FlexLinePanel" }, kids.Select(k => k.Name.LocalName));
+            // The buttons keep to the row's end, on a line that wraps too.
+            Assert.Equal("True", (string)kids[1].Attribute("EndsApart"));
+            Assert.All(kids[1].Elements(), b => Assert.Equal("True", Attached(b, "FlexLinePanel.AtEnd")));
 
             var triggers = kids[0].Descendants().Where(e => e.Name.LocalName == "DataTrigger"
                 && e.Ancestors().Any(a => a.Name.LocalName == "DecorativeStrokeIcon.Style")).ToList();

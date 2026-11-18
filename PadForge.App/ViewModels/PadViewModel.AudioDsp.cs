@@ -185,7 +185,7 @@ namespace PadForge.ViewModels
                 if (DeviceConfig == null) return;
                 var dlg = new Microsoft.Win32.OpenFileDialog
                 {
-                    Title = Strings.Instance.Pad_Audio_EqImportFile,
+                    Title = Strings.Instance.Pad_Audio_EqImportFileTitle,
                     // ParametricEQ.txt is what autoeq.app hands you, and
                     // FixedBandEQ.txt parses through the same Filter lines.
                     // GraphicEQ.txt does not, and is deliberately still

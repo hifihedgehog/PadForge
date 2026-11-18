@@ -905,6 +905,7 @@ namespace PadForge.Tests
                 "Devices_Connection_All", "Devices_Connection_Connected", "Devices_Connection_NotConnected",
                 "Devices_List_Main", "Devices_List_NotConnected", "Devices_Fold_NotConnected", "Devices_UseIt", "Devices_TestRumble", "Devices_UsedBy_New", "Devices_ResetAll",
                 "Devices_More_TestInputs", "Devices_Details", "Devices_CopyDetails", "Devices_SubmitMapping", "Devices_Remove",
+                "Devices_RemoveRow",
             })
                 Assert.True(ids.Count(v => v == id) == 1, id);
 
@@ -953,7 +954,57 @@ namespace PadForge.Tests
             Assert.Equal("DeviceCard_MouseMove", Attr(root, "PreviewMouseMove"));
             Assert.Equal("DeviceCard_MouseUp", Attr(root, "PreviewMouseLeftButtonUp"));
             Assert.Equal("UseIt_Click", Attr(Named(page, "UseItButton"), "Click"));
+
+            // The X at the row's end removes the row's device, as the list
+            // did before PadForge 6: in the last column, named for a screen
+            // reader, and shown while the pointer is on the row or the X has
+            // the keyboard.
+            var remove = Named(page, "RowRemoveButton");
+            Assert.Same(Named(page, "Row"), remove.Parent);
+            Assert.Equal("5", Attr(remove, "Grid.Column"));
+            Assert.Equal("RemoveDevice_Click", Attr(remove, "Click"));
+            Assert.Equal("{StaticResource DeviceRowRemoveButton}", Attr(remove, "Style"));
+            Assert.Equal("{Binding Devices_RemoveTooltip, Source={x:Static strings:Strings.Instance}}", Attr(remove, "ToolTip"));
+            Assert.Equal(Attr(remove, "ToolTip"), Attr(remove, "AutomationProperties.Name"));
+            var style = page.Descendants().Single(e => e.Name.LocalName == "Style" && (string)e.Attribute(Xaml + "Key") == "DeviceRowRemoveButton");
+            Assert.Equal("{StaticResource CardCloseButton}", Attr(style, "BasedOn"));
+            Assert.Contains(style.Elements(), s => Attr(s, "Property") == "Opacity" && Attr(s, "Value") == "0");
+            var shows = style.Descendants().Where(e => e.Name.LocalName is "Trigger" or "DataTrigger").ToList();
+            Assert.Equal(new[] { "{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}", null },
+                shows.Select(t => Attr(t, "Binding")).ToArray());
+            Assert.Equal("IsKeyboardFocused", Attr(shows[1], "Property"));
+            Assert.All(shows, t => Assert.Equal("1", Attr(t.Elements().Single(), "Value")));
         }
+
+        /// <summary>The X on a row removes that row's device. The selected
+        /// device stays selected when it is another one, and the selection
+        /// goes only with the device it held.</summary>
+        [Fact]
+        public void RemovingARowKeepsAnotherSelectedDevice() => RunSta(() =>
+        {
+            var vm = BoardSet();
+            var picked = vm.Devices[0];
+            var other = vm.Devices[1];
+            vm.SelectedDevice = picked;
+            var asked = new List<Guid>();
+            vm.RemoveDeviceRequested += (_, guid) => asked.Add(guid);
+
+            vm.RemoveDevice(other);
+            Assert.DoesNotContain(other, vm.Devices);
+            Assert.Same(picked, vm.SelectedDevice);
+            Assert.Equal(new[] { other.InstanceGuid }, asked);
+
+            // The command removes the selected device, and the selection
+            // goes with it.
+            vm.RemoveDeviceCommand.Execute(null);
+            Assert.DoesNotContain(picked, vm.Devices);
+            Assert.Null(vm.SelectedDevice);
+            Assert.Equal(new[] { other.InstanceGuid, picked.InstanceGuid }, asked);
+
+            // No device, nothing removed.
+            vm.RemoveDevice(null);
+            Assert.Equal(2, asked.Count);
+        });
 
         [Fact]
         public void MainWindowAnswersTheNewControllerRequest()

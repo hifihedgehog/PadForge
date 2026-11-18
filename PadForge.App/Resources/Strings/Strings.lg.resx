@@ -72,6 +72,7 @@
   <data name="Common_Start" xml:space="preserve"><value>Tandika</value></data>
   <data name="Common_None" xml:space="preserve"><value>Tewali</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>sikonda</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -197,7 +198,7 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Ettaala</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Ettaala</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>Omuzannyi 1</value></data>
   <data name="Pad_Lighting_PlayerLed_P2" xml:space="preserve"><value>Omuzannyi 2</value></data>
   <data name="Pad_Lighting_PlayerLed_P3" xml:space="preserve"><value>Omuzannyi 3</value></data>
@@ -293,6 +294,7 @@
   <data name="Macro_Count" xml:space="preserve"><value>Omuwendo</value></data>
   <data name="Macro_DelayMs" xml:space="preserve"><value>Okulwawo</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Macro empya</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Macro {0}</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Eppeesa {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(tewali)</value></data>
   <data name="Macro_UnknownAction" xml:space="preserve"><value>Ekikolwa ekitamanyiddwa</value></data>
@@ -467,7 +469,7 @@
   <!-- ═══ Macro Axis Target Labels ═══ -->
 
   <!-- ═══ Preview Views ═══ -->
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Amapeesa</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -598,6 +600,7 @@
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Bbaatule ya controller eweddeko</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Controller</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: bbaatule esigaddeko {1}%</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Si kati</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Bulijjo</value></data>
@@ -632,7 +635,7 @@
     <value>Mouse</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Tulindirira PC endala...</value>
+    <value>Tulindirira PC endala…</value>
   </data>
   <data name="About_Nefcon" xml:space="preserve"><value>nefcon</value></data>
   <data name="About_AntiMicroX" xml:space="preserve"><value>AntiMicroX</value></data>
@@ -764,6 +767,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Bbaatule</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Ekkubo</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Nnamba ya serial</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID ya app</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>GUID ya SDL</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Enkyusa</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Zzaawo</value></data>
@@ -811,4 +816,20 @@
   <data name="DreamcastScreen_Subtitle" xml:space="preserve"><value>Tewali kituuka ku port okutuusa lw'otereka.</value></data>
   <data name="Extras_OnCount_Format" xml:space="preserve"><value>{0} ku {1} bikola</value></data>
   <data name="Pad_Mappings" xml:space="preserve"><value>Mappings</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Ekyuma</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Okuwandiisa kwa interface</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Ekisumuluzo kya registry ekigabane</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Omuwendo gwa registry ogugabane</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Okuyunga kwa WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Erinnya lya OEM erikyusiddwa</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Ekisumuluzo kya DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Okuwandiisa kwa OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Ppakeeji ya driver</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Ekisumuluzo kya service ya WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Ekisumuluzo kya registry</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Satifikeeti</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Folda</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Ensengeka ya service</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Omutendera gw'okuggyawo</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b eya bulijjo</value></data>
 </root>

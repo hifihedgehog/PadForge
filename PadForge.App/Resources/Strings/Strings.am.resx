@@ -88,7 +88,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>ሞተሩን በማቆም ላይ…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>በ{0} ላይ እየሄደ ነው</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>እየሄደ ነው፣ ተገናኝቷል: {0}</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>በ:{0} ላይ በማዳመጥ ላይ</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>በወደብ {0} ላይ በማዳመጥ ላይ</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>ወደብ {0} በጥቅም ላይ ነው</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>ለወደብ {0} መዳረሻ ተከልክሏል (እንደ አስተዳዳሪ ያሂዱ)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>መጀመር አልተቻለም</value></data>
@@ -106,10 +106,11 @@
   <data name="Common_Stop" xml:space="preserve"><value>አቁም</value></data>
   <data name="Common_Start" xml:space="preserve"><value>ጀምር</value></data>
   <data name="Common_Record" xml:space="preserve"><value>ቅረጽ</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>በመቅረጽ ላይ...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>በመቅረጽ ላይ…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>አጽዳ</value></data>
   <data name="Common_None" xml:space="preserve"><value>ምንም</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>ሰከንድ</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>አልተመደበም</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -124,7 +125,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge በመዝጋት ላይ...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge በመዝጋት ላይ…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge በማስጀመር ላይ…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>ከቀድሞው ክፍለ ጊዜ የቀሩ ምናባዊ መቆጣጠሪያዎችን በማጽዳት ላይ።</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>መቆጣጠሪያ አክል</value></data>
@@ -227,7 +228,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← ግራ)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ ላይ)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll አልተገኘም</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll አልተገኘም! SDL3.dllን ከPadForge.exe አጠገብ ያስቀምጡ። ከዚህ ያውርዱ፦ https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll አልተገኘም። SDL3.dllን ከPadForge.exe አጠገብ ያስቀምጡ። ከዚህ ያውርዱት፦ https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>የአሽከርካሪ ክዋኔ አልተሳካም፦ {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>ቅንብሮች ወደ ቅንጥብ ሰሌዳ ተቀድተዋል።</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>የመሣሪያ መረጃ ወደ ቅንጥብ ሰሌዳ ተቀድቷል።</value></data>
@@ -258,11 +259,11 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>ቅንብሮች ከዲስክ እንደገና ተጭነዋል።</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>በዲስክ ላይ የቅንብሮች ፋይል አልተገኘም።</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>ለመቅረጽ የተገናኘ መሣሪያ የለም።</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>በመቅረጽ ላይ፦ ለ«{0}» አዝራር ይጫኑ ወይም ዘንግ ያንቀሳቅሱ...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>በመቅረጽ ላይ፦ ለ«{0}» መቆጣጠሪያን ያዙሩ ወይም ያወዛውዙ...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>በመቅረጽ ላይ፦ ለ«{0}» አዝራር ይጫኑ ወይም ዘንግ ያንቀሳቅሱ…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>በመቅረጽ ላይ፦ ለ«{0}» መቆጣጠሪያን ያዙሩ ወይም ያወዛውዙ…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>በዚህ ቦታ ላይ ያለ ምንም መቆጣጠሪያ ለ«{0}» ዳሳሽ የለውም።</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>«{0}» በመቅረጽ ላይ፦ የላይ አቅጣጫ ግብዓቱን ይጫኑ...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>«{0}» በመቅረጽ ላይ፦ አሁን የታች አቅጣጫ ግብዓቱን ይጫኑ...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>«{0}» በመቅረጽ ላይ፦ የላይ አቅጣጫ ግብዓቱን ይጫኑ…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>«{0}» በመቅረጽ ላይ፦ አሁን የታች አቅጣጫ ግብዓቱን ይጫኑ…</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>መቅረጽ ተሰርዟል።</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>ለ«{0}» መቅረጽ ጊዜው አልፏል።</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>ሞተሩ ተጀምሯል።</value></data>
@@ -281,7 +282,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge አሳይ ወይም ደብቅ</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያዎችን አብራ ወይም አጥፋ</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>ማንኛውም የተገናኘ መሣሪያ</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>በመቅረጽ ላይ...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>በመቅረጽ ላይ…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>መቼ</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>በመሣሪያ</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>«{0}» ከምናባዊ መቆጣጠሪያ {1} ተነስቷል።</value></data>
@@ -314,6 +316,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>መቆጣጠሪያዎች</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>በአገልግሎት ላይ ያሉ ተጨማሪዎች</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>በርቷል። {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>ነባሪ ቅንብሮች</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>የግራ ስቲክ</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>የቀኝ ስቲክ</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>ሌሎች {0} በ[ተጨማሪዎች] ውስጥ ናቸው። ተጨማሪው እስኪያበሩት ድረስ ጠፍቶ ይቆያል።</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>ተጨማሪዎችን ክፈት</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>QR አሳይ</value></data>
@@ -383,6 +390,10 @@
   <data name="Macro_EmptyHint" xml:space="preserve"><value>ከዝርዝሩ ውስጥ ማክሮ ይምረጡ፣ ወይም አዲስ ለመፍጠር ከ«ማክሮዎች» አጠገብ ያለውን + ይጫኑ።</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ጥሬ</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>ውጽዓት</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>ኩርባ</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>የሺፍት ንብርብሮች</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>የተገለበጠ</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>ጫፍ</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>ቀዝቃዛ</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>ቅድመ እይታ</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>ተጨማሪዎች</value></data>
@@ -418,11 +429,11 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>እሴቶቹ በ[መሣሪያዎች] ላይ ያለው የጨዋታ ቴሌሜትሪ ረድፍ ናቸው። በመቆጣጠሪያ የማዛመጃዎች ክፍል ውስጥ ያዛምዷቸው ወይም ማክሮዎችን ለማስነሳት ይጠቀሙባቸው።</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>የአንድ ምናሌ የራሱ ቦታ፣ መጠን እና ግልጽነት በምናሌው ላይ፣ በመቆጣጠሪያ የ[ማክሮዎች እና ምናሌዎች] ክፍል ውስጥ ይዘጋጃሉ።</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>ምንጮች</value></data>
-  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack እና የUDP ቅርጸቱን የሚልክ ማንኛውም ፕሮግራም</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack እና የUDP ቅርጸቱን የሚልክ ማንኛውም ፕሮግራም።</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>ክልል</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>የእያንዳንዱ ዘንግ ክልል። ዜሮ ከላይ ያለውን ክልል ይከተላል።</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge የማያውቃቸው ጨዋታዎች</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>ከመላካቸው በፊት የሚሠራ DSX ለሚፈልጉ ሞዶች</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>ከመላካቸው በፊት የሚሠራ DSX ለሚፈልጉ ሞዶች።</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>የሚታየው</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ምናሌ ክፍት ሆኖ ሳለ ቀለበቱ፣ ፍርግርጉ ወይም አሞሌው</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>የሺፍት ንብርብር ሲበራ፣ ያ ንብርብር ለወሰነው ጊዜ የንብርብሩ ስም</value></data>
@@ -680,7 +691,7 @@
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>መሣሪያዎችን ከጨዋታዎች ደብቅ፣ መሣሪያዎችን በማስጀመሪያዎች መካከል እንደተደበቁ አቆይ፣ የተፈቀዱ መተግበሪያዎች</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>የተፈቀዱ መተግበሪያዎች</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>እነዚህ መተግበሪያዎች አሁንም የተደበቁ መሣሪያዎችን ማየት ይችላሉ። PadForge ሁልጊዜ በራስ-ሰር ይፈቀዳል።</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>አክል...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>አክል…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge ይህን አሽከርካሪ እርስዎ ከሚፈጥሩት የመጀመሪያው ምናባዊ መቆጣጠሪያ ጋር ይጭነዋል። ማራገፍ HIDMaestro በዚህ ፒሲ ላይ የተወውን ከማስወገዱ በፊት ይዘረዝራል።</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያዎቹን ይፈጥራል።</value></data>
@@ -699,6 +710,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>ቀርቷል</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>አልተነበበም</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>አልተወገደም</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>መሣሪያ</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>የበይነገጽ ምዝገባ</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>የጋራ የመዝገብ ቁልፍ</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>የጋራ የመዝገብ እሴት</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>የWinUSB ትስስር</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>የOEM ስም መሻሪያ</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>የDeviceOverrides ቁልፍ</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>የOpenVR ምዝገባ</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>የአሽከርካሪ ጥቅል</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>የWUDF አገልግሎት ቁልፍ</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>የመዝገብ ቁልፍ</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>ሰርተፊኬት</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>አቃፊ</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>የአገልግሎት ቅንብር</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>የማስወገድ ደረጃ</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>የPlayStation 3 መቆጣጠሪያዎች፣ PlayStation Move እና የNavigation መቆጣጠሪያ በBluetooth እንዲገናኙ ያስችላል። በPadForge ውስጥ የተካተተ ሲሆን ከእነሱ አንዱ መጀመሪያ ሲጣመር ይጫናል።</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>PlayStation 3 መቆጣጠሪያዎችን በBluetooth ያገናኛል።</value></data>
@@ -893,11 +919,11 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>«{0}» ተይብ</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(ጽሑፍ የለም)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>ጽሑፍ</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>የቁምፊ መዘግየት (ms)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>በፊደላት መካከል ያለ መዘግየት</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>በሚተየቡ ቁምፊዎች መካከል ያሉ ሚሊሰከንዶች፣ እስከ 1000። 0 ሙሉውን ጽሑፍ በአንድ ጊዜ ይተይባል።</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>ሥራ ሲፈታ ግንኙነት ማቋረጥ</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>ዝርዝሮች</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>ደቂቃዎች (0 = በጭራሽ)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>ደቂቃ</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>በUSB ሲሰካ Bluetooth አቋርጥ</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>ፈጣን ኃይል መሙላት። ይህ መቆጣጠሪያ በBluetooth ተገናኝቶ ሳለ ኃይል እየሞላ መሆኑን ሲያሳውቅ፣ ሬዲዮውን ሳያንቀሳቅስ እንዲሞላ የBluetooth ግንኙነቱ ይቋረጣል። የግድግዳ ቻርጀሮችን ጨምሮ ማንኛውም የUSB ኃይል ምንጭ ይቆጠራል። ገመዱ እንደተሰካ Bluetooth መልሰህ ካበራህ፣ እስከሚቀጥለው መንቀል ድረስ አይነካም።</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>እንደ iCade መቆጣጠሪያ አንብብ</value></data>
@@ -988,7 +1014,7 @@
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Wii Remote ወደ ዒላማው አመልክተህ B ተጫን።</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Wii Remote የሴንሰር አሞሌውን አላየም። ወደ ዒላማው አመልክተህ B እንደገና ተጫን።</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc ወይም Home ይሰርዛል።</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>ይህን የBluetooth መቆጣጠሪያ ያለ ግብዓት ከዚህ ያህል ደቂቃ በኋላ ያቋርጠዋል፣ በዚህም ይተኛል፣ ባትሪም ይቆጥባል። በUSB ላይ በጭራሽ አይሠራም።</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>ይህን የBluetooth መቆጣጠሪያ ያለ ግብዓት ከዚህ ያህል ደቂቃ በኋላ ያቋርጠዋል፣ በዚህም ይተኛል፣ ባትሪም ይቆጥባል። 0 ይህን ያጠፋዋል። በUSB ላይ በጭራሽ አይሠራም።</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>ኃይል</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>ምናሌ</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>እሺ</value></data>
@@ -1077,11 +1103,15 @@
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>ጋይሮስኮፕ</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>አክስሌሮሜትር</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 ዘንግ</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} ዘንጎች</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 አዝራር</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} አዝራሮች</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>ዘንግ {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} ዘንጎች፣ {1} አዝራሮች፣ {2} POV</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>ንዝረት</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>ጋይሮ</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>አክስሌሮሜትር</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>እንደ HID መሣሪያ ከሚከፍቱት ፕሮግራሞች ይህን መሣሪያ ይደብቃል</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows የምትተይባቸውን ቁልፎች ማንበቡን ይቀጥላል፣ ስለዚህ መተየብ ጨዋታዎችን ጨምሮ በሁሉም ፕሮግራም ውስጥ አሁንም ይሠራል። የUSB ቁልፍ ሰሌዳ በ«{0}» አዝራር ከWindows ሊወሰድ ይችላል።</value></data>
@@ -1246,7 +1276,7 @@
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>ሄድሴቶች፣ የመዳፊት ሰሌዳዎች እና ድምጽ ማጉያዎች</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ሄድሴቶች</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>ጨዋታዎች መብራት በጻፉ ቁጥር ይቆጣጠራሉ።</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>ሄክስ</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ባለ ስድስት አሃዝ hex ቀለም (RRGGBB ወይም #RRGGBB) አስገባና ለመተግበር Enter ተጫን ወይም ሌላ ቦታ ጠቅ አድርግ።</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>ይህን ቀለም ከቀለም ስብስቡ አስወግድ</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>ጠፍቷል</value></data>
@@ -1361,6 +1391,7 @@
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>አስገባ</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(ስም የሌለው HID መሣሪያ)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} HID በይነገጾች ተገኝተዋል።</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>1 HID በይነገጽ ተገኝቷል።</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>መዘርዘር አልተሳካም: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>ማውጣት አልተሳካም: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>የወጣውን የመገለጫ JSON መተንተን አልተቻለም። ምንም አልተቀመጠም።</value></data>
@@ -1473,7 +1504,7 @@
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>ሁሉንም ማዛመጃዎች አንድ በአንድ በቅደም ተከተል ቅረጽ</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>ሁሉንም ማዛመጃዎች እና ቅንብሮች ወደ ቅንጥብ ሰሌዳ ቅዳ</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>ማዛመጃዎችን እና ቅንብሮችን ከቅንጥብ ሰሌዳ ለጥፍ</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>ከ... ቅዳ</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>ከ… ቅዳ</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>ከሌላ የተዋቀረ መሣሪያ ቅንብሮችን ቅዳ</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>ሁሉንም ዳግም አስጀምር</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>ሁሉንም አጽዳ</value></data>
@@ -1660,7 +1691,7 @@
   <data name="Pad_More_Trigger" xml:space="preserve"><value>ክልል በቁጥሮች፣ ጥሬ እሴቶች</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>ክልል</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«ወሰንን አስተካክል» ስቲኩ ሊደርስበት የሚችለውን ጠርዝ ለክቶ ወደ ሙሉ ክብ ያስተካክለዋል። አራቱ ተንሸራታቾች እያንዳንዱን አቅጣጫ ብቻ ይገድባሉ።</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>ናሙና በመውሰድ ላይ...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>ናሙና በመውሰድ ላይ…</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>የመሃል ማካካሻ X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>የመሃል ማካካሻ Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>የሞተ ቀጠና ቅርጽ</value></data>
@@ -1771,6 +1802,7 @@
   <data name="Macro_DelayMs" xml:space="preserve"><value>መዘግየት</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>ትብነት</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>አዲስ ማክሮ</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>ማክሮ {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>አንቂ ቅረጽ</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>አልተዘጋጀም። «ቅረጽ»ን ጠቅ አድርግ።</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>አዝራር {0}</value></data>
@@ -1829,6 +1861,8 @@
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>የቦታውን አካላዊ መሣሪያ ንዝረት ከማክሮ ይነዳል። «ምላሽ ሰጪ» ለመያዣው ጊዜ በሙሉ ጥንካሬ ይሠራል፣ ከዚያም በመደብዘዣው ጊዜ ውስጥ ወደ ዜሮ ይደበዝዛል። «ተጣባቂ» የንዝረት አቁም ድርጊት እስኪሠራ ድረስ በሙሉ ጥንካሬ ይይዛል። በጨዋታ በሚነዳ ንዝረት ላይ በmax() ይደረባል፣ ስለዚህ በተጠቃሚ የሚነዳ ግብረመልስ ሁልጊዜ ይሰማል።</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>የንዝረት ምት {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>እስኪጸዳ ድረስ ንዝረት {0} ያዝ</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>ግራ {0}%፣ ቀኝ {1}%</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>የግራ ትሪገር {0}%፣ የቀኝ ትሪገር {1}%</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>ንዝረት አቁም</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>ንዝረት አቁም</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>በተመደበው ቦታ ላይ ያለ ማንኛውንም ንቁ የንዝረት መሻር ይለቃል። መያዙን በሌላ ማክሮ ለመቀልበስ ከተጣባቂ የንዝረት ድርጊት ጋር አጣምረው።</value></data>
@@ -1867,7 +1901,7 @@
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>መዳፊት Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>ክፍተት</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>በማያ ገጽ ላይ ምረጥ</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>በ{0} ውስጥ ይያዛል...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>በ{0} ውስጥ ይያዛል…</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>ጠቅ አድርግ፣ ከዚያም ጠቋሚውን ወደ ዒላማው አንቀሳቅስ። ቦታው ከአጭር ቆጠራ በኋላ ይያዛል።</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>ሁነታ</value></data>
   <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>የውስጥ ርቀት X</value></data>
@@ -2532,9 +2566,9 @@
   <data name="Profiles_DropToImport" xml:space="preserve"><value>መገለጫ ለማስመጣት እዚህ ጣል</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>የመገለጫ ፋይል እዚህ ጣል</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>አዲስ መገለጫ</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>አስቀምጥ እንደ</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>አስቀምጥ እንደ…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>የአሁኑን ማዋቀር እዚህ አስቀምጥ</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>አርትዕ</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>አርትዕ…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>ጫን</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>አብሮ የተሰራ</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>ጨዋታ አልተዘጋጀም</value></data>
@@ -2637,8 +2671,8 @@
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>የመሃል ማካካሻ X ዳግም አስጀምር</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>ወሰንን አስተካክል</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>ወሰንን እንደገና አስተካክል</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>ጠርዙን ዙር... {0} ቀርቷል</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>ተሸፍኗል። ለማጣራት አንድ ተጨማሪ ዙር...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>ጠርዙን ዙር… {0} ቀርቷል</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>ተሸፍኗል። ለማጣራት አንድ ተጨማሪ ዙር…</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>ክብነት {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>የሚደረስበትን ወሰን ለመለካት ስቲኩን በጠርዙ ዙሪያ አዙረው፣ ከዚያም ወሰኑ ወደ ሙሉ ክብ ይስተካከላል።</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>የወሰን ማስተካከያን ዳግም አስጀምር</value></data>
@@ -2716,7 +2750,7 @@
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>በWindows የድምጽ መቀላቀያ ውስጥ የአንድ የተወሰነ መተግበሪያን የድምጽ መጠን ይቆጣጠራል፣ በድምጽ ገደቡ ተመጥኖ። የሂደቱን ስም አስገባ (በተግባር አስተዳዳሪ ውስጥ ይታያል)። ከ«ሁልጊዜ» አንቂ ጋር፣ ወይም «ተጭኖ ሳለ» + «እስኪለቀቅ ድረስ» ካለው የአዝራር/ዘንግ አንቂ ጋር ተጠቀም።</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>የተመረጠውን ዘንግ ከመዳፊት እንቅስቃሴ (ወይም ማሸብለል) ጋር ያለማቋረጥ ያዛምዳል። ከ«ሁልጊዜ» አንቂ ጋር፣ ወይም «ተጭኖ ሳለ» + «እስኪለቀቅ ድረስ» ካለው የአዝራር/ዘንግ አንቂ ጋር ተጠቀም። ለስቲክ-ወደ-መዳፊት ሁለት እርምጃዎችን ፍጠር: አንዱን ለX ዘንግ፣ አንዱን ለY ዘንግ።</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>ዘንግ ገልብጥ</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>የድምጽ መጠን OSD አሳይ</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>የድምጽ መጠን አመልካች አሳይ</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>አቅጣጫ</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>ማንኛውም</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>አዎንታዊ</value></data>
@@ -2912,7 +2946,7 @@
   <data name="Preview_CCOutputs" xml:space="preserve"><value>CC ውጤቶች</value></data>
   <data name="Preview_NoteOutputs" xml:space="preserve"><value>የኖት ውጤቶች</value></data>
   <data name="Preview_Stick_Format" xml:space="preserve"><value>ስቲክ {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>ትሪገር {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>የአቅጣጫ ቁልፍ</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>አዝራሮች</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -2929,7 +2963,6 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>ደረጃ</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>የእንቅስቃሴ-አልባነት ጊዜ ገደብ</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>ሁሉም የተዛመዱ መሣሪያዎቹ ከመስመር ውጭ ሲሆኑ አንድ ምናባዊ መቆጣጠሪያ ከመጥፋቱ በፊት የሚቆጠሩ ሰከንዶች። 0 ያሰናክላል። የቀሩት ተመሳሳይ ዓይነት መቆጣጠሪያዎች ክፍተቱን ለመሙላት ወደ ላይ ይሸጋገራሉ እና ከዝቅተኛ ቦታዎች ጋር እንደገና ይታሰራሉ።</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>ሰከንዶች (0 = በጭራሽ)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>ንብርብር አክል</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>የመቀየሪያ ንብርብር አክል። አዝራር ተጭኖ ሲያዝ ወይም ሲቀያየር የሚነቃ ሁለተኛ የማዛመጃ ሰንጠረዥ።</value></data>
@@ -3705,7 +3738,7 @@
     <value>መዘግየቱን ወደ 0 ዳግም አስጀምር (ንብርብሩ ወዲያውኑ ምላሽ ይሰጣል)።</value>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>የማኅበረሰብ ውቅሮች</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>በማኅበረሰብ የተሠሩ የSteam Input መቆጣጠሪያ ውቅሮችን ያስሱ እና ወደ PadForge መገለጫዎች ይቀይሯቸው። PadForge በቀጥታ ከSteam አገልጋዮች ጋር የሚገናኘው ሲፈልጉ፣ ውቅር ሲከፍቱ ወይም ያስገቧቸውን ውቅሮች ለዝማኔዎች ሲፈትሹ ብቻ ነው። የፍለጋ ጽሑፍዎን፣ የሚመለከታቸውን የጨዋታዎች፣ የውቅሮችና የፈጣሪዎች መለያዎች እና የPadForge ስሪትን ይልካል። ስም-አልባው የSteam መግቢያም የWindows ስሪትዎን እና ከWindows መጫኛ መለያዎ፣ ከአውታረ መረብ አስማሚ አድራሻዎች እና ከቡት ዲስክ መለያ ቁጥር ሃሾች የተሠራ የማሽን መለያ ይልካል። ቴሌሜትሪ የለም፣ የሶስተኛ ወገን አገልግሎት የለም፣ የSteam መለያ አያስፈልግም።</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>በማኅበረሰብ የተሠሩ የSteam Input መቆጣጠሪያ ውቅሮችን ያስሱ እና ወደ PadForge መገለጫዎች ይቀይሯቸው። PadForge የፍለጋ ጽሑፍዎን፣ የሚመለከታቸውን የጨዋታዎች፣ የውቅሮችና የፈጣሪዎች መለያዎች እና ስሪቱን ይልካል። ስም-አልባው የSteam መግቢያም የWindows ስሪትዎን እና ከWindows መጫኛ መለያዎ፣ ከአውታረ መረብ አስማሚ አድራሻዎች እና ከቡት ዲስክ መለያ ቁጥር ሃሾች የተሠራ የማሽን መለያ ይልካል። ምንም የሶስተኛ ወገን አገልግሎት አይሳተፍም።</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge ከSteam አገልጋዮች ጋር የሚገናኘው ሲፈልጉ፣ ውቅር ሲከፍቱ ወይም ያስገቧቸውን ውቅሮች ለዝማኔዎች ሲፈትሹ ብቻ ነው። ቴሌሜትሪ የለም፣ የSteam መለያ አያስፈልግም።</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>የሚላከው</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>የማኅበረሰብ ውቅሮችን አንቃ</value></data>
@@ -3762,6 +3795,9 @@
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam ለዚህ ውቅር የሚወርድ ፋይል አይዘረዝርም፣ በSteam አቃፊዎም ውስጥ ቅጂው የለም። በSteam ውስጥ ደንበኝነት ይመዝገቡበት፣ PadForge ከዚያ ያነበዋል።</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>በSteam ወርክሾፕ ክፈት</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>የቆየ</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>የወርክሾፕ መገለጫ</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>የወርክሾፕ ማክሮ</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>የጠቋሚ ክልል</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>የሚተላለፈውን ለማየት ውቅር ይምረጡ።</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>የሚተላለፈው</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>የሚሆነው</value></data>
@@ -4137,6 +4173,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>መካከለኛ (ቀላል)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>ከፍተኛ (ቀላል)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>ብጁ</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b ነባሪ</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>መቁረጫ</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>የመለያያ ፍሪኩዌንሲ። ከሱ በታች ቻናሎቹ ወደ ሞኖ ይቀላቀላሉ፣ ከሱ በላይ ተለያይተው ይቆያሉ፣ ስለዚህ ዝቅ ያለ መቁረጫ ያነሰ ክሮስፊድ ያደርጋል።</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>ፊድ</value></data>
@@ -4164,7 +4201,8 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>አጽዳ</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>ከቅንጥብ ሰሌዳ አስገባ</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>ለጆሮ ማዳመጫዎ የAutoEq መገለጫ ይቅዱ፣ ከዚያ ጠቅ ያድርጉ። ባንዶቹን ይተካል እና ቅድመ-ማጉያውን ያዘጋጃል። በቅንጥብ ሰሌዳው ውስጥ የሚነበብ ነገር ከሌለ የአሁኑ EQ አይቀየርም።</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>ከፋይል አስገባ</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>ከፋይል አስገባ…</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>ፓራሜትሪክ EQ አስመጣ</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>ከAutoEq የወረደውን .txt ፋይል ይምረጡ። መጠቀም ያለብዎት ይህንን ነው: autoeq.app የሚሰጥዎት ሊቀዱት የሚችሉት ጽሑፍ ሳይሆን ፋይል ነው።</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>ለጆሮ ማዳመጫዎ የተስማማ ማስተካከያ ለማግኘት: autoeq.app ይክፈቱ፣ ሞዴልዎን ይምረጡ፣ Custom Parametric Eq መርጠው ያውርዱት፣ ከዚያ «ከፋይል አስገባ» ይጫኑ። የGraphic Eq ማውረጃ የማጣሪያ መስመሮች የሉትም እና አይገባም።</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{0} ባንዶች ከ{1:0.#} dB ቅድመ-ማጉያ ጋር ከ{2} ገብተዋል።</value></data>
@@ -4217,6 +4255,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>ይህ አውታረ መረብ ቀጥተኛ ግንኙነቶችን መፍጠር አይችልም (የሞባይል ሆትስፖት ወይም የአገልግሎት አቅራቢ ደረጃ NAT ይመስላል)። እንደ Tailscale ያለ VPN ይጠቀሙ፣ ወይም ከቤት ብሮድባንድ ይገናኙ።</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>የዚህን ኮምፒውተር ይፋዊ አድራሻ ማግኘት አልተቻለም (አውታረ መረቡ አስፈላጊውን ትራፊክ ሊያግድ ይችላል)። ቀጥተኛ ግንኙነቶች እዚህ አይሠሩም። VPN ይጠቀሙ፣ ወይም በተመሳሳይ አውታረ መረብ ላይ «በአድራሻ ተገናኝ» ይጠቀሙ።</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>የመቆጣጠሪያ ባትሪ ዝቅተኛ ነው</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>መቆጣጠሪያ</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% ባትሪ ቀርቷል</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>የባትሪ ማንቂያዎች</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>የመቆጣጠሪያ ባትሪ ሲቀንስ፣ በጨዋታ መሃል ከማለቁ በፊት ማሳወቂያ ያግኙ።</value></data>
@@ -4428,7 +4467,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
     <value>በሌላው ኮምፒውተር ላይ ምናባዊ መቆጣጠሪያ ይፍጠሩ፣ ከዚያ ያድሱ።</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>ሌላውን ኮምፒውተር በመጠበቅ ላይ...</value>
+    <value>ሌላውን ኮምፒውተር በመጠበቅ ላይ…</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>የስዕል ታብሌት</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>የተጋራ ግብዓት</value></data>
@@ -4488,7 +4527,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>የSteamVR መጫኛ ቦታ እንደ C:\SteamVR ያለ ሙሉ ዱካ መሆን አለበት።</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>የSteamVR መጫኛ ቦታ የአንጻፊ ሥር ሊሆን አይችልም። እንደ C:\SteamVR ያለ አቃፊ ይምረጡ።</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd በ60 ደቂቃ ውስጥ አልጨረሰም።</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd ሠርቷል፣ ግን SteamVR በ{0} ውስጥ አልገባም። steamcmd ያለው: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd ሠርቷል፣ ግን SteamVR በ{0} ውስጥ አልገባም። steamcmd ያለው: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>HidHide ተጭኗል፣ ግን የቁጥጥር መሣሪያው አልተከፈተም፣ ስለዚህ ምንም የክፍል ማጣሪያ አልታከለም።</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>HidHide አሁንም እንደ ክፍል ማጣሪያ ተዘርዝሯል፣ ስለዚህ አሽከርካሪው በቦታው ቀርቷል።</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>የቆዩ አሽከርካሪዎችን በማስወገድ ላይ…</value></data>
@@ -4955,6 +4994,8 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>ባትሪ</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>ዱካ</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>መለያ ቁጥር</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>የመተግበሪያ GUID</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>ፈርምዌር</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>ክለሳ</value></data>
   <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>መቆጣጠሪያውንም አንዝር፣ ማሳወቂያውን በየጊዜው ድገም፣ ሙሉ ሲሞላ አሳውቅ</value></data>

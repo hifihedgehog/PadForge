@@ -1061,9 +1061,15 @@ namespace PadForge.Tests
             };
             foreach (string bound in binds)
                 Assert.Contains(rows, r => r.Elements().Any(c => c.Attributes().Any(a => a.Value == bound)));
-            // A parameter of a trigger effect has no reset, and its row none.
+            // A parameter of a trigger effect: its label, its slider, its
+            // number, and the reset to its own default at the end.
             var parameter = Assert.Single(ofSteps, r => (string)r.Elements().First().Attribute("Text") == "{Binding Label}");
-            Assert.Equal(new[] { "TextBlock", "Slider", "TextBox" }, parameter.Elements().Select(c => c.Name.LocalName));
+            Assert.Equal(new[] { "TextBlock", "Slider", "TextBox", "SettingResetButton" }, parameter.Elements().Select(c => c.Name.LocalName));
+            Assert.Equal("Center", SetterOf(Keyed(page, "FieldValueEdit"), "VerticalAlignment"));
+            var parameterReset = parameter.Elements().Last();
+            Assert.Equal("{Binding ResetValueCommand}", (string)parameterReset.Attribute("Command"));
+            Assert.Equal("True", (string)parameterReset.Attributes().First(a => a.Name.LocalName == "FlexLinePanel.AtEnd"));
+            Assert.Equal("{DynamicResource RowOptionResetMargin}", (string)parameterReset.Attribute("Margin"));
             Assert.All(rows.Where(r => r != parameter), r =>
             {
                 var parts = r.Elements().ToList();
@@ -1078,10 +1084,11 @@ namespace PadForge.Tests
                 Assert.Equal("True", (string)reset.Attributes().First(a => a.Name.LocalName == "FlexLinePanel.AtEnd"));
                 Assert.Equal("{DynamicResource RowOptionResetMargin}", (string)reset.Attribute("Margin"));
                 // A picker or a box stands centered in the row's height: the
-                // row would stretch it to its 44. The page's value text is
-                // centered by its style.
+                // row would stretch it to its 44. The page's value boxes are
+                // centered by their styles.
                 Assert.All(parts.Where(c => c.Name.LocalName is "ComboBox" or "TextBox"), c => Assert.True(
-                    (string)c.Attribute("VerticalAlignment") == "Center" || (string)c.Attribute("Style") == "{StaticResource DzValueEdit}",
+                    (string)c.Attribute("VerticalAlignment") == "Center"
+                        || (string)c.Attribute("Style") is "{StaticResource DzValueEdit}" or "{StaticResource FieldValueEdit}",
                     "a row's " + c.Name.LocalName + " is not centered"));
             });
             // No old row of the editor is left beside them: a horizontal
@@ -1147,7 +1154,8 @@ namespace PadForge.Tests
                 (string)parts[0].Attribute("Text"));
             Assert.Equal("18", (string)parts[0].Attribute("Width"));
             Assert.Equal("0,0,10,0", (string)parts[0].Attribute("Margin"));
-            Assert.Equal("{StaticResource TelemetryFontFamily}", (string)parts[0].Attribute("FontFamily"));
+            Assert.Null(parts[0].Attribute("FontFamily"));
+            Assert.Equal("Tabular", (string)parts[0].Attribute("Typography.NumeralAlignment"));
             Assert.Equal("{DynamicResource TextFillColorTertiaryBrush}", (string)parts[0].Attribute("Foreground"));
             Assert.Equal("{Binding DisplayText}", (string)parts[1].Attribute("Text"));
             Assert.Equal("Wrap", (string)parts[1].Attribute("TextWrapping"));
@@ -1540,7 +1548,8 @@ namespace PadForge.Tests
             Assert.Equal("18", (string)parts[0].Attribute("Width"));
             Assert.Equal("0,0,10,0", (string)parts[0].Attribute("Margin"));
             Assert.Equal("13", (string)parts[0].Attribute("FontSize"));
-            Assert.Equal("{StaticResource TelemetryFontFamily}", (string)parts[0].Attribute("FontFamily"));
+            Assert.Null(parts[0].Attribute("FontFamily"));
+            Assert.Equal("Tabular", (string)parts[0].Attribute("Typography.NumeralAlignment"));
             Assert.Equal("{DynamicResource TextFillColorTertiaryBrush}", (string)parts[0].Attribute("Foreground"));
             Assert.Equal("Words", Name(parts[1]));
             Assert.Equal("{Binding RowName}", (string)parts[1].Attribute("Text"));

@@ -1208,23 +1208,29 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Command to remove the selected device from the device list entirely.
         /// Removes the device record, any associated user settings, and the UI row.
-        /// Works for both online and offline devices — removing an online device
-        /// will also unassign it from any slot and stop reading its input.
+        /// Works for both online and offline devices. Removing an online device
+        /// also unassigns it from any slot and stops reading its input.
         /// </summary>
         public RelayCommand RemoveDeviceCommand =>
             _removeDeviceCommand ??= new RelayCommand(
-                () =>
-                {
-                    if (_selectedDevice != null)
-                    {
-                        Guid guid = _selectedDevice.InstanceGuid;
-                        Devices.Remove(_selectedDevice);
-                        SelectedDevice = null;
-                        RemoveDeviceRequested?.Invoke(this, guid);
-                        RefreshCounts();
-                    }
-                },
+                () => RemoveDevice(_selectedDevice),
                 () => HasSelectedDevice);
+
+        /// <summary>Removes one device's row, record and settings: the
+        /// selected device's from the Details card, or any row's from the X
+        /// at the row's end. The selection is cleared only when it was the
+        /// device removed, so removing another row leaves the selected
+        /// device and its panel in place.</summary>
+        public void RemoveDevice(DeviceRowViewModel device)
+        {
+            if (device == null) return;
+            Guid guid = device.InstanceGuid;
+            Devices.Remove(device);
+            if (ReferenceEquals(_selectedDevice, device))
+                SelectedDevice = null;
+            RemoveDeviceRequested?.Invoke(this, guid);
+            RefreshCounts();
+        }
 
         /// <summary>Raised when a refresh is requested.</summary>
         public event EventHandler RefreshRequested;
@@ -1655,11 +1661,12 @@ namespace PadForge.ViewModels
             for (int i = 0; i < 4; i++) Add(0x70 + i, $"F{i + 1}", 2 + i, y0);
             for (int i = 0; i < 4; i++) Add(0x74 + i, $"F{i + 5}", 6.5 + i, y0);
             for (int i = 0; i < 4; i++) Add(0x78 + i, $"F{i + 9}", 11 + i, y0);
-            // PrtSc / ScrLk / Pause sit above the Ins / Hm / PU nav cluster
-            // at the same x-column (nx = 15.5).
-            Add(0x2C, "PrSc", 15.5, y0);
-            Add(0x91, "ScLk", 16.5, y0);
-            Add(0x13, "Pse",  17.5, y0);
+            // PrtSc / ScrLk / Pause sit above the Ins / Home / PgUp nav
+            // cluster at the same x-column (nx = 15.5). Every cap reads as
+            // the printed legend of a US board, which this drawing is.
+            Add(0x2C, "PrtSc", 15.5, y0);
+            Add(0x91, "ScrLk", 16.5, y0);
+            Add(0x13, "Pause", 17.5, y0);
 
             // ── Row 1: ` 1–0 - = Bksp ──
             double y1 = rh + 4; // extra gap after Fn row
@@ -1717,8 +1724,8 @@ namespace PadForge.ViewModels
 
             // ── Navigation cluster ──
             double nx = 15.5;
-            Add(0x2D, "Ins", nx, y1);       Add(0x24, "Hm", nx + 1, y1);   Add(0x21, "PU", nx + 2, y1);
-            Add(0x2E, "Del", nx, y2);       Add(0x23, "End", nx + 1, y2);  Add(0x22, "PD", nx + 2, y2);
+            Add(0x2D, "Ins", nx, y1);       Add(0x24, "Home", nx + 1, y1); Add(0x21, "PgUp", nx + 2, y1);
+            Add(0x2E, "Del", nx, y2);       Add(0x23, "End", nx + 1, y2);  Add(0x22, "PgDn", nx + 2, y2);
 
             // ── Arrow keys ──
             Add(0x26, "\u25B2", nx + 1, y4);                                         // Up
@@ -1726,7 +1733,7 @@ namespace PadForge.ViewModels
 
             // ── Numpad ──
             double np = 19;
-            Add(0x90, "Num", np, y1);       Add(0x6F, "/", np + 1, y1);    Add(0x6A, "*", np + 2, y1);   Add(0x6D, "-", np + 3, y1);
+            Add(0x90, "NumLk", np, y1);       Add(0x6F, "/", np + 1, y1);    Add(0x6A, "*", np + 2, y1);   Add(0x6D, "-", np + 3, y1);
             Add(0x67, "7", np, y2);         Add(0x68, "8", np + 1, y2);    Add(0x69, "9", np + 2, y2);
             Add(0x6B, "+", np + 3, y2, 1, 2); // tall key spanning 2 rows
             Add(0x64, "4", np, y3);         Add(0x65, "5", np + 1, y3);    Add(0x66, "6", np + 2, y3);

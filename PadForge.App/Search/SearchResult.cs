@@ -28,6 +28,11 @@ namespace PadForge.Search
         /// <summary>The setting's value with its unit ("8 %"), or empty.</summary>
         public string Value { get; internal set; } = string.Empty;
 
+        /// <summary>The value is a number, which reads in the cold color of a
+        /// measured value, as Search's board draws "8 %". A word such as On
+        /// reads as plain secondary text.</summary>
+        public bool ValueIsNumber => Value.Length > 0 && (char.IsDigit(Value[0]) || Value[0] is '-' or '+' or '−');
+
         public SearchGroup Group { get; init; }
 
         public string GroupLabel { get; init; } = string.Empty;

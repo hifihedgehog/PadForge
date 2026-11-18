@@ -4434,9 +4434,9 @@ namespace PadForge.Services
             // One readout line per device per stage (user report
             // 2026-07-06: the flat cross-device union hid which device
             // owned which value and dropped devices entirely). Devices
-            // still at defaults read STOCK so every assigned device is
-            // accounted for. Attribution comes from the card roster,
-            // which keeps offline devices' stored names.
+            // still at defaults read Default Settings so every assigned
+            // device is accounted for. Attribution comes from the card
+            // roster, which keeps offline devices' stored names.
             (string Glyph, System.Windows.Media.Geometry Shape, string Name) Attr(Guid g)
             {
                 var roster = slot.MappedDevices;
@@ -4457,8 +4457,9 @@ namespace PadForge.Services
                 lines.Add(new StageSummaryLine
                 {
                     // Trailing space rides the glyph so glyph-less lines
-                    // (slot-level VOL) don't start with a stray indent. A
-                    // wheel's or a joystick's drawing takes the space too.
+                    // (the slot-level volume) don't start with a stray
+                    // indent. A wheel's or a joystick's drawing takes the
+                    // space too.
                     DeviceGlyph = gl.Length > 0 ? gl + " " : shape != null ? " " : string.Empty,
                     DeviceShape = shape,
                     // Icon, NAME, then settings (user direction 2026-07-06),
@@ -4466,7 +4467,7 @@ namespace PadForge.Services
                     // name carries the separator so slot-level lines with
                     // no attribution stay clean.
                     DeviceName = name.Length > 0 ? name + "  ·  " : string.Empty,
-                    Tokens = parts.Count > 0 ? string.Join(" · ", parts) : "STOCK",
+                    Tokens = parts.Count > 0 ? string.Join(" · ", parts) : Strings.Instance.Home_Stage_Defaults,
                 });
             }
 
@@ -4494,7 +4495,7 @@ namespace PadForge.Services
                     AddLine(triggerLines, ref triggerHot, guid, parts);
                 }
                 // Device-capability stages only line up the devices that
-                // actually have the hardware; a STOCK gyro line on a
+                // have the hardware. A Default Settings gyro line on a
                 // gyro-less sibling would be noise.
                 if (ps != null && ud != null && ud.HasGyro)
                 {
@@ -4548,25 +4549,32 @@ namespace PadForge.Services
                         // PlayerNumber, PlayerLedBrightness High,
                         // MicLedMode Off (DeviceSlotConfig field
                         // initializers; ResetIndicatorLedsAllCommand
-                        // restores them).
+                        // restores them). Each reads as the Lighting tab's
+                        // row and the choice it shows.
+                        var s = Strings.Instance;
                         if (cfg.PlayerLedMode != PlayerLedMode.PlayerNumber)
-                            AddToken(parts, cfg.PlayerLedMode switch
+                            AddToken(parts, StageOn(s.Pad_Lighting_PlayerPattern, cfg.PlayerLedMode switch
                             {
-                                PlayerLedMode.All => "PLED ALL",
-                                PlayerLedMode.Off => "PLED OFF",
-                                PlayerLedMode.Battery => "PLED BATT",
-                                _ => "PLED P" + (int)cfg.PlayerLedMode,
-                            });
+                                PlayerLedMode.All => s.Pad_Lighting_PlayerLed_All,
+                                PlayerLedMode.Off => s.Pad_Lighting_PlayerLed_Off,
+                                PlayerLedMode.Battery => s.Pad_Lighting_GuideLed_Battery,
+                                PlayerLedMode.Player1 => s.Pad_Lighting_PlayerLed_P1,
+                                PlayerLedMode.Player2 => s.Pad_Lighting_PlayerLed_P2,
+                                PlayerLedMode.Player3 => s.Pad_Lighting_PlayerLed_P3,
+                                _ => s.Pad_Lighting_PlayerLed_P4,
+                            }));
                         if (cfg.PlayerLedBrightness != PlayerLedBrightness.High)
-                            AddToken(parts, cfg.PlayerLedBrightness == PlayerLedBrightness.Medium
-                                ? "PLED MED" : "PLED LOW");
+                            AddToken(parts, StageOn(s.Pad_Lighting_LedBrightness,
+                                cfg.PlayerLedBrightness == PlayerLedBrightness.Medium
+                                    ? s.Pad_Lighting_PlayerLed_Brightness_Medium
+                                    : s.Pad_Lighting_PlayerLed_Brightness_Low));
                         if (cfg.MicLedMode != MicLedMode.Off)
-                            AddToken(parts, cfg.MicLedMode switch
+                            AddToken(parts, StageOn(s.Pad_Lighting_MuteLedMode, cfg.MicLedMode switch
                             {
-                                MicLedMode.Pulse => "MIC PULSE",
-                                MicLedMode.FollowDeviceMute => "MIC FOLLOW",
-                                _ => "MIC SOLID",
-                            });
+                                MicLedMode.Pulse => s.Pad_Lighting_MicLed_Pulse,
+                                MicLedMode.FollowDeviceMute => s.Pad_Lighting_MicLed_FollowDevice,
+                                _ => s.Pad_Lighting_MicLed_Solid,
+                            }));
                     }
                     // Guide LED default: DeviceDefault (write nothing,
                     // DeviceSlotConfig field initializer;
@@ -4574,9 +4582,10 @@ namespace PadForge.Services
                     if (cfg != null && devGuideLed
                         && cfg.GuideLedMode != GuideLedMode.DeviceDefault)
                     {
-                        AddToken(parts, cfg.GuideLedMode == GuideLedMode.Battery
-                            ? "GUIDE BATT"
-                            : "GUIDE " + cfg.GuideLedBrightness + "%");
+                        var s = Strings.Instance;
+                        AddToken(parts, StageOn(s.Pad_Lighting_GuideLed, cfg.GuideLedMode == GuideLedMode.Battery
+                            ? s.Pad_Lighting_GuideLed_Battery
+                            : StageValue(s.Pad_Lighting_GuideLed_Brightness, StagePercent(cfg.GuideLedBrightness))));
                     }
                     AddLine(lightingLines, ref lightingHot, guid, parts);
                 }
@@ -4586,7 +4595,7 @@ namespace PadForge.Services
                     // initializer; ResetSoundOutputAllCommand restores it).
                     var parts = new List<string>();
                     if (cfg != null && cfg.AudioPassthroughEnabled)
-                        AddToken(parts, "PASSTHROUGH");
+                        AddToken(parts, Strings.Instance.Pad_Audio_Mirror);
                     AddLine(audioLines, ref audioHot, guid, parts);
                 }
                 if (ud != null && ud.HasTouchpad)
@@ -4600,13 +4609,14 @@ namespace PadForge.Services
                             if (ts == null) continue;
                             // Touchpad defaults: every feature toggle off
                             // (TouchpadGestureSettings.Default(), "touchpad
-                            // mappings are opt-in").
-                            if (ts.Enabled) AddToken(parts, "GESTURES");
-                            if (ts.EnableJoystickOutput) AddToken(parts, "JOYSTICK");
+                            // mappings are opt-in"). Each reads as the
+                            // Touchpad tab's card for it.
+                            if (ts.Enabled) AddToken(parts, Strings.Instance.Pad_Touchpad_Detection_Header);
+                            if (ts.EnableJoystickOutput) AddToken(parts, Strings.Instance.Pad_Touchpad_Stick_Header);
                             if (ts.MouseSensitivityX != 1.0f || ts.MouseSensitivityY != 1.0f
                                 || ts.MouseInvertX || ts.MouseInvertY
                                 || ts.MouseMomentum || !ts.MouseJitterReduction)
-                                AddToken(parts, "MOUSE");
+                                AddToken(parts, Strings.Instance.Pad_Touchpad_Mouse_Header);
                         }
                     }
                     AddLine(touchpadLines, ref touchpadHot, guid, parts);
@@ -4621,7 +4631,7 @@ namespace PadForge.Services
                 audioHot = true;
                 audioLines.Add(new StageSummaryLine
                 {
-                    Tokens = "VOL " + padVm.SoundMasterVolume.ToString(System.Globalization.CultureInfo.InvariantCulture) + "%",
+                    Tokens = StageValue(Strings.Instance.Pad_Audio_MasterVolume, StagePercent(padVm.SoundMasterVolume)),
                 });
             }
 
@@ -4686,13 +4696,45 @@ namespace PadForge.Services
             if (!parts.Contains(token)) parts.Add(token);
         }
 
-        /// <summary>Adds "label n%" when the stored value differs from
-        /// its default. Values are PadSetting invariant strings.</summary>
-        private static void AddPctToken(List<string> parts, string label, string value, float defaultValue)
+        // The stage readout's words: each changed setting as its row on the
+        // controller page names it, with the numbers in the current
+        // culture, as in "Left Stick X: Deadzone 10%".
+
+        /// <summary>"Deadzone 10%": a setting, then its value.</summary>
+        private static string StageValue(string setting, string value)
+            => string.Format(System.Globalization.CultureInfo.CurrentCulture, Strings.Instance.Home_Stage_Value_Format, setting, value);
+
+        /// <summary>"Left Stick X: Deadzone 10%": what a setting acts on,
+        /// then the setting. With no subject, the setting alone.</summary>
+        private static string StageOn(string subject, string setting)
+            => subject == null ? setting
+                : string.Format(System.Globalization.CultureInfo.CurrentCulture, Strings.Instance.Home_Stage_On_Format, subject, setting);
+
+        /// <summary>A number in the current culture's digits.</summary>
+        private static string StageNumber(double value, string format = "0.#")
+            => value.ToString(format, System.Globalization.CultureInfo.CurrentCulture);
+
+        /// <summary>A percentage in the current culture's digits.</summary>
+        private static string StagePercent(double value)
+            => string.Format(System.Globalization.CultureInfo.CurrentCulture, Strings.Instance.Pad_Value_Percent_Format, StageNumber(value));
+
+        /// <summary>The name a picker shows for a stored choice, or the
+        /// stored value where no entry has it.</summary>
+        private static string StageChoice(IReadOnlyList<GyroLabeledOption> choices, string value)
+        {
+            foreach (var choice in choices)
+                if (string.Equals(choice.Value, value, StringComparison.Ordinal)) return choice.Display;
+            return value;
+        }
+
+        /// <summary>Adds "Deadzone 10%" on its subject when the stored value
+        /// differs from its default. Values are PadSetting invariant
+        /// strings.</summary>
+        private static void AddPctToken(List<string> parts, string subject, string setting, string value, float defaultValue)
         {
             float v = TryParseFloatPs(value, defaultValue);
             if (Math.Abs(v - defaultValue) < 0.0001f) return;
-            AddToken(parts, label + " " + v.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture) + "%");
+            AddToken(parts, StageOn(subject, StageValue(setting, StagePercent(v))));
         }
 
         private static bool PsFlagSet(string value) => TryParseFloatPs(value, 0f) != 0f;
@@ -4707,19 +4749,20 @@ namespace PadForge.Services
             // Speed multiplier, default 1. A POINTER-stick knob only (keyboard
             // and mouse stick 0 is the cursor, stick 1 the wheel; owner ruling
             // 2026-07-27), so a gamepad slot must not read hot off a value its
-            // lane ignores. Without this the Sticks stage read STOCK on a
-            // keyboard and mouse slot whose live tab showed a changed value.
+            // lane ignores. Without this the Sticks stage read Default
+            // Settings on a keyboard and mouse slot whose live tab showed a
+            // changed value.
             if (pointerSticks)
             {
-                var sic = System.Globalization.CultureInfo.InvariantCulture;
+                var s = Strings.Instance;
                 float lspd = TryParseFloatPs(ps.LeftThumbSensitivity, 1f);
                 float rspd = TryParseFloatPs(ps.RightThumbSensitivity, 1f);
                 if (Math.Abs(lspd - 1f) > 0.0001f)
-                    AddToken(parts, "L SPEED " + lspd.ToString("0.##", sic) + "x");
+                    AddToken(parts, StageOn(s.Home_Stage_LeftStick, StageValue(s.Pad_Stick_Speed, StageNumber(lspd, "0.##") + "×")));
                 if (Math.Abs(rspd - 1f) > 0.0001f)
-                    AddToken(parts, "R SPEED " + rspd.ToString("0.##", sic) + "x");
+                    AddToken(parts, StageOn(s.Home_Stage_RightStick, StageValue(s.Pad_Stick_Speed, StageNumber(rspd, "0.##") + "×")));
             }
-            AppendStickSideTokens(parts, "L",
+            AppendStickSideTokens(parts, left: true,
                 ps.LeftThumbDeadZoneX, ps.LeftThumbDeadZoneY,
                 ps.LeftThumbAntiDeadZoneX, ps.LeftThumbAntiDeadZoneY, ps.LeftThumbAntiDeadZone,
                 ps.LeftThumbLinear,
@@ -4729,7 +4772,7 @@ namespace PadForge.Services
                 ps.LeftThumbMaxRangeX, ps.LeftThumbMaxRangeY,
                 ps.LeftThumbMaxRangeXNeg, ps.LeftThumbMaxRangeYNeg,
                 ps.LeftThumbCenterOffsetX, ps.LeftThumbCenterOffsetY);
-            AppendStickSideTokens(parts, "R",
+            AppendStickSideTokens(parts, left: false,
                 ps.RightThumbDeadZoneX, ps.RightThumbDeadZoneY,
                 ps.RightThumbAntiDeadZoneX, ps.RightThumbAntiDeadZoneY, ps.RightThumbAntiDeadZone,
                 ps.RightThumbLinear,
@@ -4741,54 +4784,70 @@ namespace PadForge.Services
                 ps.RightThumbCenterOffsetX, ps.RightThumbCenterOffsetY);
         }
 
-        private static void AppendStickSideTokens(List<string> parts, string side,
+        private static void AppendStickSideTokens(List<string> parts, bool left,
             string dzX, string dzY, string adzX, string adzY, string adzLegacy,
             string linear, string curveX, string curveY, string shape,
             string invX, string invY, string maxX, string maxY,
             string maxXNeg, string maxYNeg, string offX, string offY)
         {
-            // Per-axis values carry the axis in the label (LX DZ 10% /
-            // LY DZ 20%). Side-wide values keep the bare side prefix.
-            string ax = side + "X", ay = side + "Y";
-            AddPctToken(parts, ax + " DZ", dzX, 0f);
-            AddPctToken(parts, ay + " DZ", dzY, 0f);
-            AddPctToken(parts, ax + " ADZ", adzX, 0f);
-            AddPctToken(parts, ay + " ADZ", adzY, 0f);
-            AddPctToken(parts, side + " ADZ", adzLegacy, 0f);
-            AddPctToken(parts, side + " LIN", linear, 0f);
+            // Per-axis values name the axis ("Left Stick X: Deadzone 10%").
+            // Side-wide values name the stick.
+            var s = Strings.Instance;
+            string stick = left ? s.Home_Stage_LeftStick : s.Home_Stage_RightStick;
+            string ax = left ? s.Btn_LeftStickX : s.Btn_RightStickX;
+            string ay = left ? s.Btn_LeftStickY : s.Btn_RightStickY;
+            AddPctToken(parts, ax, s.Pad_Sticks_Section_DeadZone, dzX, 0f);
+            AddPctToken(parts, ay, s.Pad_Sticks_Section_DeadZone, dzY, 0f);
+            AddPctToken(parts, ax, s.Pad_AntiDeadZone, adzX, 0f);
+            AddPctToken(parts, ay, s.Pad_AntiDeadZone, adzY, 0f);
+            AddPctToken(parts, stick, s.Pad_AntiDeadZone, adzLegacy, 0f);
+            AddPctToken(parts, stick, s.Pad_Linear, linear, 0f);
             if (!CurveLut.IsLinear(curveX))
-                AddToken(parts, ax + " CURVE " + CurveLut.MatchPreset(curveX));
+                AddToken(parts, StageOn(stick, StageValue(s.Pad_SensitivityX, CurveLut.MatchPreset(curveX))));
             if (!CurveLut.IsLinear(curveY))
-                AddToken(parts, ay + " CURVE " + CurveLut.MatchPreset(curveY));
+                AddToken(parts, StageOn(stick, StageValue(s.Pad_SensitivityY, CurveLut.MatchPreset(curveY))));
             // Shape default 2 = ScaledRadial (PadSetting initializer).
             if (!string.IsNullOrEmpty(shape) && TryParseFloatPs(shape, 2f) != 2f)
-                AddToken(parts, side + " SHAPE");
-            if (PsFlagSet(invX)) AddToken(parts, ax + " INV");
-            if (PsFlagSet(invY)) AddToken(parts, ay + " INV");
-            AddPctToken(parts, ax + " RANGE", maxX, 100f);
-            AddPctToken(parts, ay + " RANGE", maxY, 100f);
-            // Neg ranges default to null (unset = mirror of positive).
-            // The "-" marks the negative direction of the axis.
-            if (!string.IsNullOrEmpty(maxXNeg)) AddPctToken(parts, ax + "- RANGE", maxXNeg, 100f);
-            if (!string.IsNullOrEmpty(maxYNeg)) AddPctToken(parts, ay + "- RANGE", maxYNeg, 100f);
-            if (PsFlagSet(offX) || PsFlagSet(offY)) AddToken(parts, side + " OFFSET");
+                AddToken(parts, StageOn(stick, StageValue(s.Pad_DeadZoneShape, DeadZoneShapeName((int)TryParseFloatPs(shape, 2f)))));
+            if (PsFlagSet(invX)) AddToken(parts, StageOn(ax, s.Pad_Invert));
+            if (PsFlagSet(invY)) AddToken(parts, StageOn(ay, s.Pad_Invert));
+            AddPctToken(parts, ax, s.Pad_Range, maxX, 100f);
+            AddPctToken(parts, ay, s.Pad_Range, maxY, 100f);
+            // Neg ranges default to null (unset = mirror of positive). The
+            // range editor's rows name each axis's negative direction.
+            if (!string.IsNullOrEmpty(maxXNeg)) AddPctToken(parts, stick, s.Pad_MinRangeXLeft, maxXNeg, 100f);
+            if (!string.IsNullOrEmpty(maxYNeg)) AddPctToken(parts, stick, s.Pad_MinRangeYDown, maxYNeg, 100f);
+            if (PsFlagSet(offX) || PsFlagSet(offY)) AddToken(parts, StageOn(stick, s.Pad_Sticks_Section_CenterPoint));
         }
+
+        /// <summary>A deadzone shape's name as the Sticks card's picker
+        /// shows it (DzShapeNameConverter), from its stored value.</summary>
+        private static string DeadZoneShapeName(int shape) => (DeadZoneShape)shape switch
+        {
+            DeadZoneShape.Axial => Strings.Instance.Pad_DZAxial,
+            DeadZoneShape.Radial => Strings.Instance.Pad_DZRadial,
+            DeadZoneShape.SlopedAxial => Strings.Instance.Pad_DZSlopedAxial,
+            DeadZoneShape.SlopedScaledAxial => Strings.Instance.Pad_DZSlopedScaledAxial,
+            DeadZoneShape.Hybrid => Strings.Instance.Pad_DZHybrid,
+            _ => Strings.Instance.Pad_DZScaledRadial,
+        };
 
         /// <summary>Trigger-stage tokens. Defaults per the PadSetting
         /// initializers: deadzone / anti "0", max range "100", curve "0"
         /// (linear).</summary>
         private static void AppendTriggerStageTokens(List<string> parts, PadSetting ps)
         {
-            AddPctToken(parts, "LT DZ", ps.LeftTriggerDeadZone, 0f);
-            AddPctToken(parts, "RT DZ", ps.RightTriggerDeadZone, 0f);
-            AddPctToken(parts, "LT ADZ", ps.LeftTriggerAntiDeadZone, 0f);
-            AddPctToken(parts, "RT ADZ", ps.RightTriggerAntiDeadZone, 0f);
-            AddPctToken(parts, "LT RANGE", ps.LeftTriggerMaxRange, 100f);
-            AddPctToken(parts, "RT RANGE", ps.RightTriggerMaxRange, 100f);
+            var s = Strings.Instance;
+            AddPctToken(parts, s.Btn_LeftTrigger, s.Pad_Sticks_Section_DeadZone, ps.LeftTriggerDeadZone, 0f);
+            AddPctToken(parts, s.Btn_RightTrigger, s.Pad_Sticks_Section_DeadZone, ps.RightTriggerDeadZone, 0f);
+            AddPctToken(parts, s.Btn_LeftTrigger, s.Pad_AntiDeadZone, ps.LeftTriggerAntiDeadZone, 0f);
+            AddPctToken(parts, s.Btn_RightTrigger, s.Pad_AntiDeadZone, ps.RightTriggerAntiDeadZone, 0f);
+            AddPctToken(parts, s.Btn_LeftTrigger, s.Pad_Range, ps.LeftTriggerMaxRange, 100f);
+            AddPctToken(parts, s.Btn_RightTrigger, s.Pad_Range, ps.RightTriggerMaxRange, 100f);
             if (!CurveLut.IsLinear(ps.LeftTriggerSensitivityCurve))
-                AddToken(parts, "LT CURVE " + CurveLut.MatchPreset(ps.LeftTriggerSensitivityCurve));
+                AddToken(parts, StageOn(s.Btn_LeftTrigger, StageValue(s.Macro_Sensitivity, CurveLut.MatchPreset(ps.LeftTriggerSensitivityCurve))));
             if (!CurveLut.IsLinear(ps.RightTriggerSensitivityCurve))
-                AddToken(parts, "RT CURVE " + CurveLut.MatchPreset(ps.RightTriggerSensitivityCurve));
+                AddToken(parts, StageOn(s.Btn_RightTrigger, StageValue(s.Macro_Sensitivity, CurveLut.MatchPreset(ps.RightTriggerSensitivityCurve))));
         }
 
         /// <summary>Gyro-stage tokens. Defaults are the PadSetting
@@ -4801,54 +4860,61 @@ namespace PadForge.Services
         /// The legacy v3.3 GyroSmoothingAlpha has no UI, so it never
         /// counts as heat. Bias / calibration fields are excluded.
         /// InputService auto-calibrates those without user intent, so
-        /// they never count as configuration heat.</summary>
+        /// they never count as configuration heat. Each token is the Gyro
+        /// tab's row and its value.</summary>
         private static void AppendGyroStageTokens(List<string> parts, PadSetting ps, bool simulates = false)
         {
+            var s = Strings.Instance;
             float sensH = TryParseFloatPs(ps.GyroSensitivityH, 1f);
             float sensV = TryParseFloatPs(ps.GyroSensitivityV, 1f);
-            var ic = System.Globalization.CultureInfo.InvariantCulture;
-            if (Math.Abs(sensH - 1f) > 0.0001f || Math.Abs(sensV - 1f) > 0.0001f)
-                AddToken(parts, "SENS " + sensH.ToString("0.##", ic) + "×" + sensV.ToString("0.##", ic));
+            if (Math.Abs(sensH - 1f) > 0.0001f)
+                AddToken(parts, StageValue(s.Settings_GyroSensitivityH, StageNumber(sensH, "0.##") + "×"));
+            if (Math.Abs(sensV - 1f) > 0.0001f)
+                AddToken(parts, StageValue(s.Settings_GyroSensitivityV, StageNumber(sensV, "0.##") + "×"));
             float dz = TryParseFloatPs(ps.GyroDeadZoneDegPerSec, 0f);
             if (Math.Abs(dz - 3f) > 0.0001f)
-                AddToken(parts, "DZ " + dz.ToString("0.#", ic) + "°/s");
+                AddToken(parts, StageValue(s.Settings_GyroDeadZone, StageNumber(dz) + " °/s"));
             float tight = TryParseFloatPs(ps.GyroTighteningThresholdDegPerSec, 0f);
             if (Math.Abs(tight - 3f) > 0.0001f)
-                AddToken(parts, "TIGHT " + tight.ToString("0.#", ic));
+                AddToken(parts, StageValue(s.Settings_GyroTightening, StageNumber(tight) + " °/s"));
             float smoothThr = TryParseFloatPs(ps.GyroSmoothingThresholdDegPerSec, 0f);
             float smoothWin = TryParseFloatPs(ps.GyroSmoothingWindowMs, 50f);
-            if (Math.Abs(smoothThr - 8f) > 0.0001f || Math.Abs(smoothWin - 50f) > 0.0001f)
-                AddToken(parts, "SMOOTH " + smoothThr.ToString("0.#", ic) + "/" + smoothWin.ToString("0.#", ic));
-            if (PsFlagSet(ps.GyroAcceleration)) AddToken(parts, "ACCEL");
+            if (Math.Abs(smoothThr - 8f) > 0.0001f)
+                AddToken(parts, StageValue(s.Settings_GyroSmoothingThreshold, StageNumber(smoothThr) + " °/s"));
+            if (Math.Abs(smoothWin - 50f) > 0.0001f)
+                AddToken(parts, StageValue(s.Settings_GyroSmoothingWindow, StageNumber(smoothWin) + " " + s.Common_Ms));
+            if (PsFlagSet(ps.GyroAcceleration)) AddToken(parts, s.Settings_GyroAcceleration);
             if (!string.IsNullOrEmpty(ps.GyroOutputCurve)
                 && !string.Equals(ps.GyroOutputCurve, "Linear", StringComparison.Ordinal))
-                AddToken(parts, "CURVE " + ps.GyroOutputCurve);
+                AddToken(parts, StageOn(s.Settings_GyroOutputCurve, StageChoice(PadViewModel.OutputCurveChoices, ps.GyroOutputCurve)));
             float rwc = TryParseFloatPs(ps.GyroRealWorldCalibration, 0f);
             if (Math.Abs(rwc) > 0.0001f)
-                AddToken(parts, "RWC " + rwc.ToString("0.#", ic));
-            AddPctToken(parts, "EASYAIM", ps.GyroEasyAimStickThreshold, 0f);
+                AddToken(parts, StageValue(s.Settings_GyroRealWorldCalibration, StageNumber(rwc)));
+            AddPctToken(parts, null, s.Settings_GyroEasyAimThreshold, ps.GyroEasyAimStickThreshold, 0f);
             if (!string.IsNullOrEmpty(ps.GyroSpace)
                 && !string.Equals(ps.GyroSpace, "Local", StringComparison.Ordinal))
-                AddToken(parts, "SPACE " + ps.GyroSpace);
+                AddToken(parts, StageOn(s.Settings_GyroSpace, StageChoice(PadViewModel.SpaceChoices, ps.GyroSpace)));
             if (!string.IsNullOrEmpty(ps.MotionGrip)
                 && !string.Equals(ps.MotionGrip, "Pointing", StringComparison.Ordinal))
-                AddToken(parts, "GRIP " + ps.MotionGrip);
-            if (!string.IsNullOrEmpty(ps.GyroAimEngageButton)) AddToken(parts, "ENGAGE");
+                AddToken(parts, StageOn(s.Settings_MotionGrip, StageChoice(PadViewModel.GripChoices, ps.MotionGrip)));
+            if (!string.IsNullOrEmpty(ps.GyroAimEngageButton)) AddToken(parts, s.Settings_GyroAimEngageButton);
             // The gyro flags read the engine's way (TryParseBoolPs), so the
             // summary names what runs.
-            if (TryParseBoolPs(ps.GyroInvertPitch, false)) AddToken(parts, "INV P");
-            if (TryParseBoolPs(ps.GyroInvertYaw, false)) AddToken(parts, "INV Y");
-            if (TryParseBoolPs(ps.GyroInvertRollEffective, false)) AddToken(parts, "INV R");
-            if (TryParseBoolPs(ps.GyroApplyTuningToPassthrough, false)) AddToken(parts, "PASSTHRU");
+            if (TryParseBoolPs(ps.GyroInvertPitch, false)) AddToken(parts, s.Settings_GyroInvertPitch);
+            if (TryParseBoolPs(ps.GyroInvertYaw, false)) AddToken(parts, s.Settings_GyroInvertYaw);
+            if (TryParseBoolPs(ps.GyroInvertRollEffective, false)) AddToken(parts, s.Settings_GyroInvertRoll);
+            if (TryParseBoolPs(ps.GyroApplyTuningToPassthrough, false))
+                AddToken(parts, StageOn(s.Pad_Gyro_Passthrough_Header, s.Pad_Gyro_Passthrough_Tuned));
             // Simulated pitch and roll (#472), only where the card shows.
             if (simulates && TryParseBoolPs(ps.GyroSimulation, false))
             {
+                AddToken(parts, s.Settings_GyroSimulation);
                 // The value the filter runs at: clamped, and the default for
                 // anything unreadable.
                 float simMs = PadForge.Engine.SimulatedGyro.SmoothingSeconds(
                     TryParseFloatPs(ps.GyroSimulationSmoothingMs, PadForge.Engine.SimulatedGyro.DefaultSmoothingMs)) * 1000f;
-                AddToken(parts, Math.Abs(simMs - PadForge.Engine.SimulatedGyro.DefaultSmoothingMs) > 0.0001f
-                    ? "SIM " + simMs.ToString("0", ic) + "ms" : "SIM");
+                if (Math.Abs(simMs - PadForge.Engine.SimulatedGyro.DefaultSmoothingMs) > 0.0001f)
+                    AddToken(parts, StageValue(s.Settings_GyroSimulationSmoothing, StageNumber(simMs, "0") + " " + s.Common_Ms));
             }
         }
 
@@ -5842,7 +5908,7 @@ namespace PadForge.Services
                     buzz = ud.InstanceGuid;
                     break;
                 }
-                name ??= "Controller";
+                name ??= Strings.Instance.Battery_UnnamedController;
                 string title = Strings.Instance.Battery_LowTitle;
                 string text = string.Format(Strings.Instance.Battery_LowText_Format, name, pct);
                 (System.Windows.Application.Current?.MainWindow as MainWindow)?.ShowTrayBalloon(title, text);

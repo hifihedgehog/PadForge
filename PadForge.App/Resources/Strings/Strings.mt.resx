@@ -88,7 +88,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Qed titwaqqaf il-magna…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Qed jaħdem fuq {0}</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>Qed jaħdem, imqabbdin: {0}</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Qed jisma' fuq :{0}</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Qed jisma' fuq il-port {0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>Il-port {0} qed jintuża</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Aċċess miċħud għall-port {0} (mexxi bħala amministratur)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>Naqas milli jibda</value></data>
@@ -106,10 +106,11 @@
   <data name="Common_Stop" xml:space="preserve"><value>Waqqaf</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Ibda</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Irreġistra</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>Qed jirreġistra...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Qed jirreġistra…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Ikklirja</value></data>
   <data name="Common_None" xml:space="preserve"><value>L-ebda</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>sekondi</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Mhux assenjat</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -124,7 +125,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>Qed jingħalaq PadForge...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>Qed jingħalaq PadForge…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Qed jibda PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Qed jitnaddfu l-kontrolluri virtwali li fadal minn sessjoni preċedenti.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Żid kontrollur</value></data>
@@ -226,8 +227,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ isfel)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← xellug)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ 'il fuq)</value></data>
-  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll MA nstabx</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll ma nstabx! Poġġi SDL3.dll maġenb PadForge.exe. Niżżlu minn https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll ma nstabx</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll ma nstabx. Poġġi SDL3.dll maġenb PadForge.exe. Niżżlu minn https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>L-operazzjoni tad-driver falliet: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Is-settings ġew ikkupjati fil-clipboard.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>L-informazzjoni dwar l-apparat ġiet ikkupjata fil-clipboard.</value></data>
@@ -258,11 +259,11 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>Is-settings reġgħu tgħabbew mid-disk.</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>Ma nstab l-ebda fajl tas-settings fuq id-disk.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>L-ebda apparat imqabbad biex tirreġistra minnu.</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Qed jirreġistra: agħfas buttuna jew mexxi assi għal “{0}”...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Qed jirreġistra: dawwar jew ħawwad kontrollur għal “{0}”...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Qed jirreġistra: agħfas buttuna jew mexxi assi għal “{0}”…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Qed jirreġistra: dawwar jew ħawwad kontrollur għal “{0}”…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>L-ebda kontrollur fuq dan is-slot m'għandu sensor għal “{0}.”</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Qed jirreġistra “{0}”: agħfas l-input tad-direzzjoni 'Il fuq'...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Qed jirreġistra “{0}”: issa agħfas l-input tad-direzzjoni 'Isfel'...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Qed jirreġistra “{0}”: agħfas l-input tad-direzzjoni 'Il fuq'…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Qed jirreġistra “{0}”: issa agħfas l-input tad-direzzjoni 'Isfel'…</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Ir-reġistrazzjoni ġiet ikkanċellata.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Ir-reġistrazzjoni skadiet għal “{0}.”</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Il-magna bdiet.</value></data>
@@ -281,7 +282,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Uri jew aħbi PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Ixgħel jew itfi l-kontrolluri virtwali</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Kwalunkwe apparat imqabbad</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Qed jirreġistra...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Qed jirreġistra…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>meta</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>fuq</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>“{0}” ġie mneħħi mill-Kontrollur virtwali {1}.</value></data>
@@ -314,6 +316,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>Kontrolluri</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extras fl-użu</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Mixgħul. {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>Settings predefiniti</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>Stick tax-xellug</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>Stick tal-lemin</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>{0} oħra fl-[Extras]. Extra tibqa' mitfija sakemm tixgħelha.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Iftaħ l-Extras</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>Uri QR</value></data>
@@ -381,8 +388,12 @@
   <data name="Engine_Forging" xml:space="preserve"><value>Mixgħul</value></data>
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Ħaj: {0} minn {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Agħżel makro fil-lista, jew agħfas + ħdejn Makros biex toħloq waħda.</value></data>
-  <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
-  <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>Mhux ipproċessat</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>Output</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Kurva</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Saffi tal-bdil</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Maqlub</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>Quċċata</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Kiesaħ</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Dehra minn qabel</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Extras</value></data>
@@ -418,11 +429,11 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Il-valuri huma r-ringiela Telemetrija tal-logħob f'[Apparati]. Mappjahom fis-sezzjoni Mappjar ta' kontrollur jew użahom biex tiskatta makros.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Il-post, id-daqs u l-opaċità ta' menu jiġu stabbiliti fil-menu nnifsu, fis-sezzjoni [Makros u Menus] ta' kontrollur.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Sorsi</value></data>
-  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack u kull ma jibgħat il-format UDP tiegħu</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack u kull ma jibgħat il-format UDP tiegħu.</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Firxa</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Firxa għal kull assi. Il-valur 0 juża l-firxa ta' hawn fuq.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Logħob li PadForge ma jafx</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Għal mods li jfittxu DSX li jkun qed jaħdem qabel jibagħtu</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Għal mods li jfittxu DSX li jkun qed jaħdem qabel jibagħtu.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Dak li jidher</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>L-anell, il-griglja jew il-bar ta' menu waqt li jkun miftuħ</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>L-isem tas-saff meta saff shift jinxtegħel, għall-ħin li jistabbilixxi dak is-saff</value></data>
@@ -681,7 +692,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Aħbi l-apparati mil-logħob, Żomm l-apparati moħbija bejn sessjoni u oħra, Applikazzjonijiet fil-whitelist</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Applikazzjonijiet fil-whitelist</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Dawn l-applikazzjonijiet xorta jistgħu jaraw l-apparati moħbija. PadForge dejjem jiżdied awtomatikament mal-whitelist.</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>Żid...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>Żid…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge jinstalla dan id-driver mal-ewwel kontrollur virtwali li toħloq. It-tneħħija telenka dak li ħalla HIDMaestro fuq dan il-PC qabel ma tneħħih.</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Joħloq il-kontrolluri virtwali.</value></data>
@@ -700,6 +711,21 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Miżmum</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Mhux moqri</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Mhux imneħħi</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Apparat</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Reġistrazzjoni tal-interfaċċa</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Ċavetta tar-reġistru kondiviża</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Valur tar-reġistru kondiviż</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Rabta ta' WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Sostituzzjoni tal-isem OEM</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Ċavetta DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Reġistrazzjoni ta' OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Pakkett tad-driver</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Ċavetta tas-servizz WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Ċavetta tar-reġistru</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Ċertifikat</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Folder</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Issettjar tas-servizz</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Pass tat-tneħħija</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Iħalli lill-kontrolluri PlayStation 3, lill-PlayStation Move u lill-kontrollur Navigation jikkonnettjaw permezz tal-Bluetooth. Inkorporat f'PadForge u jiġi installat l-ewwel darba li wieħed minnhom jiġi ppearjat.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Iqabbad il-kontrolluri PlayStation 3 permezz ta' Bluetooth.</value></data>
@@ -894,11 +920,11 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Ittajpja "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(l-ebda test)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Test</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Dewmien bejn karattri (ms)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Dewmien bejn l-ittri</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekondi bejn karattru u ieħor, sa 1000. 0 jittajpja t-test kollu f'daqqa.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Skonnessjoni waqt inattività</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Dettalji</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuti (0 = qatt)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuti</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Aqta' l-Bluetooth meta jkun imqabbad bl-USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Meta dan il-kontrollur jirrapporta li qed jiċċarġja waqt li jkun konness bil-Bluetooth, il-konnessjoni Bluetooth tinqata' biex jiċċarġja mingħajr ma jħaddem ir-radju. Kull sors ta' enerġija USB jgħodd, inklużi ċ-ċarġers tal-ħajt. Jekk terġa' tixgħel il-Bluetooth waqt li l-kejbil jibqa' mdaħħal, jitħalla kif inhu sakemm il-kejbil jinqala' d-darba li jmiss.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Aqra bħala kontrollur iCade</value></data>
@@ -989,7 +1015,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Ipponta l-Wii Remote lejn il-mira u agħfas B.</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Il-Wii Remote ma rax is-sensor bar. Ipponta lejn il-mira u erġa' agħfas B.</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc jew Home jikkanċella.</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Jiskonnettja dan il-kontrollur Bluetooth wara dawn il-minuti mingħajr input, biex jorqod u jiffranka l-batterija. Qatt ma jaħdem fuq USB.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Jiskonnettja dan il-kontrollur Bluetooth wara dawn il-minuti mingħajr input, biex jorqod u jiffranka l-batterija. 0 jitfih. Qatt ma jaħdem fuq USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Enerġija</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>
@@ -1077,11 +1103,15 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>Ġiroskopju</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>Aċċelerometru</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 assi</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} assijiet</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 buttuna</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} buttuni</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>Assi {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} assijiet, {1} buttuni, {2} POV</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>Rumble</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Ġiroskopju</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>Aċċel.</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>jaħbi dan l-apparat mill-programmi li jiftħuh bħala apparat HID</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows jibqa' jaqra t-tasti li tagħfas, għalhekk il-kitba xorta taħdem f'kull programm, inkluż il-logħob. Tastiera USB tista' titneħħa minn Windows permezz ta' “{0}”.</value></data>
@@ -1246,7 +1276,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>headsets, mousepads u speakers</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>headsets</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Il-logħob jieħdu l-kontroll kull meta jiktbu d-dawl.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Daħħal kulur hex ta' sitt ċifri (RRGGBB jew #RRGGBB) u agħfas Enter jew ikklikkja barra biex tapplikah.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Neħħi dan il-kulur mill-paletta</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Mitfi</value></data>
@@ -1351,7 +1381,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Esportat f'{0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>L-esportazzjoni falliet: {0}</value></data>
   <data name="ManageProfiles_StatusDeleted_Format" xml:space="preserve"><value>Imħassar "{0}".</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Importa Minn Fajl…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>Importa minn fajl…</value></data>
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importa l-JSON tal-preset</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Importat minn {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Il-qari falla: {0}</value></data>
@@ -1361,6 +1391,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importa</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(apparat HID bla isem)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Instabu {0} interfaċċi HID.</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Instabet interfaċċa HID waħda.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>L-enumerazzjoni falliet: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>L-estrazzjoni falliet: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>Il-JSON tal-profil estratt ma setax jiġi analizzat. Ma ġie salvat xejn.</value></data>
@@ -1473,7 +1504,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Irreġistra l-mappjar kollu, wieħed wara l-ieħor</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Ikkopja l-mappjar u s-settings kollha fil-clipboard</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Waħħal il-mappjar u s-settings mill-clipboard</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Ikkopja minn...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Ikkopja minn…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Ikkopja s-settings minn apparat ieħor ikkonfigurat</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Irrisettja kollox</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Ħassar kollox</value></data>
@@ -1660,7 +1691,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Il-firxa f'numri, valuri mhux ipproċessati</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Firxa</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Ikkalibra l-konfini jkejjel it-tarf li l-istick jista' jilħaq u jsawwru mill-ġdid f'ċirku sħiħ. L-erba' sliders jillimitaw biss kull direzzjoni.</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>Qed jieħu kampjuni...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>Qed jieħu kampjuni…</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Offset taċ-ċentru X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Offset taċ-ċentru Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Forma taż-żona mejta</value></data>
@@ -1771,6 +1802,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Macro_DelayMs" xml:space="preserve"><value>Dewmien</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Sensittività</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Makro ġdid</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Makro {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Irreġistra l-attivatur</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>Mhux issettjat. Ikklikkja Irreġistra.</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Butt. {0}</value></data>
@@ -1829,6 +1861,8 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Iħaddem ir-rumble tal-apparat fiżiku tas-slot minn makro. Reattiv jaħdem b'saħħa sħiħa għat-tieqa taż-żamma u mbagħad jonqos għal żero matul it-tieqa tat-tbaħħit. Persistenti jżomm b'saħħa sħiħa sakemm taħdem azzjoni “Waqqaf ir-rumble”. Jiżdied fuq ir-rumble tal-logħba permezz ta' max() biex il-feedback tal-utent dejjem jinħass.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Polz ta' rumble {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Żomm ir-rumble {0} sakemm jitneħħa</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>xellug {0}%, lemin {1}%</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>trigger tax-xellug {0}%, trigger tal-lemin {1}%</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Waqqaf ir-rumble</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Waqqaf ir-rumble</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Tneħħi kwalunkwe sostituzzjoni attiva tar-rumble fuq is-slot assenjat. Użaha ma' azzjoni Rumble Persistenti biex tneħħi ż-żamma permezz ta' makro ieħor.</value></data>
@@ -1867,7 +1901,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Maws Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Intervall</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Agħżel fuq l-iskrin</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Qbid fi {0}...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Qbid fi {0}…</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Ikklikkja, imbagħad mexxi l-kursur fuq il-mira. Il-pożizzjoni tiegħu tinqabad wara għadd lura qasir.</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Modalità</value></data>
   <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>Daħla X</value></data>
@@ -1894,9 +1928,9 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>Mhux immappjat</value></data>
-  <data name="Mapping_Inv" xml:space="preserve"><value>Inv.</value></data>
+  <data name="Mapping_Inv" xml:space="preserve"><value>Maqlub</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>Nofs</value></data>
-  <data name="Mapping_InvHalf" xml:space="preserve"><value>Nofs inv.</value></data>
+  <data name="Mapping_InvHalf" xml:space="preserve"><value>Nofs maqlub</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>L-ebda apparat immappjat</value></data>
 
@@ -2514,9 +2548,9 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Itlaq hawn biex timporta profil</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Itlaq fajl tal-profil hawn</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Profil ġdid</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>Salva bħala</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Salva bħala…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Salva s-setup preżenti hawn</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Editja</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Editja…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Għabbi</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Integrat</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>L-ebda logħba</value></data>
@@ -2619,8 +2653,8 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Irrisettja l-offset taċ-ċentru X</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Ikkalibra l-konfini</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Erġa' kkalibra l-konfini</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Dawwar mat-tarf... fadal {0}</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Kopert. Dawra oħra biex jiġi rfinut...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Dawwar mat-tarf… fadal {0}</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Kopert. Dawra oħra biex jiġi rfinut…</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Ċirkolarità {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Dawwar l-istick mat-tarf kollu tiegħu biex timmappja l-konfini li jintlaħqu, imbagħad dawn jiġu ffurmati mill-ġdid f'ċirku sħiħ.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Irrisettja l-kalibrazzjoni tal-konfini</value></data>
@@ -2699,7 +2733,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Jikkontrolla l-volum ta' applikazzjoni speċifika fil-mixer tal-volum tal-Windows, skalat skont il-limitu tal-volum. Daħħal l-isem tal-proċess (jidher fit-Task Manager). Użah ma' attivazzjoni “Dejjem”, jew ma' attivazzjoni b'buttuna/assi b'“Waqt li tinżamm” + “Sa ma tinħall.”</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Jorbot kontinwament l-assi magħżul mal-moviment tal-maws (jew mal-iscroll). Użah ma' attivazzjoni “Dejjem”, jew ma' attivazzjoni b'buttuna/assi b'“Waqt li tinżamm” + “Sa ma tinħall.” Għal stick-għal-maws, oħloq żewġ azzjonijiet: waħda għall-assi X, u waħda għall-assi Y.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Ibdel id-direzzjoni tal-assi</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Uri l-OSD tal-volum</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Uri l-indikatur tal-volum</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Direzzjoni</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Kwalunkwe</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Pożittiva</value></data>
@@ -2889,7 +2923,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Preview_CCOutputs" xml:space="preserve"><value>Output CC</value></data>
   <data name="Preview_NoteOutputs" xml:space="preserve"><value>Output tan-noti</value></data>
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Stick {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Buttuni</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -2906,7 +2940,6 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Livell</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Ħin ta' inattività</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Sekondi qabel ma kontrollur virtwali jitneħħa meta l-apparati kollha mmappjati tiegħu jkunu offline. 0 jiddiżattiva. Il-kontrolluri li jibqgħu tal-istess tip jitilgħu 'l fuq biex jimlew il-vojt u jintrabtu mill-ġdid ma' slots aktar baxxi.</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekondi (0 = qatt)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Żid saff</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Żid saff shift: tabella oħra ta' mappjar li tiġi attivata waqt li buttuna tinżamm jew waqt li tkun mixgħula.</value></data>
@@ -3682,7 +3715,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
     <value>Irrisettja d-dewmien għal 0 (is-saff jirreaġixxi minnufih).</value>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Konfigurazzjonijiet tal-komunità</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Ibbrawżja konfigurazzjonijiet tal-kontrollur ta' Steam Input magħmula mill-komunità u ttraduċihom fi profili ta' PadForge. PadForge jikkonnettja direttament mas-servers ta' Steam biss meta tfittex, tiftaħ konfigurazzjoni, jew tiċċekkja l-konfigurazzjonijiet importati tiegħek għal aġġornamenti. Jibgħat it-test tat-tfittxija tiegħek, l-ids tal-logħob, tal-konfigurazzjonijiet u tal-ħallieqa involuti, u l-verżjoni ta' PadForge. Il-logon anonimu ta' Steam jibgħat ukoll il-verżjoni tal-Windows tiegħek u id tal-magna magħmul minn hashes tal-ID tal-installazzjoni tal-Windows, tal-indirizzi tal-adapters tan-netwerk, u tas-serial tad-diska tal-boot. L-ebda telemetrija, l-ebda servizz ta' parti terza, l-ebda kont ta' Steam.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Ibbrawżja konfigurazzjonijiet tal-kontrollur ta' Steam Input magħmula mill-komunità u ttraduċihom fi profili ta' PadForge. PadForge jibgħat it-test tat-tfittxija tiegħek, l-ID tal-logħob, tal-konfigurazzjonijiet u tal-ħallieqa involuti, u l-verżjoni tiegħu. Il-logon anonimu ta' Steam jibgħat ukoll il-verżjoni tal-Windows tiegħek u ID tal-magna magħmul minn hashes tal-ID tal-installazzjoni tal-Windows, tal-indirizzi tal-adapters tan-netwerk u tas-serial tad-diska tal-boot. Ebda servizz ta' parti terza ma huwa involut.</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge jikkonnettja mas-servers ta' Steam biss meta tfittex, tiftaħ konfigurazzjoni jew tiċċekkja l-konfigurazzjonijiet importati għal aġġornamenti. L-ebda telemetrija, l-ebda kont ta' Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>X'jintbagħat</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Attiva l-konfigurazzjonijiet tal-komunità</value></data>
@@ -3736,6 +3769,9 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam ma jelenka l-ebda fajl biex jitniżżel għal din il-konfigurazzjoni, u l-ebda kopja tagħha mhi fil-folder ta' Steam tiegħek. Abbona għaliha f'Steam, u PadForge jaqraha minn hemm.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Iftaħ f'Steam Workshop</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>Antik</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Profil tal-Workshop</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Makro tal-Workshop</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Reġjun tal-kursur</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Agħżel konfigurazzjoni biex tara dak li jgħaddi.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Dak li jgħaddi</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Isir</value></data>
@@ -4111,6 +4147,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Medju (faċli)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Għoli (faċli)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Personalizzat</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b predefinit</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Qtugħ</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Frekwenza tal-crossover. Taħtha l-kanali jitħalltu lejn mono, fuqha jibqgħu separati, għalhekk qtugħ aktar baxx jagħmel inqas crossfeed.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Feed</value></data>
@@ -4124,7 +4161,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Il-livell ġenerali qabel il-bandi. Il-profili AutoEq jiġu b'preamp negattiv biex iż-żidiet tagħhom ma jagħmlux clipping, u meta timporta wieħed dan jiġi ssettjat għalik.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Mixgħul</value></data>
   <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>Tip</value></data>
-  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Frek (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Frekwenza (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Gain (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
   <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Żid banda</value></data>
@@ -4132,7 +4169,8 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Ħassar</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Importa mill-clipboard</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Ikkopja profil AutoEq għall-headphones tiegħek, imbagħad ikklikkja. Jissostitwixxi l-bandi u jissettja l-preamp. Jekk fil-clipboard ma jkun hemm xejn li jinqara, l-EQ attwali jibqa' kif inhu.</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Importa minn fajl</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Importa minn fajl…</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>Importa EQ parametriku</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Agħżel il-fajl .txt li niżżilt minn AutoEq. Dan huwa dak li għandek tuża: autoeq.app jagħtik fajl minflok test li tista' tikkopja.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Għal korrezzjoni mqabbla mal-headphones tiegħek: iftaħ autoeq.app, agħżel il-mudell tiegħek, agħżel Custom Parametric Eq u niżżlu, imbagħad Importa minn fajl. It-tniżżil Graphic Eq m'għandux linji tal-filtri u ma jistax jiġi importat.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Ġew importati {0} bandi b'preamp ta' {1:0.#} dB minn {2}.</value></data>
@@ -4185,6 +4223,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Dan in-netwerk ma jistax jagħmel konnessjonijiet diretti (jidher qisu hotspot mobbli jew NAT tal-operatur). Uża VPN bħal Tailscale, jew qabbad mill-broadband tad-dar.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>L-indirizz pubbliku ta' dan il-PC ma nstabx (in-netwerk jista' jkun qed jimblokka t-traffiku meħtieġ). Il-konnessjonijiet diretti mhux se jaħdmu hawn. Uża VPN, jew Qabbad bl-indirizz fuq l-istess netwerk.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Batterija tal-kontrollur baxxa</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Kontrollur</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: fadal {1}% batterija</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Twissijiet tal-batterija</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Irċievi notifika meta l-batterija ta' kontrollur tkun baxxa, qabel ma tintefa f'nofs il-logħba.</value></data>
@@ -4396,7 +4435,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
     <value>Oħloq kontrollur virtwali fuq il-PC l-ieħor, imbagħad aġġorna.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Stennija għall-PC l-ieħor...</value>
+    <value>Stennija għall-PC l-ieħor…</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>Tablet tad-disinn</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>Input kondiviż</value></data>
@@ -4456,7 +4495,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>Il-post tal-installazzjoni ta' SteamVR irid ikun path sħiħ, bħal C:\SteamVR.</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>Il-post tal-installazzjoni ta' SteamVR ma jistax ikun l-għerq ta' drive. Agħżel folder, bħal C:\SteamVR.</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd ma spiċċax fi żmien 60 minuta.</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd ħadem, iżda SteamVR ma ġiex installat f'{0}. steamcmd qal: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd ħadem, iżda SteamVR ma ġiex installat f'{0}. steamcmd qal: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>HidHide ġie installat, iżda l-apparat tal-kontroll tiegħu ma nfetaħx, għalhekk ma ġie miżjud l-ebda filtru tal-klassi.</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>HidHide għadu elenkat bħala filtru tal-klassi, għalhekk id-driver tħalla f'postu.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Qed jitneħħew id-drivers antiki…</value></data>
@@ -4915,6 +4954,8 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Batterija</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Path</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Numru tas-serje</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID tal-app</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Reviżjoni</value></data>
   <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Ivvibra wkoll il-kontrollur, Irrepeti n-notifika kull, Innotifika meta jkun mgħobbi għalkollox</value></data>

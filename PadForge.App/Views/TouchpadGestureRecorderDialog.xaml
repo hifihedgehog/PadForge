@@ -63,7 +63,7 @@
                        common:LiveText.Polite="True"
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                        Text="{Binding Recorder_Waiting, Source={x:Static strings:Strings.Instance}}"/>
-            <TextBlock x:Name="SamplesText" Grid.Column="1" Margin="12,0,0,0" Style="{StaticResource DialogMonoNote}"/>
+            <TextBlock x:Name="SamplesText" Grid.Column="1" Margin="12,0,0,0" Style="{StaticResource DialogFigureNote}"/>
         </Grid>
 
         <controls:SettingRow MinHeight="44" Margin="0,8,0,0">

@@ -58,8 +58,8 @@
     <Geometry x:Key="ShieldLineGeometry">M12 3 L5 6 v5 c0 4.5 3 8 7 10 c4 -2 7 -5.5 7 -10 V6 z</Geometry>
     <Geometry x:Key="CheckCircleGeometry">M3.5 12 a8.5 8.5 0 1 0 17 0 a8.5 8.5 0 1 0 -17 0 M8.5 12.3 l2.4 2.4 l4.6 -5</Geometry>
 
-    <!-- A key as Search draws it (#574): a small outlined label, the key's
-         name in the telemetry face. -->
+    <!-- A key as Search draws it (#574): a small outlined label with the
+         key's name. -->
     <Style x:Key="KeyChip" TargetType="Border">
         <Setter Property="CornerRadius" Value="4"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -68,7 +68,7 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
     <Style x:Key="KeyChipText" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
+        <Setter Property="Typography.NumeralAlignment" Value="Tabular"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
     </Style>

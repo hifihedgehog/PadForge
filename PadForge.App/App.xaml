@@ -1,6 +1,7 @@
 <Application x:Class="PadForge.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:uictrl="clr-namespace:Wpf.Ui.Controls;assembly=Wpf.Ui"
              xmlns:conv="clr-namespace:PadForge.Converters"
@@ -20,11 +21,13 @@
                      these faces instead of falling back to Segoe UI.
                      StaticResource only sees earlier siblings. -->
                 <ResourceDictionary>
-                    <!-- Telemetry text (#175 iteration 4): the platform face,
-                         not a mono insert. Cascadia at 12px inside Segoe
-                         lines read as pasted terminal text on real pixels.
-                         Cold color carries the telemetry identity. -->
-                    <FontFamily x:Key="TelemetryFontFamily">Cascadia Code, Consolas, Segoe UI</FontFamily>
+                    <!-- One family for every word and number: Segoe UI
+                         Variable, Text for body sizes and Display from 18
+                         up. Numbers that change or stand in a column
+                         (readouts, counts, ports, IDs) keep that face and
+                         set Typography.NumeralAlignment="Tabular", so each
+                         digit is as wide as the next. Their cold color marks
+                         them as measured. -->
                     <FontFamily x:Key="BodyFontFamily">Segoe UI Variable Text, Segoe UI</FontFamily>
                     <FontFamily x:Key="DisplayFontFamily">Segoe UI Variable Display, Segoe UI</FontFamily>
                 </ResourceDictionary>
@@ -1043,7 +1046,7 @@
                 the container is retemplated. Selection is the EmberTint
                 wash + #66FF6B2C rim the identity chip and the AT mode cards
                 wear, and the content keeps its own foregrounds (names stay
-                primary, mono detail lines stay secondary/tertiary). Hover
+                primary, detail lines stay secondary/tertiary). Hover
                 is the neutral subtle fill.
             -->
             <Style x:Key="EmberSelectListItem" TargetType="ListBoxItem" BasedOn="{StaticResource DefaultListBoxItemStyle}">
@@ -1280,7 +1283,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
             </Style>
             <!-- A setting's value, typed in place. At rest it reads as plain
-                 text in the mono face, the number and then its unit, as the
+                 text with tabular figures, the number and then its unit, as the
                  boards draw it. Under the pointer it takes the raised fill,
                  and with the keyboard's focus the field's fill and a cold
                  edge, so it shows where a value is typed. It is as wide as its
@@ -1290,7 +1293,7 @@
                  text itself, and a template that bound the same Padding again
                  cut a third digit off a boxed value. -->
             <Style x:Key="DzValueEdit" TargetType="TextBox">
-                <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
+                <Setter Property="Typography.NumeralAlignment" Value="Tabular"/>
                 <Setter Property="FontSize" Value="13"/>
                 <Setter Property="TextAlignment" Value="Right"/>
                 <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
@@ -1336,6 +1339,7 @@
                  width of a space. -->
             <Style x:Key="DzPercent" TargetType="TextBlock">
                 <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="13"/>
                 <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
             </Style>
 
@@ -1450,6 +1454,29 @@
             <Style x:Key="DefaultControlFocusVisualStyle" BasedOn="{StaticResource EmberFocusVisual}"/>
             <Style x:Key="{x:Static SystemParameters.FocusVisualStyleKey}" BasedOn="{StaticResource EmberFocusVisual}"/>
 
+            <!-- Menus (the typography pass of 2026-11-17): a ContextMenu is a
+                 popup root that inherits nothing from the window, and
+                 WPF-UI's UiContextMenu sets no FontFamily
+                 (wpfui src/Wpf.Ui/Controls/ContextMenu/ContextMenu.xaml:13),
+                 so menus drew in classic Segoe UI. The face set here reaches
+                 every item, the tray menu's too. -->
+            <Style TargetType="ContextMenu" BasedOn="{StaticResource {x:Type ContextMenu}}">
+                <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+            </Style>
+
+            <!-- A popup the app builds itself: the ground, edge and corner of
+                 every dropdown (wpfui src/Wpf.Ui/Controls/ComboBox/ComboBox.xaml:282-285),
+                 which EmberTheme pins to the flyout ground and the steel line
+                 on dark. The device filter drew on the page's ground, the
+                 layer rename on the window's base and a trigger's picker on
+                 a card's fill, so each read as a different kind of thing. -->
+            <Style x:Key="FlyoutSurface" TargetType="Border">
+                <Setter Property="Background" Value="{DynamicResource ComboBoxDropDownBackground}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxDropDownBorderBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="CornerRadius" Value="{DynamicResource PopupCornerRadius}"/>
+            </Style>
+
             <!--
                 ToolTip typography (#175 final sweep): body face at the stock
                 12px. The stock style justifies text, which rivers on short
@@ -1458,6 +1485,17 @@
                 already pins to the flyout ground on dark.
             -->
             <Style TargetType="ToolTip" BasedOn="{StaticResource DefaultToolTipStyle}">
+                <!-- A tooltip that is a string wraps inside the 420 every
+                     tooltip keeps to, so a long hint is never one
+                     screen-wide line. The template is for strings alone:
+                     a tooltip whose content is an element, or an item with
+                     its own template, shows as it did. -->
+                <Style.Resources>
+                    <DataTemplate DataType="{x:Type sys:String}">
+                        <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                    </DataTemplate>
+                </Style.Resources>
+                <Setter Property="MaxWidth" Value="420"/>
                 <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
                 <Setter Property="TextBlock.TextAlignment" Value="Left"/>
             </Style>

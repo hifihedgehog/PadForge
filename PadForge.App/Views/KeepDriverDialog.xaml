@@ -32,8 +32,9 @@
         <!-- The time left, drained at the timer's step. It is named by the
              sentence beside it, which the code-behind keeps in step. -->
         <ProgressBar x:Name="CountdownBar" Style="{StaticResource DialogCountdownBar}" VerticalAlignment="Center"/>
-        <!-- The sentence, its number in the code face. A live region, so a
-             screen reader says each second as it changes. -->
+        <!-- The sentence, its number in tabular figures so the line keeps
+             its width. A live region, so a screen reader says each second
+             as it changes. -->
         <TextBlock x:Name="CountdownText" Grid.Column="1" Margin="12,0,0,0" FontSize="14"
                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                    AutomationProperties.LiveSetting="Polite"/>

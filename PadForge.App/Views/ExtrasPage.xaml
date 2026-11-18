@@ -140,12 +140,14 @@
         <Style x:Key="DzLabel" TargetType="TextBlock" BasedOn="{StaticResource ExtraLabel}">
             <Setter Property="Width" Value="260"/>
         </Style>
-        <!-- The gray words beside a switch in its row. They take the room the
-             row has left and wrap in it. -->
-        <Style x:Key="ExtraRowHint" TargetType="TextBlock" BasedOn="{StaticResource ExtraSmall}">
-            <Setter Property="Margin" Value="12,0,12,0"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="controls:SettingRow.Fills" Value="True"/>
+        <!-- The gray words about a row, under it: from the control column
+             (the label's 260 and its 12) to the card's edge, wrapping
+             there. Beside the control they had only what the row's 660
+             reach left and wrapped to three lines with the card's right
+             side empty. -->
+        <Style x:Key="ExtraRowNote" TargetType="TextBlock" BasedOn="{StaticResource ExtraSmall}">
+            <Setter Property="Margin" Value="272,-4,12,10"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
         <!-- A number as the boards draw one: a plain field 34 tall with its
              digits at the right, no spin buttons and no clear button. It stays
@@ -160,10 +162,10 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
         <!-- A port as the Motion Server, Game Mods and Web Controller boards
-             draw it: 96 wide, in the mono face, from the left. -->
+             draw it: 96 wide, in tabular figures, from the left. -->
         <Style x:Key="ExtraPortBox" TargetType="ui:NumberBox" BasedOn="{StaticResource ExtraNumberBox}">
             <Setter Property="Width" Value="96"/>
-            <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
+            <Setter Property="Typography.NumeralAlignment" Value="Tabular"/>
             <Setter Property="TextAlignment" Value="Left"/>
         </Style>
         <!-- A text field as the boards draw one: 34 tall, the text centered,
@@ -175,10 +177,10 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="ClearButtonEnabled" Value="False"/>
         </Style>
-        <!-- An address or a code, as the boards draw them: the mono face in
-             the cold color, wrapping where the line is short. -->
+        <!-- An address or a code, as the boards draw them: the cold color
+             and tabular figures, wrapping where the line is short. -->
         <Style x:Key="ExtraAddress" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
+            <Setter Property="Typography.NumeralAlignment" Value="Tabular"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -191,7 +193,10 @@
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="TextAlignment" Value="Left"/>
-            <Setter Property="Margin" Value="-4,0,0,0"/>
+            <!-- Its border's 1, its padding's 3 and the box's own 2 inset
+                 before the text: the name starts where the state line under
+                 it does. -->
+            <Setter Property="Margin" Value="-6,0,0,0"/>
             <Setter Property="Padding" Value="3,1"/>
             <Setter Property="MinWidth" Value="40"/>
         </Style>
@@ -307,7 +312,7 @@
                         <TextBlock AutomationProperties.HeadingLevel="Level1" Text="{Binding Extras_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraTitle}"/>
                         <TextBlock Text="{Binding Extras_Subtitle, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraLine}" Margin="0,2,0,0"/>
                     </StackPanel>
-                    <!-- 2 of 12 on: the number in the code face, large and
+                    <!-- 2 of 12 on: the number in the display face, large and
                          ember, and the words around it as the language puts
                          them. The three runs stay on one line so no space
                          falls between them. A screen reader hears the
@@ -315,7 +320,7 @@
                     <TextBlock x:Name="OnCountText" VerticalAlignment="Bottom" FontSize="14"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                AutomationProperties.AutomationId="Extras_OnCount"
-                               AutomationProperties.Name="{Binding ExtrasOnSpoken, TargetNullValue='', FallbackValue=''}"><Run Text="{Binding ExtrasOnLead, Mode=OneWay}"/><Run Text="{Binding ExtrasOnNumber, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="20" FontWeight="SemiBold" Foreground="{DynamicResource EmberHotBrush}"/><Run Text="{Binding ExtrasOnTail, Mode=OneWay}"/></TextBlock>
+                               AutomationProperties.Name="{Binding ExtrasOnSpoken, TargetNullValue='', FallbackValue=''}"><Run Text="{Binding ExtrasOnLead, Mode=OneWay}"/><Run Text="{Binding ExtrasOnNumber, Mode=OneWay}" FontFamily="{StaticResource DisplayFontFamily}" Typography.NumeralAlignment="Tabular" FontSize="20" FontWeight="SemiBold" Foreground="{DynamicResource EmberHotBrush}"/><Run Text="{Binding ExtrasOnTail, Mode=OneWay}"/></TextBlock>
                 </controls:FlexLinePanel>
 
                 <TextBlock Text="{Binding Extras_Group_Play, Source={x:Static strings:Strings.Instance}}"
@@ -605,7 +610,7 @@
                             <controls:SettingRow MinHeight="44">
                                 <TextBlock Text="{Binding Dashboard_WebAccessCode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                            ToolTip="{Binding Dashboard_WebAccessCodeHint, Source={x:Static strings:Strings.Instance}}"/>
-                                <ui:TextBox Style="{StaticResource ExtraField}" Width="120" FontFamily="{StaticResource TelemetryFontFamily}"
+                                <ui:TextBox Style="{StaticResource ExtraField}" Width="120" Typography.NumeralAlignment="Tabular"
                                             IsReadOnly="True" AutomationProperties.AutomationId="WebControllerAccessCodeBox"
                                             Text="{Binding WebControllerAccessCode, Mode=OneWay}"
                                             ToolTip="{Binding Dashboard_WebAccessCodeHint, Source={x:Static strings:Strings.Instance}}"/>
@@ -751,9 +756,9 @@
                                       Content="{Binding Dashboard_HeadTrackingEnable, Source={x:Static strings:Strings.Instance}}"
                                       ToolTip="{Binding Dashboard_HeadTrackingEnable_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                       IsChecked="{Binding HeadTrackingEnabled}"/>
-                            <TextBlock Text="{Binding Extras_HeadTracking_UdpHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowHint}"/>
                             <reset:SettingResetButton x:Name="HeadTrackingEnabledReset" Command="{Binding ResetHeadTrackingEnabledCommand}" SettingLabel="{Binding Dashboard_HeadTrackingEnable, Source={x:Static strings:Strings.Instance}}"/>
                         </controls:SettingRow>
+                        <TextBlock Text="{Binding Extras_HeadTracking_UdpHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}"/>
                         <controls:SettingRow MinHeight="44">
                             <TextBlock Text="{Binding Dashboard_HeadTrackingFreeTrack, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                        ToolTip="{Binding Dashboard_HeadTrackingFreeTrack_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -1334,7 +1339,7 @@
                                                 <StackPanel controls:FlexLinePanel.Basis="200" controls:FlexLinePanel.Grow="1" VerticalAlignment="Center">
                                                     <!-- Its machine and its key's fingerprint. -->
                                                     <StackPanel.ToolTip>
-                                                        <TextBlock><Run Text="{Binding HostName, Mode=OneWay}" FontWeight="SemiBold"/><Run Text="{Binding FingerprintDisplay, Mode=OneWay, StringFormat='  ·  {0}'}" FontFamily="{StaticResource TelemetryFontFamily}"/></TextBlock>
+                                                        <TextBlock><Run Text="{Binding HostName, Mode=OneWay}" FontWeight="SemiBold"/><Run Text="{Binding FingerprintDisplay, Mode=OneWay, StringFormat='  ·  {0}'}" Typography.NumeralAlignment="Tabular"/></TextBlock>
                                                     </StackPanel.ToolTip>
                                                     <!-- The name reads as text and is typed over in
                                                          place. An emptied name goes back to the PC's
@@ -1395,7 +1400,7 @@
                                     <controls:FlexLinePanel Gap="12" LineGap="8" MinLineHeight="44">
                                         <StackPanel controls:FlexLinePanel.Basis="200" controls:FlexLinePanel.Grow="1" VerticalAlignment="Center">
                                             <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-                                            <TextBlock Text="{Binding HostPort}" FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                            <TextBlock Text="{Binding HostPort}" FontSize="13" Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                                         </StackPanel>
                                         <ui:Button MinHeight="36" Padding="14,0" VerticalAlignment="Center"
                                                    Content="{Binding ButtonLabel}" IsEnabled="{Binding CanPair}"
@@ -1467,7 +1472,7 @@
                             <controls:SettingRow MinHeight="44">
                                 <TextBlock Text="{Binding Dashboard_RemoteLinkConnect, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                 <controls:FlexLinePanel controls:SettingRow.Fills="True" Gap="12" LineGap="8" VerticalAlignment="Center">
-                                    <ui:TextBox Style="{StaticResource ExtraField}" Width="200" FontFamily="{StaticResource TelemetryFontFamily}"
+                                    <ui:TextBox Style="{StaticResource ExtraField}" Width="200" Typography.NumeralAlignment="Tabular"
                                                 PlaceholderText="192.168.1.20:27500"
                                                 Text="{Binding RemoteLinkConnectHost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 AutomationProperties.Name="{Binding Dashboard_RemoteLinkConnect, Source={x:Static strings:Strings.Instance}}"/>
@@ -1622,9 +1627,9 @@
                                           Content="{Binding Dashboard_GameModStandIn, Source={x:Static strings:Strings.Instance}}"
                                           ToolTip="{Binding Dashboard_GameModStandIn_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                           IsChecked="{Binding GameModDsxStandIn}"/>
-                                <TextBlock Text="{Binding Extras_GameMods_StandInHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowHint}"/>
                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="GameModDsxStandIn" SettingLabel="{Binding Dashboard_GameModStandIn, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_GameModDsxStandIn_2246"/>
                             </controls:SettingRow>
+                            <TextBlock Text="{Binding Extras_GameMods_StandInHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}"/>
                         </StackPanel>
                     </controls:MoreRow>
                 </controls:FoldList>
@@ -1808,8 +1813,8 @@
                             <TextBlock Text="{Binding Extras_PlaceOnScreen, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                             <Button Command="{Binding ResetTouchpadOverlayPositionCommand}" Style="{StaticResource ExtraButton}"
                                     Content="{Binding Dashboard_TouchpadOverlayResetPosition, Source={x:Static strings:Strings.Instance}}"/>
-                            <TextBlock Text="{Binding Extras_TouchpadOverlay_DragHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowHint}" Margin="12,0,0,0"/>
                         </controls:SettingRow>
+                        <TextBlock Text="{Binding Extras_TouchpadOverlay_DragHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}"/>
                     </StackPanel>
                 </Border>
             </StackPanel>
@@ -2005,14 +2010,14 @@
                                     </controls:SettingRow>
                                     <controls:SettingRow MinHeight="44">
                                         <TextBlock Text="{Binding Extras_Crosshair_Style, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                        <ComboBox MinWidth="180" ItemsSource="{Binding StyleNames}" SelectedIndex="{Binding StyleIndex, Mode=TwoWay}"
+                                        <ComboBox controls:SettingRow.Fills="True" MaxWidth="300" ItemsSource="{Binding StyleNames}" SelectedIndex="{Binding StyleIndex, Mode=TwoWay}"
                                                   AutomationProperties.AutomationId="{Binding StyleId}"
                                                   AutomationProperties.Name="{Binding Extras_Crosshair_Style, Source={x:Static strings:Strings.Instance}}"/>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="StyleIndex" SettingLabel="{Binding Extras_Crosshair_Style, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_StyleIndex_58502"/>
                                     </controls:SettingRow>
                                     <controls:SettingRow MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Lighting_ScreenDisplay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                        <ComboBox MinWidth="220" ItemsSource="{Binding DisplayChoices}" DisplayMemberPath="Label"
+                                        <ComboBox controls:SettingRow.Fills="True" MaxWidth="300" ItemsSource="{Binding DisplayChoices}" DisplayMemberPath="Label"
                                                   SelectedValuePath="Id" SelectedValue="{Binding Display, Mode=TwoWay}"
                                                   AutomationProperties.AutomationId="{Binding DisplayId}"
                                                   AutomationProperties.Name="{Binding Pad_Lighting_ScreenDisplay, Source={x:Static strings:Strings.Instance}}"/>
@@ -2110,9 +2115,9 @@
                                         <CheckBox Style="{StaticResource SwitchCheckBox}"
                                                   Content="{Binding Extras_Crosshair_TShape, Source={x:Static strings:Strings.Instance}}"
                                                   IsChecked="{Binding TShape}"/>
-                                        <TextBlock Text="{Binding Extras_Crosshair_TShapeHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowHint}"/>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="TShape" SettingLabel="{Binding Extras_Crosshair_TShape, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_TShape_58509"/>
                                     </controls:SettingRow>
+                                    <TextBlock Text="{Binding Extras_Crosshair_TShapeHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}" Visibility="{Binding IsCross, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                     <!-- Dot -->
                                     <controls:SettingRow MinHeight="44" Visibility="{Binding IsDot, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="{Binding Extras_Crosshair_DotSize, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -2158,9 +2163,9 @@
                                         <CheckBox Style="{StaticResource SwitchCheckBox}"
                                                   Content="{Binding Extras_Crosshair_KeepProportions, Source={x:Static strings:Strings.Instance}}"
                                                   IsChecked="{Binding KeepProportions}"/>
-                                        <TextBlock Text="{Binding Extras_Crosshair_KeepProportionsHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowHint}"/>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="KeepProportions" SettingLabel="{Binding Extras_Crosshair_KeepProportions, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_KeepProportions_58515"/>
                                     </controls:SettingRow>
+                                    <TextBlock Text="{Binding Extras_Crosshair_KeepProportionsHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}" Visibility="{Binding IsImage, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                     <!-- Color, for the drawn styles: a swatch that opens the
                                          picker under its row, and the color as #RRGGBB. -->
@@ -2179,7 +2184,7 @@
                                                 </Border.Background>
                                             </Border>
                                         </ToggleButton>
-                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12" Width="84" Margin="12,0,0,0" FontFamily="{StaticResource TelemetryFontFamily}"
+                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12" Width="84" Margin="12,0,0,0" Typography.NumeralAlignment="Tabular"
                                                  Text="{Binding ColorHex, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                  ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"
                                                  AutomationProperties.Name="{Binding Extras_Crosshair_Color, Source={x:Static strings:Strings.Instance}}"/>
@@ -2234,7 +2239,7 @@
                                                 </Border.Background>
                                             </Border>
                                         </ToggleButton>
-                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12" Width="84" Margin="12,0,0,0" FontFamily="{StaticResource TelemetryFontFamily}"
+                                        <TextBox Style="{StaticResource DzValueEdit}" FontSize="12" Width="84" Margin="12,0,0,0" Typography.NumeralAlignment="Tabular"
                                                  Text="{Binding OutlineHex, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                  ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"
                                                  AutomationProperties.Name="{Binding Extras_Crosshair_OutlineColor, Source={x:Static strings:Strings.Instance}}"/>
@@ -2260,9 +2265,9 @@
                                         <CheckBox Style="{StaticResource SwitchCheckBox}"
                                                   Content="{Binding Extras_Crosshair_SmoothEdges, Source={x:Static strings:Strings.Instance}}"
                                                   IsChecked="{Binding SmoothEdges}"/>
-                                        <TextBlock Text="{Binding Extras_Crosshair_SmoothEdgesHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowHint}"/>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="SmoothEdges" SettingLabel="{Binding Extras_Crosshair_SmoothEdges, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_CrosshairItem_SmoothEdges_58522"/>
                                     </controls:SettingRow>
+                                    <TextBlock Text="{Binding Extras_Crosshair_SmoothEdgesHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}"/>
                                 </StackPanel>
                             </Border>
                         </DataTemplate>
@@ -2341,22 +2346,22 @@
                             </DockPanel>
                             <controls:SettingRow MinHeight="44">
                                 <TextBlock Text="{Binding Extras_Magnifier_Mode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                <ComboBox MinWidth="180" ItemsSource="{Binding ModeNames}" SelectedIndex="{Binding ModeIndex, Mode=TwoWay}"
+                                <ComboBox controls:SettingRow.Fills="True" MaxWidth="300" ItemsSource="{Binding ModeNames}" SelectedIndex="{Binding ModeIndex, Mode=TwoWay}"
                                           AutomationProperties.AutomationId="Magnifier_Mode"
                                           AutomationProperties.Name="{Binding Extras_Magnifier_Mode, Source={x:Static strings:Strings.Instance}}"/>
                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ModeIndex" SettingLabel="{Binding Extras_Magnifier_Mode, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MagnifierItem_ModeIndex_58531"/>
                             </controls:SettingRow>
                             <controls:SettingRow MinHeight="44">
                                 <TextBlock Text="{Binding Extras_Magnifier_Follow, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                <ComboBox MinWidth="180" ItemsSource="{Binding FollowNames}" SelectedIndex="{Binding FollowIndex, Mode=TwoWay}"
+                                <ComboBox controls:SettingRow.Fills="True" MaxWidth="300" ItemsSource="{Binding FollowNames}" SelectedIndex="{Binding FollowIndex, Mode=TwoWay}"
                                           AutomationProperties.AutomationId="Magnifier_Follow"
                                           AutomationProperties.Name="{Binding Extras_Magnifier_Follow, Source={x:Static strings:Strings.Instance}}"/>
-                                <TextBlock Text="{Binding Extras_Magnifier_FollowHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowHint}"/>
                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="FollowIndex" SettingLabel="{Binding Extras_Magnifier_Follow, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MagnifierItem_FollowIndex_58532"/>
                             </controls:SettingRow>
+                            <TextBlock Text="{Binding Extras_Magnifier_FollowHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}"/>
                             <controls:SettingRow MinHeight="44" IsEnabled="{Binding FollowsCenter}">
                                 <TextBlock Text="{Binding Pad_Lighting_ScreenDisplay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                <ComboBox MinWidth="220" ItemsSource="{Binding DisplayChoices}" DisplayMemberPath="Label"
+                                <ComboBox controls:SettingRow.Fills="True" MaxWidth="300" ItemsSource="{Binding DisplayChoices}" DisplayMemberPath="Label"
                                           SelectedValuePath="Id" SelectedValue="{Binding Display, Mode=TwoWay}"
                                           AutomationProperties.AutomationId="Magnifier_Display"
                                           AutomationProperties.Name="{Binding Pad_Lighting_ScreenDisplay, Source={x:Static strings:Strings.Instance}}"/>
@@ -2383,7 +2388,7 @@
                             <TextBlock Text="{Binding Extras_Magnifier_Mode_Lens, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}" Margin="0,0,0,4"/>
                             <controls:SettingRow MinHeight="44">
                                 <TextBlock Text="{Binding Extras_Magnifier_Shape, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                <ComboBox MinWidth="180" ItemsSource="{Binding LensShapeNames}" SelectedIndex="{Binding LensShapeIndex, Mode=TwoWay}"
+                                <ComboBox controls:SettingRow.Fills="True" MaxWidth="300" ItemsSource="{Binding LensShapeNames}" SelectedIndex="{Binding LensShapeIndex, Mode=TwoWay}"
                                           AutomationProperties.AutomationId="Magnifier_Shape"
                                           AutomationProperties.Name="{Binding Extras_Magnifier_Shape, Source={x:Static strings:Strings.Instance}}"/>
                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="LensShapeIndex" SettingLabel="{Binding Extras_Magnifier_Shape, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MagnifierItem_LensShapeIndex_58535"/>
@@ -2452,7 +2457,7 @@
                                         </Border.Background>
                                     </Border>
                                 </ToggleButton>
-                                <TextBox Style="{StaticResource DzValueEdit}" FontSize="12" Width="84" Margin="12,0,0,0" FontFamily="{StaticResource TelemetryFontFamily}"
+                                <TextBox Style="{StaticResource DzValueEdit}" FontSize="12" Width="84" Margin="12,0,0,0" Typography.NumeralAlignment="Tabular"
                                          Text="{Binding BorderHex, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                          ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"
                                          AutomationProperties.Name="{Binding Extras_Magnifier_BorderColor, Source={x:Static strings:Strings.Instance}}"/>

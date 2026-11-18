@@ -987,8 +987,9 @@ public class GyroSimulationTests
         }
     }
 
-    /// <summary>The slot summary prints SIM only for a device the card
-    /// serves, so a DS3 setting pasted onto a DualSense shows no heat.</summary>
+    /// <summary>The slot summary names the simulation only for a device
+    /// the card serves, so a DS3 setting pasted onto a DualSense shows no
+    /// heat.</summary>
     [Fact]
     public void TheSummaryTokenPrintsOnlyForADeviceTheCardServes()
     {
@@ -999,14 +1000,19 @@ public class GyroSimulationTests
             append.Invoke(null, new object[] { parts, ps, simulates });
             return parts;
         }
+        var s = PadForge.Resources.Strings.Strings.Instance;
+        string Smoothing(string ms) => string.Format(s.Home_Stage_Value_Format, s.Settings_GyroSimulationSmoothing, ms + " " + s.Common_Ms);
         var on = new PadSetting { GyroSimulation = "1" };
-        Assert.Contains("SIM", Tokens(on, true));
-        Assert.DoesNotContain(Tokens(on, false), t => t.StartsWith("SIM"));
-        Assert.Contains("SIM 150ms", Tokens(new PadSetting { GyroSimulation = "1", GyroSimulationSmoothingMs = "150" }, true));
-        Assert.DoesNotContain(Tokens(new PadSetting(), true), t => t.StartsWith("SIM"));
+        Assert.Contains(s.Settings_GyroSimulation, Tokens(on, true));
+        Assert.DoesNotContain(s.Settings_GyroSimulation, Tokens(on, false));
+        Assert.Contains(Smoothing("150"), Tokens(new PadSetting { GyroSimulation = "1", GyroSimulationSmoothingMs = "150" }, true));
+        Assert.DoesNotContain(s.Settings_GyroSimulation, Tokens(new PadSetting(), true));
         // The token shows what the filter runs at.
-        Assert.Contains("SIM 250ms", Tokens(new PadSetting { GyroSimulation = "1", GyroSimulationSmoothingMs = "1e6" }, true));
-        Assert.Contains("SIM", Tokens(new PadSetting { GyroSimulation = "1", GyroSimulationSmoothingMs = "NaN" }, true));
+        Assert.Contains(Smoothing("250"), Tokens(new PadSetting { GyroSimulation = "1", GyroSimulationSmoothingMs = "1e6" }, true));
+        // Unreadable reads as the default, which names no smoothing.
+        var unreadable = Tokens(new PadSetting { GyroSimulation = "1", GyroSimulationSmoothingMs = "NaN" }, true);
+        Assert.Contains(s.Settings_GyroSimulation, unreadable);
+        Assert.DoesNotContain(unreadable, t => t.StartsWith(s.Settings_GyroSimulationSmoothing, StringComparison.Ordinal));
     }
 
     /// <summary>The setting reaches the estimator as seconds, clamped: the

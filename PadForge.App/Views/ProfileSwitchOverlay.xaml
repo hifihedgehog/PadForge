@@ -1,4 +1,4 @@
-<Window x:Class="PadForge.Views.ProfileSwitchOverlay"
+<Window x:Class="PadForge.Views.ProfileSwitchOverlay" FontFamily="{DynamicResource BodyFontFamily}"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:PadForge.Controls"
@@ -56,7 +56,6 @@
 
                         <TextBlock x:Name="StatusText"
                                    FontSize="14"
-                                   FontFamily="{StaticResource BodyFontFamily}"
                                    VerticalAlignment="Center"
                                    Foreground="White"/>
                     </StackPanel>

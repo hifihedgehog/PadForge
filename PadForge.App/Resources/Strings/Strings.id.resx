@@ -88,7 +88,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Menghentikan mesin…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Berjalan di {0}</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>Berjalan, {0} tersambung</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Mendengarkan di :{0}</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Mendengarkan di port {0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>Port {0} sedang dipakai</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Akses ditolak untuk port {0} (jalankan sebagai admin)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>Gagal memulai</value></data>
@@ -106,7 +106,7 @@
   <data name="Common_Stop" xml:space="preserve"><value>Hentikan</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Mulai</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Rekam</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>Merekam...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Merekam…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Bersihkan</value></data>
   <data name="Common_Increase" xml:space="preserve"><value>Naikkan</value></data>
   <data name="Common_Decrease" xml:space="preserve"><value>Turunkan</value></data>
@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Satu Halaman ke Kanan</value></data>
   <data name="Common_None" xml:space="preserve"><value>Tidak ada</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>detik</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Belum ditetapkan</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -134,7 +135,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>Menutup PadForge...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>Menutup PadForge…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Memulai PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Membersihkan kontroler virtual yang tersisa dari sesi sebelumnya.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Tambah kontroler</value></data>
@@ -239,8 +240,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ bawah)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← kiri)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ atas)</value></data>
-  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll TIDAK DITEMUKAN</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll tidak ditemukan! Letakkan SDL3.dll di samping PadForge.exe. Unduh dari https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll tidak ditemukan</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll tidak ditemukan. Letakkan SDL3.dll di samping PadForge.exe. Unduh dari https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Operasi driver gagal: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Pengaturan disalin ke papan klip.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Info perangkat disalin ke papan klip.</value></data>
@@ -271,11 +272,11 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>Pengaturan dimuat ulang dari disk.</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>File pengaturan tidak ditemukan di disk.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Tidak ada perangkat tersambung untuk direkam.</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Merekam: tekan tombol atau gerakkan sumbu untuk "{0}"...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Merekam: putar atau goyangkan kontroler untuk "{0}"...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Merekam: tekan tombol atau gerakkan sumbu untuk "{0}"…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Merekam: putar atau goyangkan kontroler untuk "{0}"…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>Tidak ada kontroler di slot ini yang memiliki sensor untuk "{0}".</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Merekam "{0}": tekan input arah Atas...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Merekam "{0}": sekarang tekan input arah Bawah...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Merekam "{0}": tekan input arah Atas…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Merekam "{0}": sekarang tekan input arah Bawah…</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Perekaman dibatalkan.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Waktu perekaman untuk "{0}" habis.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Mesin dimulai.</value></data>
@@ -294,7 +295,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Tampilkan atau sembunyikan PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Aktifkan atau nonaktifkan kontroler virtual</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Perangkat tersambung mana pun</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Merekam...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Merekam…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} dtk)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>saat</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>di</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}" dilepas dari Kontroler Virtual {1}.</value></data>
@@ -327,6 +329,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>Kontroler</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Ekstra yang dipakai</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Aktif. {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>Pengaturan default</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>Stik kiri</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>Stik kanan</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>{0} lagi di [Ekstra]. Ekstra nonaktif sampai Anda mengaktifkannya.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Buka Ekstra</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>Tampilkan QR</value></data>
@@ -394,8 +401,12 @@
   <data name="Engine_Forging" xml:space="preserve"><value>Menempa</value></data>
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Aktif: {0} dari {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Pilih makro dalam daftar, atau tekan + di samping Makro untuk membuatnya.</value></data>
-  <data name="Instr_Raw" xml:space="preserve"><value>MENTAH</value></data>
-  <data name="Instr_Out" xml:space="preserve"><value>OUTPUT</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>Mentah</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>Output</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Kurva</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Lapisan shift</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Balik</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>Puncak</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Dingin</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Pratinjau</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Ekstra</value></data>
@@ -431,11 +442,11 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Nilainya adalah baris Telemetri Game di [Perangkat]. Petakan di bagian Pemetaan pada kontroler atau pakai untuk memicu makro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Posisi, ukuran, dan opasitas menu diatur pada menunya, di bagian [Makro dan menu] pada kontroler.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Sumber</value></data>
-  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack dan apa pun yang mengirim format UDP-nya</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack dan apa pun yang mengirim format UDP-nya.</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Rentang</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Rentang per sumbu. Nol mengikuti rentang di atas.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Game yang tidak dikenal PadForge</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Untuk mod yang mencari DSX yang berjalan sebelum mengirim</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Untuk mod yang mencari DSX yang berjalan sebelum mengirim.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Yang ditampilkan</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Cincin, kisi, atau bilah menu saat terbuka</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Nama lapisan saat lapisan shift aktif, selama waktu yang diatur lapisan itu</value></data>
@@ -694,7 +705,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Sembunyikan perangkat dari game, Tetap sembunyikan perangkat di antara peluncuran, Aplikasi dalam daftar putih</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Aplikasi dalam daftar putih</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Aplikasi ini tetap dapat melihat perangkat yang disembunyikan. PadForge selalu masuk daftar putih secara otomatis.</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>Tambah...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>Tambah…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge menginstal driver ini bersama kontroler virtual pertama yang Anda buat. Hapus instalan mencantumkan apa yang ditinggalkan HIDMaestro di PC ini sebelum menghapusnya.</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Membuat kontroler virtual.</value></data>
@@ -713,6 +724,21 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Dipertahankan</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Tidak terbaca</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Tidak dihapus</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Perangkat</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Registrasi antarmuka</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Kunci registri bersama</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Nilai registri bersama</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Pengikatan WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Penimpaan nama OEM</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Kunci DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Registrasi OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Paket driver</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Kunci layanan WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Kunci registri</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Sertifikat</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Folder</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Pengaturan layanan</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Langkah penghapusan</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Memungkinkan kontroler PlayStation 3, PlayStation Move, dan kontroler Navigation tersambung melalui Bluetooth. Tertanam di PadForge dan diinstal saat salah satunya pertama kali disandingkan.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Menyambungkan kontroler PlayStation 3 lewat Bluetooth.</value></data>
@@ -907,11 +933,11 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Ketik "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(tidak ada teks)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Teks</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Jeda karakter (ms)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Jeda antarhuruf</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milidetik di antara karakter yang diketik, hingga 1000. 0 mengetik seluruh teks sekaligus.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Putuskan saat tidak aktif</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detail</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>menit (0 = tidak pernah)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>menit</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Putuskan Bluetooth saat dicolokkan lewat USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Pengisian cepat. Saat kontroler ini melaporkan sedang mengisi daya ketika tersambung lewat Bluetooth, sambungan Bluetooth diputus agar pengisian berlangsung tanpa menyalakan radio. Sumber daya USB apa pun dihitung, termasuk pengisi daya dinding. Jika Anda menyalakan Bluetooth lagi selagi kabel masih tercolok, sambungan itu dibiarkan sampai kabel dicabut berikutnya.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Baca sebagai kontroler iCade</value></data>
@@ -1002,7 +1028,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Arahkan Wii Remote ke target, lalu tekan B.</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Wii Remote tidak melihat sensor bar. Arahkan ke target dan tekan B lagi.</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc atau Home membatalkan.</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Memutus sambungan kontroler Bluetooth ini setelah sekian menit tanpa input, sehingga kontroler tidur dan menghemat baterai. Tidak pernah berlaku lewat USB.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Memutus sambungan kontroler Bluetooth ini setelah sekian menit tanpa input, sehingga kontroler tidur dan menghemat baterai. 0 menonaktifkannya. Tidak pernah berlaku lewat USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Daya</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>
@@ -1068,6 +1094,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Baterai</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Jalur</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Nomor seri</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID aplikasi</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Revisi</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Baca Chatpad</value></data>
@@ -1156,11 +1184,15 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>Giroskop</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>Akselerometer</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 sumbu</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} sumbu</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 tombol</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} tombol</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>Sumbu {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} sumbu, {1} tombol, {2} POV</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>Getaran</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Giroskop</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>Akselerometer</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>menyembunyikan perangkat ini dari program yang membukanya sebagai perangkat HID</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows tetap membaca tombol yang Anda ketik, jadi mengetik tetap berfungsi di semua program, termasuk game. Keyboard USB dapat disembunyikan dari Windows dengan tombol “{0}”.</value></data>
@@ -1346,7 +1378,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>motherboard dan kartu grafis</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepad, headset, dan dudukan headset</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Game mengambil alih setiap kali menulis pencahayaan.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Masukkan warna heksa enam digit (RRGGBB atau #RRGGBB), lalu tekan Enter atau klik di tempat lain untuk menerapkannya.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Hapus warna ini dari palet</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Nonaktif</value></data>
@@ -1548,6 +1580,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Impor</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(perangkat HID tanpa nama)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Ditemukan {0} antarmuka HID.</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Ditemukan 1 antarmuka HID.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Enumerasi gagal: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>Ekstraksi gagal: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>Tidak dapat mengurai JSON profil hasil ekstraksi. Tidak ada yang disimpan.</value></data>
@@ -1660,7 +1693,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Rekam semua pemetaan secara berurutan, satu per satu</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Salin semua pemetaan dan pengaturan ke papan klip</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Tempel pemetaan dan pengaturan dari papan klip</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Salin dari...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Salin dari…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Salin pengaturan dari perangkat lain yang sudah dikonfigurasi</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Atur ulang semua</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Bersihkan semua</value></data>
@@ -1848,7 +1881,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Rentang dalam angka, nilai mentah</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Rentang</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Kalibrasikan batas mengukur tepi yang dapat dicapai stik dan membentuknya ulang menjadi lingkaran penuh. Keempat penggeser hanya membatasi setiap arah.</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>Mengambil sampel...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>Mengambil sampel…</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Offset tengah X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Offset tengah Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Bentuk zona mati</value></data>
@@ -1959,6 +1992,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Macro_DelayMs" xml:space="preserve"><value>Jeda</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Sensitivitas</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Makro baru</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Makro {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Rekam pemicu</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>Belum diatur. Klik Rekam.</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Tombol {0}</value></data>
@@ -2017,6 +2051,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Menggerakkan getaran perangkat fisik slot dari makro. Reaktif berjalan dengan kekuatan penuh selama jendela tahan, lalu memudar ke nol selama jendela pudar. Lekat bertahan pada kekuatan penuh sampai tindakan Hentikan getaran berjalan. Ditumpuk di atas getaran dari game melalui max() sehingga umpan balik dari pengguna selalu terasa.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Denyutkan getaran {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Tahan getaran {0} sampai dihapus</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>kiri {0}%, kanan {1}%</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>pelatuk kiri {0}%, pelatuk kanan {1}%</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Hentikan getaran</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Hentikan getaran</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Melepas penimpaan getaran apa pun yang aktif pada slot yang ditetapkan. Pasangkan dengan tindakan Getaran bermode Lekat untuk membatalkan penahanan lewat makro lain.</value></data>
@@ -2055,7 +2091,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Mouse Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Interval</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Pilih di layar</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Menangkap dalam {0}...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Menangkap dalam {0}…</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Klik, lalu pindahkan kursor ke target. Posisinya ditangkap setelah hitung mundur singkat.</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>Inset X</value></data>
@@ -2727,9 +2763,9 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Jatuhkan file profil di sini</value></data>
   <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD, atau DS4Windows</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Profil baru</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>Simpan sebagai</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Simpan sebagai…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Simpan setelan saat ini di sini</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Edit…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Muat</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Bawaan</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Belum ada game</value></data>
@@ -2832,8 +2868,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Atur ulang offset tengah X</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Kalibrasikan batas</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Kalibrasikan ulang batas</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Sapu tepinya... tersisa {0}</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Sudah tercakup. Satu putaran lagi untuk memperhalus...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Sapu tepinya… tersisa {0}</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Sudah tercakup. Satu putaran lagi untuk memperhalus…</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Kebulatan {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Sapukan stik mengelilingi tepinya untuk memetakan batas yang dapat dicapai, lalu bentuk ulang menjadi lingkaran penuh.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Atur ulang kalibrasi batas</value></data>
@@ -2912,7 +2948,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Mengendalikan volume aplikasi tertentu di mixer volume Windows, diskalakan ke batas volume. Masukkan nama proses (terlihat di Pengelola Tugas). Gunakan dengan pemicu "Selalu", atau pemicu tombol/sumbu dengan "Selama ditahan" + "Sampai dilepas".</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Terus-menerus memetakan sumbu yang dipilih ke gerakan mouse (atau gulir). Gunakan dengan pemicu "Selalu", atau pemicu tombol/sumbu dengan "Selama ditahan" + "Sampai dilepas". Untuk stik ke mouse, buat dua tindakan: satu untuk sumbu X, satu untuk sumbu Y.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Balikkan sumbu</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Tampilkan OSD volume</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Tampilkan indikator volume</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Arah</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Mana pun</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positif</value></data>
@@ -3139,7 +3175,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Preview_CCOutputs" xml:space="preserve"><value>Output CC</value></data>
   <data name="Preview_NoteOutputs" xml:space="preserve"><value>Output not</value></data>
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Stik {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Pelatuk {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Tombol</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -3156,7 +3192,6 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Level</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Batas waktu tidak aktif</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Detik sebelum kontroler virtual dimusnahkan saat semua perangkat yang dipetakan kepadanya offline. 0 menonaktifkan. Kontroler sejenis yang tersisa bergeser naik untuk mengisi celah dan terikat ulang ke slot yang lebih rendah.</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>detik (0 = tidak pernah)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Tambah lapisan</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Tambahkan lapisan shift. Tabel pemetaan kedua yang aktif selama sebuah tombol ditahan atau dialihkan.</value></data>
@@ -3961,7 +3996,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
     <value>Atur ulang jeda ke 0 (lapisan bereaksi seketika).</value>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Konfigurasi komunitas</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Jelajahi konfigurasi kontroler Steam Input buatan komunitas dan terjemahkan menjadi profil PadForge. PadForge tersambung langsung ke server Steam hanya saat Anda mencari, membuka konfigurasi, atau memeriksa pembaruan untuk konfigurasi yang Anda impor. PadForge mengirim teks pencarian Anda, id game, konfigurasi, dan pembuat yang terlibat, serta versi PadForge. Logon Steam anonim juga mengirim versi Windows Anda dan id mesin yang dibuat dari hash ID instalasi Windows, alamat adaptor jaringan, dan nomor seri disk boot Anda. Tanpa telemetri, tanpa layanan pihak ketiga, tanpa akun Steam.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Jelajahi konfigurasi kontroler Steam Input buatan komunitas dan terjemahkan menjadi profil PadForge. PadForge mengirim teks pencarian Anda, ID game, konfigurasi, dan pembuat yang terlibat, serta versinya. Logon Steam anonim juga mengirim versi Windows Anda dan ID mesin yang dibuat dari hash ID instalasi Windows, alamat adaptor jaringan, dan nomor seri disk boot. Tidak ada layanan pihak ketiga yang terlibat.</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge tersambung ke server Steam hanya saat Anda mencari, membuka konfigurasi, atau memeriksa pembaruan konfigurasi yang diimpor. Tanpa telemetri, tanpa akun Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Yang dikirim</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Aktifkan konfigurasi komunitas</value></data>
@@ -4018,6 +4053,9 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam tidak menyediakan file untuk diunduh bagi konfigurasi ini, dan tidak ada salinannya di folder Steam Anda. Berlanggananlah di Steam, dan PadForge akan membacanya dari sana.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Buka di Workshop Steam</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>Lawas</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Profil Workshop</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Makro Workshop</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Wilayah kursor</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Pilih konfigurasi untuk melihat apa yang ikut terbawa.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Yang ikut terbawa</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Menjadi</value></data>
@@ -4395,6 +4433,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Sedang (ringan)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Tinggi (ringan)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Kustom</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Default bs2b</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Frekuensi potong</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Frekuensi crossover. Di bawahnya saluran berbaur menuju mono, di atasnya saluran tetap terpisah, sehingga frekuensi potong yang lebih rendah menghasilkan crossfeed yang lebih sedikit.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Feed</value></data>
@@ -4414,7 +4453,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Pad_Audio_EqType_HighPass" xml:space="preserve"><value>High pass</value></data>
   <data name="Pad_Audio_EqType_LowPass" xml:space="preserve"><value>Low pass</value></data>
   <data name="Pad_Audio_EqType_Notch" xml:space="preserve"><value>Notch</value></data>
-  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Frek. (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Frekuensi (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Gain (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
   <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Tambah pita</value></data>
@@ -4422,7 +4461,8 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Bersihkan</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Impor dari papan klip</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Salin profil AutoEq untuk headphone Anda ke papan klip, lalu klik. Menggantikan pita-pita dan mengatur preamp. Jika tidak ada yang dapat dibaca di papan klip, EQ saat ini tidak diubah.</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Impor dari file</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Impor dari file…</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>Impor EQ parametrik</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Pilih file .txt yang diunduh dari AutoEq. Inilah yang perlu dipakai: autoeq.app memberi Anda file, bukan teks yang dapat disalin.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Untuk koreksi yang cocok dengan headphone Anda: buka autoeq.app, pilih model Anda, pilih Custom Parametric Eq dan unduh, lalu Impor dari file. Unduhan Graphic Eq tidak memiliki baris filter dan tidak akan dapat diimpor.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{0} pita diimpor dengan preamp {1:0.#} dB dari {2}.</value></data>
@@ -4475,6 +4515,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Jaringan ini tidak dapat membuat sambungan langsung (tampaknya hotspot seluler atau NAT tingkat operator). Gunakan VPN seperti Tailscale, atau sambungkan dari broadband rumah.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Tidak dapat menemukan alamat publik PC ini (jaringan mungkin memblokir lalu lintas yang diperlukan). Sambungan langsung tidak akan berfungsi di sini. Gunakan VPN, atau Sambungkan lewat alamat di jaringan yang sama.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Baterai kontroler lemah</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Kontroler</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: sisa baterai {1}%</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Peringatan baterai</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Dapatkan pemberitahuan saat baterai kontroler hampir habis, sebelum mati di tengah permainan.</value></data>
@@ -4691,7 +4732,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
     <value>Buat kontroler virtual di PC lain, lalu segarkan.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Menunggu PC lain...</value>
+    <value>Menunggu PC lain…</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>Tablet gambar</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>Input bersama</value></data>
@@ -4753,7 +4794,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>Lokasi instalasi SteamVR harus berupa jalur lengkap, misalnya C:\SteamVR.</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>Lokasi instalasi SteamVR tidak boleh berupa akar drive. Pilih sebuah folder, misalnya C:\SteamVR.</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd tidak selesai dalam 60 menit.</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd berjalan, tetapi SteamVR tidak masuk ke {0}. Kata steamcmd: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd berjalan, tetapi SteamVR tidak masuk ke {0}. Kata steamcmd: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>HidHide terinstal, tetapi perangkat kontrolnya tidak terbuka, sehingga tidak ada filter kelas yang ditambahkan.</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>HidHide masih terdaftar sebagai filter kelas, sehingga drivernya dibiarkan di tempat.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Menghapus driver lama…</value></data>

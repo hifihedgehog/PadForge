@@ -358,6 +358,38 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>With FillsHeight the last line takes the height the panel
+        /// is given beyond what its lines asked for, as a Home card as tall as
+        /// its neighbor gives its Driven-by column, so the column's foot
+        /// reaches the card's foot. Without it the line keeps its tallest
+        /// part's height.</summary>
+        [Fact]
+        public void TheLastLineTakesTheSpareHeight_OnlyWhenTheLineFillsIt()
+        {
+            RunSta(() =>
+            {
+                foreach (bool fills in new[] { false, true })
+                {
+                    var panel = new FlexLinePanel { Gap = 18, LineGap = 14, FillsHeight = fills };
+                    var stage = new Border { Height = 140, VerticalAlignment = VerticalAlignment.Top };
+                    var column = new Border { MinHeight = 100 };
+                    FlexLinePanel.SetBasis(stage, 204);
+                    FlexLinePanel.SetBasis(column, 220);
+                    FlexLinePanel.SetGrow(column, 1);
+                    panel.Children.Add(stage);
+                    panel.Children.Add(column);
+                    panel.Measure(new Size(600, double.PositiveInfinity));
+                    Assert.Equal(140, panel.DesiredSize.Height, 6);
+                    // The card is 40 taller than the body asked for.
+                    panel.Arrange(new Rect(0, 0, 600, 180));
+                    Assert.Equal(fills ? 180 : 140, column.RenderSize.Height, 6);
+                    // The stage keeps its height at the top either way.
+                    Assert.Equal(140, stage.RenderSize.Height, 6);
+                    Assert.Equal(0, stage.TranslatePoint(new Point(0, 0), panel).Y, 6);
+                }
+            });
+        }
+
         private static void RunSta(Action action)
         {
             Exception failure = null;

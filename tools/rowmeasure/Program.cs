@@ -60,8 +60,6 @@ internal static class Program
     static Dictionary<string, Dictionary<string, string>> _strings;
     static FontFamily _bodyFont;
 
-    // TelemetryFontFamily in App.xaml.
-    static readonly FontFamily TelemetryFont = new("Cascadia Code, Consolas, Segoe UI");
     static readonly FontFamily DisplayFont = new("Segoe UI Variable Display, Segoe UI");
 
     // The reset control is a fixed 28 by 28 with a 4 left margin (the shared
@@ -76,6 +74,13 @@ internal static class Program
     }
 
     static readonly List<Probe> _probes = new();
+
+    /// <summary>Tabular figures, as the app's numbers have them.</summary>
+    static T Tabular<T>(T text) where T : DependencyObject
+    {
+        System.Windows.Documents.Typography.SetNumeralAlignment(text, FontNumeralAlignment.Tabular);
+        return text;
+    }
 
     static void LoadStrings()
     {
@@ -275,7 +280,7 @@ internal static class Program
     // ── C228: the raw hat strip in the 340-wide device detail pane ───────
     //
     // DevicesPage.xaml: a horizontal stack of cells, each a 36 compass, then
-    // the POV label and the hat's number in the telemetry font at 10 inside a
+    // the POV label and the hat's number in the body face at 10 inside a
     // 6 left margin, the cell inside a 12 right margin.
     static void BuildHatStrip()
     {
@@ -284,8 +289,10 @@ internal static class Program
             string pov = S("Devices_POV", tag);
             if (pov == null) continue;
             var label = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(6, 0, 0, 0) };
-            label.Children.Add(new TextBlock { Text = pov, FontSize = 10, FontFamily = TelemetryFont });
-            label.Children.Add(new TextBlock { Text = "3", FontSize = 10, FontFamily = TelemetryFont });
+            // The app's face with tabular figures, as PadPage.xaml draws
+            // the hat's label.
+            label.Children.Add(Tabular(new TextBlock { Text = pov, FontSize = 10, FontFamily = _bodyFont }));
+            label.Children.Add(Tabular(new TextBlock { Text = "3", FontSize = 10, FontFamily = _bodyFont }));
             var cell = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 0, 12, 0) };
             cell.Children.Add(new Canvas { Width = 36, Height = 36 });
             cell.Children.Add(label);
@@ -390,7 +397,7 @@ internal static class Program
     {
         // Type tile and title: a 46 square in a 16 right margin, then the
         // output type's name at 28 SemiBold in the display face with its
-        // instance number at 15 in the telemetry face. The longest type
+        // instance number at 15 with tabular figures. The longest type
         // name is the one that sizes it.
         var typeKeys = new[]
         {
@@ -412,12 +419,11 @@ internal static class Program
                     FontWeight = FontWeights.SemiBold,
                 };
                 title.Inlines.Add(new System.Windows.Documents.Run(name));
-                title.Inlines.Add(new System.Windows.Documents.Run(" #16")
+                title.Inlines.Add(Tabular(new System.Windows.Documents.Run(" #16")
                 {
-                    FontFamily = TelemetryFont,
                     FontSize = 15,
                     FontWeight = FontWeights.Normal,
-                });
+                }));
                 Add("hdr-title", tag, key, title, 0);
             }
         }

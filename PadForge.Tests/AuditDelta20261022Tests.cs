@@ -222,7 +222,7 @@ namespace PadForge.Tests
                     Strings.ChangeCulture(CultureInfo.GetCultureInfo("en"));
                     var vm = new PadViewModel(0) { OutputType = VirtualControllerType.KeyboardMouse };
                     var view = new KBMPreviewView();
-                    view.Resources["TelemetryFontFamily"] = new FontFamily("Consolas");
+                    view.Resources["BodyFontFamily"] = new FontFamily("Segoe UI");
                     window = Show(view);
                     view.Bind(vm);
                     Pump(window);

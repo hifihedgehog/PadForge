@@ -88,7 +88,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Đang dừng bộ máy…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Đang chạy trên {0}</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>Đang chạy, đã kết nối: {0}</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Đang lắng nghe trên :{0}</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Đang lắng nghe trên cổng {0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>Cổng {0} đang được sử dụng</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Bị từ chối truy cập cổng {0} (hãy chạy với quyền quản trị)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>Không khởi động được</value></data>
@@ -106,7 +106,7 @@
   <data name="Common_Stop" xml:space="preserve"><value>Dừng</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Bắt đầu</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Ghi</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>Đang ghi...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Đang ghi…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Xóa</value></data>
   <data name="Common_Increase" xml:space="preserve"><value>Tăng</value></data>
   <data name="Common_Decrease" xml:space="preserve"><value>Giảm</value></data>
@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Sang phải một trang</value></data>
   <data name="Common_None" xml:space="preserve"><value>Không có</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>giây</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Chưa gán</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -134,7 +135,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>Đang đóng PadForge...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>Đang đóng PadForge…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Đang khởi động PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Đang dọn dẹp các tay cầm ảo còn sót lại từ phiên trước.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Thêm tay cầm</value></data>
@@ -239,8 +240,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ xuống)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← trái)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ lên)</value></data>
-  <data name="Status_SDL3NotFound" xml:space="preserve"><value>KHÔNG TÌM THẤY SDL3.dll</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Không tìm thấy SDL3.dll! Hãy đặt SDL3.dll bên cạnh PadForge.exe. Tải xuống từ https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>Không tìm thấy SDL3.dll</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Không tìm thấy SDL3.dll. Hãy đặt SDL3.dll bên cạnh PadForge.exe. Hãy tải xuống từ https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Thao tác với trình điều khiển thất bại: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Đã sao chép thiết lập vào bảng nhớ tạm.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Đã sao chép thông tin thiết bị vào bảng nhớ tạm.</value></data>
@@ -271,11 +272,11 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>Đã tải lại thiết lập từ đĩa.</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>Không tìm thấy tệp thiết lập trên đĩa.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Không có thiết bị nào được kết nối để ghi.</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Đang ghi: nhấn một nút hoặc di chuyển một trục cho "{0}"...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Đang ghi: xoay hoặc lắc tay cầm cho "{0}"...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Đang ghi: nhấn một nút hoặc di chuyển một trục cho "{0}"…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Đang ghi: xoay hoặc lắc tay cầm cho "{0}"…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>Không tay cầm nào ở khe này có cảm biến cho "{0}".</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Đang ghi "{0}": nhấn đầu vào hướng Lên...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Đang ghi "{0}": bây giờ nhấn đầu vào hướng Xuống...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Đang ghi "{0}": nhấn đầu vào hướng Lên…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Đang ghi "{0}": bây giờ nhấn đầu vào hướng Xuống…</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Đã hủy ghi.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Hết thời gian ghi cho "{0}".</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Bộ máy đã khởi động.</value></data>
@@ -294,7 +295,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Hiện hoặc ẩn PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Bật hoặc tắt các tay cầm ảo</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Bất kỳ thiết bị nào đã kết nối</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Đang ghi...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Đang ghi…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} giây)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>khi</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>trên</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>Đã bỏ gán "{0}" khỏi Tay cầm ảo {1}.</value></data>
@@ -327,6 +329,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>Tay cầm</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Tiện ích đang dùng</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Bật. {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>Cài đặt mặc định</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>Cần trái</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>Cần phải</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>Còn {0} tiện ích nữa trong [Tiện ích]. Mỗi tiện ích tắt cho đến khi bạn bật nó.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Mở Tiện ích</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>Hiện mã QR</value></data>
@@ -394,8 +401,12 @@
   <data name="Engine_Forging" xml:space="preserve"><value>Đang rèn</value></data>
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Chạy: {0} trên {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Chọn một macro trong danh sách, hoặc nhấn + bên cạnh Macro để tạo mới.</value></data>
-  <data name="Instr_Raw" xml:space="preserve"><value>THÔ</value></data>
-  <data name="Instr_Out" xml:space="preserve"><value>RA</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>Thô</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>Đầu ra</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Đường cong</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Lớp Shift</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Đảo ngược</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>Đỉnh</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Nguội</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Xem trước</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Tiện ích</value></data>
@@ -431,11 +442,11 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Các giá trị nằm ở hàng Telemetry trò chơi trên trang [Thiết bị]. Hãy ánh xạ chúng trong mục Ánh xạ của tay cầm hoặc dùng chúng để kích hoạt macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Vị trí, kích thước và độ mờ của một menu được đặt ngay trên menu đó, trong mục [Macro và menu] của tay cầm.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Nguồn</value></data>
-  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack và mọi thứ gửi theo định dạng UDP của nó</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack và mọi thứ gửi theo định dạng UDP của nó.</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Biên độ</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Phạm vi theo từng trục. Giá trị 0 dùng theo phạm vi ở trên.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Trò chơi PadForge chưa biết</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Cho các mod tìm DSX đang chạy trước khi gửi</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Cho các mod tìm DSX đang chạy trước khi gửi.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Nội dung hiển thị</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Vòng tròn, lưới hoặc thanh của một menu khi nó đang mở</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Tên của lớp khi một lớp chuyển bật lên, trong khoảng thời gian mà lớp đó đặt</value></data>
@@ -694,7 +705,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Ẩn thiết bị khỏi trò chơi, Giữ thiết bị ẩn giữa các lần chạy, Ứng dụng trong danh sách cho phép</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Ứng dụng trong danh sách cho phép</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Các ứng dụng này vẫn thấy được thiết bị đã ẩn. PadForge luôn tự động nằm trong danh sách cho phép.</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>Thêm...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>Thêm…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge cài đặt trình điều khiển này cùng với tay cầm ảo đầu tiên bạn tạo. Gỡ cài đặt liệt kê những gì HIDMaestro để lại trên PC này trước khi gỡ nó.</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Tạo ra các tay cầm ảo.</value></data>
@@ -713,6 +724,21 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Đã giữ</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Chưa đọc được</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Chưa gỡ được</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Thiết bị</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Đăng ký giao diện</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Khóa registry dùng chung</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Giá trị registry dùng chung</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Liên kết WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Ghi đè tên OEM</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Khóa DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Đăng ký OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Gói trình điều khiển</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Khóa dịch vụ WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Khóa registry</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Chứng chỉ</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Thư mục</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Cài đặt dịch vụ</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Bước gỡ cài đặt</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Cho phép tay cầm PlayStation 3, PlayStation Move và tay cầm Navigation kết nối qua Bluetooth. Được nhúng trong PadForge và cài đặt vào lần đầu ghép đôi một trong số đó.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Kết nối tay cầm PlayStation 3 qua Bluetooth.</value></data>
@@ -907,11 +933,11 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Gõ "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(không có văn bản)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Văn bản</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Độ trễ ký tự (ms)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Độ trễ giữa các chữ cái</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Số mili giây giữa các ký tự được gõ, tối đa 1000. 0 sẽ gõ toàn bộ văn bản cùng lúc.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Ngắt kết nối khi nhàn rỗi</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Chi tiết</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>phút (0 = không bao giờ)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>phút</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Ngắt Bluetooth khi cắm qua USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Sạc nhanh. Khi tay cầm này báo đang sạc trong lúc kết nối qua Bluetooth, liên kết Bluetooth sẽ bị ngắt để nó sạc mà không phải cấp điện cho bộ thu phát vô tuyến. Mọi nguồn điện USB đều được tính, kể cả sạc tường. Nếu bạn bật lại Bluetooth trong khi cáp vẫn cắm, kết nối sẽ được giữ nguyên cho đến lần rút cáp tiếp theo.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Đọc như tay cầm iCade</value></data>
@@ -1002,7 +1028,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Chĩa Wii Remote vào mục tiêu rồi nhấn B.</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Wii Remote không nhìn thấy thanh cảm biến. Hãy chĩa nó vào mục tiêu rồi nhấn B lần nữa.</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Nhấn Esc hoặc Home để hủy.</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Ngắt kết nối tay cầm Bluetooth này sau số phút không có đầu vào như trên, để nó ngủ và tiết kiệm pin. Không bao giờ kích hoạt khi dùng USB.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Ngắt kết nối tay cầm Bluetooth này sau số phút không có đầu vào như trên, để nó ngủ và tiết kiệm pin. 0 là tắt tính năng này. Không bao giờ kích hoạt khi dùng USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Nguồn</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>
@@ -1068,6 +1094,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Pin</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Đường dẫn</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Số sê-ri</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID của ứng dụng</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>GUID của SDL</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Bản sửa đổi</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Đọc Chatpad</value></data>
@@ -1156,11 +1184,15 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>Con quay hồi chuyển</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>Gia tốc kế</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 trục</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} trục</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 nút</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} nút</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>Trục {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} trục, {1} nút, {2} POV</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>Rung</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Con quay hồi chuyển</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>Gia tốc kế</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>ẩn thiết bị này khỏi các chương trình mở nó dưới dạng thiết bị HID</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows vẫn đọc các phím bạn gõ, nên việc gõ phím vẫn hoạt động trong mọi chương trình, kể cả trò chơi. Có thể gỡ bàn phím USB khỏi Windows bằng nút “{0}”.</value></data>
@@ -1346,7 +1378,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>bo mạch chủ và card đồ họa</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>tấm lót chuột, tai nghe và giá đỡ tai nghe</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Trò chơi giành quyền điều khiển mỗi khi chúng ghi đèn.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Nhập mã màu hex sáu chữ số (RRGGBB hoặc #RRGGBB) rồi nhấn Enter hoặc nhấp ra ngoài để áp dụng.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Gỡ màu này khỏi bảng màu</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Tắt</value></data>
@@ -1548,6 +1580,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Nhập</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(thiết bị HID không tên)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Đã tìm thấy {0} giao diện HID.</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Đã tìm thấy 1 giao diện HID.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Liệt kê thất bại: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>Trích xuất thất bại: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>Không phân tích được JSON hồ sơ đã trích xuất. Không có gì được lưu.</value></data>
@@ -1660,7 +1693,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Lần lượt ghi từng ánh xạ một</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Sao chép mọi ánh xạ và thiết lập vào bảng nhớ tạm</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Dán ánh xạ và thiết lập từ bảng nhớ tạm</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Sao chép từ...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Sao chép từ…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Sao chép thiết lập từ một thiết bị khác đã cấu hình</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Đặt lại tất cả</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Xóa tất cả</value></data>
@@ -1848,7 +1881,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Phạm vi bằng số, giá trị thô</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Phạm vi</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Hiệu chỉnh biên đo mép mà cần analog có thể chạm tới và định hình lại mép đó thành một đường tròn đầy đủ. Bốn thanh trượt chỉ giới hạn từng hướng.</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>Đang lấy mẫu...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>Đang lấy mẫu…</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Bù lệch tâm X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Bù lệch tâm Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Hình dạng vùng chết</value></data>
@@ -1959,6 +1992,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Macro_DelayMs" xml:space="preserve"><value>Độ trễ</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Độ nhạy</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Macro mới</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Macro {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Ghi bộ kích hoạt</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>Chưa đặt. Hãy nhấp Ghi.</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Nút {0}</value></data>
@@ -2017,6 +2051,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Điều khiển rung của thiết bị vật lý trên khe từ một macro. Phản ứng chạy ở cường độ tối đa trong khoảng thời gian giữ rồi mờ dần về không trong khoảng thời gian mờ dần. Duy trì giữ ở cường độ tối đa cho đến khi một hành động Dừng rung chạy. Được chồng lên rung do trò chơi điều khiển bằng max() nên phản hồi do người dùng điều khiển luôn được cảm nhận.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Rung xung {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Giữ rung {0} cho đến khi xóa</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>trái {0}%, phải {1}%</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>cò trái {0}%, cò phải {1}%</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Dừng rung</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Dừng rung</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Giải phóng mọi phần ghi đè rung đang hoạt động trên khe đã gán. Dùng kèm với một hành động Rung kiểu Duy trì để hủy việc giữ bằng một macro khác.</value></data>
@@ -2055,7 +2091,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Chuột Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Khoảng thời gian</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Chọn trên màn hình</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Lấy vị trí sau {0}...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Lấy vị trí sau {0}…</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Nhấp, rồi di chuyển con trỏ đến mục tiêu. Vị trí của nó được lấy sau một khoảng đếm ngược ngắn.</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Chế độ</value></data>
   <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>Độ thụt X</value></data>
@@ -2082,9 +2118,9 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>Chưa ánh xạ</value></data>
-  <data name="Mapping_Inv" xml:space="preserve"><value>Đảo</value></data>
+  <data name="Mapping_Inv" xml:space="preserve"><value>Đảo ngược</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>Nửa</value></data>
-  <data name="Mapping_InvHalf" xml:space="preserve"><value>Đảo nửa</value></data>
+  <data name="Mapping_InvHalf" xml:space="preserve"><value>Đảo ngược một nửa</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Chưa ánh xạ thiết bị nào</value></data>
 
@@ -2727,9 +2763,9 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Profiles_DropTile" xml:space="preserve"><value>Thả tệp hồ sơ vào đây</value></data>
   <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD hoặc DS4Windows</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Hồ sơ mới</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>Lưu thành</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Lưu thành…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Lưu thiết lập hiện tại vào đây</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Sửa</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Sửa…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Tải</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Tích hợp sẵn</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Chưa đặt trò chơi</value></data>
@@ -2832,8 +2868,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Đặt lại bù lệch tâm X</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Hiệu chỉnh biên</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Hiệu chỉnh lại biên</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Quét quanh vành... còn {0}</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Đã phủ hết. Thêm một vòng nữa để tinh chỉnh...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Quét quanh vành… còn {0}</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Đã phủ hết. Thêm một vòng nữa để tinh chỉnh…</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Độ tròn {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Quét cần analog quanh vành của nó để lập bản đồ đường biên chạm tới được, rồi định hình lại thành một đường tròn đầy đủ.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Đặt lại hiệu chỉnh biên</value></data>
@@ -2912,7 +2948,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Điều khiển âm lượng của một ứng dụng cụ thể trong bộ trộn âm lượng của Windows, theo tỷ lệ với giới hạn âm lượng. Nhập tên tiến trình (xem được trong Trình quản lý Tác vụ). Dùng với bộ kích hoạt "Luôn luôn", hoặc bộ kích hoạt bằng nút/trục với "Trong khi giữ" + "Cho đến khi thả".</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Liên tục ánh xạ trục đã chọn sang di chuyển chuột (hoặc cuộn). Dùng với bộ kích hoạt "Luôn luôn", hoặc bộ kích hoạt bằng nút/trục với "Trong khi giữ" + "Cho đến khi thả". Để dùng cần analog làm chuột, hãy tạo hai hành động: một cho trục X, một cho trục Y.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Đảo ngược trục</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Hiện OSD âm lượng</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Hiện chỉ báo âm lượng</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Hướng</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Bất kỳ</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Dương</value></data>
@@ -3156,7 +3192,6 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Mức</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Thời gian chờ không hoạt động</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Số giây trước khi một tay cầm ảo bị hủy khi mọi thiết bị đã ánh xạ của nó đều ngoại tuyến. 0 để tắt. Các tay cầm còn lại cùng loại sẽ dồn lên để lấp chỗ trống và gắn lại vào các khe thấp hơn.</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>giây (0 = không bao giờ)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Thêm lớp</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Thêm một lớp shift. Một bảng ánh xạ thứ hai được kích hoạt khi một nút được giữ hoặc bật/tắt.</value></data>
@@ -3961,7 +3996,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
     <value>Đặt lại độ trễ về 0 (lớp phản ứng tức thì).</value>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Cấu hình cộng đồng</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Duyệt các cấu hình tay cầm Steam Input do cộng đồng tạo và chuyển đổi chúng thành hồ sơ PadForge. PadForge chỉ kết nối trực tiếp đến máy chủ của Steam khi bạn tìm kiếm, mở một cấu hình hoặc kiểm tra cập nhật cho các cấu hình đã nhập. Nó gửi văn bản tìm kiếm của bạn, id của các trò chơi, cấu hình và người tạo liên quan, cùng phiên bản của PadForge. Lần đăng nhập Steam ẩn danh cũng gửi phiên bản Windows của bạn và một id máy được tạo từ các giá trị băm của ID cài đặt Windows, địa chỉ bộ điều hợp mạng và số sê-ri ổ đĩa khởi động. Không thu thập dữ liệu đo từ xa, không dịch vụ bên thứ ba, không tài khoản Steam.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Duyệt các cấu hình tay cầm Steam Input do cộng đồng tạo và chuyển đổi chúng thành hồ sơ PadForge. PadForge gửi văn bản tìm kiếm của bạn, ID của các trò chơi, cấu hình và người tạo liên quan, cùng phiên bản của nó. Lần đăng nhập Steam ẩn danh cũng gửi phiên bản Windows của bạn và một ID máy được tạo từ các giá trị băm của ID cài đặt Windows, địa chỉ bộ điều hợp mạng và số sê-ri ổ đĩa khởi động. Không có dịch vụ bên thứ ba nào tham gia.</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge chỉ kết nối đến máy chủ của Steam khi bạn tìm kiếm, mở một cấu hình hoặc kiểm tra cập nhật cho các cấu hình đã nhập. Không thu thập dữ liệu đo từ xa, không cần tài khoản Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Những gì được gửi</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Bật cấu hình cộng đồng</value></data>
@@ -4018,6 +4053,9 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam không liệt kê tệp nào để tải xuống cho cấu hình này, và thư mục Steam của bạn cũng không có bản sao nào của nó. Hãy đăng ký nó trong Steam, và PadForge sẽ đọc nó từ đó.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Mở trong Steam Workshop</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>Cũ</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Hồ sơ Workshop</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Macro Workshop</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Vùng con trỏ</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Chọn một cấu hình để xem những gì được chuyển sang.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Những gì được chuyển sang</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Thành</value></data>
@@ -4395,6 +4433,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Trung bình (nhẹ)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Cao (nhẹ)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Tùy chỉnh</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Mặc định bs2b</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Tần số cắt</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Tần số phân tần. Dưới tần số này các kênh trộn dần về mono, trên tần số này chúng vẫn tách biệt, nên tần số cắt thấp hơn sẽ trộn chéo ít hơn.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Mức trộn</value></data>
@@ -4422,7 +4461,8 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Xóa</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Nhập từ bảng nhớ tạm</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Sao chép một hồ sơ AutoEq cho tai nghe của bạn, rồi nhấp nút này. Thay thế các dải và đặt mức tiền khuếch đại. Nếu bảng nhớ tạm không có gì đọc được, EQ hiện tại được giữ nguyên.</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Nhập từ tệp</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Nhập từ tệp…</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>Nhập EQ tham số</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Chọn tệp .txt mà AutoEq đã tải xuống. Đây là cách nên dùng: autoeq.app đưa cho bạn một tệp chứ không phải văn bản để sao chép.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Để có bản hiệu chỉnh khớp với tai nghe của bạn: mở autoeq.app, chọn mẫu tai nghe, chọn Custom Parametric Eq rồi tải xuống, sau đó dùng Nhập từ tệp. Bản tải Graphic Eq không có các dòng bộ lọc nên sẽ không nhập được.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Đã nhập {0} dải với mức tiền khuếch đại {1:0.#} dB từ {2}.</value></data>
@@ -4475,6 +4515,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Mạng này không tạo được kết nối trực tiếp (có vẻ là điểm phát sóng di động hoặc NAT cấp nhà mạng). Hãy dùng VPN như Tailscale, hoặc kết nối từ mạng băng thông rộng tại nhà.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Không tìm được địa chỉ công khai của PC này (mạng có thể đang chặn lưu lượng cần thiết). Kết nối trực tiếp sẽ không hoạt động ở đây. Hãy dùng VPN, hoặc Kết nối bằng địa chỉ trong cùng một mạng.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Pin tay cầm yếu</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Tay cầm</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: còn {1}% pin</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Cảnh báo pin</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Nhận thông báo khi pin tay cầm sắp cạn, trước khi nó hết pin giữa trận.</value></data>
@@ -4691,7 +4732,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
     <value>Hãy tạo một tay cầm ảo trên PC kia, rồi làm mới.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Đang chờ PC kia...</value>
+    <value>Đang chờ PC kia…</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>Bảng vẽ</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>Đầu vào dùng chung</value></data>
@@ -4753,7 +4794,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>Vị trí cài đặt SteamVR phải là một đường dẫn đầy đủ, chẳng hạn C:\SteamVR.</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>Vị trí cài đặt SteamVR không được là thư mục gốc của ổ đĩa. Hãy chọn một thư mục, chẳng hạn C:\SteamVR.</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd không hoàn tất trong vòng 60 phút.</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd đã chạy, nhưng SteamVR không xuất hiện trong {0}. steamcmd báo: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd đã chạy, nhưng SteamVR không xuất hiện trong {0}. steamcmd báo: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>HidHide đã được cài đặt, nhưng thiết bị điều khiển của nó không mở được, nên không có bộ lọc lớp nào được thêm.</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>HidHide vẫn nằm trong danh sách bộ lọc lớp, nên trình điều khiển được giữ nguyên tại chỗ.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Đang gỡ bỏ các trình điều khiển cũ…</value></data>

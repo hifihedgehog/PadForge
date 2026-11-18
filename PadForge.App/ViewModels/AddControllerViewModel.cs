@@ -144,7 +144,7 @@ namespace PadForge.ViewModels
         /// before them when the device has a line at all.</summary>
         public string LineLead { get; init; } = string.Empty;
 
-        /// <summary>The battery level, drawn in the telemetry face.</summary>
+        /// <summary>The battery level, drawn with tabular figures.</summary>
         public string LineBattery { get; init; } = string.Empty;
 
         /// <summary>A picture of that level, drawn before it

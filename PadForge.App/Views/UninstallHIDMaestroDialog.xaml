@@ -46,8 +46,7 @@
                 <ItemsControl x:Name="ProgramList" Margin="0,6,0,0" Visibility="Collapsed">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="13"
-                                       FontFamily="{DynamicResource TelemetryFontFamily}"/>
+                            <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="13"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -72,7 +71,7 @@
              the user asks (HMUninstallOptions.IncludeUsbip). Changing it
              reads the PC again. Its tooltip says what else that touches. -->
         <StackPanel x:Name="UsbipPanel" Margin="0,12,0,0">
-            <CheckBox x:Name="IncludeUsbipBox" MinHeight="36"
+            <CheckBox x:Name="IncludeUsbipBox" MinHeight="36" Margin="-11,0,0,0"
                       Content="{Binding HIDMaestroUninstall_IncludeUsbip, Source={x:Static strings:Strings.Instance}}"
                       ToolTip="{Binding HIDMaestroUninstall_IncludeUsbipDesc, Source={x:Static strings:Strings.Instance}}"
                       Checked="IncludeUsbipBox_Changed" Unchecked="IncludeUsbipBox_Changed"/>

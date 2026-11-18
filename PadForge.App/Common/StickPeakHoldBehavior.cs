@@ -10,10 +10,10 @@ using PadForge.ViewModels;
 namespace PadForge.Common
 {
     /// <summary>Ember artifact peak-hold (#175 competitor item 3): a short
-    /// ember tick on the radar rim at the angle of the largest OUT
-    /// deflection recorded, plus a mono percent readout written into the
-    /// TextBlock handed over via the Readout attached property (the static
-    /// "PEAK" caption stays in XAML; this writes only the "n%" value).
+    /// ember tick on the radar rim at the angle of the largest output
+    /// deflection recorded, plus a percent readout written into the
+    /// TextBlock handed over via the Readout attached property. The static
+    /// Peak caption stays in XAML, and this writes only the "n%" value.
     /// A new peak, or a stick holding the peak, relights the tick; once
     /// the stick backs off, the tick decays over ~3s and the peak then
     /// re-arms at the current deflection. The decay is gated on

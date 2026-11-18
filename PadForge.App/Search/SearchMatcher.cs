@@ -5,9 +5,9 @@ namespace PadForge.Search
 {
     /// <summary>How well a result matches what was typed (#574). Case,
     /// accents, kana type and width are ignored, as the language's own
-    /// comparison does. Every word typed must be found, in the title, the
-    /// where line or, in a language other than English, the English
-    /// title.</summary>
+    /// comparison does, and a curly quote is its straight form. Every word
+    /// typed must be found, in the title, the where line or, in a language
+    /// other than English, the English title.</summary>
     internal static class SearchMatcher
     {
         private const CompareOptions Loose =
@@ -22,6 +22,8 @@ namespace PadForge.Search
         {
             atWordStart = atStart = false;
             if (string.IsNullOrEmpty(haystack) || string.IsNullOrEmpty(token)) return false;
+            haystack = FoldQuotes(haystack);
+            token = FoldQuotes(token);
             var compare = CultureInfo.CurrentUICulture.CompareInfo;
             bool found = false;
             for (int from = 0; from < haystack.Length;)
@@ -67,9 +69,29 @@ namespace PadForge.Search
                 if (best == 0) return 0;
                 score += best;
             }
-            if (CultureInfo.CurrentUICulture.CompareInfo.Compare(query.Trim(), title ?? string.Empty, Loose) == 0)
+            if (CultureInfo.CurrentUICulture.CompareInfo.Compare(FoldQuotes(query.Trim()), FoldQuotes(title ?? string.Empty), Loose) == 0)
                 score += 100;
             return score;
+        }
+
+        private static readonly char[] CurlyQuotes = { '\u2018', '\u2019', '\u201C', '\u201D' };
+
+        /// <summary>The text with each curly quote as its straight form, one
+        /// character for one, so a word typed with ' finds a string written
+        /// with \u2019, and the reverse. The language's comparison holds them
+        /// apart even with its options set.</summary>
+        internal static string FoldQuotes(string text)
+        {
+            if (string.IsNullOrEmpty(text) || text.IndexOfAny(CurlyQuotes) < 0) return text;
+            var chars = text.ToCharArray();
+            for (int i = 0; i < chars.Length; i++)
+                chars[i] = chars[i] switch
+                {
+                    '\u2018' or '\u2019' => '\'',
+                    '\u201C' or '\u201D' => '"',
+                    _ => chars[i],
+                };
+            return new string(chars);
         }
     }
 }

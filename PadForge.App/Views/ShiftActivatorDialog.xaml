@@ -22,13 +22,12 @@
          constructor) shows the name row, the flyout row and the color with
          no More. -->
     <views:DialogWindow.Resources>
-        <!-- A color channel's letter, in the code face as on the controller
-             page's color rows. -->
+        <!-- A color channel's letter, as on the controller page's color
+             rows. -->
         <Style x:Key="DzLabelTight" TargetType="TextBlock">
             <Setter Property="Width" Value="14"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
         </Style>
         <Style x:Key="DzRgbSlider" TargetType="Slider" BasedOn="{StaticResource EmberSlider}">
             <Setter Property="Minimum" Value="0"/>
@@ -100,7 +99,7 @@
                     AutomationProperties.Name="{Binding Pad_Shift_Icon_Tooltip, Source={x:Static strings:Strings.Instance}}">
                 <Grid>
                     <TextBlock x:Name="IconPickerGlyph" Text="&#x21E7;"
-                               FontFamily="Segoe UI Emoji, Segoe UI Symbol, Segoe UI" FontSize="16"
+                               FontFamily="{x:Static common:TextFaces.Emoji}" FontSize="16"
                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <reset:DecorativeImage FlowDirection="LeftToRight" x:Name="IconPickerImage"
                                            Width="22" Height="22" Stretch="Uniform"
@@ -120,7 +119,7 @@
         <controls:SettingRow x:Name="InputRow" MinHeight="44">
             <TextBlock x:Name="InputLabel" Style="{StaticResource DialogLabel}"
                        Text="{Binding Pad_Shift_HeldWith, Source={x:Static strings:Strings.Instance}}"/>
-            <Grid MaxWidth="240">
+            <Grid Width="200" MaxWidth="240">
                 <ComboBox x:Name="InputCombo" Style="{StaticResource DialogInputChipCombo}" HorizontalAlignment="Stretch"
                           DisplayMemberPath="DisplayName" ScrollViewer.VerticalScrollBarVisibility="Visible"
                           SelectionChanged="InputPicker_SelectionChanged"
@@ -151,7 +150,7 @@
         <controls:SettingRow x:Name="ChordSecondRow" MinHeight="44">
             <TextBlock x:Name="ChordLabel" Style="{StaticResource DialogLabel}"
                        Text="{Binding Pad_Shift_AndWith, Source={x:Static strings:Strings.Instance}}"/>
-            <Grid MaxWidth="240">
+            <Grid Width="200" MaxWidth="240">
                 <ComboBox x:Name="ChordSecondCombo" Style="{StaticResource DialogInputChipCombo}" HorizontalAlignment="Stretch"
                           DisplayMemberPath="DisplayName" ScrollViewer.VerticalScrollBarVisibility="Visible"
                           SelectionChanged="InputPicker_SelectionChanged"
@@ -178,7 +177,7 @@
         </controls:SettingRow>
 
         <!-- How far an axis has to go to turn the layer on. -->
-        <controls:SettingRow x:Name="AxisThresholdRow" MinHeight="44">
+        <controls:SettingRow x:Name="AxisThresholdRow" MinHeight="44" ValueWidth="84">
             <TextBlock x:Name="AxisThresholdLabel" Style="{StaticResource DialogLabel}"
                        Text="{Binding Pad_Shift_AxisThreshold, Source={x:Static strings:Strings.Instance}}"/>
             <Slider x:Name="AxisThresholdSlider" Style="{StaticResource RowSlider}" Minimum="0.05" Maximum="1.0" Value="0.5"
@@ -197,7 +196,7 @@
         <controls:SettingRow x:Name="UnmappedRow" MinHeight="44">
             <TextBlock x:Name="UnmappedLabel" Style="{StaticResource DialogLabel}"
                        Text="{Binding Pad_Shift_UnmappedControls, Source={x:Static strings:Strings.Instance}}"/>
-            <ComboBox x:Name="InheritUnmappedCombo" Style="{StaticResource DialogSelect}" MinWidth="200" SelectedIndex="1"
+            <ComboBox x:Name="InheritUnmappedCombo" Style="{StaticResource DialogSelect}" MinWidth="200" MaxWidth="300" controls:SettingRow.Fills="True" SelectedIndex="1"
                       ToolTip="{Binding Pad_Shift_InheritUnmapped_Tooltip, Source={x:Static strings:Strings.Instance}}"
                       AutomationProperties.Name="{Binding Pad_Shift_UnmappedControls, Source={x:Static strings:Strings.Instance}}">
                 <ComboBoxItem Content="{Binding Pad_Shift_FallThroughToBase, Source={x:Static strings:Strings.Instance}}"/>
@@ -322,7 +321,7 @@
                 <!-- The delay. With an edge mode (Toggle, Latch, Sticky) a
                      delay above zero makes the switch a long press: it
                      fires once when the hold crosses the delay (#206). -->
-                <controls:SettingRow x:Name="DelayRow" MinHeight="44">
+                <controls:SettingRow x:Name="DelayRow" MinHeight="44" ValueWidth="84">
                     <TextBlock Style="{StaticResource DialogLabel}"
                                Text="{Binding Pad_Shift_Delay, Source={x:Static strings:Strings.Instance}}"
                                ToolTip="{Binding Pad_Shift_Delay_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -344,7 +343,7 @@
 
                 <!-- Auto-cancel, for a Toggle layer alone: the layer lets
                      go by itself after this long (#206). -->
-                <controls:SettingRow x:Name="AutoCancelRow" MinHeight="44">
+                <controls:SettingRow x:Name="AutoCancelRow" MinHeight="44" ValueWidth="84">
                     <TextBlock x:Name="AutoCancelLabel" Style="{StaticResource DialogLabel}"
                                Text="{Binding Pad_Shift_AutoCancel, Source={x:Static strings:Strings.Instance}}"
                                ToolTip="{Binding Pad_Shift_AutoCancel_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -416,7 +415,7 @@
                         <TextBlock Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
                                    VerticalAlignment="Center" Margin="12,0,10,0"/>
                         <ui:TextBox x:Name="ColorHexBox" Style="{StaticResource DialogTextBox}" Width="110"
-                                    FontFamily="{StaticResource TelemetryFontFamily}"
+                                    Typography.NumeralAlignment="Tabular"
                                     PlaceholderText="{Binding Common_None, Source={x:Static strings:Strings.Instance}}"
                                     KeyDown="ColorHexBox_KeyDown" LostFocus="ColorHexBox_LostFocus"
                                     ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"

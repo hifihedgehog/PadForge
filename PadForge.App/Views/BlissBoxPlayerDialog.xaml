@@ -28,7 +28,7 @@
         <!-- The port being changed, which the board does not draw: it says
              which adapter and port the number is for. Collapsed when the
              caller names none. -->
-        <TextBlock x:Name="DetailText" Style="{StaticResource DialogMonoNote}" Margin="0,0,0,8"/>
+        <TextBlock x:Name="DetailText" Style="{StaticResource DialogFigureNote}" Margin="0,0,0,8"/>
         <controls:SettingRow MinHeight="34">
             <TextBlock Style="{StaticResource DialogLabel}" Width="120" Margin="0,0,12,0"
                        Text="{Binding BlissBoxPlayer_Label, Source={x:Static strings:Strings.Instance}}"/>

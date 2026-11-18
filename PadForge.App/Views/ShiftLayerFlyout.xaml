@@ -1,6 +1,7 @@
-<Window x:Class="PadForge.Views.ShiftLayerFlyout"
+<Window x:Class="PadForge.Views.ShiftLayerFlyout" FontFamily="{DynamicResource BodyFontFamily}"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:common="clr-namespace:PadForge.Common"
         xmlns:controls="clr-namespace:PadForge.Controls"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -43,7 +44,7 @@
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock x:Name="StatusIcon"
                                    Text="&#x21E7;"
-                                   FontFamily="Segoe UI Emoji, Segoe UI Symbol, Segoe UI"
+                                   FontFamily="{x:Static common:TextFaces.Emoji}"
                                    FontSize="18"
                                    VerticalAlignment="Center"
                                    Margin="0,0,10,0"
@@ -60,7 +61,6 @@
 
                         <TextBlock x:Name="LayerNameText"
                                    FontSize="14"
-                                   FontFamily="{StaticResource BodyFontFamily}"
                                    VerticalAlignment="Center"
                                    Margin="0,0,10,0"
                                    Foreground="White"/>

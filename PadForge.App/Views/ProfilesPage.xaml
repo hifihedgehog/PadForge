@@ -26,7 +26,7 @@
             <Setter Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
             <Setter Property="Background" Value="{DynamicResource SteelBandBrush}"/>
             <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
-            <Setter Property="TextElement.FontSize" Value="12.5"/>
+            <Setter Property="TextElement.FontSize" Value="12"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <!-- A controller type and its count on a profile's card: a pill 26
@@ -40,7 +40,7 @@
             <Setter Property="BorderBrush" Value="{DynamicResource SteelPillLineBrush}"/>
             <Setter Property="Background" Value="{DynamicResource SteelBandBrush}"/>
             <Setter Property="TextElement.Foreground" Value="{DynamicResource SubRowTextBrush}"/>
-            <Setter Property="TextElement.FontSize" Value="12.5"/>
+            <Setter Property="TextElement.FontSize" Value="12"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <!-- A small outlined word: Built-in on Default's card, and what a
@@ -52,7 +52,7 @@
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="{DynamicResource SteelPillLineBrush}"/>
             <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-            <Setter Property="TextElement.FontSize" Value="11"/>
+            <Setter Property="TextElement.FontSize" Value="12"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <!-- A starter profile's tile: the band's fill inside the card's
@@ -139,7 +139,7 @@
                         </Grid>
                     </Border>
                     <TextBlock DockPanel.Dock="Right" Text="{Binding Number}" Margin="5,0,0,0" VerticalAlignment="Center"
-                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                               Typography.NumeralAlignment="Tabular" FontSize="13"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     <TextBlock Text="{Binding TypeName}" Margin="7,0,0,0" FontSize="13" VerticalAlignment="Center"
                                TextTrimming="CharacterEllipsis"
@@ -538,11 +538,10 @@
                                                 <TextBlock Text="{Binding GameLead}" FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                            LineHeight="18.85" LineStackingStrategy="BlockLineHeight"/>
                                                 <TextBlock Grid.Column="1" Text="{Binding GameNames}" FontSize="13" TextTrimming="CharacterEllipsis"
-                                                           LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
-                                                           FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"/>
+                                                           LineHeight="18.85" LineStackingStrategy="BlockLineHeight" Foreground="{DynamicResource ColdBrush}"/>
                                                 <TextBlock Grid.Column="2" Text="{Binding GameExtra}" FontSize="13" Margin="4,0,0,0"
                                                            LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
-                                                           FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
+                                                           Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource ColdBrush}"
                                                            Visibility="{Binding GameExtra, Converter={StaticResource StringToVisibility}}"/>
                                                 <TextBlock Grid.Column="3" Text="{Binding GameTail}" FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                            LineHeight="18.85" LineStackingStrategy="BlockLineHeight"/>
@@ -589,8 +588,7 @@
                                Stroke="{DynamicResource ColdBrush}" StrokeThickness="1.5"
                                StrokeDashArray="4 3"/>
                     <TextBlock Text="{Binding Profiles_DropToImport, Source={x:Static strings:Strings.Instance}}"
-                               HorizontalAlignment="Center" VerticalAlignment="Center"
-                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"
                                Foreground="{DynamicResource ColdBrush}"/>
                 </Grid>
             </Grid>
@@ -640,7 +638,7 @@
                                 <TextBlock Text="{Binding Name, Mode=OneWay}" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
                                            LineHeight="20.3" LineStackingStrategy="BlockLineHeight"/>
                                 <Border Style="{StaticResource SmallTag}" HorizontalAlignment="Left" Margin="0,6,0,0">
-                                    <TextBlock Text="{Binding OutputLabel, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}"
+                                    <TextBlock Text="{Binding OutputLabel, Mode=OneWay}"
                                                LineHeight="15.95" LineStackingStrategy="BlockLineHeight"/>
                                 </Border>
                                 <TextBlock Text="{Binding Description, Mode=OneWay}" FontSize="13" Margin="0,6,0,0" TextWrapping="Wrap"
@@ -668,7 +666,7 @@
                                    Style="{StaticResource CardTitle}" HorizontalAlignment="Left"
                                    AutomationProperties.HeadingLevel="Level2"/>
                         <!-- What is in front now: a cold dot, lit, then the
-                             program's file in the code face and whether a
+                             program's file and whether a
                              profile loads for it. The three runs stay on one
                              line so no space falls between them. -->
                         <Grid x:Name="InFrontLine" Margin="0,4,0,0"
@@ -683,7 +681,7 @@
                             </controls:Halo>
                             <TextBlock Grid.Column="1" TextWrapping="Wrap" FontSize="13" VerticalAlignment="Center"
                                        LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
-                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" AutomationProperties.AutomationId="Profiles_InFront"><Run Text="{Binding ForegroundLead, Mode=OneWay}"/><Run Text="{Binding ForegroundExeName, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"/><Run Text="{Binding ForegroundTail, Mode=OneWay}"/></TextBlock>
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" AutomationProperties.AutomationId="Profiles_InFront"><Run Text="{Binding ForegroundLead, Mode=OneWay}"/><Run Text="{Binding ForegroundExeName, Mode=OneWay}" Foreground="{DynamicResource ColdBrush}"/><Run Text="{Binding ForegroundTail, Mode=OneWay}"/></TextBlock>
                         </Grid>
                         <Grid Margin="0,12,0,0" MinHeight="36">
                             <Grid.ColumnDefinitions>
@@ -711,8 +709,12 @@
                             <TextBlock Text="{Binding Profiles_Shortcuts, Source={x:Static strings:Strings.Instance}}"
                                        Style="{StaticResource CardTitle}" AutomationProperties.HeadingLevel="Level2"
                                        ToolTip="{Binding Profiles_ShortcutsDescription, Source={x:Static strings:Strings.Instance}}"/>
+                            <!-- Reset All's 30 hangs 4 over and under the title's
+                                 line, so the line is the title's, and the title
+                                 stands where its two neighbors' titles do. -->
                             <ui:Button Style="{StaticResource ResetAllButton}" Command="{Binding ResetShortcutsCommand}"
                                        Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}"
+                                       Margin="0,-4,0,-4"
                                        AutomationProperties.AutomationId="Profiles_ResetShortcuts">
                                 <ui:Button.ToolTip>
                                     <MultiBinding Converter="{StaticResource FormatTextConverter}">

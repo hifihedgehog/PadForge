@@ -212,8 +212,9 @@ namespace PadForge.Views
                 DeviceList.SelectedItem = pick >= 0 ? devices[pick] : null;
 
                 if (sayCount)
-                    StatusText.Text = string.Format(
-                        Strings.Instance.ImportFromDevice_StatusFound_Format, devices.Count);
+                    StatusText.Text = devices.Count == 1
+                        ? Strings.Instance.ImportFromDevice_StatusFoundOne
+                        : string.Format(Strings.Instance.ImportFromDevice_StatusFound_Format, devices.Count);
             }
             catch (Exception ex)
             {

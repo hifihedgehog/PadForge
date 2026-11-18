@@ -256,7 +256,7 @@ namespace PadForge.Tests
                         IsBthPS3Installed = true,
                         AnalogKeyboardsEnabled = true, BlissBoxEnabled = true, KeyboardScreensEnabled = true,
                         SettingsFilePath = @"D:\Tools\PadForge\PadForge.xml",
-                        ApplicationVersion = "6.0.0", RuntimeVersion = "10.0.13", SdlVersion = "SDL 3.5.0",
+                        ApplicationVersion = "6.0.0", RuntimeVersion = "10.0.13", SdlVersion = "3.5.0",
                     };
                     vm.ActiveMidiApi = PadForge.Common.Input.MidiApiKind.InBox;
                     vm.AnalogKeyboardsStatus = PadForge.Resources.Strings.Strings.Instance.Settings_AnalogKeyboardsStatus_None;
@@ -492,7 +492,7 @@ namespace PadForge.Tests
                     new CopyFromDialog.DeviceEntry { Name = "Xbox #2", Detail = "DualSense Wireless Controller" },
                     new CopyFromDialog.DeviceEntry { Name = "Keyboard + Mouse #1", Detail = "Xbox Series X Controller" },
                     new CopyFromDialog.DeviceEntry { Name = "8BitDo Pro 2", Detail = "Not assigned, keeps mappings from before" },
-                }, "Replace the mappings and per-device tuning of Xbox #1 with another controller's."), "dialog-copy-from.png");
+                }, "Replace the mappings and per-device tuning of Xbox #1 with another controller\u2019s."), "dialog-copy-from.png");
                 drawing.PictureWindow(new PickSoundDialog(new[]
                 {
                     new PickSoundDialog.Item("alert.wav", "Arcade Pack", "pfsound://Arcade Pack/alert.wav"),
@@ -1309,6 +1309,7 @@ namespace PadForge.Tests
 
             private static void Lay(FrameworkElement ground, double width, double height)
             {
+                PageRenderDump.Flush(ground);
                 ground.Measure(new Size(width, height));
                 ground.Arrange(new Rect(0, 0, width, height));
                 ground.UpdateLayout();

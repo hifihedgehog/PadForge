@@ -359,8 +359,8 @@
                                      line of markup, since a line break
                                      between runs would add a space. -->
                                 <TextBlock x:Name="EngineFootRate" Grid.Column="2" VerticalAlignment="Center"
-                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
-                                           AutomationProperties.Name="{Binding Dashboard.PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}"/><Style.Triggers><DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger></Style.Triggers></Style></TextBlock.Style><Run Text="{Binding Dashboard.PollingRateLead, Mode=OneWay}"/><Run Text="{Binding Dashboard.PollingRateNumber, Mode=OneWay}" FontSize="17" FontWeight="SemiBold"/><Run Text="{Binding Dashboard.PollingRateTail, Mode=OneWay}"/></TextBlock>
+                                           Typography.NumeralAlignment="Tabular" FontSize="12"
+                                           AutomationProperties.Name="{Binding Dashboard.PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}"/><Style.Triggers><DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger></Style.Triggers></Style></TextBlock.Style><Run Text="{Binding Dashboard.PollingRateLead, Mode=OneWay}"/><Run Text="{Binding Dashboard.PollingRateNumber, Mode=OneWay}" FontFamily="{StaticResource DisplayFontFamily}" FontSize="18" FontWeight="SemiBold"/><Run Text="{Binding Dashboard.PollingRateTail, Mode=OneWay}"/></TextBlock>
                             </Grid>
                         </Grid>
                     </Border>
@@ -443,7 +443,7 @@
               Grid.RowSpan="2"
               Visibility="Collapsed"
               Panel.ZIndex="1000">
-            <Border Background="#80000000"/>
+            <Border Background="#CC000000"/>
             <Border Background="{DynamicResource SolidBackgroundFillColorSecondaryBrush}"
                     CornerRadius="8" Padding="32,24"
                     HorizontalAlignment="Center"
@@ -453,13 +453,10 @@
                     <ui:ProgressRing IsIndeterminate="True"
                                      Width="40" Height="40"
                                      Margin="0,0,0,16"/>
-                    <!-- Headline role (#175 font sweep): the overlay's sole
-                         16px line reads as its title, so it wears Display
-                         like the shutdown/startup overlay titles. -->
-                    <TextBlock x:Name="DriverOverlayText"
-                               FontFamily="{StaticResource DisplayFontFamily}"
-                               FontSize="16" HorizontalAlignment="Center"
-                               TextAlignment="Center"/>
+                    <!-- The overlay's one line is its title: a card's title,
+                         as the shutdown and startup overlays have theirs. -->
+                    <TextBlock x:Name="DriverOverlayText" Style="{StaticResource CardTitle}"
+                               HorizontalAlignment="Center" TextAlignment="Center"/>
                 </StackPanel>
             </Border>
         </Grid>
@@ -481,9 +478,7 @@
                     <ui:ProgressRing IsIndeterminate="True"
                                      Width="40" Height="40"
                                      Margin="0,0,0,16"/>
-                    <TextBlock FontFamily="{StaticResource DisplayFontFamily}"
-                               FontSize="16" FontWeight="SemiBold"
-                               HorizontalAlignment="Center"
+                    <TextBlock Style="{StaticResource CardTitle}" HorizontalAlignment="Center"
                                Text="{Binding Main_ShuttingDown, Source={x:Static strings:Strings.Instance}}"/>
                 </StackPanel>
             </Border>
@@ -509,9 +504,7 @@
                     <ui:ProgressRing IsIndeterminate="True"
                                      Width="40" Height="40"
                                      Margin="0,0,0,16"/>
-                    <TextBlock FontFamily="{StaticResource DisplayFontFamily}"
-                               FontSize="16" FontWeight="SemiBold"
-                               HorizontalAlignment="Center"
+                    <TextBlock Style="{StaticResource CardTitle}" HorizontalAlignment="Center"
                                Text="{Binding Main_StartingUp, Source={x:Static strings:Strings.Instance}}"/>
                     <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                Margin="0,6,0,4" HorizontalAlignment="Center"

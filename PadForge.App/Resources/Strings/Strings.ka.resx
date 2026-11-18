@@ -88,7 +88,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>ძრავა ჩერდება…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>მუშაობს: {0}</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>მუშაობს, დაკავშირებულია {0}</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>ისმენს :{0}</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>ისმენს პორტზე {0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>პორტი {0} დაკავებულია</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>პორტზე {0} წვდომა უარყოფილია (გაუშვით ადმინისტრატორის სახელით)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>გაშვება ვერ მოხერხდა</value></data>
@@ -106,10 +106,11 @@
   <data name="Common_Stop" xml:space="preserve"><value>გაჩერება</value></data>
   <data name="Common_Start" xml:space="preserve"><value>დაწყება</value></data>
   <data name="Common_Record" xml:space="preserve"><value>ჩაწერა</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>ჩაწერა...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>ჩაწერა…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>გასუფთავება</value></data>
   <data name="Common_None" xml:space="preserve"><value>არცერთი</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>მწმ</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>წამი</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>ჰც</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>მიუნიჭებელი</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -124,7 +125,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge იხურება...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge იხურება…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge იწყება…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>წინა სესიიდან დარჩენილი ვირტუალური კონტროლერების გასუფთავება.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>კონტროლერის დამატება</value></data>
@@ -227,7 +228,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← მარცხნივ)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ ზემოთ)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll ვერ მოიძებნა</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll ვერ მოიძებნა! განათავსეთ SDL3.dll PadForge.exe-ს გვერდით. ჩამოტვირთეთ: https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll ვერ მოიძებნა. განათავსეთ SDL3.dll PadForge.exe-ს გვერდით. ჩამოტვირთეთ აქედან: https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>დრაივერის ოპერაცია ვერ შესრულდა: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>პარამეტრები დაკოპირდა გაცვლის ბუფერში.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>მოწყობილობის ინფორმაცია დაკოპირდა გაცვლის ბუფერში.</value></data>
@@ -258,11 +259,11 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>პარამეტრები ხელახლა ჩაიტვირთა დისკიდან.</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>დისკზე პარამეტრების ფაილი ვერ მოიძებნა.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>ჩასაწერად დაკავშირებული მოწყობილობა არ არის.</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>ჩაწერა: დააჭირეთ ღილაკს ან გადაადგილეთ ღერძი „{0}“-ისთვის...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>ჩაწერა: დაატრიალეთ ან შეანჯღრიეთ კონტროლერი „{0}“-ისთვის...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>ჩაწერა: დააჭირეთ ღილაკს ან გადაადგილეთ ღერძი „{0}“-ისთვის…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>ჩაწერა: დაატრიალეთ ან შეანჯღრიეთ კონტროლერი „{0}“-ისთვის…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>ამ სლოტის არცერთ კონტროლერს არ აქვს სენსორი „{0}“-ისთვის.</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>ჩაწერა „{0}“: დააჭირეთ ზემოთ მიმართულების შეყვანას...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>ჩაწერა „{0}“: ახლა დააჭირეთ ქვემოთ მიმართულების შეყვანას...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>ჩაწერა „{0}“: დააჭირეთ ზემოთ მიმართულების შეყვანას…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>ჩაწერა „{0}“: ახლა დააჭირეთ ქვემოთ მიმართულების შეყვანას…</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>ჩაწერა გაუქმდა.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>„{0}“-ის ჩაწერის დრო ამოიწურა.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>ძრავა გაეშვა.</value></data>
@@ -281,7 +282,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge-ის ჩვენება ან დამალვა</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>ვირტუალური კონტროლერების ჩართვა ან გამორთვა</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>ნებისმიერი დაკავშირებული მოწყობილობა</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>ჩაწერა...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>ჩაწერა…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} წმ)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>როცა</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>მოწყობილობაზე</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>„{0}“ მოცილდა ვირტუალურ კონტროლერს {1}.</value></data>
@@ -314,6 +316,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>კონტროლერები</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>გამოყენებული დამატებითი</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>ჩართული. {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>ნაგულისხმევი პარამეტრები</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>მარცხენა სტიკი</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>მარჯვენა სტიკი</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>კიდევ {0} არის [დამატებითში]. დამატებითი გამორთულია, სანამ არ ჩართავთ.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>დამატებითის გახსნა</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>QR კოდის ჩვენება</value></data>
@@ -381,8 +388,12 @@
   <data name="Engine_Forging" xml:space="preserve"><value>ჭედვა</value></data>
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>ჩართულია {0} / {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>აირჩიეთ მაკრო სიაში ან ახლის შესაქმნელად დააჭირეთ + ღილაკს „მაკროების“ გვერდით.</value></data>
-  <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
-  <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>ნედლი</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>გამოსავალი</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>მრუდი</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Shift ფენები</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>ინვერტირებული</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>პიკი</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>ცივი</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>გადახედვა</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>დამატებითი</value></data>
@@ -418,11 +429,11 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>მნიშვნელობები არის „თამაშის ტელემეტრიის“ რიგი გვერდზე [მოწყობილობები]. მიაბით ისინი კონტროლერის მიბმების განყოფილებაში ან გამოიყენეთ მაკროების გასაშვებად.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>მენიუს საკუთარი ადგილი, ზომა და გაუმჭვირვალობა მენიუზე დგინდება, კონტროლერის განყოფილებაში [მაკროები და მენიუები].</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>წყაროები</value></data>
-  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack და ყველაფერი, რაც მის UDP ფორმატს აგზავნის</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack და ყველაფერი, რაც მის UDP ფორმატს აგზავნის.</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>დიაპაზონი</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>დიაპაზონი ღერძების მიხედვით. ნული ზემოთ მოცემულ დიაპაზონს მიჰყვება.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>თამაშები, რომლებსაც PadForge არ იცნობს</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>მოდებისთვის, რომლებიც გაგზავნამდე გაშვებულ DSX-ს ეძებენ</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>მოდებისთვის, რომლებიც გაგზავნამდე გაშვებულ DSX-ს ეძებენ.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>რა ჩანს</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>მენიუს რგოლი, ბადე ან ზოლი, სანამ ის ღიაა</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>შრის სახელი, როცა Shift-შრე ირთვება, იმ დროის განმავლობაში, რომელსაც ეს შრე განსაზღვრავს</value></data>
@@ -681,7 +692,7 @@
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>მოწყობილობების დამალვა თამაშებისგან, მოწყობილობების დაფარვა გაშვებებს შორის, თეთრ სიაში შეყვანილი აპლიკაციები</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>თეთრ სიაში შეყვანილი აპლიკაციები</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>ეს აპლიკაციები დამალულ მოწყობილობებს მაინც ხედავენ. PadForge ყოველთვის ავტომატურად არის თეთრ სიაში.</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>დამატება...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>დამატება…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge ამ დრაივერს პირველ შექმნილ ვირტუალურ კონტროლერთან ერთად აყენებს. წაშლამდე ჩამოთვლის, რა დარჩა HIDMaestro-დან ამ კომპიუტერზე.</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>ქმნის ვირტუალურ კონტროლერებს.</value></data>
@@ -700,6 +711,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>დარჩა</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>წაუკითხავია</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>ვერ წაიშალა</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>მოწყობილობა</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>ინტერფეისის რეგისტრაცია</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>საერთო რეესტრის გასაღები</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>საერთო რეესტრის მნიშვნელობა</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>WinUSB მიბმა</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>OEM სახელის გადაფარვა</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>DeviceOverrides გასაღები</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>OpenVR რეგისტრაცია</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>დრაივერის პაკეტი</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>WUDF სერვისის გასაღები</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>რეესტრის გასაღები</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>სერტიფიკატი</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>საქაღალდე</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>სერვისის პარამეტრი</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>წაშლის ნაბიჯი</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>აძლევს საშუალებას PlayStation 3-ის კონტროლერებს, PlayStation Move-სა და Navigation კონტროლერს Bluetooth-ით დაუკავშირდნენ. ჩაშენებულია PadForge-ში და ირთვება მათგან პირველის დაწყვილებისას.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>აკავშირებს PlayStation 3-ის კონტროლერებს Bluetooth-ით.</value></data>
@@ -894,11 +920,11 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>ტექსტის აკრეფა: „{0}“</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(ტექსტი არ არის)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>ტექსტი</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>სიმბოლოს დაყოვნება (მწმ)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>დაყოვნება ასოებს შორის</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>მილიწამები აკრეფილ სიმბოლოებს შორის, 1000-მდე. 0 მთელ ტექსტს ერთდროულად კრეფს.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>უმოქმედობისას გამორთვა</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>დეტალები</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>წუთი (0 = არასდროს)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>წუთი</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Bluetooth-ის გამორთვა USB-ით შეერთებისას</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>სწრაფი დატენვა. როცა ეს კონტროლერი Bluetooth-ით დაკავშირებულ მდგომარეობაში იტყობინება, რომ იტენება, Bluetooth კავშირი წყდება, რათა დაიტენოს რადიოს კვების გარეშე. ნებისმიერი USB კვების წყარო ითვლება, კედლის დამტენების ჩათვლით. თუ კაბელის ჩართულობისას Bluetooth-ს კვლავ ჩართავთ, ის კაბელის შემდეგ გამოღებამდე არ შეეხება.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>წაკითხვა iCade კონტროლერად</value></data>
@@ -989,7 +1015,7 @@
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>დაუმიზნეთ Wii Remote სამიზნეს და დააჭირეთ B-ს.</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Wii Remote-მა სენსორის ზოლი ვერ დაინახა. დაუმიზნეთ სამიზნეს და B-ს კვლავ დააჭირეთ.</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>გასაუქმებლად დააჭირეთ Esc-ს ან Home-ს.</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>ამ Bluetooth კონტროლერს გამორთავს შეყვანის გარეშე გასული ამდენი წუთის შემდეგ, რათა დაიძინოს და ბატარეა დაზოგოს. USB-ით არასდროს მუშაობს.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>ამ Bluetooth კონტროლერს გამორთავს შეყვანის გარეშე გასული ამდენი წუთის შემდეგ, რათა დაიძინოს და ბატარეა დაზოგოს. 0 გამორთავს ამ ფუნქციას. USB-ით არასდროს მუშაობს.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>კვება</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>მენიუ</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>კარგი</value></data>
@@ -1078,11 +1104,15 @@
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>გიროსკოპი</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>აქსელერომეტრი</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 ღერძი</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} ღერძი</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 ღილაკი</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} ღილაკი</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>ღერძი {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} ღერძი, {1} ღილაკი, {2} POV</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>ვიბრაცია</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>გიროსკოპი</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>აქსელერომეტრი</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>ამ მოწყობილობის დამალვა იმ პროგრამებისგან, რომლებიც მას HID მოწყობილობად ხსნიან</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows კვლავ იღებს თქვენ მიერ დაჭერილ კლავიშებს, ამიტომ აკრეფა ყველა პროგრამაში მუშაობს, თამაშების ჩათვლით. USB კლავიატურის Windows-ისთვის ჩამორთმევა შესაძლებელია ღილაკით „{0}“.</value></data>
@@ -1247,7 +1277,7 @@
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>ჰედსეტები, მაუსპადები და დინამიკები</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ჰედსეტები</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>თამაშები განათებას ჩაწერისას გადაიბარებენ.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>შეიყვანეთ ექვსნიშნა hex ფერი (RRGGBB ან #RRGGBB) და გამოსაყენებლად დააჭირეთ Enter-ს ან დააწკაპუნეთ გვერდით.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>ამ ფერის პალიტრიდან ამოღება</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>გამორთულია</value></data>
@@ -1362,6 +1392,7 @@
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>იმპორტი</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(უსახელო HID მოწყობილობა)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>ნაპოვნია {0} HID ინტერფეისი.</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>ნაპოვნია 1 HID ინტერფეისი.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>აღრიცხვა ვერ მოხერხდა: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>ამოღება ვერ მოხერხდა: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>ამოღებული პროფილის JSON-ის დამუშავება ვერ მოხერხდა. არაფერი შენახულა.</value></data>
@@ -1474,7 +1505,7 @@
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>ყველა მიბმის თანმიმდევრულად ჩაწერა სათითაოდ</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>ყველა მიბმისა და პარამეტრის კოპირება გაცვლის ბუფერში</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>მიბმებისა და პარამეტრების ჩასმა გაცვლის ბუფერიდან</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>კოპირება აქედან...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>კოპირება აქედან…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>პარამეტრების კოპირება სხვა გამართული მოწყობილობიდან</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>ყველას საწყისზე დაბრუნება</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>ყველას გასუფთავება</value></data>
@@ -1661,7 +1692,7 @@
   <data name="Pad_More_Trigger" xml:space="preserve"><value>დიაპაზონი რიცხვებში, ნედლი მნიშვნელობები</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>დიაპაზონი</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>„საზღვრის კალიბრაცია“ ზომავს კიდეს, რომლამდეც სტიკს მისვლა შეუძლია, და მას სრულ წრედ აქცევს. ოთხი სლაიდერი მხოლოდ თითოეულ მიმართულებას ზღუდავს.</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>ნიმუშის აღება...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>ნიმუშის აღება…</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>ცენტრის წანაცვლება X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>ცენტრის წანაცვლება Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>მკვდარი ზონის ფორმა</value></data>
@@ -1772,6 +1803,7 @@
   <data name="Macro_DelayMs" xml:space="preserve"><value>დაყოვნება</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>მგრძნობელობა</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>ახალი მაკრო</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>მაკრო {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>ტრიგერის ჩაწერა</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>არ არის დაყენებული. დააწკაპუნეთ ჩაწერაზე.</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>ღილ. {0}</value></data>
@@ -1830,6 +1862,8 @@
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>მაკროთი მართავს სლოტის ფიზიკური მოწყობილობის ვიბრაციას. „რეაქტიული“ მუშაობს სრული სიძლიერით შენარჩუნების ფანჯრის განმავლობაში, შემდეგ კი ნულამდე ჩაქრება ჩაქრობის ფანჯრის განმავლობაში. „ფიქსირებული“ სრულ სიძლიერეს ინარჩუნებს, სანამ არ შესრულდება ვიბრაციის შეჩერების მოქმედება. თამაშიდან მოსულ ვიბრაციას max()-ით ემატება, ამიტომ მომხმარებლის მიერ გამოწვეული უკუკავშირი ყოველთვის იგრძნობა.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>ვიბრაციის იმპულსი {0} ({1} მწმ)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>ვიბრაციის შენარჩუნება {0} გასუფთავებამდე</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>მარცხენა {0}%, მარჯვენა {1}%</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>მარცხენა ტრიგერი {0}%, მარჯვენა ტრიგერი {1}%</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>ვიბრაციის შეჩერება</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>ვიბრაციის შეჩერება</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>მინიჭებულ სლოტზე ხსნის ვიბრაციის ნებისმიერ აქტიურ გადაფარვას. გამოიყენეთ „ფიქსირებული“ ვიბრაციის მოქმედებასთან ერთად, რომ შენარჩუნება სხვა მაკროთი გააუქმოთ.</value></data>
@@ -1868,7 +1902,7 @@
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>მაუსი Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>ინტერვალი</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>ეკრანზე არჩევა</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>ჩაწერამდე: {0}...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>ჩაწერამდე: {0}…</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>დააწკაპუნეთ, შემდეგ კურსორი სამიზნეზე გადაიტანეთ. მისი პოზიცია ჩაიწერება მოკლე უკუთვლის შემდეგ.</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>რეჟიმი</value></data>
   <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>შიდა დაშორება X</value></data>
@@ -1895,9 +1929,9 @@
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>მიბმული არ არის</value></data>
-  <data name="Mapping_Inv" xml:space="preserve"><value>ინვ.</value></data>
+  <data name="Mapping_Inv" xml:space="preserve"><value>ინვერტირებული</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>ნახევარი</value></data>
-  <data name="Mapping_InvHalf" xml:space="preserve"><value>ინვ. ნახევარი</value></data>
+  <data name="Mapping_InvHalf" xml:space="preserve"><value>ინვერტირებული ნახევარი</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>მოწყობილობა მიბმული არ არის</value></data>
 
@@ -2539,9 +2573,9 @@
   <data name="Profiles_DropToImport" xml:space="preserve"><value>ჩააგდეთ პროფილის იმპორტისთვის</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>ჩააგდეთ პროფილის ფაილი აქ</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>ახალი პროფილი</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>შენახვა როგორც</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>შენახვა როგორც…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>მიმდინარე მოწყობის აქ შენახვა</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>რედაქტირება</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>რედაქტირება…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>ჩატვირთვა</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>ჩაშენებული</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>თამაში არ არის მითითებული</value></data>
@@ -2644,8 +2678,8 @@
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>საწყისზე დაბრუნება: ცენტრის წანაცვლება X</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>საზღვრის კალიბრაცია</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>საზღვრის ხელახალი კალიბრაცია</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>დაატარეთ სტიკი კიდეზე... დარჩა {0}</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>დაფარულია. კიდევ ერთი წრე დასაზუსტებლად...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>დაატარეთ სტიკი კიდეზე… დარჩა {0}</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>დაფარულია. კიდევ ერთი წრე დასაზუსტებლად…</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>წრიულობა {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>სტიკი გააბრუნეთ კიდეზე, რომ აღიწეროს მისაწვდომი საზღვარი, შემდეგ ის სრულ წრედ გადაკეთდება.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>საწყისზე დაბრუნება: საზღვრის კალიბრაცია</value></data>
@@ -2724,7 +2758,7 @@
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>აკონტროლებს კონკრეტული აპლიკაციის ხმის სიმძლავრეს Windows-ის ხმის მიქშერში, ხმის ზღვრის მიხედვით მასშტაბირებით. შეიყვანეთ პროცესის სახელი (ჩანს Task Manager-ში). გამოიყენეთ „ყოველთვის“ ტრიგერთან ან ღილაკის/ღერძის ტრიგერთან „დაჭერილად ყოფნისას“ + „აშვებამდე“.</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>უწყვეტად აკავშირებს არჩეულ ღერძს მაუსის მოძრაობასთან (ან გადახვევასთან). გამოიყენეთ „ყოველთვის“ ტრიგერთან ან ღილაკის/ღერძის ტრიგერთან „დაჭერილად ყოფნისას“ + „აშვებამდე“. სტიკიდან მაუსზე გადასატანად შექმენით ორი მოქმედება: ერთი X ღერძისთვის, ერთი Y ღერძისთვის.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>ღერძის ინვერტირება</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>ხმის OSD-ის ჩვენება</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>ხმის ინდიკატორის ჩვენება</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>მიმართულება</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>ნებისმიერი</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>დადებითი</value></data>
@@ -2947,7 +2981,7 @@
   <data name="Preview_CCOutputs" xml:space="preserve"><value>CC გამოსავლები</value></data>
   <data name="Preview_NoteOutputs" xml:space="preserve"><value>ნოტების გამოსავლები</value></data>
   <data name="Preview_Stick_Format" xml:space="preserve"><value>სტიკი {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>ტრიგერი {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>ღილაკები</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -2964,7 +2998,6 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>დონე</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>უქმობის ვადა</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>წამები, რომლის შემდეგაც ვირტუალური კონტროლერი განადგურდება, როცა მისი ყველა მიბმული მოწყობილობა გათიშულია. 0 გამორთავს. იმავე ტიპის დარჩენილი კონტროლერები ზევით გადაინაცვლებს ხარვეზის შესავსებად და ქვედა სლოტებს თავიდან მიებმება.</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>წამი (0 = არასდროს)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>შრის დამატება</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>დაამატეთ Shift შრე. მიბმების მეორე ცხრილი, რომელიც აქტიურდება ღილაკის დაჭერისას ან გადართვისას.</value></data>
@@ -3740,7 +3773,7 @@
     <value>შეყოვნების დაბრუნება 0-ზე (შრე მაშინვე რეაგირებს).</value>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>საზოგადოების კონფიგურაციები</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>დაათვალიერეთ საზოგადოების მიერ შექმნილი Steam Input-ის კონტროლერის კონფიგურაციები და გადათარგმნეთ ისინი PadForge-ის პროფილებად. PadForge Steam-ის სერვერებს უშუალოდ მხოლოდ მაშინ უკავშირდება, როცა ეძებთ, კონფიგურაციას ხსნით ან იმპორტირებული კონფიგურაციების განახლებას ამოწმებთ. ის აგზავნის თქვენს საძიებო ტექსტს, ჩართული თამაშების, კონფიგურაციებისა და ავტორების ID-ებს და PadForge-ის ვერსიას. ანონიმური Steam-ში შესვლა ასევე აგზავნის თქვენს Windows-ის ვერსიას და კომპიუტერის ID-ს, რომელიც შედგენილია თქვენი Windows-ის ინსტალაციის ID-ის, ქსელის ადაპტერების მისამართებისა და ჩატვირთვის დისკის სერიული ნომრის ჰეშებისგან. არც ტელემეტრია, არც მესამე მხარის სერვისი, არც Steam ანგარიში.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>დაათვალიერეთ საზოგადოების მიერ შექმნილი Steam Input-ის კონტროლერის კონფიგურაციები და გადათარგმნეთ ისინი PadForge-ის პროფილებად. PadForge აგზავნის თქვენს საძიებო ტექსტს, ჩართული თამაშების, კონფიგურაციებისა და ავტორების ID-ებს და თავის ვერსიას. ანონიმური Steam-ში შესვლა ასევე აგზავნის თქვენს Windows-ის ვერსიას და კომპიუტერის ID-ს, რომელიც შედგენილია თქვენი Windows-ის ინსტალაციის ID-ის, ქსელის ადაპტერების მისამართებისა და ჩატვირთვის დისკის სერიული ნომრის ჰეშებისგან. მესამე მხარის სერვისი არ მონაწილეობს.</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam-ის სერვერებს უკავშირდება მხოლოდ მაშინ, როცა ეძებთ, კონფიგურაციას ხსნით ან იმპორტირებული კონფიგურაციების განახლებას ამოწმებთ. არც ტელემეტრია, არც Steam ანგარიში.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>რა იგზავნება</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>საზოგადოების კონფიგურაციების ჩართვა</value></data>
@@ -3797,6 +3830,9 @@
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam-ში ამ კონფიგურაციისთვის ჩამოსატვირთი ფაილი არ არის მითითებული და მისი ასლი თქვენს Steam-ის საქაღალდეშიც არ არის. გამოიწერეთ ის Steam-ში და PadForge წაიკითხავს მას იქიდან.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>გახსნა Steam Workshop-ში</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>ძველი</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop-ის პროფილი</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop-ის მაკრო</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>კურსორის არე</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>აირჩიეთ კონფიგურაცია, რომ ნახოთ რა გადმოდის.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>რა გადმოდის</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>ხდება</value></data>
@@ -4172,6 +4208,7 @@
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>საშუალო (მსუბუქი)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>მაღალი (მსუბუქი)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>მორგებული</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b ნაგულისხმევი</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>ჭრის სიხშირე</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>გამყოფი სიხშირე. მის ქვემოთ არხები მონოსკენ ირევა, ზემოთ კი განცალკევებული რჩება, ამიტომ დაბალი ჭრის სიხშირე ნაკლებ კროსფიდს იძლევა.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>მიწოდება</value></data>
@@ -4191,7 +4228,7 @@
   <data name="Pad_Audio_EqType_HighPass" xml:space="preserve"><value>HPF</value></data>
   <data name="Pad_Audio_EqType_LowPass" xml:space="preserve"><value>LPF</value></data>
   <data name="Pad_Audio_EqType_Notch" xml:space="preserve"><value>ნოჩი</value></data>
-  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>სიხშ. (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>სიხშირე (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>გაძლ. (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
   <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>ზოლის დამატება</value></data>
@@ -4199,7 +4236,8 @@
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>გასუფთავება</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>იმპორტი ბუფერიდან</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>დააკოპირეთ თქვენი ყურსასმენის AutoEq პროფილი და დააწკაპუნეთ. ცვლის ზოლებს და აყენებს პრეამპს. თუ ბუფერში წასაკითხი არაფერია, მიმდინარე EQ უცვლელი რჩება.</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>იმპორტი ფაილიდან</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>იმპორტი ფაილიდან…</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>პარამეტრული EQ-ის იმპორტი</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>აირჩიეთ AutoEq-დან ჩამოტვირთული .txt ფაილი. სწორედ ეს გამოიყენეთ: autoeq.app გაძლევთ ფაილს და არა დასაკოპირებელ ტექსტს.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>თქვენს ყურსასმენზე მორგებული კორექციისთვის: გახსენით autoeq.app, აირჩიეთ თქვენი მოდელი, აირჩიეთ Custom Parametric Eq და ჩამოტვირთეთ, შემდეგ იმპორტი ფაილიდან. Graphic Eq-ის ჩამოტვირთვას ფილტრის ხაზები არ აქვს და ვერ დაიმპორტდება.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>დაიმპორტდა {0} ზოლი {1:0.#} dB პრეამპით, წყარო: {2}.</value></data>
@@ -4252,6 +4290,7 @@
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>ამ ქსელს პირდაპირი კავშირების დამყარება არ შეუძლია (როგორც ჩანს, ეს მობილური ჰოტსპოტია ან carrier-grade NAT). გამოიყენეთ VPN, მაგალითად Tailscale, ან დაუკავშირდით სახლის ფართოზოლოვანი ინტერნეტიდან.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>ამ კომპიუტერის საჯარო მისამართი ვერ მოიძებნა (ქსელმა შეიძლება საჭირო ტრაფიკი დაბლოკოს). პირდაპირი კავშირები აქ არ იმუშავებს. გამოიყენეთ VPN ან იმავე ქსელში დაუკავშირდით მისამართით.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>კონტროლერის ბატარეა იცლება</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>კონტროლერი</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: ბატარეა {1}% დარჩა</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>ბატარეის გაფრთხილებები</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>მიიღეთ შეტყობინება, როცა კონტროლერის ბატარეა იცლება, სანამ თამაშის შუა დროს ჩაქრება.</value></data>
@@ -4460,7 +4499,7 @@
     <value>შექმენით ვირტუალური კონტროლერი მეორე კომპიუტერზე, შემდეგ განაახლეთ.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>ველოდებით მეორე კომპიუტერს...</value>
+    <value>ველოდებით მეორე კომპიუტერს…</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>საგრაფიკო ტაბლეტი</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>გაზიარებული შეყვანა</value></data>
@@ -4519,7 +4558,7 @@
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>SteamVR-ის დაყენების ადგილი სრული მისამართი უნდა იყოს, მაგალითად C:\SteamVR.</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>SteamVR-ის დაყენების ადგილი დისკის ძირი ვერ იქნება. აირჩიეთ საქაღალდე, მაგალითად C:\SteamVR.</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd 60 წუთში არ დასრულდა.</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd გაეშვა, მაგრამ SteamVR {0}-ში არ აღმოჩნდა. steamcmd-მა თქვა: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd გაეშვა, მაგრამ SteamVR {0}-ში არ აღმოჩნდა. steamcmd-მა თქვა: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>HidHide დაყენდა, მაგრამ მისი მართვის მოწყობილობა არ გაიხსნა, ამიტომ კლასის ფილტრი არ დაემატა.</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>HidHide ჯერ კიდევ ჩამოთვლილია კლასის ფილტრად, ამიტომ დრაივერი ადგილზე დარჩა.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>ძველი დრაივერების წაშლა…</value></data>
@@ -4967,6 +5006,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>ბატარეა</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>გზა</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>სერიული ნომერი</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>აპის GUID</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>ფირმვერი</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>რევიზია</value></data>
   <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>ასევე კონტროლერის ვიბრაცია, შეტყობინების გამეორება ყოველ, შეტყობინება სრულ დამუხტვაზე</value></data>

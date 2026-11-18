@@ -57,7 +57,7 @@ namespace PadForge.Tests
         /// StaticResource outside Dialogs.xaml and a dialog's own resources.</summary>
         internal static void StandIns(ResourceDictionary resources)
         {
-            foreach (string key in new[] { "BodyFontFamily", "DisplayFontFamily", "TelemetryFontFamily" })
+            foreach (string key in new[] { "BodyFontFamily", "DisplayFontFamily" })
                 resources[key] = new FontFamily("Segoe UI");
             foreach (string key in new[] { "QuietResetButton", "EmberIconButton", "EmberPrimaryButton", "RecordButton" })
                 resources[key] = new Style(typeof(Wpf.Ui.Controls.Button));

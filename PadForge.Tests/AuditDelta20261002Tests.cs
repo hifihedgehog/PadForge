@@ -791,11 +791,12 @@ namespace PadForge.Tests
             var parts = new List<string>();
             typeof(PadForge.Services.InputService).GetMethod("AppendGyroStageTokens",
                 BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new object[] { parts, ps, true });
-            Assert.Equal(on, parts.Contains("INV P"));
-            Assert.Equal(on, parts.Contains("INV Y"));
-            Assert.Equal(on, parts.Contains("INV R"));
-            Assert.Equal(on, parts.Contains("PASSTHRU"));
-            Assert.Equal(on, parts.Any(p => p.StartsWith("SIM", StringComparison.Ordinal)));
+            var s = Strings.Instance;
+            Assert.Equal(on, parts.Contains(s.Settings_GyroInvertPitch));
+            Assert.Equal(on, parts.Contains(s.Settings_GyroInvertYaw));
+            Assert.Equal(on, parts.Contains(s.Settings_GyroInvertRoll));
+            Assert.Equal(on, parts.Contains(string.Format(s.Home_Stage_On_Format, s.Pad_Gyro_Passthrough_Header, s.Pad_Gyro_Passthrough_Tuned)));
+            Assert.Equal(on, parts.Contains(s.Settings_GyroSimulation));
         }
 
         /// <summary>No reader of the six compares the stored string with "1"

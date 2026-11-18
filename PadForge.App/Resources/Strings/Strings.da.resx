@@ -88,7 +88,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Stopper motoren…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Kører på {0}</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>Kører, {0} tilsluttet</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Lytter på :{0}</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Lytter på port {0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>Port {0} er i brug</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Adgang nægtet til port {0} (kør som administrator)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>Kunne ikke starte</value></data>
@@ -106,7 +106,7 @@
   <data name="Common_Stop" xml:space="preserve"><value>Stop</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Start</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Optag</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>Optager...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Optager…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Ryd</value></data>
   <data name="Common_Increase" xml:space="preserve"><value>Forøg</value></data>
   <data name="Common_Decrease" xml:space="preserve"><value>Formindsk</value></data>
@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Side til højre</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ingen</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>sekunder</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Ikke tildelt</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -134,7 +135,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>Lukker PadForge...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>Lukker PadForge…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Starter PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Rydder op i virtuelle controllere fra en tidligere session.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Tilføj controller</value></data>
@@ -239,8 +240,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ ned)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← venstre)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ op)</value></data>
-  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll IKKE FUNDET</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll blev ikke fundet! Placer SDL3.dll ved siden af PadForge.exe. Download fra https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll ikke fundet</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll blev ikke fundet. Placer SDL3.dll ved siden af PadForge.exe. Download den fra https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Driverhandlingen mislykkedes: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Indstillingerne er kopieret til udklipsholderen.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Enhedsoplysningerne er kopieret til udklipsholderen.</value></data>
@@ -271,11 +272,11 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>Indstillingerne er genindlæst fra disken.</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>Der blev ikke fundet nogen indstillingsfil på disken.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Der er ingen tilsluttet enhed at optage fra.</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Optager: tryk på en knap, eller bevæg en akse for ”{0}”...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Optager: drej eller ryst en controller for ”{0}”...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Optager: tryk på en knap, eller bevæg en akse for ”{0}”…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Optager: drej eller ryst en controller for ”{0}”…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>Ingen controller på denne plads har en sensor til ”{0}”.</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Optager ”{0}”: tryk på input for retningen Op...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Optager ”{0}”: tryk nu på input for retningen Ned...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Optager ”{0}”: tryk på input for retningen Op…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Optager ”{0}”: tryk nu på input for retningen Ned…</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Optagelsen er annulleret.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Tiden løb ud for optagelsen af ”{0}”.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Motoren er startet.</value></data>
@@ -294,7 +295,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Vis eller skjul PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Slå virtuelle controllere til eller fra</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Enhver tilsluttet enhed</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Optager...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Optager…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>når</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>på</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>Tildelingen af ”{0}” til virtuel controller {1} blev fjernet.</value></data>
@@ -327,6 +329,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>Controllere</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Ekstra i brug</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Til. {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>Standardindstillinger</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>Venstre stick</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>Højre stick</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>{0} flere under [Ekstra]. En ekstra er slået fra, til du slår den til.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Åbn Ekstra</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>Vis QR</value></data>
@@ -394,8 +401,12 @@
   <data name="Engine_Forging" xml:space="preserve"><value>Smeder</value></data>
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Live: {0} af {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Vælg en makro på listen, eller tryk på + ved siden af Makroer for at oprette en.</value></data>
-  <data name="Instr_Raw" xml:space="preserve"><value>RÅ</value></data>
-  <data name="Instr_Out" xml:space="preserve"><value>UD</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>Rå</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>Output</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Kurve</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Skiftelag</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Inverteret</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>Spids</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Kold</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Forhåndsvisning</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Ekstra</value></data>
@@ -431,11 +442,11 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Værdierne er rækken Spiltelemetri under [Enheder]. Tildel dem i en controllers sektion Tildelinger, eller brug dem som udløsere til makroer.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>En menus placering, størrelse og uigennemsigtighed angives på selve menuen, i en controllers sektion [Makroer og menuer].</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Kilder</value></data>
-  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack og alt, der sender dets UDP-format</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack og alt, der sender dets UDP-format.</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Område</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Område pr. akse. Nul følger området ovenfor.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Spil, PadForge ikke kender</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Til mods, der leder efter en kørende DSX, før de sender</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Til mods, der leder efter en kørende DSX, før de sender.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Hvad der vises</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menuens ring, gitter eller bjælke, mens den er åben</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Lagets navn, når et skiftelag slås til, i den tid laget angiver</value></data>
@@ -694,7 +705,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Skjul enheder for spil, Hold enheder skjult mellem opstarter, Tilladte programmer</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Tilladte programmer</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Disse programmer kan stadig se skjulte enheder. PadForge er altid tilladt automatisk.</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>Tilføj...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>Tilføj…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge installerer denne driver sammen med den første virtuelle controller, du opretter. Afinstaller viser, hvad HIDMaestro har efterladt på denne pc, før den fjernes.</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Opretter de virtuelle controllere.</value></data>
@@ -713,6 +724,21 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Beholdt</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Ikke læst</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Ikke fjernet</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Enhed</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Grænsefladeregistrering</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Delt registreringsdatabasenøgle</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Delt registreringsdatabaseværdi</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>WinUSB-binding</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>OEM-navneoverstyring</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>DeviceOverrides-nøgle</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>OpenVR-registrering</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Driverpakke</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>WUDF-servicenøgle</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Registreringsdatabasenøgle</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Certifikat</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Mappe</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Serviceindstilling</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Fjernelsestrin</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Lader PlayStation 3-controllere, PlayStation Move og Navigation-controlleren oprette forbindelse via Bluetooth. Indlejret i PadForge og installeret, første gang en af dem parres.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Forbinder PlayStation 3-controllere via Bluetooth.</value></data>
@@ -907,11 +933,11 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Skriv ”{0}”</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(ingen tekst)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Tekst</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Tegnforsinkelse (ms)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Forsinkelse mellem bogstaver</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekunder mellem de skrevne tegn, op til 1000. 0 skriver hele teksten på én gang.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Afbryd ved inaktivitet</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detaljer</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutter (0 = aldrig)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutter</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Afbryd Bluetooth, når der er tilsluttet via USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Hurtig opladning. Når denne controller melder, at den oplades, mens den er forbundet via Bluetooth, afbrydes Bluetooth-forbindelsen, så den oplades uden at skulle forsyne radioen med strøm. Enhver USB-strømkilde tæller med, også vægopladere. Hvis du slår Bluetooth til igen, mens kablet stadig sidder i, får den lov at være, indtil kablet tages ud næste gang.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Læs som iCade-controller</value></data>
@@ -1002,7 +1028,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Peg med Wii Remote på målet, og tryk på B.</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Wii Remote kunne ikke se sensorbjælken. Peg på målet, og tryk på B igen.</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc eller Home annullerer.</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Afbryder denne Bluetooth-controller efter så mange minutter uden input, så den går i dvale og sparer på batteriet. Sker aldrig via USB.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Afbryder denne Bluetooth-controller efter så mange minutter uden input, så den går i dvale og sparer på batteriet. 0 slår det fra. Sker aldrig via USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Tænd/sluk</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>
@@ -1068,6 +1094,8 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Batteri</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Sti</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Serienummer</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>App-GUID</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL-GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Revision</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Læs Chatpad</value></data>
@@ -1156,11 +1184,15 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>Gyroskop</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>Accelerometer</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 akse</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} akser</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 knap</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} knapper</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV'er</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>Akse {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} akser, {1} knapper, {2} POV'er</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>Vibration</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>Accel.</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>skjule denne enhed for programmer, der åbner den som en HID-enhed</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows læser stadig de taster, du trykker på, så det er fortsat muligt at skrive i alle programmer, også i spil. Et USB-tastatur kan fjernes fra Windows med knappen ”{0}”.</value></data>
@@ -1346,7 +1378,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>bundkort og grafikkort</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>musemåtter, headsets og headsetholdere</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Spil overtager, når de skriver belysning.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Angiv en sekscifret hexfarve (RRGGBB eller #RRGGBB), og tryk på Enter, eller klik et andet sted for at anvende den.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Fjern denne farve fra paletten</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Fra</value></data>
@@ -1547,7 +1579,8 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Intet blev importeret. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importer</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(unavngiven HID-enhed)</value></data>
-  <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Fandt {0} HID-grænseflade(r).</value></data>
+  <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Fandt {0} HID-grænseflader.</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Fandt 1 HID-grænseflade.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Enumereringen mislykkedes: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>Udtrækningen mislykkedes: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>Den udtrukne profil-JSON kunne ikke fortolkes. Intet blev gemt.</value></data>
@@ -1660,7 +1693,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Optag alle tildelinger én ad gangen</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopier alle tildelinger og indstillinger til udklipsholderen</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Indsæt tildelinger og indstillinger fra udklipsholderen</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopier fra...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopier fra…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopier indstillinger fra en anden konfigureret enhed</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Nulstil alle</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Ryd alle</value></data>
@@ -1848,7 +1881,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Området i tal, rå værdier</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Område</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Knappen Kalibrer grænse måler den kant, sticken kan nå, og former den om til en hel cirkel. De fire skydere begrænser kun hver retning.</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>Måler...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>Måler…</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Centerforskydning X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Centerforskydning Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Dødzoneform</value></data>
@@ -1959,6 +1992,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Macro_DelayMs" xml:space="preserve"><value>Forsinkelse</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Følsomhed</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Ny makro</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Makro {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Optag udløser</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>Ikke angivet. Klik på Optag.</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Knap {0}</value></data>
@@ -2017,6 +2051,8 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Styrer vibrationen i pladsens fysiske enhed fra en makro. Reaktiv kører med fuld styrke i holdevinduet og toner derefter ud til nul over udtoningsvinduet. Fastholdt holder fuld styrke, indtil en handling af typen Stop vibration kører. Lægges oven på vibration styret af spillet via max(), så feedback styret af brugeren altid kan mærkes.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Vibrationspuls {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Hold vibration {0}, indtil den ryddes</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>venstre {0}%, højre {1}%</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>venstre trigger {0}%, højre trigger {1}%</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Stop vibration</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Stop vibration</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Ophæver enhver aktiv tilsidesættelse af vibration på den tildelte plads. Brug sammen med en fastholdt handling af typen Vibration for at fortryde fastholdelsen via en anden makro.</value></data>
@@ -2055,7 +2091,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Mus Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Interval</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Vælg på skærmen</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Registrerer om {0}...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Registrerer om {0}…</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Klik, og flyt derefter markøren hen på målet. Positionen registreres efter en kort nedtælling.</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Tilstand</value></data>
   <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>Indrykning X</value></data>
@@ -2082,9 +2118,9 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>Ikke tildelt</value></data>
-  <data name="Mapping_Inv" xml:space="preserve"><value>Inv.</value></data>
+  <data name="Mapping_Inv" xml:space="preserve"><value>Inverteret</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>Halv</value></data>
-  <data name="Mapping_InvHalf" xml:space="preserve"><value>Inv. halv</value></data>
+  <data name="Mapping_InvHalf" xml:space="preserve"><value>Inverteret halv</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Ingen enhed tildelt</value></data>
 
@@ -2727,9 +2763,9 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Slip en profilfil her</value></data>
   <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD eller DS4Windows</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Ny profil</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>Gem som</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Gem som…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Gem nuværende opsætning her</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Rediger</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Rediger…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Indlæs</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Indbygget</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Intet spil sat</value></data>
@@ -2832,8 +2868,8 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Nulstil centerforskydning X</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Kalibrer grænse</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Genkalibrer grænse</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Kør langs kanten... {0} tilbage</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Dækket. Én omgang mere for at finjustere...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Kør langs kanten… {0} tilbage</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Dækket. Én omgang mere for at finjustere…</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Rundhed {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Kør sticken rundt langs kanten for at kortlægge den grænse, den kan nå, og omform den derefter til en fuld cirkel.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Nulstil grænsekalibrering</value></data>
@@ -2912,7 +2948,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Styrer lydstyrken for et bestemt program i Windows-lydstyrkemixeren, skaleret til lydstyrkegrænsen. Angiv procesnavnet (vises i Jobliste). Brug med udløseren ”Altid” eller en knap-/akseudløser med ”Mens den holdes” + ”Indtil slip”.</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Tildeler løbende den valgte akse til musebevægelse (eller rulning). Brug med udløseren ”Altid” eller en knap-/akseudløser med ”Mens den holdes” + ”Indtil slip”. Til stick-til-mus skal du oprette to handlinger: én til X-aksen og én til Y-aksen.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Inverter akse</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Vis lydstyrke-OSD</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Vis lydstyrkeindikator</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Retning</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Alle</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positiv</value></data>
@@ -3139,7 +3175,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Preview_CCOutputs" xml:space="preserve"><value>CC-output</value></data>
   <data name="Preview_NoteOutputs" xml:space="preserve"><value>Tone-output</value></data>
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Stick {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Knapper</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -3156,7 +3192,6 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Niveau</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Timeout ved inaktivitet</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Sekunder, før en virtuel controller fjernes, når alle dens tildelte enheder er offline. 0 slår det fra. Resterende controllere af samme type rykker op for at udfylde hullet og bindes igen til lavere pladser.</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekunder (0 = aldrig)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Tilføj lag</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Tilføj et skiftelag. En ekstra tildelingstabel, der aktiveres, mens en knap holdes nede eller er slået til.</value></data>
@@ -3961,7 +3996,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
     <value>Nulstil forsinkelsen til 0 (laget reagerer øjeblikkeligt).</value>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Fællesskabskonfigurationer</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Gennemse Steam Input-controllerkonfigurationer lavet af fællesskabet, og omsæt dem til PadForge-profiler. PadForge forbinder kun direkte til Steams servere, når du søger, åbner en konfiguration eller tjekker dine importerede konfigurationer for opdateringer. Programmet sender din søgetekst, id'erne for de berørte spil, konfigurationer og skabere samt versionen af PadForge. Det anonyme Steam-logon sender også din Windows-version og et maskine-id, der er dannet ud fra hashværdier af dit Windows-installations-id, adresserne på dine netværksadaptere og serienummeret på din startdisk. Ingen telemetri, ingen tredjepartstjeneste, ingen Steam-konto.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Gennemse Steam Input-controllerkonfigurationer lavet af fællesskabet, og omsæt dem til PadForge-profiler. PadForge sender din søgetekst, ID'erne for de berørte spil, konfigurationer og skabere samt sin version. Det anonyme Steam-logon sender også din Windows-version og et maskine-ID, der er dannet ud fra hashværdier af dit Windows-installations-ID, adresserne på dine netværksadaptere og serienummeret på din startdisk. Ingen tredjepartstjeneste er involveret.</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge forbinder kun til Steams servere, når du søger, åbner en konfiguration eller tjekker importerede konfigurationer for opdateringer. Ingen telemetri, ingen Steam-konto.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Hvad der sendes</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Aktiver fællesskabskonfigurationer</value></data>
@@ -4018,6 +4053,9 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam viser ingen fil at downloade til denne konfiguration, og der ligger ingen kopi af den i din Steam-mappe. Abonner på den i Steam, så læser PadForge den derfra.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Åbn i Steam Workshop</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>Ældre</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop-profil</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop-makro</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Markørområde</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Vælg en konfiguration for at se, hvad der overføres.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Hvad der overføres</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Bliver til</value></data>
@@ -4395,6 +4433,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Mellem (let)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Høj (let)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Brugerdefineret</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b-standard</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Afskæring</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Delefrekvens. Under den blandes kanalerne mod mono, over den forbliver de adskilt, så en lavere afskæring giver mindre crossfeed.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Tilførsel</value></data>
@@ -4414,7 +4453,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Pad_Audio_EqType_HighPass" xml:space="preserve"><value>Højpas</value></data>
   <data name="Pad_Audio_EqType_LowPass" xml:space="preserve"><value>Lavpas</value></data>
   <data name="Pad_Audio_EqType_Notch" xml:space="preserve"><value>Notch</value></data>
-  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Frekv. (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Frekvens (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Forstærkning (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
   <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Tilføj bånd</value></data>
@@ -4422,7 +4461,8 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Ryd</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Importer fra udklipsholder</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Kopier en AutoEq-profil til dine hovedtelefoner, og klik derefter. Erstatter båndene og indstiller forforstærkeren. Hvis der ikke er noget læsbart i udklipsholderen, forbliver den aktuelle EQ uændret.</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Importer fra fil</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Importer fra fil…</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>Importer parametrisk EQ</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Vælg den .txt-fil, som AutoEq downloadede. Det er den, du skal bruge: autoeq.app giver dig en fil i stedet for tekst, du kan kopiere.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>For en korrektion, der passer til dine hovedtelefoner: åbn autoeq.app, vælg din model, vælg Custom Parametric Eq, og download den, og brug derefter Importer fra fil. Downloaden Graphic Eq har ingen filterlinjer og kan ikke importeres.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Importerede {0} bånd med en forforstærkning på {1:0.#} dB fra {2}.</value></data>
@@ -4475,6 +4515,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Dette netværk kan ikke oprette direkte forbindelser (det ligner et mobilt hotspot eller carrier-grade NAT). Brug et VPN som Tailscale, eller opret forbindelse fra bredbånd derhjemme.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Kunne ikke finde denne pc's offentlige adresse (netværket blokerer måske den nødvendige trafik). Direkte forbindelser virker ikke her. Brug et VPN, eller opret forbindelse via adresse på samme netværk.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Lavt batteri i controller</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Controller</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% batteri tilbage</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Batteriadvarsler</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Få besked, når batteriet i en controller er ved at løbe tør, før den går ud midt i spillet.</value></data>
@@ -4691,7 +4732,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
     <value>Opret en virtuel controller på den anden pc, og opdater derefter.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Venter på den anden pc...</value>
+    <value>Venter på den anden pc…</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>Tegneplade</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>Delt input</value></data>
@@ -4753,7 +4794,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>Installationsplaceringen for SteamVR skal være en fuld sti, f.eks. C:\SteamVR.</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>Installationsplaceringen for SteamVR kan ikke være roden af et drev. Vælg en mappe, f.eks. C:\SteamVR.</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd blev ikke færdig inden for 60 minutter.</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd kørte, men SteamVR havnede ikke i {0}. steamcmd sagde: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd kørte, men SteamVR havnede ikke i {0}. steamcmd sagde: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>HidHide blev installeret, men dens kontrolenhed blev ikke åbnet, så der blev ikke tilføjet noget klassefilter.</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>HidHide er stadig angivet som et klassefilter, så driveren blev ikke fjernet.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Fjerner ældre drivere…</value></data>

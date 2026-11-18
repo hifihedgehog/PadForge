@@ -73,7 +73,9 @@ namespace PadForge.Tests
             // no wait for the first count.
             Assert.Contains(nameof(ProfileShortcutViewModel.ComboNote), changed);
             vm.RecordingCountdown = 4;
-            Assert.Equal(s.Profiles_ShortcutLearning + " (4s)", vm.ComboNote);
+            // The count is the language's own "(4 s)".
+            string four = string.Format(s.Profiles_ShortcutCountdown_Format, 4);
+            Assert.Equal(s.Profiles_ShortcutLearning + " " + four, vm.ComboNote);
             Assert.Equal(vm.ComboNote, vm.ButtonComboDisplay);
 
             // Two buttons held: the keys, and the count alone after them.
@@ -83,12 +85,12 @@ namespace PadForge.Tests
             foreach (string name in new[] { "ButtonComboDisplay", "ComboParts", "HasCombo", "ComboNote" })
                 Assert.Contains(name, changed);
             Assert.True(vm.HasCombo);
-            Assert.Equal("(4s)", vm.ComboNote);
+            Assert.Equal(four, vm.ComboNote);
             // No device is known here, so a key is its button's number.
             string eleven = string.Format(s.Macro_Btn_Format, 11), six = string.Format(s.Macro_Btn_Format, 6);
             Assert.Equal(new[] { eleven, six }, vm.ComboParts.Select(p => p.Name));
             Assert.All(vm.ComboParts, p => Assert.Equal(string.Empty, p.DeviceTail));
-            Assert.Equal(eleven + " + " + six + " (4s)", vm.ButtonComboDisplay);
+            Assert.Equal(eleven + " + " + six + " " + four, vm.ButtonComboDisplay);
 
             // Recorded: the keys alone.
             vm.SetLearnedButtons(data.TriggerEntries);

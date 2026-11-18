@@ -71,6 +71,10 @@ namespace PadForge.Controls
             nameof(MinLineHeight), typeof(double), typeof(FlexLinePanel),
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
+        public static readonly DependencyProperty FillsHeightProperty = DependencyProperty.Register(
+            nameof(FillsHeight), typeof(bool), typeof(FlexLinePanel),
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsArrange));
+
         public static double GetBasis(UIElement element) => (double)element.GetValue(BasisProperty);
 
         public static void SetBasis(UIElement element, double value) => element.SetValue(BasisProperty, value);
@@ -97,6 +101,17 @@ namespace PadForge.Controls
         {
             get => (double)GetValue(MinLineHeightProperty);
             set => SetValue(MinLineHeightProperty, value);
+        }
+
+        /// <summary>Whether the last line takes the height the panel is
+        /// given beyond what its lines asked for. A Home card that is as tall
+        /// as a taller neighbor then lets its last line's column reach the
+        /// card's foot, where that column keeps its own foot. Unset, every
+        /// line is as tall as its tallest part.</summary>
+        public bool FillsHeight
+        {
+            get => (bool)GetValue(FillsHeightProperty);
+            set => SetValue(FillsHeightProperty, value);
         }
 
         /// <summary>The space between the parts of a line.</summary>
@@ -339,6 +354,8 @@ namespace PadForge.Controls
                     atEnd[i] = GetAtEnd(parts[first + i]);
                 }
                 if (line > 0) y += LineGap;
+                if (FillsHeight && line == lines.Count - 1)
+                    tallest = Math.Max(tallest, finalSize.Height - y);
                 double[] starts = Starts(widths, atEnd, finalSize.Width, Gap, EndsApart);
                 for (int i = 0; i < count; i++)
                     parts[first + i].Arrange(new Rect(starts[i], y, widths[i], tallest));

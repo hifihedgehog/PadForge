@@ -28,7 +28,7 @@
             <StackPanel Margin="0,2">
                 <TextBlock Text="{Binding DisplayName}"/>
                 <TextBlock Text="{Binding DetailLine}" FontSize="13"
-                           FontFamily="{DynamicResource TelemetryFontFamily}"
+                           Typography.NumeralAlignment="Tabular"
                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
             </StackPanel>
         </DataTemplate>
@@ -63,7 +63,7 @@
                                 </Grid.ColumnDefinitions>
                                 <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
                                     <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
-                                    <TextBlock Text="{Binding Id}" Style="{StaticResource DialogMonoNote}" TextWrapping="NoWrap"
+                                    <TextBlock Text="{Binding Id}" Style="{StaticResource DialogFigureNote}" TextWrapping="NoWrap"
                                                TextTrimming="CharacterEllipsis"/>
                                     <!-- Why HIDMaestro left this preset out
                                          of the pickers (2.0.0 loads presets

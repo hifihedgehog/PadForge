@@ -344,7 +344,7 @@ namespace PadForge.ViewModels
         public bool OffersUse => _isOnline && !IsAssigned && IsGameControllerType;
 
         /// <summary>The row's line, "Gamepad, Bluetooth, battery 82%", in three
-        /// parts so the charge draws in the mono face: what leads it, the
+        /// parts so the charge draws with tabular figures: what leads it, the
         /// charge, and what follows the charge. A link is named only when it
         /// is Bluetooth: a path that is not makes no claim
         /// (DeviceTransport).</summary>
@@ -1553,16 +1553,23 @@ namespace PadForge.ViewModels
             {
                 bool isTouchpadType = DeviceTypeKey == "Touchpad";
 
-                // Touchpad-only devices: skip "0 axes, 0 buttons, 0 POV" noise.
+                // Touchpad-only devices: skip "0 axes, 0 buttons, 0 POVs" noise.
+                // Each count reads as one or as many, "1 axis" beside "2 buttons".
+                var s = Strings.Instance;
                 var sb = new System.Text.StringBuilder();
-                if (!isTouchpadType)
-                    sb.Append(string.Format(Strings.Instance.Devices_CapsSummary_Format, _axisCount, _buttonCount, _povCount));
-
                 void Append(string cap) { if (sb.Length > 0) sb.Append(", "); sb.Append(cap); }
+                string Count(int n, string one, string many)
+                    => n == 1 ? one : string.Format(System.Globalization.CultureInfo.CurrentCulture, many, n);
+                if (!isTouchpadType)
+                {
+                    Append(Count(_axisCount, s.Devices_Caps_OneAxis, s.Devices_Caps_Axes_Format));
+                    Append(Count(_buttonCount, s.Devices_Caps_OneButton, s.Devices_Caps_Buttons_Format));
+                    Append(Count(_povCount, s.Devices_Caps_OnePov, s.Devices_Caps_Povs_Format));
+                }
 
                 if (_hasRumble) Append(Strings.Instance.Devices_Rumble);
                 if (_hasGyro) Append(Strings.Instance.Devices_Gyro);
-                if (_hasAccel) Append(Strings.Instance.Devices_Accel);
+                if (_hasAccel) Append(Strings.Instance.Devices_Accelerometer);
                 // Only show "Touchpad" capability on non-touchpad-type devices (e.g. DualSense gamepad).
                 if (_hasTouchpad && !isTouchpadType) Append(Strings.Instance.Btn_Touchpad);
                 // NFC reader as a secondary capability of a controller (Switch

@@ -32,7 +32,7 @@
 
     <StackPanel>
         <!-- The device, then how many of its key lights have a name. The
-             two numbers stand in the telemetry face, and a screen reader
+             two numbers stand in tabular figures, and a screen reader
              reads the line whole. -->
         <controls:FlexLinePanel Gap="16" LineGap="8">
             <Grid>
@@ -46,7 +46,7 @@
                            Text="{Binding DeviceName}"/>
             </Grid>
             <TextBlock x:Name="ProgressText" Style="{StaticResource DialogNote}" TextWrapping="NoWrap" VerticalAlignment="Center"
-                       AutomationProperties.Name="{Binding Progress, TargetNullValue='', FallbackValue=''}"><Run Text="{Binding ProgressLead, Mode=OneWay}"/><Run Text="{Binding ProgressFirst, Mode=OneWay}" FontFamily="{DynamicResource TelemetryFontFamily}"/><Run Text="{Binding ProgressMiddle, Mode=OneWay}"/><Run Text="{Binding ProgressSecond, Mode=OneWay}" FontFamily="{DynamicResource TelemetryFontFamily}"/><Run Text="{Binding ProgressTail, Mode=OneWay}"/></TextBlock>
+                       AutomationProperties.Name="{Binding Progress, TargetNullValue='', FallbackValue=''}"><Run Text="{Binding ProgressLead, Mode=OneWay}"/><Run Text="{Binding ProgressFirst, Mode=OneWay}" Typography.NumeralAlignment="Tabular"/><Run Text="{Binding ProgressMiddle, Mode=OneWay}"/><Run Text="{Binding ProgressSecond, Mode=OneWay}" Typography.NumeralAlignment="Tabular"/><Run Text="{Binding ProgressTail, Mode=OneWay}"/></TextBlock>
         </controls:FlexLinePanel>
 
         <!-- The keyboard's lights, the lit one in white. A click on a key

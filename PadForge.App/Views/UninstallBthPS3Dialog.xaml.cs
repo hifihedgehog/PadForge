@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -111,7 +110,7 @@ namespace PadForge.Views
                     Kind = kind,
                     Location = item.Location,
                     Detail = format != null && !string.IsNullOrEmpty(item.Reason) ? string.Format(format, item.Reason) : null,
-                    Title = UninstallHIDMaestroDialog.TitleOf(kind, CultureInfo.CurrentCulture),
+                    Title = kind,
                     Outcome = item.Outcome switch
                     {
                         BthPS3Removal.ItemOutcome.Kept => Strings.Instance.HIDMaestroUninstall_OutcomeKept,

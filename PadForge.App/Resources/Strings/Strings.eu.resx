@@ -88,7 +88,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Motorra gelditzen…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Exekutatzen: {0}</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>Exekutatzen, konektatuta: {0}</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Entzuten (:{0})</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Entzuten: {0} portua</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>{0} ataka lanpetuta dago</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Sarbidea ukatu da {0} atakan (exekutatu administratzaile gisa)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>Ezin izan da abiarazi</value></data>
@@ -106,10 +106,11 @@
   <data name="Common_Stop" xml:space="preserve"><value>Gelditu</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Hasi</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Grabatu</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>Grabatzen...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Grabatzen…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Garbitu</value></data>
   <data name="Common_None" xml:space="preserve"><value>Bat ere ez</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>segundo</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Esleitu gabe</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -124,7 +125,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge ixten...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge ixten…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge abiarazten…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Aurreko saio batetik geratutako kontrolagailu birtualak garbitzen.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Gehitu kontrolagailua</value></data>
@@ -226,8 +227,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ behera)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← ezkerrera)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ gora)</value></data>
-  <data name="Status_SDL3NotFound" xml:space="preserve"><value>EZ DA SDL3.dll AURKITU</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Ez da SDL3.dll aurkitu! Jarri SDL3.dll PadForge.exe-ren ondoan. Deskargatu hemendik: https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>Ez da SDL3.dll aurkitu</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Ez da SDL3.dll aurkitu. Jarri SDL3.dll PadForge.exe-ren ondoan. Deskargatu hemendik: https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Kontrolatzailearen eragiketak huts egin du: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Ezarpenak arbelera kopiatu dira.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Gailuaren informazioa arbelera kopiatu da.</value></data>
@@ -258,11 +259,11 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>Ezarpenak diskotik birkargatu dira.</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>Ez da ezarpen-fitxategirik aurkitu diskoan.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Ez dago grabatzeko gailurik konektatuta.</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>«{0}» grabatzen: sakatu botoi bat edo mugitu ardatz bat...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>«{0}» grabatzen: biratu edo astindu kontrolagailu bat...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>«{0}» grabatzen: sakatu botoi bat edo mugitu ardatz bat…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>«{0}» grabatzen: biratu edo astindu kontrolagailu bat…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>Zirrikitu honetako kontrolagailu batek ere ez du sentsorerik honetarako: «{0}».</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>«{0}» grabatzen: sakatu Gora norabideko sarrera...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>«{0}» grabatzen: orain sakatu Behera norabideko sarrera...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>«{0}» grabatzen: sakatu Gora norabideko sarrera…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>«{0}» grabatzen: orain sakatu Behera norabideko sarrera…</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Grabazioa bertan behera utzi da.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>«{0}» grabatzeko denbora-muga gainditu da.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Motorra abiarazi da.</value></data>
@@ -281,7 +282,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Erakutsi edo ezkutatu PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Aktibatu edo desaktibatu kontrolagailu birtualak</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Konektatutako edozein gailu</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Grabatzen...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Grabatzen…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>noiz</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>hemen</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>«{0}» {1}. kontrolagailu birtualetik kendu da.</value></data>
@@ -314,6 +316,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>Kontrolagailuak</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Erabiltzen ari diren gehigarriak</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Aktibatuta. {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>Ezarpen lehenetsiak</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>Ezkerreko palanka</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>Eskuineko palanka</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>{0} gehiago [Gehigarriak] orrian. Gehigarri bat desaktibatuta dago zuk aktibatu arte.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Ireki Gehigarriak</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>Erakutsi QR</value></data>
@@ -381,8 +388,12 @@
   <data name="Engine_Forging" xml:space="preserve"><value>Forjatzen</value></data>
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Martxan: {0} / {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Hautatu makro bat zerrendan, edo sakatu Makroak izenburuaren ondoko + bat sortzeko.</value></data>
-  <data name="Instr_Raw" xml:space="preserve"><value>GORDINA</value></data>
-  <data name="Instr_Out" xml:space="preserve"><value>IRTEERA</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>Gordina</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>Irteera</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Kurba</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Aldaketa-geruzak</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Alderantzikatua</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>Gailurra</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Hotza</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Aurrebista</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Gehigarriak</value></data>
@@ -418,11 +429,11 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Balioak [Gailuak] orriko Jokoaren telemetria errenkada dira. Esleitu itzazu kontrolagailu baten Esleipenak atalean edo erabili makroak abiarazteko.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Menu baten kokapena, tamaina eta opakutasuna menuan bertan ezartzen dira, kontrolagailu baten [Makroak eta menuak] atalean.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Iturriak</value></data>
-  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack eta bere UDP formatua bidaltzen duen edozer</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack eta bere UDP formatua bidaltzen duen edozer.</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Heina</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Ardatz bakoitzeko heina. Zeroak goiko heina jarraitzen du.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge-k ezagutzen ez dituen jokoak</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Bidali aurretik DSX martxan dagoen bilatzen duten modentzat</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Bidali aurretik DSX martxan dagoen bilatzen duten modentzat.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Zer erakusten den</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menu baten eraztuna, sareta edo barra irekita dagoen bitartean</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Geruzaren izena, aldaketa-geruza bat aktibatzen denean, geruza horrek ezartzen duen denboran zehar</value></data>
@@ -681,7 +692,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Ezkutatu gailuak jokoetatik, Mantendu gailuak ezkutatuta abioen artean, Baimendutako aplikazioak</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Baimendutako aplikazioak</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Aplikazio hauek ezkutatutako gailuak ikus ditzakete oraindik. PadForge beti baimentzen da automatikoki.</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>Gehitu...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>Gehitu…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge-k kontrolatzaile hau instalatzen du sortzen duzun lehen kontrolagailu birtualarekin. Desinstalatzeak HIDMaestro-k PC honetan utzi duena zerrendatzen du, kendu aurretik.</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Kontrolagailu birtualak sortzen ditu.</value></data>
@@ -700,6 +711,21 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Mantendu da</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Ez da irakurri</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Ez da kendu</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Gailua</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Interfaze-erregistroa</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Erregistroko gako partekatua</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Erregistroko balio partekatua</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>WinUSB lotura</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>OEM izenaren gainidazketa</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>DeviceOverrides gakoa</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>OpenVR erregistroa</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Kontrolatzaile-paketea</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>WUDF zerbitzu-gakoa</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Erregistroko gakoa</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Ziurtagiria</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Karpeta</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Zerbitzuaren ezarpena</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Kentzeko urratsa</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>PlayStation 3 kontrolagailuei, PlayStation Move-ri eta Navigation kontrolagailuari Bluetooth bidez konektatzeko aukera ematen die. PadForge-n txertatuta dago eta horietako bat lehen aldiz parekatzean instalatzen da.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>PlayStation 3 kontrolagailuak Bluetooth bidez konektatzen ditu.</value></data>
@@ -894,11 +920,11 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Idatzi «{0}»</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(testurik ez)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Testua</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Karaktere arteko atzerapena (ms)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Hizkien arteko atzerapena</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Idatzitako karaktereen arteko milisegundoak, gehienez 1000. 0 balioarekin testu osoa batera idazten da.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Inaktibitateagatiko deskonexioa</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Xehetasunak</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutu (0 = inoiz ez)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutu</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Deskonektatu Bluetooth USB bidez konektatzean</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Karga azkarra. Kontrolagailu honek Bluetooth bidez konektatuta dagoela kargatzen ari dela jakinarazten duenean, Bluetooth lotura eten egiten da, irratia elikatu gabe karga dadin. USB bidezko edozein elikatze-iturrik balio du, hormako kargagailuak barne. Kablea konektatuta dagoela Bluetooth berriro aktibatzen baduzu, ez zaio ezer egingo hurrengo deskonexiora arte.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Irakurri iCade kontrolagailu gisa</value></data>
@@ -989,7 +1015,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Apuntatu Wii Remote-a itura eta sakatu B.</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Wii Remote-ak ez du sentsore-barra ikusi. Apuntatu itura eta sakatu B berriro.</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Sakatu Esc edo Home uzteko.</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Bluetooth kontrolagailu hau deskonektatzen du sarrerarik gabeko minutu kopuru hau igaro ondoren, lo-moduan sar dadin eta bateria aurrez dezan. USB bidez ez da inoiz aktibatzen.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Bluetooth kontrolagailu hau deskonektatzen du sarrerarik gabeko minutu kopuru hau igaro ondoren, lo-moduan sar dadin eta bateria aurrez dezan. 0 jartzeak desaktibatu egiten du. USB bidez ez da inoiz aktibatzen.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Pizte-botoia</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menua</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>Ados</value></data>
@@ -1078,11 +1104,15 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>Giroskopioa</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>Azelerometroa</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 ardatz</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} ardatz</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 botoi</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} botoi</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>{0}. ardatza</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} ardatz, {1} botoi, {2} POV</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>Bibrazioa</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Giroskopioa</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>Azel.</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>gailu hau ezkutatuko da HID gailu gisa irekitzen duten programetatik</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows-ek idazten dituzun teklak irakurtzen jarraitzen du, beraz programa guztietan idatz daiteke oraindik, jokoetan barne. USB teklatu bat Windows-i kendu dakioke «{0}» botoiarekin.</value></data>
@@ -1247,7 +1277,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>entzungailuak, sagu-alfonbrak eta bozgorailuak</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>entzungailuak</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Jokoek kontrola hartzen dute argiztapena idazten duten bakoitzean.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Idatzi sei digituko kolore hamaseitar bat (RRGGBB edo #RRGGBB) eta sakatu Sartu edo egin klik kanpoan aplikatzeko.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Kendu kolore hau paletatik</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Itzalita</value></data>
@@ -1362,6 +1392,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Inportatu</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(izenik gabeko HID gailua)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Aurkitutako HID interfazeak: {0}.</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Aurkitutako HID interfazeak: 1.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Zerrendatzeak huts egin du: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>Erauzketak huts egin du: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>Ezin izan da erauzitako profilaren JSON-a analizatu. Ez da ezer gorde.</value></data>
@@ -1474,7 +1505,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Grabatu esleipen guztiak banan-banan, segidan</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopiatu esleipen eta ezarpen guztiak arbelera</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Itsatsi esleipenak eta ezarpenak arbeletik</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopiatu hemendik...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopiatu hemendik…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopiatu ezarpenak konfiguratutako beste gailu batetik</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Berrezarri dena</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Garbitu dena</value></data>
@@ -1661,7 +1692,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Heina zenbakitan, balio gordinak</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Heina</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«Kalibratu muga» botoiak palankak irits dezakeen ertza neurtzen du, eta zirkulu oso bihurtzen du. Lau graduatzaileek norabide bakoitza mugatu besterik ez dute egiten.</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>Laginketa egiten...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>Laginketa egiten…</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Erdigunearen desplazamendua X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Erdigunearen desplazamendua Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Gune hilaren forma</value></data>
@@ -1772,6 +1803,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Macro_DelayMs" xml:space="preserve"><value>Atzerapena</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Sentikortasuna</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Makro berria</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Makro {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Grabatu abiarazlea</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>Ezarri gabe. Egin klik Grabatu botoian.</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>{0}. bot.</value></data>
@@ -1830,6 +1862,8 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Zirrikituko gailu fisikoaren bibrazioa makro batetik eragiten du. Erreaktiboak indar osoz funtzionatzen du euste-tartean, eta gero zerora itzaltzen da itzaltze-tartean. Iraunkorrak indar osoari eusten dio «Gelditu bibrazioa» ekintza bat exekutatu arte. Jokoak eragindako bibrazioaren gainean jartzen da max() bidez, erabiltzaileak eragindako erantzuna beti nabaritu dadin.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Bibrazio-pultsua {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Mantendu bibrazioa {0} garbitu arte</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>ezkerrekoa %{0}, eskuinekoa %{1}</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>ezkerreko katua %{0}, eskuineko katua %{1}</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Gelditu bibrazioa</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Gelditu bibrazioa</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Esleitutako zirrikituko bibrazio-gainidazketa aktiboak askatzen ditu. Erabili «Bibrazioa» ekintza iraunkor batekin batera, eustea beste makro baten bidez desegiteko.</value></data>
@@ -1868,7 +1902,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Sagua Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Tartea</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Aukeratu pantailan</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>{0} barru atzemango da...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>{0} barru atzemango da…</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Egin klik, eta gero eraman kurtsorea helburuaren gainera. Haren posizioa atzerako kontaketa labur baten ondoren atzematen da.</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Modua</value></data>
   <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>X barne-marjina</value></data>
@@ -1895,9 +1929,9 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>Esleitu gabe</value></data>
-  <data name="Mapping_Inv" xml:space="preserve"><value>Alder.</value></data>
+  <data name="Mapping_Inv" xml:space="preserve"><value>Alderantzikatua</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>Erdia</value></data>
-  <data name="Mapping_InvHalf" xml:space="preserve"><value>Alder. erdia</value></data>
+  <data name="Mapping_InvHalf" xml:space="preserve"><value>Alderantzikatutako erdia</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Ez dago gailurik esleituta</value></data>
 
@@ -2534,9 +2568,9 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Jaregin profila inportatzeko</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Jaregin profil-fitxategi bat hemen</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Profil berria</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>Gorde honela</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Gorde honela…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Gorde uneko konfigurazioa hemen</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Editatu</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Editatu…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Kargatu</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Integratua</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Ez dago jokorik ezarrita</value></data>
@@ -2639,8 +2673,8 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Berrezarri erdigunearen desplazamendua X</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Kalibratu muga</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Kalibratu muga berriro</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Ekortu ertza... falta: {0}</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Estalita. Beste bira bat fintzeko...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Ekortu ertza… falta: {0}</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Estalita. Beste bira bat fintzeko…</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Biribiltasuna: %{0:F0}</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Ekortu palanka bere ertzean zehar irits daitekeen muga neurtzeko, eta gero zirkulu oso bihurtzeko.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Berrezarri mugaren kalibrazioa</value></data>
@@ -2719,7 +2753,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Windows-en bolumen-nahasgailuko aplikazio zehatz baten bolumena kontrolatzen du, bolumen-mugaren arabera eskalatuta. Idatzi prozesuaren izena (Ataza-kudeatzailean ikusten da). Erabili «Beti» abiarazlearekin, edo botoi/ardatz abiarazle batekin «Eutsi bitartean» + «Askatu arte» aukerekin.</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Hautatutako ardatza etengabe esleitzen dio saguaren mugimenduari (edo korritzeari). Erabili «Beti» abiarazlearekin, edo botoi/ardatz abiarazle batekin «Eutsi bitartean» + «Askatu arte» aukerekin. Palanka saguan erabiltzeko, sortu bi ekintza: bat X ardatzerako, eta bestea Y ardatzerako.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Alderantzikatu ardatza</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Erakutsi bolumenaren OSD-a</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Erakutsi bolumen-adierazlea</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Norabidea</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Edozein</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positiboa</value></data>
@@ -2941,7 +2975,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Preview_CCOutputs" xml:space="preserve"><value>CC irteerak</value></data>
   <data name="Preview_NoteOutputs" xml:space="preserve"><value>Nota-irteerak</value></data>
   <data name="Preview_Stick_Format" xml:space="preserve"><value>{0}. palanka</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>K{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Katua {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>Norabide-gurutzea</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Botoiak</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -2958,7 +2992,6 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Maila</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Inaktibitatearen denbora-muga</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Kontrolagailu birtual bat suntsitu aurreko segundoak, esleitutako gailu guztiak lineaz kanpo daudenean. 0 balioak desgaitu egiten du. Mota bereko gainerako kontrolagailuak gorantz mugitzen dira hutsunea betetzeko, eta zenbaki txikiagoko zirrikituetara lotzen dira berriro.</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>segundo (0 = inoiz ez)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Gehitu geruza</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Gehitu aldaketa-geruza bat. Botoi bati eusten zaion bitartean edo txandakatzean aktibatzen den bigarren esleipen-taula da.</value></data>
@@ -3734,7 +3767,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
     <value>Berrezarri atzerapena 0ra (geruzak berehala erreakzionatzen du).</value>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Komunitatearen konfigurazioak</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Arakatu komunitateak egindako Steam Input kontrolagailu-konfigurazioak, eta itzuli PadForge profiletara. PadForge Steam-en zerbitzarietara zuzenean konektatzen da bilatzen duzunean, konfigurazio bat irekitzen duzunean edo inportatutako konfigurazioen eguneratzeak egiaztatzen dituzunean soilik. Zure bilaketa-testua, inplikatutako jokoen, konfigurazioen eta sortzaileen IDak, eta PadForge-ren bertsioa bidaltzen ditu. Steam-en saio-hasiera anonimoak zure Windows bertsioa eta makina-ID bat ere bidaltzen ditu. ID hori zure Windows instalazioaren IDaren, sare-egokigailuen helbideen eta abio-diskoaren serie-zenbakiaren hashetatik sortzen da. Telemetriarik ez, hirugarrenen zerbitzurik ez, Steam konturik ez.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Arakatu komunitateak egindako Steam Input kontrolagailu-konfigurazioak, eta itzuli PadForge profiletara. PadForge-k bilaketa-testua, inplikatutako jokoen, konfigurazioen eta sortzaileen IDak eta bere bertsioa bidaltzen ditu. Steam-en saio-hasiera anonimoak zure Windows bertsioa eta makina-ID bat ere bidaltzen ditu. ID hori zure Windows instalazioaren IDaren, sare-egokigailuen helbideen eta abio-diskoaren serie-zenbakiaren hashetatik sortzen da. Ez dago hirugarrenen zerbitzurik tartean.</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge Steam-en zerbitzarietara konektatzen da bilatzen duzunean, konfigurazio bat irekitzen duzunean edo inportatutako konfigurazioen eguneratzeak egiaztatzen dituzunean soilik. Telemetriarik ez, Steam konturik ez.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Zer bidaltzen den</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Gaitu komunitatearen konfigurazioak</value></data>
@@ -3791,6 +3824,9 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam-ek ez du konfigurazio honetarako deskargatzeko fitxategirik zerrendatzen, eta haren kopiarik ez dago zure Steam karpetan. Harpidetu zaitez Steam-en, eta PadForge-k handik irakurriko du.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Ireki Steam Workshop-en</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>Zaharkitua</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop profila</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop makroa</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Kurtsore-eskualdea</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Hautatu konfigurazio bat zer etortzen den ikusteko.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Zer etortzen den</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Bihurtzen da</value></data>
@@ -4166,6 +4202,7 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Ertaina (leuna)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Altua (leuna)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Pertsonalizatua</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b lehenetsia</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Mozte-maiztasuna</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Gurutzatze-maiztasuna. Hortik behera kanalak monorantz nahasten dira, hortik gora bereizita geratzen dira. Beraz, mozte-maiztasun baxuago batek crossfeed gutxiago egiten du.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Maila-aldea</value></data>
@@ -4185,7 +4222,7 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Pad_Audio_EqType_HighPass" xml:space="preserve"><value>High Pass</value></data>
   <data name="Pad_Audio_EqType_LowPass" xml:space="preserve"><value>Low Pass</value></data>
   <data name="Pad_Audio_EqType_Notch" xml:space="preserve"><value>Notch</value></data>
-  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Maiz. (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Maiztasuna (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Irabazia (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
   <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Gehitu banda</value></data>
@@ -4193,7 +4230,8 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Garbitu</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Inportatu arbeletik</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Kopiatu zure aurikularretarako AutoEq profil bat eta egin klik. Bandak ordezkatzen ditu eta aurre-anplifikazioa ezartzen du. Arbelean irakurtzeko ezer ez badago, uneko ekualizadorea ez da aldatzen.</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Inportatu fitxategitik</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Inportatu fitxategitik…</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>Inportatu ekualizadore parametrikoa</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Aukeratu AutoEq-ek deskargatutako .txt fitxategia. Hau da erabili beharrekoa: autoeq.app-ek fitxategi bat ematen dizu, ez kopiatu daitekeen testurik.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Zure aurikularretara egokitutako zuzenketa lortzeko: ireki autoeq.app, aukeratu zure eredua, hautatu Custom Parametric Eq eta deskargatu, gero Inportatu fitxategitik. Graphic Eq deskargak ez du iragazki-lerrorik eta ezin da inportatu.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{0} banda inportatu dira, {1:0.#} dB-ko aurre-anplifikazioarekin, hemendik: {2}.</value></data>
@@ -4246,6 +4284,7 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Sare honek ezin ditu zuzeneko konexioak egin (mugikorreko sare-puntu bat edo operadorearen mailako NAT bat dirudi). Erabili VPN bat, Tailscale bezalakoa, edo konektatu etxeko banda zabaletik.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Ezin izan da PC honen helbide publikoa aurkitu (sareak beharrezko trafikoa blokeatu dezake). Hemen ez dute zuzeneko konexioek funtzionatuko. Erabili VPN bat, edo Konektatu helbidearen bidez sare berean.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Kontrolagailuaren bateria baxua</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Kontrolagailua</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: bateriaren %{1} geratzen da</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Bateria-abisuak</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Jaso jakinarazpen bat kontrolagailu baten bateria baxu dagoenean, jokoaren erdian hil aurretik.</value></data>
@@ -4457,7 +4496,7 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
     <value>Sortu kontrolagailu birtual bat beste PCan, eta eguneratu.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Beste PCaren zain...</value>
+    <value>Beste PCaren zain…</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>Marrazteko tableta</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>Sarrera partekatua</value></data>
@@ -4517,7 +4556,7 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>SteamVR instalazio-kokalekuak bide osoa izan behar du, adibidez C:\SteamVR.</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>SteamVR instalazio-kokalekua ezin da unitate baten erroa izan. Aukeratu karpeta bat, adibidez C:\SteamVR.</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd ez da 60 minututan amaitu.</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd exekutatu da, baina SteamVR ez da {0} karpetan geratu. steamcmd-k esan du: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd exekutatu da, baina SteamVR ez da {0} karpetan geratu. steamcmd-k esan du: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>HidHide instalatu da, baina bere kontrol-gailua ez da ireki, beraz ez da klase-iragazkirik gehitu.</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>HidHide klase-iragazki gisa zerrendatuta dago oraindik, beraz kontrolatzailea bere horretan utzi da.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Kontrolatzaile zaharrak kentzen…</value></data>
@@ -4978,6 +5017,8 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Bateria</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Bidea</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Serie-zenbakia</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>Aplikazioaren GUID</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmwarea</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Berrikuspena</value></data>
   <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Kontrolagailua bibratu ere, Errepikatu abisua tarte honetan, Jakinarazi guztiz kargatuta dagoenean</value></data>

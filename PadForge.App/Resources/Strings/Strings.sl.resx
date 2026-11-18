@@ -88,7 +88,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Ustavljanje mehanizma …</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Deluje na {0}</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>Deluje, povezano: {0}</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Posluša na :{0}</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Posluša na vratih {0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>Vrata {0} so v uporabi</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Dostop do vrat {0} je zavrnjen (zaženite kot skrbnik)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>Zagon ni uspel</value></data>
@@ -106,7 +106,7 @@
   <data name="Common_Stop" xml:space="preserve"><value>Ustavi</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Zaženi</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Posnemi</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>Snemanje ...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Snemanje …</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Počisti</value></data>
   <data name="Common_Increase" xml:space="preserve"><value>Povečaj</value></data>
   <data name="Common_Decrease" xml:space="preserve"><value>Zmanjšaj</value></data>
@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Stran desno</value></data>
   <data name="Common_None" xml:space="preserve"><value>Brez</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>sekund</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Nedodeljeno</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -134,7 +135,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>Zapiranje programa PadForge ...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>Zapiranje programa PadForge …</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Zagon programa PadForge …</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Čiščenje navideznih krmilnikov, ki so ostali iz prejšnje seje.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Dodaj krmilnik</value></data>
@@ -239,8 +240,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ dol)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← levo)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ gor)</value></data>
-  <data name="Status_SDL3NotFound" xml:space="preserve"><value>NI DATOTEKE SDL3.dll</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Datoteke SDL3.dll ni mogoče najti! Postavite SDL3.dll poleg PadForge.exe. Prenesete jo lahko s strani https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>Ni datoteke SDL3.dll</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Datoteke SDL3.dll ni mogoče najti. Postavite SDL3.dll poleg PadForge.exe. Prenesite jo s strani https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Operacija gonilnika ni uspela: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Nastavitve so kopirane v odložišče.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Podatki o napravi so kopirani v odložišče.</value></data>
@@ -271,11 +272,11 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>Nastavitve so znova naložene z diska.</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>Na disku ni datoteke z nastavitvami.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Ni povezane naprave, s katere bi lahko snemali.</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Snemanje: pritisnite gumb ali premaknite os za „{0}“ ...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Snemanje: zavrtite ali stresite krmilnik za „{0}“ ...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Snemanje: pritisnite gumb ali premaknite os za „{0}“ …</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Snemanje: zavrtite ali stresite krmilnik za „{0}“ …</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>Noben krmilnik v tej reži nima senzorja za „{0}“.</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Snemanje „{0}“: pritisnite vnos za smer gor ...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Snemanje „{0}“: zdaj pritisnite vnos za smer dol ...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Snemanje „{0}“: pritisnite vnos za smer gor …</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Snemanje „{0}“: zdaj pritisnite vnos za smer dol …</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Snemanje je preklicano.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Čas za snemanje „{0}“ je potekel.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Mehanizem je zagnan.</value></data>
@@ -294,7 +295,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Pokaži ali skrij PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Vklopi ali izklopi navidezne krmilnike</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Katera koli povezana naprava</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Snemanje ...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Snemanje …</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>ko</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>na</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>Naprava „{0}“ ni več dodeljena navideznemu krmilniku {1}.</value></data>
@@ -327,6 +329,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>Krmilniki</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Dodatki v uporabi</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Vklopljeno. {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>Privzete nastavitve</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>Leva palica</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>Desna palica</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>Še {0} na strani [Dodatki]. Dodatek je izklopljen, dokler ga ne vklopite.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Odpri dodatke</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>Prikaži QR</value></data>
@@ -394,8 +401,12 @@
   <data name="Engine_Forging" xml:space="preserve"><value>Kovanje</value></data>
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>V živo: {0} od {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Izberite makro na seznamu ali pa pritisnite + ob naslovu Makri, da ustvarite novega.</value></data>
-  <data name="Instr_Raw" xml:space="preserve"><value>SUROVO</value></data>
-  <data name="Instr_Out" xml:space="preserve"><value>IZHOD</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>Surovo</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>Izhod</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Krivulja</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Plasti preklopa</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Obrnjeno</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>Vrh</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Hladno</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Predogled</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Dodatki</value></data>
@@ -431,11 +442,11 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Vrednosti so vrstica Telemetrija iger na strani [Naprave]. Preslikajte jih v razdelku Preslikave na strani krmilnika ali z njimi sprožajte makre.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Mesto, velikost in prosojnost menija se nastavijo pri samem meniju, v razdelku [Makri in meniji] na strani krmilnika.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Viri</value></data>
-  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack in vse, kar pošilja njegovo obliko UDP</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack in vse, kar pošilja njegovo obliko UDP.</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Obseg</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Obseg posamezne osi. Ničla sledi obsegu zgoraj.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Igre, ki jih PadForge ne pozna</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Za modifikacije, ki pred pošiljanjem iščejo zagnan DSX</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Za modifikacije, ki pred pošiljanjem iščejo zagnan DSX.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Kaj se prikaže</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Obroč, mreža ali vrstica menija, medtem ko je odprt</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ime plasti ob vklopu preklopne plasti, za čas, ki ga določi ta plast</value></data>
@@ -694,7 +705,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Skrij naprave pred igrami, Naprave ostanejo skrite med zagoni, Dovoljeni programi</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Dovoljeni programi</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Ti programi še vedno vidijo skrite naprave. PadForge je vedno samodejno na seznamu dovoljenih.</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>Dodaj ...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>Dodaj …</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge namesti ta gonilnik skupaj s prvim navideznim krmilnikom, ki ga ustvarite. Odstranitev našteje, kaj je HIDMaestro pustil na tem računalniku, preden to odstrani.</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Ustvarja navidezne krmilnike.</value></data>
@@ -713,6 +724,21 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Ohranjeno</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Ni prebrano</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Ni odstranjeno</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Naprava</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Registracija vmesnika</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Skupni registrski ključ</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Skupna registrska vrednost</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Vezava WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Preglasitev imena OEM</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Ključ DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Registracija OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Paket gonilnika</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Ključ storitve WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Registrski ključ</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Potrdilo</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Mapa</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Nastavitev storitve</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Korak odstranitve</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Omogoča povezavo krmilnikov PlayStation 3, naprave PlayStation Move in krmilnika Navigation prek Bluetootha. Vgrajen je v PadForge in se namesti ob prvem seznanjanju enega od njih.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Povezuje krmilnike PlayStation 3 prek Bluetootha.</value></data>
@@ -907,11 +933,11 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Vtipkaj „{0}“</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(ni besedila)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Besedilo</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Zamik znakov (ms)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Zamik med znaki</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisekunde med vtipkanimi znaki, največ 1000. Pri 0 se celotno besedilo vtipka naenkrat.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Prekinitev ob nedejavnosti</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Podrobnosti</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minut (0 = nikoli)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minut</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Prekini Bluetooth, ko je priključen prek USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Hitro polnjenje. Ko krmilnik, povezan prek Bluetootha, sporoči, da se polni, se povezava Bluetooth prekine, tako da se polni brez napajanja radia. Šteje vsak vir napajanja USB, tudi stenski polnilniki. Če Bluetooth znova vklopite, medtem ko je kabel še priključen, ostane vklopljen do naslednjega odklopa.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Beri kot krmilnik iCade</value></data>
@@ -1002,7 +1028,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Usmerite Wii Remote v tarčo in pritisnite B.</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Wii Remote ni zaznal senzorske vrstice. Usmerite ga v tarčo in znova pritisnite B.</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc ali Home prekliče.</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Po tolikšnem številu minut brez vnosa prekine povezavo s tem krmilnikom Bluetooth, da preide v stanje spanja in varčuje z baterijo. Prek USB se nikoli ne sproži.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Po tolikšnem številu minut brez vnosa prekine povezavo s tem krmilnikom Bluetooth, da preide v stanje spanja in varčuje z baterijo. 0 ga izklopi. Prek USB se nikoli ne sproži.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Napajanje</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Meni</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>V redu</value></data>
@@ -1068,6 +1094,8 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Baterija</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Pot</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Serijska številka</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID aplikacije</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Vdelana programska oprema</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Revizija</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Beri tipkovnico Chatpad</value></data>
@@ -1156,11 +1184,15 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>Žiroskop</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>Merilnik pospeška</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>Osi: 1</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>Osi: {0}</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>gumbi: 1</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>gumbi: {0}</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>POV: 1</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>POV: {0}</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>Os {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>Osi: {0}, gumbi: {1}, POV: {2}</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>Vibriranje</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Žiroskop</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>Pospešek</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>skrili to napravo pred programi, ki jo odprejo kot napravo HID</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Sistem Windows še naprej bere tipke, ki jih natipkate, zato tipkanje deluje v vseh programih, tudi v igrah. USB tipkovnico lahko sistemu Windows odvzamete z gumbom „{0}“.</value></data>
@@ -1346,7 +1378,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>matične plošče in grafične kartice</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>podloge za miško, slušalke in stojala za slušalke</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Igre prevzamejo nadzor, kadar zapišejo osvetlitev.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Vnesite šestmestno šestnajstiško barvo (RRGGBB ali #RRGGBB) in za uporabo pritisnite Enter ali kliknite drugam.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Odstrani to barvo iz palete</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Izklopljeno</value></data>
@@ -1548,6 +1580,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Uvozi</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(neimenovana naprava HID)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Najdeni vmesniki HID: {0}.</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Najden vmesnik HID: 1.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Naštevanje ni uspelo: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>Izvlečenje ni uspelo: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>Izvlečenega profila JSON ni bilo mogoče razčleniti. Nič ni bilo shranjeno.</value></data>
@@ -1660,7 +1693,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Zaporedno posnemi vse preslikave eno za drugo</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopiraj vse preslikave in nastavitve v odložišče</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Prilepi preslikave in nastavitve iz odložišča</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopiraj iz ...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopiraj iz …</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopiraj nastavitve iz druge nastavljene naprave</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Ponastavi vse</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Počisti vse</value></data>
@@ -1848,7 +1881,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Obseg v številkah, surove vrednosti</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Obseg</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Možnost „Umeri mejo“ izmeri rob, ki ga palica doseže, in ga preoblikuje v poln krog. Štirje drsniki le omejijo doseg v vsaki smeri.</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>Vzorčenje ...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>Vzorčenje …</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Zamik središča X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Zamik središča Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Oblika mrtvega območja</value></data>
@@ -1959,6 +1992,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Macro_DelayMs" xml:space="preserve"><value>Zakasnitev</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Občutljivost</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Nov makro</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Makro {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Posnemi sprožilec</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>Ni nastavljeno. Kliknite „Posnemi“.</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Gumb {0}</value></data>
@@ -2017,6 +2051,8 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Vibriranje fizične naprave reže upravlja iz makra. „Odzivno“ deluje s polno močjo v času zadržanja in nato v času bledenja pojema do nič. „Trajno“ ohrani polno moč, dokler se ne izvede dejanje „Ustavi vibriranje“. Prek max() se nalaga na vibriranje, ki ga upravlja igra, zato je uporabnikov odziv vedno zaznaven.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Utrip vibriranja {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Zadrži vibriranje {0}, dokler ni počiščeno</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>levi {0}%, desni {1}%</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>levi sprožilec {0}%, desni sprožilec {1}%</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Ustavi vibriranje</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Ustavi vibriranje</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Sprosti vsako dejavno preglasitev vibriranja v dodeljeni reži. Uporabite ga skupaj z dejanjem „Vibriranje“ v načinu „Trajno“, da zadržanje razveljavite z drugim makrom.</value></data>
@@ -2055,7 +2091,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Miška Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Interval</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Izberi na zaslonu</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Zajem čez {0} ...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Zajem čez {0} …</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Kliknite, nato premaknite kazalec na cilj. Njegov položaj se zajame po kratkem odštevanju.</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Način</value></data>
   <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>Odmik X</value></data>
@@ -2082,9 +2118,9 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>Ni preslikano</value></data>
-  <data name="Mapping_Inv" xml:space="preserve"><value>Obr.</value></data>
+  <data name="Mapping_Inv" xml:space="preserve"><value>Obrnjeno</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>Polovica</value></data>
-  <data name="Mapping_InvHalf" xml:space="preserve"><value>Obr. polovica</value></data>
+  <data name="Mapping_InvHalf" xml:space="preserve"><value>Obrnjena polovica</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Ni preslikane naprave</value></data>
 
@@ -2727,9 +2763,9 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Spustite datoteko profila sem</value></data>
   <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD ali DS4Windows</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Nov profil</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>Shrani kot</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Shrani kot …</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Shrani trenutno nastavitev sem</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Uredi</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Uredi …</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Naloži</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Vgrajen</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Igra ni nastavljena</value></data>
@@ -2832,8 +2868,8 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Ponastavi zamik središča X</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Umeri mejo</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Znova umeri mejo</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Zaokrožite po robu ... še {0}</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Pokrito. Še en krog za izboljšavo ...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Zaokrožite po robu … še {0}</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Pokrito. Še en krog za izboljšavo …</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Okroglost {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>S palico zaokrožite po robu, da se izmeri dosegljiva meja, nato pa se preoblikuje v poln krog.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Ponastavi umerjanje meje</value></data>
@@ -2912,7 +2948,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Upravlja glasnost določenega programa v mešalniku glasnosti sistema Windows, skalirano na omejitev glasnosti. Vnesite ime procesa (vidno v upravitelju opravil). Uporabite s sprožilcem „Vedno“ ali s sprožilcem gumba/osi z „Med držanjem“ + „Do spusta“.</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Izbrano os neprekinjeno preslikuje na premikanje miške (ali drsenje). Uporabite s sprožilcem „Vedno“ ali s sprožilcem gumba/osi z „Med držanjem“ + „Do spusta“. Za preslikavo palice na miško ustvarite dve dejanji: eno za os X in eno za os Y.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Obrni os</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Pokaži zaslonski prikaz glasnosti (OSD)</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Pokaži prikaz glasnosti</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Smer</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Katera koli</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Pozitivna</value></data>
@@ -3139,7 +3175,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Preview_CCOutputs" xml:space="preserve"><value>Izhodi CC</value></data>
   <data name="Preview_NoteOutputs" xml:space="preserve"><value>Izhodi not</value></data>
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Palica {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>S{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Sprožilec {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>Smerni križ</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Gumbi</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -3156,7 +3192,6 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Raven</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Časovna omejitev nedejavnosti</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Število sekund, preden se navidezni krmilnik uniči, ko so vse njegove preslikane naprave brez povezave. 0 to onemogoči. Preostali krmilniki iste vrste se pomaknejo navzgor, da zapolnijo vrzel, in se znova povežejo z nižjimi režami.</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekund (0 = nikoli)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Dodaj plast</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Dodajte preklopno plast: drugo tabelo preslikav, ki se aktivira, dokler je gumb pridržan ali preklopljen.</value></data>
@@ -3961,7 +3996,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
     <value>Ponastavi zakasnitev na 0 (plast se odzove takoj).</value>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Konfiguracije skupnosti</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Brskajte po konfiguracijah krmilnikov Steam Input, ki jih je ustvarila skupnost, in jih pretvorite v profile PadForge. PadForge se neposredno poveže s strežniki Steam le, ko iščete, odprete konfiguracijo ali preverjate posodobitve uvoženih konfiguracij. Pošlje besedilo iskanja, identifikatorje vpletenih iger, konfiguracij in ustvarjalcev ter različico programa PadForge. Anonimna prijava v Steam pošlje tudi različico sistema Windows in identifikator računalnika, sestavljen iz zgoščenih vrednosti ID-ja namestitve sistema Windows, naslovov omrežnih kartic in serijske številke zagonskega diska. Brez telemetrije, brez storitev tretjih oseb, brez računa Steam.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Brskajte po konfiguracijah krmilnikov Steam Input, ki jih je ustvarila skupnost, in jih pretvorite v profile PadForge. PadForge pošlje besedilo iskanja, ID-je vpletenih iger, konfiguracij in ustvarjalcev ter svojo različico. Anonimna prijava v Steam pošlje tudi različico sistema Windows in ID računalnika, sestavljen iz zgoščenih vrednosti ID-ja namestitve sistema Windows, naslovov omrežnih kartic in serijske številke zagonskega diska. Storitev tretjih oseb ni vključena.</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge se poveže s strežniki Steam le, ko iščete, odprete konfiguracijo ali preverjate posodobitve uvoženih konfiguracij. Brez telemetrije, brez računa Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Kaj se pošlje</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Omogoči konfiguracije skupnosti</value></data>
@@ -4018,6 +4053,9 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam za to konfiguracijo ne navaja datoteke za prenos, njene kopije pa ni niti v vaši mapi Steam. Naročite se nanjo v storitvi Steam in PadForge jo bo prebral od tam.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Odpri v Steam Workshop</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>Starejša</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Profil Workshop</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Makro Workshop</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Območje kazalca</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Izberite konfiguracijo, da vidite, kaj se prenese.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Kaj se prenese</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Postane</value></data>
@@ -4395,6 +4433,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Srednje (blago)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Visoko (blago)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Po meri</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b privzeto</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Mejna frekvenca</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Frekvenca prehoda. Pod njo se kanala mešata proti monu, nad njo ostaneta ločena, zato nižja mejna frekvenca pomeni manj navzkrižnega mešanja.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Primešanje</value></data>
@@ -4414,7 +4453,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Pad_Audio_EqType_HighPass" xml:space="preserve"><value>HP</value></data>
   <data name="Pad_Audio_EqType_LowPass" xml:space="preserve"><value>LP</value></data>
   <data name="Pad_Audio_EqType_Notch" xml:space="preserve"><value>Zaporni</value></data>
-  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Frek. (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Frekvenca (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Ojačitev (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
   <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Dodaj pas</value></data>
@@ -4422,7 +4461,8 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Počisti</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Uvozi iz odložišča</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Kopirajte profil AutoEq za svoje slušalke in kliknite. Zamenja pasove in nastavi predojačitev. Če v odložišču ni nič berljivega, trenutni izenačevalnik ostane nespremenjen.</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Uvozi iz datoteke</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Uvozi iz datoteke …</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>Uvozi parametrični izenačevalnik</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Izberite datoteko .txt, ki ste jo prenesli iz AutoEq. To je pravi način, saj autoeq.app ponudi datoteko, ne besedila za kopiranje.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Za popravek, prilagojen vašim slušalkam: odprite autoeq.app, izberite svoj model, izberite Custom Parametric Eq in ga prenesite, nato izberite „Uvozi iz datoteke“. Prenos Graphic Eq nima vrstic filtrov in se ne bo uvozil.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Uvoženi pasovi: {0}, predojačitev {1:0.#} dB, vir: {2}.</value></data>
@@ -4475,6 +4515,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>To omrežje ne more vzpostaviti neposrednih povezav (videti je kot mobilna dostopna točka ali NAT na ravni operaterja). Uporabite VPN, kot je Tailscale, ali se povežite iz domačega širokopasovnega omrežja.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Javnega naslova tega računalnika ni bilo mogoče najti (omrežje morda blokira potreben promet). Neposredne povezave tu ne bodo delovale. Uporabite VPN ali povezavo prek naslova v istem omrežju.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Baterija krmilnika je skoraj prazna</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Krmilnik</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: preostanek baterije {1}%</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Opozorila o bateriji</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Prejmite obvestilo, ko je baterija krmilnika skoraj prazna, preden se sredi igre izprazni.</value></data>
@@ -4691,7 +4732,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
     <value>Na drugem računalniku ustvarite navidezni krmilnik, nato osvežite.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Čakanje na drugi računalnik ...</value>
+    <value>Čakanje na drugi računalnik …</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>Grafična tablica</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>Deljeni vnos</value></data>
@@ -4753,7 +4794,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>Mesto namestitve SteamVR mora biti polna pot, na primer C:\SteamVR.</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>Mesto namestitve SteamVR ne more biti koren pogona. Izberite mapo, na primer C:\SteamVR.</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd se ni končal v 60 minutah.</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd se je izvedel, vendar SteamVR ni pristal v {0}. steamcmd je sporočil: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd se je izvedel, vendar SteamVR ni pristal v {0}. steamcmd je sporočil: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>HidHide je nameščen, vendar se njegova nadzorna naprava ni odprla, zato filter razreda ni bil dodan.</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>HidHide je še vedno naveden kot filter razreda, zato je bil gonilnik puščen na mestu.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Odstranjevanje starejših gonilnikov …</value></data>

@@ -32,6 +32,21 @@ namespace PadForge.Tests
             Assert.False(SearchMatcher.Find("Deadzone", "lean", out _, out _));
         }
 
+        /// <summary>A word typed with a straight quote finds a string
+        /// written with a curly one, and the reverse, at the same place.</summary>
+        [Fact]
+        public void CurlyAndStraightQuotesMatch()
+        {
+            Assert.True(SearchMatcher.Find("PadForge\u2019s Version", "padforge's", out _, out bool start));
+            Assert.True(start);
+            Assert.True(SearchMatcher.Find("Don't Close", "don\u2019t", out _, out _));
+            Assert.True(SearchMatcher.Find("Profile \u201CRacing\u201D", "\"racing\"", out bool word, out _));
+            Assert.True(word);
+            Assert.Equal("Windows' 'own' \"driver\"", SearchMatcher.FoldQuotes("Windows\u2019 \u2018own\u2019 \u201Cdriver\u201D"));
+            // The title's start, a word start, and the whole title.
+            Assert.Equal(60 + 45 + 100, SearchMatcher.Score("padforge's version", "PadForge\u2019s Version", null, null));
+        }
+
         [Fact]
         public void AHyphenStartsAWord()
         {

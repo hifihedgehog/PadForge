@@ -563,6 +563,7 @@ namespace PadForge.Tests
 
         private static void LayAt(FrameworkElement ground, double width, double height)
         {
+            Flush(ground);
             ground.Measure(new Size(width, height));
             ground.Arrange(new Rect(0, 0, width, height));
             ground.UpdateLayout();
@@ -1335,10 +1336,24 @@ namespace PadForge.Tests
             return groups + " groups, " + made + " built, " + shown + " shown, " + parts + " parts on the page";
         }
 
+        /// <summary>Lays out first what the last change left waiting, through
+        /// WPF's own queue, as a window's layout does. Measured and arranged
+        /// at a new size straight away, a part whose parent's room stays the
+        /// same is measured inside the arrange, and WPF tells no parent of a
+        /// size measured there: a section tab kept the width of its last
+        /// word, a device's pill the width it had online, and the tray of
+        /// folded cards the height it had empty, none of which the app's
+        /// own layout does. Nothing waits before the first layout.</summary>
+        internal static void Flush(FrameworkElement ground)
+        {
+            if (ground.RenderSize.Width > 0) ground.UpdateLayout();
+        }
+
         /// <summary>Lays the page out at the picture's size. With no window
         /// around it nothing else does.</summary>
         private static void Lay(FrameworkElement ground, double height)
         {
+            Flush(ground);
             ground.Measure(new Size(Width, height));
             ground.Arrange(new Rect(0, 0, Width, height));
             ground.UpdateLayout();

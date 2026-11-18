@@ -58,8 +58,8 @@ namespace PadForge.ViewModels
             : HasFirstRunDevice ? _firstRunDeviceName
             : Strings.Instance.Home_FirstRun_NoDevice;
 
-        /// <summary>The card's line in three parts, so the battery takes the
-        /// telemetry face: what stands before the battery, the battery, and
+        /// <summary>The card's line in three parts, so the battery takes
+        /// tabular figures: what stands before the battery, the battery, and
         /// what follows it.</summary>
         public string FirstRunLineLead => FirstRunLine().Lead;
 

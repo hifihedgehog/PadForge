@@ -107,8 +107,7 @@ namespace PadForge.Views
 
             string format = Strings.Instance.Devices_DriverKeepCountdown_Format;
             var (before, after) = FormatRuns.Split(format);
-            var number = new Run(_remaining.ToString(CultureInfo.CurrentCulture));
-            number.SetResourceReference(TextElement.FontFamilyProperty, "TelemetryFontFamily");
+            var number = PadForge.Common.TextFaces.Numbers(new Run(_remaining.ToString(CultureInfo.CurrentCulture)));
             CountdownText.Inlines.Clear();
             CountdownText.Inlines.Add(new Run(before));
             CountdownText.Inlines.Add(number);

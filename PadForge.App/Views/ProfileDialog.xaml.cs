@@ -107,8 +107,8 @@ namespace PadForge.Views
         }
 
         /// <summary>One chip per game, ahead of the two buttons that add
-        /// one: the file name in the code face with the whole path as its
-        /// tooltip, and a remove button named for the game.</summary>
+        /// one: the file name with the whole path as its tooltip, and a
+        /// remove button named for the game.</summary>
         private void RebuildGames()
         {
             for (int i = GamesLine.Children.Count - 1; i >= 0; i--)
@@ -127,7 +127,6 @@ namespace PadForge.Views
                     TextTrimming = TextTrimming.CharacterEllipsis,
                     VerticalAlignment = VerticalAlignment.Center,
                 };
-                text.SetResourceReference(TextBlock.FontFamilyProperty, "TelemetryFontFamily");
 
                 string removeName = string.Format(Strings.Instance.ProfileDialog_RemoveGame_Format, name);
                 var remove = new Wpf.Ui.Controls.Button { Tag = path, ToolTip = removeName };

@@ -979,7 +979,8 @@ namespace PadForge.Tests
         }
 
         /// <summary>A formula's status line takes the theme's status colors,
-        /// in the mapping row and in the macro.</summary>
+        /// in the mapping row and in the macro: the same quiet gray while the
+        /// formula reads well, in both.</summary>
         [Fact]
         public void AStatusLine_TakesTheThemesColors()
         {
@@ -989,7 +990,7 @@ namespace PadForge.Tests
             var xml = Page();
             foreach (var (text, warning, invalid, rest) in new[]
                      {
-                         ("{Binding CombineExpressionStatus}", "IsCombineExpressionWarning", "IsCombineExpressionInvalid", "{DynamicResource SystemFillColorSuccessBrush}"),
+                         ("{Binding CombineExpressionStatus}", "IsCombineExpressionWarning", "IsCombineExpressionInvalid", "{DynamicResource TextFillColorSecondaryBrush}"),
                          ("{Binding CustomExpressionStatus}", "IsCustomExpressionWarning", "IsCustomExpressionInvalid", "{DynamicResource TextFillColorSecondaryBrush}"),
                      })
             {
@@ -1106,8 +1107,8 @@ namespace PadForge.Tests
         {
             string page = PageText();
             Assert.Contains("<ColumnDefinition Width=\"Auto\" MinWidth=\"38\"/>", page);
-            Assert.Equal(2, System.Text.RegularExpressions.Regex.Matches(page, "FontSize=\"11\" MinWidth=\"36\"").Count);
-            Assert.DoesNotContain("FontSize=\"11\" Width=\"36\"", page);
+            Assert.Equal(2, System.Text.RegularExpressions.Regex.Matches(page, "FontSize=\"12\" MinWidth=\"36\"").Count);
+            Assert.DoesNotContain("FontSize=\"12\" Width=\"36\"", page);
 
             var xml = Page();
             Assert.DoesNotContain("StringFormat={}Pitch ", page);
@@ -1602,7 +1603,7 @@ namespace PadForge.Tests
             string panel = Text("PadForge.App", "Views", "CommunityConfigsPanel.xaml");
             Assert.DoesNotContain("Text=\"LEGACY\"", panel);
             Assert.Equal(2, Regex.Matches(panel, Regex.Escape(
-                "Text=\"{Binding Workshop_LegacyTag, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}\"")).Count);
+                "Text=\"{Binding Workshop_LegacyTag, Source={x:Static strings:Strings.Instance}}\"")).Count);
             Assert.Equal("Legacy", English("Workshop_LegacyTag"));
         }
 

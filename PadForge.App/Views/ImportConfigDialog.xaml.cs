@@ -57,14 +57,14 @@ namespace PadForge.Views
             InitializeComponent();
             _result = result ?? throw new ArgumentNullException(nameof(result));
 
-            // The line under the title: the file, set apart in the code
-            // face, the tool it is from, and the profile it becomes.
+            // The line under the title: the file, set apart in the primary
+            // text color, the tool it is from, and the profile it becomes.
             string file = Path.GetFileName(path);
             var (before, after) = FormatRuns.Split(Strings.Instance.Import_Source_Format, result.ToolName);
             string becomes = string.Format(CultureInfo.CurrentCulture, Strings.Instance.Import_ProfileName_Format,
                 PreviewName(result));
             var name = new Run(file) { FontSize = 13 };
-            name.SetResourceReference(TextElement.FontFamilyProperty, "TelemetryFontFamily");
+            name.SetResourceReference(TextElement.ForegroundProperty, "TextFillColorPrimaryBrush");
             SourceText.Inlines.Add(new Run(before));
             SourceText.Inlines.Add(name);
             SourceText.Inlines.Add(new Run(after + " " + becomes));

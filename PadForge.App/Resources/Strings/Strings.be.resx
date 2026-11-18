@@ -88,7 +88,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Спыненне рухавіка…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Працуе на {0}</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>Працуе, падключана: {0}</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Праслухоўванне на :{0}</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Праслухоўванне порта {0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>Порт {0} заняты</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Доступ да порта {0} забаронены (запусціце ад імя адміністратара)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>Не ўдалося запусціць</value></data>
@@ -106,7 +106,7 @@
   <data name="Common_Stop" xml:space="preserve"><value>Спыніць</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Запусціць</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Запісаць</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>Запіс...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Запіс…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Ачысціць</value></data>
   <data name="Common_Increase" xml:space="preserve"><value>Павялічыць</value></data>
   <data name="Common_Decrease" xml:space="preserve"><value>Паменшыць</value></data>
@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Старонка ўправа</value></data>
   <data name="Common_None" xml:space="preserve"><value>Няма</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>мс</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>секунд</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Гц</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Не прызначана</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -134,7 +135,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>Закрыццё PadForge...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>Закрыццё PadForge…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Запуск PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Ачыстка віртуальных кантролераў, што засталіся ад папярэдняга сеанса.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Дадаць кантролер</value></data>
@@ -239,8 +240,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ уніз)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← налева)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ уверх)</value></data>
-  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll НЕ ЗНОЙДЗЕНА</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll не знойдзена! Змясціце SDL3.dll побач з PadForge.exe. Спампуйце з https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll не знойдзена</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll не знойдзена. Змясціце SDL3.dll побач з PadForge.exe. Спампуйце яе з https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Збой аперацыі з драйверам: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Налады скапіраваны ў буфер абмену.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Звесткі пра прыладу скапіраваны ў буфер абмену.</value></data>
@@ -271,11 +272,11 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>Налады паўторна загружаны з дыска.</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>Файл налад на дыску не знойдзены.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Няма падключанай прылады для запісу.</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Запіс: націсніце кнопку або зрушце вось для «{0}»...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Запіс: павярніце або патрасіце кантролер для «{0}»...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Запіс: націсніце кнопку або зрушце вось для «{0}»…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Запіс: павярніце або патрасіце кантролер для «{0}»…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>Ні ў адным кантролеры ў гэтым слоце няма датчыка для «{0}».</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Запіс «{0}»: націсніце ўвод напрамку ўверх...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Запіс «{0}»: цяпер націсніце ўвод напрамку ўніз...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Запіс «{0}»: націсніце ўвод напрамку ўверх…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Запіс «{0}»: цяпер націсніце ўвод напрамку ўніз…</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Запіс скасаваны.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Час запісу для «{0}» скончыўся.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Рухавік запушчаны.</value></data>
@@ -294,7 +295,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Паказаць або схаваць PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Уключыць або выключыць віртуальныя кантролеры</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Любая падключаная прылада</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Запіс...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Запіс…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} с)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>калі</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>на</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>Скасавана прызначэнне «{0}» для віртуальнага кантролера {1}.</value></data>
@@ -327,6 +329,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>Кантролеры</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Дадаткова ў ужытку</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Уключана. {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>Параметры па змаўчанні</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>Левы стык</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>Правы стык</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>Яшчэ {0} у раздзеле [Дадаткова]. Функцыя выключана, пакуль вы яе не ўключыце.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Адкрыць «Дадаткова»</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>Паказаць QR</value></data>
@@ -394,8 +401,12 @@
   <data name="Engine_Forging" xml:space="preserve"><value>Каванне</value></data>
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Працуе: {0} з {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Выберыце макрас у спісе або націсніце + побач з загалоўкам «Макрасы», каб стварыць новы.</value></data>
-  <data name="Instr_Raw" xml:space="preserve"><value>СЫРЫЯ</value></data>
-  <data name="Instr_Out" xml:space="preserve"><value>ВЫХАД</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>Сырыя</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>Выхад</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Крывая</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Слаі зруху</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Інвертавана</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>Пік</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Халодны</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Прагляд</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Дадаткова</value></data>
@@ -431,11 +442,11 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Значэнні гэта радок «Гульнявая тэлеметрыя» на старонцы [Прылады]. Прызначайце іх у раздзеле «Прызначэнні» кантролера або выкарыстоўвайце, каб запускаць макрасы.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Месца, памер і непразрыстасць меню задаюцца на самім меню, у раздзеле [Макрасы і меню] кантролера.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Крыніцы</value></data>
-  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack і ўсё, што адпраўляе яго фармат UDP</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack і ўсё, што адпраўляе яго фармат UDP.</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Дыяпазон</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Дыяпазон для кожнай восі. Нуль бярэ дыяпазон з карткі вышэй.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Гульні, якіх PadForge не ведае</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Для модаў, якія перад адпраўкай шукаюць запушчаны DSX</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Для модаў, якія перад адпраўкай шукаюць запушчаны DSX.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Што паказваецца</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Кола, сетка або панэль меню, пакуль яно адкрыта</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Назва слоя, калі слой зруху ўключаецца, на час, які задае гэты слой</value></data>
@@ -694,7 +705,7 @@
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Хаваць прылады ад гульняў, Трымаць прылады схаванымі паміж запускамі, Дазволеныя праграмы</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Дазволеныя праграмы</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Гэтыя праграмы па-ранейшаму бачаць схаваныя прылады. PadForge заўсёды дазволены аўтаматычна.</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>Дадаць...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>Дадаць…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge усталёўвае гэты драйвер разам з першым створаным вамі віртуальным кантролерам. Праграма выдалення паказвае, што HIDMaestro пакінуў на гэтым ПК, перш чым гэта выдаліць.</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Стварае віртуальныя кантролеры.</value></data>
@@ -713,6 +724,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Пакінута</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Не прачытана</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Не выдалена</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Прылада</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Рэгістрацыя інтэрфейсу</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Агульны раздзел рэестра</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Агульнае значэнне рэестра</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Прывязка WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Перавызначэнне імя OEM</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Раздзел DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Рэгістрацыя OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Пакет драйвера</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Раздзел службы WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Раздзел рэестра</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Сертыфікат</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Папка</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Параметр службы</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Крок выдалення</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Дазваляе кантролерам PlayStation 3, PlayStation Move і кантролеру Navigation падключацца праз Bluetooth. Убудаваны ў PadForge і ўсталёўваецца пры першым спалучэнні аднаго з іх.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Падключае кантролеры PlayStation 3 праз Bluetooth.</value></data>
@@ -907,11 +933,11 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Набраць «{0}»</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(няма тэксту)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Тэкст</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Затрымка паміж сімваламі (мс)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Затрымка паміж літарамі</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Мілісекунды паміж набранымі сімваламі, да 1000. Пры 0 увесь тэкст набіраецца адразу.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Адключэнне пры бяздзейнасці</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Падрабязнасці</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>хвілін (0 = ніколі)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>хвілін</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Адключаць Bluetooth пры падключэнні па USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Хуткая зарадка. Калі гэты кантролер паведамляе, што зараджаецца падчас злучэння па Bluetooth, злучэнне Bluetooth разрываецца, каб ён зараджаўся без сілкавання радыёмодуля. Улічваецца любая крыніца сілкавання USB, у тым ліку сеткавыя зарадныя прылады. Калі вы зноў уключыце Bluetooth, пакуль кабель падключаны, яго не будуць чапаць да наступнага адключэння кабеля.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Чытаць як кантролер iCade</value></data>
@@ -1002,7 +1028,7 @@
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Навядзіце Wii Remote на мішэнь і націсніце B.</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Wii Remote не ўбачыў планку датчыкаў. Навядзіце яго на мішэнь і зноў націсніце B.</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Скасаваць: Esc або Home.</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Адключае гэты Bluetooth-кантролер пасля столькіх хвілін без уводу, каб ён засынаў і эканоміў батарэю. Па USB не спрацоўвае.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Адключае гэты Bluetooth-кантролер пасля столькіх хвілін без уводу, каб ён засынаў і эканоміў батарэю. 0 выключае гэта. Па USB не спрацоўвае.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Сілкаванне</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Меню</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>
@@ -1068,6 +1094,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Батарэя</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Шлях</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Серыйны нумар</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID праграмы</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Прашыўка</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Рэвізія</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Чытаць чатпад</value></data>
@@ -1156,11 +1184,15 @@
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>Гіраскоп</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>Акселерометр</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 вось</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>Восей: {0}</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 кнопка</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>Кнопак: {0}</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>POV: {0}</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>Вось {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>Восей: {0}, кнопак: {1}, POV: {2}</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>Вібрацыя</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Гіраскоп</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>Акселерометр</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>схавае гэтую прыладу ад праграм, якія адкрываюць яе як прыладу HID</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows і далей чытае клавішы, якія вы націскаеце, таму набор тэксту працуе ва ўсіх праграмах, у тым ліку ў гульнях. USB-клавіятуру можна забраць у Windows кнопкай «{0}».</value></data>
@@ -1346,7 +1378,7 @@
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>матчыны платы і відэакарты</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>дыванкі для мышы, гарнітуры і падстаўкі для гарнітур</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Гульні пераймаюць кіраванне, калі запісваюць падсветку.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Увядзіце шасцізначны шаснаццатковы колер (RRGGBB або #RRGGBB) і націсніце Enter або пстрыкніце па-за полем, каб ужыць.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Прыбраць гэты колер з палітры</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Выключана</value></data>
@@ -1548,6 +1580,7 @@
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Імпартаваць</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(HID-прылада без назвы)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Знойдзена HID-інтэрфейсаў: {0}.</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Знойдзены HID-інтэрфейс: 1.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Памылка пераліку: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>Памылка выдабывання: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>Не ўдалося разабраць выдабыты JSON профілю. Нічога не захавана.</value></data>
@@ -1660,7 +1693,7 @@
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Паслядоўна запісаць усе прызначэнні адно за адным</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Скапіраваць усе прызначэнні і налады ў буфер абмену</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Уставіць прызначэнні і налады з буфера абмену</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Капіраваць з...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Капіраваць з…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Скапіраваць налады з іншай наладжанай прылады</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Скінуць усё</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Ачысціць усё</value></data>
@@ -1848,7 +1881,7 @@
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Дыяпазон у лічбах, сырыя значэнні</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Дыяпазон</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«Каліброўка мяжы» вымярае край, якога можа дасягнуць стык, і ператварае яго ў поўнае кола. Чатыры паўзункі толькі абмяжоўваюць кожны напрамак.</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>Збор узораў...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>Збор узораў…</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Зрух цэнтра X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Зрух цэнтра Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Форма мёртвай зоны</value></data>
@@ -1959,6 +1992,7 @@
   <data name="Macro_DelayMs" xml:space="preserve"><value>Затрымка</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Адчувальнасць</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Новы макрас</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Макрас {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Запісаць запуск</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>Не зададзена. Націсніце «Запісаць».</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Кн. {0}</value></data>
@@ -2017,6 +2051,8 @@
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Кіруе вібрацыяй фізічнай прылады слота з макраса. «Рэактыўны» працуе на поўнай сіле на працягу часу ўтрымання, потым затухае да нуля на працягу часу затухання. «Фіксаваны» трымае поўную сілу, пакуль не выканаецца дзеянне «Спыніць вібрацыю». Накладваецца на вібрацыю ад гульні праз max(), таму вібрацыя ад карыстальніка адчуваецца заўсёды.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Імпульс вібрацыі {0} (працягласць {1} мс)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Утрымліваць вібрацыю {0} да скасавання</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>злева {0}%, справа {1}%</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>левы курок {0}%, правы курок {1}%</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Спыніць вібрацыю</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Спыніць вібрацыю</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Здымае любое актыўнае перавызначэнне вібрацыі на прызначаным слоце. Выкарыстоўвайце разам з фіксаваным дзеяннем «Вібрацыя», каб зняць утрыманне іншым макрасам.</value></data>
@@ -2055,7 +2091,7 @@
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Мыш Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Інтэрвал</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Выбраць на экране</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Захоп праз {0}...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Захоп праз {0}…</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Націсніце, потым навядзіце курсор на мэту. Пазіцыя захопліваецца пасля кароткага адліку.</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Рэжым</value></data>
   <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>Адступ X</value></data>
@@ -2082,9 +2118,9 @@
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>Не прызначана</value></data>
-  <data name="Mapping_Inv" xml:space="preserve"><value>Інв.</value></data>
+  <data name="Mapping_Inv" xml:space="preserve"><value>Інвертавана</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>Палова</value></data>
-  <data name="Mapping_InvHalf" xml:space="preserve"><value>Інв. палова</value></data>
+  <data name="Mapping_InvHalf" xml:space="preserve"><value>Інвертаваная палова</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Прылада не прызначана</value></data>
 
@@ -2727,9 +2763,9 @@
   <data name="Profiles_DropTile" xml:space="preserve"><value>Перацягніце сюды файл профілю</value></data>
   <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD або DS4Windows</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Новы профіль</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>Захаваць як</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Захаваць як…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Захаваць бягучую наладу сюды</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Рэдагаваць</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Рэдагаваць…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Загрузіць</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Убудаваны</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Гульня не зададзена</value></data>
@@ -2832,8 +2868,8 @@
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Скінуць зрух цэнтра X</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Каліброўка мяжы</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Паўторная каліброўка мяжы</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Вядзіце стыкам па краі... засталося {0}</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Пройдзена. Яшчэ адно кола для ўдакладнення...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Вядзіце стыкам па краі… засталося {0}</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Пройдзена. Яшчэ адно кола для ўдакладнення…</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Акругласць {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Правядзіце стыкам па краі, каб вызначыць дасяжную мяжу, а потым ператварыць яе ў поўнае кола.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Скінуць каліброўку мяжы</value></data>
@@ -2912,7 +2948,7 @@
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Кіруе гучнасцю пэўнай праграмы ў мікшары гучнасці Windows з маштабаваннем да ліміту гучнасці. Увядзіце назву працэсу (яе відаць у дыспетчары задач). Выкарыстоўвайце з запускам «Заўсёды» або з запускам ад кнопкі/восі з «Пакуль утрымліваецца» + «Да адпускання».</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Бесперапынна перадае выбраную вось у рух мышы (або пракрутку). Выкарыстоўвайце з запускам «Заўсёды» або з запускам ад кнопкі/восі з «Пакуль утрымліваецца» + «Да адпускання». Каб кіраваць мышшу стыкам, стварыце два дзеянні: адно для восі X, другое для восі Y.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Інвертаваць вось</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Паказваць OSD гучнасці</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Паказваць індыкатар гучнасці</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Напрамак</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Любы</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Дадатны</value></data>
@@ -3139,7 +3175,7 @@
   <data name="Preview_CCOutputs" xml:space="preserve"><value>Выхады CC</value></data>
   <data name="Preview_NoteOutputs" xml:space="preserve"><value>Выхады нот</value></data>
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Стык {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>К{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Курок {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>Крыжавіна</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Кнопкі</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -3156,7 +3192,6 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Узровень</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Тайм-аўт бяздзейнасці</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Колькасць секунд, праз якую віртуальны кантролер выдаляецца, калі ўсе яго прызначаныя прылады адключаны. 0 выключае. Астатнія кантролеры таго ж тыпу зрушваюцца, каб запоўніць пропуск, і перапрывязваюцца да ніжэйшых слотаў.</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>секунд (0 = ніколі)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Дадаць слой</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Дадаць слой. Гэта другая табліца прызначэнняў, якая актывуецца, пакуль кнопка ўтрымліваецца або пераключана.</value></data>
@@ -3961,7 +3996,7 @@
     <value>Скінуць затрымку да 0 (слой рэагуе адразу).</value>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Канфігурацыі супольнасці</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Праглядайце створаныя супольнасцю канфігурацыі кантролераў Steam Input і перакладайце іх у профілі PadForge. PadForge злучаецца наўпрост з серверамі Steam, толькі калі вы шукаеце, адкрываеце канфігурацыю або правяраеце імпартаваныя канфігурацыі на абнаўленні. Ён адпраўляе тэкст вашага пошуку, ідэнтыфікатары гульняў, канфігурацый і аўтараў, а таксама версію PadForge. Ананімны ўваход у Steam адпраўляе яшчэ версію вашай Windows і ідэнтыфікатар машыны, створаны з хэшаў ідэнтыфікатара ўсталёўкі Windows, адрасоў сеткавых адаптараў і серыйнага нумара загрузачнага дыска. Без тэлеметрыі, без староніх службаў, без акаунта Steam.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Праглядайце створаныя супольнасцю канфігурацыі кантролераў Steam Input і перакладайце іх у профілі PadForge. PadForge адпраўляе тэкст вашага пошуку, ідэнтыфікатары гульняў, канфігурацый і аўтараў, а таксама сваю версію. Ананімны ўваход у Steam адпраўляе яшчэ версію вашай Windows і ідэнтыфікатар машыны, створаны з хэшаў ідэнтыфікатара ўсталёўкі Windows, адрасоў сеткавых адаптараў і серыйнага нумара загрузачнага дыска. Староннія службы не выкарыстоўваюцца.</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge звяртаецца да сервераў Steam, толькі калі вы шукаеце, адкрываеце канфігурацыю або правярэце імпартаваныя канфігурацыі на абнаўленні. Без тэлеметрыі і без уліковага запісу Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Што адпраўляецца</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Уключыць канфігурацыі супольнасці</value></data>
@@ -4018,6 +4053,9 @@
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam не прапануе файла для спампоўкі гэтай канфігурацыі, і яе копіі няма ў вашай папцы Steam. Падпішыцеся на яе ў Steam, і PadForge прачытае яе адтуль.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Адкрыць у Майстэрні Steam</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>Састарэлая</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Профіль Workshop</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Макрас Workshop</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Вобласць курсора</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Абярыце канфігурацыю, каб убачыць, што пераносіцца.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Што пераносіцца</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Становіцца</value></data>
@@ -4395,6 +4433,7 @@
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Сярэдні (лёгкі)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Высокі (лёгкі)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Уласны</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b па змаўчанні</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Частата зрэзу</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Частата размежавання. Ніжэй яе каналы змешваюцца ў манасігнал, вышэй застаюцца раздзеленымі, таму чым ніжэй частата зрэзу, тым менш кросфіду.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Падача</value></data>
@@ -4422,7 +4461,8 @@
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Ачысціць</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Імпарт з буфера абмену</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Скапіруйце профіль AutoEq для вашых навушнікаў і націсніце. Замяняе паласы і задае папярэдняе ўзмацненне. Калі ў буферы абмену няма чытэльнага тэксту, бягучы EQ не змяняецца.</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Імпарт з файла</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Імпарт з файла…</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>Імпарт параметрычнага EQ</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Выберыце файл .txt, які спампаваў AutoEq. Гэта правільны варыянт: autoeq.app аддае файл, а не тэкст, які можна скапіяваць.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Каб атрымаць карэкцыю пад вашы навушнікі: адкрыйце autoeq.app, выберыце сваю мадэль, абярыце Custom Parametric Eq і спампуйце, потым націсніце «Імпарт з файла». Файл Graphic Eq не мае радкоў фільтраў і не імпартуецца.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Імпартавана палос: {0}, папярэдняе ўзмацненне {1:0.#} dB, крыніца: {2}.</value></data>
@@ -4475,6 +4515,7 @@
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Праз гэтую сетку нельга ўсталяваць прамыя злучэнні (падобна на мабільную кропку доступу або NAT аператара). Скарыстайце VPN, напрыклад Tailscale, або падключыцеся праз хатні шырокапалосны інтэрнэт.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Не ўдалося вызначыць публічны адрас гэтага ПК (магчыма, сетка блакуе патрэбны трафік). Прамыя злучэнні тут не будуць працаваць. Скарыстайце VPN або «Злучыцца па адрасе» ў той жа сетцы.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Нізкі зарад акумулятара кантролера</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Кантролер</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: засталося {1}% зараду</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Абвесткі аб зарадзе</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Атрымлівайце паведамленне, калі акумулятар кантролера разраджаецца, раней чым ён сядзе падчас гульні.</value></data>
@@ -4691,7 +4732,7 @@
     <value>Стварыце віртуальны кантролер на другім ПК, потым абнавіце.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Чаканне другога ПК...</value>
+    <value>Чаканне другога ПК…</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>Графічны планшэт</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>Агульны ўвод</value></data>
@@ -4753,7 +4794,7 @@
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>Месца ўсталявання SteamVR павінна быць поўным шляхам, напрыклад C:\SteamVR.</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>Месцам усталявання SteamVR не можа быць корань дыска. Абярыце папку, напрыклад C:\SteamVR.</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd не скончыў за 60 хвілін.</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd запусціўся, але SteamVR не з'явіўся ў {0}. steamcmd паведаміў: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd запусціўся, але SteamVR не з'явіўся ў {0}. steamcmd паведаміў: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>HidHide усталяваны, але яго кіравальная прылада не адкрылася, таму фільтр класа не дададзены.</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>HidHide усё яшчэ ў спісе фільтраў класа, таму драйвер пакінуты на месцы.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Выдаленне састарэлых драйвераў…</value></data>

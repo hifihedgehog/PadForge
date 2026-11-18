@@ -88,7 +88,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>در حال توقف موتور…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>در حال اجرا روی {0}</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>در حال اجرا، {0} متصل</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>در حال گوش دادن روی :{0}</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>در حال گوش دادن روی پورت {0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>پورت {0} در حال استفاده است</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>دسترسی به پورت {0} رد شد (به‌عنوان سرپرست اجرا کنید)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>راه‌اندازی ناموفق بود</value></data>
@@ -106,7 +106,7 @@
   <data name="Common_Stop" xml:space="preserve"><value>توقف</value></data>
   <data name="Common_Start" xml:space="preserve"><value>شروع</value></data>
   <data name="Common_Record" xml:space="preserve"><value>ضبط</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>در حال ضبط...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>در حال ضبط…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>پاک کردن</value></data>
   <data name="Common_Increase" xml:space="preserve"><value>افزایش</value></data>
   <data name="Common_Decrease" xml:space="preserve"><value>کاهش</value></data>
@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>یک صفحه به راست</value></data>
   <data name="Common_None" xml:space="preserve"><value>هیچ‌کدام</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>ثانیه</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>اختصاص‌نیافته</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -134,7 +135,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>در حال بستن PadForge...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>در حال بستن PadForge…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>در حال راه‌اندازی PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>در حال پاک‌سازی کنترلرهای مجازی به‌جامانده از نشست قبلی.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>افزودن کنترلر</value></data>
@@ -240,7 +241,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← چپ)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ بالا)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll پیدا نشد</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll پیدا نشد! SDL3.dll را کنار PadForge.exe قرار دهید. دانلود از https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll پیدا نشد. SDL3.dll را کنار PadForge.exe قرار دهید. آن را از https://github.com/libsdl-org/SDL/releases دانلود کنید</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>عملیات درایور ناموفق بود: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>تنظیمات در کلیپ‌بورد کپی شد.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>اطلاعات دستگاه در کلیپ‌بورد کپی شد.</value></data>
@@ -271,11 +272,11 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>تنظیمات دوباره از دیسک بارگذاری شد.</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>هیچ فایل تنظیماتی روی دیسک پیدا نشد.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>دستگاهی برای ضبط متصل نیست.</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>در حال ضبط: برای «{0}» دکمه‌ای را فشار دهید یا محوری را حرکت دهید...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>در حال ضبط: برای «{0}» کنترلری را بچرخانید یا تکان دهید...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>در حال ضبط: برای «{0}» دکمه‌ای را فشار دهید یا محوری را حرکت دهید…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>در حال ضبط: برای «{0}» کنترلری را بچرخانید یا تکان دهید…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>هیچ کنترلری در این اسلات حسگری برای «{0}» ندارد.</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>در حال ضبط «{0}»: ورودی جهت بالا را فشار دهید...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>در حال ضبط «{0}»: اکنون ورودی جهت پایین را فشار دهید...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>در حال ضبط «{0}»: ورودی جهت بالا را فشار دهید…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>در حال ضبط «{0}»: اکنون ورودی جهت پایین را فشار دهید…</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>ضبط لغو شد.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>مهلت ضبط برای «{0}» به پایان رسید.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>موتور شروع به کار کرد.</value></data>
@@ -294,7 +295,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>نمایش یا پنهان کردن PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>روشن یا خاموش کردن کنترلرهای مجازی</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>هر دستگاه متصل</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>در حال ضبط...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>در حال ضبط…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} ثانیه)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>وقتی</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>روی</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>اختصاص «{0}» به کنترلر مجازی {1} لغو شد.</value></data>
@@ -327,6 +329,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>کنترلرها</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>افزونه‌های در حال استفاده</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>روشن. {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>تنظیمات پیش‌فرض</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>استیک چپ</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>استیک راست</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>{0} مورد دیگر در [افزونه‌ها]. هر افزونه تا وقتی روشنش نکنید خاموش می‌ماند.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>باز کردن افزونه‌ها</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>نمایش QR</value></data>
@@ -396,6 +403,10 @@
   <data name="Macro_EmptyHint" xml:space="preserve"><value>یک ماکرو را از فهرست انتخاب کنید یا برای ساختن ماکرو، + کنار «ماکروها» را فشار دهید.</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>خام</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>خروجی</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>منحنی</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>لایه‌های شیفت</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>معکوس</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>اوج</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>سرد</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>پیش‌نمایش</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>افزونه‌ها</value></data>
@@ -431,11 +442,11 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>مقادیر همان ردیف تله‌متری بازی در [دستگاه‌ها] هستند. آن‌ها را در بخش نگاشت‌های یک کنترلر نگاشت کنید یا برای فعال کردن ماکروها به کار ببرید.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>جای منو، اندازه و شفافیت آن روی خود منو، در بخش [ماکروها و منوها] یک کنترلر تنظیم می‌شود.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>منابع</value></data>
-  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack و هر چیزی که قالب UDP آن را می‌فرستد</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack و هر چیزی که قالب UDP آن را می‌فرستد.</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>محدوده</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>محدوده هر محور. صفر از محدوده بالا پیروی می‌کند.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>بازی‌هایی که PadForge نمی‌شناسد</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>برای مودهایی که پیش از فرستادن دنبال DSX در حال اجرا می‌گردند</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>برای مودهایی که پیش از فرستادن دنبال DSX در حال اجرا می‌گردند.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>آنچه نشان داده می‌شود</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>حلقه، جدول یا نوار یک منو تا وقتی باز است</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>نام لایه هنگام روشن شدن یک لایه شیفت، به مدتی که آن لایه تعیین می‌کند</value></data>
@@ -694,7 +705,7 @@
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>پنهان کردن دستگاه‌ها از بازی‌ها، پنهان نگه داشتن دستگاه‌ها بین اجراها، برنامه‌های مجاز</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>برنامه‌های مجاز</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>این برنامه‌ها همچنان می‌توانند دستگاه‌های پنهان را ببینند. PadForge همیشه به‌طور خودکار در فهرست مجاز قرار دارد.</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>افزودن...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>افزودن…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge این درایور را همراه با نخستین کنترلر مجازی که بسازید نصب می‌کند. حذف نصب پیش از برداشتن، فهرست آنچه HIDMaestro روی این رایانه به جا گذاشته را نشان می‌دهد.</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>کنترلرهای مجازی را می‌سازد.</value></data>
@@ -713,6 +724,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>نگه داشته شد</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>خوانده نشد</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>حذف نشد</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>دستگاه</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>ثبت رابط</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>کلید رجیستری مشترک</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>مقدار رجیستری مشترک</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>اتصال WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>بازنویسی نام OEM</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>کلید DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>ثبت OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>بسته درایور</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>کلید سرویس WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>کلید رجیستری</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>گواهی</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>پوشه</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>تنظیم سرویس</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>مرحله حذف</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>بلوتوث BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>به کنترلرهای PlayStation 3، PlayStation Move و کنترلر Navigation امکان اتصال از طریق بلوتوث را می‌دهد. درون PadForge جاسازی شده و نخستین باری که یکی از آن‌ها جفت شود نصب می‌شود.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>کنترلرهای PlayStation 3 را از طریق بلوتوث وصل می‌کند.</value></data>
@@ -907,11 +933,11 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>تایپ «{0}»</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(بدون متن)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>متن</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>تأخیر نویسه (ms)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>تأخیر بین نویسه‌ها</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>میلی‌ثانیه بین نویسه‌های تایپ‌شده، حداکثر 1000. مقدار 0 کل متن را یکجا تایپ می‌کند.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>قطع اتصال در بیکاری</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>جزئیات</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>دقیقه (0 = هرگز)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>دقیقه</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>قطع بلوتوث هنگام اتصال با USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>شارژ سریع. وقتی این کنترلر هنگام اتصال با بلوتوث گزارش دهد که در حال شارژ است، اتصال بلوتوث قطع می‌شود تا بدون تغذیه رادیو شارژ شود. هر منبع تغذیه USB حساب می‌شود، از جمله شارژرهای دیواری. اگر تا وقتی کابل وصل است بلوتوث را دوباره روشن کنید، تا جدا شدن بعدی کابل کاری با آن نخواهد داشت.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>خواندن به‌عنوان کنترلر iCade</value></data>
@@ -1002,7 +1028,7 @@
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Wii Remote را به سمت هدف بگیرید و B را فشار دهید.</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Wii Remote نوار حسگر را ندید. آن را به سمت هدف بگیرید و دوباره B را فشار دهید.</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc یا Home لغو می‌کند.</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>این کنترلر بلوتوث را پس از این تعداد دقیقه بدون ورودی قطع می‌کند تا به خواب برود و در مصرف باتری صرفه‌جویی شود. در اتصال USB هرگز عمل نمی‌کند.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>این کنترلر بلوتوث را پس از این تعداد دقیقه بدون ورودی قطع می‌کند تا به خواب برود و در مصرف باتری صرفه‌جویی شود. 0 آن را خاموش می‌کند. در اتصال USB هرگز عمل نمی‌کند.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>روشن/خاموش</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>منو</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>تأیید</value></data>
@@ -1068,6 +1094,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>باتری</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>مسیر</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>شماره سریال</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID برنامه</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>فریم‌ور</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>ویرایش</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>خواندن Chatpad</value></data>
@@ -1156,11 +1184,15 @@
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>ژیروسکوپ</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>شتاب‌سنج</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 محور</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} محور</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 دکمه</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} دکمه</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>محور {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} محور، {1} دکمه، {2} POV</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>لرزش</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>ژیروسکوپ</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>شتاب‌سنج</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>پنهان شدن این دستگاه از برنامه‌هایی که آن را به‌عنوان دستگاه HID باز می‌کنند</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows همچنان کلیدهایی را که تایپ می‌کنید می‌خواند، پس تایپ در همه برنامه‌ها، از جمله بازی‌ها، کار می‌کند. صفحه‌کلید USB را می‌توان با دکمه «{0}» از Windows گرفت.</value></data>
@@ -1346,7 +1378,7 @@
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>مادربردها و کارت‌های گرافیک</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>ماوس‌پدها، هدست‌ها و پایه‌های هدست</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>هر وقت بازی‌ها نورپردازی را بنویسند کنترل را به دست می‌گیرند.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>هگز</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>یک رنگ هگز شش‌رقمی (RRGGBB یا #RRGGBB) وارد کنید و برای اعمال، Enter را فشار دهید یا بیرون از کادر کلیک کنید.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>برداشتن این رنگ از پالت</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>خاموش</value></data>
@@ -1548,6 +1580,7 @@
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>وارد کردن</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(دستگاه HID بدون نام)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} رابط HID پیدا شد.</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>1 رابط HID پیدا شد.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>فهرست‌برداری ناموفق بود: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>استخراج ناموفق بود: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>تجزیه JSON پروفایل استخراج‌شده ممکن نشد. چیزی ذخیره نشد.</value></data>
@@ -1660,7 +1693,7 @@
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>ضبط همه نگاشت‌ها به‌ترتیب و یکی‌یکی</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>کپی همه نگاشت‌ها و تنظیمات در کلیپ‌بورد</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>جای‌گذاری نگاشت‌ها و تنظیمات از کلیپ‌بورد</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>کپی از...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>کپی از…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>کپی تنظیمات از یک دستگاه پیکربندی‌شده دیگر</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>بازنشانی همه</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>پاک کردن همه</value></data>
@@ -1848,7 +1881,7 @@
   <data name="Pad_More_Trigger" xml:space="preserve"><value>محدوده به‌صورت عدد، مقادیر خام</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>محدوده</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>«کالیبره کردن مرز» لبه‌ای را که استیک به آن می‌رسد اندازه می‌گیرد و آن را به شکل یک دایره کامل درمی‌آورد. چهار لغزنده فقط هر جهت را محدود می‌کنند.</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>در حال نمونه‌برداری...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>در حال نمونه‌برداری…</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>آفست مرکز X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>آفست مرکز Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>شکل ناحیه مرده</value></data>
@@ -1959,6 +1992,7 @@
   <data name="Macro_DelayMs" xml:space="preserve"><value>تأخیر</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>حساسیت</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>ماکروی جدید</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>ماکرو {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>ضبط راه‌انداز</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>تنظیم نشده. روی «ضبط» کلیک کنید.</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>دکمه {0}</value></data>
@@ -2017,6 +2051,8 @@
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>لرزش دستگاه فیزیکی اسلات را از یک ماکرو به کار می‌اندازد. «واکنشی» در بازه نگه داشتن با شدت کامل اجرا می‌شود و سپس در بازه محو شدن به صفر می‌رسد. «ماندگار» تا اجرای کنش «توقف لرزش» با شدت کامل می‌ماند. با تابع max روی لرزش بازی قرار می‌گیرد تا بازخورد کاربر همیشه حس شود.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>تپش لرزش {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>نگه داشتن لرزش {0} تا پاک شدن</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>چپ {0}%، راست {1}%</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>ماشه چپ {0}%، ماشه راست {1}%</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>توقف لرزش</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>توقف لرزش</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>هر بازنویسی فعال لرزش را در اسلات اختصاص‌یافته آزاد می‌کند. آن را با یک کنش «لرزش» از نوع ماندگار همراه کنید تا با ماکروی دیگری نگه داشتن را لغو کنید.</value></data>
@@ -2055,7 +2091,7 @@
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>ماوس Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>بازه</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>انتخاب روی صفحه</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>ثبت پس از {0}...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>ثبت پس از {0}…</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>کلیک کنید، سپس نشانگر را روی هدف ببرید. پس از شمارش معکوسی کوتاه، موقعیت آن ثبت می‌شود.</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>حالت</value></data>
   <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>تورفتگی X</value></data>
@@ -2727,9 +2763,9 @@
   <data name="Profiles_DropTile" xml:space="preserve"><value>یک فایل پروفایل را اینجا رها کنید</value></data>
   <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge، reWASD یا DS4Windows</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>پروفایل جدید</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>ذخیره با نام</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>ذخیره با نام…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>ذخیره تنظیمات فعلی اینجا</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>ویرایش</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>ویرایش…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>بارگذاری</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>داخلی</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>بازی تعیین نشده</value></data>
@@ -2832,8 +2868,8 @@
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>بازنشانی آفست مرکز X</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>کالیبره کردن مرز</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>کالیبره کردن دوباره مرز</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>لبه را دور بزنید... {0} مانده</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>پوشش داده شد. یک دور دیگر برای دقیق‌تر شدن...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>لبه را دور بزنید… {0} مانده</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>پوشش داده شد. یک دور دیگر برای دقیق‌تر شدن…</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>میزان گردی {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>استیک را دور لبه‌اش بچرخانید تا مرز دسترس‌پذیر ثبت و سپس به دایره‌ای کامل تبدیل شود.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>بازنشانی کالیبراسیون مرز</value></data>
@@ -2912,7 +2948,7 @@
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>میزان صدای یک برنامه مشخص را در میکسر صدای Windows کنترل می‌کند، با مقیاس‌بندی تا حد میزان صدا. نام فرایند را وارد کنید (در Task Manager دیده می‌شود). با راه‌انداز «همیشه» استفاده کنید، یا با راه‌انداز دکمه/محور همراه با «هنگام نگه داشتن» + «تا رها کردن».</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>محور انتخاب‌شده را پیوسته به حرکت ماوس (یا پیمایش) نگاشت می‌کند. با راه‌انداز «همیشه» استفاده کنید، یا با راه‌انداز دکمه/محور همراه با «هنگام نگه داشتن» + «تا رها کردن». برای تبدیل استیک به ماوس دو کنش بسازید: یکی برای محور X و یکی برای محور Y.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>معکوس کردن محور</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>نمایش OSD میزان صدا</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>نمایش نشانگر میزان صدا</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>جهت</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>هر کدام</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>مثبت</value></data>
@@ -3139,7 +3175,7 @@
   <data name="Preview_CCOutputs" xml:space="preserve"><value>خروجی‌های CC</value></data>
   <data name="Preview_NoteOutputs" xml:space="preserve"><value>خروجی‌های نت</value></data>
   <data name="Preview_Stick_Format" xml:space="preserve"><value>استیک {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>ماشه {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>دکمه‌های جهتی</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>دکمه‌ها</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -3156,7 +3192,6 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>سطح</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>مهلت عدم فعالیت</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>تعداد ثانیه‌ها پیش از حذف یک کنترلر مجازی، وقتی همه دستگاه‌های نگاشت‌شده آن آفلاین باشند. مقدار 0 غیرفعال می‌کند. کنترلرهای باقی‌مانده از همان نوع برای پر کردن جای خالی بالا می‌آیند و به اسلات‌های پایین‌تر مقید می‌شوند.</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>ثانیه (0 = هرگز)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>افزودن لایه</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>یک لایه شیفت اضافه می‌کند: جدول نگاشت دومی که با نگه داشتن یا تغییر وضعیت یک دکمه فعال می‌شود.</value></data>
@@ -3961,7 +3996,7 @@
     <value>بازنشانی تأخیر به 0 (لایه بی‌درنگ واکنش نشان می‌دهد).</value>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>پیکربندی‌های جامعه کاربران</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>پیکربندی‌های کنترلر Steam Input ساخته‌شده توسط جامعه کاربران را مرور کنید و آن‌ها را به پروفایل‌های PadForge تبدیل کنید. PadForge فقط وقتی مستقیماً به سرورهای Steam وصل می‌شود که جستجو کنید، پیکربندی‌ای را باز کنید یا به‌روزرسانی پیکربندی‌های واردشده را بررسی کنید. متن جستجوی شما، شناسه‌های بازی‌ها، پیکربندی‌ها و سازندگان مربوط و نسخه PadForge را می‌فرستد. ورود ناشناس به Steam نیز نسخه Windows شما و یک شناسه رایانه را می‌فرستد که از هش شناسه نصب Windows، نشانی‌های آداپتورهای شبکه و شماره سریال دیسک راه‌انداز ساخته می‌شود. بدون تله‌متری، بدون سرویس شخص ثالث، بدون حساب Steam.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>پیکربندی‌های کنترلر Steam Input ساخته‌شده توسط جامعه کاربران را مرور کنید و آن‌ها را به پروفایل‌های PadForge تبدیل کنید. PadForge متن جستجوی شما، شناسه‌های بازی‌ها، پیکربندی‌ها و سازندگان مربوط و نسخه خود را می‌فرستد. ورود ناشناس به Steam نیز نسخه Windows شما و یک شناسه رایانه را می‌فرستد که از هش شناسه نصب Windows، نشانی‌های آداپتورهای شبکه و شماره سریال دیسک راه‌انداز ساخته می‌شود. هیچ سرویس شخص ثالثی درگیر نیست.</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge فقط وقتی جستجو می‌کنید، یک پیکربندی را باز می‌کنید یا به‌روزرسانی پیکربندی‌های واردشده را بررسی می‌کنید به سرورهای Steam وصل می‌شود. بدون تله‌متری، بدون حساب Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>آنچه ارسال می‌شود</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>فعال کردن پیکربندی‌های جامعه کاربران</value></data>
@@ -4018,6 +4053,9 @@
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam فایلی برای دانلود این پیکربندی ارائه نمی‌کند و نسخه‌ای از آن در پوشه Steam شما نیست. در Steam مشترک آن شوید تا PadForge آن را از همان‌جا بخواند.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>باز کردن در Steam Workshop</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>قدیمی</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>پروفایل Workshop</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>ماکروی Workshop</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>ناحیه مکان‌نما</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>یک پیکربندی را انتخاب کنید تا ببینید چه چیزی منتقل می‌شود.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>آنچه منتقل می‌شود</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>تبدیل به</value></data>
@@ -4395,6 +4433,7 @@
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>متوسط (ملایم)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>زیاد (ملایم)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>سفارشی</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>پیش‌فرض bs2b</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>فرکانس قطع</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>فرکانس تقسیم. زیر آن کانال‌ها به سمت مونو آمیخته می‌شوند و بالای آن جدا می‌مانند، پس فرکانس قطع پایین‌تر کراس‌فید کمتری دارد.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>سطح آمیزش</value></data>
@@ -4422,7 +4461,8 @@
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>پاک کردن</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>وارد کردن از کلیپ‌بورد</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>پروفایل AutoEq هدفون خود را در کلیپ‌بورد کپی کنید و سپس کلیک کنید. باندها را جایگزین و پیش‌تقویت را تنظیم می‌کند. اگر در کلیپ‌بورد چیز خوانایی نباشد، اکولایزر کنونی دست‌نخورده می‌ماند.</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>وارد کردن از فایل</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>وارد کردن از فایل…</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>وارد کردن اکولایزر پارامتریک</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>فایل .txt را که از AutoEq دانلود کرده‌اید انتخاب کنید. این گزینه مناسب است: autoeq.app به شما فایل می‌دهد، نه متنی که بتوانید کپی کنید.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>برای اصلاحی متناسب با هدفون شما: autoeq.app را باز کنید، مدل خود را انتخاب کنید، Custom Parametric Eq را برگزینید و دانلودش کنید، سپس «وارد کردن از فایل» را بزنید. فایل دانلودی Graphic Eq خط فیلتر ندارد و وارد نمی‌شود.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{0} باند با پیش‌تقویت {1:0.#} dB از {2} وارد شد.</value></data>
@@ -4475,6 +4515,7 @@
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>این شبکه نمی‌تواند اتصال مستقیم برقرار کند (به نظر می‌رسد هات‌اسپات موبایل یا NAT در سطح اپراتور باشد). از یک VPN مانند Tailscale استفاده کنید یا از اینترنت پرسرعت خانگی وصل شوید.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>نشانی عمومی این رایانه پیدا نشد (ممکن است شبکه ترافیک لازم را مسدود کند). اتصال مستقیم اینجا کار نمی‌کند. از VPN استفاده کنید یا در همان شبکه از «اتصال با نشانی» استفاده کنید.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>باتری کنترلر ضعیف است</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>کنترلر</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% باتری باقی مانده است</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>هشدارهای باتری</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>وقتی باتری کنترلر رو به اتمام است، پیش از آنکه در میانه بازی خاموش شود، اعلان دریافت کنید.</value></data>
@@ -4691,7 +4732,7 @@
     <value>در رایانه دیگر یک کنترلر مجازی بسازید و سپس تازه‌سازی کنید.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>در انتظار رایانه دیگر...</value>
+    <value>در انتظار رایانه دیگر…</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>تبلت طراحی</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>ورودی مشترک</value></data>
@@ -4753,7 +4794,7 @@
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>محل نصب SteamVR باید یک مسیر کامل باشد، مانند C:\SteamVR.</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>محل نصب SteamVR نمی‌تواند ریشه یک درایو باشد. یک پوشه انتخاب کنید، مانند C:\SteamVR.</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd در 60 دقیقه تمام نشد.</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd اجرا شد، اما SteamVR در {0} قرار نگرفت. پیام steamcmd: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd اجرا شد، اما SteamVR در {0} قرار نگرفت. پیام steamcmd: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>HidHide نصب شد، اما دستگاه کنترلی آن باز نشد، بنابراین هیچ فیلتر کلاسی اضافه نشد.</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>HidHide هنوز به‌عنوان فیلتر کلاس فهرست شده است، بنابراین درایور سر جای خود باقی ماند.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>در حال حذف درایورهای قدیمی…</value></data>

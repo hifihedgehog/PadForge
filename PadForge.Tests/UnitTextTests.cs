@@ -15,7 +15,7 @@ namespace PadForge.Tests
 
         private static readonly string[] UnitKeys =
         {
-            "Common_Ms", "Common_Pixels", "Devices_IdleDisconnectMinutes", "Settings_SecondsZeroNever",
+            "Common_Ms", "Common_Pixels", "Devices_IdleDisconnectMinutes", "Common_Seconds",
             "Pad_Falcon_NewtonsUnit", "GyroSensitivityH_DegPerTurn", "GyroSensitivityV_DegPerTurn",
         };
 

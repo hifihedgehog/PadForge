@@ -191,8 +191,8 @@
                 <Rectangle Height="1" Fill="{DynamicResource SteelLineSoftBrush}" VerticalAlignment="Center"/>
             </DockPanel>
         </DataTemplate>
-        <!-- A binding: its status dot, the Steam binding in the code face in
-             the cold color, the PadForge binding it becomes, and the reason
+        <!-- A binding: its status dot, the Steam binding in the cold color,
+             the PadForge binding it becomes, and the reason
              for anything not clean. -->
         <DataTemplate DataType="{x:Type views:WorkshopManifestRowItem}">
             <Grid Margin="0,5">
@@ -203,8 +203,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Ellipse Width="7" Height="7" Fill="{Binding DotBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBlock Grid.Column="1" Text="{Binding Source}" MaxWidth="240"
-                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="13"
+                <TextBlock Grid.Column="1" Text="{Binding Source}" MaxWidth="240" FontSize="13"
                            Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center"
                            TextTrimming="CharacterEllipsis" Margin="0,0,10,0"/>
                 <TextBlock Grid.Column="2" Text="{Binding Target}" FontSize="13"
@@ -250,11 +249,11 @@
                        TextWrapping="Wrap" TextAlignment="Center" MaxWidth="320"
                        HorizontalAlignment="Center" Margin="0,8,0,0"/>
             <!-- The endpoint list IS the privacy statement (design P4):
-                 shown in plain telemetry, not linked away. Locale-neutral
-                 host literals. -->
-            <TextBlock FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                 shown as plain text, not linked away. Locale-neutral host
+                 literals. -->
+            <TextBlock FontSize="12"
                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                       LineHeight="17" HorizontalAlignment="Center" TextAlignment="Left" Margin="0,10,0,0"
+                       LineHeight="18" HorizontalAlignment="Center" TextAlignment="Left" Margin="0,10,0,0"
                        Text="store.steampowered.com&#10;api.steampowered.com&#10;steamcommunity.com&#10;cdn.steamusercontent.com&#10;cdn.cloudflare.steamstatic.com"/>
             <ui:Button x:Name="EnableCommunityConfigsButton" Style="{StaticResource EmberPrimaryButton}" MinWidth="90"
                        HorizontalAlignment="Center" Margin="0,14,0,0" Click="EnableCommunityConfigs_Click"
@@ -300,7 +299,7 @@
                                                 <GradientStop Color="#12161E" Offset="1"/>
                                             </LinearGradientBrush>
                                         </Border.Background>
-                                        <TextBlock Text="{Binding Initial}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                        <TextBlock Text="{Binding Initial}" FontSize="12"
                                                    Foreground="#8BFFFFFF"
                                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
@@ -485,7 +484,7 @@
                                             Background="{DynamicResource WaitWellBrush}" BorderBrush="{DynamicResource WaitEdgeBrush}"
                                             TextElement.Foreground="{DynamicResource WaitBrush}"
                                             Visibility="{Binding IsLegacy, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text="{Binding Workshop_LegacyTag, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Workshop_LegacyTag, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
                                     </Border>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
@@ -623,7 +622,7 @@
                             <Border CornerRadius="8" BorderThickness="1" Padding="12,8"
                                     Background="{DynamicResource SteelBandBrush}" BorderBrush="{DynamicResource SteelLineSoftBrush}">
                                 <StackPanel>
-                                    <TextBlock x:Name="StatCleanNum" Text="0" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="18"
+                                    <TextBlock x:Name="StatCleanNum" Text="0" FontFamily="{StaticResource DisplayFontFamily}" Typography.NumeralAlignment="Tabular" FontSize="18"
                                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                                     <TextBlock Text="{Binding Workshop_StatClean, Source={x:Static strings:Strings.Instance}}" FontSize="13"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
@@ -632,7 +631,7 @@
                             <Border Grid.Column="2" CornerRadius="8" BorderThickness="1" Padding="12,8"
                                     Background="{DynamicResource SteelBandBrush}" BorderBrush="{DynamicResource SteelLineSoftBrush}">
                                 <StackPanel>
-                                    <TextBlock x:Name="StatPartialNum" Text="0" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="18"
+                                    <TextBlock x:Name="StatPartialNum" Text="0" FontFamily="{StaticResource DisplayFontFamily}" Typography.NumeralAlignment="Tabular" FontSize="18"
                                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                                     <TextBlock Text="{Binding Workshop_StatPartial, Source={x:Static strings:Strings.Instance}}" FontSize="13"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
@@ -641,7 +640,7 @@
                             <Border Grid.Column="4" CornerRadius="8" BorderThickness="1" Padding="12,8"
                                     Background="{DynamicResource SteelBandBrush}" BorderBrush="{DynamicResource SteelLineSoftBrush}">
                                 <StackPanel>
-                                    <TextBlock x:Name="StatSkippedNum" Text="0" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="18"
+                                    <TextBlock x:Name="StatSkippedNum" Text="0" FontFamily="{StaticResource DisplayFontFamily}" Typography.NumeralAlignment="Tabular" FontSize="18"
                                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                                     <TextBlock Text="{Binding Workshop_StatSkipped, Source={x:Static strings:Strings.Instance}}" FontSize="13"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
@@ -669,7 +668,7 @@
                     <Border Style="{StaticResource PillChip}" HorizontalAlignment="Center"
                             Background="{DynamicResource WaitWellBrush}" BorderBrush="{DynamicResource WaitEdgeBrush}"
                             TextElement.Foreground="{DynamicResource WaitBrush}">
-                        <TextBlock Text="{Binding Workshop_LegacyTag, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Workshop_LegacyTag, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
                     </Border>
                     <TextBlock Text="{Binding Workshop_LegacyBody, Source={x:Static strings:Strings.Instance}}"
                                FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"

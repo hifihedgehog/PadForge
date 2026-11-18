@@ -160,7 +160,7 @@ namespace PadForge.Tests
                          {
                              "DialogFootPanel", "DialogButton", "DialogPrimaryButton", "DialogDangerButton", "DialogQuietButton",
                              "DialogSmallQuietButton", "DialogIconButton", "DialogClearButton", "DialogRecordButton", "DialogChipRemove",
-                             "DialogLabel", "DialogLabelNarrow", "DialogHead3", "DialogNote", "DialogMonoNote", "DialogFootNote",
+                             "DialogLabel", "DialogLabelNarrow", "DialogHead3", "DialogNote", "DialogFigureNote", "DialogFootNote",
                              "DialogTextBox", "DialogPasswordBox", "DialogSelect", "DialogInputChipCombo", "DialogValueEdit", "DialogUnit",
                              "DialogList", "DialogListBox", "DialogListItem", "DialogListItemTall", "DialogListItemLinks",
                              "DialogPickListItem", "DialogRadioListItem", "DialogRadioListItemLinks", "DialogOptionItem", "DialogTag",
@@ -306,15 +306,33 @@ namespace PadForge.Tests
             });
         }
 
-        /// <summary>A removal row's first line is its kind with the first
-        /// letter upper, since HIDMaestro writes its kinds in lowercase.</summary>
+        /// <summary>A removal row's first line is its kind in the app's
+        /// language. Every kind the shipped HIDMaestro names has a string of
+        /// its own, read from the library's constants, so a kind a later
+        /// HIDMaestro adds fails here until it has one. Until then it shows
+        /// in HIDMaestro's words with its first letter upper.</summary>
         [Fact]
-        public void ARemovalRowsTitleStartsUpper()
+        public void ARemovalRowsTitleIsItsKindInTheAppsLanguage()
         {
-            Assert.Equal("Driver package", UninstallHIDMaestroDialog.TitleOf("driver package", CultureInfo.InvariantCulture));
-            Assert.Equal("OpenVR registration", UninstallHIDMaestroDialog.TitleOf("OpenVR registration", CultureInfo.InvariantCulture));
-            Assert.Equal(string.Empty, UninstallHIDMaestroDialog.TitleOf(string.Empty, CultureInfo.InvariantCulture));
-            Assert.Null(UninstallHIDMaestroDialog.TitleOf(null, CultureInfo.InvariantCulture));
+            var uninstaller = typeof(HIDMaestro.HMUninstallEntry).Assembly.GetType("HIDMaestro.Internal.Uninstall.Uninstaller", throwOnError: true);
+            var kinds = uninstaller.GetFields(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)
+                .Where(f => f.IsLiteral && f.FieldType == typeof(string) && f.Name.StartsWith("Kind", StringComparison.Ordinal))
+                .Select(f => (string)f.GetRawConstantValue())
+                .ToList();
+            Assert.Equal(15, kinds.Count);
+            var keys = typeof(Strings).GetProperties()
+                .Where(p => p.Name.StartsWith("HIDMaestroUninstall_Kind", StringComparison.Ordinal))
+                .Select(p => (string)p.GetValue(Strings.Instance))
+                .ToList();
+            var titles = kinds.Select(UninstallHIDMaestroDialog.KindTitle).ToList();
+            Assert.All(titles, title => Assert.Contains(title, keys));
+            Assert.Equal(kinds.Count, titles.Distinct().Count());
+            Assert.Equal(keys.Count, titles.Count);
+            Assert.Equal(Strings.Instance.HIDMaestroUninstall_KindDevice, UninstallHIDMaestroDialog.KindTitle("devnode"));
+            Assert.Equal(Strings.Instance.HIDMaestroUninstall_KindPackage, UninstallHIDMaestroDialog.KindTitle("driver package"));
+            Assert.Equal("Firmware slot", UninstallHIDMaestroDialog.KindTitle("firmware slot"));
+            Assert.Equal(string.Empty, UninstallHIDMaestroDialog.KindTitle(string.Empty));
+            Assert.Null(UninstallHIDMaestroDialog.KindTitle(null));
         }
 
         private static string RepoRoot()

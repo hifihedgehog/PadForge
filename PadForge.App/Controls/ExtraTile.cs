@@ -54,8 +54,7 @@ namespace PadForge.Controls
             nameof(Title), typeof(string), typeof(ExtraTile), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty LineProperty = DependencyProperty.Register(
-            nameof(Line), typeof(string), typeof(ExtraTile),
-            new PropertyMetadata(string.Empty, (d, _) => ((ExtraTile)d).SetSummary()));
+            nameof(Line), typeof(string), typeof(ExtraTile), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty SwitchLabelProperty = DependencyProperty.Register(
             nameof(SwitchLabel), typeof(string), typeof(ExtraTile), new PropertyMetadata(string.Empty));
@@ -65,13 +64,7 @@ namespace PadForge.Controls
             new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public static readonly DependencyProperty StatusProperty = DependencyProperty.Register(
-            nameof(Status), typeof(string), typeof(ExtraTile),
-            new PropertyMetadata(string.Empty, (d, _) => ((ExtraTile)d).SetSummary()));
-
-        private static readonly DependencyPropertyKey SummaryKey = DependencyProperty.RegisterReadOnly(
-            nameof(Summary), typeof(string), typeof(ExtraTile), new PropertyMetadata(string.Empty));
-
-        public static readonly DependencyProperty SummaryProperty = SummaryKey.DependencyProperty;
+            nameof(Status), typeof(string), typeof(ExtraTile), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty ActionTextProperty = DependencyProperty.Register(
             nameof(ActionText), typeof(string), typeof(ExtraTile), new PropertyMetadata(string.Empty));
@@ -152,14 +145,6 @@ namespace PadForge.Controls
             get => (string)GetValue(StatusProperty);
             set => SetValue(StatusProperty, value);
         }
-
-        /// <summary>What Home says under the name of an extra that is on:
-        /// its live status when it has one, and its one-line description
-        /// otherwise.</summary>
-        public string Summary => (string)GetValue(SummaryProperty);
-
-        private void SetSummary()
-            => SetValue(SummaryKey, string.IsNullOrEmpty(Status) ? (Line ?? string.Empty) : Status);
 
         /// <summary>The words on a second button at the tile's end (Show QR
         /// on the Web Controller's tile), or empty for none. The button

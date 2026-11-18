@@ -744,7 +744,7 @@ namespace PadForge.Tests
             // The Border is known to the accessibility allowlist by its
             // drag handlers, which a name of its own would hide.
             Assert.Null(row.Attribute(Xaml + "Name"));
-            Assert.Equal(new[] { "40/", "*/", "Auto/DeviceLink", "Auto/DeviceBattery", "Auto/DeviceUsedBy" }, Columns(head));
+            Assert.Equal(new[] { "40/", "*/", "Auto/DeviceLink", "Auto/DeviceBattery", "Auto/DeviceUsedBy", "Auto/DeviceRemove" }, Columns(head));
             Assert.Equal(Columns(head), Columns(rowGrid));
             Assert.Equal("18,12,16,10", Attr(head, "Margin"));
             Assert.Equal("18,0,16,0", Attr(row, "Padding"));

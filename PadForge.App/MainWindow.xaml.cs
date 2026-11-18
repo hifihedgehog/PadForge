@@ -3369,11 +3369,12 @@ namespace PadForge
             _viewModel.Settings.VersionNumber = Services.BuildIdentity.VersionText(Services.BuildIdentity.Version);
             _viewModel.Settings.RuntimeVersion = Environment.Version.ToString();
 
-            // Check SDL3.dll availability.
+            // Check SDL3.dll availability. The number alone: its row's
+            // label already says SDL.
             try
             {
                 var sdlVersion = SDL3.SDL.SDL_Linked_Version();
-                _viewModel.Settings.SdlVersion = $"SDL {sdlVersion.major}.{sdlVersion.minor}.{sdlVersion.patch}";
+                _viewModel.Settings.SdlVersion = $"{sdlVersion.major}.{sdlVersion.minor}.{sdlVersion.patch}";
             }
             catch (DllNotFoundException)
             {
@@ -4172,16 +4173,17 @@ namespace PadForge
             var slotNumber = new System.Windows.Controls.TextBlock
             {
                 Text = $"{navItem.SlotNumber}",
-                FontFamily = (System.Windows.Media.FontFamily)FindResource("TelemetryFontFamily"),
                 FontSize = 12,
                 FontWeight = FontWeights.Normal,
                 VerticalAlignment = VerticalAlignment.Center,
-                // The 16px box holds two digits: "16" measures 14.1 in
-                // Cascadia @12, so slot 10-16 fits without widening.
+                // The 16px box holds two digits: "16" measures 12.9 in the
+                // body face @12 with tabular figures, so slot 10-16 fits
+                // without widening.
                 Margin = new Thickness(2, 0, 0, 0),
                 Width = 16,
                 TextAlignment = TextAlignment.Center
             };
+            System.Windows.Documents.Typography.SetNumeralAlignment(slotNumber, FontNumeralAlignment.Tabular);
             slotNumber.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
             row.Children.Add(slotNumber);
 
@@ -4273,19 +4275,20 @@ namespace PadForge
                 Text = string.IsNullOrEmpty(navItem.InstanceLabel) || navItem.InstanceLabel.Contains('#')
                     ? navItem.InstanceLabel
                     : "#" + navItem.InstanceLabel,
-                // Telemetry mono (#175 font sweep): the "#N" token matches
-                // the Home card's instance label face.
-                FontFamily = (System.Windows.Media.FontFamily)FindResource("TelemetryFontFamily"),
+                // The body face with tabular figures, as the Home card's
+                // instance label has it.
                 FontSize = 12,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(6, 0, 0, 0),
                 // Fixed box (user report 2026-07-06): an auto-width token
                 // moved what follows it when the instance number gained a
                 // digit, so stacked cards no longer lined up. 22 holds the
-                // worst case ("#16" = 21.1, Cascadia @12).
+                // worst case ("#16" = 20.0 in the body face @12 with tabular
+                // figures).
                 Width = 22,
                 TextAlignment = TextAlignment.Left
             };
+            System.Windows.Documents.Typography.SetNumeralAlignment(instanceLabel, FontNumeralAlignment.Tabular);
             instanceLabel.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorSecondaryBrush");
             row.Children.Add(instanceLabel);
 

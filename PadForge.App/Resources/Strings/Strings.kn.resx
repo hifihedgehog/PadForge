@@ -88,7 +88,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>ಎಂಜಿನ್ ನಿಲ್ಲಿಸಲಾಗುತ್ತಿದೆ…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>{0} ನಲ್ಲಿ ಚಾಲನೆಯಲ್ಲಿದೆ</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>ಚಾಲನೆಯಲ್ಲಿದೆ, ಸಂಪರ್ಕಿತ: {0}</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>:{0} ನಲ್ಲಿ ಆಲಿಸಲಾಗುತ್ತಿದೆ</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>ಪೋರ್ಟ್ {0} ನಲ್ಲಿ ಆಲಿಸಲಾಗುತ್ತಿದೆ</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>ಪೋರ್ಟ್ {0} ಬಳಕೆಯಲ್ಲಿದೆ</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>ಪೋರ್ಟ್ {0} ಗೆ ಪ್ರವೇಶ ನಿರಾಕರಿಸಲಾಗಿದೆ (ನಿರ್ವಾಹಕರಾಗಿ ಚಲಾಯಿಸಿ)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>ಪ್ರಾರಂಭಿಸಲು ವಿಫಲವಾಗಿದೆ</value></data>
@@ -106,10 +106,11 @@
   <data name="Common_Stop" xml:space="preserve"><value>ನಿಲ್ಲಿಸಿ</value></data>
   <data name="Common_Start" xml:space="preserve"><value>ಪ್ರಾರಂಭಿಸಿ</value></data>
   <data name="Common_Record" xml:space="preserve"><value>ರೆಕಾರ್ಡ್ ಮಾಡಿ</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>ರೆಕಾರ್ಡ್ ಆಗುತ್ತಿದೆ...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>ರೆಕಾರ್ಡ್ ಆಗುತ್ತಿದೆ…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>ತೆರವುಗೊಳಿಸಿ</value></data>
   <data name="Common_None" xml:space="preserve"><value>ಯಾವುದೂ ಇಲ್ಲ</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ಮಿ.ಸೆ.</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>ಸೆಕೆಂಡ್</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>ನಿಯೋಜಿಸಿಲ್ಲ</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -124,7 +125,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge ಮುಚ್ಚಲಾಗುತ್ತಿದೆ...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge ಮುಚ್ಚಲಾಗುತ್ತಿದೆ…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge ಪ್ರಾರಂಭವಾಗುತ್ತಿದೆ…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>ಹಿಂದಿನ ಸೆಷನ್‌ನಿಂದ ಉಳಿದಿರುವ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳನ್ನು ಸ್ವಚ್ಛಗೊಳಿಸಲಾಗುತ್ತಿದೆ.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್ ಸೇರಿಸಿ</value></data>
@@ -227,7 +228,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← ಎಡ)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ ಮೇಲೆ)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll ಕಂಡುಬಂದಿಲ್ಲ</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll ಕಂಡುಬಂದಿಲ್ಲ! SDL3.dll ಅನ್ನು PadForge.exe ಪಕ್ಕದಲ್ಲಿ ಇರಿಸಿ. https://github.com/libsdl-org/SDL/releases ನಿಂದ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll ಕಂಡುಬಂದಿಲ್ಲ. SDL3.dll ಅನ್ನು PadForge.exe ಪಕ್ಕದಲ್ಲಿ ಇರಿಸಿ. https://github.com/libsdl-org/SDL/releases ನಿಂದ ಅದನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>ಡ್ರೈವರ್ ಕಾರ್ಯಾಚರಣೆ ವಿಫಲವಾಗಿದೆ: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>ಸೆಟ್ಟಿಂಗ್ಸ್ ಅನ್ನು ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>ಸಾಧನದ ಮಾಹಿತಿಯನ್ನು ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ.</value></data>
@@ -258,11 +259,11 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>ಸೆಟ್ಟಿಂಗ್ಸ್ ಅನ್ನು ಡಿಸ್ಕ್‌ನಿಂದ ಮರುಲೋಡ್ ಮಾಡಲಾಗಿದೆ.</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>ಡಿಸ್ಕ್‌ನಲ್ಲಿ ಸೆಟ್ಟಿಂಗ್ಸ್ ಫೈಲ್ ಕಂಡುಬಂದಿಲ್ಲ.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>ರೆಕಾರ್ಡ್ ಮಾಡಲು ಯಾವುದೇ ಸಾಧನ ಸಂಪರ್ಕಗೊಂಡಿಲ್ಲ.</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>ರೆಕಾರ್ಡ್ ಆಗುತ್ತಿದೆ: “{0}” ಗಾಗಿ ಬಟನ್ ಒತ್ತಿ ಅಥವಾ ಅಕ್ಷವನ್ನು ಚಲಿಸಿ...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>ರೆಕಾರ್ಡ್ ಆಗುತ್ತಿದೆ: “{0}” ಗಾಗಿ ಕಂಟ್ರೋಲರ್ ಅನ್ನು ತಿರುಗಿಸಿ ಅಥವಾ ಅಲುಗಾಡಿಸಿ...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>ರೆಕಾರ್ಡ್ ಆಗುತ್ತಿದೆ: “{0}” ಗಾಗಿ ಬಟನ್ ಒತ್ತಿ ಅಥವಾ ಅಕ್ಷವನ್ನು ಚಲಿಸಿ…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>ರೆಕಾರ್ಡ್ ಆಗುತ್ತಿದೆ: “{0}” ಗಾಗಿ ಕಂಟ್ರೋಲರ್ ಅನ್ನು ತಿರುಗಿಸಿ ಅಥವಾ ಅಲುಗಾಡಿಸಿ…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>ಈ ಸ್ಲಾಟ್‌ನ ಯಾವ ಕಂಟ್ರೋಲರ್‌ನಲ್ಲೂ “{0}.” ಗಾಗಿ ಸೆನ್ಸರ್ ಇಲ್ಲ.</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>“{0}” ರೆಕಾರ್ಡ್ ಆಗುತ್ತಿದೆ: ಮೇಲಿನ ದಿಕ್ಕಿನ ಇನ್‌ಪುಟ್ ಒತ್ತಿ...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>“{0}” ರೆಕಾರ್ಡ್ ಆಗುತ್ತಿದೆ: ಈಗ ಕೆಳಗಿನ ದಿಕ್ಕಿನ ಇನ್‌ಪುಟ್ ಒತ್ತಿ...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>“{0}” ರೆಕಾರ್ಡ್ ಆಗುತ್ತಿದೆ: ಮೇಲಿನ ದಿಕ್ಕಿನ ಇನ್‌ಪುಟ್ ಒತ್ತಿ…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>“{0}” ರೆಕಾರ್ಡ್ ಆಗುತ್ತಿದೆ: ಈಗ ಕೆಳಗಿನ ದಿಕ್ಕಿನ ಇನ್‌ಪುಟ್ ಒತ್ತಿ…</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>ರೆಕಾರ್ಡಿಂಗ್ ರದ್ದುಗೊಂಡಿದೆ.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>“{0}.” ಗಾಗಿ ರೆಕಾರ್ಡಿಂಗ್ ಸಮಯ ಮೀರಿದೆ.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>ಎಂಜಿನ್ ಪ್ರಾರಂಭವಾಯಿತು.</value></data>
@@ -281,7 +282,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge ತೋರಿಸಿ ಅಥವಾ ಮರೆಮಾಡಿ</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳನ್ನು ಆನ್ ಅಥವಾ ಆಫ್ ಮಾಡಿ</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>ಸಂಪರ್ಕಗೊಂಡ ಯಾವುದೇ ಸಾಧನ</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>ರೆಕಾರ್ಡ್ ಆಗುತ್ತಿದೆ...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>ರೆಕಾರ್ಡ್ ಆಗುತ್ತಿದೆ…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} ಸೆ.)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>ಯಾವಾಗ</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>ಇದರಲ್ಲಿ</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>“{0}” ಅನ್ನು ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ {1} ನಿಂದ ನಿಯೋಜನೆ ತೆಗೆಯಲಾಗಿದೆ.</value></data>
@@ -314,6 +316,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್‌ಗಳು</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>ಬಳಕೆಯಲ್ಲಿರುವ ಹೆಚ್ಚುವರಿ</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>ಆನ್. {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>ಡೀಫಾಲ್ಟ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>ಎಡ ಸ್ಟಿಕ್</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>ಬಲ ಸ್ಟಿಕ್</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>{0} ಇನ್ನಷ್ಟು [ಹೆಚ್ಚುವರಿ] ಪುಟದಲ್ಲಿವೆ. ಹೆಚ್ಚುವರಿ ಸೌಲಭ್ಯವನ್ನು ನೀವು ಆನ್ ಮಾಡುವವರೆಗೆ ಅದು ಆಫ್ ಆಗಿರುತ್ತದೆ.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>ಹೆಚ್ಚುವರಿ ತೆರೆಯಿರಿ</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>QR ತೋರಿಸಿ</value></data>
@@ -416,11 +423,11 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>ಮೌಲ್ಯಗಳು [ಸಾಧನಗಳು] ಪುಟದಲ್ಲಿರುವ ಗೇಮ್ ಟೆಲಿಮೆಟ್ರಿ ಸಾಲು. ಅವನ್ನು ಕಂಟ್ರೋಲರ್‌ನ ಮ್ಯಾಪಿಂಗ್‌ಗಳ ವಿಭಾಗದಲ್ಲಿ ಮ್ಯಾಪ್ ಮಾಡಿ, ಅಥವಾ ಮ್ಯಾಕ್ರೋಗಳನ್ನು ಪ್ರಚೋದಿಸಲು ಬಳಸಿ.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>ಮೆನುವಿನ ಸ್ಥಾನ, ಗಾತ್ರ ಮತ್ತು ಅಪಾರದರ್ಶಕತೆಯನ್ನು ಮೆನುವಿನಲ್ಲೇ, ಕಂಟ್ರೋಲರ್‌ನ [ಮ್ಯಾಕ್ರೋಗಳು ಮತ್ತು ಮೆನುಗಳು] ವಿಭಾಗದಲ್ಲಿ ಹೊಂದಿಸಲಾಗುತ್ತದೆ.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>ಮೂಲಗಳು</value></data>
-  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack ಮತ್ತು ಅದರ UDP ಸ್ವರೂಪವನ್ನು ಕಳುಹಿಸುವ ಯಾವುದೇ ಪ್ರೋಗ್ರಾಂ</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack ಮತ್ತು ಅದರ UDP ಸ್ವರೂಪವನ್ನು ಕಳುಹಿಸುವ ಯಾವುದೇ ಪ್ರೋಗ್ರಾಂ.</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>ವ್ಯಾಪ್ತಿ</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>ಪ್ರತಿ ಅಕ್ಷದ ವ್ಯಾಪ್ತಿ. ಸೊನ್ನೆ ಮೇಲಿನ ವ್ಯಾಪ್ತಿಯನ್ನು ಅನುಸರಿಸುತ್ತದೆ.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge ಗೆ ತಿಳಿಯದ ಆಟಗಳು</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>ಕಳುಹಿಸುವ ಮೊದಲು ಚಾಲನೆಯಲ್ಲಿರುವ DSX ಅನ್ನು ಹುಡುಕುವ ಮಾಡ್‌ಗಳಿಗಾಗಿ</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>ಕಳುಹಿಸುವ ಮೊದಲು ಚಾಲನೆಯಲ್ಲಿರುವ DSX ಅನ್ನು ಹುಡುಕುವ ಮಾಡ್‌ಗಳಿಗಾಗಿ.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>ಏನು ತೋರಿಸುತ್ತದೆ</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ತೆರೆದಿರುವಾಗ ಮೆನುವಿನ ರಿಂಗ್, ಗ್ರಿಡ್ ಅಥವಾ ಬಾರ್</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ಶಿಫ್ಟ್ ಲೇಯರ್ ಆನ್ ಆದಾಗ, ಆ ಲೇಯರ್ ನಿಗದಿಪಡಿಸಿದ ಅವಧಿಗೆ ಲೇಯರ್‌ನ ಹೆಸರು</value></data>
@@ -679,7 +686,7 @@
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>ಆಟಗಳಿಂದ ಸಾಧನಗಳನ್ನು ಮರೆಮಾಡಿ, ಲಾಂಚ್‌ಗಳ ನಡುವೆ ಸಾಧನಗಳನ್ನು ಮರೆಮಾಡಿಯೇ ಇರಿಸಿ, ಅನುಮತಿಸಿದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳು</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>ಅನುಮತಿಸಿದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳು</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>ಈ ಅಪ್ಲಿಕೇಶನ್‌ಗಳಿಗೆ ಮರೆಮಾಡಿದ ಸಾಧನಗಳು ಇನ್ನೂ ಕಾಣುತ್ತವೆ. PadForge ಯಾವಾಗಲೂ ತಾನಾಗಿ ಅನುಮತಿಸಲ್ಪಟ್ಟಿರುತ್ತದೆ.</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>ಸೇರಿಸಿ...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>ಸೇರಿಸಿ…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>ನೀವು ರಚಿಸುವ ಮೊದಲ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ನೊಂದಿಗೆ PadForge ಈ ಡ್ರೈವರ್ ಅನ್ನು ಸ್ಥಾಪಿಸುತ್ತದೆ. ಅನ್‌ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡುವ ಮೊದಲು HIDMaestro ಈ PC ಯಲ್ಲಿ ಉಳಿಸಿದ್ದನ್ನು ಪಟ್ಟಿ ಮಾಡುತ್ತದೆ.</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ಗಳನ್ನು ರಚಿಸುತ್ತದೆ.</value></data>
@@ -698,6 +705,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>ಉಳಿಸಲಾಗಿದೆ</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>ಓದಿಲ್ಲ</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>ತೆಗೆದುಹಾಕಿಲ್ಲ</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>ಸಾಧನ</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>ಇಂಟರ್ಫೇಸ್ ನೋಂದಣಿ</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>ಹಂಚಿದ ರಿಜಿಸ್ಟ್ರಿ ಕೀ</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>ಹಂಚಿದ ರಿಜಿಸ್ಟ್ರಿ ಮೌಲ್ಯ</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>WinUSB ಬೈಂಡಿಂಗ್</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>OEM ಹೆಸರಿನ ಅತಿಕ್ರಮಣ</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>DeviceOverrides ಕೀ</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>OpenVR ನೋಂದಣಿ</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>ಡ್ರೈವರ್ ಪ್ಯಾಕೇಜ್</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>WUDF ಸರ್ವಿಸ್ ಕೀ</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>ರಿಜಿಸ್ಟ್ರಿ ಕೀ</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>ಪ್ರಮಾಣಪತ್ರ</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>ಫೋಲ್ಡರ್</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>ಸರ್ವಿಸ್ ಸೆಟ್ಟಿಂಗ್</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>ತೆಗೆದುಹಾಕುವ ಹಂತ</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 ಬ್ಲೂಟೂತ್</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>PlayStation 3 ಕಂಟ್ರೋಲರ್‌ಗಳು, PlayStation Move ಮತ್ತು Navigation ಕಂಟ್ರೋಲರ್ ಅನ್ನು ಬ್ಲೂಟೂತ್ ಮೂಲಕ ಸಂಪರ್ಕಿಸಲು ಅವಕಾಶ ನೀಡುತ್ತದೆ. PadForge ನಲ್ಲಿ ಅಳವಡಿಸಲಾಗಿದೆ. ಇವುಗಳಲ್ಲಿ ಒಂದನ್ನು ಮೊದಲ ಬಾರಿ ಜೋಡಿಸಿದಾಗ ಸ್ಥಾಪನೆಯಾಗುತ್ತದೆ.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>PlayStation 3 ಕಂಟ್ರೋಲರ್‌ಗಳನ್ನು ಬ್ಲೂಟೂತ್ ಮೂಲಕ ಸಂಪರ್ಕಿಸುತ್ತದೆ.</value></data>
@@ -889,11 +911,11 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>"{0}" ಟೈಪ್ ಮಾಡಿ</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(ಪಠ್ಯವಿಲ್ಲ)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>ಪಠ್ಯ</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>ಅಕ್ಷರ ವಿಳಂಬ (ms)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>ಅಕ್ಷರಗಳ ನಡುವಿನ ವಿಳಂಬ</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>ಟೈಪ್ ಮಾಡಿದ ಅಕ್ಷರಗಳ ನಡುವಿನ ಮಿಲಿಸೆಕೆಂಡ್‌ಗಳು, ಗರಿಷ್ಠ 1000. 0 ಇಡೀ ಪಠ್ಯವನ್ನು ಒಮ್ಮೆಗೇ ಟೈಪ್ ಮಾಡುತ್ತದೆ.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>ನಿಷ್ಕ್ರಿಯವಾದರೆ ಸಂಪರ್ಕ ಕಡಿತ</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>ವಿವರಗಳು</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>ನಿಮಿಷಗಳು (0 = ಎಂದಿಗೂ ಇಲ್ಲ)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>ನಿಮಿಷ</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB ಮೂಲಕ ಪ್ಲಗ್ ಮಾಡಿದಾಗ ಬ್ಲೂಟೂತ್ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>ಕ್ವಿಕ್ ಚಾರ್ಜ್. ಈ ಕಂಟ್ರೋಲರ್ ಬ್ಲೂಟೂತ್ ಮೂಲಕ ಸಂಪರ್ಕದಲ್ಲಿರುವಾಗ ಚಾರ್ಜ್ ಆಗುತ್ತಿದೆ ಎಂದು ವರದಿ ಮಾಡಿದರೆ, ರೇಡಿಯೊಗೆ ಶಕ್ತಿ ನೀಡದೆ ಚಾರ್ಜ್ ಆಗುವಂತೆ ಬ್ಲೂಟೂತ್ ಲಿಂಕ್ ಕಡಿತಗೊಳ್ಳುತ್ತದೆ. ವಾಲ್ ಚಾರ್ಜರ್‌ಗಳು ಸೇರಿದಂತೆ ಯಾವುದೇ USB ಪವರ್ ಮೂಲ ಪರಿಗಣಿಸಲ್ಪಡುತ್ತದೆ. ಕೇಬಲ್ ಹಾಗೆಯೇ ಇರುವಾಗ ನೀವು ಬ್ಲೂಟೂತ್ ಅನ್ನು ಮತ್ತೆ ಆನ್ ಮಾಡಿದರೆ, ಮುಂದಿನ ಅನ್‌ಪ್ಲಗ್‌ವರೆಗೆ ಅದನ್ನು ಮುಟ್ಟಲಾಗುವುದಿಲ್ಲ.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>iCade ಕಂಟ್ರೋಲರ್ ಆಗಿ ಓದು</value></data>
@@ -984,7 +1006,7 @@
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Wii Remote ಅನ್ನು ಗುರಿಯತ್ತ ತೋರಿಸಿ B ಒತ್ತಿ.</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Wii Remote ಗೆ ಸೆನ್ಸರ್ ಬಾರ್ ಕಾಣಿಸಲಿಲ್ಲ. ಅದನ್ನು ಗುರಿಯತ್ತ ತೋರಿಸಿ ಮತ್ತೆ B ಒತ್ತಿ.</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc ಅಥವಾ Home ರದ್ದುಮಾಡುತ್ತದೆ.</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>ಈ ಬ್ಲೂಟೂತ್ ಕಂಟ್ರೋಲರ್ ಇನ್‌ಪುಟ್ ಇಲ್ಲದೆ ಇಷ್ಟು ನಿಮಿಷಗಳ ನಂತರ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸುತ್ತದೆ, ಇದರಿಂದ ಅದು ನಿದ್ರಿಸಿ ಬ್ಯಾಟರಿ ಉಳಿಸುತ್ತದೆ. USB ಮೂಲಕ ಎಂದಿಗೂ ಜಾರಿಯಾಗುವುದಿಲ್ಲ.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>ಈ ಬ್ಲೂಟೂತ್ ಕಂಟ್ರೋಲರ್ ಇನ್‌ಪುಟ್ ಇಲ್ಲದೆ ಇಷ್ಟು ನಿಮಿಷಗಳ ನಂತರ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸುತ್ತದೆ, ಇದರಿಂದ ಅದು ನಿದ್ರಿಸಿ ಬ್ಯಾಟರಿ ಉಳಿಸುತ್ತದೆ. 0 ಇದನ್ನು ಆಫ್ ಮಾಡುತ್ತದೆ. USB ಮೂಲಕ ಎಂದಿಗೂ ಜಾರಿಯಾಗುವುದಿಲ್ಲ.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>ಪವರ್</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>ಮೆನು</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>
@@ -1073,11 +1095,15 @@
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>ಜೈರೋಸ್ಕೋಪ್</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>ಆಕ್ಸೆಲರೋಮೀಟರ್</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 ಅಕ್ಷ</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} ಅಕ್ಷಗಳು</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 ಬಟನ್</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} ಬಟನ್‌ಗಳು</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>ಅಕ್ಷ {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} ಅಕ್ಷಗಳು, {1} ಬಟನ್‌ಗಳು, {2} POV(ಗಳು)</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>ಕಂಪನ</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>ಜೈರೋ</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>ಆಕ್ಸೆಲ್</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>ಇದನ್ನು HID ಸಾಧನವಾಗಿ ತೆರೆಯುವ ಪ್ರೋಗ್ರಾಂಗಳಿಂದ ಈ ಸಾಧನವನ್ನು ಮರೆಮಾಡಲಾಗುವುದು</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows ನೀವು ಟೈಪ್ ಮಾಡುವ ಕೀಗಳನ್ನು ಓದುತ್ತಲೇ ಇರುತ್ತದೆ, ಆದ್ದರಿಂದ ಆಟಗಳೂ ಸೇರಿದಂತೆ ಪ್ರತಿಯೊಂದು ಪ್ರೋಗ್ರಾಂನಲ್ಲಿ ಟೈಪಿಂಗ್ ಕೆಲಸ ಮಾಡುತ್ತಲೇ ಇರುತ್ತದೆ. USB ಕೀಬೋರ್ಡ್ ಅನ್ನು “{0}” ಬಳಸಿ Windows ನಿಂದ ಬೇರ್ಪಡಿಸಬಹುದು.</value></data>
@@ -1242,7 +1268,7 @@
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>ಹೆಡ್‌ಸೆಟ್‌ಗಳು, ಮೌಸ್‌ಪ್ಯಾಡ್‌ಗಳು ಮತ್ತು ಸ್ಪೀಕರ್‌ಗಳು</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>ಹೆಡ್‌ಸೆಟ್‌ಗಳು</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>ಆಟಗಳು ಬೆಳಕನ್ನು ಬರೆದಾಗಲೆಲ್ಲಾ ನಿಯಂತ್ರಣ ತೆಗೆದುಕೊಳ್ಳುತ್ತವೆ.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>ಹೆಕ್ಸ್</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ಆರು-ಅಂಕಿಯ ಹೆಕ್ಸ್ ಬಣ್ಣ (RRGGBB ಅಥವಾ #RRGGBB) ನಮೂದಿಸಿ, ಅನ್ವಯಿಸಲು Enter ಒತ್ತಿ ಅಥವಾ ಹೊರಗೆ ಕ್ಲಿಕ್ ಮಾಡಿ.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>ಈ ಬಣ್ಣವನ್ನು ಪ್ಯಾಲೆಟ್‌ನಿಂದ ತೆಗೆದುಹಾಕಿ</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>ಆಫ್</value></data>
@@ -1356,7 +1382,8 @@
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>ಏನನ್ನೂ ಆಮದು ಮಾಡಿಲ್ಲ. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>ಆಮದು ಮಾಡಿ</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(ಹೆಸರಿಲ್ಲದ HID ಸಾಧನ)</value></data>
-  <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} HID ಇಂಟರ್ಫೇಸ್(ಗಳು) ಕಂಡುಬಂದವು.</value></data>
+  <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} HID ಇಂಟರ್ಫೇಸ್‌ಗಳು ಕಂಡುಬಂದವು.</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>1 HID ಇಂಟರ್ಫೇಸ್ ಕಂಡುಬಂದಿದೆ.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>ಎಣಿಕೆ ವಿಫಲವಾಯಿತು: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>ಹೊರತೆಗೆಯುವುದು ವಿಫಲವಾಯಿತು: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>ಹೊರತೆಗೆದ ಪ್ರೊಫೈಲ್ JSON ಅನ್ನು ಪಾರ್ಸ್ ಮಾಡಲಾಗಲಿಲ್ಲ. ಏನನ್ನೂ ಉಳಿಸಿಲ್ಲ.</value></data>
@@ -1469,7 +1496,7 @@
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>ಎಲ್ಲಾ ಮ್ಯಾಪಿಂಗ್‌ಗಳನ್ನು ಒಂದೊಂದಾಗಿ ಕ್ರಮವಾಗಿ ರೆಕಾರ್ಡ್ ಮಾಡಿ</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>ಎಲ್ಲಾ ಮ್ಯಾಪಿಂಗ್‌ಗಳು ಮತ್ತು ಸೆಟ್ಟಿಂಗ್ಸ್ ಅನ್ನು ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಿ</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ನಿಂದ ಮ್ಯಾಪಿಂಗ್‌ಗಳು ಮತ್ತು ಸೆಟ್ಟಿಂಗ್ಸ್ ಅಂಟಿಸಿ</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>ಇದರಿಂದ ನಕಲಿಸಿ...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>ಇದರಿಂದ ನಕಲಿಸಿ…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾದ ಇನ್ನೊಂದು ಸಾಧನದಿಂದ ಸೆಟ್ಟಿಂಗ್ಸ್ ನಕಲಿಸಿ</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>ಎಲ್ಲವನ್ನೂ ಮರುಹೊಂದಿಸಿ</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>ಎಲ್ಲವನ್ನೂ ತೆರವುಗೊಳಿಸಿ</value></data>
@@ -1655,7 +1682,7 @@
   <data name="Pad_More_Stick" xml:space="preserve"><value>ಕೇಂದ್ರ ಆಫ್‌ಸೆಟ್‌ಗಳು, ಡೆಡ್ ಜೋನ್ ಆಕಾರ ಮತ್ತು ಪ್ರತಿ ಅಕ್ಷದ ಮೌಲ್ಯಗಳು, ಪ್ರತಿ ಅಕ್ಷಕ್ಕೆ ವಕ್ರರೇಖೆ, ವ್ಯಾಪ್ತಿ, ಸ್ಟೀರಿಂಗ್</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>ಸಂಖ್ಯೆಗಳಲ್ಲಿ ವ್ಯಾಪ್ತಿ, ರಾ ಮೌಲ್ಯಗಳು</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>ವ್ಯಾಪ್ತಿ</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>ಮಾದರಿ ತೆಗೆದುಕೊಳ್ಳಲಾಗುತ್ತಿದೆ...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>ಮಾದರಿ ತೆಗೆದುಕೊಳ್ಳಲಾಗುತ್ತಿದೆ…</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>ಕೇಂದ್ರ ಆಫ್‌ಸೆಟ್ X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>ಕೇಂದ್ರ ಆಫ್‌ಸೆಟ್ Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>ಡೆಡ್ ಜೋನ್ ಆಕಾರ</value></data>
@@ -1766,6 +1793,7 @@
   <data name="Macro_DelayMs" xml:space="preserve"><value>ವಿಳಂಬ</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>ಸಂವೇದನಾಶೀಲತೆ</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>ಹೊಸ ಮ್ಯಾಕ್ರೋ</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>ಮ್ಯಾಕ್ರೋ {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>ಟ್ರಿಗರ್ ರೆಕಾರ್ಡ್ ಮಾಡಿ</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>ಹೊಂದಿಸಿಲ್ಲ. ರೆಕಾರ್ಡ್ ಕ್ಲಿಕ್ ಮಾಡಿ.</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>ಬಟನ್ {0}</value></data>
@@ -1824,6 +1852,8 @@
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>ಮ್ಯಾಕ್ರೋದಿಂದ ಸ್ಲಾಟ್‌ನ ಭೌತಿಕ ಸಾಧನದ ಕಂಪನವನ್ನು ನಡೆಸುತ್ತದೆ. ರಿಯಾಕ್ಟಿವ್ ಹಿಡಿತ ಅವಧಿಯವರೆಗೆ ಪೂರ್ಣ ಬಲದಲ್ಲಿ ನಡೆದು ನಂತರ ಮಸುಕು ಅವಧಿಯಲ್ಲಿ ಸೊನ್ನೆಗೆ ಇಳಿಯುತ್ತದೆ. ಸ್ಟಿಕಿ 'ಕಂಪನ ನಿಲ್ಲಿಸಿ' ಕ್ರಿಯೆ ನಡೆಯುವವರೆಗೆ ಪೂರ್ಣ ಬಲದಲ್ಲಿ ಇರುತ್ತದೆ. max() ಮೂಲಕ ಆಟ ನಡೆಸುವ ಕಂಪನದ ಮೇಲೆ ಸೇರುತ್ತದೆ, ಆದ್ದರಿಂದ ಬಳಕೆದಾರ ನಡೆಸುವ ಪ್ರತಿಕ್ರಿಯೆ ಯಾವಾಗಲೂ ಅನುಭವಕ್ಕೆ ಬರುತ್ತದೆ.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>ಕಂಪನ {0} ಮಿಡಿತ ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>ತೆರವುಗೊಳಿಸುವವರೆಗೆ ಕಂಪನ {0} ಹಿಡಿದಿಡಿ</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>ಎಡ {0}%, ಬಲ {1}%</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>ಎಡ ಟ್ರಿಗರ್ {0}%, ಬಲ ಟ್ರಿಗರ್ {1}%</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>ಕಂಪನ ನಿಲ್ಲಿಸಿ</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>ಕಂಪನ ನಿಲ್ಲಿಸಿ</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>ನಿಯೋಜಿತ ಸ್ಲಾಟ್‌ನಲ್ಲಿರುವ ಯಾವುದೇ ಸಕ್ರಿಯ ಕಂಪನ ಅತಿಕ್ರಮಣವನ್ನು ಬಿಡುಗಡೆ ಮಾಡುತ್ತದೆ. ಇನ್ನೊಂದು ಮ್ಯಾಕ್ರೋ ಮೂಲಕ ಹಿಡಿತವನ್ನು ರದ್ದುಗೊಳಿಸಲು ಸ್ಟಿಕಿ ಕಂಪನ ಕ್ರಿಯೆಯೊಂದಿಗೆ ಜೋಡಿಸಿ.</value></data>
@@ -1862,7 +1892,7 @@
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>ಮೌಸ್ Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>ಅಂತರ</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>ಪರದೆಯಲ್ಲಿ ಆರಿಸಿ</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>{0} ರಲ್ಲಿ ಸೆರೆಹಿಡಿಯಲಾಗುತ್ತದೆ...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>{0} ರಲ್ಲಿ ಸೆರೆಹಿಡಿಯಲಾಗುತ್ತದೆ…</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>ಕ್ಲಿಕ್ ಮಾಡಿ, ನಂತರ ಕರ್ಸರ್ ಅನ್ನು ಗುರಿಯ ಮೇಲೆ ಸರಿಸಿ. ಸ್ವಲ್ಪ ಕೌಂಟ್‌ಡೌನ್ ನಂತರ ಅದರ ಸ್ಥಾನವನ್ನು ಸೆರೆಹಿಡಿಯಲಾಗುತ್ತದೆ.</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>ಮೋಡ್</value></data>
   <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>ಇನ್‌ಸೆಟ್ X</value></data>
@@ -1889,9 +1919,9 @@
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>ಮ್ಯಾಪ್ ಮಾಡಿಲ್ಲ</value></data>
-  <data name="Mapping_Inv" xml:space="preserve"><value>ವಿಲೋ.</value></data>
+  <data name="Mapping_Inv" xml:space="preserve"><value>ವಿಲೋಮ</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>ಅರ್ಧ</value></data>
-  <data name="Mapping_InvHalf" xml:space="preserve"><value>ವಿಲೋ. ಅರ್ಧ</value></data>
+  <data name="Mapping_InvHalf" xml:space="preserve"><value>ವಿಲೋಮ ಅರ್ಧ</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>ಯಾವುದೇ ಸಾಧನ ಮ್ಯಾಪ್ ಆಗಿಲ್ಲ</value></data>
 
@@ -2533,9 +2563,9 @@
   <data name="Profiles_DropToImport" xml:space="preserve"><value>ಪ್ರೊಫೈಲ್ ಆಮದು ಮಾಡಲು ಬಿಡಿ</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>ಇಲ್ಲಿ ಪ್ರೊಫೈಲ್ ಫೈಲ್ ಬಿಡಿ</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>ಹೊಸ ಪ್ರೊಫೈಲ್</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>ಹೀಗೆ ಉಳಿಸು</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>ಹೀಗೆ ಉಳಿಸು…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>ಪ್ರಸ್ತುತ ಸೆಟಪ್ ಅನ್ನು ಇಲ್ಲಿ ಉಳಿಸಿ</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>ಸಂಪಾದಿಸು</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>ಸಂಪಾದಿಸು…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>ಲೋಡ್ ಮಾಡು</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>ಅಂತರ್ನಿರ್ಮಿತ</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>ಆಟ ಹೊಂದಿಸಿಲ್ಲ</value></data>
@@ -2638,8 +2668,8 @@
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>ಕೇಂದ್ರ ಆಫ್‌ಸೆಟ್ X ಅನ್ನು ಮರುಹೊಂದಿಸು</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>ಗಡಿಯನ್ನು ಕ್ಯಾಲಿಬ್ರೇಟ್ ಮಾಡಿ</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>ಗಡಿಯನ್ನು ಮರು-ಕ್ಯಾಲಿಬ್ರೇಟ್ ಮಾಡಿ</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>ಅಂಚನ್ನು ಸುತ್ತಿಸಿ... {0} ಉಳಿದಿದೆ</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>ಒಳಗೊಂಡಿದೆ. ಪರಿಷ್ಕರಿಸಲು ಇನ್ನೊಂದು ಸುತ್ತು...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>ಅಂಚನ್ನು ಸುತ್ತಿಸಿ… {0} ಉಳಿದಿದೆ</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>ಒಳಗೊಂಡಿದೆ. ಪರಿಷ್ಕರಿಸಲು ಇನ್ನೊಂದು ಸುತ್ತು…</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>ವೃತ್ತಾಕಾರತೆ {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>ತಲುಪಬಹುದಾದ ಗಡಿಯನ್ನು ಗುರುತಿಸಲು ಸ್ಟಿಕ್ ಅನ್ನು ಅದರ ಅಂಚಿನ ಸುತ್ತ ತಿರುಗಿಸಿ, ನಂತರ ಅದನ್ನು ಪೂರ್ಣ ವೃತ್ತಕ್ಕೆ ಮರುರೂಪಿಸಿ.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>ಗಡಿ ಕ್ಯಾಲಿಬ್ರೇಶನ್ ಅನ್ನು ಮರುಹೊಂದಿಸು</value></data>
@@ -2718,7 +2748,7 @@
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Windows ವಾಲ್ಯೂಮ್ ಮಿಕ್ಸರ್‌ನಲ್ಲಿ ಒಂದು ನಿರ್ದಿಷ್ಟ ಅಪ್ಲಿಕೇಶನ್‌ನ ವಾಲ್ಯೂಮ್ ಅನ್ನು ನಿಯಂತ್ರಿಸುತ್ತದೆ, ವಾಲ್ಯೂಮ್ ಮಿತಿಗೆ ಅನುಗುಣವಾಗಿ ಮಾಪಿಸಲಾಗುತ್ತದೆ. ಪ್ರಕ್ರಿಯೆಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ (ಟಾಸ್ಕ್ ಮ್ಯಾನೇಜರ್‌ನಲ್ಲಿ ಕಾಣುತ್ತದೆ). "ಯಾವಾಗಲೂ" ಟ್ರಿಗರ್‌ನೊಂದಿಗೆ ಬಳಸಿ, ಅಥವಾ "ಹಿಡಿದಿರುವಾಗ" + "ಬಿಡುಗಡೆಯವರೆಗೆ" ಜೊತೆ ಬಟನ್/ಅಕ್ಷ ಟ್ರಿಗರ್‌ನೊಂದಿಗೆ ಬಳಸಿ.</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>ಆಯ್ಕೆ ಮಾಡಿದ ಅಕ್ಷವನ್ನು ಮೌಸ್ ಚಲನೆಗೆ (ಅಥವಾ ಸ್ಕ್ರಾಲ್‌ಗೆ) ನಿರಂತರವಾಗಿ ಮ್ಯಾಪ್ ಮಾಡುತ್ತದೆ. "ಯಾವಾಗಲೂ" ಟ್ರಿಗರ್‌ನೊಂದಿಗೆ ಬಳಸಿ, ಅಥವಾ "ಹಿಡಿದಿರುವಾಗ" + "ಬಿಡುಗಡೆಯವರೆಗೆ" ಜೊತೆ ಬಟನ್/ಅಕ್ಷ ಟ್ರಿಗರ್‌ನೊಂದಿಗೆ ಬಳಸಿ. ಸ್ಟಿಕ್‌ನಿಂದ ಮೌಸ್‌ಗೆ, ಎರಡು ಕ್ರಿಯೆಗಳನ್ನು ರಚಿಸಿ: ಒಂದು X ಅಕ್ಷಕ್ಕೆ, ಒಂದು Y ಅಕ್ಷಕ್ಕೆ.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>ಅಕ್ಷವನ್ನು ವಿಲೋಮಗೊಳಿಸು</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>ವಾಲ್ಯೂಮ್ OSD ತೋರಿಸು</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>ವಾಲ್ಯೂಮ್ ಸೂಚಕ ತೋರಿಸು</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>ದಿಕ್ಕು</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>ಯಾವುದೇ</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>ಧನಾತ್ಮಕ</value></data>
@@ -2932,7 +2962,7 @@
   <data name="Preview_CCOutputs" xml:space="preserve"><value>CC ಔಟ್‌ಪುಟ್‌ಗಳು</value></data>
   <data name="Preview_NoteOutputs" xml:space="preserve"><value>ನೋಟ್ ಔಟ್‌ಪುಟ್‌ಗಳು</value></data>
   <data name="Preview_Stick_Format" xml:space="preserve"><value>ಸ್ಟಿಕ್ {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>ಟ್ರಿಗರ್ {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>ಡಿ-ಪ್ಯಾಡ್</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>ಬಟನ್‌ಗಳು</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -2949,7 +2979,6 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>ಮಟ್ಟ</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>ನಿಷ್ಕ್ರಿಯತೆ ಸಮಯ ಮಿತಿ</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್‌ನ ಮ್ಯಾಪ್ ಮಾಡಿದ ಎಲ್ಲಾ ಸಾಧನಗಳು ಆಫ್‌ಲೈನ್ ಆದಾಗ, ಅದನ್ನು ನಾಶಪಡಿಸುವ ಮೊದಲಿನ ಸೆಕೆಂಡುಗಳು. 0 ನಿಷ್ಕ್ರಿಯಗೊಳಿಸುತ್ತದೆ. ಉಳಿದ ಅದೇ ಪ್ರಕಾರದ ಕಂಟ್ರೋಲರ್‌ಗಳು ಅಂತರವನ್ನು ತುಂಬಲು ಮೇಲಕ್ಕೆ ಸರಿದು ಕೆಳಗಿನ ಸ್ಲಾಟ್‌ಗಳಿಗೆ ಮರು-ಬೈಂಡ್ ಆಗುತ್ತವೆ.</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>ಸೆಕೆಂಡುಗಳು (0 = ಎಂದಿಗೂ ಇಲ್ಲ)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>ಲೇಯರ್ ಸೇರಿಸಿ</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>ಶಿಫ್ಟ್ ಲೇಯರ್ ಸೇರಿಸಿ. ಬಟನ್ ಹಿಡಿದಿರುವಾಗ ಅಥವಾ ಟಾಗಲ್ ಮಾಡಿದಾಗ ಸಕ್ರಿಯವಾಗುವ ಎರಡನೇ ಮ್ಯಾಪಿಂಗ್ ಪಟ್ಟಿ.</value></data>
@@ -3725,7 +3754,7 @@
     <value>ವಿಳಂಬವನ್ನು 0 ಗೆ ಮರುಹೊಂದಿಸಿ (ಲೇಯರ್ ತಕ್ಷಣ ಪ್ರತಿಕ್ರಿಯಿಸುತ್ತದೆ).</value>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>ಸಮುದಾಯ ಕಾನ್ಫಿಗ್‌ಗಳು</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>ಸಮುದಾಯ ರಚಿಸಿದ Steam Input ಕಂಟ್ರೋಲರ್ ಕಾನ್ಫಿಗರೇಶನ್‌ಗಳನ್ನು ಬ್ರೌಸ್ ಮಾಡಿ ಮತ್ತು PadForge ಪ್ರೊಫೈಲ್‌ಗಳಾಗಿ ಅನುವಾದಿಸಿ. ನೀವು ಹುಡುಕಿದಾಗ, ಕಾನ್ಫಿಗ್ ತೆರೆದಾಗ ಅಥವಾ ಆಮದು ಮಾಡಿದ ಕಾನ್ಫಿಗ್‌ಗಳ ನವೀಕರಣಗಳನ್ನು ಪರಿಶೀಲಿಸಿದಾಗ ಮಾತ್ರ PadForge ನೇರವಾಗಿ Steam ಸರ್ವರ್‌ಗಳಿಗೆ ಸಂಪರ್ಕಿಸುತ್ತದೆ. ಅದು ನಿಮ್ಮ ಹುಡುಕಾಟ ಪಠ್ಯ, ಸಂಬಂಧಿತ ಆಟಗಳು, ಕಾನ್ಫಿಗ್‌ಗಳು ಮತ್ತು ರಚನಾಕಾರರ ಐಡಿಗಳು, ಮತ್ತು PadForge ಆವೃತ್ತಿಯನ್ನು ಕಳುಹಿಸುತ್ತದೆ. ಅನಾಮಧೇಯ Steam ಲಾಗಿನ್ ನಿಮ್ಮ Windows ಆವೃತ್ತಿಯನ್ನು ಮತ್ತು ನಿಮ್ಮ Windows ಇನ್‌ಸ್ಟಾಲೇಶನ್ ಐಡಿ, ನೆಟ್‌ವರ್ಕ್ ಅಡಾಪ್ಟರ್ ವಿಳಾಸಗಳು ಮತ್ತು ಬೂಟ್ ಡಿಸ್ಕ್ ಸರಣಿ ಸಂಖ್ಯೆಯ ಹ್ಯಾಶ್‌ಗಳಿಂದ ಮಾಡಿದ ಯಂತ್ರ ಐಡಿಯನ್ನೂ ಕಳುಹಿಸುತ್ತದೆ. ಟೆಲಿಮೆಟ್ರಿ ಇಲ್ಲ, ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಸೇವೆ ಇಲ್ಲ, Steam ಖಾತೆ ಇಲ್ಲ.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>ಸಮುದಾಯ ರಚಿಸಿದ Steam Input ಕಂಟ್ರೋಲರ್ ಕಾನ್ಫಿಗರೇಶನ್‌ಗಳನ್ನು ಬ್ರೌಸ್ ಮಾಡಿ ಮತ್ತು PadForge ಪ್ರೊಫೈಲ್‌ಗಳಾಗಿ ಅನುವಾದಿಸಿ. PadForge ನಿಮ್ಮ ಹುಡುಕಾಟ ಪಠ್ಯ, ಸಂಬಂಧಿತ ಆಟಗಳು, ಕಾನ್ಫಿಗ್‌ಗಳು ಮತ್ತು ರಚನಾಕಾರರ ID ಗಳು ಹಾಗೂ ತನ್ನ ಆವೃತ್ತಿಯನ್ನು ಕಳುಹಿಸುತ್ತದೆ. ಅನಾಮಧೇಯ Steam ಲಾಗಿನ್ ನಿಮ್ಮ Windows ಆವೃತ್ತಿಯನ್ನು ಮತ್ತು ನಿಮ್ಮ Windows ಇನ್‌ಸ್ಟಾಲೇಶನ್ ID, ನೆಟ್‌ವರ್ಕ್ ಅಡಾಪ್ಟರ್ ವಿಳಾಸಗಳು ಮತ್ತು ಬೂಟ್ ಡಿಸ್ಕ್ ಸರಣಿ ಸಂಖ್ಯೆಯ ಹ್ಯಾಶ್‌ಗಳಿಂದ ಮಾಡಿದ ಯಂತ್ರ ID ಯನ್ನೂ ಕಳುಹಿಸುತ್ತದೆ. ಯಾವುದೇ ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಸೇವೆ ಒಳಗೊಂಡಿಲ್ಲ.</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge ನೀವು ಹುಡುಕಿದಾಗ, ಕಾನ್ಫಿಗ್ ತೆರೆದಾಗ ಅಥವಾ ಆಮದು ಮಾಡಿದ ಕಾನ್ಫಿಗ್‌ಗಳ ನವೀಕರಣ ಪರಿಶೀಲಿಸಿದಾಗ ಮಾತ್ರ Steam ಸರ್ವರ್‌ಗಳಿಗೆ ಸಂಪರ್ಕಿಸುತ್ತದೆ. ಟೆಲಿಮೆಟ್ರಿ ಇಲ್ಲ, Steam ಖಾತೆ ಇಲ್ಲ.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>ಏನು ಕಳುಹಿಸಲಾಗುತ್ತದೆ</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>ಸಮುದಾಯ ಕಾನ್ಫಿಗ್‌ಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</value></data>
@@ -3782,6 +3811,9 @@
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>ಈ ಕಾನ್ಫಿಗ್‌ಗೆ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು Steam ಯಾವುದೇ ಫೈಲ್ ಪಟ್ಟಿ ಮಾಡಿಲ್ಲ, ಮತ್ತು ನಿಮ್ಮ Steam ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ಅದರ ಯಾವುದೇ ಪ್ರತಿ ಇಲ್ಲ. Steam ನಲ್ಲಿ ಇದಕ್ಕೆ ಚಂದಾದಾರರಾಗಿ, PadForge ಅದನ್ನು ಅಲ್ಲಿಂದ ಓದುತ್ತದೆ.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam Workshop ನಲ್ಲಿ ತೆರೆಯಿರಿ</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>ಹಳೆಯದು</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop ಪ್ರೊಫೈಲ್</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop ಮ್ಯಾಕ್ರೋ</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>ಕರ್ಸರ್ ಪ್ರದೇಶ</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>ಏನೆಲ್ಲ ಬರುತ್ತದೆ ಎಂದು ನೋಡಲು ಕಾನ್ಫಿಗ್ ಆರಿಸಿ.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>ಏನೆಲ್ಲ ಬರುತ್ತದೆ</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>ಆಗುವುದು</value></data>
@@ -4157,6 +4189,7 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>ಮಧ್ಯಮ (ಸುಲಭ)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>ಹೆಚ್ಚು (ಸುಲಭ)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>ಕಸ್ಟಮ್</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b ಡೀಫಾಲ್ಟ್</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>ಕಟ್‌ಆಫ್</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>ಕ್ರಾಸ್‌ಓವರ್ ಆವರ್ತನ. ಇದರ ಕೆಳಗೆ ಚಾನಲ್‌ಗಳು ಮೊನೊ ಕಡೆಗೆ ಬೆರೆಯುತ್ತವೆ, ಮೇಲೆ ಪ್ರತ್ಯೇಕವಾಗಿರುತ್ತವೆ, ಆದ್ದರಿಂದ ಕಡಿಮೆ ಕಟ್‌ಆಫ್ ಕಡಿಮೆ ಕ್ರಾಸ್‌ಫೀಡ್ ಮಾಡುತ್ತದೆ.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>ಫೀಡ್</value></data>
@@ -4184,7 +4217,8 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>ತೆರವುಗೊಳಿಸು</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ನಿಂದ ಆಮದು ಮಾಡಿ</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>ನಿಮ್ಮ ಹೆಡ್‌ಫೋನ್‌ಗಳ AutoEq ಪ್ರೊಫೈಲ್ ನಕಲಿಸಿ, ನಂತರ ಕ್ಲಿಕ್ ಮಾಡಿ. ಬ್ಯಾಂಡ್‌ಗಳನ್ನು ಬದಲಾಯಿಸಿ ಪ್ರೀಆಂಪ್ ಹೊಂದಿಸುತ್ತದೆ. ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ನಲ್ಲಿ ಓದಬಹುದಾದ ಏನೂ ಇಲ್ಲದಿದ್ದರೆ ಪ್ರಸ್ತುತ EQ ಹಾಗೆಯೇ ಉಳಿಯುತ್ತದೆ.</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>ಫೈಲ್‌ನಿಂದ ಆಮದು ಮಾಡಿ</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>ಫೈಲ್‌ನಿಂದ ಆಮದು ಮಾಡಿ…</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>ಪ್ಯಾರಾಮೆಟ್ರಿಕ್ EQ ಆಮದು ಮಾಡಿ</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>AutoEq ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ .txt ಆರಿಸಿ. ಇದನ್ನೇ ಬಳಸಿ: autoeq.app ನಕಲಿಸಬಹುದಾದ ಪಠ್ಯದ ಬದಲು ಫೈಲ್ ನೀಡುತ್ತದೆ.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>ನಿಮ್ಮ ಹೆಡ್‌ಫೋನ್‌ಗಳಿಗೆ ಹೊಂದುವ ತಿದ್ದುಪಡಿಗಾಗಿ: autoeq.app ತೆರೆಯಿರಿ, ನಿಮ್ಮ ಮಾದರಿಯನ್ನು ಆರಿಸಿ, Custom Parametric Eq ಆರಿಸಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ, ನಂತರ ಫೈಲ್‌ನಿಂದ ಆಮದು ಮಾಡಿ. Graphic Eq ಡೌನ್‌ಲೋಡ್‌ನಲ್ಲಿ ಫಿಲ್ಟರ್ ಸಾಲುಗಳಿಲ್ಲ, ಅದು ಆಮದಾಗುವುದಿಲ್ಲ.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{2} ನಿಂದ {1:0.#} dB ಪ್ರೀಆಂಪ್‌ನೊಂದಿಗೆ {0} ಬ್ಯಾಂಡ್‌ಗಳನ್ನು ಆಮದು ಮಾಡಲಾಗಿದೆ.</value></data>
@@ -4237,6 +4271,7 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>ಈ ನೆಟ್‌ವರ್ಕ್ ನೇರ ಸಂಪರ್ಕ ಮಾಡಲಾಗದು (ಇದು ಮೊಬೈಲ್ ಹಾಟ್‌ಸ್ಪಾಟ್ ಅಥವಾ ಕ್ಯಾರಿಯರ್-ಗ್ರೇಡ್ NAT ಎಂದು ತೋರುತ್ತದೆ). Tailscale ನಂತಹ VPN ಬಳಸಿ, ಅಥವಾ ಮನೆಯ ಬ್ರಾಡ್‌ಬ್ಯಾಂಡ್‌ನಿಂದ ಸಂಪರ್ಕಿಸಿ.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>ಈ PC ಯ ಸಾರ್ವಜನಿಕ ವಿಳಾಸ ಸಿಗಲಿಲ್ಲ (ನೆಟ್‌ವರ್ಕ್ ಬೇಕಾದ ಟ್ರಾಫಿಕ್ ತಡೆಯುತ್ತಿರಬಹುದು). ನೇರ ಸಂಪರ್ಕಗಳು ಇಲ್ಲಿ ಕೆಲಸ ಮಾಡುವುದಿಲ್ಲ. VPN ಬಳಸಿ, ಅಥವಾ ಅದೇ ನೆಟ್‌ವರ್ಕ್‌ನಲ್ಲಿ ವಿಳಾಸದ ಮೂಲಕ ಸಂಪರ್ಕಿಸಿ.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್ ಬ್ಯಾಟರಿ ಕಡಿಮೆ</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% ಬ್ಯಾಟರಿ ಉಳಿದಿದೆ</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>ಬ್ಯಾಟರಿ ಎಚ್ಚರಿಕೆಗಳು</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್‌ನ ಬ್ಯಾಟರಿ ಕಡಿಮೆಯಾದಾಗ, ಆಟದ ಮಧ್ಯದಲ್ಲಿ ಆರುವ ಮೊದಲೇ ಸೂಚನೆ ಪಡೆಯಿರಿ.</value></data>
@@ -4447,7 +4482,7 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
     <value>ಇನ್ನೊಂದು PC ಯಲ್ಲಿ ವರ್ಚುವಲ್ ಕಂಟ್ರೋಲರ್ ರಚಿಸಿ, ನಂತರ ರಿಫ್ರೆಶ್ ಮಾಡಿ.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>ಇನ್ನೊಂದು PC ಗಾಗಿ ಕಾಯಲಾಗುತ್ತಿದೆ...</value>
+    <value>ಇನ್ನೊಂದು PC ಗಾಗಿ ಕಾಯಲಾಗುತ್ತಿದೆ…</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>ಡ್ರಾಯಿಂಗ್ ಟ್ಯಾಬ್ಲೆಟ್</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>ಹಂಚಿದ ಇನ್‌ಪುಟ್</value></data>
@@ -4506,7 +4541,7 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>SteamVR ಸ್ಥಾಪನೆ ಸ್ಥಳ ಪೂರ್ಣ ಮಾರ್ಗವಾಗಿರಬೇಕು, ಉದಾಹರಣೆಗೆ C:\SteamVR.</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>SteamVR ಸ್ಥಾಪನೆ ಸ್ಥಳ ಡ್ರೈವ್ ರೂಟ್ ಆಗಿರಬಾರದು. ಫೋಲ್ಡರ್ ಆರಿಸಿ, ಉದಾಹರಣೆಗೆ C:\SteamVR.</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd 60 ನಿಮಿಷಗಳಲ್ಲಿ ಮುಗಿಯಲಿಲ್ಲ.</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd ಚಾಲನೆಯಾಯಿತು, ಆದರೆ SteamVR {0} ನಲ್ಲಿ ಇಳಿಯಲಿಲ್ಲ. steamcmd ಹೇಳಿದ್ದು: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd ಚಾಲನೆಯಾಯಿತು, ಆದರೆ SteamVR {0} ನಲ್ಲಿ ಇಳಿಯಲಿಲ್ಲ. steamcmd ಹೇಳಿದ್ದು: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>HidHide ಸ್ಥಾಪಿತವಾಯಿತು, ಆದರೆ ಅದರ ನಿಯಂತ್ರಣ ಸಾಧನ ತೆರೆಯಲಿಲ್ಲ, ಆದ್ದರಿಂದ ಯಾವುದೇ ವರ್ಗ ಫಿಲ್ಟರ್ ಸೇರಿಸಲಾಗಿಲ್ಲ.</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>HidHide ಇನ್ನೂ ವರ್ಗ ಫಿಲ್ಟರ್ ಆಗಿ ಪಟ್ಟಿಯಲ್ಲಿದೆ, ಆದ್ದರಿಂದ ಡ್ರೈವರ್ ಅನ್ನು ಹಾಗೆಯೇ ಬಿಡಲಾಯಿತು.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>ಹಳೆಯ ಡ್ರೈವರ್‌ಗಳನ್ನು ತೆಗೆದುಹಾಕಲಾಗುತ್ತಿದೆ…</value></data>
@@ -4955,6 +4990,8 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>ಬ್ಯಾಟರಿ</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>ಪಥ</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>ಸರಣಿ ಸಂಖ್ಯೆ</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>ಆ್ಯಪ್ GUID</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>ಫರ್ಮ್‌ವೇರ್</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>ಪರಿಷ್ಕರಣೆ</value></data>
   <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>ಕಂಟ್ರೋಲರ್ ಅನ್ನು ಸಹ ಕಂಪಿಸು, ಸೂಚನೆಯನ್ನು ಪುನರಾವರ್ತಿಸುವ ಅಂತರ, ಪೂರ್ಣ ಚಾರ್ಜ್ ಆದಾಗ ತಿಳಿಸು</value></data>
@@ -4966,4 +5003,8 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>ಪಾಸ್‌ವರ್ಡ್</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>ಭೂತಗನ್ನಡಿ (ಹಿಡಿದಿರುವಾಗ)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>ಈ ಮ್ಯಾಕ್ರೋ ಹಿಡಿದಿರುವಾಗ ಭೂತಗನ್ನಡಿಯನ್ನು ತೋರಿಸುತ್ತದೆ, ಸೈಟ್‌ಗಳ ಮೂಲಕ ಗುರಿ ಇಡಲು. ಭೂತಗನ್ನಡಿ ಪುಟದಲ್ಲಿ ಅದನ್ನು ಹೊಂದಿಸಿ.</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>ವಕ್ರರೇಖೆ</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>ಶಿಫ್ಟ್ ಲೇಯರ್‌ಗಳು</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>ವಿಲೋಮ</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>ಗರಿಷ್ಠ</value></data>
 </root>

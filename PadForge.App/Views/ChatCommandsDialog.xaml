@@ -66,8 +66,7 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding Display}" VerticalAlignment="Center" Margin="0,0,12,0"
-                                           FontFamily="{DynamicResource TelemetryFontFamily}"/>
+                                <TextBlock Text="{Binding Display}" VerticalAlignment="Center" Margin="0,0,12,0"/>
                                 <Button Grid.Column="1" Style="{StaticResource DialogSmallQuietButton}"
                                         Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"
                                         Click="RemoveButton_Click" Tag="{Binding Word}"/>

@@ -4850,7 +4850,12 @@ namespace PadForge.ViewModels
             PadForge.Services.SwitchProfileMode.Previous => Strings.Instance.Profiles_ShortcutMode_Previous,
             PadForge.Services.SwitchProfileMode.ToggleWindow => Strings.Instance.Profiles_ShortcutMode_ToggleWindow,
             PadForge.Services.SwitchProfileMode.ToggleVCsDisabled => Strings.Instance.Profiles_ShortcutMode_ToggleVCsDisabled,
-            _ => string.Format(Strings.Instance.MacroAction_ProfileShortcut_Format, _profileShortcutName),
+            // A step that names no profile switches nothing
+            // (InputManager.RunProfileShortcutAction), so it reads as the step
+            // alone, as a Play Sound step with no file does.
+            _ => string.IsNullOrWhiteSpace(_profileShortcutName)
+                ? Strings.Instance.MacroAction_Type_ProfileShortcut
+                : string.Format(Strings.Instance.MacroAction_ProfileShortcut_Format, _profileShortcutName),
         };
 
         // ── Run program (for MacroActionType.RunProgram, user request) ──
@@ -6678,21 +6683,22 @@ namespace PadForge.ViewModels
 
         private string FormatRumbleSummary()
         {
-            // "L100/R100" style motor descriptor — concise and reads
-            // identically across locales without needing translation.
-            string motors = $"L{_rumbleStrengthLeft}/R{_rumbleStrengthRight}";
+            // The two motors in words, "left 100%, right 100%".
+            string motors = string.Format(System.Globalization.CultureInfo.CurrentCulture,
+                Strings.Instance.MacroAction_Rumble_Motors_Format, _rumbleStrengthLeft, _rumbleStrengthRight);
             return _rumbleHoldMode == MacroRumbleHoldMode.Sticky
                 ? string.Format(Strings.Instance.MacroAction_Rumble_Sticky_Format, motors)
                 : string.Format(Strings.Instance.MacroAction_Rumble_Reactive_Format, motors, _rumbleHoldMs + _rumbleFadeMs);
         }
 
         /// <summary>Trigger-channel sibling of <see cref="FormatRumbleSummary"/>
-        /// (issue #102). Uses LT / RT trigger codes so the list row reads
-        /// distinctly from a main-motor Rumble action, reusing the same hold-mode
-        /// format strings (no separate translation needed).</summary>
+        /// (issue #102). Names the triggers, so the list row reads distinctly
+        /// from a main-motor Rumble action, and reuses the same hold-mode
+        /// format strings.</summary>
         private string FormatRumbleTriggerSummary()
         {
-            string triggers = $"LT{_rumbleStrengthLeft}/RT{_rumbleStrengthRight}";
+            string triggers = string.Format(System.Globalization.CultureInfo.CurrentCulture,
+                Strings.Instance.MacroAction_Rumble_Triggers_Format, _rumbleStrengthLeft, _rumbleStrengthRight);
             return _rumbleHoldMode == MacroRumbleHoldMode.Sticky
                 ? string.Format(Strings.Instance.MacroAction_Rumble_Sticky_Format, triggers)
                 : string.Format(Strings.Instance.MacroAction_Rumble_Reactive_Format, triggers, _rumbleHoldMs + _rumbleFadeMs);

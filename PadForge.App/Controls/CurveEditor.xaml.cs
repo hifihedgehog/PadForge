@@ -240,15 +240,15 @@ namespace PadForge.Controls
             // Keep the live dot above the handle ellipses DrawControlPoints appends later.
             Panel.SetZIndex(_liveDot, 10);
 
-            // Drag coordinate readout (full-width mode only): mono chip that
-            // rides beside the grabbed node while dragging. Value-driven,
-            // no animation, hidden except during a drag.
+            // Drag coordinate readout (full-width mode only): a chip that
+            // rides beside the grabbed node while dragging, in the body
+            // face at the 12 of a label, with tabular figures so the chip
+            // keeps its width as the numbers change. Value-driven, no
+            // animation, hidden except during a drag.
             if (IsFullWidth)
             {
-                _dragReadout.FontFamily = TryFindResource("TelemetryFontFamily") as FontFamily
-                    ?? Application.Current?.TryFindResource("TelemetryFontFamily") as FontFamily
-                    ?? new FontFamily("Consolas");
-                _dragReadout.FontSize = 10;
+                TextFaces.Numbers(_dragReadout);
+                _dragReadout.FontSize = 12;
                 _dragReadout.Foreground = EmberHotBrush;
                 _dragReadout.Background = ReadoutBackBrush;
                 _dragReadout.Padding = new Thickness(4, 1, 4, 1);

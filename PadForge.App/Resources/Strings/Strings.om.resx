@@ -91,10 +91,11 @@
   <data name="Common_Stop" xml:space="preserve"><value>Dhaabi</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Jalqabi</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Galmeessi</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>Galmeessaa jira...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Galmeessaa jira…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Qulqulleessi</value></data>
   <data name="Common_None" xml:space="preserve"><value>Homaa</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>sekondii</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Hin ramadamne</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -107,7 +108,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge cufaa jira...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge cufaa jira…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge jalqabaa jira…</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Kontirolaa ida'i</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Kontirolaa ida'i</value></data>
@@ -159,8 +160,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ gadi)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← bitaa)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ ol)</value></data>
-  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll HIN ARGAMNE</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll hin argamne! SDL3.dll PadForge.exe cinaa kaa'i. https://github.com/libsdl-org/SDL/releases irraa buufadhu</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll hin argamne</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll hin argamne. SDL3.dll PadForge.exe cinaa kaa'i. https://github.com/libsdl-org/SDL/releases irraa buufadhu</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>Garagalchuun hin milkoofne: {0}</value></data>
   <data name="Status_PasteFailed_Format" xml:space="preserve"><value>Maxxansuun hin milkoofne: {0}</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Piroofaayiliin "{0}" uumameera.</value></data>
@@ -181,7 +182,8 @@
   <data name="Profile_Default" xml:space="preserve"><value>Durtii</value></data>
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Piroofaayilii itti aanu</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Piroofaayilii duraa</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Galmeessaa jira...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Galmeessaa jira…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>yeroo</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>irratti</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Meeshaan balleeffameera.</value></data>
@@ -237,6 +239,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Hafeera</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Hin dubbifamne</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Hin haqamne</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Meeshaa</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Galmee interfeesii</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Furtuu rejistirii waloo</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Gatii rejistirii waloo</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Walqabsiisa WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Maqaa OEM bakka bu'aa</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Furtuu DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Galmee OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Paakeejii draayivarii</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Furtuu tajaajila WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Furtuu rejistirii</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Sartifikeetii</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Foldarii</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Qindaa'ina tajaajilaa</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Tarkaanfii haqiinsaa</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Kontirolaawwan PlayStation 3, PlayStation Move fi kontirolaa Navigation karaa Bluetooth akka walqabatan dandeessisa. PadForge keessatti hammatameera, yeroo isaan keessaa tokko jalqaba walqabsiifamu fe'ama.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Kontirolaawwan PlayStation 3 Bluetooth irraan walqabsiisa.</value></data>
@@ -293,7 +310,7 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>"{0}" barreessi</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(barruu hin jiru)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Barruu</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>daqiiqaa (0 = gonkumaa)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>daqiiqaa</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Akka kontirolaa iCade-tti dubbisi</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Akka kiiboordiitti dubbisi</value></data>
   <data name="Devices_BlissBoxPlayer" xml:space="preserve"><value>Lakkoofsa taphataa…</value></data>
@@ -398,7 +415,7 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Ibsaa</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Ibsaa</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Cufaa</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Meeshaa sagalee hordofi</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Meeshaa sagalee</value></data>
@@ -578,6 +595,7 @@
   <data name="Macro_Count" xml:space="preserve"><value>Lakkoofsa</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Miira</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Maakroo haaraa</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Maakroo {0}</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Qabduu {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(homaa)</value></data>
   <data name="Macro_DeviceAxis_Format" xml:space="preserve"><value>Aksisii meeshaa {0}</value></data>
@@ -904,9 +922,9 @@
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Piroofaayilii hojii irra jiru:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Kontirolaa hin qabu</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Piroofaayilii haaraa</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>Maqaa biraan olkaa'i</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Maqaa biraan olkaa'i…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Qindaa'ina ammaa asitti olkaa'i</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Gulaali</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Gulaali…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Fe'i</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>{0} haqi?</value></data>
   <data name="Profiles_DeleteConfirmGames" xml:space="preserve"><value>Piroofaayiliin fi seerri ofumaan jijjiiruu isaa ni haqamu. Kun deebi'uu hin danda'u.</value></data>
@@ -1025,7 +1043,7 @@
   <data name="Macro_Axis_Half" xml:space="preserve"><value>walakkaa aksisii</value></data>
   <data name="Pad_Either" xml:space="preserve"><value>Kallattii lamaan</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Aksisii garagalchi</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>OSD sagalee agarsiisi</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Agarsiisaa sagalee agarsiisi</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Kallattii</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Kamiyyuu</value></data>
 
@@ -1171,7 +1189,7 @@
 
   <!-- ═══ Preview Views ═══ -->
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Sitikii {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Tiriigarii {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Qabduuwwan</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -1183,7 +1201,6 @@
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Miira</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Mootora bitaa</value></data>
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Mootora mirgaa</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekondii (0 = gonkumaa)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Sadarkaa dabali</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Bu'uura</value></data>
@@ -1521,6 +1538,9 @@
   <data name="Workshop_Retry" xml:space="preserve"><value>Irra deebi'ii yaali</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam Workshop keessatti bani</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>Durii</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Piroofaayilii Workshop</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Maakroo Workshop</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Naannoo kursarii</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Piroofaayilii olkaa'i</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Olkaa'ii hojii irra oolchi</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>hiikameera</value></data>
@@ -1623,11 +1643,12 @@
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Giddu-galeessa (Salphaa)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Ol'aanaa (Salphaa)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Kan dhuunfaa</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Durtii bs2b</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Banaa</value></data>
   <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>Gosa</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Qulqulleessi</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Faayilii irraa galchi</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Faayilii irraa galchi…</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Faayilii sana dubbisuun hin danda'amne: {0}</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Durtii</value></data>
   <data name="Pad_Audio_OutputPath_SpeakerOnly" xml:space="preserve"><value>Spiikarii qofa</value></data>
@@ -1638,6 +1659,7 @@
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Koodiin walqunnamaa jira…</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Koodii PC kanaa</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Baatiriin kontirolaa gad bu'eera</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Kontirolaa</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: baatirii {1}% hafe</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Akeekkachiisa baatirii</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Yeroo baatiriin kontirolaa gad bu'u, osoo tapha gidduutti hin dhaamin dura beeksisa argadhu.</value></data>
@@ -1733,7 +1755,7 @@
     <value>PC isa kaan irratti kontirolaa fakkeessaa uumi, achiis haaromsi.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>PC isa kaan eegaa jira...</value>
+    <value>PC isa kaan eegaa jira…</value>
   </data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Yeroo aksisiin sitikii fakkeessaa filatame giddu-galeessa irraa fagaatu raafama itti fufaa ida'a. Bu'aa walqabsiifame madda ramadaman hunda irraa fayyadama. "Kallattiin qoodi" yoo filatame, sochiin gara negaatiivii mootora bitaa, sochiin gara pozatiivii immoo mootora mirgaa socho'a. "Mootora bitaa" ykn "Mootora mirgaa" kallattii lamaanuu mootora tokko sana irratti kaa'a. Bu'aa Xbox fi PlayStation meeshaalee raafama qabaniif. Geengoo konkolaataa, meeshaalee biroo force feedback itti fufaa qaban, fi pedaalii Fanatec ni dhiisa.</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Aksisii fakkeessaa</value></data>
@@ -2003,6 +2025,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Baatirii</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Karaa</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Lakkoofsa siriyaalaa</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID appii</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Faarmweerii</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Fooyya'iinsa</value></data>
   <data name="Profiles_Card_LoadsFor_Format" xml:space="preserve"><value>{0} f ni fe'ama</value></data>
@@ -2077,4 +2101,13 @@
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Hamma sadarkaan banaa ta'etti flyout-ii hamma sadarkaan jijjiiramutti mul'isee tursa. Sekondii 2f yeroo sadarkaan banamu ni agarsiisa, booda ofumaan dhabama. Gonkumaa yoo filatame, sadarkaan kun flyout hin agarsiisu, Bu'uurris yeroo sadarkaan kun xumuramu hin agarsiisu.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Sekondii 2f yeroo sadarkaan shift xumuramu maqaa Bu'uuraa ni agarsiisa. Gonkumaa yoo filatame, Bu'uurri flyout hin agarsiisu.</value></data>
   <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Fakkiiwwan (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Faayiloota hunda (*.*)|*.*</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>Qindaa'ina durtii</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>Sitikii bitaa</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>Sitikii mirgaa</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Kurfii</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Sadarkaalee Shift</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Garagalfame</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>Fiixee</value></data>
 </root>

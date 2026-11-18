@@ -23,6 +23,15 @@
         <Style x:Key="SerialRow" TargetType="ListBoxItem" BasedOn="{StaticResource DialogListItemLinks}">
             <Setter Property="AutomationProperties.Name" Value="{Binding Display, TargetNullValue=''}"/>
         </Style>
+        <!-- A serial protocol: its name trimmed in the closed picker, with
+             the whole name as its tooltip, and whole in the open list. -->
+        <DataTemplate x:Key="ProtocolClosed">
+            <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" ToolTip="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="ProtocolInList">
+            <TextBlock Text="{Binding}"/>
+        </DataTemplate>
+        <controls:PickTemplateSelector x:Key="ProtocolLook" Closed="{StaticResource ProtocolClosed}" List="{StaticResource ProtocolInList}"/>
     </views:DialogWindow.Resources>
 
     <views:DialogWindow.Foot>
@@ -101,6 +110,7 @@
                 <TextBlock Style="{StaticResource DialogLabel}"
                            Text="{Binding SerialPair_Controller, Source={x:Static strings:Strings.Instance}}"/>
                 <ComboBox x:Name="ControllerCombo" Style="{StaticResource DialogSelect}" controls:SettingRow.Fills="True" SelectedIndex="0"
+                          ItemTemplateSelector="{StaticResource ProtocolLook}"
                           AutomationProperties.Name="{Binding SerialPair_Controller, Source={x:Static strings:Strings.Instance}}"/>
                 <reset:SettingResetButton Click="ResetSetting_Click" Tag="SerialController" IsEnabled="{Binding IsEnabled, ElementName=ControllerCombo}" SettingLabel="{Binding SerialPair_Controller, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ControllerCombo"/>
             </controls:SettingRow>
@@ -197,8 +207,7 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="0,0,12,0"
-                                           FontFamily="{DynamicResource TelemetryFontFamily}" FontSize="13"
+                                <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="0,0,12,0" FontSize="13"
                                            TextTrimming="CharacterEllipsis"/>
                                 <Button Grid.Column="1" Style="{StaticResource DialogSmallQuietButton}"
                                         Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"

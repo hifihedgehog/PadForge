@@ -199,7 +199,7 @@ namespace PadForge.Tests
             var card = new KeyColorsCardViewModel();
             card.Attach(new DeviceSlotConfig(), Keys, new[] { Base() });
             var view = new KeyLightsView { Visibility = Visibility.Collapsed };
-            view.Resources["TelemetryFontFamily"] = new System.Windows.Media.FontFamily("Segoe UI");
+            view.Resources["BodyFontFamily"] = new System.Windows.Media.FontFamily("Segoe UI");
             view.Source = card;
             var window = new Window
             {

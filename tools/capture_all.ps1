@@ -2808,7 +2808,7 @@ $script:PadAnchors = @{
     "pad-sticks-boundary-calibration"   = @{ Column = "SticksSectionScroll"; Name = "Range"; Type = "Text"; Within = "TabSticks" }
     "pad-sticks-momentum"               = @{ Column = "SticksSectionScroll"; Name = "Momentum"; Type = "Text"; Within = "TabSticks"; At = 0.3 }
     "pad-triggers-sensitivity-dropdown" = @{ Column = "SticksSectionScroll"; Aid = "TriggerPresetCombo"; At = 0.15 }
-    "pad-trigger-instrument"            = @{ Column = "SticksSectionScroll"; Name = "RAW"; Type = "Text"; Within = "TabTriggers"; At = 0.45 }
+    "pad-trigger-instrument"            = @{ Column = "SticksSectionScroll"; Name = "Raw"; Type = "Text"; Within = "TabTriggers"; At = 0.45 }
     "pad-motor-activity"                = @{ Column = "RumbleSectionScroll"; Name = "Motor Activity"; Type = "Text"; Within = "TabForceFeedback"; At = 0.2 }
     "pad-trigger-routing"               = @{ Column = "RumbleSectionScroll"; Aid = "AudioRumbleFoldCard" }
     "pad-steering-angle-rumble"         = @{ Column = "RumbleSectionScroll"; Aid = "SteeringAngleRumbleToggle"; At = 0.1 }
@@ -5477,7 +5477,7 @@ function Scroll-ToAnchors {
 $script:UpdateAnswers = @("PadForge * is up to date.", "PadForge * is available.",
     "Pre-release * is available.", "Could not check for updates: *",
     "GitHub is limiting requests from this network. Try again later.",
-    "The newest version has no build for this PC's processor yet.")
+    "The newest version has no build for this PC’s processor yet.")
 function Capture-UpdatesCard {
     if (-not (Want "settings-updates")) { return }
     if (-not (Open-SettingsGroup "General")) { Refuse-Shots @("settings-updates") "the General group did not open"; return }
@@ -7244,7 +7244,7 @@ function Capture-ImportPreview {
 function Capture-TwitchChatShots {
     if (Want "dashboard-twitch-chat") {
         Write-Host "[5.3.0] Extras: Twitch Chat page"
-        if ((Open-Extra "TwitchChat") -and (Test-InFrame "Who approves !claim") -and (Test-InFrame "Picture for Your Broadcast")) { Cap "dashboard-twitch-chat" }
+        if ((Open-Extra "TwitchChat") -and (Test-InFrame "Who Approves !claim") -and (Test-InFrame "Picture for Your Broadcast")) { Cap "dashboard-twitch-chat" }
         else { Refuse-Shots @("dashboard-twitch-chat") "the Twitch Chat page never fit one frame" }
     }
     if (Want "devices-twitch-chat") {
@@ -7649,11 +7649,9 @@ if ($Only.Count -gt 0) {
     # anchor is actually on screen, so the shot cannot silently drift onto a
     # neighboring card.
     #
-    # A SECTION TITLE IS UPPERCASED IN THE VIEW where a page runs its
-    # SectionTitle through UpperConverter, and a TextBlock's UIA Name is what
-    # it RENDERS, so such a title is matched in capitals. Settings CARD titles
-    # are not converted, so those anchors stay as written, and neither are the
-    # Extras catalog's group headings (#574).
+    # An anchor is matched as the view renders it, since a TextBlock's UIA
+    # Name is what it draws. No title is uppercased in the view, so every
+    # anchor is written as its string reads.
     $scrollTargets = @(
         # remote-link, dashboard-head-tracking and dsu-port-box are taken by
         # Capture-ExtrasPages above: each needs BOTH ends of its page in the

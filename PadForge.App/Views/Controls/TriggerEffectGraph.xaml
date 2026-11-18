@@ -18,7 +18,7 @@
                  can confirm which preset the graph represents. -->
             <TextBlock x:Name="ModeLabel"
                        HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                       FontSize="10"
+                       FontSize="12"
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
         </Grid>
     </Border>

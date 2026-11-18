@@ -401,7 +401,7 @@
                     <controls:BatteryMeter Margin="6,0,0,0" Percent="{Binding BatteryPercent}"
                                            Charging="{Binding BatteryCharging}" Low="{Binding BatteryLow}"/>
                     <TextBlock Text="{Binding BatteryText}" MinWidth="34" Margin="6,0,0,0" TextAlignment="Right"
-                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" VerticalAlignment="Center"
+                               Typography.NumeralAlignment="Tabular" FontSize="12" VerticalAlignment="Center"
                                AutomationProperties.Name="{Binding BatterySpoken, Mode=OneWay, TargetNullValue='', FallbackValue=''}"
                                Visibility="{Binding HasBattery, Converter={StaticResource BoolToVisibilityConverter}}">
                         <TextBlock.Style>
@@ -504,7 +504,7 @@
                         <TextBlock x:Name="FirstRunCardLine" FontSize="13" TextTrimming="CharacterEllipsis" LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                    AutomationProperties.Name="{Binding FirstRunLineText, Mode=OneWay, TargetNullValue='', FallbackValue=''}"
-                                   Visibility="{Binding HasFirstRunLine, Converter={StaticResource BoolToVisibilityConverter}}"><Run Text="{Binding FirstRunLineFacts, Mode=OneWay}"/><Run Text="{Binding FirstRunLineGlyph, Mode=OneWay}" FontFamily="Segoe UI, Segoe MDL2 Assets" BaselineAlignment="Center"/><Run Text="{Binding FirstRunLineGap, Mode=OneWay}"/><Run Text="{Binding FirstRunLineBattery, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}"/><Run Text="{Binding FirstRunLineTail, Mode=OneWay}"/></TextBlock>
+                                   Visibility="{Binding HasFirstRunLine, Converter={StaticResource BoolToVisibilityConverter}}"><Run Text="{Binding FirstRunLineFacts, Mode=OneWay}"/><Run Text="{Binding FirstRunLineGlyph, Mode=OneWay}" FontFamily="Segoe UI Variable Text, Segoe MDL2 Assets" BaselineAlignment="Center"/><Run Text="{Binding FirstRunLineGap, Mode=OneWay}"/><Run Text="{Binding FirstRunLineBattery, Mode=OneWay}" Typography.NumeralAlignment="Tabular"/><Run Text="{Binding FirstRunLineTail, Mode=OneWay}"/></TextBlock>
                         <TextBlock FontSize="13" TextWrapping="Wrap" LineHeight="18.85" LineStackingStrategy="BlockLineHeight"
                                    Text="{Binding Home_FirstRun_NoDeviceLine, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
@@ -760,24 +760,24 @@
                              a space. -->
                         <controls:FlexLinePanel x:Name="EngineStats" Gap="36" LineGap="14" VerticalAlignment="Center">
                             <StackPanel x:Name="EngineStatRate">
-                                <TextBlock x:Name="EngineRate" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="13"
-                                           LineHeight="33" LineStackingStrategy="BlockLineHeight"
-                                           AutomationProperties.Name="{Binding PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource QuietGlyphBrush}"/><Style.Triggers><DataTrigger Binding="{Binding EngineStateKey}" Value="Running"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger><DataTrigger Binding="{Binding EngineStateKey}" Value="Idle"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger><DataTrigger Binding="{Binding EngineStateKey}" Value="Stopping"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger></Style.Triggers></Style></TextBlock.Style><Run Text="{Binding PollingRateLead, Mode=OneWay}"/><Run Text="{Binding PollingRateNumber, Mode=OneWay}" FontSize="30" FontWeight="SemiBold"/><Run Text="{Binding PollingRateTail, Mode=OneWay}"/></TextBlock>
+                                <TextBlock x:Name="EngineRate" FontFamily="{StaticResource DisplayFontFamily}" FontSize="14" Typography.NumeralAlignment="Tabular"
+                                           LineHeight="31" LineStackingStrategy="BlockLineHeight"
+                                           AutomationProperties.Name="{Binding PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource QuietGlyphBrush}"/><Style.Triggers><DataTrigger Binding="{Binding EngineStateKey}" Value="Running"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger><DataTrigger Binding="{Binding EngineStateKey}" Value="Idle"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger><DataTrigger Binding="{Binding EngineStateKey}" Value="Stopping"><Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/></DataTrigger></Style.Triggers></Style></TextBlock.Style><Run Text="{Binding PollingRateLead, Mode=OneWay}"/><Run Text="{Binding PollingRateNumber, Mode=OneWay}" FontSize="28" FontWeight="SemiBold"/><Run Text="{Binding PollingRateTail, Mode=OneWay}"/></TextBlock>
                                 <TextBlock Style="{StaticResource StatLabel}"
                                            Text="{Binding Home_Stat_PollingRate, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
                             <StackPanel x:Name="EngineStatLive">
-                                <TextBlock x:Name="EngineLive" FontFamily="{StaticResource DisplayFontFamily}" FontSize="16"
-                                           LineHeight="33" LineStackingStrategy="BlockLineHeight"
+                                <TextBlock x:Name="EngineLive" FontFamily="{StaticResource DisplayFontFamily}" FontSize="14" Typography.NumeralAlignment="Tabular"
+                                           LineHeight="31" LineStackingStrategy="BlockLineHeight"
                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                           AutomationProperties.Name="{Binding LiveLine, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><Run Text="{Binding LiveControllers, Mode=OneWay}" FontSize="30" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/><Run Text=" / "/><Run Text="{Binding ControllerCount, Mode=OneWay}"/></TextBlock>
+                                           AutomationProperties.Name="{Binding LiveLine, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><Run Text="{Binding LiveControllers, Mode=OneWay}" FontSize="28" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/><Run Text=" / "/><Run Text="{Binding ControllerCount, Mode=OneWay}"/></TextBlock>
                                 <TextBlock Style="{StaticResource StatLabel}"
                                            Text="{Binding Home_Stat_ControllersLive, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
                             <StackPanel x:Name="EngineStatDevices">
-                                <TextBlock x:Name="EngineDevices" Text="{Binding OnlineDevices, Mode=OneWay}"
-                                           FontFamily="{StaticResource DisplayFontFamily}" FontSize="30" FontWeight="SemiBold"
-                                           LineHeight="33" LineStackingStrategy="BlockLineHeight"
+                                <TextBlock x:Name="EngineDevices" Text="{Binding OnlineDevices, Mode=OneWay}" Typography.NumeralAlignment="Tabular"
+                                           FontFamily="{StaticResource DisplayFontFamily}" FontSize="28" FontWeight="SemiBold"
+                                           LineHeight="31" LineStackingStrategy="BlockLineHeight"
                                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                                 <TextBlock Style="{StaticResource StatLabel}"
                                            Text="{Binding Home_Stat_DevicesConnected, Source={x:Static strings:Strings.Instance}}"/>
@@ -835,7 +835,7 @@
                                Text="{Binding Home_Controllers, Source={x:Static strings:Strings.Instance}}"/>
                     <TextBlock x:Name="ControllersCount" Text="{Binding ControllerCount, Mode=OneWay}" Margin="10,0,0,1"
                                VerticalAlignment="Bottom"
-                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                               Typography.NumeralAlignment="Tabular" FontSize="12"
                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                 </StackPanel>
                 <!-- Cards: the size of the controller cards. Detailed and
@@ -843,7 +843,7 @@
                      detailed cards while they fit it, compact ones once
                      they would run past it. -->
                 <StackPanel x:Name="CardsChoice" controls:FlexLinePanel.AtEnd="True" Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock x:Name="CardsLabel" Margin="0,0,10,0" VerticalAlignment="Center" FontSize="12.5"
+                    <TextBlock x:Name="CardsLabel" Margin="0,0,10,0" VerticalAlignment="Center" FontSize="12"
                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                Text="{Binding Home_Cards, Source={x:Static strings:Strings.Instance}}"/>
                     <Border x:Name="CardsSegments" Style="{StaticResource SegmentTrack}"
@@ -989,7 +989,7 @@
                                                        LineHeight="24" LineStackingStrategy="BlockLineHeight"
                                                        AutomationProperties.AutomationId="Dash_SlotTitle"/>
                                             <TextBlock Text="{Binding TypeInstanceLabel, StringFormat={}#{0}}"
-                                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="13"
+                                                       Typography.NumeralAlignment="Tabular" FontSize="13"
                                                        Margin="6,0,0,3" VerticalAlignment="Bottom"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                         </StackPanel>
@@ -1032,8 +1032,12 @@
                                      stage, and beside it the devices that
                                      drive it. They stand side by side while
                                      the card is wide enough and one under the
-                                     other when it is not. -->
-                                <controls:FlexLinePanel Grid.Row="1" Margin="18,14,18,16" Gap="18" LineGap="14">
+                                     other when it is not. The last line takes
+                                     the height a taller neighbor gives the
+                                     card, so the foot stands at the card's
+                                     foot in every card of a row, and the
+                                     stage stands at the top. -->
+                                <controls:FlexLinePanel Grid.Row="1" Margin="18,14,18,16" Gap="18" LineGap="14" FillsHeight="True">
                                     <!-- The stage: the controller as its page
                                          shows it, lit from below while it
                                          forges, dim and gray while it does
@@ -1041,7 +1045,7 @@
                                          for the keyboard and a screen reader,
                                          as a click anywhere on the card does
                                          for the mouse. -->
-                                    <controls:ClickBorder controls:FlexLinePanel.Basis="204" Height="140" CornerRadius="10" BorderThickness="1"
+                                    <controls:ClickBorder controls:FlexLinePanel.Basis="204" Height="140" VerticalAlignment="Top" CornerRadius="10" BorderThickness="1"
                                                           Style="{StaticResource SlotStageEdge}"
                                                           Background="{DynamicResource SteelGroundBrush}" ClipToBounds="True"
                                                           Click="OpenSlot_Click" Tag="{Binding PadIndex}"
@@ -1151,8 +1155,8 @@
                                         </StackPanel>
 
                                         <!-- What a waiting controller waits for. -->
-                                        <TextBlock Grid.Row="3" common:LiveText.Polite="True" Text="{Binding WaitHint}" Margin="0,0,0,0"
-                                                   FontSize="12.5" TextWrapping="Wrap"
+                                        <TextBlock Grid.Row="3" common:LiveText.Polite="True" Text="{Binding WaitHint}" Margin="0,4,0,8"
+                                                   FontSize="13" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                    Visibility="{Binding WaitHint, Converter={StaticResource StringToVisibility}}"/>
 
@@ -1314,12 +1318,12 @@
                                                            LineHeight="22" LineStackingStrategy="BlockLineHeight"
                                                            AutomationProperties.AutomationId="Dash_SlotTitle"/>
                                                 <TextBlock Text="{Binding TypeInstanceLabel, StringFormat={}#{0}}"
-                                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                                           Typography.NumeralAlignment="Tabular" FontSize="12"
                                                            Margin="5,0,0,3" VerticalAlignment="Bottom"
                                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                             </StackPanel>
                                             <controls:MarqueeLabel Text="{Binding PresetName}"
-                                                                   TextElement.FontSize="12.5"
+                                                                   TextElement.FontSize="13"
                                                                    TextElement.Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                                    Active="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Border}}"/>
                                         </StackPanel>

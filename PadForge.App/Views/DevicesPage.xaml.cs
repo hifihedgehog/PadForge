@@ -520,13 +520,15 @@ namespace PadForge.Views
                 InputService?.IdentifyDevice(vm.SelectedDevice.InstanceGuid);
         }
 
-        /// <summary>Remove Device, in the Details card: the selected device. The
-        /// device is selected again before the command runs, so the one the
-        /// confirm named is the one removed.</summary>
+        /// <summary>Remove Device: the X at a row's end removes that row's
+        /// device, and the button in the Details card the selected device.
+        /// The device the confirm names is the one removed, and another
+        /// selected device stays selected.</summary>
         private void RemoveDevice_Click(object sender, RoutedEventArgs e)
         {
-            if (DataContext is not ViewModels.DevicesViewModel vm || vm.SelectedDevice is not { } device)
-                return;
+            if (DataContext is not ViewModels.DevicesViewModel vm) return;
+            var device = (sender as FrameworkElement)?.DataContext as ViewModels.DeviceRowViewModel ?? vm.SelectedDevice;
+            if (device == null) return;
 
             // Destructive-verb guard (#175 phase 2 item 1b): one click
             // deleted the device record plus its settings. Same shared
@@ -561,9 +563,7 @@ namespace PadForge.Views
 
             try
             {
-                vm.SelectedDevice = device;
-                if (vm.RemoveDeviceCommand.CanExecute(null))
-                    vm.RemoveDeviceCommand.Execute(null);
+                vm.RemoveDevice(device);
             }
             finally
             {
@@ -944,7 +944,7 @@ namespace PadForge.Views
         // ── Copy Details (#175 competitor item 7) ──
 
         /// <summary>
-        /// Copies the device's details as plain mono text, in locale-neutral
+        /// Copies the device's details as plain text, in locale-neutral
         /// token lines (PRODUCT, TYPE, CAPS, APP GUID, SDL GUID, PATH,
         /// VID:PID, LINK, SERIAL, FIRMWARE, REV, BATT). Fields the engine
         /// holds only, absent facts omitted, no placeholders. CAPS is the

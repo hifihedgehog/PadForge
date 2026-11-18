@@ -76,6 +76,7 @@
   <data name="Common_Start" xml:space="preserve"><value>Kobanda</value></data>
   <data name="Common_None" xml:space="preserve"><value>Eloko te</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>sekondi</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -87,7 +88,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>Kokanga PadForge...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>Kokanga PadForge…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Kobanda PadForge…</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Kobakisa manette</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Kobakisa manette</value></data>
@@ -171,6 +172,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Ebatelami</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Etangami te</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Elongolami te</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Appareil</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Bokomisi ya interface</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Clé ya registre oyo bakabolaka</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Valeur ya registre oyo bakabolaka</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Liboko ya WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Kobongola nkombo ya OEM</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Clé ya DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Bokomisi ya OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Paquet ya pilote</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Clé ya service ya WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Clé ya registre</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Certificat</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Dossier</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Paramètre ya service</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Étape ya kolongola</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Epesaka nzela na ba manette ya PlayStation 3, PlayStation Move mpe manette Navigation kokangana na nzela ya Bluetooth. Ezali kati na PadForge mpe etiamaka na PC mbala ya liboso oyo moko na yango ekangani na Bluetooth.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Ekangisaka ba manette PlayStation 3 na Bluetooth.</value></data>
@@ -231,7 +247,7 @@
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(makomi ezali te)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Makomi</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Ba détail</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>miniti (0 = ata mokolo moko te)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>miniti</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Tanga lokola manette iCade</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Tanga lokola clavier</value></data>
   <data name="Devices_UsioTekken" xml:space="preserve"><value>Tanga lokola ba stick Tekken</value></data>
@@ -323,11 +339,15 @@
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>Gyroscope</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>Accéléromètre</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>axe 1</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>ba axe {0}</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>bouton 1</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>ba bouton {0}</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>POV 1</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>POV {0}</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>Axe {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>ba axe {0}, ba bouton {1}, POV {2}</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>Vibration</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>Accél</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>souris</value></data>
   <data name="Devices_DeviceKind_Keyboard" xml:space="preserve"><value>clavier</value></data>
@@ -390,7 +410,7 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Miinda</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Miinda</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Longola langi oyo na palette</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Ezimi</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Zongisa barre lumineuse</value></data>
@@ -540,6 +560,7 @@
   <data name="Macro_UntilRelease" xml:space="preserve"><value>Kino otika</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Macro ya sika</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Macro {0}</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Bouton {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(eloko te)</value></data>
   <data name="Macro_UnknownAction" xml:space="preserve"><value>Action oyo eyebani te</value></data>
@@ -827,9 +848,9 @@
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profil oyo ezali kosala:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Manette moko te</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Profil ya sika</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>Kobomba lokola</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Kobomba lokola…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Kobomba bobongisi ya sikoyo awa</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Kobongisa</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Kobongisa…</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Kobomba lokola profil</value></data>
@@ -922,7 +943,7 @@
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>ebalolami</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>ndambo ya axe</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Kobalola axe</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Kolakisa OSD ya volume</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Kolakisa elakisi ya volume</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positif</value></data>
   <data name="Macro_AxisDirection_Negative" xml:space="preserve"><value>Négatif</value></data>
 
@@ -1071,7 +1092,7 @@
 
   <!-- ═══ Preview Views ═══ -->
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Stick {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Gâchette {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>Croix directionnelle</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Ba bouton</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -1082,7 +1103,6 @@
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Moteur ya mwasi</value></data>
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Moteur ya mobali</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekonde (0 = ata mokolo moko te)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Kobakisa couche</value></data>
   <data name="Pad_Shift_DialogTitle" xml:space="preserve"><value>Couche Shift</value></data>
@@ -1379,7 +1399,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_Audio_EqRemove" xml:space="preserve"><value>Kolongola bande</value></data>
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Kopangusa</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Kokotisa uta na presse-papiers</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Kokotisa uta na fichier</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Kokotisa uta na fichier…</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Eloko moko te ya kokotisa. Égaliseur ya sikoyo ebongwani te.</value></data>
   <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Fichier wana etangami te: {0}</value></data>
   <data name="Pad_Audio_EqImport_ClipboardLabel" xml:space="preserve"><value>presse-papiers</value></data>
@@ -1397,6 +1417,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Code ya PC oyo</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Batterie ya manette ekiti</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Manette</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% ya batterie etikali</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Ba alerte ya batterie</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Yeba tango batterie ya manette ekiti, liboso ete ekufa na katikati ya lisano.</value></data>
@@ -1490,7 +1511,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
     <value>Profil oyo ezali kosala: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Kozela PC mosusu...</value>
+    <value>Kozela PC mosusu…</value>
   </data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Axe virtuel</value></data>
   <data name="Pad_SteeringAngleRumble_LX" xml:space="preserve"><value>Stick ya mwasi X</value></data>
@@ -1833,7 +1854,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Ba motuya ezali molongo Game Telemetry na [Ba appareil]. Tia yango na eteni Ba assignation ya manette to salela yango mpo na kobandisa ba macro.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Esika, monene mpe opacité ya menu moko moko ebongisamaka na menu yango, na eteni [Ba macro na ba menu] ya manette.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Masano Oyo PadForge Eyebi Te</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Mpo na ba mod oyo elukaka DSX ezali kosala liboso ya kotinda</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Mpo na ba mod oyo elukaka DSX ezali kosala liboso ya kotinda.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kokopia adresse</value></data>
   <data name="Extras_WebController_PhonesHint" xml:space="preserve"><value>Telefone oyo ekangani emonanaka awa mpe na lokasa Ba appareil, epai okotia yango na manette.</value></data>
   <data name="Devices_Line_Battery_Format" xml:space="preserve"><value>batterie {0}</value></data>
@@ -1847,6 +1868,8 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Batterie</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Nzela</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Numéro ya série</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID ya application</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>GUID ya SDL</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Révision</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Mingi mpo na {0}</value></data>
@@ -1935,4 +1958,14 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Tango couche ezali kosala etikaka flyout na écran kino couche ebongwana. Mpo na sekondi 2 elakisaka yango tango couche ebandi kosala, sima etikaka yango ekende. Na Ata mokolo te, couche oyo elakisaka flyout te, mpe Base elakisaka yango te tango couche esili.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Mpo na sekondi 2 elakisaka nkombo ya Base tango couche Shift esili. Na Ata mokolo te, Base elakisaka flyout te.</value></data>
   <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Bilili (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Ba fichier nyonso (*.*)|*.*</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>Ba paramètres ya ebandeli</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>Stick ya loboko ya mwasi</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>Stick ya loboko ya mobali</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Courbe</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Ba couche Shift</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Ebalolami</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>Nsonge</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b ya ebandeli</value></data>
 </root>

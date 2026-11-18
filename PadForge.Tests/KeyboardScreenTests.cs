@@ -1024,7 +1024,7 @@ namespace PadForge.Tests
                 if (route != KeyboardScreenRoute.NotFound)
                     Assert.Contains("KeyboardScreenRoute." + route + " =>", service);
             string resx = File.ReadAllText(RepoFile("PadForge.App", "Resources", "Strings", "Strings.resx"));
-            Assert.Contains("<data name=\"KeyboardScreens_Status_G19ForeignDriver_Format\" xml:space=\"preserve\"><value>the G19's screen is on another program's driver ({0}), which PadForge leaves alone</value></data>", resx);
+            Assert.Contains("<data name=\"KeyboardScreens_Status_G19ForeignDriver_Format\" xml:space=\"preserve\"><value>the G19\u2019s screen is on another program\u2019s driver ({0}), which PadForge leaves alone</value></data>", resx);
         }
 
         /// <summary>A S.T.R.I.K.E. 7 library that will not load for want of

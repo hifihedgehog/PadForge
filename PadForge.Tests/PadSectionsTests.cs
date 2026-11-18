@@ -1202,12 +1202,13 @@ namespace PadForge.Tests
             Assert.Contains(wellParts[1].Descendants(), e => (string)e.Attribute(X + "Name") == "PeakReadout");
             // The legend's chips stand at the line's start and the peak at
             // its end. The two axes' columns share the width alike, each
-            // 112 at the least, so a changing value moves no other.
+            // 100 at the least, which holds the longest value, so a changing
+            // value moves no other.
             var legend = wellParts[1].Elements().First();
             Assert.Equal("False", (string)legend.Attribute("LastChildFill"));
             Assert.Equal(new[] { "Left", "Right" }, legend.Elements().Select(e => (string)e.Attributes().Single(a => a.Name.LocalName == "DockPanel.Dock")));
             var columns = wellParts[1].Elements().Last().Elements().Single(e => e.Name.LocalName == "Grid.ColumnDefinitions").Elements().ToList();
-            Assert.Equal(new[] { ("Auto", "38"), ("*", "112"), ("*", "112") },
+            Assert.Equal(new[] { ("Auto", "38"), ("*", "100"), ("*", "100") },
                 columns.Select(c => ((string)c.Attribute("Width"), (string)c.Attribute("MinWidth"))));
             var readings = wellParts[1].Elements().Last().Elements().Where(e => e.Name.LocalName == "TextBlock").ToList();
             Assert.Equal(new[] { "X", "Y", "{Binding Instr_Raw, Source={x:Static strings:Strings.Instance}}", "{Binding InDisplayX, Mode=OneWay}",
@@ -1365,7 +1366,7 @@ namespace PadForge.Tests
             // The chart is captioned by the setting it draws, in the row's
             // own word. A caption that named the axis never said the chart
             // was the sensitivity (owner, 2026-11-14).
-            Assert.Equal("{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}",
+            Assert.Equal("{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}}",
                 (string)chart.ElementsBeforeSelf().Last(e => e.Name.LocalName == "TextBlock").Attribute("Text"));
             Assert.DoesNotContain("Pad_TriggerAxis", PageText());
         }
@@ -2334,7 +2335,7 @@ namespace PadForge.Tests
             // a choice of Raw or Tuned, not a switch to turn off.
             Assert.Contains("under Driven by", data["Pad_Audio_Subtitle"]);
             Assert.DoesNotContain("dropdown", data["Pad_Audio_Subtitle"]);
-            Assert.StartsWith(data["Pad_Gyro_Passthrough_Tuned"] + " runs the Gyro card's tuning", data["Pad_Gyro_ApplyToPassthrough_Tooltip"]);
+            Assert.StartsWith(data["Pad_Gyro_Passthrough_Tuned"] + " runs the Gyro card\u2019s tuning", data["Pad_Gyro_ApplyToPassthrough_Tooltip"]);
             Assert.Contains(data["Pad_Gyro_Passthrough_Raw"] + " sends only the calibrated reading", data["Pad_Gyro_ApplyToPassthrough_Tooltip"]);
             Assert.DoesNotContain("Turn it off", data["Pad_Gyro_ApplyToPassthrough_Tooltip"]);
             // No string sends the user to a card the page no longer has.

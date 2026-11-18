@@ -884,7 +884,7 @@ namespace PadForge.Views
                 .Select(t => new WorkshopTagChipItem
                 {
                     Tag = t.tag,
-                    Label = ControllerTagLabel(t.tag, t.display_name).ToUpperInvariant(),
+                    Label = ControllerTagLabel(t.tag, t.display_name),
                     IsCold = string.Equals(t.tag, "controller_neptune", StringComparison.OrdinalIgnoreCase),
                 })
                 .ToList();

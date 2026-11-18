@@ -77,6 +77,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Hlakola</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ha ho letho</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>metsotswana</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -88,7 +89,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>Ho kwala PadForge...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>Ho kwala PadForge…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Ho qala PadForge…</value></data>
   <data name="Status_RemovingHIDMaestro" xml:space="preserve"><value>Ho tlosa HIDMaestro…</value></data>
   <data name="Status_HIDMaestroRemoved" xml:space="preserve"><value>HIDMaestro e tlositswe.</value></data>
@@ -127,6 +128,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>E bolokilwe</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Ha e a balwa</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Ha e a tloswa</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Sesebediswa</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Ngodiso ya interface</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Key ya registry e arolelanwang</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Boleng ba registry bo arolelanwang</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Kgokahanyo ya WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Lebitso la OEM le nkang sebaka</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Key ya DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Ngodiso ya OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Package ya driver</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Key ya service ya WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Key ya registry</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Setifikeiti</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Foldara</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Setting ya service</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Mohato wa ho tlosa</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth ya BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>E dumella di-controller tsa PlayStation 3, PlayStation Move le Navigation controller ho hokahana ka Bluetooth. E kentswe ka hare ho PadForge, mme e kenngwa la pele ha e nngwe ya tsona e hokahanngwa le PC.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>E hokahanya di-controller tsa PlayStation 3 ka Bluetooth.</value></data>
@@ -268,7 +284,7 @@
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>Mebala e feta ka {0}.</value></data>
   <data name="Pad_Lighting_RouteOtherControllerOnly" xml:space="preserve"><value>Virtual Controller {0} e kgantsha sesebediswa sena.</value></data>
   <data name="Pad_Lighting_RouteWaiting" xml:space="preserve"><value>Ho emetswe {0}. Mebala e tla bonahala hang ha e qala ho sebetsa.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Tima</value></data>
   <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>Tima</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>Sebapadi 1</value></data>
@@ -297,7 +313,7 @@
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Mokgwa</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Fetolela ponong ya 2D</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Fetolela ponong ya 3D</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopitsa ho tswa ho...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopitsa ho tswa ho…</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Hlakola tsohle</value></data>
   <data name="Pad_HeaderSource" xml:space="preserve"><value>Mohlodi</value></data>
   <data name="Pad_List_GamesSee" xml:space="preserve"><value>Dipapadi di bona</value></data>
@@ -391,6 +407,7 @@
   <data name="Macro_Count" xml:space="preserve"><value>Palo</value></data>
   <data name="Macro_DelayMs" xml:space="preserve"><value>Tieho</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Macro e ntjha</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Macro {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(ha ho letho)</value></data>
   <data name="Macro_UnknownAction" xml:space="preserve"><value>Ketso e sa tsejweng</value></data>
   <data name="Macro_Button_Format" xml:space="preserve"><value>Konopo {0}</value></data>
@@ -525,9 +542,9 @@
   <data name="Profiles_Title" xml:space="preserve"><value>Diprofaele</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profaele e sebetsang:</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Profaele e ntjha</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>Boloka jwalo ka</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Boloka jwalo ka…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Boloka setup ya jwale mona</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Fetola</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Fetola…</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Boloka jwalo ka profaele</value></data>
@@ -636,7 +653,6 @@
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 
   <!-- ═══ Audio Bass Rumble ═══ -->
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>metsotswana (0 = le ka mohla)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Motheo</value></data>
   <data name="Pad_Shift_LayerName" xml:space="preserve"><value>Lebitso la layer</value></data>
@@ -783,6 +799,9 @@
   <data name="Workshop_Retry" xml:space="preserve"><value>Leka hape</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Bula ho Steam Workshop</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>Kgale</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Profaele ya Workshop</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Macro ya Workshop</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Sebaka sa cursor</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Boloka profaele</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>e fetoletswe</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>e fetoletswe e le macro</value></data>
@@ -838,6 +857,7 @@
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Khoutu ya PC ena</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Betri ya controller e tlase</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Controller</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% ya betri e setseng</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Ditemoso tsa betri</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Thothomisa controller hape</value></data>
@@ -881,7 +901,7 @@
     <value>Profaele e sebetsang: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>E emetse PC e nngwe...</value>
+    <value>E emetse PC e nngwe…</value>
   </data>
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profaele</value></data>
@@ -1093,6 +1113,8 @@
   <data name="Devices_Detail_Type" xml:space="preserve"><value>Mofuta</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Tsela</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Nomoro ya serial</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID ya app</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>GUID ya SDL</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Ntlafatso</value></data>
   <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Nkela setup e bolokilweng ho “{0}” sebaka ka ya jwale? Lebitso la yona le dipapadi tsa yona di a sala.</value></data>
@@ -1161,4 +1183,8 @@
   <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
   <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Ditshwantsho (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Difaele tsohle (*.*)|*.*</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Curve</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Di-layer tsa shift</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>E kgelositswe</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Ya kamehla ya bs2b</value></data>
 </root>

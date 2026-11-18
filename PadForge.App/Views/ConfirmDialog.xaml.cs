@@ -9,7 +9,7 @@ namespace PadForge.Views
 
     /// <summary>The shared confirm (#574) on the dialog frame: the question
     /// as the title, what happens as the line under it, an optional fact in
-    /// the code face, and a foot where Cancel holds the default, the cancel
+    /// the secondary text color, and a foot where Cancel holds the default, the cancel
     /// and the first focus. Esc cancels, and Enter never fires the action
     /// unless the user tabs onto it. <see cref="Notice"/> is the same window
     /// with nothing to decide.</summary>
@@ -48,7 +48,7 @@ namespace PadForge.Views
         /// <summary>Modal confirm, centered on <paramref name="owner"/> (the
         /// screen when null). True only when the user chose the action.
         /// Callers pass their own words. <paramref name="detail"/> names the
-        /// thing at stake in the code face, <paramref name="kind"/> picks the
+        /// thing at stake, <paramref name="kind"/> picks the
         /// action's look, and <paramref name="cancelText"/> replaces Cancel's
         /// word.</summary>
         public static bool Show(Window owner, string title, string message, string actionText, string detail = null,

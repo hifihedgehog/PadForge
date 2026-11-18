@@ -206,7 +206,7 @@ namespace PadForge.Tests
                 {
                     new CopyFromDialog.DeviceEntry { Name = "Keyboard + Mouse #1", Detail = "Xbox Series X GIP Controller" },
                     new CopyFromDialog.DeviceEntry { Name = "DualShock 3", Detail = "Not assigned, keeps mappings from before" },
-                }, "Replace the mappings and per-device tuning of Xbox #1 with another controller's.");
+                }, "Replace the mappings and per-device tuning of Xbox #1 with another controller\u2019s.");
                 var list = (ListBox)dialog.FindName("DeviceList");
                 Assert.Equal(2, list.Items.Count);
                 // The first row is picked on open.

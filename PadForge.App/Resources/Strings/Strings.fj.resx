@@ -70,6 +70,7 @@
   <data name="Common_Start" xml:space="preserve"><value>Tekivuna</value></data>
   <data name="Common_None" xml:space="preserve"><value>Sega</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>sekodi</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -117,6 +118,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Vo</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Sega ni wiliki</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Sega ni kau tani</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Device</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Volai ni interface</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Key ni registry e wasei</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Value ni registry e wasei</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Vauci ni WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Yaca ni OEM e veisosomitaki</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Key ni DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Volai ni OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Package ni driver</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Key ni service ni WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Key ni registry</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Setifiketi</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Folder</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Ituvaki ni service</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Ikalawa ni kau tani</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth ni BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>E rawa kina ni sema ena Bluetooth na controller ni PlayStation 3, na PlayStation Move kei na Navigation controller. E tu ena loma ni PadForge, ka install ena imatai ni gauna e pair kina e dua vei ira.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>E semata ena Bluetooth na controller ni PlayStation 3.</value></data>
@@ -154,7 +170,7 @@
 
   <!-- ═══ Device Types ═══ -->
 
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>miniti (0 = sega vakadua)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>miniti</value></data>
   <data name="Devices_BlissBoxPlayer" xml:space="preserve"><value>Naba ni dauqito…</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Naba ni dauqito</value></data>
   <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Dauqito</value></data>
@@ -181,7 +197,7 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Rarama</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Rarama</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Rarama ni LED</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>Dauqito 1</value></data>
   <data name="Pad_Lighting_PlayerLed_P2" xml:space="preserve"><value>Dauqito 2</value></data>
@@ -236,6 +252,7 @@
   <data name="Macro_Once" xml:space="preserve"><value>Vakadua</value></data>
   <data name="Macro_Count" xml:space="preserve"><value>Iwiliwili</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Macro vou</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Macro {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(sega)</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
@@ -340,7 +357,7 @@
 
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profile e vakayagataki tiko:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Sega na Controller</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Sega na controller</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Profile Vou</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
@@ -753,6 +770,8 @@
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Na axis, na bulukau kei na sensor kece</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Sala</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Naba ni serial</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID ni app</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>GUID ni SDL</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Vakavoui</value></data>
   <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Veisosomitaka na setup e maroroi ena "{0}" ena setup qo? E na vo ga na yacana kei na nona qito.</value></data>
@@ -818,4 +837,8 @@
   <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
   <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
   <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Curve</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Shift layer</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Vukici</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b taumada</value></data>
 </root>

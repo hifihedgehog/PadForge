@@ -9,7 +9,6 @@
     mc:Ignorable="po">
 
 
-    <conv:UppercaseConverter x:Key="UpperConverter"/>
 
     <!-- ═══════════════════════════════════════════
          PadPage tab icons.
@@ -73,7 +72,7 @@
         <Setter Property="BorderBrush" Value="#66FF6B2C"/>
         <Setter Property="Background" Value="#1AFF6B2C"/>
         <Setter Property="TextElement.Foreground" Value="{DynamicResource EmberHotBrush}"/>
-        <Setter Property="TextElement.FontSize" Value="12.5"/>
+        <Setter Property="TextElement.FontSize" Value="12"/>
         <Setter Property="TextElement.FontWeight" Value="SemiBold"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
@@ -84,7 +83,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}"/>
         <Setter Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}"/>
         <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-        <Setter Property="TextElement.FontSize" Value="12.5"/>
+        <Setter Property="TextElement.FontSize" Value="12"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
     <!-- A quiet tag in a card's head (#574), as the boards draw a chip: a
@@ -320,10 +319,11 @@
 
     <!-- One stage icon. Under the pointer, a stage with something set shows
          a readout for each device it covers: the device's glyph and name,
-         then its values in the telemetry face (STOCK for an untouched
-         device), wrapped so a long readout never clips at the screen's
-         edge. A stage with nothing set has no tooltip. The shapes show by
-         style triggers so the template needs no converter. -->
+         then each changed setting as its row names it, with tabular
+         figures (Default Settings for an untouched device), all at the
+         tooltip's 12 and wrapped so a long readout never clips at the
+         screen's edge. A stage with nothing set has no tooltip. The shapes
+         show by style triggers so the template needs no converter. -->
     <DataTemplate x:Key="StageChipTemplate">
         <Grid Margin="0,0,10,0" Background="Transparent"
               ToolTipService.IsEnabled="{Binding HasSummary}"
@@ -333,7 +333,7 @@
                 <ItemsControl ItemsSource="{Binding SummaryLines}" MaxWidth="400">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock TextWrapping="Wrap" Margin="0,1,0,1"><InlineUIContainer BaselineAlignment="Center"><controls:KindIcon Shape="{Binding DeviceShape, Mode=OneWay}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/></InlineUIContainer><Run Text="{Binding DeviceGlyph, Mode=OneWay}" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding DeviceName, Mode=OneWay}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding Tokens, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/></TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="0,1,0,1"><InlineUIContainer BaselineAlignment="Center"><controls:KindIcon Shape="{Binding DeviceShape, Mode=OneWay}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/></InlineUIContainer><Run Text="{Binding DeviceGlyph, Mode=OneWay}" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding DeviceName, Mode=OneWay}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding Tokens, Mode=OneWay}" Typography.NumeralAlignment="Tabular" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/></TextBlock>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -1248,9 +1248,9 @@
     </Style>
 
     <!-- An extra that is on, as Home shows it: a card with the glyph on its
-         square, the extra's name, and under the name the word On and the
-         extra's live status (its one line from the catalog when it reports
-         none). The face is one button that opens the extra's page, and a
+         square, the extra's name, and under the name the extra's live
+         status, or the word On and its one line from the catalog when it
+         reports none. The face is one button that opens the extra's page, and a
          tile with ActionText has a second button at its end that opens it
          too (Show QR on the Web Controller's). It has no switch: an extra
          is turned off on its own page or on its tile in the catalog. The
@@ -1291,9 +1291,14 @@
                                         <TextBlock Text="{TemplateBinding Title}" FontSize="14" FontWeight="SemiBold"
                                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                                    TextTrimming="CharacterEllipsis"/>
-                                        <!-- "On." and then the extra's live status, or its one
-                                             line from the catalog when it reports none. -->
-                                        <TextBlock FontSize="13" TextWrapping="Wrap"
+                                        <!-- The extra's live status, as the catalog's tile
+                                             has it: ember and semibold while the extra is
+                                             live. -->
+                                        <TextBlock x:Name="StatusText" Text="{TemplateBinding Status}" FontSize="13" TextWrapping="Wrap"
+                                                   Foreground="{DynamicResource EmberHotBrush}" FontWeight="SemiBold"/>
+                                        <!-- "On." and the extra's one line from the
+                                             catalog, while it reports no status. -->
+                                        <TextBlock x:Name="OnLine" FontSize="13" TextWrapping="Wrap" Visibility="Collapsed"
                                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}">
                                             <TextBlock.Text>
                                                 <MultiBinding>
@@ -1303,7 +1308,7 @@
                                                     <MultiBinding.Converter>
                                                         <conv:FormatTextConverter/>
                                                     </MultiBinding.Converter>
-                                                    <Binding Path="Summary" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                                    <Binding Path="Line" RelativeSource="{RelativeSource TemplatedParent}"/>
                                                     <Binding Path="Home_ExtraOn_Format" Source="{x:Static strings:Strings.Instance}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -1327,6 +1332,17 @@
                             <Setter TargetName="Card" Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}"/>
                             <Setter TargetName="IconSquare" Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
                             <Setter TargetName="Icon" Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                            <Setter TargetName="StatusText" Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            <Setter TargetName="StatusText" Property="FontWeight" Value="Normal"/>
+                        </Trigger>
+                        <!-- No status of its own: the word On and the line. -->
+                        <Trigger Property="Status" Value="">
+                            <Setter TargetName="StatusText" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="OnLine" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="Status" Value="{x:Null}">
+                            <Setter TargetName="StatusText" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="OnLine" Property="Visibility" Value="Visible"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -24,8 +24,7 @@
     </views:DialogWindow.Foot>
 
     <!-- The thing at stake (a device, a controller, a file, the rows an
-         update names), in the code face. Collapsed unless the caller
+         update names), in the secondary text color. Collapsed unless the caller
          passes one. -->
-    <TextBlock x:Name="DetailText" Visibility="Collapsed" TextWrapping="Wrap" FontSize="13"
-               FontFamily="{DynamicResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"/>
+    <TextBlock x:Name="DetailText" Visibility="Collapsed" TextWrapping="Wrap" FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
 </views:DialogWindow>

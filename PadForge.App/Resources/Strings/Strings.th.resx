@@ -88,7 +88,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>กำลังหยุดเอนจิน…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>กำลังทำงานบน {0}</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>กำลังทำงาน เชื่อมต่ออยู่ {0}</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>กำลังรอรับที่ :{0}</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>กำลังรอรับที่พอร์ต {0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>พอร์ต {0} ถูกใช้งานอยู่</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>ถูกปฏิเสธการเข้าถึงพอร์ต {0} (เรียกใช้ในฐานะผู้ดูแลระบบ)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>เริ่มไม่สำเร็จ</value></data>
@@ -106,7 +106,7 @@
   <data name="Common_Stop" xml:space="preserve"><value>หยุด</value></data>
   <data name="Common_Start" xml:space="preserve"><value>เริ่ม</value></data>
   <data name="Common_Record" xml:space="preserve"><value>บันทึกอินพุต</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>กำลังบันทึก...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>กำลังบันทึก…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>ล้าง</value></data>
   <data name="Common_Increase" xml:space="preserve"><value>เพิ่ม</value></data>
   <data name="Common_Decrease" xml:space="preserve"><value>ลด</value></data>
@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>เลื่อนไปทางขวาหนึ่งหน้า</value></data>
   <data name="Common_None" xml:space="preserve"><value>ไม่มี</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>วินาที</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>ยังไม่ได้กำหนด</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -134,7 +135,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>กำลังปิด PadForge...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>กำลังปิด PadForge…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>กำลังเริ่ม PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>กำลังล้างคอนโทรลเลอร์เสมือนที่ค้างจากเซสชันก่อนหน้า</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>เพิ่มคอนโทรลเลอร์</value></data>
@@ -240,7 +241,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← ซ้าย)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ ขึ้น)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>ไม่พบ SDL3.dll</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>ไม่พบ SDL3.dll! วาง SDL3.dll ไว้ข้าง PadForge.exe ดาวน์โหลดได้จาก https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>ไม่พบ SDL3.dll วาง SDL3.dll ไว้ข้าง PadForge.exe ดาวน์โหลดได้จาก https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>การดำเนินการกับไดรเวอร์ล้มเหลว: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>คัดลอกการตั้งค่าไปยังคลิปบอร์ดแล้ว</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>คัดลอกข้อมูลอุปกรณ์ไปยังคลิปบอร์ดแล้ว</value></data>
@@ -271,11 +272,11 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>โหลดการตั้งค่าจากดิสก์ใหม่แล้ว</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>ไม่พบไฟล์การตั้งค่าบนดิสก์</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>ไม่มีอุปกรณ์ที่เชื่อมต่ออยู่ให้บันทึกอินพุต</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>กำลังบันทึก: กดปุ่มหรือขยับแกนสำหรับ "{0}"...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>กำลังบันทึก: หมุนหรือเขย่าคอนโทรลเลอร์สำหรับ "{0}"...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>กำลังบันทึก: กดปุ่มหรือขยับแกนสำหรับ "{0}"…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>กำลังบันทึก: หมุนหรือเขย่าคอนโทรลเลอร์สำหรับ "{0}"…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>ไม่มีคอนโทรลเลอร์ในช่องนี้ที่มีเซนเซอร์สำหรับ "{0}"</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>กำลังบันทึก "{0}": กดอินพุตทิศทางขึ้น...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>กำลังบันทึก "{0}": ตอนนี้กดอินพุตทิศทางลง...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>กำลังบันทึก "{0}": กดอินพุตทิศทางขึ้น…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>กำลังบันทึก "{0}": ตอนนี้กดอินพุตทิศทางลง…</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>ยกเลิกการบันทึกแล้ว</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>การบันทึกสำหรับ "{0}" หมดเวลา</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>เอนจินเริ่มทำงานแล้ว</value></data>
@@ -294,7 +295,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>แสดงหรือซ่อน PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>เปิดหรือปิดคอนโทรลเลอร์เสมือน</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>อุปกรณ์ใดก็ได้ที่เชื่อมต่ออยู่</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>กำลังบันทึก...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>กำลังบันทึก…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} วิ)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>เมื่อ</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>บน</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>ยกเลิกการกำหนด "{0}" จากคอนโทรลเลอร์เสมือน {1} แล้ว</value></data>
@@ -327,6 +329,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>คอนโทรลเลอร์</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>ส่วนเสริมที่ใช้อยู่</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>เปิด {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>การตั้งค่าเริ่มต้น</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>สติ๊กซ้าย</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>สติ๊กขวา</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>อีก {0} รายการอยู่ใน [ส่วนเสริม] ส่วนเสริมจะปิดอยู่จนกว่าคุณจะเปิดใช้</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>เปิดส่วนเสริม</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>แสดง QR</value></data>
@@ -396,6 +403,10 @@
   <data name="Macro_EmptyHint" xml:space="preserve"><value>เลือกแมโครในรายการ หรือกด + ข้าง “แมโคร” เพื่อสร้างใหม่</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>ดิบ</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>เอาต์พุต</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>เส้นโค้ง</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>เลเยอร์ชิฟต์</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>กลับ</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>จุดสูงสุด</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>เย็น</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>แสดงตัวอย่าง</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>ส่วนเสริม</value></data>
@@ -694,7 +705,7 @@
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>ซ่อนอุปกรณ์จากเกม, คงการพรางอุปกรณ์ไว้ระหว่างการเปิดแต่ละครั้ง, แอปพลิเคชันในรายการที่อนุญาต</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>แอปพลิเคชันในรายการที่อนุญาต</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>แอปพลิเคชันเหล่านี้ยังมองเห็นอุปกรณ์ที่ซ่อนอยู่ได้ PadForge จะอยู่ในรายการที่อนุญาตโดยอัตโนมัติเสมอ</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>เพิ่ม...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>เพิ่ม…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge ติดตั้งไดรเวอร์นี้พร้อมคอนโทรลเลอร์เสมือนตัวแรกที่คุณสร้าง การถอนการติดตั้งจะแสดงรายการสิ่งที่ HIDMaestro ทิ้งไว้บนพีซีเครื่องนี้ก่อนลบออก</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>สร้างคอนโทรลเลอร์เสมือน</value></data>
@@ -713,6 +724,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>คงไว้</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>ยังไม่ได้อ่าน</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>ลบไม่ได้</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>อุปกรณ์</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>การลงทะเบียนอินเทอร์เฟซ</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>คีย์รีจิสทรีที่ใช้ร่วมกัน</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>ค่ารีจิสทรีที่ใช้ร่วมกัน</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>การผูก WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>การแทนที่ชื่อ OEM</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>คีย์ DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>การลงทะเบียน OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>แพ็กเกจไดรเวอร์</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>คีย์บริการ WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>คีย์รีจิสทรี</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>ใบรับรอง</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>โฟลเดอร์</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>การตั้งค่าบริการ</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>ขั้นตอนการลบ</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>ทำให้คอนโทรลเลอร์ PlayStation 3, PlayStation Move และคอนโทรลเลอร์ Navigation เชื่อมต่อผ่าน Bluetooth ได้ ฝังอยู่ใน PadForge และติดตั้งเมื่อมีการจับคู่ตัวใดตัวหนึ่งเป็นครั้งแรก</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>เชื่อมต่อคอนโทรลเลอร์ PlayStation 3 ผ่าน Bluetooth</value></data>
@@ -907,11 +933,11 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>พิมพ์ "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(ไม่มีข้อความ)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>ข้อความ</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>หน่วงเวลาต่ออักขระ (ms)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>หน่วงเวลาระหว่างตัวอักษร</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>จำนวนมิลลิวินาทีระหว่างอักขระที่พิมพ์ สูงสุด 1000 ค่า 0 จะพิมพ์ข้อความทั้งหมดในครั้งเดียว</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>ตัดการเชื่อมต่อเมื่อไม่ได้ใช้งาน</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>รายละเอียด</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>นาที (0 = ไม่ตัด)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>นาที</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>ตัดการเชื่อมต่อ Bluetooth เมื่อเสียบสาย USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>ชาร์จเร็ว เมื่อคอนโทรลเลอร์นี้รายงานว่ากำลังชาร์จขณะเชื่อมต่อผ่าน Bluetooth ระบบจะตัดการเชื่อมต่อ Bluetooth เพื่อให้ชาร์จได้โดยไม่ต้องจ่ายไฟให้ภาควิทยุ แหล่งจ่ายไฟ USB ทุกแบบนับรวมด้วย รวมถึงที่ชาร์จแบบเสียบผนัง หากคุณเปิด Bluetooth กลับมาขณะที่ยังเสียบสายอยู่ ระบบจะไม่ยุ่งกับการเชื่อมต่อนั้นจนกว่าจะถอดสายครั้งถัดไป</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>อ่านเป็นคอนโทรลเลอร์ iCade</value></data>
@@ -1002,7 +1028,7 @@
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>ชี้ Wii Remote ไปที่เป้าแล้วกด B</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Wii Remote มองไม่เห็นเซนเซอร์บาร์ ชี้ไปที่เป้าแล้วกด B อีกครั้ง</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>กด Esc หรือ Home เพื่อยกเลิก</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>ตัดการเชื่อมต่อคอนโทรลเลอร์ Bluetooth นี้หลังจากไม่มีอินพุตตามจำนวนนาทีที่กำหนด เพื่อให้เข้าสู่โหมดสลีปและประหยัดแบตเตอรี่ ไม่ทำงานเมื่อเชื่อมต่อผ่าน USB</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>ตัดการเชื่อมต่อคอนโทรลเลอร์ Bluetooth นี้หลังจากไม่มีอินพุตตามจำนวนนาทีที่กำหนด เพื่อให้เข้าสู่โหมดสลีปและประหยัดแบตเตอรี่ ใส่ 0 เพื่อปิดการทำงานนี้ ไม่ทำงานเมื่อเชื่อมต่อผ่าน USB</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>เปิด/ปิดเครื่อง</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>เมนู</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>ตกลง</value></data>
@@ -1068,6 +1094,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>แบตเตอรี่</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>เส้นทาง</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>หมายเลขซีเรียล</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID ของแอป</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>GUID ของ SDL</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>เฟิร์มแวร์</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>รุ่นปรับปรุง</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>อ่าน Chatpad</value></data>
@@ -1156,11 +1184,15 @@
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>ไจโรสโคป</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>เซนเซอร์วัดความเร่ง</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 แกน</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} แกน</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 ปุ่ม</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} ปุ่ม</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>แกน {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} แกน, {1} ปุ่ม, {2} POV</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>การสั่น</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>ไจโร</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>ความเร่ง</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>ซ่อนอุปกรณ์นี้จากโปรแกรมที่เปิดอุปกรณ์นี้เป็นอุปกรณ์ HID</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows ยังคงอ่านปุ่มที่คุณพิมพ์ จึงยังพิมพ์ได้ในทุกโปรแกรม รวมถึงเกม คีย์บอร์ด USB สามารถแยกออกจาก Windows ได้ด้วยปุ่ม “{0}”</value></data>
@@ -1346,7 +1378,7 @@
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>เมนบอร์ดและการ์ดจอ</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>แผ่นรองเมาส์ ชุดหูฟัง และแท่นวางชุดหูฟัง</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>เกมจะเข้าควบคุมทุกครั้งที่เขียนค่าแสงไฟ</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ป้อนสีฐานสิบหกหกหลัก (RRGGBB หรือ #RRGGBB) แล้วกด Enter หรือคลิกที่อื่นเพื่อนำไปใช้</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>นำสีนี้ออกจากจานสี</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>ปิด</value></data>
@@ -1548,6 +1580,7 @@
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>นำเข้า</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(อุปกรณ์ HID ไม่มีชื่อ)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>พบอินเทอร์เฟซ HID {0} รายการ</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>พบอินเทอร์เฟซ HID 1 รายการ</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>แจงนับไม่สำเร็จ: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>แยกข้อมูลไม่สำเร็จ: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>แยกวิเคราะห์ JSON ของโปรไฟล์ที่แยกออกมาไม่ได้ ไม่มีการบันทึกใด ๆ</value></data>
@@ -1660,7 +1693,7 @@
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>บันทึกการแมปทั้งหมดตามลำดับทีละรายการ</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>คัดลอกการแมปและการตั้งค่าทั้งหมดไปยังคลิปบอร์ด</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>วางการแมปและการตั้งค่าจากคลิปบอร์ด</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>คัดลอกจาก...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>คัดลอกจาก…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>คัดลอกการตั้งค่าจากอุปกรณ์อื่นที่กำหนดค่าไว้</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>รีเซ็ตทั้งหมด</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>ล้างทั้งหมด</value></data>
@@ -1848,7 +1881,7 @@
   <data name="Pad_More_Trigger" xml:space="preserve"><value>ช่วงเป็นตัวเลข, ค่าดิบ</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>ช่วง</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>“ปรับเทียบขอบเขต” จะวัดขอบที่สติ๊กไปถึงได้ แล้วปรับรูปทรงให้เป็นวงกลมสมบูรณ์ แถบเลื่อนสี่ตัวเพียงจำกัดแต่ละทิศทางเท่านั้น</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>กำลังเก็บตัวอย่าง...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>กำลังเก็บตัวอย่าง…</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>ค่าชดเชยกึ่งกลาง X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>ค่าชดเชยกึ่งกลาง Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>รูปทรงเดดโซน</value></data>
@@ -1959,6 +1992,7 @@
   <data name="Macro_DelayMs" xml:space="preserve"><value>หน่วงเวลา</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>ความไว</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>แมโครใหม่</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>แมโคร {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>บันทึกตัวเรียกใช้</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>ยังไม่ได้ตั้ง คลิกปุ่มบันทึก</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>ปุ่ม {0}</value></data>
@@ -2017,6 +2051,8 @@
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>สั่งการสั่นของอุปกรณ์จริงในช่องจากแมโคร แบบ “ตอบสนอง” จะทำงานเต็มความแรงตลอดช่วงเวลาคงค่า แล้วเฟดลงเป็นศูนย์ตลอดช่วงเวลาเฟด แบบ “ค้าง” จะคงความแรงเต็มที่จนกว่าจะมีแอ็กชัน “หยุดการสั่น” ทำงาน ซ้อนทับบนการสั่นที่เกมสั่งด้วย max() เพื่อให้รู้สึกถึงการตอบสนองที่ผู้ใช้สั่งได้เสมอ</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>สั่นเป็นพัลส์ {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>คงการสั่น {0} จนกว่าจะล้าง</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>ซ้าย {0}%, ขวา {1}%</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>ทริกเกอร์ซ้าย {0}%, ทริกเกอร์ขวา {1}%</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>หยุดการสั่น</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>หยุดการสั่น</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>ยกเลิกการแทนที่การสั่นที่ทำงานอยู่บนช่องที่กำหนด ใช้คู่กับแอ็กชัน “การสั่น” แบบค้าง เพื่อยกเลิกการคงค่าผ่านแมโครอื่น</value></data>
@@ -2055,7 +2091,7 @@
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>เมาส์ Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>ช่วงเวลา</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>เลือกบนหน้าจอ</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>จะจับตำแหน่งใน {0}...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>จะจับตำแหน่งใน {0}…</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>คลิก แล้วเลื่อนเคอร์เซอร์ไปยังเป้าหมาย ระบบจะจับตำแหน่งหลังนับถอยหลังสั้น ๆ</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>โหมด</value></data>
   <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>ระยะร่น X</value></data>
@@ -2727,9 +2763,9 @@
   <data name="Profiles_DropTile" xml:space="preserve"><value>วางไฟล์โปรไฟล์ที่นี่</value></data>
   <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD หรือ DS4Windows</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>โปรไฟล์ใหม่</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>บันทึกเป็น</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>บันทึกเป็น…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>บันทึกการตั้งค่าปัจจุบันที่นี่</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>แก้ไข</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>แก้ไข…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>โหลด</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>ในตัว</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>ยังไม่ได้ตั้งเกม</value></data>
@@ -2832,8 +2868,8 @@
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>รีเซ็ตค่าชดเชยกึ่งกลาง X</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>ปรับเทียบขอบเขต</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>ปรับเทียบขอบเขตใหม่</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>กวาดรอบขอบ... เหลือ {0}</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>ครอบคลุมแล้ว อีกหนึ่งรอบเพื่อปรับให้ละเอียด...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>กวาดรอบขอบ… เหลือ {0}</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>ครอบคลุมแล้ว อีกหนึ่งรอบเพื่อปรับให้ละเอียด…</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>ความกลม {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>กวาดสติ๊กไปรอบขอบเพื่อหาขอบเขตที่ไปถึงได้ แล้วปรับรูปร่างให้เป็นวงกลมเต็ม</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>รีเซ็ตการปรับเทียบขอบเขต</value></data>
@@ -2912,7 +2948,7 @@
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>ควบคุมระดับเสียงของแอปพลิเคชันที่ระบุในตัวผสมระดับเสียงของ Windows โดยปรับสเกลตามขีดจำกัดระดับเสียง ป้อนชื่อโปรเซส (ดูได้ในตัวจัดการงาน) ใช้กับตัวเรียกใช้ "ตลอดเวลา" หรือตัวเรียกใช้แบบปุ่ม/แกนคู่กับ "ขณะกดค้าง" + "จนกว่าจะปล่อย"</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>แมปแกนที่เลือกไปยังการเคลื่อนที่ของเมาส์ (หรือการเลื่อน) อย่างต่อเนื่อง ใช้กับตัวเรียกใช้ "ตลอดเวลา" หรือตัวเรียกใช้แบบปุ่ม/แกนคู่กับ "ขณะกดค้าง" + "จนกว่าจะปล่อย" สำหรับการใช้สติ๊กเป็นเมาส์ ให้สร้างสองแอ็กชัน: หนึ่งสำหรับแกน X และอีกหนึ่งสำหรับแกน Y</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>กลับทิศแกน</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>แสดง OSD ระดับเสียง</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>แสดงตัวบอกระดับเสียง</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>ทิศทาง</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>ใดก็ได้</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>บวก</value></data>
@@ -3139,7 +3175,7 @@
   <data name="Preview_CCOutputs" xml:space="preserve"><value>เอาต์พุต CC</value></data>
   <data name="Preview_NoteOutputs" xml:space="preserve"><value>เอาต์พุตโน้ต</value></data>
   <data name="Preview_Stick_Format" xml:space="preserve"><value>สติ๊ก {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>ทริกเกอร์ {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>ปุ่มทิศทาง</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>ปุ่ม</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -3156,7 +3192,6 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>ระดับ</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>หมดเวลาเมื่อไม่มีการใช้งาน</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>จำนวนวินาทีก่อนที่คอนโทรลเลอร์เสมือนจะถูกทำลายเมื่ออุปกรณ์ที่แมปไว้ทั้งหมดออฟไลน์ 0 คือปิดใช้งาน คอนโทรลเลอร์ประเภทเดียวกันที่เหลืออยู่จะเลื่อนขึ้นมาแทนที่ช่องว่างและผูกใหม่กับช่องที่ต่ำกว่า</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>วินาที (0 = ไม่เลย)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>เพิ่มเลเยอร์</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>เพิ่มเลเยอร์ชิฟต์ ซึ่งเป็นตารางการแมปชุดที่สองที่ทำงานขณะกดปุ่มค้างหรือสลับเปิดไว้</value></data>
@@ -3961,7 +3996,7 @@
     <value>รีเซ็ตหน่วงเวลาเป็น 0 (เลเยอร์ตอบสนองทันที)</value>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>คอนฟิกจากชุมชน</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>เรียกดูคอนฟิกคอนโทรลเลอร์ Steam Input ที่ชุมชนสร้าง แล้วแปลงเป็นโปรไฟล์ PadForge PadForge จะเชื่อมต่อกับเซิร์ฟเวอร์ของ Steam โดยตรงเฉพาะเมื่อคุณค้นหา เปิดคอนฟิก หรือตรวจหาการอัปเดตของคอนฟิกที่นำเข้าไว้ โดยจะส่งข้อความค้นหาของคุณ ID ของเกม คอนฟิก และผู้สร้างที่เกี่ยวข้อง และเวอร์ชันของ PadForge การเข้าสู่ระบบ Steam แบบไม่ระบุตัวตนยังส่งเวอร์ชัน Windows ของคุณ และ ID เครื่องที่สร้างจากค่าแฮชของ ID การติดตั้ง Windows ที่อยู่ของอะแดปเตอร์เครือข่าย และหมายเลขซีเรียลของดิสก์บูต ไม่มีการเก็บข้อมูลการใช้งาน ไม่มีบริการของบุคคลที่สาม ไม่ต้องใช้บัญชี Steam</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>เรียกดูคอนฟิกคอนโทรลเลอร์ Steam Input ที่ชุมชนสร้าง แล้วแปลงเป็นโปรไฟล์ PadForge PadForge จะส่งข้อความค้นหาของคุณ ID ของเกม คอนฟิก และผู้สร้างที่เกี่ยวข้อง และเวอร์ชันของตัวเอง การเข้าสู่ระบบ Steam แบบไม่ระบุตัวตนยังส่งเวอร์ชัน Windows ของคุณ และ ID เครื่องที่สร้างจากค่าแฮชของ ID การติดตั้ง Windows ที่อยู่ของอะแดปเตอร์เครือข่าย และหมายเลขซีเรียลของดิสก์บูต ไม่มีบริการของบุคคลที่สามเข้ามาเกี่ยวข้อง</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge จะเชื่อมต่อกับเซิร์ฟเวอร์ของ Steam เฉพาะเมื่อคุณค้นหา เปิดคอนฟิก หรือตรวจหาการอัปเดตของคอนฟิกที่นำเข้าไว้ ไม่มีการเก็บข้อมูลการใช้งาน ไม่ต้องใช้บัญชี Steam</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>สิ่งที่ถูกส่ง</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>เปิดใช้คอนฟิกจากชุมชน</value></data>
@@ -4018,6 +4053,9 @@
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam ไม่มีไฟล์ให้ดาวน์โหลดสำหรับคอนฟิกนี้ และไม่มีสำเนาของคอนฟิกนี้ในโฟลเดอร์ Steam ของคุณ สมัครรับคอนฟิกนี้ใน Steam แล้ว PadForge จะอ่านจากที่นั่น</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>เปิดในเวิร์กชอปของ Steam</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>รุ่นเก่า</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>โปรไฟล์ Workshop</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>แมโคร Workshop</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>ขอบเขตเคอร์เซอร์</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>เลือกคอนฟิกเพื่อดูสิ่งที่แปลงมา</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>สิ่งที่แปลงมา</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>กลายเป็น</value></data>
@@ -4395,6 +4433,7 @@
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>ปานกลาง (ฟังสบาย)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>สูง (ฟังสบาย)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>กำหนดเอง</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b ค่าเริ่มต้น</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>ความถี่ตัด</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>ความถี่ครอสโอเวอร์ ต่ำกว่าค่านี้แชนเนลจะผสมเข้าหาโมโน สูงกว่าค่านี้แชนเนลจะยังแยกกัน ความถี่ตัดที่ต่ำลงจึงครอสฟีดน้อยลง</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>ฟีด</value></data>
@@ -4422,7 +4461,8 @@
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>ล้าง</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>นำเข้าจากคลิปบอร์ด</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>คัดลอกโปรไฟล์ AutoEq สำหรับหูฟังของคุณ แล้วคลิกปุ่มนี้ จะแทนที่แบนด์และตั้งค่าปรีแอมป์ หากคลิปบอร์ดไม่มีข้อมูลที่อ่านได้ EQ ปัจจุบันจะไม่เปลี่ยนแปลง</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>นำเข้าจากไฟล์</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>นำเข้าจากไฟล์…</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>นำเข้า EQ แบบพาราเมตริก</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>เลือกไฟล์ .txt ที่ AutoEq ดาวน์โหลดมา ควรใช้วิธีนี้ เพราะ autoeq.app ให้เป็นไฟล์ ไม่ใช่ข้อความที่คัดลอกได้</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>สำหรับการปรับแก้ที่ตรงกับหูฟังของคุณ: เปิด autoeq.app เลือกรุ่นของคุณ เลือก Custom Parametric Eq แล้วดาวน์โหลด จากนั้นใช้ “นำเข้าจากไฟล์” ไฟล์ดาวน์โหลดแบบ Graphic Eq ไม่มีบรรทัดฟิลเตอร์และจะนำเข้าไม่ได้</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>นำเข้า {0} แบนด์พร้อมปรีแอมป์ {1:0.#} dB จาก {2} แล้ว</value></data>
@@ -4475,6 +4515,7 @@
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>เครือข่ายนี้สร้างการเชื่อมต่อโดยตรงไม่ได้ (ดูเหมือนเป็นฮอตสปอตมือถือหรือ NAT ระดับผู้ให้บริการ) ใช้ VPN เช่น Tailscale หรือเชื่อมต่อจากบรอดแบนด์ที่บ้าน</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>ไม่พบที่อยู่สาธารณะของพีซีเครื่องนี้ (เครือข่ายอาจบล็อกทราฟฟิกที่จำเป็น) การเชื่อมต่อโดยตรงจะใช้ไม่ได้ที่นี่ ใช้ VPN หรือ “เชื่อมต่อด้วยที่อยู่” ในเครือข่ายเดียวกัน</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>แบตเตอรี่คอนโทรลเลอร์ใกล้หมด</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>คอนโทรลเลอร์</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: แบตเตอรี่เหลือ {1}%</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>การแจ้งเตือนแบตเตอรี่</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>รับการแจ้งเตือนเมื่อแบตเตอรี่ของคอนโทรลเลอร์ใกล้หมด ก่อนที่จะดับกลางเกม</value></data>
@@ -4691,7 +4732,7 @@
     <value>สร้างคอนโทรลเลอร์เสมือนบนพีซีอีกเครื่อง แล้วรีเฟรช</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>กำลังรอพีซีอีกเครื่อง...</value>
+    <value>กำลังรอพีซีอีกเครื่อง…</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>แท็บเล็ตวาดภาพ</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>อินพุตที่ใช้ร่วมกัน</value></data>
@@ -4753,7 +4794,7 @@
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>ตำแหน่งติดตั้ง SteamVR ต้องเป็นพาธเต็ม เช่น C:\SteamVR</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>ตำแหน่งติดตั้ง SteamVR เป็นรูทของไดรฟ์ไม่ได้ เลือกโฟลเดอร์ เช่น C:\SteamVR</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd ทำงานไม่เสร็จภายใน 60 นาที</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd ทำงานแล้ว แต่ SteamVR ไม่ได้ถูกติดตั้งลงใน {0} steamcmd แจ้งว่า: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd ทำงานแล้ว แต่ SteamVR ไม่ได้ถูกติดตั้งลงใน {0} steamcmd แจ้งว่า: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>ติดตั้ง HidHide แล้ว แต่อุปกรณ์ควบคุมของ HidHide ไม่เปิด จึงไม่ได้เพิ่มตัวกรองคลาส</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>HidHide ยังอยู่ในรายการตัวกรองคลาส จึงยังคงไดรเวอร์ไว้ตามเดิม</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>กำลังลบไดรเวอร์รุ่นเก่า…</value></data>

@@ -237,6 +237,13 @@ namespace PadForge.ViewModels
             }
         }
 
+        private CommunityToolkit.Mvvm.Input.RelayCommand _resetCommand;
+
+        /// <summary>Puts the value back to the effect's own default for this
+        /// parameter, as every other row of a step has its reset.</summary>
+        public CommunityToolkit.Mvvm.Input.RelayCommand ResetValueCommand
+            => _resetCommand ??= new CommunityToolkit.Mvvm.Input.RelayCommand(() => Value = Parameter.Default);
+
         internal void RaiseLabelChanged() => OnPropertyChanged(nameof(Label));
         internal void RaisePropertyChangedForValue() => OnPropertyChanged(nameof(Value));
     }

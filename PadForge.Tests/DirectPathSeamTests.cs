@@ -2321,7 +2321,7 @@ namespace PadForge.Tests
         {
             string En(string key) => Strings.ResourceManager.GetString(key, CultureInfo.InvariantCulture);
             Assert.Equal("Play Rumble on This Mouse", En("Devices_DriverBind_TouchSenseMouse"));
-            Assert.Equal("PadForge moves this mouse to Windows' WinUSB driver so it can play rumble on it. Windows then stops using this mouse as a pointer until its driver is restored. PadForge moves the pointer from it only while PadForge runs and the mouse is assigned to a Keyboard + Mouse virtual controller. Restore the Windows driver from this page at any time.",
+            Assert.Equal("PadForge moves this mouse to Windows\u2019 WinUSB driver so it can play rumble on it. Windows then stops using this mouse as a pointer until its driver is restored. PadForge moves the pointer from it only while PadForge runs and the mouse is assigned to a Keyboard + Mouse virtual controller. Restore the Windows driver from this page at any time.",
                 En("Devices_DriverConfirm_TouchSenseMouse"));
             Assert.Contains(En("ControllerType_KeyboardMouse"), En("Devices_DriverConfirm_TouchSenseMouse"));
             Assert.EndsWith(LastSentence(En("Devices_DriverConfirm_Prodikeys")), En("Devices_DriverConfirm_TouchSenseMouse"));

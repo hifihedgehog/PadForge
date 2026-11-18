@@ -80,6 +80,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Pichay</value></data>
   <data name="Common_None" xml:space="preserve"><value>Mana imapas</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>segundokuna</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -91,7 +92,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge wisq'akuchkan...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge wisq'akuchkan…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge qallarichkan…</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>PadForge-ta rikuchiy</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Motor sayachisqa</value></data>
@@ -160,8 +161,12 @@
   <data name="Pad_Kind_AnalogPull" xml:space="preserve"><value>Analógico aysay</value></data>
   <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, lluq'i maki</value></data>
   <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, paña maki</value></data>
-  <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
-  <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>Chawa</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>Lluqsiq</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Curva</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Shift capakuna</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>T'ikrasqa</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>Punta</value></data>
   <data name="GameMods_PortInUse_Format" xml:space="preserve"><value>{0} puertota huk programa llamk'achishan, DSX hina. Chay programata wisq'ay, utaq huk puertota akllay.</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>Remote Link</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>HIDMaestro-ta desinstalay</value></data>
@@ -179,6 +184,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Waqaychasqa</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Mana ñawinchasqa</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Mana urqhusqa</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Dispositivo</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Interfazpa registron</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Registropa rakinakusqa llaven</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Registropa rakinakusqa valornin</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>WinUSB-pa watasqan</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>OEM sutipa rantin</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>DeviceOverrides llave</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>OpenVR-pa registron</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Controladorpa paqueten</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>WUDF serviciopa llaven</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Registropa llaven</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Certificado</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Carpeta</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Serviciopa configuracionnin</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Urqhuypa patan</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>PlayStation 3 controlkuna, PlayStation Move, Navigation controlpas Bluetooth-wan tinkikunankupaq. PadForge ukhupi kachkan, ñawpaq kutipi hukninta emparejaqtiyki instalakun.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>PlayStation 3 controlkunata Bluetooth-wan tinkichin.</value></data>
@@ -242,7 +262,7 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>"{0}" qillqay</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(mana qillqa kanchu)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Qillqa</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutokuna (0 = mana hayk'aqpas)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutokuna</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Teclado hina ñawinchay</value></data>
   <data name="Devices_BlissBoxPlayer" xml:space="preserve"><value>Pukllaqpa yupaynin…</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Pukllaqpa yupaynin</value></data>
@@ -276,8 +296,13 @@
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>Giroscopio</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>Acelerómetro</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 eje</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} eje</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 boton</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} boton</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>Eje {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} ejekuna, {1} botonkuna, {2} POV</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>Vibración</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Giroscopio</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
@@ -322,7 +347,7 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>K'anchaykuna</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>K'anchaykuna</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Lightbarta ñawpaqman kutichiy</value></data>
   <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>Force feedbackta ñawpaqman kutichiy</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>{0} ñawpaqman kutichiy</value></data>
@@ -431,6 +456,7 @@
   <data name="Macro_Count" xml:space="preserve"><value>Yupay</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Musuq macro</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Macro {0}</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Botón {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(mana ima)</value></data>
   <data name="Macro_DeviceAxis_Format" xml:space="preserve"><value>Dispositivoq ejen {0}</value></data>
@@ -751,7 +777,7 @@
   <data name="Macro_Axis_Half" xml:space="preserve"><value>kuskan eje</value></data>
   <data name="Pad_Mapping_Accel" xml:space="preserve"><value>Aceleración</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Ejeta t'ikray</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Volumen OSD rikuchiy</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Volumen rikuchiqta rikuchiy</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Mayqinpas</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positivo</value></data>
   <data name="Macro_AxisDirection_Negative" xml:space="preserve"><value>Negativo</value></data>
@@ -927,7 +953,6 @@
   <data name="Settings_AudioRumble_Sensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Lluq'i motor</value></data>
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Paña motor</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>segundokuna (0 = mana hayk'aq)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Capata yapay</value></data>
   <data name="Pad_Shift_BaseTabLabel" xml:space="preserve"><value>Base</value></data>
@@ -1195,6 +1220,7 @@
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Kay PC-pa códigon</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Controlpa baterían pisiña</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Control</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% batería puchun</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Batería willakuykuna</value></data>
   <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Batería pisiyaptin willay</value></data>
@@ -1538,6 +1564,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Batería</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Ñan</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Serie yupay</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>App GUID</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Revisión</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>{0} nisqapaq astawan</value></data>

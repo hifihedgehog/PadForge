@@ -84,7 +84,7 @@
   <data name="Common_Running" xml:space="preserve"><value>실행 중</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>{0}에서 실행 중</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>실행 중, {0}개 연결됨</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>:{0}에서 수신 대기 중</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>포트 {0}에서 수신 대기 중</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>포트 {0} 사용 중</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>포트 {0} 접근 거부됨 (관리자로 실행)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>시작 실패</value></data>
@@ -102,7 +102,7 @@
   <data name="Common_Stop" xml:space="preserve"><value>중지</value></data>
   <data name="Common_Start" xml:space="preserve"><value>시작</value></data>
   <data name="Common_Record" xml:space="preserve"><value>기록</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>기록 중...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>기록 중…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>지우기</value></data>
   <data name="Common_Increase" xml:space="preserve"><value>증가</value></data>
   <data name="Common_Decrease" xml:space="preserve"><value>감소</value></data>
@@ -116,6 +116,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>오른쪽으로 한 페이지</value></data>
   <data name="Common_None" xml:space="preserve"><value>없음</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>초</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>할당되지 않음</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -130,7 +131,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge를 종료하는 중...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge를 종료하는 중…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge를 시작하는 중…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>이전 세션에서 남은 가상 컨트롤러를 정리하는 중입니다.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>컨트롤러 추가</value></data>
@@ -236,7 +237,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← 왼쪽)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ 위)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll을 찾을 수 없습니다</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll을 찾을 수 없습니다! PadForge.exe 옆에 SDL3.dll을 배치하십시오. https://github.com/libsdl-org/SDL/releases 에서 다운로드하십시오.</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll을 찾을 수 없습니다. PadForge.exe 옆에 SDL3.dll을 배치하십시오. https://github.com/libsdl-org/SDL/releases 에서 다운로드하십시오</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>드라이버 작업 실패: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>설정이 클립보드에 복사되었습니다.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>장치 정보가 클립보드에 복사되었습니다.</value></data>
@@ -262,8 +263,8 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>디스크에서 설정을 다시 로드했습니다.</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>디스크에서 설정 파일을 찾을 수 없습니다.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>기록할 장치가 연결되어 있지 않습니다.</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>기록 중: "{0}"에 대해 버튼을 누르거나 축을 움직이십시오...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>기록 중: "{0}"에 대해 컨트롤러를 돌리거나 흔드십시오...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>기록 중: "{0}"에 대해 버튼을 누르거나 축을 움직이십시오…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>기록 중: "{0}"에 대해 컨트롤러를 돌리거나 흔드십시오…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>이 슬롯의 어떤 컨트롤러에도 "{0}"용 센서가 없습니다.</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>기록이 취소되었습니다.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>"{0}"에 대한 기록 시간이 초과되었습니다.</value></data>
@@ -283,7 +284,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge 표시 또는 숨기기</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>가상 컨트롤러 켜기 또는 끄기</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>연결된 모든 장치</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>기록 중...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>기록 중…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0}초)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>실행 조건</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>장치</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}"을(를) 가상 컨트롤러 {1}에서 해제했습니다.</value></data>
@@ -316,6 +318,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>컨트롤러</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>사용 중인 추가 기능</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>켬. {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>기본 설정</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>왼쪽 스틱</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>오른쪽 스틱</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>[추가 기능]에 {0}개가 더 있습니다. 추가 기능은 켜기 전에는 꺼져 있습니다.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>추가 기능 열기</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>QR 표시</value></data>
@@ -468,7 +475,7 @@
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>게임에서 장치 숨기기, 실행 간 장치 숨김 유지, 화이트리스트 응용 프로그램</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>화이트리스트 응용 프로그램</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>이 응용 프로그램은 숨겨진 장치를 계속 볼 수 있습니다. PadForge는 항상 자동으로 화이트리스트에 포함됩니다.</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>추가...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>추가…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge는 처음 만드는 가상 컨트롤러와 함께 이 드라이버를 설치합니다. 제거하면 HIDMaestro가 이 PC에 남긴 항목을 먼저 보여 줍니다.</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>가상 컨트롤러를 만듭니다.</value></data>
@@ -487,6 +494,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>유지됨</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>읽지 못함</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>제거 안 됨</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>장치</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>인터페이스 등록</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>공유 레지스트리 키</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>공유 레지스트리 값</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>WinUSB 바인딩</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>OEM 이름 재정의</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>DeviceOverrides 키</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>OpenVR 등록</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>드라이버 패키지</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>WUDF 서비스 키</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>레지스트리 키</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>인증서</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>폴더</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>서비스 설정</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>제거 단계</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>PlayStation 3 컨트롤러, PlayStation Move, Navigation 컨트롤러를 Bluetooth로 연결할 수 있게 합니다. PadForge에 내장되어 있으며 이 중 하나를 처음 페어링할 때 설치됩니다.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Bluetooth로 PlayStation 3 컨트롤러를 연결합니다.</value></data>
@@ -654,6 +676,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>배터리</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>경로</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>일련번호</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>앱 GUID</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>펌웨어</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>리비전</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>채팅패드 읽기</value></data>
@@ -741,11 +765,15 @@
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>자이로스코프</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>가속도계</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>축 1개</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>축 {0}개</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>버튼 1개</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>버튼 {0}개</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>POV 1개</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>POV {0}개</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>축 {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>축 {0}개, 버튼 {1}개, POV {2}개</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>진동</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>자이로</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>가속</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>HID 장치로 이 장치를 여는 프로그램에서 숨깁니다</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows는 입력하는 키를 계속 읽으므로 게임을 포함한 모든 프로그램에서 계속 입력할 수 있습니다. USB 키보드는 “{0}” 버튼으로 Windows에서 분리할 수 있습니다.</value></data>
@@ -795,7 +823,8 @@
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>가져온 항목이 없습니다. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>가져오기</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(이름 없는 HID 장치)</value></data>
-  <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0}개의 HID 인터페이스를 찾았습니다.</value></data>
+  <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>HID 인터페이스 {0}개를 찾았습니다.</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>HID 인터페이스 1개를 찾았습니다.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>열거 실패: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>추출 실패: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>추출된 프로필 JSON을 구문 분석할 수 없어 저장된 항목이 없습니다.</value></data>
@@ -839,7 +868,7 @@
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>모든 매핑을 하나씩 순서대로 기록합니다</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>모든 매핑 및 설정을 클립보드에 복사합니다</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>클립보드에서 매핑 및 설정을 붙여넣습니다</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>복사 원본...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>복사 원본…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>다른 설정된 장치에서 설정을 복사합니다</value></data>
   <data name="Pad_RawAxisValue" xml:space="preserve"><value>원시 축 값</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>전체 초기화</value></data>
@@ -1028,7 +1057,7 @@
   <data name="Pad_More_Trigger" xml:space="preserve"><value>숫자로 입력하는 범위, 원시 값</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>범위</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>경계 보정은 스틱이 도달할 수 있는 가장자리를 측정해 완전한 원으로 다시 맞춥니다. 슬라이더 4개는 각 방향의 최대 범위만 제한합니다.</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>샘플링 중...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>샘플링 중…</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>중앙 오프셋 X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>중앙 오프셋 Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>데드존 형태</value></data>
@@ -1139,6 +1168,7 @@
   <data name="Macro_DelayMs" xml:space="preserve"><value>지연</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>감도</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>새 매크로</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>매크로 {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>트리거 기록</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>설정되지 않음, 기록을 클릭하십시오</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>버튼 {0}</value></data>
@@ -1197,6 +1227,8 @@
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>매크로에서 슬롯의 물리 기기 진동을 구동합니다. Reactive는 유지 시간 동안 최대 강도로 작동한 다음 페이드 구간 동안 선형으로 0까지 감소합니다. Sticky는 진동 정지 액션이 실행될 때까지 최대 강도를 유지합니다. 게임 구동 진동 위에 max()로 겹쳐지므로 사용자 피드백은 항상 느껴집니다.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>진동 {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>진동 {0} 해제까지 유지</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>왼쪽 {0}%, 오른쪽 {1}%</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>왼쪽 트리거 {0}%, 오른쪽 트리거 {1}%</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>진동 정지</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>진동 정지</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>할당된 슬롯에서 활성 상태인 진동 오버라이드를 해제합니다. Sticky 진동 액션과 짝지어 다른 매크로에서 유지를 해제하세요.</value></data>
@@ -1275,9 +1307,9 @@
   <data name="Profiles_DropTile" xml:space="preserve"><value>프로필 파일을 여기에 놓으세요</value></data>
   <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD 또는 DS4Windows</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>새 프로필</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>다른 이름으로 저장</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>다른 이름으로 저장…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>현재 설정을 여기에 저장</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>편집</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>편집…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>로드</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>기본 제공</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>게임 미설정</value></data>
@@ -1339,7 +1371,7 @@
   <data name="Preview_CCOutputs" xml:space="preserve"><value>CC 출력</value></data>
   <data name="Preview_NoteOutputs" xml:space="preserve"><value>노트 출력</value></data>
   <data name="Preview_Stick_Format" xml:space="preserve"><value>스틱 {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>트리거 {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-Pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>버튼</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -1382,8 +1414,8 @@
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>중앙 오프셋 X 초기화</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>경계 보정</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>경계 재보정</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>가장자리를 훑으세요... {0}개 남음</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>커버 완료. 정밀도를 위해 한 바퀴 더...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>가장자리를 훑으세요… {0}개 남음</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>커버 완료. 정밀도를 위해 한 바퀴 더…</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>원형도 {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>스틱으로 가장자리를 훑어 도달 가능한 경계를 측정한 뒤 완전한 원으로 변형합니다.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>경계 보정 재설정</value></data>
@@ -1426,7 +1458,7 @@
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Windows 볼륨 믹서에서 특정 앱의 볼륨을 한도에 맞게 조정합니다. 프로세스 이름을 입력하세요 (작업 관리자에서 확인). "항상" 트리거, 또는 "누르는 동안" + "놓을 때까지"와 함께 버튼/축 트리거를 사용하세요.</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>선택한 축을 마우스 이동(또는 스크롤)에 지속적으로 매핑합니다. "항상" 트리거, 또는 "누르는 동안" + "놓을 때까지"와 함께 버튼/축 트리거를 사용하세요. 스틱→마우스의 경우 X축과 Y축에 각각 하나씩 두 개의 액션을 만드세요.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>축 반전</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>볼륨 OSD 표시</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>볼륨 표시기 표시</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>방향</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>모두</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>양의 방향</value></data>
@@ -1944,7 +1976,6 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>엔진 중지 중…</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>비활성 시간 초과</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>매핑된 모든 장치가 오프라인일 때 가상 컨트롤러가 제거되기까지의 시간(초)입니다. 0이면 비활성화됩니다. 남은 동일한 유형의 컨트롤러는 빈 자리를 메우기 위해 위로 이동하고 더 낮은 슬롯에 다시 바인딩됩니다.</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>초 (0 = 안 함)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>사용자 모드 가상 HID 컨트롤러 엔진 (ViGEmBus 및 vJoy 대체).</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -2059,7 +2090,7 @@
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>메인보드와 그래픽 카드</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>마우스패드, 헤드셋, 헤드셋 스탠드</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>게임이 조명을 쓰면 게임이 우선합니다.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>16진수</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>여섯 자리 16진수 색상(RRGGBB 또는 #RRGGBB)을 입력하고 Enter 키를 누르거나 다른 곳을 클릭하면 적용됩니다.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>이 색상을 팔레트에서 제거</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>끔</value></data>
@@ -2984,8 +3015,8 @@
   <data name="About_VoskDesc" xml:space="preserve"><value>음성 매크로 문구를 인식하는 오프라인 음성 인식기. Alpha Cephei 제작. 모델은 PadForge에 포함되어 있습니다.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Remote Link 페어링 및 전송을 위한 암호화(X25519, Ed25519, ChaCha20-Poly1305).</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>기록 중 "{0}": 위 방향 입력을 누르십시오...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>기록 중 "{0}": 이제 아래 방향 입력을 누르십시오...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>기록 중 "{0}": 위 방향 입력을 누르십시오…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>기록 중 "{0}": 이제 아래 방향 입력을 누르십시오…</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>복제</value></data>
   <data name="Common_Rename" xml:space="preserve"><value>이름 바꾸기</value></data>
   <data name="Macro_CopyNameFormat" xml:space="preserve"><value>{0} (복사본)</value></data>
@@ -3175,7 +3206,7 @@
   <data name="MacroAction_RunProgram_WorkingDir_Tooltip" xml:space="preserve"><value>선택 사항. 프로그램이 현재 디렉터리로 사용하는 폴더입니다. 프로그램 파일이 있는 폴더가 아닙니다. 비워 두면 기본값이 사용됩니다.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>유휴 연결 해제</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>세부 정보</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>분 (0 = 안 함)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>분</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB 연결 시 Bluetooth 연결 해제</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>퀵 차지. 이 컨트롤러가 Bluetooth로 연결된 상태에서 충전 중이라고 보고하면 Bluetooth 링크를 끊어 무선에 전력을 쓰지 않고 충전합니다. 벽 충전기를 포함한 모든 USB 전원이 해당됩니다. 케이블을 꽂은 채 Bluetooth를 다시 연결하면 다음에 케이블을 뽑을 때까지 그대로 둡니다.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>iCade 컨트롤러로 읽기</value></data>
@@ -3266,7 +3297,7 @@
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Wii 리모컨으로 표적을 가리키고 B를 누르세요.</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Wii 리모컨이 센서 바를 인식하지 못했습니다. 표적을 가리키고 B를 다시 누르세요.</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc 또는 Home으로 취소</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>입력이 없는 상태로 설정한 분이 지나면 이 Bluetooth 컨트롤러의 연결을 끊어 절전 상태로 전환하고 배터리를 절약합니다. USB 연결 시에는 작동하지 않습니다.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>입력이 없는 상태로 설정한 분이 지나면 이 Bluetooth 컨트롤러의 연결을 끊어 절전 상태로 전환하고 배터리를 절약합니다. 0으로 설정하면 꺼집니다. USB 연결 시에는 작동하지 않습니다.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>전원</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>메뉴</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>확인</value></data>
@@ -3351,8 +3382,12 @@
   <data name="Ds3Pair_Working" xml:space="preserve"><value>컨트롤러를 설정하는 중입니다. USB 연결을 유지하세요.</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>벼리는 중</value></data>
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>실행 중: {0} / {1}</value></data>
-  <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
-  <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>출력</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>곡선</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>시프트 레이어</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>반전</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>최댓값</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>원시</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>목록에서 매크로를 선택하거나 ‘매크로’ 옆의 +를 눌러 새로 만드세요.</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>장치</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>입력 장치</value></data>
@@ -3427,11 +3462,11 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>값은 [장치]의 게임 텔레메트리 행입니다. 컨트롤러의 매핑 섹션에서 매핑하거나 매크로를 실행하는 데 사용하세요.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>메뉴의 위치, 크기, 불투명도는 컨트롤러의 [매크로 및 메뉴] 섹션에 있는 해당 메뉴에서 설정합니다.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>소스</value></data>
-  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack 및 해당 UDP 형식을 보내는 모든 프로그램</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack 및 해당 UDP 형식을 보내는 모든 프로그램.</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>범위</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>축별 범위. 0은 위의 범위를 따릅니다.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>PadForge가 모르는 게임</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>보내기 전에 실행 중인 DSX를 찾는 모드용</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>보내기 전에 실행 중인 DSX를 찾는 모드용.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>표시 항목</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>메뉴가 열려 있는 동안의 링, 격자 또는 바</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>시프트 레이어가 켜질 때 레이어 이름, 해당 레이어가 정한 시간 동안</value></data>
@@ -3574,7 +3609,7 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>"{0}" 입력</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(텍스트 없음)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>텍스트</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>문자 간격 (ms)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>글자 사이 지연</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>입력되는 문자 사이의 밀리초입니다(최대 1000). 0이면 전체 텍스트를 한 번에 입력합니다.</value></data>
   <data name="Mapping_NunchukLean" xml:space="preserve"><value>눈차크 기울임</value></data>
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>왼쪽 Joy-Con 기울임</value></data>
@@ -3770,13 +3805,13 @@
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>마우스 Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>간격</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>화면에서 선택</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>{0}초 후 캡처...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>{0}초 후 캡처…</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>클릭한 다음 커서를 대상 위로 이동하십시오. 짧은 카운트다운 후 위치가 캡처됩니다.</value></data>
   <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>터치패드 {0} 손가락 {1} 압력</value></data>
   <data name="Mapping_TouchpadFingerRing_Format" xml:space="preserve"><value>터치패드 {0} 손가락 {1} 링</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>게임패드 {0}</value></data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>커뮤니티 구성</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>커뮤니티가 만든 Steam Input 컨트롤러 구성을 둘러보고 PadForge 프로필로 변환합니다. PadForge는 검색할 때, 구성을 열 때, 가져온 구성의 업데이트를 확인할 때만 Steam 서버에 직접 연결합니다. 검색어, 관련된 게임·구성·제작자의 ID, PadForge 버전을 전송합니다. 익명 Steam 로그온은 Windows 버전과, Windows 설치 ID·네트워크 어댑터 주소·부팅 디스크 일련번호의 해시로 만든 머신 ID도 전송합니다. 텔레메트리 없음, 서드파티 서비스 없음, Steam 계정 불필요.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>커뮤니티가 만든 Steam Input 컨트롤러 구성을 둘러보고 PadForge 프로필로 변환합니다. PadForge는 검색어, 관련된 게임, 구성, 제작자의 ID, 그리고 PadForge 버전을 전송합니다. 익명 Steam 로그온은 Windows 버전과, Windows 설치 ID, 네트워크 어댑터 주소, 부팅 디스크 일련번호의 해시로 만든 머신 ID도 전송합니다. 서드파티 서비스는 관여하지 않습니다.</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge는 검색할 때, 구성을 열 때, 가져온 구성의 업데이트를 확인할 때만 Steam 서버에 연결합니다. 텔레메트리 없음, Steam 계정 불필요.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>전송되는 내용</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>커뮤니티 구성 사용</value></data>
@@ -3833,6 +3868,9 @@
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam에 이 구성의 다운로드할 파일이 없고 Steam 폴더에도 사본이 없습니다. Steam에서 구독하면 PadForge가 그곳에서 읽어옵니다.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam 창작마당에서 열기</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>레거시</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop 프로필</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop 매크로</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>커서 영역</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>구성을 선택하면 변환되는 내용을 볼 수 있습니다.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>변환되는 내용</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>변환 대상</value></data>
@@ -4333,6 +4371,7 @@
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>보통(부드럽게)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>강하게(부드럽게)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>사용자 지정</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b 기본값</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>차단 주파수</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>크로스오버 주파수입니다. 이보다 낮으면 좌우가 모노에 가까워지고 높으면 분리된 상태로 남습니다. 차단 주파수가 낮을수록 덜 섞입니다.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>레벨 차이</value></data>
@@ -4360,7 +4399,8 @@
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>지우기</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>클립보드에서 가져오기</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>사용 중인 헤드폰의 AutoEq 프로필을 복사한 뒤 클릭하세요. 대역을 교체하고 프리앰프를 설정합니다. 읽을 수 있는 내용이 없으면 현재 EQ는 그대로 둡니다.</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>파일에서 가져오기</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>파일에서 가져오기…</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>파라메트릭 EQ 가져오기</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>AutoEq가 내려받은 .txt를 선택합니다. autoeq.app은 복사할 수 있는 텍스트가 아니라 파일을 제공하므로 보통 이쪽을 사용합니다.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>헤드폰에 맞춘 보정을 적용하려면 autoeq.app을 열어 모델을 고르고 Custom Parametric Eq를 내려받은 다음 파일에서 가져오기를 실행합니다. Graphic Eq 내려받기에는 필터 줄이 없어 가져올 수 없습니다.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{2}에서 밴드 {0}개와 프리앰프 {1:0.#} dB를 가져왔습니다.</value></data>
@@ -4424,6 +4464,7 @@
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>새 코드</value></data>
   <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>이 장치를 진동시켜 어느 장치인지 알 수 있게 합니다.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>컨트롤러 배터리 부족</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>컨트롤러</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: 배터리 {1}% 남음</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>배터리 알림</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>컨트롤러 배터리가 부족해지면 게임 중 꺼지기 전에 알려줍니다.</value></data>
@@ -4640,7 +4681,7 @@
     <value>다른 PC에서 가상 컨트롤러를 만든 다음 새로 고침하세요.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>다른 PC를 기다리는 중...</value>
+    <value>다른 PC를 기다리는 중…</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>펜 태블릿</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>공유 입력</value></data>
@@ -4702,7 +4743,7 @@
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>SteamVR 설치 위치는 C:\SteamVR처럼 전체 경로여야 합니다.</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>SteamVR 설치 위치는 드라이브의 루트일 수 없습니다. C:\SteamVR 같은 폴더를 선택하세요.</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd가 60분 안에 끝나지 않았습니다.</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd가 실행되었지만 SteamVR이 {0}에 설치되지 않았습니다. steamcmd 출력: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd가 실행되었지만 SteamVR이 {0}에 설치되지 않았습니다. steamcmd 출력: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>HidHide가 설치되었지만 제어 장치가 열리지 않아 클래스 필터를 추가하지 않았습니다.</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>HidHide가 아직 클래스 필터로 등록되어 있어 드라이버를 그대로 두었습니다.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>이전 드라이버 제거 중…</value></data>

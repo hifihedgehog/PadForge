@@ -74,6 +74,7 @@
   <data name="Common_Start" xml:space="preserve"><value>Puonan</value></data>
   <data name="Common_None" xml:space="preserve"><value>Mayo</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>segundo</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -114,6 +115,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Itinago</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Dai nabasa</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Dai nahali</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Device</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Rehistro kan interface</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Pinagsasaluhang registry key</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Pinagsasaluhang registry value</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Binding kan WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Override kan OEM na pangaran</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Key na DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Rehistro sa OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Package kan driver</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Service key kan WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Registry key</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Sertipiko</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Folder</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Setting kan serbisyo</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Hakbang sa paghali</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Pinapangyari kaini na makakonektar sa Bluetooth an mga PlayStation 3 controller, an PlayStation Move asin an Navigation controller. Naka-embed sa PadForge asin ini-install sa enot na pag-pair sa saro sa sainda.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Ikinokonektar an mga PlayStation 3 controller paagi sa Bluetooth.</value></data>
@@ -169,7 +185,7 @@
   <data name="MacroAction_RunProgram_Args" xml:space="preserve"><value>Mga argumento</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(mayong teksto)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Teksto</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuto (0 = dai noarin)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuto</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Ipahiling</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Pangaran kan profile</value></data>
   <data name="DreamcastScreen_Mode_ProfileNumber" xml:space="preserve"><value>Numero kan profile</value></data>
@@ -238,7 +254,7 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Ilaw</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Ilaw</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>I-reset an lightbar</value></data>
   <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>I-reset an force feedback</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>I-reset an {0}</value></data>
@@ -277,7 +293,7 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>I-map an gabos</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>I-map: {0}</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopyahon an gabos na mapping asin settings sa clipboard</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopyahon hali sa...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopyahon hali sa…</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>I-reset an gabos</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Halion an gabos</value></data>
   <data name="Pad_Invert" xml:space="preserve"><value>Baliktadon</value></data>
@@ -318,6 +334,7 @@
   <data name="Macro_Once" xml:space="preserve"><value>Sarong beses</value></data>
   <data name="Macro_Count" xml:space="preserve"><value>Bilang</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Bagong macro</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Macro {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(mayo)</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
@@ -636,7 +653,7 @@
 
   <!-- ═══ Preview Views ═══ -->
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Stick {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Mga button</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -955,6 +972,7 @@
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Hababa na an baterya kan controller</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Controller</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% na baterya an natatada</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>I-assign</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Bako pa ngunyan</value></data>
@@ -1009,7 +1027,7 @@
     <value>Aktibong profile: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Naghahalat sa ibang PC...</value>
+    <value>Naghahalat sa ibang PC…</value>
   </data>
   <data name="Pad_SteeringAngleRumble_LX" xml:space="preserve"><value>Kaliwang stick X</value></data>
   <data name="Pad_SteeringAngleRumble_LY" xml:space="preserve"><value>Kaliwang stick Y</value></data>
@@ -1269,6 +1287,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Baterya</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Path</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Serial number</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID kan app</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Rebisyon</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Dagdag para sa {0}</value></data>
@@ -1352,4 +1372,8 @@
   <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
   <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Mga litrato (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Gabos na file (*.*)|*.*</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Curve</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Mga shift layer</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Baliktad</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Default kan bs2b</value></data>
 </root>

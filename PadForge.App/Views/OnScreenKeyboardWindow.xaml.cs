@@ -228,7 +228,7 @@ namespace PadForge.Views
                     };
                     var corner = new TextBlock
                     {
-                        FontSize = 10,
+                        FontSize = 12,
                         Margin = new Thickness(5, 2, 0, 0),
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top,
@@ -299,7 +299,7 @@ namespace PadForge.Views
             Canvas.SetLeft(hub, c - 50);
             Canvas.SetTop(hub, c - 50);
             canvas.Children.Add(hub);
-            _wheelCenter = new TextBlock { FontSize = 18, FontWeight = FontWeights.Bold, IsHitTestVisible = false };
+            _wheelCenter = new TextBlock { FontSize = 18, FontWeight = FontWeights.SemiBold, IsHitTestVisible = false };
             _wheelCenter.Tag = (c, c);
             canvas.Children.Add(_wheelCenter);
             return canvas;
@@ -524,7 +524,7 @@ namespace PadForge.Views
         {
             Text = "+",
             Foreground = _muted,
-            FontSize = 11,
+            FontSize = 12,
             Margin = new Thickness(2, 0, 2, 0),
             VerticalAlignment = VerticalAlignment.Center,
         };
@@ -596,7 +596,7 @@ namespace PadForge.Views
             Child = new TextBlock
             {
                 Text = text,
-                FontSize = 11.5,
+                FontSize = 12,
                 FontWeight = FontWeights.SemiBold,
                 Foreground = _text,
                 HorizontalAlignment = HorizontalAlignment.Center,
@@ -624,8 +624,8 @@ namespace PadForge.Views
                 Child = new TextBlock
                 {
                     Text = text,
-                    FontSize = 11.5,
-                    FontWeight = FontWeights.Bold,
+                    FontSize = 12,
+                    FontWeight = FontWeights.SemiBold,
                     Foreground = filled ? Frozen(Color.FromRgb(0x10, 0x12, 0x14)) : face ?? _text,
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Center,

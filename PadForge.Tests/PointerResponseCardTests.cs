@@ -164,7 +164,7 @@ namespace PadForge.Tests
             // key this project defines.
             // Scanned across EVERY xaml in the app, not just this page and
             // App.xaml. A first cut checked only those two and reported
-            // UpperConverter as undefined when it lives in
+            // a converter as undefined when it lived in
             // Resources/ControllerIcons.xaml, which would have been a false
             // finding about pre-existing code.
             string appDir = Path.Combine(RepoRoot(), "PadForge.App");

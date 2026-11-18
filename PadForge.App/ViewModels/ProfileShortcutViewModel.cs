@@ -223,13 +223,19 @@ namespace PadForge.ViewModels
         //  Button combo
         // ─────────────────────────────────────────────
 
+        /// <summary>The seconds left to record, "(4 s)" in the language's
+        /// own form.</summary>
+        private string Countdown
+            => string.Format(System.Globalization.CultureInfo.CurrentCulture,
+                Strings.Instance.Profiles_ShortcutCountdown_Format, _recordingCountdown);
+
         public string ButtonComboDisplay
         {
             get
             {
                 var entries = Data.TriggerEntries;
                 if (_isRecording && (entries == null || entries.Length == 0))
-                    return $"{Strings.Instance.Profiles_ShortcutLearning} ({_recordingCountdown}s)";
+                    return Strings.Instance.Profiles_ShortcutLearning + " " + Countdown;
                 if (entries == null || entries.Length == 0)
                     return Strings.Instance.Common_None;
 
@@ -239,7 +245,7 @@ namespace PadForge.ViewModels
                     string deviceName = ResolveDeviceName(e.DeviceInstanceGuid);
                     return deviceName != null ? $"{name} ({deviceName})" : name;
                 }));
-                return _isRecording ? $"{combo} ({_recordingCountdown}s)" : combo;
+                return _isRecording ? combo + " " + Countdown : combo;
             }
         }
 
@@ -272,8 +278,8 @@ namespace PadForge.ViewModels
             {
                 if (_isRecording)
                     return HasCombo
-                        ? $"({_recordingCountdown}s)"
-                        : $"{Strings.Instance.Profiles_ShortcutLearning} ({_recordingCountdown}s)";
+                        ? Countdown
+                        : Strings.Instance.Profiles_ShortcutLearning + " " + Countdown;
                 return HasCombo ? string.Empty : Strings.Instance.Common_None;
             }
         }
@@ -326,7 +332,7 @@ namespace PadForge.ViewModels
                     8 => Strings.Instance.Btn_LeftStickButton,
                     9 => Strings.Instance.Btn_RightStickButton,
                     10 => Strings.Instance.Btn_Guide,
-                    _ => $"B{index}"
+                    _ => string.Format(Strings.Instance.Macro_Btn_Format, index + 1)
                 };
             }
 
@@ -339,7 +345,7 @@ namespace PadForge.ViewModels
                     if (ud != null && ud.CapType == Engine.InputDeviceType.Keyboard)
                     {
                         if (Enum.IsDefined(typeof(VirtualKey), index))
-                            return ((VirtualKey)index).ToString();
+                            return MacroAction.VirtualKeyDisplayName((VirtualKey)index);
                     }
                 }
             }
@@ -363,22 +369,22 @@ namespace PadForge.ViewModels
 
             string dirSuffix = direction == AxisTriggerDirection.Positive ? "+" : "–"; // + or –
 
+            var s = Strings.Instance;
             if (isGamepad && index >= 0 && index <= 5)
             {
                 string name = index switch
                 {
-                    0 => "LX",
-                    1 => "LY",
-                    2 => "LT",
-                    3 => "RX",
-                    4 => "RY",
-                    5 => "RT",
-                    _ => $"Axis {index}"
+                    0 => s.Btn_LeftStickX,
+                    1 => s.Btn_LeftStickY,
+                    2 => s.Btn_LeftTrigger,
+                    3 => s.Btn_RightStickX,
+                    4 => s.Btn_RightStickY,
+                    _ => s.Btn_RightTrigger,
                 };
-                return $"{name}{dirSuffix}";
+                return name + " " + dirSuffix;
             }
 
-            return $"Axis {index}{dirSuffix}";
+            return string.Format(s.DevObj_AxisN, index) + " " + dirSuffix;
         }
 
         private static string ResolveDeviceName(Guid deviceGuid)

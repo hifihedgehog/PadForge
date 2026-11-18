@@ -208,6 +208,7 @@ public class Strings : INotifyPropertyChanged
     public string Common_PageRight => Get("Common_PageRight");
     public string Common_None => Get("Common_None");
     public string Common_Ms => Get("Common_Ms");
+    public string Common_Seconds => Get("Common_Seconds");
     public string Common_Hz => Get("Common_Hz");
     public string Common_Unassigned => Get("Common_Unassigned");
     public string Common_PadForge => Get("Common_PadForge");
@@ -383,6 +384,7 @@ public class Strings : INotifyPropertyChanged
     public string Profiles_ShortcutMode_ToggleVCsDisabled => Get("Profiles_ShortcutMode_ToggleVCsDisabled");
     public string Profiles_ShortcutDevice_Any => Get("Profiles_ShortcutDevice_Any");
     public string Profiles_ShortcutLearning => Get("Profiles_ShortcutLearning");
+    public string Profiles_ShortcutCountdown_Format => Get("Profiles_ShortcutCountdown_Format");
     public string Profiles_Shortcut_When => Get("Profiles_Shortcut_When");
     public string Profiles_Shortcut_On => Get("Profiles_Shortcut_On");
     public string Status_DeviceUnassignedSlot_Format => Get("Status_DeviceUnassignedSlot_Format");
@@ -413,6 +415,11 @@ public class Strings : INotifyPropertyChanged
     public string Home_Controllers => Get("Home_Controllers");
     public string Home_ExtrasInUse => Get("Home_ExtrasInUse");
     public string Home_ExtraOn_Format => Get("Home_ExtraOn_Format");
+    public string Home_Stage_Defaults => Get("Home_Stage_Defaults");
+    public string Home_Stage_Value_Format => Get("Home_Stage_Value_Format");
+    public string Home_Stage_On_Format => Get("Home_Stage_On_Format");
+    public string Home_Stage_LeftStick => Get("Home_Stage_LeftStick");
+    public string Home_Stage_RightStick => Get("Home_Stage_RightStick");
     public string Home_MoreExtras => Get("Home_MoreExtras");
     public string Home_OpenExtras => Get("Home_OpenExtras");
     public string Home_ShowQr => Get("Home_ShowQr");
@@ -482,6 +489,10 @@ public class Strings : INotifyPropertyChanged
     public string Macro_EmptyHint => Get("Macro_EmptyHint");
     public string Instr_Raw => Get("Instr_Raw");
     public string Instr_Out => Get("Instr_Out");
+    public string Pad_Chip_Curve => Get("Pad_Chip_Curve");
+    public string Pad_Chip_ShiftLayers => Get("Pad_Chip_ShiftLayers");
+    public string Pad_Chip_Inverted => Get("Pad_Chip_Inverted");
+    public string Pad_Curve_Peak => Get("Pad_Curve_Peak");
     public string Dashboard_StatusCold => Get("Dashboard_StatusCold");
     public string Pad_Tab_Preview => Get("Pad_Tab_Preview");
     public string Extras_Title => Get("Extras_Title");
@@ -673,6 +684,7 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_WebNewAccessCode => Get("Dashboard_WebNewAccessCode");
     public string Devices_IdentifyTooltip => Get("Devices_IdentifyTooltip");
     public string Battery_LowTitle => Get("Battery_LowTitle");
+    public string Battery_UnnamedController => Get("Battery_UnnamedController");
     public string Battery_LowText_Format => Get("Battery_LowText_Format");
     public string Settings_BatteryNotify => Get("Settings_BatteryNotify");
     public string Settings_BatteryNotifyDesc => Get("Settings_BatteryNotifyDesc");
@@ -805,7 +817,6 @@ public class Strings : INotifyPropertyChanged
     public string Status_StoppingEngine => Get("Status_StoppingEngine");
     public string Settings_HmInactivityTimeout => Get("Settings_HmInactivityTimeout");
     public string Settings_HmInactivityTimeoutTooltip => Get("Settings_HmInactivityTimeoutTooltip");
-    public string Settings_SecondsZeroNever => Get("Settings_SecondsZeroNever");
     public string Dashboard_NoDevice => Get("Dashboard_NoDevice");
     public string Settings_Title => Get("Settings_Title");
     public string Settings_Group_General => Get("Settings_Group_General");
@@ -903,6 +914,21 @@ public class Strings : INotifyPropertyChanged
     public string HIDMaestroUninstall_OutcomeKept => Get("HIDMaestroUninstall_OutcomeKept");
     public string HIDMaestroUninstall_OutcomeUnread => Get("HIDMaestroUninstall_OutcomeUnread");
     public string HIDMaestroUninstall_OutcomeNotRemoved => Get("HIDMaestroUninstall_OutcomeNotRemoved");
+    public string HIDMaestroUninstall_KindDevice => Get("HIDMaestroUninstall_KindDevice");
+    public string HIDMaestroUninstall_KindInterface => Get("HIDMaestroUninstall_KindInterface");
+    public string HIDMaestroUninstall_KindSharedKey => Get("HIDMaestroUninstall_KindSharedKey");
+    public string HIDMaestroUninstall_KindSharedValue => Get("HIDMaestroUninstall_KindSharedValue");
+    public string HIDMaestroUninstall_KindWinUsb => Get("HIDMaestroUninstall_KindWinUsb");
+    public string HIDMaestroUninstall_KindOemName => Get("HIDMaestroUninstall_KindOemName");
+    public string HIDMaestroUninstall_KindDeviceOverrides => Get("HIDMaestroUninstall_KindDeviceOverrides");
+    public string HIDMaestroUninstall_KindOpenVr => Get("HIDMaestroUninstall_KindOpenVr");
+    public string HIDMaestroUninstall_KindPackage => Get("HIDMaestroUninstall_KindPackage");
+    public string HIDMaestroUninstall_KindWudf => Get("HIDMaestroUninstall_KindWudf");
+    public string HIDMaestroUninstall_KindRegistryKey => Get("HIDMaestroUninstall_KindRegistryKey");
+    public string HIDMaestroUninstall_KindCertificate => Get("HIDMaestroUninstall_KindCertificate");
+    public string HIDMaestroUninstall_KindFolder => Get("HIDMaestroUninstall_KindFolder");
+    public string HIDMaestroUninstall_KindServiceSetting => Get("HIDMaestroUninstall_KindServiceSetting");
+    public string HIDMaestroUninstall_KindStep => Get("HIDMaestroUninstall_KindStep");
     public string Settings_BthPS3 => Get("Settings_BthPS3");
     public string Settings_BthPS3Desc => Get("Settings_BthPS3Desc");
     public string Settings_BthPS3Line => Get("Settings_BthPS3Line");
@@ -1003,6 +1029,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_CrossfeedFeed => Get("Pad_Audio_CrossfeedFeed");
     public string Pad_Audio_CrossfeedFeed_Tooltip => Get("Pad_Audio_CrossfeedFeed_Tooltip");
     public string Pad_Audio_Crossfeed_Custom => Get("Pad_Audio_Crossfeed_Custom");
+    public string Pad_Audio_Crossfeed_Bs2bDefault => Get("Pad_Audio_Crossfeed_Bs2bDefault");
     public string Pad_Audio_Crossfeed_High => Get("Pad_Audio_Crossfeed_High");
     public string Pad_Audio_Crossfeed_HighEasy => Get("Pad_Audio_Crossfeed_HighEasy");
     public string Pad_Audio_Crossfeed_Low => Get("Pad_Audio_Crossfeed_Low");
@@ -1022,6 +1049,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_EqHowTo => Get("Pad_Audio_EqHowTo");
     public string Pad_Audio_EqImport => Get("Pad_Audio_EqImport");
     public string Pad_Audio_EqImportFile => Get("Pad_Audio_EqImportFile");
+    public string Pad_Audio_EqImportFileTitle => Get("Pad_Audio_EqImportFileTitle");
     public string Pad_Audio_EqImportFile_Tooltip => Get("Pad_Audio_EqImportFile_Tooltip");
     public string Pad_Audio_EqImport_ClipboardLabel => Get("Pad_Audio_EqImport_ClipboardLabel");
     public string Pad_Audio_EqImport_Empty => Get("Pad_Audio_EqImport_Empty");
@@ -1427,6 +1455,8 @@ public class Strings : INotifyPropertyChanged
     public string Devices_Detail_Battery => Get("Devices_Detail_Battery");
     public string Devices_Detail_Path => Get("Devices_Detail_Path");
     public string Devices_Detail_Serial => Get("Devices_Detail_Serial");
+    public string Devices_Detail_AppGuid => Get("Devices_Detail_AppGuid");
+    public string Devices_Detail_SdlGuid => Get("Devices_Detail_SdlGuid");
     public string Devices_Detail_Firmware => Get("Devices_Detail_Firmware");
     public string Devices_Detail_Revision => Get("Devices_Detail_Revision");
     public string Devices_DriverBind_Xbox360Pad => Get("Devices_DriverBind_Xbox360Pad");
@@ -1572,12 +1602,16 @@ public class Strings : INotifyPropertyChanged
     public string Devices_POV => Get("Devices_POV");
     public string Devices_Gyroscope => Get("Devices_Gyroscope");
     public string Devices_Accelerometer => Get("Devices_Accelerometer");
+    public string Devices_Caps_OneAxis => Get("Devices_Caps_OneAxis");
+    public string Devices_Caps_Axes_Format => Get("Devices_Caps_Axes_Format");
+    public string Devices_Caps_OneButton => Get("Devices_Caps_OneButton");
+    public string Devices_Caps_Buttons_Format => Get("Devices_Caps_Buttons_Format");
+    public string Devices_Caps_OnePov => Get("Devices_Caps_OnePov");
+    public string Devices_Caps_Povs_Format => Get("Devices_Caps_Povs_Format");
     public string Devices_Axis_Format => Get("Devices_Axis_Format");
-    public string Devices_CapsSummary_Format => Get("Devices_CapsSummary_Format");
     public string Devices_Rumble => Get("Devices_Rumble");
     public string Devices_Nfc => Get("Devices_Nfc");
     public string Devices_Gyro => Get("Devices_Gyro");
-    public string Devices_Accel => Get("Devices_Accel");
     public string Devices_HideHidAction => Get("Devices_HideHidAction");
     public string Devices_WarnHideHid_Keyboard => Get("Devices_WarnHideHid_Keyboard");
     public string Devices_WarnHideHid_Mouse => Get("Devices_WarnHideHid_Mouse");
@@ -1936,6 +1970,7 @@ public class Strings : INotifyPropertyChanged
     public string ImportFromDevice_Import => Get("ImportFromDevice_Import");
     public string ImportFromDevice_UnnamedDevice => Get("ImportFromDevice_UnnamedDevice");
     public string ImportFromDevice_StatusFound_Format => Get("ImportFromDevice_StatusFound_Format");
+    public string ImportFromDevice_StatusFoundOne => Get("ImportFromDevice_StatusFoundOne");
     public string ImportFromDevice_StatusEnumFailed_Format => Get("ImportFromDevice_StatusEnumFailed_Format");
     public string ImportFromDevice_StatusExtractFailed_Format => Get("ImportFromDevice_StatusExtractFailed_Format");
     public string ImportFromDevice_StatusPersistFailed => Get("ImportFromDevice_StatusPersistFailed");
@@ -2632,6 +2667,7 @@ public class Strings : INotifyPropertyChanged
     public string Macro_DelayMs => Get("Macro_DelayMs");
     public string Macro_Sensitivity => Get("Macro_Sensitivity");
     public string Macro_NewMacro => Get("Macro_NewMacro");
+    public string Macro_Default_Format => Get("Macro_Default_Format");
     public string Macro_RecordTrigger => Get("Macro_RecordTrigger");
     public string Macro_NotSet => Get("Macro_NotSet");
     public string Macro_Btn_Format => Get("Macro_Btn_Format");
@@ -2691,6 +2727,8 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_Rumble_Tooltip => Get("MacroAction_Rumble_Tooltip");
     public string MacroAction_Rumble_Reactive_Format => Get("MacroAction_Rumble_Reactive_Format");
     public string MacroAction_Rumble_Sticky_Format => Get("MacroAction_Rumble_Sticky_Format");
+    public string MacroAction_Rumble_Motors_Format => Get("MacroAction_Rumble_Motors_Format");
+    public string MacroAction_Rumble_Triggers_Format => Get("MacroAction_Rumble_Triggers_Format");
     public string MacroAction_Type_RumbleStop => Get("MacroAction_Type_RumbleStop");
     public string MacroAction_RumbleStop => Get("MacroAction_RumbleStop");
     public string MacroAction_RumbleStop_Tooltip => Get("MacroAction_RumbleStop_Tooltip");
@@ -4293,6 +4331,9 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_LegacyBody => Get("Workshop_LegacyBody");
     public string Workshop_LegacyOpenButton => Get("Workshop_LegacyOpenButton");
     public string Workshop_LegacyTag => Get("Workshop_LegacyTag");
+    public string Workshop_DefaultProfileName => Get("Workshop_DefaultProfileName");
+    public string Workshop_DefaultMacroName => Get("Workshop_DefaultMacroName");
+    public string Workshop_DefaultCursorRegionName => Get("Workshop_DefaultCursorRegionName");
     public string Workshop_ManifestIdle => Get("Workshop_ManifestIdle");
     public string Workshop_WhatComesAcross => Get("Workshop_WhatComesAcross");
     public string Workshop_Becomes => Get("Workshop_Becomes");

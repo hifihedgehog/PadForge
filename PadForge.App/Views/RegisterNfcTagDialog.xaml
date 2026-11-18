@@ -45,7 +45,7 @@
                       Fill="{DynamicResource WaitBrush}"/>
                 <TextBlock x:Name="StatusText" Grid.Column="1" Margin="10,0" TextWrapping="Wrap" VerticalAlignment="Center"
                            common:LiveText.Polite="True"/>
-                <TextBlock x:Name="UidText" Grid.Column="2" Style="{StaticResource DialogMonoNote}"/>
+                <TextBlock x:Name="UidText" Grid.Column="2" Style="{StaticResource DialogFigureNote}"/>
             </Grid>
         </Border>
 
@@ -79,7 +79,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-                                <TextBlock Grid.Column="1" Margin="12,0" Text="{Binding Uid}" Style="{StaticResource DialogMonoNote}"/>
+                                <TextBlock Grid.Column="1" Margin="12,0" Text="{Binding Uid}" Style="{StaticResource DialogFigureNote}"/>
                                 <!-- Remove takes the tag off at once, with
                                      no confirm: tapping it again registers
                                      it again. -->

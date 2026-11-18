@@ -126,20 +126,18 @@ namespace PadForge.Views
             => LiveDot.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, running ? "EmberBrush" : "WaitBrush");
 
         /// <summary>The end of the live line during a learn: which step
-        /// this is, in the body face.</summary>
+        /// this is.</summary>
         private void ShowStep(int step)
         {
-            ChordText.ClearValue(System.Windows.Controls.TextBlock.FontFamilyProperty);
             ChordText.Text = string.Format(Strings.Instance.Handheld_Step_Format, step, Steps);
             ChordText.ToolTip = null;
         }
 
         /// <summary>The end of the live line after a learn: what the press
-        /// changed, in the code face, or nothing. A long source is cut
-        /// short on the line and whole in its tooltip.</summary>
+        /// changed, or nothing. A long source is cut short on the line and
+        /// whole in its tooltip.</summary>
         private void ShowSource(string source)
         {
-            ChordText.SetResourceReference(System.Windows.Controls.TextBlock.FontFamilyProperty, "TelemetryFontFamily");
             ChordText.Text = source ?? string.Empty;
             ChordText.ToolTip = string.IsNullOrEmpty(source) ? null : source;
         }

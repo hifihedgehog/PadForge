@@ -144,8 +144,10 @@
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
-    <Style x:Key="DialogMonoNote" TargetType="TextBlock" BasedOn="{StaticResource DialogNote}">
-        <Setter Property="FontFamily" Value="{DynamicResource TelemetryFontFamily}"/>
+    <!-- A note that holds a figure: an ID, a code, a count. Tabular
+         figures keep each digit as wide as the next. -->
+    <Style x:Key="DialogFigureNote" TargetType="TextBlock" BasedOn="{StaticResource DialogNote}">
+        <Setter Property="Typography.NumeralAlignment" Value="Tabular"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
     <!-- The note that leads a foot and takes the room its buttons leave. -->
@@ -189,11 +191,11 @@
         <Setter Property="MinWidth" Value="120"/>
         <Setter Property="MaxWidth" Value="240"/>
     </Style>
-    <!-- A value typed in place, as the controller page's rows hold one: the
-         mono digits at rest, the raised fill under the pointer, and the
+    <!-- A value typed in place, as the controller page's rows hold one:
+         tabular digits at rest, the raised fill under the pointer, and the
          field's fill with a cold edge with the keyboard's focus. -->
     <Style x:Key="DialogValueEdit" TargetType="TextBox">
-        <Setter Property="FontFamily" Value="{DynamicResource TelemetryFontFamily}"/>
+        <Setter Property="Typography.NumeralAlignment" Value="Tabular"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="TextAlignment" Value="Right"/>
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
@@ -349,7 +351,7 @@
     </Style>
     <Style x:Key="DialogListItemLinks" TargetType="ListBoxItem" BasedOn="{StaticResource DialogListItem}">
         <Setter Property="MinHeight" Value="42"/>
-        <Setter Property="Padding" Value="12,4"/>
+        <Setter Property="Padding" Value="12,4,6,4"/>
     </Style>
     <Style x:Key="DialogPickListItem" TargetType="ListBoxItem" BasedOn="{StaticResource DialogListItemTall}">
         <Setter Property="Template" Value="{StaticResource DialogPickListItemTemplate}"/>
@@ -404,7 +406,6 @@
             <StackPanel>
                 <TextBlock Text="{Binding Title}" TextWrapping="Wrap"/>
                 <TextBlock Text="{Binding Location}" FontSize="13" TextWrapping="Wrap"
-                           FontFamily="{DynamicResource TelemetryFontFamily}"
                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                 <TextBlock Text="{Binding Detail}" FontSize="13" TextWrapping="Wrap"
                            Foreground="{DynamicResource TextFillColorTertiaryBrush}">
@@ -461,7 +462,7 @@
         <Setter Property="Background" Value="{DynamicResource SteelBandBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
-        <Setter Property="TextElement.FontFamily" Value="{DynamicResource TelemetryFontFamily}"/>
+        <Setter Property="Typography.NumeralAlignment" Value="Tabular"/>
         <Setter Property="TextElement.FontSize" Value="28"/>
         <Setter Property="TextElement.Foreground" Value="{DynamicResource ColdBrush}"/>
     </Style>

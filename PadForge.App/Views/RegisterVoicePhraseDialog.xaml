@@ -52,7 +52,7 @@
                 <TextBlock x:Name="HeardText" Grid.Column="1" Margin="10,0" TextWrapping="Wrap" VerticalAlignment="Center"
                            common:LiveText.Polite="True"/>
                 <TextBlock x:Name="HeardConfidence" Grid.Column="2" FontSize="12" VerticalAlignment="Center"
-                           FontFamily="{DynamicResource TelemetryFontFamily}"
+                           Typography.NumeralAlignment="Tabular"
                            Foreground="{DynamicResource ColdBrush}"/>
             </Grid>
         </Border>
@@ -150,7 +150,7 @@
                             ToolTip="{Binding Voice_ConfidenceTooltip, Source={x:Static strings:Strings.Instance}}"
                             AutomationProperties.Name="{Binding Voice_ConfidenceLabel, Source={x:Static strings:Strings.Instance}}"/>
                     <TextBlock x:Name="ConfidenceText" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="13"
-                               FontFamily="{DynamicResource TelemetryFontFamily}"/>
+                               Typography.NumeralAlignment="Tabular"/>
                     <reset:SettingResetButton Click="ResetSetting_Click" Tag="Confidence" Visibility="{Binding Visibility, ElementName=ConfidenceSlider}" IsEnabled="{Binding IsEnabled, ElementName=ConfidenceSlider}" SettingLabel="{Binding Voice_ConfidenceLabel, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ConfidenceSlider_78"/>
                 </controls:SettingRow>
             </StackPanel>

@@ -164,6 +164,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Igciniwe</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Ayifundwanga</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Ayisuswanga</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Isixhobo</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Ubhaliso lwe-interface</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Isitshixo serejistri ekwabelwana ngaso</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Ixabiso lerejistri ekwabelwana ngalo</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Ukubotshelelwa kwe-WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Igama le-OEM elitshintshiweyo</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Isitshixo se-DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Ubhaliso lwe-OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Ipakethe yedrayiva</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Isitshixo senkonzo ye-WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Isitshixo serejistri</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Isatifikethi</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Ifolda</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Isetingi yenkonzo</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Inyathelo lokususa</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>I-BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Ivumela izilawuli ze-PlayStation 3, i-PlayStation Move nesilawuli se-Navigation ukuba ziqhagamshele nge-Bluetooth. Ifakwe ngaphakathi kwi-PadForge kwaye ifakwa xa esinye sazo sidityaniswa okokuqala.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Iqhagamshela izilawuli ze-PlayStation 3 nge-Bluetooth.</value></data>
@@ -390,7 +405,7 @@
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Imephu: {0}</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopa zonke iimephu neesetingi kwi-clipboard</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Ncamathisela iimephu neesetingi ukusuka kwi-clipboard</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopa ku...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopa ku…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopa iisetingi kwesinye isixhobo esicwangcisiweyo</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Seta kwakhona konke</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Susa konke</value></data>
@@ -500,6 +515,7 @@
   <data name="Macro_DelayMs" xml:space="preserve"><value>Ukulibazisa</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Uvakalelo</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Imakhro entsha</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Imakhro {0}</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Iqhosha {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(akukho)</value></data>
   <data name="Macro_DeviceAxis_Format" xml:space="preserve"><value>I-axis yesixhobo {0}</value></data>
@@ -818,9 +834,9 @@
   <data name="Profiles_Title" xml:space="preserve"><value>Iiprofayile</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Iprofayile esebenzayo:</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Iprofayile entsha</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>Gcina njenge</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Gcina njenge…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Gcina ulungiselelo lwangoku apha</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Hlela</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Hlela…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Layisha</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
@@ -995,7 +1011,7 @@
 
   <!-- ═══ Preview Views ═══ -->
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Intonga {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>I-trigger {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>I-D-pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Amaqhosha</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -1324,6 +1340,9 @@
   <data name="Workshop_Retry" xml:space="preserve"><value>Zama kwakhona</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Vula kwi-Steam Workshop</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>Endala</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Iprofayile ye-Workshop</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Imakhro ye-Workshop</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Ummandla wekhesa</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Gcina iprofayile</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Gcina uze usebenzise</value></data>
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>iguqulelwe</value></data>
@@ -1414,6 +1433,7 @@
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Ibhetri yesilawuli iphantsi</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Isilawuli</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: kusele {1}% yebhetri</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Izilumkiso zebhetri</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Yaziswa xa ibhetri yesilawuli iphantsi, ngaphambi kokuba icime phakathi komdlalo.</value></data>
@@ -1482,7 +1502,7 @@
     <value>Yenza isilawuli esibonakalayo kwenye i-PC, emva koko uhlaziye.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Kulindwe enye i-PC...</value>
+    <value>Kulindwe enye i-PC…</value>
   </data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Yongeza ukungcangcazela okuqhubekayo njengoko i-axis yentonga ebonakalayo ekhethiweyo isuka embindini. Isebenzisa isiphumo semephu esivela kuyo yonke imithombo eyabelweyo. Xa kukhethwe "Yahlula ngokwecala", intshukumo eya ngasekhohlo iqhuba imoto yasekhohlo, eya ngasekunene iqhuba eyasekunene. "Imoto yasekhohlo" okanye "Imoto yasekunene" ibeka omabini amacala kuloo moto inye. Isetyenziselwa isiphumo se-Xbox nese-PlayStation kunye nezixhobo ezingcangcazelayo. Itsiba amavili, ezinye izixhobo ezine-force feedback eqhubekayo, kunye neepedali ze-Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>I-axis ebonakalayo</value></data>
@@ -1784,6 +1804,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Ibhetri</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Indlela</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Inombolo yesiriyeli</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>I-GUID yenkqubo</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>I-GUID ye-SDL</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>I-firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Uhlaziyo</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Ngaphambili ngoku: {0}, akukho profayile isetelwe yona</value></data>
@@ -1869,4 +1891,9 @@
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Ngelixa umaleko uvuliwe igcina i-flyout isesikrinini de umaleko utshintshe. Imizuzwana eyi-2 iyibonisa xa umaleko uvuleka, emva koko iyayiyeka ihambe. Ukuba ukhetha Soze, lo maleko awubonisi i-flyout, kwaye i-Base ayibonisi nanye xa lo maleko uphela.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Imizuzwana eyi-2 ibonisa igama le-Base xa umaleko wokutshintsha uphela. Ukuba ukhetha Soze, i-Base ayibonisi i-flyout.</value></data>
   <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Imifanekiso (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Zonke iifayile (*.*)|*.*</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Igophe</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Imaleko</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Iguquliwe</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>Incopho</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Okumiselweyo kwe-bs2b</value></data>
 </root>

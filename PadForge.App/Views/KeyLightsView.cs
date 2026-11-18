@@ -99,7 +99,7 @@ namespace PadForge.Views
 
         public KeyLightsView()
         {
-            _canvas.SetResourceReference(TextElement.FontFamilyProperty, "TelemetryFontFamily");
+            _canvas.SetResourceReference(TextElement.FontFamilyProperty, "BodyFontFamily");
             _band.SetResourceReference(Shape.StrokeProperty, "EmberBrush");
             Panel.SetZIndex(_band, 1);
             // Tab reaches the picture once, at the light that last had the
@@ -287,7 +287,7 @@ namespace PadForge.Views
             }
             var onPicture = new HashSet<int>(placed.Select(p => p.Index));
             double x = 0, y = placed.Count > 0 ? height + ChipGap * 2 : 0;
-            var typeface = new Typeface((FontFamily)FindResource("TelemetryFontFamily"), FontStyles.Normal,
+            var typeface = new Typeface((FontFamily)FindResource("BodyFontFamily"), FontStyles.Normal,
                 FontWeights.Normal, FontStretches.Normal);
             double dip = VisualTreeHelper.GetDpi(this).PixelsPerDip;
             for (int i = 0; i < map.Lights.Count; i++)

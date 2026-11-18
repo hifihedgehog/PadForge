@@ -402,15 +402,18 @@ namespace PadForge.Views
             // A board drawn as the nearest standard set says so under it.
             if (family.Approximate)
             {
+                // A sentence, so it reads at the 12 of a note in the
+                // tertiary text color, under the art rather than in it.
                 var note = new TextBlock
                 {
                     Text = Strings.Instance.Pad_Kbm_Preview_Approximate,
-                    FontSize = 8, Opacity = 0.6, IsHitTestVisible = false,
+                    FontSize = 12, IsHitTestVisible = false,
                 };
+                note.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
                 Canvas.SetLeft(note, 0);
                 Canvas.SetTop(note, KeyboardCanvas.Height + 2);
                 KeyboardCanvas.Children.Add(note);
-                KeyboardCanvas.Height += 14;
+                KeyboardCanvas.Height += 18;
             }
         }
 
@@ -436,7 +439,7 @@ namespace PadForge.Views
             border.Child = new TextBlock
             {
                 Text = legend ?? string.Empty, FontSize = 8,
-                FontFamily = font ?? (FontFamily)FindResource("TelemetryFontFamily"),
+                FontFamily = font ?? (FontFamily)FindResource("BodyFontFamily"),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
                 Opacity = 0.8, IsHitTestVisible = false
@@ -481,7 +484,7 @@ namespace PadForge.Views
                 var mark = new TextBlock
                 {
                     Text = marks[i], FontSize = 7, Opacity = 0.7, IsHitTestVisible = false,
-                    FontFamily = (FontFamily)FindResource("TelemetryFontFamily"),
+                    FontFamily = (FontFamily)FindResource("BodyFontFamily"),
                 };
                 Canvas.SetLeft(mark, x + 8);
                 Canvas.SetTop(mark, 2);
@@ -553,20 +556,20 @@ namespace PadForge.Views
         };
 
         /// <summary>The generic keyboard's short legend for a key whose
-        /// legend no layout writes.</summary>
+        /// legend no layout writes: the printed legend of a US board.</summary>
         internal static string ShortLegend(int vk)
         {
             if (vk >= 0x70 && vk <= 0x87) return "F" + (vk - 0x6F).ToString(System.Globalization.CultureInfo.InvariantCulture);
             if (vk >= 0x60 && vk <= 0x69) return (vk - 0x60).ToString(System.Globalization.CultureInfo.InvariantCulture);
             return vk switch
             {
-                0x1B => "Esc", 0x2C => "PrSc", 0x91 => "ScLk", 0x13 => "Pse",
+                0x1B => "Esc", 0x2C => "PrtSc", 0x91 => "ScrLk", 0x13 => "Pause",
                 0x08 => "←", 0x09 => "Tab", 0x14 => "Caps", 0x0D => "↵", 0x88 => "↵",
                 0xA0 or 0xA1 => "Shift", 0xA2 or 0xA3 => "Ctrl", 0xA4 or 0xA5 => "Alt",
                 0x5B or 0x5C => "Win", 0x5D => "Menu", 0x20 => "",
-                0x2D => "Ins", 0x24 => "Hm", 0x21 => "PU", 0x2E => "Del", 0x23 => "End", 0x22 => "PD",
+                0x2D => "Ins", 0x24 => "Home", 0x21 => "PgUp", 0x2E => "Del", 0x23 => "End", 0x22 => "PgDn",
                 0x26 => "▲", 0x25 => "◄", 0x28 => "▼", 0x27 => "►",
-                0x90 => "Num", 0x6F => "/", 0x6A => "*", 0x6D => "-", 0x6B => "+", 0x6E => ".",
+                0x90 => "NumLk", 0x6F => "/", 0x6A => "*", 0x6D => "-", 0x6B => "+", 0x6E => ".",
                 0xF3 => "半/全",
                 _ => "",
             };

@@ -25,7 +25,7 @@ namespace PadForge.Common
         /// "Mouse" and two boxes. A text font draws nothing for them, and
         /// has no glyph at the battery's codepoints, which fall through to
         /// the glyphs' font.</summary>
-        internal const string RunFontFamily = "Segoe UI, Segoe MDL2 Assets";
+        internal const string RunFontFamily = "Segoe UI Variable Text, Segoe MDL2 Assets";
 
         /// <summary>The glyph for a level from 0 to 100, or nothing for a
         /// device that reports no battery (a negative level).</summary>

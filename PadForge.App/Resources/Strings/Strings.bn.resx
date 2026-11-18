@@ -88,7 +88,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>ইঞ্জিন থামানো হচ্ছে…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>{0}-এ চলছে</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>চলছে, {0}টি সংযুক্ত</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>:{0}-এ শুনছে</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>পোর্ট {0}-এ শুনছে</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>পোর্ট {0} ব্যবহৃত হচ্ছে</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>পোর্ট {0}-এ প্রবেশাধিকার প্রত্যাখ্যাত (অ্যাডমিন হিসেবে চালান)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>চালু করা যায়নি</value></data>
@@ -106,7 +106,7 @@
   <data name="Common_Stop" xml:space="preserve"><value>থামান</value></data>
   <data name="Common_Start" xml:space="preserve"><value>চালু করুন</value></data>
   <data name="Common_Record" xml:space="preserve"><value>রেকর্ড করুন</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>রেকর্ড হচ্ছে...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>রেকর্ড হচ্ছে…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>সাফ করুন</value></data>
   <data name="Common_Increase" xml:space="preserve"><value>বাড়ান</value></data>
   <data name="Common_Decrease" xml:space="preserve"><value>কমান</value></data>
@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>পৃষ্ঠা ডানে</value></data>
   <data name="Common_None" xml:space="preserve"><value>কোনোটিই নয়</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>সেকেন্ড</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>বরাদ্দ নেই</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -134,7 +135,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge বন্ধ হচ্ছে...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge বন্ধ হচ্ছে…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge চালু হচ্ছে…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>আগের সেশন থেকে রয়ে যাওয়া ভার্চুয়াল কন্ট্রোলারগুলো পরিষ্কার করা হচ্ছে।</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>কন্ট্রোলার যোগ করুন</value></data>
@@ -240,7 +241,7 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← বামে)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ উপরে)</value></data>
   <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll পাওয়া যায়নি</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll পাওয়া যায়নি! SDL3.dll ফাইলটি PadForge.exe-এর পাশে রাখুন। ডাউনলোড করুন: https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll পাওয়া যায়নি। SDL3.dll ফাইলটি PadForge.exe-এর পাশে রাখুন। এটি ডাউনলোড করুন: https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>ড্রাইভারের কাজ ব্যর্থ হয়েছে: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>সেটিংস ক্লিপবোর্ডে কপি হয়েছে।</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>ডিভাইসের তথ্য ক্লিপবোর্ডে কপি হয়েছে।</value></data>
@@ -271,11 +272,11 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>ডিস্ক থেকে সেটিংস আবার লোড হয়েছে।</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>ডিস্কে কোনো সেটিংস ফাইল পাওয়া যায়নি।</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>রেকর্ড করার মতো কোনো ডিভাইস সংযুক্ত নেই।</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>রেকর্ড হচ্ছে: "{0}"-এর জন্য একটি বোতাম চাপুন বা একটি অক্ষ নাড়ান...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>রেকর্ড হচ্ছে: "{0}"-এর জন্য একটি কন্ট্রোলার ঘোরান বা ঝাঁকান...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>রেকর্ড হচ্ছে: "{0}"-এর জন্য একটি বোতাম চাপুন বা একটি অক্ষ নাড়ান…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>রেকর্ড হচ্ছে: "{0}"-এর জন্য একটি কন্ট্রোলার ঘোরান বা ঝাঁকান…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>এই স্লটের কোনো কন্ট্রোলারে "{0}"-এর জন্য সেন্সর নেই।</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>"{0}" রেকর্ড হচ্ছে: উপরের দিকের ইনপুটটি চাপুন...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>"{0}" রেকর্ড হচ্ছে: এবার নিচের দিকের ইনপুটটি চাপুন...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>"{0}" রেকর্ড হচ্ছে: উপরের দিকের ইনপুটটি চাপুন…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>"{0}" রেকর্ড হচ্ছে: এবার নিচের দিকের ইনপুটটি চাপুন…</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>রেকর্ডিং বাতিল হয়েছে।</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>"{0}"-এর রেকর্ডিংয়ের সময় শেষ হয়ে গেছে।</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>ইঞ্জিন চালু হয়েছে।</value></data>
@@ -294,7 +295,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge দেখান বা লুকান</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলার চালু বা বন্ধ করুন</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>যেকোনো সংযুক্ত ডিভাইস</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>রেকর্ড হচ্ছে...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>রেকর্ড হচ্ছে…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} সেকেন্ড)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>যখন</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>থেকে</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলার {1} থেকে "{0}"-এর বরাদ্দ সরানো হয়েছে।</value></data>
@@ -327,6 +329,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>কন্ট্রোলার</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>ব্যবহারে থাকা এক্সট্রা</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>চালু। {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>ডিফল্ট সেটিংস</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>বাম স্টিক</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>ডান স্টিক</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>আরও {0}টি [এক্সট্রা] পাতায় আছে। চালু না করা পর্যন্ত একটি এক্সট্রা বন্ধ থাকে।</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>এক্সট্রা খুলুন</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>QR দেখান</value></data>
@@ -396,6 +403,10 @@
   <data name="Macro_EmptyHint" xml:space="preserve"><value>তালিকা থেকে একটি ম্যাক্রো নির্বাচন করুন, অথবা নতুন একটি তৈরি করতে “ম্যাক্রো”-এর পাশের + চাপুন।</value></data>
   <data name="Instr_Raw" xml:space="preserve"><value>কাঁচা</value></data>
   <data name="Instr_Out" xml:space="preserve"><value>আউটপুট</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>কার্ভ</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>শিফট লেয়ার</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>উল্টো</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>শীর্ষ</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>ঠান্ডা</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>প্রিভিউ</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>এক্সট্রা</value></data>
@@ -431,11 +442,11 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>মানগুলো হলো [ডিভাইস] পাতার গেম টেলিমেট্রি সারি। কন্ট্রোলারের ম্যাপিং বিভাগে এগুলো ম্যাপ করুন বা ম্যাক্রো চালু করতে ব্যবহার করুন।</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>মেনুর নিজস্ব জায়গা, আকার ও অস্বচ্ছতা মেনুতেই ঠিক করা হয়, কন্ট্রোলারের [ম্যাক্রো ও মেনু] বিভাগে।</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>উৎস</value></data>
-  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack এবং এর UDP ফরম্যাটে পাঠায় এমন যেকোনো কিছু</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack এবং এর UDP ফরম্যাটে পাঠায় এমন যেকোনো কিছু।</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>পরিসর</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>প্রতিটি অক্ষের আলাদা পরিসর। শূন্য হলে ওপরের পরিসর প্রযোজ্য।</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>যেসব গেম PadForge চেনে না</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>যেসব মড পাঠানোর আগে চালু DSX খোঁজে তাদের জন্য</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>যেসব মড পাঠানোর আগে চালু DSX খোঁজে তাদের জন্য।</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>যা দেখানো হয়</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>মেনু খোলা থাকাকালীন তার রিং, গ্রিড বা বার</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>শিফট লেয়ার চালু হলে লেয়ারের নাম, সেই লেয়ারের ঠিক করা সময় ধরে</value></data>
@@ -694,7 +705,7 @@
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>গেম থেকে ডিভাইস লুকান, PadForge বন্ধ থাকলেও ডিভাইস আড়ালে রাখুন, হোয়াইটলিস্ট করা অ্যাপ্লিকেশন</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>হোয়াইটলিস্ট করা অ্যাপ্লিকেশন</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>এই অ্যাপ্লিকেশনগুলো লুকানো ডিভাইসও দেখতে পায়। PadForge সব সময় স্বয়ংক্রিয়ভাবে হোয়াইটলিস্টে থাকে।</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>যোগ করুন...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>যোগ করুন…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge আপনার তৈরি প্রথম ভার্চুয়াল কন্ট্রোলারের সঙ্গে এই ড্রাইভার ইনস্টল করে। আনইনস্টল করার আগে HIDMaestro এই পিসিতে কী কী রেখে গেছে তার তালিকা দেখায়।</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলার তৈরি করে।</value></data>
@@ -713,6 +724,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>রাখা হয়েছে</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>পড়া যায়নি</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>সরানো যায়নি</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>ডিভাইস</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>ইন্টারফেস নিবন্ধন</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>শেয়ার্ড রেজিস্ট্রি কী</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>শেয়ার্ড রেজিস্ট্রি ভ্যালু</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>WinUSB বাইন্ডিং</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>OEM নামের ওভাররাইড</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>DeviceOverrides কী</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>OpenVR নিবন্ধন</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>ড্রাইভার প্যাকেজ</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>WUDF সার্ভিস কী</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>রেজিস্ট্রি কী</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>সার্টিফিকেট</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>ফোল্ডার</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>সার্ভিস সেটিং</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>অপসারণের ধাপ</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>PlayStation 3 কন্ট্রোলার, PlayStation Move ও Navigation কন্ট্রোলারকে Bluetooth দিয়ে সংযুক্ত হতে দেয়। PadForge-এর ভেতরে এমবেড করা। এগুলোর কোনোটি প্রথমবার পেয়ার করার সময় ইনস্টল হয়।</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Bluetooth-এ PlayStation 3 কন্ট্রোলার সংযুক্ত করে।</value></data>
@@ -907,11 +933,11 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>"{0}" টাইপ করুন</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(কোনো টেক্সট নেই)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>টেক্সট</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>অক্ষরের বিলম্ব (ms)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>অক্ষরের মধ্যে বিলম্ব</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>টাইপ করা অক্ষরগুলোর মাঝের মিলিসেকেন্ড, সর্বোচ্চ 1000। 0 দিলে পুরো টেক্সট একবারে টাইপ হয়।</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>নিষ্ক্রিয় থাকলে বিচ্ছিন্ন</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>বিবরণ</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>মিনিট (0 = কখনো নয়)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>মিনিট</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB-তে লাগানো হলে Bluetooth বিচ্ছিন্ন করুন</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>দ্রুত চার্জ। Bluetooth-এ সংযুক্ত থাকা অবস্থায় এই কন্ট্রোলার চার্জ হচ্ছে বলে জানালে Bluetooth সংযোগ কেটে দেওয়া হয়, যাতে রেডিওতে বিদ্যুৎ খরচ না করে এটি চার্জ হয়। ওয়াল চার্জারসহ যেকোনো USB পাওয়ার উৎসই গণ্য হয়। USB কেবল লাগানো অবস্থায় আপনি Bluetooth আবার চালু করলে, পরের বার USB কেবল খুলে ফেলা পর্যন্ত এতে আর হাত দেওয়া হয় না।</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>iCade কন্ট্রোলার হিসেবে পড়ুন</value></data>
@@ -1002,7 +1028,7 @@
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Wii Remote লক্ষ্যের দিকে তাক করে B চাপুন।</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Wii Remote সেন্সর বার দেখতে পায়নি। এটি লক্ষ্যের দিকে তাক করে আবার B চাপুন।</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc বা Home চাপলে বাতিল হয়।</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>এত মিনিট কোনো ইনপুট না এলে এই Bluetooth কন্ট্রোলারটি বিচ্ছিন্ন করে, যাতে এটি স্লিপে গিয়ে ব্যাটারি বাঁচায়। USB-তে কখনো কার্যকর হয় না।</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>এত মিনিট কোনো ইনপুট না এলে এই Bluetooth কন্ট্রোলারটি বিচ্ছিন্ন করে, যাতে এটি স্লিপে গিয়ে ব্যাটারি বাঁচায়। 0 দিলে এটি বন্ধ থাকে। USB-তে কখনো কার্যকর হয় না।</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>পাওয়ার</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>মেনু</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>
@@ -1068,6 +1094,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>ব্যাটারি</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>পাথ</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>সিরিয়াল নম্বর</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>অ্যাপ GUID</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>ফার্মওয়্যার</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>রিভিশন</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>চ্যাটপ্যাড পড়ুন</value></data>
@@ -1156,11 +1184,15 @@
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>জাইরোস্কোপ</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>অ্যাক্সিলেরোমিটার</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1টি অক্ষ</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0}টি অক্ষ</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1টি বোতাম</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0}টি বোতাম</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1টি POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0}টি POV</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>অক্ষ {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0}টি অক্ষ, {1}টি বোতাম, {2}টি POV</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>রাম্বল</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>জাইরো</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>অ্যাক্সেল</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>যেসব প্রোগ্রাম এই ডিভাইসটিকে HID ডিভাইস হিসেবে খোলে, সেগুলোর কাছ থেকে ডিভাইসটি লুকিয়ে রাখবে</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>আপনার টাইপ করা কী Windows পড়তে থাকে, তাই গেমসহ সব প্রোগ্রামে টাইপিং আগের মতোই কাজ করে। “{0}” বোতামটি দিয়ে USB কীবোর্ডকে Windows-এর কাছ থেকে সরিয়ে নেওয়া যায়।</value></data>
@@ -1346,7 +1378,7 @@
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>মাদারবোর্ড ও গ্রাফিক্স কার্ড</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>মাউসপ্যাড, হেডসেট ও হেডসেট স্ট্যান্ড</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>গেম লাইটিং লিখলেই নিয়ন্ত্রণ নেয়।</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>হেক্স</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>ছয় অঙ্কের হেক্স রং লিখুন (RRGGBB বা #RRGGBB), তারপর প্রয়োগ করতে Enter চাপুন বা অন্য কোথাও ক্লিক করুন।</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>প্যালেট থেকে এই রং সরান</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>বন্ধ</value></data>
@@ -1548,6 +1580,7 @@
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>ইমপোর্ট করুন</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(নামহীন HID ডিভাইস)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0}টি HID ইন্টারফেস পাওয়া গেছে।</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>1টি HID ইন্টারফেস পাওয়া গেছে।</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>এনুমারেশন ব্যর্থ হয়েছে: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>এক্সট্র্যাক্ট ব্যর্থ হয়েছে: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>এক্সট্র্যাক্ট করা প্রোফাইল JSON পার্স করা যায়নি। কিছুই সংরক্ষিত হয়নি।</value></data>
@@ -1660,7 +1693,7 @@
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>সব ম্যাপিং একটি একটি করে পরপর রেকর্ড করুন</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>সব ম্যাপিং ও সেটিংস ক্লিপবোর্ডে কপি করুন</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>ক্লিপবোর্ড থেকে ম্যাপিং ও সেটিংস পেস্ট করুন</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>অন্যটি থেকে কপি করুন...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>অন্যটি থেকে কপি করুন…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>কনফিগার করা অন্য ডিভাইস থেকে সেটিংস কপি করুন</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>সব রিসেট করুন</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>সব সাফ করুন</value></data>
@@ -1848,7 +1881,7 @@
   <data name="Pad_More_Trigger" xml:space="preserve"><value>সংখ্যায় পরিসর, কাঁচা মান</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>পরিসর</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>“সীমানা ক্যালিব্রেট করুন” স্টিক যত দূর পৌঁছাতে পারে সেই প্রান্ত মাপে এবং সেটিকে পূর্ণ বৃত্তের আকার দেয়। চারটি স্লাইডার কেবল প্রতিটি দিকের সীমা বেঁধে দেয়।</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>নমুনা নেওয়া হচ্ছে...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>নমুনা নেওয়া হচ্ছে…</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>কেন্দ্র অফসেট X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>কেন্দ্র অফসেট Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>ডেডজোনের আকৃতি</value></data>
@@ -1959,6 +1992,7 @@
   <data name="Macro_DelayMs" xml:space="preserve"><value>বিলম্ব</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>সংবেদনশীলতা</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>নতুন ম্যাক্রো</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>ম্যাক্রো {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>ট্রিগার রেকর্ড করুন</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>সেট করা নেই। “রেকর্ড করুন”-এ ক্লিক করুন।</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>বোতাম {0}</value></data>
@@ -2017,6 +2051,8 @@
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>ম্যাক্রো থেকে স্লটের ফিজিক্যাল ডিভাইসের রাম্বল চালায়। “রিঅ্যাক্টিভ” ধরে রাখার সময়জুড়ে পূর্ণ শক্তিতে চলে, তারপর ফেডের সময়ের মধ্যে শূন্যে নেমে আসে। “স্টিকি” একটি “রাম্বল থামান” অ্যাকশন না চলা পর্যন্ত পূর্ণ শক্তিতে ধরে রাখে। max() দিয়ে গেমের রাম্বলের উপর যুক্ত হয়, তাই ব্যবহারকারীর চালানো ফিডব্যাক সব সময় টের পাওয়া যায়।</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>রাম্বল পালস {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>সাফ না করা পর্যন্ত রাম্বল {0} ধরে রাখুন</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>বাম {0}%, ডান {1}%</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>বাম ট্রিগার {0}%, ডান ট্রিগার {1}%</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>রাম্বল থামান</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>রাম্বল থামান</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>বরাদ্দ করা স্লটের যেকোনো সক্রিয় রাম্বল ওভাররাইড ছেড়ে দেয়। স্টিকি “রাম্বল” অ্যাকশনের সঙ্গে একসঙ্গে ব্যবহার করুন, যাতে অন্য একটি ম্যাক্রো দিয়ে ধরে রাখা বন্ধ করা যায়।</value></data>
@@ -2055,7 +2091,7 @@
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>মাউস Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>ব্যবধান</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>স্ক্রিনে বেছে নিন</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>ক্যাপচার হবে: {0}...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>ক্যাপচার হবে: {0}…</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>ক্লিক করুন, তারপর কার্সার লক্ষ্যের উপর নিয়ে যান। সংক্ষিপ্ত কাউন্টডাউনের পর এর অবস্থান ক্যাপচার হয়।</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>মোড</value></data>
   <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>ইনসেট X</value></data>
@@ -2727,9 +2763,9 @@
   <data name="Profiles_DropTile" xml:space="preserve"><value>এখানে একটি প্রোফাইল ফাইল ছাড়ুন</value></data>
   <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD বা DS4Windows</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>নতুন প্রোফাইল</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>নতুন নামে সংরক্ষণ করুন</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>নতুন নামে সংরক্ষণ করুন…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>বর্তমান সেটআপ এখানে সংরক্ষণ করুন</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>সম্পাদনা করুন</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>সম্পাদনা করুন…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>লোড করুন</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>অন্তর্নির্মিত</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>কোনো গেম ঠিক করা নেই</value></data>
@@ -2832,8 +2868,8 @@
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>কেন্দ্র অফসেট X রিসেট করুন</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>সীমানা ক্যালিব্রেট করুন</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>সীমানা আবার ক্যালিব্রেট করুন</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>কিনারা বরাবর ঘোরান... {0} বাকি</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>সম্পূর্ণ হয়েছে। আরও নিখুঁত করতে আরেক পাক...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>কিনারা বরাবর ঘোরান… {0} বাকি</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>সম্পূর্ণ হয়েছে। আরও নিখুঁত করতে আরেক পাক…</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>বৃত্তাকারতা {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>স্টিক যত দূর পৌঁছায় সেই সীমানা মাপতে স্টিকটি তার কিনারা বরাবর ঘোরান, এরপর তা পূর্ণ বৃত্তের আকারে আনা হয়।</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>সীমানা ক্যালিব্রেশন রিসেট করুন</value></data>
@@ -2912,7 +2948,7 @@
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Windows ভলিউম মিক্সারে একটি নির্দিষ্ট অ্যাপ্লিকেশনের ভলিউম নিয়ন্ত্রণ করে, ভলিউমের সীমা অনুযায়ী স্কেল করে। প্রসেসের নাম লিখুন (টাস্ক ম্যানেজারে দেখা যায়)। "সব সময়" ট্রিগারের সঙ্গে ব্যবহার করুন, অথবা "ধরে রাখা অবস্থায়" + "ছেড়ে দেওয়া পর্যন্ত" সহ একটি বোতাম/অক্ষ ট্রিগারের সঙ্গে।</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>নির্বাচিত অক্ষকে অবিরাম মাউসের নড়াচড়ায় (বা স্ক্রোলে) ম্যাপ করে। "সব সময়" ট্রিগারের সঙ্গে ব্যবহার করুন, অথবা "ধরে রাখা অবস্থায়" + "ছেড়ে দেওয়া পর্যন্ত" সহ একটি বোতাম/অক্ষ ট্রিগারের সঙ্গে। স্টিক দিয়ে মাউস চালাতে দুটি অ্যাকশন তৈরি করুন: একটি X অক্ষের জন্য, একটি Y অক্ষের জন্য।</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>অক্ষ উল্টান</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>ভলিউম OSD দেখান</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>ভলিউম ইন্ডিকেটর দেখান</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>দিক</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>যেকোনো</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>ধনাত্মক</value></data>
@@ -3139,7 +3175,7 @@
   <data name="Preview_CCOutputs" xml:space="preserve"><value>CC আউটপুট</value></data>
   <data name="Preview_NoteOutputs" xml:space="preserve"><value>নোট আউটপুট</value></data>
   <data name="Preview_Stick_Format" xml:space="preserve"><value>স্টিক {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>ট্রিগার {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>ডি-প্যাড</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>বোতাম</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -3156,7 +3192,6 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>মাত্রা</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>নিষ্ক্রিয়তার টাইমআউট</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>কোনো ভার্চুয়াল কন্ট্রোলারের ম্যাপ করা সব ডিভাইস অফলাইন থাকলে যত সেকেন্ড পর সেটি সরিয়ে ফেলা হয়। 0 দিলে এটি নিষ্ক্রিয় থাকে। একই ধরনের টিকে থাকা কন্ট্রোলারগুলো ফাঁকা জায়গা পূরণ করতে উপরে সরে আসে এবং নিচের নম্বরের স্লটে আবার যুক্ত হয়।</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>সেকেন্ড (0 = কখনো নয়)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>লেয়ার যোগ করুন</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>একটি শিফট লেয়ার যোগ করুন। এটি দ্বিতীয় একটি ম্যাপিং টেবিল, যা একটি বোতাম ধরে রাখা বা টগল করা অবস্থায় সক্রিয় হয়।</value></data>
@@ -3961,7 +3996,7 @@
     <value>বিলম্ব 0-তে রিসেট করুন (লেয়ার সঙ্গে সঙ্গে সাড়া দেয়)।</value>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>কমিউনিটি কনফিগ</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>কমিউনিটির তৈরি Steam Input কন্ট্রোলার কনফিগারেশন ব্রাউজ করুন এবং সেগুলো PadForge প্রোফাইলে রূপান্তর করুন। আপনি কেবল অনুসন্ধান করলে, কোনো কনফিগ খুললে বা ইমপোর্ট করা কনফিগের আপডেট খুঁজলেই PadForge সরাসরি Steam-এর সার্ভারে সংযুক্ত হয়। এটি আপনার অনুসন্ধানের লেখা, সংশ্লিষ্ট গেম, কনফিগ ও নির্মাতাদের আইডি এবং PadForge-এর সংস্করণ পাঠায়। বেনামি Steam লগঅন আপনার Windows সংস্করণ এবং একটি মেশিন আইডিও পাঠায়, যা আপনার Windows ইনস্টলেশন আইডি, নেটওয়ার্ক অ্যাডাপ্টারের ঠিকানা ও বুট ডিস্কের সিরিয়ালের হ্যাশ থেকে তৈরি। কোনো টেলিমেট্রি নেই, তৃতীয় পক্ষের কোনো সার্ভিস নেই, Steam অ্যাকাউন্টও লাগে না।</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>কমিউনিটির তৈরি Steam Input কন্ট্রোলার কনফিগারেশন ব্রাউজ করুন এবং সেগুলো PadForge প্রোফাইলে রূপান্তর করুন। PadForge আপনার অনুসন্ধানের লেখা, সংশ্লিষ্ট গেম, কনফিগ ও নির্মাতাদের ID এবং নিজের সংস্করণ পাঠায়। বেনামি Steam লগঅন আপনার Windows সংস্করণ এবং একটি মেশিন ID-ও পাঠায়, যা আপনার Windows ইনস্টলেশন ID, নেটওয়ার্ক অ্যাডাপ্টারের ঠিকানা ও বুট ডিস্কের সিরিয়ালের হ্যাশ থেকে তৈরি। কোনো তৃতীয় পক্ষের সার্ভিস জড়িত নয়।</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge কেবল তখনই Steam-এর সার্ভারে সংযুক্ত হয় যখন আপনি অনুসন্ধান করেন, কোনো কনফিগ খোলেন বা ইমপোর্ট করা কনফিগের আপডেট খোঁজেন। কোনো টেলিমেট্রি নেই, Steam অ্যাকাউন্টও লাগে না।</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>কী পাঠানো হয়</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>কমিউনিটি কনফিগ সক্ষম করুন</value></data>
@@ -4018,6 +4053,9 @@
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>এই কনফিগের জন্য Steam ডাউনলোড করার কোনো ফাইল দেখায় না, আর আপনার Steam ফোল্ডারেও এর কোনো কপি নেই। Steam-এ এটিতে সাবস্ক্রাইব করুন, তাহলে PadForge সেখান থেকে এটি পড়বে।</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam ওয়ার্কশপে খুলুন</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>পুরোনো</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop প্রোফাইল</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop ম্যাক্রো</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>কার্সর অঞ্চল</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>কী কী আসে তা দেখতে একটি কনফিগ বেছে নিন।</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>যা যা রূপান্তরিত হয়</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>হয়ে যায়</value></data>
@@ -4395,6 +4433,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>মাঝারি (সহজ)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>উচ্চ (সহজ)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>কাস্টম</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b ডিফল্ট</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>কাটঅফ</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>ক্রসওভার ফ্রিকোয়েন্সি। এর নিচে চ্যানেলগুলো মনোর দিকে মিশে যায়, এর উপরে আলাদা থাকে, তাই কাটঅফ কম হলে ক্রসফিড কম হয়।</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>ফিড</value></data>
@@ -4422,7 +4461,8 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>সাফ করুন</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>ক্লিপবোর্ড থেকে ইমপোর্ট করুন</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>আপনার হেডফোনের একটি AutoEq প্রোফাইল ক্লিপবোর্ডে কপি করুন, তারপর ক্লিক করুন। ব্যান্ডগুলো প্রতিস্থাপন করে এবং প্রিঅ্যাম্প সেট করে। ক্লিপবোর্ডে পড়ার মতো কিছু না থাকলে বর্তমান EQ অপরিবর্তিত থাকে।</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>ফাইল থেকে ইমপোর্ট করুন</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>ফাইল থেকে ইমপোর্ট করুন…</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>প্যারামেট্রিক EQ ইমপোর্ট করুন</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>AutoEq থেকে ডাউনলোড করা .txt ফাইলটি বেছে নিন। এটিই ব্যবহার করুন: autoeq.app কপি করার মতো লেখা না দিয়ে একটি ফাইল দেয়।</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>আপনার হেডফোনের সঙ্গে মেলানো সংশোধনের জন্য: autoeq.app খুলুন, আপনার মডেল বেছে নিন, Custom Parametric Eq বেছে নিয়ে ডাউনলোড করুন, তারপর “ফাইল থেকে ইমপোর্ট করুন”। Graphic Eq ডাউনলোডে কোনো ফিল্টার লাইন থাকে না, তাই সেটি ইমপোর্ট হবে না।</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{2} থেকে {1:0.#} dB প্রিঅ্যাম্পসহ {0}টি ব্যান্ড ইমপোর্ট হয়েছে।</value></data>
@@ -4475,6 +4515,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>এই নেটওয়ার্ক সরাসরি সংযোগ করতে পারে না (এটি মোবাইল হটস্পট বা ক্যারিয়ার-গ্রেড NAT বলে মনে হচ্ছে)। Tailscale-এর মতো একটি VPN ব্যবহার করুন, অথবা বাসার ব্রডব্যান্ড থেকে সংযুক্ত হোন।</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>এই পিসির পাবলিক ঠিকানা পাওয়া যায়নি (নেটওয়ার্ক হয়তো প্রয়োজনীয় ট্রাফিক আটকে দিচ্ছে)। এখানে সরাসরি সংযোগ কাজ করবে না। একটি VPN ব্যবহার করুন, অথবা একই নেটওয়ার্কে “ঠিকানা দিয়ে সংযুক্ত হোন” ব্যবহার করুন।</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>কন্ট্রোলারের ব্যাটারি কম</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>কন্ট্রোলার</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% ব্যাটারি বাকি</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>ব্যাটারি সতর্কতা</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>খেলার মাঝখানে বন্ধ হয়ে যাওয়ার আগেই কন্ট্রোলারের ব্যাটারি কমে এলে বিজ্ঞপ্তি পান।</value></data>
@@ -4691,7 +4732,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
     <value>অন্য পিসিতে একটি ভার্চুয়াল কন্ট্রোলার তৈরি করুন, তারপর রিফ্রেশ করুন।</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>অন্য পিসির অপেক্ষায়...</value>
+    <value>অন্য পিসির অপেক্ষায়…</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>ড্রয়িং ট্যাবলেট</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>শেয়ার করা ইনপুট</value></data>
@@ -4753,7 +4794,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>SteamVR ইনস্টলের অবস্থান অবশ্যই পূর্ণ পাথ হতে হবে, যেমন C:\SteamVR।</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>SteamVR ইনস্টলের অবস্থান কোনো ড্রাইভের রুট হতে পারে না। একটি ফোল্ডার বেছে নিন, যেমন C:\SteamVR।</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd 60 মিনিটের মধ্যে শেষ হয়নি।</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd চলেছে, কিন্তু SteamVR {0}-এ পৌঁছায়নি। steamcmd জানিয়েছে: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd চলেছে, কিন্তু SteamVR {0}-এ পৌঁছায়নি। steamcmd জানিয়েছে: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>HidHide ইনস্টল হয়েছে, কিন্তু এর কন্ট্রোল ডিভাইস খোলেনি, তাই কোনো ক্লাস ফিল্টার যোগ হয়নি।</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>HidHide এখনো একটি ক্লাস ফিল্টার হিসেবে তালিকায় আছে, তাই ড্রাইভারটি রেখে দেওয়া হয়েছে।</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>পুরোনো ড্রাইভার সরানো হচ্ছে…</value></data>

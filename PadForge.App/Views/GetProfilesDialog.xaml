@@ -129,7 +129,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <controls:ClickBorder x:Name="FileDropZone" CornerRadius="10" Cursor="Hand" AllowDrop="True" Click="FileDropZone_Click"
+            <controls:ClickBorder x:Name="FileDropZone" CornerRadius="12" Cursor="Hand" AllowDrop="True" Click="FileDropZone_Click"
                                   DragEnter="FileDropZone_DragOver" DragOver="FileDropZone_DragOver" Drop="FileDropZone_Drop"
                                   AutomationProperties.AutomationId="GetProfiles_FileDrop"
                                   AutomationProperties.Name="{Binding Profiles_DropTile, Source={x:Static strings:Strings.Instance}}">
@@ -144,16 +144,16 @@
                     </Style>
                 </Border.Style>
                 <Grid>
-                    <Rectangle RadiusX="10" RadiusY="10" Stroke="{DynamicResource DashLineBrush}"
+                    <Rectangle RadiusX="12" RadiusY="12" Stroke="{DynamicResource DashLineBrush}"
                                StrokeThickness="1" StrokeDashArray="4 3" SnapsToDevicePixels="True"/>
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16">
                         <controls:DecorativeStrokeIcon Data="{StaticResource DownloadLineGeometry}" Size="22" StrokeWidth="1.7"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center"/>
                         <TextBlock Text="{Binding Profiles_DropTile, Source={x:Static strings:Strings.Instance}}"
-                                   FontSize="14" Margin="0,8,0,0" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                   FontSize="14" FontWeight="SemiBold" Margin="0,6,0,0" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                         <TextBlock Text="{Binding Profiles_DropTileFormats, Source={x:Static strings:Strings.Instance}}"
-                                   FontSize="13" Margin="0,8,0,0" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"
+                                   FontSize="13" Margin="0,6,0,0" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"
                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                     </StackPanel>
                 </Grid>

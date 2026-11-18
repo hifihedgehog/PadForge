@@ -191,7 +191,7 @@
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
         </Style>
         <Style x:Key="DriverVersion" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
+            <Setter Property="Typography.NumeralAlignment" Value="Tabular"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
             <Setter Property="Margin" Value="6,0,0,0"/>
@@ -217,10 +217,6 @@
             <Style x:Key="CardBorder" TargetType="Border" BasedOn="{StaticResource CardBorder}">
                 <Setter Property="Padding" Value="0"/>
                 <Setter Property="Margin" Value="0,0,0,14"/>
-            </Style>
-            <!-- A card's title: the board's 15. -->
-            <Style x:Key="CardTitle" TargetType="TextBlock" BasedOn="{StaticResource CardTitle}">
-                <Setter Property="FontSize" Value="15"/>
             </Style>
         </ScrollViewer.Resources>
         <!-- The column's cap is the panel's own. A grid's star column that
@@ -498,8 +494,8 @@
                                                 </controls:DecorativeStrokeIcon.Style>
                                             </controls:DecorativeStrokeIcon>
                                             <Grid VerticalAlignment="Center">
-                                                <!-- Before any check: PadForge and its version, in the
-                                                     code face and the cold color as the board has it. -->
+                                                <!-- Before any check: PadForge and its version, in
+                                                     tabular figures and the cold color as the board has it. -->
                                                 <TextBlock x:Name="UpdateVersionLine" TextWrapping="Wrap"><TextBlock.Style>
                                                         <Style TargetType="TextBlock">
                                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -510,7 +506,7 @@
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
-                                                    </TextBlock.Style><Run Text="PadForge" FontWeight="SemiBold"/><Run Text=" "/><Run Text="{Binding VersionNumber, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"/></TextBlock>
+                                                    </TextBlock.Style><Run Text="{Binding Common_PadForge, Source={x:Static strings:Strings.Instance}, Mode=OneWay}" FontWeight="SemiBold"/><Run Text=" "/><Run Text="{Binding VersionNumber, Mode=OneWay}" Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource ColdBrush}"/></TextBlock>
                                                 <TextBlock x:Name="UpdateStatusLineText" common:LiveText.Polite="True" Text="{Binding UpdateStatusText}" TextWrapping="Wrap"
                                                            Visibility="{Binding UpdateStatusText, Converter={StaticResource StringToVisibility}}">
                                                     <TextBlock.Style>
@@ -528,18 +524,20 @@
                                         </DockPanel>
                                         <!-- Check Now, and while an update waits Release Notes
                                              and then Install and Restart, the main action, at
-                                             the row's end. -->
-                                        <WrapPanel controls:SettingRow.Fills="True" VerticalAlignment="Center">
-                                            <Button Content="{Binding Settings_CheckNow, Source={x:Static strings:Strings.Instance}}"
-                                                    Command="{Binding CheckForUpdatesNowCommand}" Margin="12,4,0,4"/>
-                                            <Button Content="{Binding Settings_ReleaseNotes, Source={x:Static strings:Strings.Instance}}"
-                                                    Command="{Binding OpenReleaseNotesCommand}" Margin="12,4,0,4"
+                                             the row's end. A line that wraps keeps its buttons
+                                             at the end, as the driver rows do. -->
+                                        <controls:FlexLinePanel controls:SettingRow.Fills="True" VerticalAlignment="Center"
+                                                                Gap="12" LineGap="8" EndsApart="True" Margin="12,0,0,0">
+                                            <Button controls:FlexLinePanel.AtEnd="True" Content="{Binding Settings_CheckNow, Source={x:Static strings:Strings.Instance}}"
+                                                    Command="{Binding CheckForUpdatesNowCommand}" Margin="0,4,0,4"/>
+                                            <Button controls:FlexLinePanel.AtEnd="True" Content="{Binding Settings_ReleaseNotes, Source={x:Static strings:Strings.Instance}}"
+                                                    Command="{Binding OpenReleaseNotesCommand}" Margin="0,4,0,4"
                                                     Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                            <Button Content="{Binding Settings_InstallAndRestart, Source={x:Static strings:Strings.Instance}}"
+                                            <Button controls:FlexLinePanel.AtEnd="True" Content="{Binding Settings_InstallAndRestart, Source={x:Static strings:Strings.Instance}}"
                                                     Command="{Binding InstallUpdateCommand}"
-                                                    Style="{StaticResource EmberAccentButton}" Padding="14,0" Margin="12,4,0,4"
+                                                    Style="{StaticResource EmberAccentButton}" Padding="14,0" Margin="0,4,0,4"
                                                     Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                        </WrapPanel>
+                                        </controls:FlexLinePanel>
                                     </controls:SettingRow>
                                     <ProgressBar Value="{Binding UpdateProgress}" Maximum="100" Height="4"
                                                  AutomationProperties.Name="{Binding Settings_Updates, Source={x:Static strings:Strings.Instance}}"
@@ -660,7 +658,7 @@
                                                       AutomationProperties.Name="{Binding Settings_HmInactivityTimeout, Source={x:Static strings:Strings.Instance}}"
                                                       ToolTip="{Binding Settings_HmInactivityTimeoutTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <TextBlock Style="{StaticResource DzPercent}" controls:SettingRow.Fills="True"
-                                                   Text="{Binding Settings_SecondsZeroNever, Source={x:Static strings:Strings.Instance}}"/>
+                                                   Text="{Binding Common_Seconds, Source={x:Static strings:Strings.Instance}}"/>
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="HmInactivityDestroyTimeoutSeconds"
                                                                   SettingLabel="{Binding Settings_HmInactivityTimeout, Source={x:Static strings:Strings.Instance}}"
                                                                   AutomationProperties.AutomationId="Reset_SettingsViewModel_HmInactivityDestroyTimeoutSeconds_197"/>
@@ -774,8 +772,11 @@
                                 <controls:SettingItem>
                                     <controls:SettingRow MinHeight="44">
                                         <TextBlock Style="{StaticResource DzLabel}" Text="{Binding Settings_BatteryNotifyTestLabel, Source={x:Static strings:Strings.Instance}}"/>
+                                        <!-- No reset: the button keeps the reset's slot, 32
+                                             and the row's 12 before it, so it ends where the
+                                             card's switches end. -->
                                         <Button Content="{Binding Settings_BatteryNotifyTest, Source={x:Static strings:Strings.Instance}}"
-                                                Click="TestBatteryNotify_Click" IsEnabled="{Binding BatteryNotifyEnabled}"/>
+                                                Click="TestBatteryNotify_Click" IsEnabled="{Binding BatteryNotifyEnabled}" Margin="0,0,44,0"/>
                                     </controls:SettingRow>
                                 </controls:SettingItem>
                                 <!-- The More row draws the hairline over itself and the one
@@ -1208,7 +1209,7 @@
                             </controls:SettingItem>
 
                             <!-- Windows MIDI Services. The older runtime's version reads in
-                                 the telemetry face beside the state, and a note (a leftover
+                                 tabular figures beside the state, and a note (a leftover
                                  runtime, a service that did not start, what the PC lacks)
                                  reads as a line under the description. Install fetches
                                  PadForge's build of the runtime (Microsoft withdrew its
@@ -1450,7 +1451,7 @@
                                                              AutomationProperties.Name="{Binding Settings_WhitelistedApps, Source={x:Static strings:Strings.Instance}}">
                                                         <ListBox.ItemTemplate>
                                                             <DataTemplate>
-                                                                <TextBlock Text="{Binding}" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}"
+                                                                <TextBlock Text="{Binding}" FontSize="12"
                                                                            TextTrimming="CharacterEllipsis"/>
                                                             </DataTemplate>
                                                         </ListBox.ItemTemplate>
@@ -1525,11 +1526,13 @@
                                 </controls:SettingItem>
                                 <!-- What Is Sent stands under the line it adds to and
                                      opens the full account under itself, with the
-                                     chevron the pad page's More Options has: down while
-                                     closed, up while open. Beside the two buttons and
-                                     with no chevron it read as their name. Its words
-                                     start where the line's do, and its fill under the
-                                     pointer reaches 10 past them at each side. -->
+                                     chevron every fold on the page has (More, HidHide
+                                     Options): before the words, pointing at them while
+                                     closed and down while open. Beside the two buttons
+                                     and with no chevron it read as their name. Its
+                                     chevron starts where the line's words do, and its
+                                     fill under the pointer reaches 10 past them at each
+                                     side. -->
                                 <controls:SettingItem>
                                     <TextBlock Text="{Binding Settings_CommunityConfigs_Line, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardDescription}" Margin="20,12,10,2"/>
@@ -1537,9 +1540,8 @@
                                                   HorizontalAlignment="Left" AutomationProperties.AutomationId="Settings_WhatIsSent"
                                                   AutomationProperties.Name="{Binding Settings_WhatIsSent, Source={x:Static strings:Strings.Instance}}">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Settings_WhatIsSent, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
-                                            <Path x:Name="WhatIsSentChevron" FlowDirection="LeftToRight" Data="M 1,3 L 5,7 L 9,3" Width="10" Height="10" Margin="8,0,0,0"
-                                                  Stroke="{DynamicResource TextFillColorPrimaryBrush}" StrokeThickness="1.4"
+                                            <Path x:Name="WhatIsSentChevron" FlowDirection="LeftToRight" Data="M 3,1 L 7,5 L 3,9" Width="10" Height="10" Margin="0,0,8,0"
+                                                  Stroke="{DynamicResource TextFillColorSecondaryBrush}" StrokeThickness="1.4"
                                                   StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
                                                   VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
                                                 <Path.Style>
@@ -1548,7 +1550,7 @@
                                                             <DataTrigger Binding="{Binding IsChecked, ElementName=WhatIsSentToggle}" Value="True">
                                                                 <Setter Property="RenderTransform">
                                                                     <Setter.Value>
-                                                                        <RotateTransform Angle="180"/>
+                                                                        <RotateTransform Angle="90"/>
                                                                     </Setter.Value>
                                                                 </Setter>
                                                             </DataTrigger>
@@ -1556,6 +1558,7 @@
                                                     </Style>
                                                 </Path.Style>
                                             </Path>
+                                            <TextBlock Text="{Binding Settings_WhatIsSent, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </ToggleButton>
                                     <TextBlock x:Name="WhatIsSentAccount" Text="{Binding Settings_CommunityConfigsDesc, Source={x:Static strings:Strings.Instance}}"
@@ -1580,9 +1583,11 @@
                                 <TextBlock Text="{Binding Settings_SettingsFile, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"
                                            ToolTip="{Binding Settings_SettingsFileDesc, Source={x:Static strings:Strings.Instance}}" Margin="20,16,10,16"/>
                                 <controls:SettingItem>
-                                    <TextBlock Text="{Binding SettingsFilePath}" FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}"
+                                    <TextBlock Text="{Binding SettingsFilePath}" FontSize="13"
                                                Foreground="{DynamicResource ColdBrush}" TextWrapping="Wrap" Margin="20,14,10,6"/>
-                                    <controls:FlexLinePanel Gap="12" LineGap="12" MinLineHeight="44" EndsApart="True" Margin="20,0,10,4">
+                                    <!-- 44 past the row's 10 at the end: the reset's slot, so
+                                         Reset to Defaults ends where the card's switches end. -->
+                                    <controls:FlexLinePanel Gap="12" LineGap="12" MinLineHeight="44" EndsApart="True" Margin="20,0,54,4">
                                         <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}" Command="{Binding SaveCommand}"
                                                 Style="{StaticResource EmberAccentButton}" Padding="14,0"/>
                                         <Button Content="{Binding Settings_Reload, Source={x:Static strings:Strings.Instance}}" Command="{Binding ReloadCommand}"/>
@@ -1612,20 +1617,20 @@
                                     <controls:SettingRow MinHeight="30">
                                         <TextBlock Style="{StaticResource DzLabel}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                    Text="{Binding Settings_AppVersion, Source={x:Static strings:Strings.Instance}}"/>
-                                        <TextBlock Text="{Binding ApplicationVersion}" FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}"
-                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding ApplicationVersion}" FontSize="13" Typography.NumeralAlignment="Tabular"
+                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}" VerticalAlignment="Center" Margin="0,0,44,0"/>
                                     </controls:SettingRow>
                                     <controls:SettingRow MinHeight="30">
                                         <TextBlock Style="{StaticResource DzLabel}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                    Text="{Binding Settings_DotNetRuntime, Source={x:Static strings:Strings.Instance}}"/>
-                                        <TextBlock Text="{Binding RuntimeVersion}" FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}"
-                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding RuntimeVersion}" FontSize="13" Typography.NumeralAlignment="Tabular"
+                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}" VerticalAlignment="Center" Margin="0,0,44,0"/>
                                     </controls:SettingRow>
                                     <controls:SettingRow MinHeight="30">
                                         <TextBlock Style="{StaticResource DzLabel}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                    Text="{Binding Settings_SdlVersion, Source={x:Static strings:Strings.Instance}}"/>
-                                        <TextBlock Text="{Binding SdlVersion}" FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}"
-                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding SdlVersion}" FontSize="13" Typography.NumeralAlignment="Tabular"
+                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}" VerticalAlignment="Center" Margin="0,0,44,0"/>
                                     </controls:SettingRow>
                                 </controls:SettingItem>
                                 <controls:SettingItem>

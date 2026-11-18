@@ -83,6 +83,7 @@
   <data name="Common_Clear" xml:space="preserve"><value>Mopotĩ</value></data>
   <data name="Common_None" xml:space="preserve"><value>Mba'eve</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>segundo</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -94,7 +95,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>Oñembotyhína PadForge...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>Oñembotyhína PadForge…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Oñepyrũhína PadForge…</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Hechauka PadForge</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Motor opyta</value></data>
@@ -117,7 +118,7 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ yvy gotyo)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← asu)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ yvate)</value></data>
-  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll NDOJEJUHÚI</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll ndojejuhúi</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>Ndaikatúi oñemonguatia: {0}</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Perfil "{0}" oñemoheñói.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>Perfil "{0}" oñemboguete.</value></data>
@@ -225,7 +226,7 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Ehai «{0}»</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(ndaipóri moñe'ẽrã)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Moñe'ẽrã</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>aravo'i (0 = araka'eve)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>aravo'i</value></data>
   <data name="Devices_BlissBoxLine_Format" xml:space="preserve"><value>Bliss-Box puerto {0} · {1} · firmware {2}</value></data>
   <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Hechauka</value></data>
   <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Perfil réra</value></data>
@@ -256,11 +257,15 @@
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>Giroscopio</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>Acelerómetro</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 eje</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} eje</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 votõ</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} votõ</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>Eje {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} eje, {1} votõ, {2} POV</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>Vibración</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Giroscopio</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>Acelerómetro</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_DeviceKind_Mouse" xml:space="preserve"><value>mouse</value></data>
   <data name="Devices_DeviceKind_Keyboard" xml:space="preserve"><value>teclado</value></data>
@@ -296,7 +301,7 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Tesape</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Tesape</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED brillo</value></data>
   <data name="Pad_Lighting_PlayerLed_All" xml:space="preserve"><value>Opaite</value></data>
   <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
@@ -373,6 +378,7 @@
   <data name="Macro_MouseX2" xml:space="preserve"><value>X2 (Tenonde)</value></data>
   <data name="Macro_Once" xml:space="preserve"><value>Peteĩ jey</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Macro pyahu</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Macro {0}</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Votõ {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(mba'eve)</value></data>
   <data name="Macro_DeviceAxis_Format" xml:space="preserve"><value>Mba'e'oka eje {0}</value></data>
@@ -407,7 +413,7 @@
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>Ndorekói asignación</value></data>
-  <data name="Mapping_Inv" xml:space="preserve"><value>Inv.</value></data>
+  <data name="Mapping_Inv" xml:space="preserve"><value>Invertido</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
 
   <!-- ═══ Touchpad Mapping Labels ═══ -->
@@ -756,7 +762,7 @@
 
   <!-- ═══ Preview Views ═══ -->
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Palanca {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>G{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Gatillo {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Votõkuéra</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -1183,6 +1189,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Batería</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Tape</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Número de serie</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>App GUID</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Revisión</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Emyengovia</value></data>
@@ -1226,6 +1234,21 @@
   <data name="Search_Group_Actions" xml:space="preserve"><value>Tembiapo</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Emboguete {0}?</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Ndojeipe'ái</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Mba'e'oka</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Interfaz ñemboheraguapy</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Registro clave ojekompartíva</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Registro valor ojekompartíva</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>WinUSB ñembojoaju</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>OEM réra ñemyengovia</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>DeviceOverrides clave</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>OpenVR ñemboheraguapy</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Driver paquete</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>WUDF servicio clave</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Registro clave</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Certificado</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Ñongatuha</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Servicio ñemboheko</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Ñemboguete rembiapo</value></data>
   <data name="PickSound_Use" xml:space="preserve"><value>Eipuru ryapu</value></data>
   <data name="ProfileDialog_AddRunningGame" xml:space="preserve"><value>Embojuaju ñembosarái oikóva</value></data>
   <data name="ProfileDialog_RemoveGame_Format" xml:space="preserve"><value>Nohẽ {0}</value></data>
@@ -1263,4 +1286,7 @@
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Capa oñemyendy aja omantene flyout ojehechakuaa capa iñambue peve. 2 segundo aja ohechauka chupe capa oñemyendývo, upéi oheja oho. Araka'eve ndive, ko capa ndohechaukái flyout, ha Base avei ndohechaukái mba'eve capa opávo.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 segundo aja ohechauka Base réra peteĩ shift layer opávo. Araka'eve ndive, Base ndohechaukái flyout.</value></data>
   <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Ta'angakuéra (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Opaite marandurenda (*.*)|*.*</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Curva</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Capakuéra Shift</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Invertido</value></data>
 </root>

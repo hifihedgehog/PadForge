@@ -71,6 +71,7 @@
   <data name="Common_Start" xml:space="preserve"><value>Poputá</value></data>
   <data name="Common_None" xml:space="preserve"><value>Esor</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>sekon</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -99,7 +100,7 @@
   <data name="Main_EngineStopped" xml:space="preserve"><value>Ewe engine a úkútiw</value></data>
 
   <!-- ═══ MainWindow Status Messages ═══ -->
-  <data name="Status_SDL3NotFound" xml:space="preserve"><value>ESOR SDL3.dll</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>Esor SDL3.dll</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Ewe engine a poputá.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Ewe engine a úkútiw.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Osukosuk: {0}</value></data>
@@ -116,7 +117,7 @@
   <data name="Update_Available_Format" xml:space="preserve"><value>A wor PadForge {0}.</value></data>
   <data name="Update_PreReleaseAvailable_Format" xml:space="preserve"><value>A wor pre-release {0}.</value></data>
   <data name="Update_RestartFailed_Format" xml:space="preserve"><value>PadForge ese tongeni poputá sefál: {0}</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>Apachaatá...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>Apachaatá…</value></data>
   <data name="BthPS3Uninstall_KindRadio" xml:space="preserve"><value>Bluetooth</value></data>
   <data name="Settings_MidiStatusUnavailable" xml:space="preserve"><value>Ese wor</value></data>
   <data name="Settings_MidiStatusNotRunning" xml:space="preserve"><value>Ese angang</value></data>
@@ -184,7 +185,7 @@
   <data name="Pad_AT_Weapon" xml:space="preserve"><value>Pisekin maun</value></data>
   <data name="Pad_AT_Strength" xml:space="preserve"><value>Péchékkúl</value></data>
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>Chón urumwot 1</value></data>
   <data name="Pad_Lighting_PlayerLed_P2" xml:space="preserve"><value>Chón urumwot 2</value></data>
   <data name="Pad_Lighting_PlayerLed_P3" xml:space="preserve"><value>Chón urumwot 3</value></data>
@@ -200,7 +201,7 @@
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_MidiOutputPortNone" xml:space="preserve"><value>Esor</value></data>
   <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>Apachaatá mwékútúkút</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kapiini seni...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kapiini seni…</value></data>
   <data name="Pad_Half" xml:space="preserve"><value>Esópw</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. -->
   <!-- Combine UI (Issue #61): per-row CombineMode dropdown + Custom formula editor + starter presets. English placeholders pending translation. -->
@@ -231,6 +232,7 @@
   <data name="Macro_Repeat" xml:space="preserve"><value>Féri sefál</value></data>
   <data name="Macro_Once" xml:space="preserve"><value>Fán eú</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Macro minefé</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Macro {0}</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
   <data name="MacroAction_Wait_Format" xml:space="preserve"><value>Witiwit {0} ms</value></data>
@@ -295,7 +297,7 @@
   <!-- ═══ Profiles ═══ -->
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Esor controller</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Minefen profile</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Siwili</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Siwili…</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_Edit" xml:space="preserve"><value>Siwili ewe profile</value></data>
@@ -564,7 +566,7 @@
   </data>
   <data name="Menu_IconScale" xml:space="preserve"><value>Watteen ewe icon</value></data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>A witi ewe pwal eú PC...</value>
+    <value>A witi ewe pwal eú PC…</value>
   </data>
   <data name="Pad_SteeringAngleRumble_Motor" xml:space="preserve"><value>Motor</value></data>
   <data name="Status_InstallerTimedOut" xml:space="preserve"><value>Ewe installer a chúen angang mwirin úlúngát minich.</value></data>
@@ -731,4 +733,11 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Ese fókkun</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Lupwen ewe layer a angang a amwóchu ewe flyout tori an ewe layer siwil. Lón 2 sekon a pwárátá lupwen ewe layer a poputá, mwirin a mwúttiiló. Ren Ese fókkun, ei layer ese pwárátá flyout, me Base ese pwárátá lupwen ewe layer a wesiló.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Lón 2 sekon a pwárátá iten Base lupwen eu shift layer a wesiló. Ren Ese fókkun, Base ese pwárátá flyout.</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>Ekkewe settings ese siwil</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>Stick peliefefin</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>Stick peliemwán</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>App GUID</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
 </root>

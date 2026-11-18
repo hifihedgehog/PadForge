@@ -218,7 +218,7 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Light</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Light</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Ii rang ke palette se hatao</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Band</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Lightbar reset karo</value></data>
@@ -242,7 +242,7 @@
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Button</value></data>
   <data name="ManageProfiles_Export" xml:space="preserve"><value>Export karo…</value></data>
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Delete karo</value></data>
-  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>File se Import karo…</value></data>
+  <data name="ManageProfiles_ImportFromFile" xml:space="preserve"><value>File se import karo…</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Import karo</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
@@ -279,6 +279,7 @@
   <data name="Macro_MouseMiddle" xml:space="preserve"><value>Beech</value></data>
   <data name="Macro_Once" xml:space="preserve"><value>Ek dafe</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Naya macro</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Macro {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(kuch nai)</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
@@ -418,7 +419,7 @@
   <data name="Profiles_Title" xml:space="preserve"><value>Profile</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Koi controller nahi</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Naya profile</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Edit karo</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Edit karo…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Load karo</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
@@ -557,7 +558,7 @@
 
   <!-- ═══ Preview Views ═══ -->
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Stick {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Button</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -1041,6 +1042,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Battery</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Path</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Serial number</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>App GUID</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Revision</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Abhi aage: {0}, iske liye koi profile set nai hai</value></data>
@@ -1127,4 +1130,29 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Kabhi nai</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Jab tak layer on hai, flyout ke layer badle tak screen pe rakhe. 2 second ke liye, layer on hoe pe flyout ke dikhaai, phir apne se hatae dei. Kabhi nai ke saath, ee layer koi flyout nai dikhaai, aur layer khatam hoe pe Base bhi koi flyout nai dikhaai.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 second ke liye, shift layer khatam hoe pe Base ke naam dikhaai. Kabhi nai ke saath, Base koi flyout nai dikhaai.</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>Default settings</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>Baaya stick</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>Daaya stick</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Curve</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Shift layer</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Ulta</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Device</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Interface ke registration</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Shared registry key</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Shared registry value</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>WinUSB binding</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>OEM naam ke override</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>DeviceOverrides key</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>OpenVR registration</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Driver ke package</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>WUDF service key</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Registry key</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Certificate</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Folder</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Service ke setting</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Hatae ke step</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b default</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Controller</value></data>
 </root>

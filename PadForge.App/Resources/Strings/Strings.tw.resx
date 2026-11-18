@@ -74,6 +74,7 @@
   <data name="Common_Start" xml:space="preserve"><value>Fi ase</value></data>
   <data name="Common_None" xml:space="preserve"><value>Hwee</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>sɛkɛn</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -123,6 +124,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Wɔakora</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Wɔankenkan</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Wɔanyi</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Device</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Interface nkyerɛwee</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Registry key a wɔkyɛ</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Registry value a wɔkyɛ</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>WinUSB nkabom</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>OEM din a ɛsi ananmu</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>DeviceOverrides key</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>OpenVR nkyerɛwee</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Driver package</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>WUDF service key</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Registry key</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Certificate</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Folder</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Service nhyehyɛe</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Nyiyi anammɔn</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Yi BthPS3 fi hɔ</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Yɛrekenkan nea BthPS3 gyaw wɔ PC yi so…</value></data>
   <data name="BthPS3Uninstall_Nothing" xml:space="preserve"><value>BthPS3 annyaw biribiara wɔ PC yi so a wobɛyi.</value></data>
@@ -197,7 +213,7 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Kanea</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Kanea</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED hann</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>Agodifoɔ 1</value></data>
   <data name="Pad_Lighting_PlayerLed_P2" xml:space="preserve"><value>Agodifoɔ 2</value></data>
@@ -458,7 +474,7 @@
   <data name="MacroAxis_ZRotation" xml:space="preserve"><value>Trigger nifa</value></data>
 
   <!-- ═══ Preview Views ═══ -->
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 

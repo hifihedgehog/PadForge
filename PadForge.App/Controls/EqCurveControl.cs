@@ -57,12 +57,16 @@ namespace PadForge.Controls
         private static readonly Brush Bg = Frozen(new SolidColorBrush(Color.FromArgb(0x30, 0x00, 0x00, 0x00)));
         private static readonly Pen GridPen = Frozen(new Pen(Frozen(new SolidColorBrush(Color.FromArgb(0x38, 0xC8, 0xC8, 0xC8))), 1));
         private static readonly Pen ZeroPen = Frozen(new Pen(Frozen(new SolidColorBrush(Color.FromArgb(0x70, 0xC8, 0xC8, 0xC8))), 1));
-        private static readonly Brush LabelBrush = Frozen(new SolidColorBrush(Color.FromArgb(0x90, 0xC8, 0xC8, 0xC8)));
+        // The grid's labels take the theme's tertiary text where the app has
+        // one, and this frozen gray where it does not (a test's bare host).
+        private static readonly Brush LabelFallback = Frozen(new SolidColorBrush(Color.FromArgb(0x90, 0xC8, 0xC8, 0xC8)));
         private static readonly Pen CurvePen = Frozen(new Pen(Frozen(new SolidColorBrush(Color.FromRgb(0xF2, 0x65, 0x2A))), 2));
         private static readonly Brush HandleFill = Frozen(new SolidColorBrush(Color.FromRgb(0xF2, 0x65, 0x2A)));
         private static readonly Brush HandleHot = Frozen(new SolidColorBrush(Color.FromRgb(0xFF, 0x9D, 0x5D)));
         private static readonly Pen HandleRing = Frozen(new Pen(Frozen(new SolidColorBrush(Colors.White)), 1.5));
-        private static readonly Typeface Face = new("Segoe UI");
+        private static readonly Typeface Face = PadForge.Common.TextFaces.BodyTypeface(FontWeights.Normal);
+        // The labels at the 12 of a label, the frequency's above the floor.
+        private const double LabelSize = 12;
         private static readonly double[] GridHz = { 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000 };
 
         private static T Frozen<T>(T f) where T : Freezable { f.Freeze(); return f; }
@@ -138,20 +142,22 @@ namespace PadForge.Controls
 
             dc.DrawRectangle(Bg, null, new Rect(0, 0, w, h));
 
+            var labelBrush = TryFindResource("TextFillColorTertiaryBrush") as Brush ?? LabelFallback;
             foreach (double hz in GridHz)
             {
                 double x = Math.Round(XOf(hz)) + 0.5;
                 dc.DrawLine(GridPen, new Point(x, 0), new Point(x, h));
-                string t = hz >= 1000 ? (hz / 1000).ToString("0.#", CultureInfo.InvariantCulture) + "k"
-                                      : hz.ToString("0", CultureInfo.InvariantCulture);
-                dc.DrawText(Text(t, LabelBrush, 9), new Point(Math.Min(x + 3, w - 22), h - 13));
+                string t = hz >= 1000 ? (hz / 1000).ToString("0.#", CultureInfo.CurrentCulture) + "k"
+                                      : hz.ToString("0", CultureInfo.CurrentCulture);
+                var label = Text(t, labelBrush, LabelSize);
+                dc.DrawText(label, new Point(Math.Min(x + 3, w - label.Width - 3), h - label.Height - 1));
             }
             for (double db = -MaxDb; db <= MaxDb; db += 12)
             {
                 double y = Math.Round(YOf(db)) + 0.5;
                 dc.DrawLine(Math.Abs(db) < 0.01 ? ZeroPen : GridPen, new Point(0, y), new Point(w, y));
                 if (Math.Abs(db) > 0.01)
-                    dc.DrawText(Text((db > 0 ? "+" : "") + db.ToString("0", CultureInfo.InvariantCulture), LabelBrush, 9),
+                    dc.DrawText(Text((db > 0 ? "+" : "") + db.ToString("0", CultureInfo.CurrentCulture), labelBrush, LabelSize),
                                 new Point(3, y + 1));
             }
 
@@ -200,7 +206,7 @@ namespace PadForge.Controls
         }
 
         private static FormattedText Text(string s, Brush b, double size) =>
-            new(s, CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
+            new(s, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
                 Face, size, b, 1.25);
 
         // ── interaction ─────────────────────────────────────────────────────

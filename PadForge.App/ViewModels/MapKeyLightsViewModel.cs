@@ -93,7 +93,7 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>The progress line in five parts, so the dialog can set its
-        /// two numbers in the telemetry face: the words before the first
+        /// two numbers in tabular figures: the words before the first
         /// number, that number, the words between, the second number and the
         /// words after, in the order this language's sentence puts them
         /// (#574).</summary>

@@ -88,7 +88,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>A bemeneti motor leállítása…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Fut itt: {0}</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>Fut, {0} csatlakoztatva</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Figyel a :{0} porton</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Figyelt port: {0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>A(z) {0} port foglalt</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>A(z) {0} porthoz a hozzáférés megtagadva (futtassa rendszergazdaként)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>Nem sikerült elindítani</value></data>
@@ -106,7 +106,7 @@
   <data name="Common_Stop" xml:space="preserve"><value>Leállítás</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Indítás</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Rögzítés</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>Rögzítés...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Rögzítés…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Törlés</value></data>
   <data name="Common_Increase" xml:space="preserve"><value>Növelés</value></data>
   <data name="Common_Decrease" xml:space="preserve"><value>Csökkentés</value></data>
@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Lapozás jobbra</value></data>
   <data name="Common_None" xml:space="preserve"><value>Nincs</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>másodperc</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Nincs hozzárendelve</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -134,7 +135,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>A PadForge bezárása...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>A PadForge bezárása…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>A PadForge indítása…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Az előző munkamenetből maradt virtuális kontrollerek eltávolítása.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Kontroller hozzáadása</value></data>
@@ -239,8 +240,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ le)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← balra)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ fel)</value></data>
-  <data name="Status_SDL3NotFound" xml:space="preserve"><value>AZ SDL3.dll NEM TALÁLHATÓ</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Az SDL3.dll nem található! Helyezze az SDL3.dll fájlt a PadForge.exe mellé. Letöltés: https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll nem található</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Az SDL3.dll nem található. Helyezze az SDL3.dll fájlt a PadForge.exe mellé. Letöltés: https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Az illesztőprogram-művelet nem sikerült: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>A beállítások a vágólapra másolva.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Az eszközadatok a vágólapra másolva.</value></data>
@@ -271,11 +272,11 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>A beállítások újratöltve a lemezről.</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>Nem található beállításfájl a lemezen.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Nincs csatlakoztatott eszköz, amelyről rögzíteni lehetne.</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Rögzítés: nyomjon meg egy gombot, vagy mozgasson el egy tengelyt ehhez: „{0}”...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Rögzítés: fordítson el vagy rázzon meg egy kontrollert ehhez: „{0}”...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Rögzítés: nyomjon meg egy gombot, vagy mozgasson el egy tengelyt ehhez: „{0}”…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Rögzítés: fordítson el vagy rázzon meg egy kontrollert ehhez: „{0}”…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>Ezen a foglalaton egyik kontrollernek sincs érzékelője ehhez: „{0}”.</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>„{0}” rögzítése: nyomja meg a Fel irány bemenetét...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>„{0}” rögzítése: most nyomja meg a Le irány bemenetét...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>„{0}” rögzítése: nyomja meg a Fel irány bemenetét…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>„{0}” rögzítése: most nyomja meg a Le irány bemenetét…</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Rögzítés megszakítva.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>A rögzítés időtúllépés miatt megszakadt: „{0}”.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>A bemeneti motor elindult.</value></data>
@@ -294,7 +295,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge megjelenítése vagy elrejtése</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Virtuális kontrollerek be- vagy kikapcsolása</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Bármely csatlakoztatott eszköz</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Rögzítés...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Rögzítés…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>amikor</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>itt</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>„{0}” hozzárendelése megszüntetve itt: {1}. virtuális kontroller.</value></data>
@@ -327,6 +329,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>Kontrollerek</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Használatban lévő extrák</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Be. {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>Alapértelmezett beállítások</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>Bal kar</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>Jobb kar</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>{0} további az [Extrák] oldalon található. Az extra kikapcsolva marad, amíg be nem kapcsolja.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Extrák megnyitása</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>QR megjelenítése</value></data>
@@ -394,8 +401,12 @@
   <data name="Engine_Forging" xml:space="preserve"><value>Kovácsolás</value></data>
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Élő: {0} / {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Válasszon egy makrót a listában, vagy hozzon létre egyet a Makrók melletti + gombbal.</value></data>
-  <data name="Instr_Raw" xml:space="preserve"><value>NYERS</value></data>
-  <data name="Instr_Out" xml:space="preserve"><value>KIMENET</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>Nyers</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>Kimenet</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Görbe</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Shift-rétegek</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Fordított</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>Csúcs</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Hideg</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Előnézet</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Extrák</value></data>
@@ -431,11 +442,11 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Az értékeket az [Eszközök] oldal Játéktelemetria sora adja. Képezze le őket egy kontroller Hozzárendelések szakaszában, vagy használja őket makrók indítására.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Egy menü saját helyét, méretét és átlátszatlanságát magán a menün lehet beállítani, egy kontroller [Makrók és menük] szakaszában.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Források</value></data>
-  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack és minden program, amely UDP-formátumban küld</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack és minden program, amely UDP-formátumban küld.</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Tartomány</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Tengelyenkénti tartomány. A nulla a fenti tartományt követi.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>A PadForge által nem ismert játékok</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Olyan modokhoz, amelyek küldés előtt futó DSX-et keresnek</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Olyan modokhoz, amelyek küldés előtt futó DSX-et keresnek.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Mi jelenjen meg</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>A menü gyűrűje, rácsa vagy sávja, amíg nyitva van</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>A réteg neve, amikor egy váltóréteg bekapcsol, az adott réteg által megadott ideig</value></data>
@@ -694,7 +705,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Eszközök elrejtése a játékok elől, Eszközök rejtve tartása az indítások között, Engedélyezőlistán lévő alkalmazások</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Engedélyezőlistán lévő alkalmazások</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Ezek az alkalmazások továbbra is látják az elrejtett eszközöket. A PadForge automatikusan mindig rajta van az engedélyezőlistán.</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>Hozzáadás...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>Hozzáadás…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>A PadForge az első létrehozott virtuális kontrollerrel telepíti ezt az illesztőprogramot. Az Eltávolítás gomb az eltávolítás előtt felsorolja, mit hagyott a HIDMaestro ezen a számítógépen.</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Létrehozza a virtuális kontrollereket.</value></data>
@@ -713,6 +724,21 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Megtartva</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Nem olvasható be</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Nincs eltávolítva</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Eszköz</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Interfészregisztráció</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Megosztott beállításjegyzék-kulcs</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Megosztott beállításjegyzék-érték</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>WinUSB-kötés</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>OEM-név felülbírálása</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>DeviceOverrides-kulcs</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>OpenVR-regisztráció</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Illesztőprogram-csomag</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>WUDF-szolgáltatáskulcs</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Beállításjegyzék-kulcs</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Tanúsítvány</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Mappa</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Szolgáltatásbeállítás</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Eltávolítási lépés</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Lehetővé teszi, hogy a PlayStation 3 kontrollerek, a PlayStation Move és a Navigation kontroller Bluetooth-on keresztül csatlakozzanak. A PadForge része, és az első ilyen eszköz párosításakor települ.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>PlayStation 3 kontrollerek csatlakoztatása Bluetooth-kapcsolaton keresztül.</value></data>
@@ -907,11 +933,11 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Begépelés: „{0}”</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(nincs szöveg)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Szöveg</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Karakterkésleltetés (ms)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Betűk közötti késleltetés</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>A begépelt karakterek közötti idő ezredmásodpercben, legfeljebb 1000. 0 esetén a teljes szöveg egyszerre kerül begépelésre.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Leválasztás tétlenség esetén</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Részletek</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>perc (0 = soha)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>perc</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Bluetooth leválasztása USB-csatlakoztatáskor</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Gyorstöltés. Ha a kontroller Bluetooth-kapcsolat közben töltést jelez, a Bluetooth-kapcsolat megszakad, így a rádió táplálása nélkül töltődik. Bármilyen USB-áramforrás számít, a fali töltőket is beleértve. Ha a kábel bedugva marad, és Ön visszakapcsolja a Bluetooth-kapcsolatot, a program a következő kihúzásig békén hagyja.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Olvasás iCade kontrollerként</value></data>
@@ -1002,7 +1028,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Irányítsa a Wii Remote-ot a célpontra, és nyomja meg a B gombot.</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>A Wii Remote nem látta a szenzorsávot. Irányítsa a célpontra, és nyomja meg újra a B gombot.</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Megszakítás: Esc vagy Home.</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Ennyi percnyi bemenet nélküli idő után leválasztja ezt a Bluetooth-kontrollert, így az alvó állapotba lép, és kíméli az akkumulátort. USB-kapcsolaton soha nem lép működésbe.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Ennyi percnyi bemenet nélküli idő után leválasztja ezt a Bluetooth-kontrollert, így az alvó állapotba lép, és kíméli az akkumulátort. A 0 kikapcsolja. USB-kapcsolaton soha nem lép működésbe.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Bekapcsolás</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menü</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>
@@ -1068,6 +1094,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Akkumulátor</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Útvonal</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Sorozatszám</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>Alkalmazás GUID</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Revízió</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>A chatpad olvasása</value></data>
@@ -1156,11 +1184,15 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>Giroszkóp</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>Gyorsulásmérő</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 tengely</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} tengely</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 gomb</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} gomb</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>{0}. tengely</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} tengely, {1} gomb, {2} POV</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>Rezgés</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Giroszkóp</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>Gyorsulásmérő</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>elrejti ezt az eszközt azon programok elől, amelyek HID-eszközként nyitják meg</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>A Windows továbbra is olvassa a leütött billentyűket, így a gépelés minden programban működik, a játékokban is. Az USB-billentyűzetet a Windowstól el lehet venni ezzel: „{0}”.</value></data>
@@ -1346,7 +1378,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>alaplapok és videokártyák</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>egérpadok, headsetek és headsetállványok</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>A játékok átveszik az irányítást, valahányszor világítást írnak.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Adjon meg egy hatjegyű hexadecimális színt (RRGGBB vagy #RRGGBB), majd az alkalmazáshoz nyomja meg az Enter billentyűt, vagy kattintson máshová.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>A szín eltávolítása a palettáról</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Ki</value></data>
@@ -1548,6 +1580,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importálás</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(névtelen HID-eszköz)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} HID-interfész található.</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>1 HID-interfész található.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>A felsorolás nem sikerült: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>A kinyerés nem sikerült: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>A kinyert profil JSON-ját nem sikerült értelmezni. Semmi sem lett mentve.</value></data>
@@ -1660,7 +1693,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Az összes hozzárendelés rögzítése egymás után, egyenként</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Az összes hozzárendelés és beállítás másolása a vágólapra</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Hozzárendelések és beállítások beillesztése a vágólapról</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Másolás innen...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Másolás innen…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Beállítások másolása egy másik beállított eszközről</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Összes visszaállítása</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Összes törlése</value></data>
@@ -1848,7 +1881,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_More_Trigger" xml:space="preserve"><value>A tartomány számokban, nyers értékek</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Tartomány</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>A Határ kalibrálása megméri a kar által elérhető peremet, és teljes körré alakítja. A négy csúszka csak az egyes irányokat korlátozza.</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>Mintavétel...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>Mintavétel…</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Középpont-eltolás X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Középpont-eltolás Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Holtzóna alakja</value></data>
@@ -1959,6 +1992,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Macro_DelayMs" xml:space="preserve"><value>Késleltetés</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Érzékenység</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Új makró</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Makró {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Kiváltó rögzítése</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>Nincs beállítva. Kattintson a Rögzítés gombra.</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>{0}. gomb</value></data>
@@ -2017,6 +2051,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Makróból hajtja a foglalat fizikai eszközének rezgését. A Reaktív a tartási idő alatt teljes erősséggel fut, majd az elhalványulási idő alatt nullára csökken. A Beragadó teljes erősségen marad, amíg le nem fut egy Rezgés leállítása művelet. A max() függvénnyel rétegződik a játék által vezérelt rezgésre, így a felhasználó által indított visszajelzés mindig érezhető.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Rezgésimpulzus: {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Rezgés tartása: {0}, törlésig</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>bal {0}%, jobb {1}%</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>bal ravasz {0}%, jobb ravasz {1}%</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Rezgés leállítása</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Rezgés leállítása</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Megszünteti a hozzárendelt foglalaton aktív rezgésfelülbírálást. Egy Beragadó módú Rezgés művelettel párosítva egy másik makróból szüntethető meg vele a tartás.</value></data>
@@ -2055,7 +2091,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Egér Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Időköz</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Kijelölés a képernyőn</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Rögzítésig: {0}...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Rögzítésig: {0}…</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Kattintson, majd vigye az egérmutatót a célra. A pozícióját a program rövid visszaszámlálás után rögzíti.</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Mód</value></data>
   <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>X behúzás</value></data>
@@ -2082,9 +2118,9 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>Nincs hozzárendelve</value></data>
-  <data name="Mapping_Inv" xml:space="preserve"><value>Ford.</value></data>
+  <data name="Mapping_Inv" xml:space="preserve"><value>Fordított</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>Fél</value></data>
-  <data name="Mapping_InvHalf" xml:space="preserve"><value>Ford. fél</value></data>
+  <data name="Mapping_InvHalf" xml:space="preserve"><value>Fordított fél</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Nincs hozzárendelt eszköz</value></data>
 
@@ -2727,9 +2763,9 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Profiles_DropTile" xml:space="preserve"><value>Húzzon ide egy profilfájlt</value></data>
   <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD vagy DS4Windows</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Új profil</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>Mentés másként</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Mentés másként…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Jelenlegi beállítás mentése ide</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Szerkesztés</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Szerkesztés…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Betöltés</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Beépített</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Nincs játék beállítva</value></data>
@@ -2832,8 +2868,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Középpont-eltolás X visszaállítása</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Határ kalibrálása</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Határ újrakalibrálása</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Járja körbe a peremet... hátravan: {0}</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Lefedve. Még egy kör a finomításhoz...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Járja körbe a peremet… hátravan: {0}</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Lefedve. Még egy kör a finomításhoz…</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Körkörösség: {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Vezesse körbe a kart a peremén az elérhető határ feltérképezéséhez, majd alakítsa teljes körré.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Határkalibrálás visszaállítása</value></data>
@@ -2912,7 +2948,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Egy adott alkalmazás hangerejét szabályozza a Windows hangerőkeverőjében, a hangerőkorláthoz skálázva. Adja meg a folyamat nevét (a Feladatkezelőben látható). Használja „Mindig” kiváltóval, vagy gomb-/tengelykiváltóval a „Nyomva tartás közben” + „Felengedésig” beállítással.</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>A kiválasztott tengelyt folyamatosan egérmozgáshoz (vagy görgetéshez) rendeli. Használja „Mindig” kiváltóval, vagy gomb-/tengelykiváltóval a „Nyomva tartás közben” + „Felengedésig” beállítással. Ha a kart egérként szeretné használni, hozzon létre két műveletet: egyet az X tengelyhez, egyet az Y tengelyhez.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Tengely megfordítása</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Hangerő OSD megjelenítése</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Hangerőjelző megjelenítése</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Irány</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Bármelyik</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Pozitív</value></data>
@@ -3139,7 +3175,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Preview_CCOutputs" xml:space="preserve"><value>CC-kimenetek</value></data>
   <data name="Preview_NoteOutputs" xml:space="preserve"><value>Hangjegykimenetek</value></data>
   <data name="Preview_Stick_Format" xml:space="preserve"><value>{0}. kar</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Ravasz {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Gombok</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -3156,7 +3192,6 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Szint</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Inaktivitási időkorlát</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Ennyi másodperc után szűnik meg egy virtuális kontroller, ha az összes hozzárendelt eszköze offline. 0 esetén ki van kapcsolva. Az azonos típusú megmaradó kontrollerek feljebb lépnek, hogy kitöltsék a rést, és alacsonyabb foglalatokhoz kötődnek újra.</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>másodperc (0 = soha)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Réteg hozzáadása</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Váltóréteg hozzáadása. Egy második hozzárendelési táblázat, amely egy gomb nyomva tartása vagy átkapcsolása idejére aktiválódik.</value></data>
@@ -3961,7 +3996,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
     <value>A késleltetés visszaállítása 0-ra (a réteg azonnal reagál).</value>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Közösségi konfigurációk</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Böngésszen a közösség által készített Steam Input kontrollerkonfigurációk között, és alakítsa át őket PadForge-profilokká. A PadForge csak akkor kapcsolódik közvetlenül a Steam kiszolgálóihoz, amikor Ön keres, megnyit egy konfigurációt, vagy frissítéseket keres az importált konfigurációihoz. Elküldi a keresett szöveget, az érintett játékok, konfigurációk és készítők azonosítóit, valamint a PadForge verzióját. A névtelen Steam-bejelentkezés emellett elküldi a Windows verzióját és egy gépazonosítót, amely a Windows-telepítés azonosítójának, a hálózati adapterek címeinek és a rendszerlemez sorozatszámának hashértékeiből készül. Nincs telemetria, nincs külső szolgáltatás, nincs szükség Steam-fiókra.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Böngésszen a közösség által készített Steam Input kontrollerkonfigurációk között, és alakítsa át őket PadForge-profilokká. A PadForge elküldi a keresett szöveget, az érintett játékok, konfigurációk és készítők azonosítóit, valamint a saját verzióját. A névtelen Steam-bejelentkezés emellett elküldi a Windows verzióját és egy gépazonosítót, amely a Windows-telepítés azonosítójának, a hálózati adapterek címeinek és a rendszerlemez sorozatszámának hashértékeiből készül. Külső szolgáltatás nem vesz részt.</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>A PadForge csak akkor kapcsolódik a Steam kiszolgálóihoz, amikor Ön keres, megnyit egy konfigurációt, vagy frissítéseket keres az importált konfigurációihoz. Nincs telemetria, nincs szükség Steam-fiókra.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Mit küld el</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Közösségi konfigurációk engedélyezése</value></data>
@@ -4018,6 +4053,9 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>A Steam nem ad letölthető fájlt ehhez a konfigurációhoz, és a Steam-mappájában sincs másolata. Iratkozzon fel rá a Steamben, és a PadForge onnan fogja olvasni.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Megnyitás a Steam Műhelyben</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>Régi</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop-profil</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop-makró</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Kurzorrégió</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Válasszon ki egy konfigurációt, hogy lássa, mi kerül át.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Ami átkerül</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Ilyen lesz</value></data>
@@ -4395,6 +4433,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Közepes (enyhe)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Magas (enyhe)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Egyéni</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b alapértelmezett</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Vágási frekvencia</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Keresztezési frekvencia. Alatta a csatornák a monó felé keverednek, fölötte különállók maradnak, így alacsonyabb vágási frekvenciánál kisebb a crossfeed.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Betáplálás</value></data>
@@ -4414,7 +4453,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Pad_Audio_EqType_HighPass" xml:space="preserve"><value>HP</value></data>
   <data name="Pad_Audio_EqType_LowPass" xml:space="preserve"><value>LP</value></data>
   <data name="Pad_Audio_EqType_Notch" xml:space="preserve"><value>Lyukszűrő</value></data>
-  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Frekv. (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Frekvencia (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Erősítés (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
   <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Sáv hozzáadása</value></data>
@@ -4422,7 +4461,8 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Törlés</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Importálás a vágólapról</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Másolja a vágólapra a fejhallgatójához tartozó AutoEq-profilt, majd kattintson. Lecseréli a sávokat, és beállítja az előerősítést. Ha a vágólapon nincs olvasható tartalom, a jelenlegi EQ változatlan marad.</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Importálás fájlból</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Importálás fájlból…</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>Parametrikus EQ importálása</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Válassza ki az AutoEq-ből letöltött .txt fájlt. Ezt érdemes használni: az autoeq.app fájlt ad, nem másolható szöveget.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>A fejhallgatójához illesztett korrekcióhoz nyissa meg az autoeq.app oldalt, válassza ki a modelljét, válassza a Custom Parametric Eq lehetőséget, és töltse le, majd használja az Importálás fájlból gombot. A Graphic Eq letöltés nem tartalmaz szűrősorokat, ezért nem importálható.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{0} sáv importálva {1:0.#} dB-es előerősítéssel innen: {2}.</value></data>
@@ -4475,6 +4515,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Ez a hálózat nem tud közvetlen kapcsolatokat létrehozni (mobil hotspotnak vagy szolgáltatói szintű NAT-nak tűnik). Használjon VPN-t, például a Tailscale-t, vagy csatlakozzon otthoni szélessávú internetről.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Nem található a számítógép nyilvános címe (lehet, hogy a hálózat blokkolja a szükséges forgalmat). A közvetlen kapcsolatok itt nem működnek. Használjon VPN-t, vagy csatlakozzon cím alapján ugyanazon a hálózaton.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>A kontroller akkumulátora lemerülőben</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Kontroller</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: az akkumulátor töltöttsége {1}%</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Akkumulátor-figyelmeztetések</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Értesítést kap, ha egy kontroller akkumulátora lemerülőben van, még mielőtt játék közben lemerülne.</value></data>
@@ -4691,7 +4732,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
     <value>Hozzon létre egy virtuális kontrollert a másik számítógépen, majd frissítsen.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Várakozás a másik számítógépre...</value>
+    <value>Várakozás a másik számítógépre…</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>Rajztábla</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>Megosztott bemenet</value></data>
@@ -4753,7 +4794,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>A SteamVR telepítési helyének teljes elérési útnak kell lennie, például C:\SteamVR.</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>A SteamVR telepítési helye nem lehet meghajtó gyökere. Válasszon egy mappát, például C:\SteamVR.</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>A steamcmd nem fejeződött be 60 percen belül.</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>A steamcmd lefutott, de a SteamVR nem került ide: {0}. A steamcmd üzenete: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>A steamcmd lefutott, de a SteamVR nem került ide: {0}. A steamcmd üzenete: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>A HidHide települt, de a vezérlőeszköze nem nyílt meg, ezért nem lett osztályszűrő hozzáadva.</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>A HidHide még mindig osztályszűrőként szerepel, ezért az illesztőprogram a helyén maradt.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Régi illesztőprogramok eltávolítása…</value></data>

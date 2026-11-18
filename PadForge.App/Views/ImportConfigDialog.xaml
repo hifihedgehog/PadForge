@@ -41,21 +41,21 @@
             </Grid.ColumnDefinitions>
             <Border x:Name="StatCleanTile" Style="{StaticResource DialogStatTile}">
                 <StackPanel>
-                    <TextBlock x:Name="StatCleanNum" Text="0" FontSize="20" FontFamily="{DynamicResource TelemetryFontFamily}"/>
+                    <TextBlock x:Name="StatCleanNum" Text="0" FontSize="20" FontFamily="{DynamicResource DisplayFontFamily}" Typography.NumeralAlignment="Tabular"/>
                     <TextBlock x:Name="StatCleanLabel" Style="{StaticResource DialogNote}"
                                Text="{Binding Workshop_StatClean, Source={x:Static strings:Strings.Instance}}"/>
                 </StackPanel>
             </Border>
             <Border x:Name="StatPartialTile" Grid.Column="2" Style="{StaticResource DialogStatTile}">
                 <StackPanel>
-                    <TextBlock x:Name="StatPartialNum" Text="0" FontSize="20" FontFamily="{DynamicResource TelemetryFontFamily}"/>
+                    <TextBlock x:Name="StatPartialNum" Text="0" FontSize="20" FontFamily="{DynamicResource DisplayFontFamily}" Typography.NumeralAlignment="Tabular"/>
                     <TextBlock x:Name="StatPartialLabel" Style="{StaticResource DialogNote}"
                                Text="{Binding Workshop_StatPartial, Source={x:Static strings:Strings.Instance}}"/>
                 </StackPanel>
             </Border>
             <Border x:Name="StatSkippedTile" Grid.Column="4" Style="{StaticResource DialogStatTile}">
                 <StackPanel>
-                    <TextBlock x:Name="StatSkippedNum" Text="0" FontSize="20" FontFamily="{DynamicResource TelemetryFontFamily}"/>
+                    <TextBlock x:Name="StatSkippedNum" Text="0" FontSize="20" FontFamily="{DynamicResource DisplayFontFamily}" Typography.NumeralAlignment="Tabular"/>
                     <TextBlock x:Name="StatSkippedLabel" Style="{StaticResource DialogNote}"
                                Text="{Binding Workshop_StatSkipped, Source={x:Static strings:Strings.Instance}}"/>
                 </StackPanel>
@@ -86,7 +86,7 @@
         </StackPanel>
 
         <!-- What came across as it was, two to a line: the file's name
-             for the binding in the code face, then what it became. The
+             for the binding in the cold color, then what it became. The
              grid runs 24 past its block so its two columns stand 24
              apart with the second one's end at the block's. -->
         <StackPanel x:Name="CleanBlock" Margin="24,16,24,4">
@@ -106,7 +106,6 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding Source}" FontSize="13" MaxWidth="150" TextWrapping="Wrap"
-                                       FontFamily="{DynamicResource TelemetryFontFamily}"
                                        Foreground="{DynamicResource ColdBrush}"/>
                             <TextBlock Grid.Column="1" Margin="10,0,0,0" Text="{Binding Target}" FontSize="13" TextWrapping="Wrap"
                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>

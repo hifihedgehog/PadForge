@@ -628,7 +628,12 @@ namespace PadForge.ViewModels
         {
             string d = (descriptor ?? "").Trim();
             string clean = SourceCoercion.StripLegacyPrefix(d, out bool invert, out bool half);
-            string name = ChoiceName(d, deviceGuid) ?? ChoiceName(clean, deviceGuid) ?? clean;
+            // An input no list offers now is named the way the mapping list
+            // names it, never by its raw descriptor.
+            string name = ChoiceName(d, deviceGuid) ?? ChoiceName(clean, deviceGuid)
+                ?? PadForge.Common.MappingDisplayResolver.ResolveGamepadText(clean)
+                ?? PadForge.Common.MappingDisplayResolver.ResolveDescriptorText(clean, Array.Empty<PadForge.Engine.DeviceObjectItem>())
+                ?? clean;
             if (!half || ChoiceName(d, deviceGuid) != null) return name;
             bool stick = clean.StartsWith("Gamepad ", StringComparison.Ordinal) && (clean.EndsWith("StickX", StringComparison.Ordinal)
                 || clean.EndsWith("StickY", StringComparison.Ordinal));

@@ -84,7 +84,7 @@
   <data name="Common_Running" xml:space="preserve"><value>Em Execução</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Executando em {0}</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>Executando, conectados: {0}</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Escutando em :{0}</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Escutando na porta {0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>Porta {0} em uso</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Acesso negado para porta {0} (executar como admin)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>Falha ao iniciar</value></data>
@@ -102,7 +102,7 @@
   <data name="Common_Stop" xml:space="preserve"><value>Parar</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Iniciar</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Gravar</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>Gravando...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Gravando…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Limpar</value></data>
   <data name="Common_Increase" xml:space="preserve"><value>Aumentar</value></data>
   <data name="Common_Decrease" xml:space="preserve"><value>Diminuir</value></data>
@@ -116,6 +116,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Página para a Direita</value></data>
   <data name="Common_None" xml:space="preserve"><value>Nenhum</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>segundos</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Não Atribuído</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -130,7 +131,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>Fechando PadForge...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>Fechando PadForge…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Iniciando PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Limpando controles virtuais deixados por uma sessão anterior.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Adicionar Controle</value></data>
@@ -235,8 +236,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ baixo)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← esquerda)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ cima)</value></data>
-  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll NÃO ENCONTRADO</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll não encontrado! Coloque SDL3.dll ao lado de PadForge.exe. Baixe em https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll não encontrado</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll não encontrado. Coloque SDL3.dll ao lado de PadForge.exe. Baixe-o em https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Operação do driver falhou: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Configurações copiadas para a área de transferência.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Informações do dispositivo copiadas para a área de transferência.</value></data>
@@ -262,8 +263,8 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>Configurações recarregadas do disco.</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>Nenhum arquivo de configurações encontrado no disco.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Nenhum dispositivo conectado para gravar.</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Gravando: pressione um botão ou mova um eixo para "{0}"...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Gravando: gire ou sacuda um controle para "{0}"...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Gravando: pressione um botão ou mova um eixo para "{0}"…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Gravando: gire ou sacuda um controle para "{0}"…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>Nenhum controle neste slot tem um sensor para "{0}".</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Gravação cancelada.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Gravação expirou para "{0}".</value></data>
@@ -283,7 +284,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Mostrar ou Ocultar o PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Ativar ou Desativar Controles Virtuais</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Qualquer Dispositivo Conectado</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Gravando...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Gravando…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>quando</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>em</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}" removido do Controle Virtual {1}.</value></data>
@@ -316,6 +318,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>Controles</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extras em Uso</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Ativado. {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>Configurações Padrão</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>Analógico Esquerdo</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>Analógico Direito</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>Mais {0} em [Extras]. Um extra fica desativado até você ativá-lo.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Abrir Extras</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>Mostrar QR</value></data>
@@ -468,7 +475,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Ocultar Dispositivos dos Jogos, Manter Dispositivos Ocultos Entre Execuções, Aplicativos na Lista de Permissões</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Aplicativos na Lista de Permissões</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Estes aplicativos ainda podem ver dispositivos ocultos. PadForge é sempre adicionado automaticamente à lista de permissões.</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>Adicionar...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>Adicionar…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>O PadForge instala este driver com o primeiro controle virtual que você criar. Desinstalar lista o que o HIDMaestro deixou neste PC antes de removê-lo.</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Cria os controles virtuais.</value></data>
@@ -487,6 +494,21 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Mantido</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Não Lido</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Não Removido</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Dispositivo</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Registro de interface</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Chave de registro compartilhada</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Valor de registro compartilhado</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Vínculo WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Substituição de nome OEM</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Chave DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Registro OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Pacote de driver</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Chave de serviço WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Chave do registro</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Certificado</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Pasta</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Configuração de serviço</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Etapa de remoção</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Permite que controles de PlayStation 3, o PlayStation Move e o controle Navigation se conectem por Bluetooth. Integrado ao PadForge e instalado na primeira vez que um deles é pareado.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Conecta controles PlayStation 3 por Bluetooth.</value></data>
@@ -654,6 +676,8 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Bateria</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Caminho</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Número de Série</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID do app</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>GUID do SDL</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Revisão</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Ler o Chatpad</value></data>
@@ -741,11 +765,15 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>Giroscópio</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>Acelerômetro</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 eixo</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} eixos</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 botão</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} botões</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POVs</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>Eixo {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} eixos, {1} botões, {2} POV(s)</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>Vibração</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Giro</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>Acel</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>ocultar este dispositivo de programas que o abrem como um dispositivo HID</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>O Windows continua lendo as teclas que você digita, então a digitação continua funcionando em todos os programas, jogos inclusive. Um teclado USB pode ser retirado do Windows com a opção “{0}”.</value></data>
@@ -795,7 +823,8 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Nada foi importado. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importar</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(dispositivo HID sem nome)</value></data>
-  <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Encontrada(s) {0} interface(s) HID.</value></data>
+  <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Encontradas {0} interfaces HID.</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Encontrada 1 interface HID.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Enumeração falhou: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>Extração falhou: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>Não foi possível analisar o JSON do perfil extraído. Nada foi salvo.</value></data>
@@ -839,7 +868,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Gravar sequencialmente todos os mapeamentos um por um</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Copiar todos os mapeamentos e configurações para a área de transferência</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Colar mapeamentos e configurações da área de transferência</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Copiar de...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Copiar de…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Copiar configurações de outro dispositivo configurado</value></data>
   <data name="Pad_RawAxisValue" xml:space="preserve"><value>Valor bruto do eixo</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Redefinir Tudo</value></data>
@@ -1028,7 +1057,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>O alcance em números, valores brutos</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Alcance</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibrar Limite mede a borda que o analógico consegue alcançar e a transforma em um círculo completo. Os quatro controles deslizantes apenas limitam cada direção.</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>Amostrando...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>Amostrando…</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Deslocamento Central X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Deslocamento Central Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Formato da Deadzone</value></data>
@@ -1139,6 +1168,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Macro_DelayMs" xml:space="preserve"><value>Atraso</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Sensibilidade</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Nova Macro</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Macro {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Gravar Gatilho</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>Não definido. Clique em Gravar</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Botão {0}</value></data>
@@ -1197,6 +1227,8 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Aciona a vibração do dispositivo físico do slot a partir de uma macro. Reactive opera em força total na janela de retenção e depois reduz linearmente até zero. Sticky mantém a força total até uma ação Parar vibração ser executada. Sobrepõe-se à vibração do jogo via max() para que o retorno do usuário seja sempre sentido.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Pulso de vibração {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Manter vibração {0} até liberar</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>esquerdo {0}%, direito {1}%</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>gatilho esquerdo {0}%, gatilho direito {1}%</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Parar Vibração</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Parar vibração</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Libera qualquer sobreposição de vibração ativa no slot atribuído. Combine com uma ação Sticky de vibração para liberar a retenção a partir de outra macro.</value></data>
@@ -1250,9 +1282,9 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>Não mapeado</value></data>
-  <data name="Mapping_Inv" xml:space="preserve"><value>Inv.</value></data>
+  <data name="Mapping_Inv" xml:space="preserve"><value>Invertido</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>Metade</value></data>
-  <data name="Mapping_InvHalf" xml:space="preserve"><value>Inv. Metade</value></data>
+  <data name="Mapping_InvHalf" xml:space="preserve"><value>Metade Invertida</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Nenhum dispositivo mapeado</value></data>
 
@@ -1270,14 +1302,14 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Disponibiliza um pipe nomeado local, PadForge.Control, para que Playnite, LaunchBox ou um script ative e desative perfis. Um perfil ativado assim permanece ativo até o script liberá-lo ou você trocar de perfil. Somente nesta máquina.</value></data>
   <data name="Profiles_ExternalControlTitle" xml:space="preserve"><value>Controle Externo</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Perfil ativo:</value></data>
-  <data name="Profiles_NoSlots" xml:space="preserve"><value>Sem Controles</value></data>
+  <data name="Profiles_NoSlots" xml:space="preserve"><value>Sem controles</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Solte para Importar o Perfil</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Solte um arquivo de perfil aqui</value></data>
   <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD ou DS4Windows</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Novo Perfil</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>Salvar Como</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Salvar Como…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Salvar a Configuração Atual Aqui</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Editar</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Editar…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Carregar</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Integrado</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Sem jogo definido</value></data>
@@ -1339,7 +1371,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Preview_CCOutputs" xml:space="preserve"><value>Saídas CC</value></data>
   <data name="Preview_NoteOutputs" xml:space="preserve"><value>Saídas de Nota</value></data>
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Analógico {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>G{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Gatilho {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-Pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Botões</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -1382,8 +1414,8 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Redefinir Deslocamento Central X</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Calibrar Limite</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Recalibrar Limite</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Percorra a borda... faltam {0}</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Coberto. Mais uma volta para refinar...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Percorra a borda… faltam {0}</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Coberto. Mais uma volta para refinar…</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Circularidade {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Percorra a borda com o direcional para mapear o limite alcançável e remodele-o em um círculo completo.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Redefinir Calibração do Limite</value></data>
@@ -1426,7 +1458,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controla o volume de um aplicativo específico no mixer de volume do Windows, escalonado ao limite de volume. Insira o nome do processo (visível no Gerenciador de Tarefas). Use com gatilho "Sempre", ou botão/eixo com "Enquanto Segurar" + "Até Soltar".</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Mapeia continuamente o eixo selecionado para o movimento do mouse (ou rolagem). Use com gatilho "Sempre", ou botão/eixo com "Enquanto Segurar" + "Até Soltar". Para usar analógico como mouse, crie duas ações: uma para o eixo X e outra para o eixo Y.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Inverter Eixo</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Mostrar OSD de Volume</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Mostrar Indicador de Volume</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Direção</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Qualquer</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positivo</value></data>
@@ -1944,7 +1976,6 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Parando o motor…</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Tempo Limite de Inatividade</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Segundos antes de um controle virtual ser destruído quando todos os dispositivos mapeados estão offline. 0 desativa. Os controles restantes do mesmo tipo sobem para preencher a lacuna e são revinculados a slots inferiores.</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>segundos (0 = nunca)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Motor de controle HID virtual em modo usuário (substitui ViGEmBus e vJoy).</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -2059,7 +2090,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>placas-mãe e placas de vídeo</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepads, headsets e suportes para headset</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Os jogos assumem quando escrevem iluminação.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Insira uma cor hexadecimal de seis dígitos (RRGGBB ou #RRGGBB) e pressione Enter ou clique fora para aplicar.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Remover esta cor da paleta</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Desligado</value></data>
@@ -2978,8 +3009,8 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="About_VoskDesc" xml:space="preserve"><value>Reconhecimento de voz offline para as frases das macros de voz. Da Alpha Cephei. O modelo vem dentro do PadForge.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Criptografia para o emparelhamento e o transporte do Remote Link (X25519, Ed25519, ChaCha20-Poly1305).</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Gravando "{0}": pressione a entrada da direção Cima...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Gravando "{0}": agora pressione a entrada da direção Baixo...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Gravando "{0}": pressione a entrada da direção Cima…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Gravando "{0}": agora pressione a entrada da direção Baixo…</value></data>
   <data name="Common_Duplicate" xml:space="preserve"><value>Duplicar</value></data>
   <data name="Common_Rename" xml:space="preserve"><value>Renomear</value></data>
   <data name="Macro_CopyNameFormat" xml:space="preserve"><value>{0} (Cópia)</value></data>
@@ -3072,7 +3103,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="HeadTracker_StatusOpenXrEnded" xml:space="preserve"><value>O runtime do OpenXR encerrou a sessão. Desative e reative a entrada de headset do OpenXR para reconectar.</value></data>
   <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>Porta UDP</value></data>
   <data name="Dashboard_HeadTrackingPort_Tooltip" xml:space="preserve"><value>A porta para a qual a saída "UDP over network" do OpenTrack envia. O padrão do OpenTrack é 4242.</value></data>
-  <data name="Dashboard_HeadTrackingRotationRange" xml:space="preserve"><value>Faixa de Rotação (Graus)</value></data>
+  <data name="Dashboard_HeadTrackingRotationRange" xml:space="preserve"><value>Faixa de Rotação (graus)</value></data>
   <data name="Dashboard_HeadTrackingRotationRange_Tooltip" xml:space="preserve"><value>Rotação da cabeça que leva os eixos de guinada, inclinação e rolagem à deflexão máxima.</value></data>
   <data name="Dashboard_HeadTrackingTranslationRange" xml:space="preserve"><value>Faixa de Translação (cm)</value></data>
   <data name="Dashboard_HeadTrackingTranslationRange_Tooltip" xml:space="preserve"><value>Deslocamento da cabeça que leva os eixos X, Y e Z à deflexão máxima.</value></data>
@@ -3169,7 +3200,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="MacroAction_RunProgram_WorkingDir_Tooltip" xml:space="preserve"><value>Opcional. A pasta que o programa usa como diretório atual. Não é a pasta onde o arquivo do programa está. Deixe em branco para usar o padrão.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Desconexão por Inatividade</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detalhes</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutos (0 = nunca)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutos</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Desconectar Bluetooth ao Conectar por USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Quando este controle informa que está carregando enquanto conectado por Bluetooth, o link Bluetooth é desligado para que ele carregue sem alimentar o rádio. Qualquer fonte de energia USB conta, incluindo carregadores de parede. Se você reativar o Bluetooth com o cabo conectado, ele fica como está até o próximo desligamento do cabo.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Ler como Controle iCade</value></data>
@@ -3260,7 +3291,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Aponte o controle Wii para o alvo e aperte B.</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>O controle Wii não viu a barra de sensores. Aponte para o alvo e aperte B de novo.</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc ou Home cancela.</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Desconecta este controle Bluetooth após esses minutos sem entrada, para que entre em repouso e economize bateria. Nunca dispara via USB.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Desconecta este controle Bluetooth após esses minutos sem entrada, para que entre em repouso e economize bateria. 0 desativa. Nunca dispara via USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Liga/Desliga</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>
@@ -3345,8 +3376,12 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Ds3Pair_Working" xml:space="preserve"><value>Configurando o controle. Mantenha-o conectado via USB.</value></data>
   <data name="Engine_Forging" xml:space="preserve"><value>Forjando</value></data>
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Ao vivo: {0} de {1}</value></data>
-  <data name="Instr_Out" xml:space="preserve"><value>SAÍDA</value></data>
-  <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>Saída</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Curva</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Camadas de Shift</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Invertido</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>Pico</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>Bruto</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Selecione uma macro na lista ou clique em + ao lado de Macros para criar uma.</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispositivo</value></data>
   <data name="Pad_DrivenBy" xml:space="preserve"><value>Entrada de</value></data>
@@ -3421,11 +3456,11 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Os valores são a linha Telemetria de Jogos em [Dispositivos]. Mapeie-os na seção Mapeamentos de um controle ou use-os para disparar macros.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>O lugar, o tamanho e a opacidade de um menu são definidos no próprio menu, na seção [Macros e Menus] de um controle.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Fontes</value></data>
-  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack e qualquer coisa que envie seu formato UDP</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack e qualquer coisa que envie seu formato UDP.</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Alcance</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Alcance por Eixo. Zero segue o alcance acima.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Jogos que o PadForge Não Conhece</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Para mods que procuram um DSX em execução antes de enviar</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Para mods que procuram um DSX em execução antes de enviar.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>O Que Aparece</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>O anel, a grade ou a barra de um menu enquanto ele está aberto</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>O nome da camada quando uma camada shift é ativada, pelo tempo que essa camada define</value></data>
@@ -3568,7 +3603,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Digitar "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(sem texto)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Texto</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Atraso por caractere (ms)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Atraso entre letras</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milissegundos entre os caracteres digitados, até 1000. 0 digita todo o texto de uma vez.</value></data>
   <data name="Mapping_NunchukLean" xml:space="preserve"><value>Inclinação do Nunchuk</value></data>
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>Inclinação do Joy-Con Esquerdo</value></data>
@@ -3764,13 +3799,13 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Mouse Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Intervalo</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Escolher na Tela</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Capturando em {0}...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Capturando em {0}…</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Clique e depois mova o cursor até o alvo. A posição é capturada após uma breve contagem regressiva.</value></data>
   <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>Touchpad {0} Dedo {1} Pressão</value></data>
   <data name="Mapping_TouchpadFingerRing_Format" xml:space="preserve"><value>Touchpad {0} Dedo {1} Anel</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Configurações da Comunidade</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Explore configurações de controle do Steam Input criadas pela comunidade e traduza-as em perfis do PadForge. O PadForge se conecta diretamente aos servidores do Steam somente quando você pesquisa, abre uma configuração ou verifica atualizações das configurações importadas. Ele envia seu texto de pesquisa, os IDs dos jogos, configurações e criadores envolvidos e a versão do PadForge. O login anônimo no Steam também envia sua versão do Windows e um ID de máquina formado por hashes do ID da sua instalação do Windows, dos endereços dos adaptadores de rede e do número de série do disco de inicialização. Sem telemetria, sem serviço de terceiros, sem conta Steam.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Explore configurações de controle do Steam Input criadas pela comunidade e traduza-as em perfis do PadForge. O PadForge envia seu texto de pesquisa, os IDs dos jogos, configurações e criadores envolvidos e a sua versão. O login anônimo no Steam também envia sua versão do Windows e um ID de máquina formado por hashes do ID da sua instalação do Windows, dos endereços dos adaptadores de rede e do número de série do disco de inicialização. Nenhum serviço de terceiros está envolvido.</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>O PadForge só se conecta aos servidores do Steam quando você pesquisa, abre uma configuração ou verifica atualizações das configurações importadas. Sem telemetria, sem conta Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>O Que É Enviado</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Ativar Configurações da Comunidade</value></data>
@@ -3827,6 +3862,9 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>O Steam não lista nenhum arquivo para baixar desta configuração, e não há cópia dela na sua pasta Steam. Inscreva-se nela no Steam e o PadForge a lerá de lá.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Abrir no Steam Workshop</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>Legado</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Perfil do Workshop</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Macro do Workshop</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Região do Cursor</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Escolha uma configuração para ver o que é aproveitado.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>O Que É Aproveitado</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Vira</value></data>
@@ -4327,6 +4365,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Médio (Suave)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Alto (Suave)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Personalizado</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Padrão do bs2b</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Frequência de Corte</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Frequência de cruzamento. Abaixo dela os canais se aproximam do mono e acima permanecem separados, então um corte mais baixo mistura menos.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Diferença de Nível</value></data>
@@ -4346,7 +4385,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Pad_Audio_EqType_HighPass" xml:space="preserve"><value>High Pass</value></data>
   <data name="Pad_Audio_EqType_LowPass" xml:space="preserve"><value>Low Pass</value></data>
   <data name="Pad_Audio_EqType_Notch" xml:space="preserve"><value>Notch</value></data>
-  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Freq. (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Frequência (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Ganho (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
   <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Adicionar Banda</value></data>
@@ -4354,7 +4393,8 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Limpar</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Importar da Área de Transferência</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Copie um perfil do AutoEq para seus fones e clique. Substitui as bandas e define a pré-amplificação. Sem conteúdo legível, o equalizador atual fica intacto.</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Importar de Arquivo</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Importar de Arquivo…</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>Importar Equalizador Paramétrico</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Escolha o .txt que o AutoEq baixou. Esta é a opção certa: o autoeq.app entrega um arquivo em vez de texto que dê para copiar.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Para uma correção ajustada aos seus fones: abra o autoeq.app, escolha seu modelo, baixe Custom Parametric Eq e use Importar de Arquivo. O download Graphic Eq não tem linhas de filtro e não pode ser importado.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Importadas {0} bandas com {1:0.#} dB de pré-amplificação de {2}.</value></data>
@@ -4418,6 +4458,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Dashboard_WebNewAccessCode" xml:space="preserve"><value>Novo Código</value></data>
   <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Faz este dispositivo vibrar para você saber qual é.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Bateria do Controle Fraca</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Controle</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% de bateria restante</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Alertas de Bateria</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Receba um aviso quando a bateria de um controle estiver acabando, antes que ele morra no meio do jogo.</value></data>
@@ -4634,7 +4675,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
     <value>Crie um controle virtual no outro PC e atualize.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Aguardando o outro PC...</value>
+    <value>Aguardando o outro PC…</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>Mesa Digitalizadora</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>Entrada Compartilhada</value></data>
@@ -4696,7 +4737,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>O local de instalação do SteamVR precisa ser um caminho completo, como C:\SteamVR.</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>O local de instalação do SteamVR não pode ser a raiz de uma unidade. Escolha uma pasta, como C:\SteamVR.</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>O steamcmd não terminou em 60 minutos.</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>O steamcmd foi executado, mas o SteamVR não foi instalado em {0}. O steamcmd disse: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>O steamcmd foi executado, mas o SteamVR não foi instalado em {0}. O steamcmd disse: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>O HidHide foi instalado, mas o dispositivo de controle dele não abriu, então nenhum filtro de classe foi adicionado.</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>O HidHide ainda está listado como filtro de classe, então o driver foi mantido.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Removendo drivers antigos…</value></data>
@@ -5059,7 +5100,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Dashboard_EnableTwitchChat" xml:space="preserve"><value>Ler Chat da Twitch</value></data>
   <data name="Dashboard_TwitchChatChannel" xml:space="preserve"><value>Canal</value></data>
   <data name="Dashboard_TwitchChatChannel_Tooltip" xml:space="preserve"><value>O nome do seu canal ou o endereço dele em twitch.tv.</value></data>
-  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Quem aprova !claim</value></data>
+  <data name="Dashboard_TwitchChatClaimApproval" xml:space="preserve"><value>Quem Aprova !claim</value></data>
   <data name="Dashboard_TwitchChatClaimApproval_Tooltip" xml:space="preserve"><value>Quem pode dar a um espectador o controle exclusivo que ele pede com !claim, digitando !accept @name. Dois espectadores podem ser a mesma pessoa com contas extras.</value></data>
   <data name="TwitchChat_Approval_Streamer" xml:space="preserve"><value>Só você</value></data>
   <data name="TwitchChat_Approval_Moderators" xml:space="preserve"><value>Você e seus moderadores</value></data>
@@ -5123,7 +5164,7 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="Telemetry_Formats_Kind" xml:space="preserve"><value>Pacotes</value></data>
   <data name="Telemetry_Formats_KindBinary" xml:space="preserve"><value>Binário</value></data>
   <data name="Telemetry_Formats_KindJson" xml:space="preserve"><value>JSON</value></data>
-  <data name="Telemetry_Formats_Length" xml:space="preserve"><value>Comprimento (Bytes)</value></data>
+  <data name="Telemetry_Formats_Length" xml:space="preserve"><value>Comprimento (bytes)</value></data>
   <data name="Telemetry_Formats_Length_Tooltip" xml:space="preserve"><value>Somente pacotes com exatamente esta quantidade de bytes são lidos com este formato. Com 0, qualquer pacote é lido e a Detecção Automática ignora o formato, então escolha-o pelo nome.</value></data>
   <data name="Telemetry_Formats_Key" xml:space="preserve"><value>Chave Obrigatória</value></data>
   <data name="Telemetry_Formats_Key_Tooltip" xml:space="preserve"><value>Somente pacotes JSON que tenham esta chave são lidos com este formato. Se ficar vazio, qualquer pacote é lido e a Detecção Automática ignora o formato, então escolha-o pelo nome.</value></data>

@@ -112,7 +112,9 @@ namespace PadForge.Tests
             Assert.Equal("{Binding Common_PadForge, Source={x:Static strings:Strings.Instance}, Mode=OneWay}", Attr(runs[0], "Text"));
             var version = runs[^1];
             Assert.Equal("{Binding VersionNumber, Mode=OneWay}", Attr(version, "Text"));
-            Assert.Equal("{StaticResource TelemetryFontFamily}", Attr(version, "FontFamily"));
+            // The line's own face, with tabular figures.
+            Assert.Null(Attr(version, "FontFamily"));
+            Assert.Equal("Tabular", Attr(version, "Typography.NumeralAlignment"));
             Assert.Equal("{DynamicResource ColdBrush}", Attr(version, "Foreground"));
             Assert.Equal("14", Attr(version, "FontSize"));
 

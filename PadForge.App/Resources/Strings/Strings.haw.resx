@@ -88,7 +88,7 @@
   <data name="Common_Stop" xml:space="preserve"><value>Hoʻōki</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Hoʻomaka</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Hoʻopaʻa</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>Ke hoʻopaʻa nei...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Ke hoʻopaʻa nei…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Holoi</value></data>
   <data name="Common_None" xml:space="preserve"><value>ʻAʻohe</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -101,7 +101,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>Ke pani ʻia nei ʻo PadForge...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>Ke pani ʻia nei ʻo PadForge…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Ke hoʻomaka ʻia nei ʻo PadForge…</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Hōʻike iā PadForge</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Ua kū ka ʻenekini</value></data>
@@ -140,7 +140,8 @@
   <data name="Status_EngineStarted" xml:space="preserve"><value>Ua hoʻomaka ka ʻenekini.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Ua kū ka ʻenekini.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Hewa: {0}</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Ke hoʻopaʻa nei...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Ke hoʻopaʻa nei…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>ke</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>ma</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Ua wehe ʻia ka hāmeʻa.</value></data>
@@ -206,6 +207,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Mālama ʻia</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>ʻAʻole i heluhelu ʻia</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>ʻAʻole i wehe ʻia</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Hāmeʻa</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Hoʻopaʻa inoa interface</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Kī registry kaʻana like</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Waiwai registry kaʻana like</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Hoʻopili WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Pani inoa OEM</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Kī DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Hoʻopaʻa inoa OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Pūʻolo driver</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Kī lawelawe WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Kī registry</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Palapala hōʻoia</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Waihona</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Hoʻonohonoho lawelawe</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Kaʻina wehe</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth BthPS3</value></data>
   <data name="BthPS3Uninstall_Title" xml:space="preserve"><value>Wehe iā BthPS3</value></data>
   <data name="BthPS3Uninstall_Reading" xml:space="preserve"><value>Ke heluhelu nei i nā mea a BthPS3 i waiho ai ma kēia kamepiula…</value></data>
@@ -321,7 +337,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>nā headset</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Pio</value></data>
   <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>Pio</value></data>
   <data name="Pad_Lighting_PlayerLed_Brightness_High" xml:space="preserve"><value>Kiʻekiʻe</value></data>
@@ -390,6 +406,7 @@
   <data name="Macro_MouseMiddle" xml:space="preserve"><value>Waena</value></data>
   <data name="Macro_Once" xml:space="preserve"><value>Hoʻokahi manawa</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Macro hou</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Macro {0}</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Pihi {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(ʻaʻohe)</value></data>
   <data name="Macro_Button_Format" xml:space="preserve"><value>Pihi {0}</value></data>
@@ -506,7 +523,7 @@
   <data name="Profiles_Title" xml:space="preserve"><value>Nā profile</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>ʻAʻohe controller</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Profile hou</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Hoʻoponopono</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Hoʻoponopono…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Hoʻouka</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
@@ -655,7 +672,7 @@
   <data name="MacroAxis_ZRotation" xml:space="preserve"><value>Trigger ʻākau</value></data>
 
   <!-- ═══ Preview Views ═══ -->
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Nā pihi</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 
@@ -1032,6 +1049,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Pākaukau</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Ala</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Helu serial</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID o ka polokalamu</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>GUID SDL</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Hoʻoponopono hou</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Ma mua i kēia manawa: {0}, ʻaʻohe profile no ia</value></data>
@@ -1117,4 +1136,5 @@
   <data name="Pad_Row_Modifier" xml:space="preserve"><value>Mea hoʻololi</value></data>
   <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Lāʻau hoʻoponopono</value></data>
   <data name="Pad_Picked_Row" xml:space="preserve"><value>Hoʻopuka</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Paʻamau bs2b</value></data>
 </root>

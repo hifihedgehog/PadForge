@@ -480,7 +480,7 @@ namespace PadForge.Views
                     Text = item.Icon,
                     Foreground = _labelBrush,
                     FontSize = iconSize * 0.8,
-                    FontFamily = new FontFamily("Segoe UI Emoji, Segoe UI Symbol, Segoe UI"),
+                    FontFamily = PadForge.Common.TextFaces.Emoji,
                     TextAlignment = TextAlignment.Center,
                     IsHitTestVisible = false,
                 };
@@ -513,19 +513,18 @@ namespace PadForge.Views
         }
 
         private TextBlock MakeLabel(string text, double maxWidth, double fontSize)
-            => new()
+            => PadForge.Common.TextFaces.Body(new TextBlock
             {
                 Text = text,
                 Foreground = _labelBrush,
                 FontSize = fontSize,
-                FontFamily = new FontFamily("Segoe UI"),
                 TextAlignment = TextAlignment.Center,
                 TextTrimming = TextTrimming.CharacterEllipsis,
                 TextWrapping = TextWrapping.Wrap,
                 MaxWidth = Math.Max(maxWidth, 24),
                 MaxHeight = fontSize * 2.9,
                 IsHitTestVisible = false,
-            };
+            });
 
         private void PlaceLabel(TextBlock label, double cx, double cy)
         {

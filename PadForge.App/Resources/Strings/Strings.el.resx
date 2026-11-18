@@ -88,7 +88,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Διακοπή μηχανής…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Εκτελείται σε {0}</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>Εκτελείται, συνδεδεμένα: {0}</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Ακρόαση στο :{0}</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Ακρόαση στη θύρα {0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>Η θύρα {0} χρησιμοποιείται</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Δεν επιτρέπεται η πρόσβαση στη θύρα {0} (εκτελέστε ως διαχειριστής)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>Αποτυχία εκκίνησης</value></data>
@@ -106,7 +106,7 @@
   <data name="Common_Stop" xml:space="preserve"><value>Διακοπή</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Έναρξη</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Καταγραφή</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>Καταγραφή...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Καταγραφή…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Εκκαθάριση</value></data>
   <data name="Common_Increase" xml:space="preserve"><value>Αύξηση</value></data>
   <data name="Common_Decrease" xml:space="preserve"><value>Μείωση</value></data>
@@ -120,6 +120,7 @@
   <data name="Common_PageRight" xml:space="preserve"><value>Σελίδα δεξιά</value></data>
   <data name="Common_None" xml:space="preserve"><value>Κανένα</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>δευτερόλεπτα</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Χωρίς ανάθεση</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -134,7 +135,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>Κλείσιμο του PadForge...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>Κλείσιμο του PadForge…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Εκκίνηση του PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Εκκαθάριση εικονικών χειριστηρίων που απέμειναν από προηγούμενη συνεδρία.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Προσθήκη χειριστηρίου</value></data>
@@ -239,8 +240,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ κάτω)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← αριστερά)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ πάνω)</value></data>
-  <data name="Status_SDL3NotFound" xml:space="preserve"><value>ΤΟ SDL3.dll ΔΕΝ ΒΡΕΘΗΚΕ</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Το SDL3.dll δεν βρέθηκε! Τοποθετήστε το SDL3.dll δίπλα στο PadForge.exe. Λήψη από https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>Το SDL3.dll δεν βρέθηκε</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>Το SDL3.dll δεν βρέθηκε. Τοποθετήστε το SDL3.dll δίπλα στο PadForge.exe. Λήψη του από https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Η λειτουργία του προγράμματος οδήγησης απέτυχε: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Οι ρυθμίσεις αντιγράφηκαν στο πρόχειρο.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Οι πληροφορίες συσκευής αντιγράφηκαν στο πρόχειρο.</value></data>
@@ -271,11 +272,11 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>Οι ρυθμίσεις φορτώθηκαν ξανά από τον δίσκο.</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>Δεν βρέθηκε αρχείο ρυθμίσεων στον δίσκο.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Δεν υπάρχει συνδεδεμένη συσκευή για καταγραφή.</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Καταγραφή: πατήστε ένα κουμπί ή μετακινήστε έναν άξονα για «{0}»...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Καταγραφή: στρέψτε ή κουνήστε ένα χειριστήριο για «{0}»...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Καταγραφή: πατήστε ένα κουμπί ή μετακινήστε έναν άξονα για «{0}»…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Καταγραφή: στρέψτε ή κουνήστε ένα χειριστήριο για «{0}»…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>Κανένα χειριστήριο σε αυτή την υποδοχή δεν έχει αισθητήρα για «{0}».</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Καταγραφή «{0}»: πατήστε την είσοδο για την κατεύθυνση Πάνω...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Καταγραφή «{0}»: πατήστε τώρα την είσοδο για την κατεύθυνση Κάτω...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Καταγραφή «{0}»: πατήστε την είσοδο για την κατεύθυνση Πάνω…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Καταγραφή «{0}»: πατήστε τώρα την είσοδο για την κατεύθυνση Κάτω…</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Η καταγραφή ακυρώθηκε.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Το χρονικό όριο καταγραφής για «{0}» έληξε.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Η μηχανή ξεκίνησε.</value></data>
@@ -294,7 +295,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Εμφάνιση ή απόκρυψη του PadForge</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Ενεργοποίηση ή απενεργοποίηση εικονικών χειριστηρίων</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Οποιαδήποτε συνδεδεμένη συσκευή</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Καταγραφή...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Καταγραφή…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} δλ)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>όταν</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>σε</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>Καταργήθηκε η ανάθεση της συσκευής «{0}» στο εικονικό χειριστήριο {1}.</value></data>
@@ -327,6 +329,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>Χειριστήρια</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Επιπλέον σε χρήση</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Ενεργό. {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>Προεπιλεγμένες ρυθμίσεις</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>Αριστερός μοχλός</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>Δεξιός μοχλός</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>{0} ακόμη στα [Επιπλέον]. Ένα επιπλέον παραμένει απενεργοποιημένο μέχρι να το ενεργοποιήσετε.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Άνοιγμα Επιπλέον</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>Εμφάνιση QR</value></data>
@@ -394,8 +401,12 @@
   <data name="Engine_Forging" xml:space="preserve"><value>Σφυρηλάτηση</value></data>
   <data name="Shell_Foot_Live_Format" xml:space="preserve"><value>Ζωντανά: {0} από {1}</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Επιλέξτε μια μακροεντολή στη λίστα ή πατήστε το + δίπλα στην επικεφαλίδα «Μακροεντολές» για να δημιουργήσετε μία.</value></data>
-  <data name="Instr_Raw" xml:space="preserve"><value>ΕΙΣΟΔΟΣ</value></data>
-  <data name="Instr_Out" xml:space="preserve"><value>ΕΞΟΔΟΣ</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>Είσοδος</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>Έξοδος</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Καμπύλη</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Επίπεδα αλλαγής</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Ανεστραμμένο</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>Κορυφή</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Κρύο</value></data>
   <data name="Pad_Tab_Preview" xml:space="preserve"><value>Προεπισκόπηση</value></data>
   <data name="Extras_Title" xml:space="preserve"><value>Επιπλέον</value></data>
@@ -431,11 +442,11 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>Οι τιμές είναι η γραμμή Τηλεμετρία παιχνιδιών στις [Συσκευές]. Αντιστοιχίστε τις στην ενότητα Αντιστοιχίσεις ενός χειριστηρίου ή χρησιμοποιήστε τις για να ενεργοποιείτε μακροεντολές.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Η θέση, το μέγεθος και η αδιαφάνεια ενός μενού ορίζονται στο ίδιο το μενού, στην ενότητα [Μακροεντολές και μενού] ενός χειριστηρίου.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Πηγές</value></data>
-  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>Το OpenTrack και οτιδήποτε στέλνει τη μορφή UDP του</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>Το OpenTrack και οτιδήποτε στέλνει τη μορφή UDP του.</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Εύρος κίνησης</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Εύρος ανά άξονα. Το μηδέν ακολουθεί το παραπάνω εύρος.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Παιχνίδια που το PadForge δεν γνωρίζει</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Για mod που αναζητούν ένα DSX σε λειτουργία πριν στείλουν</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Για mod που αναζητούν ένα DSX σε λειτουργία πριν στείλουν.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Τι εμφανίζεται</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ο δακτύλιος, το πλέγμα ή η γραμμή ενός μενού όσο είναι ανοιχτό</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Το όνομα του επιπέδου όταν ενεργοποιείται ένα επίπεδο shift, για τον χρόνο που ορίζει το επίπεδο</value></data>
@@ -694,7 +705,7 @@
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Απόκρυψη συσκευών από τα παιχνίδια, Διατήρηση απόκρυψης συσκευών μεταξύ εκκινήσεων, Επιτρεπόμενες εφαρμογές</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Επιτρεπόμενες εφαρμογές</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Αυτές οι εφαρμογές εξακολουθούν να βλέπουν τις κρυμμένες συσκευές. Το PadForge προστίθεται πάντα αυτόματα στις επιτρεπόμενες.</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>Προσθήκη...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>Προσθήκη…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>Το PadForge εγκαθιστά αυτό το πρόγραμμα οδήγησης με το πρώτο εικονικό χειριστήριο που δημιουργείτε. Η απεγκατάσταση απαριθμεί τι άφησε το HIDMaestro σε αυτόν τον υπολογιστή πριν το αφαιρέσει.</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Δημιουργεί τα εικονικά χειριστήρια.</value></data>
@@ -713,6 +724,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Διατηρήθηκε</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Δεν διαβάστηκε</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Δεν αφαιρέθηκε</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Συσκευή</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Καταχώριση διεπαφής</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Κοινόχρηστο κλειδί μητρώου</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Κοινόχρηστη τιμή μητρώου</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Σύνδεση WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Παράκαμψη ονόματος OEM</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Κλειδί DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Καταχώριση OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Πακέτο προγράμματος οδήγησης</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Κλειδί υπηρεσίας WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Κλειδί μητρώου</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Πιστοποιητικό</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Φάκελος</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Ρύθμιση υπηρεσίας</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Βήμα αφαίρεσης</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Επιτρέπει σε χειριστήρια PlayStation 3, στο PlayStation Move και στο χειριστήριο Navigation να συνδέονται μέσω Bluetooth. Είναι ενσωματωμένο στο PadForge και εγκαθίσταται την πρώτη φορά που γίνεται σύζευξη ενός από αυτά.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Συνδέει χειριστήρια PlayStation 3 μέσω Bluetooth.</value></data>
@@ -907,11 +933,11 @@
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Πληκτρολόγηση «{0}»</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(κανένα κείμενο)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Κείμενο</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Καθυστέρηση χαρακτήρα (ms)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Καθυστέρηση μεταξύ γραμμάτων</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Χιλιοστά του δευτερολέπτου μεταξύ των χαρακτήρων που πληκτρολογούνται, έως 1000. Με 0, ολόκληρο το κείμενο πληκτρολογείται αμέσως.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Αποσύνδεση σε αδράνεια</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Λεπτομέρειες</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>λεπτά (0 = ποτέ)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>λεπτά</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Αποσύνδεση Bluetooth κατά τη σύνδεση μέσω USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Γρήγορη φόρτιση. Όταν αυτό το χειριστήριο αναφέρει ότι φορτίζει ενώ είναι συνδεδεμένο μέσω Bluetooth, η σύνδεση Bluetooth διακόπτεται, ώστε να φορτίζει χωρίς να τροφοδοτεί τον πομποδέκτη. Μετρά κάθε πηγή τροφοδοσίας USB, ακόμη και οι φορτιστές τοίχου. Αν ενεργοποιήσετε ξανά το Bluetooth ενώ το καλώδιο παραμένει συνδεδεμένο, η σύνδεση δεν διακόπτεται μέχρι την επόμενη αποσύνδεση του καλωδίου.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Ανάγνωση ως χειριστήριο iCade</value></data>
@@ -1002,7 +1028,7 @@
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Στρέψτε το Wii Remote προς τον στόχο και πατήστε B.</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>Το Wii Remote δεν είδε τη μπάρα αισθητήρων. Στρέψτε το προς τον στόχο και πατήστε ξανά B.</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Ακύρωση με Esc ή Home.</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Αποσυνδέει αυτό το χειριστήριο Bluetooth μετά από τόσα λεπτά χωρίς είσοδο, ώστε να τεθεί σε αναστολή λειτουργίας και να εξοικονομήσει μπαταρία. Δεν ενεργοποιείται ποτέ μέσω USB.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Αποσυνδέει αυτό το χειριστήριο Bluetooth μετά από τόσα λεπτά χωρίς είσοδο, ώστε να τεθεί σε αναστολή λειτουργίας και να εξοικονομήσει μπαταρία. Το 0 το απενεργοποιεί. Δεν ενεργοποιείται ποτέ μέσω USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Τροφοδοσία</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Μενού</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>
@@ -1068,6 +1094,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Μπαταρία</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Διαδρομή</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Σειριακός αριθμός</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID εφαρμογής</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>GUID SDL</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Υλικολογισμικό</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Αναθεώρηση</value></data>
   <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Ανάγνωση του Chatpad</value></data>
@@ -1156,11 +1184,15 @@
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>Γυροσκόπιο</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>Επιταχυνσιόμετρο</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 άξονας</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} άξονες</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 κουμπί</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} κουμπιά</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>Άξονας {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} άξονες, {1} κουμπιά, {2} POV</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>Δόνηση</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Γυροσκόπιο</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>Επιταχυνσιόμετρο</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>αποκρύψει αυτή τη συσκευή από τα προγράμματα που την ανοίγουν ως συσκευή HID</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Τα Windows συνεχίζουν να διαβάζουν τα πλήκτρα που πληκτρολογείτε, οπότε η πληκτρολόγηση λειτουργεί σε κάθε πρόγραμμα, ακόμη και στα παιχνίδια. Ένα πληκτρολόγιο USB μπορεί να αφαιρεθεί από τα Windows με την επιλογή «{0}».</value></data>
@@ -1346,7 +1378,7 @@
   <data name="Pad_Lighting_VendorRowExamples_MysticLight" xml:space="preserve"><value>μητρικές και κάρτες γραφικών</value></data>
   <data name="Pad_Lighting_VendorRowExamples_Icue" xml:space="preserve"><value>mousepad, σετ κεφαλής και βάσεις για σετ κεφαλής</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Τα παιχνίδια αναλαμβάνουν κάθε φορά που γράφουν φωτισμό.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Εισαγάγετε ένα εξαψήφιο δεκαεξαδικό χρώμα (RRGGBB ή #RRGGBB) και πατήστε Enter ή κάντε κλικ αλλού για εφαρμογή.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Αφαίρεση αυτού του χρώματος από την παλέτα</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Σβηστό</value></data>
@@ -1548,6 +1580,7 @@
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Εισαγωγή</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(συσκευή HID χωρίς όνομα)</value></data>
   <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>Βρέθηκαν {0} διεπαφές HID.</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>Βρέθηκε 1 διεπαφή HID.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Η απαρίθμηση απέτυχε: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>Η εξαγωγή από τη συσκευή απέτυχε: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>Δεν ήταν δυνατή η ανάλυση του JSON του προφίλ που εξήχθη. Δεν αποθηκεύτηκε τίποτα.</value></data>
@@ -1660,7 +1693,7 @@
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Διαδοχική καταγραφή όλων των αντιστοιχίσεων, μία προς μία</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Αντιγραφή όλων των αντιστοιχίσεων και ρυθμίσεων στο πρόχειρο</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Επικόλληση αντιστοιχίσεων και ρυθμίσεων από το πρόχειρο</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Αντιγραφή από...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Αντιγραφή από…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Αντιγραφή ρυθμίσεων από άλλη ρυθμισμένη συσκευή</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Επαναφορά όλων</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Εκκαθάριση όλων</value></data>
@@ -1848,7 +1881,7 @@
   <data name="Pad_More_Trigger" xml:space="preserve"><value>Το εύρος σε αριθμούς, ακατέργαστες τιμές</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Εύρος</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Η «Βαθμονόμηση ορίου» μετρά το άκρο που μπορεί να φτάσει ο μοχλός και το αναδιαμορφώνει σε πλήρη κύκλο. Τα τέσσερα ρυθμιστικά απλώς περιορίζουν κάθε κατεύθυνση.</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>Δειγματοληψία...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>Δειγματοληψία…</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Μετατόπιση κέντρου X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Μετατόπιση κέντρου Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Σχήμα νεκρής ζώνης</value></data>
@@ -1959,6 +1992,7 @@
   <data name="Macro_DelayMs" xml:space="preserve"><value>Καθυστέρηση</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Ευαισθησία</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Νέα μακροεντολή</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Μακροεντολή {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Καταγραφή εναύσματος</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>Δεν έχει οριστεί. Κάντε κλικ στην «Καταγραφή».</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Κουμπί {0}</value></data>
@@ -2017,6 +2051,8 @@
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Οδηγεί τη δόνηση της φυσικής συσκευής της υποδοχής από μια μακροεντολή. Η «Παροδική» λειτουργεί σε πλήρη ισχύ για το διάστημα κρατήματος και έπειτα σβήνει ως το μηδέν μέσα στο διάστημα σβησίματος. Η «Μόνιμη» παραμένει σε πλήρη ισχύ μέχρι να εκτελεστεί μια ενέργεια «Διακοπή δόνησης». Προστίθεται πάνω από τη δόνηση του παιχνιδιού μέσω max(), ώστε η ανάδραση που προκαλεί ο χρήστης να γίνεται πάντα αισθητή.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Παλμός δόνησης {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Κράτημα δόνησης {0} μέχρι την εκκαθάριση</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>αριστερά {0}%, δεξιά {1}%</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>αριστερή σκανδάλη {0}%, δεξιά σκανδάλη {1}%</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Διακοπή δόνησης</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Διακοπή δόνησης</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Αποδεσμεύει κάθε ενεργή παράκαμψη δόνησης στην ανατεθειμένη υποδοχή. Συνδυάστε τη με μια «Μόνιμη» ενέργεια «Δόνηση» για να αναιρείτε το κράτημα μέσω άλλης μακροεντολής.</value></data>
@@ -2055,7 +2091,7 @@
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Ποντίκι Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Διάστημα</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Επιλογή στην οθόνη</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Καταγραφή σε {0}...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Καταγραφή σε {0}…</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Κάντε κλικ και έπειτα μετακινήστε τον δείκτη πάνω στον στόχο. Η θέση του καταγράφεται μετά από μια σύντομη αντίστροφη μέτρηση.</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Λειτουργία</value></data>
   <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>Εσοχή X</value></data>
@@ -2082,9 +2118,9 @@
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>Χωρίς αντιστοίχιση</value></data>
-  <data name="Mapping_Inv" xml:space="preserve"><value>Αντ.</value></data>
+  <data name="Mapping_Inv" xml:space="preserve"><value>Ανεστραμμένο</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>Μισό</value></data>
-  <data name="Mapping_InvHalf" xml:space="preserve"><value>Αντ. μισό</value></data>
+  <data name="Mapping_InvHalf" xml:space="preserve"><value>Ανεστραμμένο μισό</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Καμία αντιστοιχισμένη συσκευή</value></data>
 
@@ -2727,9 +2763,9 @@
   <data name="Profiles_DropTile" xml:space="preserve"><value>Αφήστε εδώ ένα αρχείο προφίλ</value></data>
   <data name="Profiles_DropTileFormats" xml:space="preserve"><value>PadForge, reWASD ή DS4Windows</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Νέο προφίλ</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>Αποθήκευση ως</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Αποθήκευση ως…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Αποθήκευση τρέχουσας ρύθμισης εδώ</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Επεξεργασία</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Επεξεργασία…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Φόρτωση</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Ενσωματωμένο</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Χωρίς παιχνίδι</value></data>
@@ -2832,8 +2868,8 @@
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Επαναφορά μετατόπισης κέντρου X</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Βαθμονόμηση ορίου</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Επαναβαθμονόμηση ορίου</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Περιστρέψτε στο άκρο... απομένουν {0}</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Καλύφθηκε. Ένας ακόμη γύρος για βελτίωση...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Περιστρέψτε στο άκρο… απομένουν {0}</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Καλύφθηκε. Ένας ακόμη γύρος για βελτίωση…</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Κυκλικότητα {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Περιστρέψτε τον μοχλό κατά μήκος του άκρου του για να χαρτογραφηθεί το όριο που μπορεί να φτάσει, το οποίο έπειτα αναδιαμορφώνεται σε πλήρη κύκλο.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Επαναφορά βαθμονόμησης ορίου</value></data>
@@ -2912,7 +2948,7 @@
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Ελέγχει την ένταση μιας συγκεκριμένης εφαρμογής στον μείκτη έντασης των Windows, κλιμακωμένη στο όριο έντασης. Εισαγάγετε το όνομα της διεργασίας (φαίνεται στη Διαχείριση Εργασιών). Χρησιμοποιήστε το με έναυσμα «Πάντα» ή με έναυσμα κουμπιού/άξονα με «Όσο κρατιέται» + «Μέχρι την απελευθέρωση».</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Αντιστοιχίζει συνεχώς τον επιλεγμένο άξονα στην κίνηση του ποντικιού (ή στην κύλιση). Χρησιμοποιήστε το με έναυσμα «Πάντα» ή με έναυσμα κουμπιού/άξονα με «Όσο κρατιέται» + «Μέχρι την απελευθέρωση». Για μοχλό σε ποντίκι, δημιουργήστε δύο ενέργειες: μία για τον άξονα X και μία για τον άξονα Y.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Αντιστροφή άξονα</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Εμφάνιση OSD έντασης</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Εμφάνιση ένδειξης έντασης</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Κατεύθυνση</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Οποιαδήποτε</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Θετική</value></data>
@@ -3139,7 +3175,7 @@
   <data name="Preview_CCOutputs" xml:space="preserve"><value>Έξοδοι CC</value></data>
   <data name="Preview_NoteOutputs" xml:space="preserve"><value>Έξοδοι νοτών</value></data>
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Μοχλός {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Σ{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Σκανδάλη {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Κουμπιά</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -3156,7 +3192,6 @@
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Στάθμη</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Χρονικό όριο αδράνειας</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Δευτερόλεπτα μέχρι να καταστραφεί ένα εικονικό χειριστήριο όταν όλες οι αντιστοιχισμένες συσκευές του είναι εκτός σύνδεσης. Το 0 το απενεργοποιεί. Τα υπόλοιπα χειριστήρια του ίδιου τύπου μετακινούνται προς τα πάνω για να καλύψουν το κενό και συνδέονται ξανά σε χαμηλότερες υποδοχές.</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>δευτερόλεπτα (0 = ποτέ)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Προσθήκη επιπέδου</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Προσθέτει ένα επίπεδο shift: έναν δεύτερο πίνακα αντιστοιχίσεων που ενεργοποιείται όσο κρατιέται ένα κουμπί ή όταν γίνεται εναλλαγή.</value></data>
@@ -3961,7 +3996,7 @@
     <value>Επαναφορά της καθυστέρησης στο 0 (το επίπεδο αντιδρά αμέσως).</value>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Διαμορφώσεις κοινότητας</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Περιηγηθείτε σε διαμορφώσεις χειριστηρίων Steam Input που έχει φτιάξει η κοινότητα και μετατρέψτε τες σε προφίλ PadForge. Το PadForge συνδέεται απευθείας με τους διακομιστές του Steam μόνο όταν κάνετε αναζήτηση, ανοίγετε μια διαμόρφωση ή ελέγχετε τις εισηγμένες διαμορφώσεις σας για ενημερώσεις. Στέλνει το κείμενο της αναζήτησής σας, τα αναγνωριστικά των σχετικών παιχνιδιών, διαμορφώσεων και δημιουργών, καθώς και την έκδοση του PadForge. Η ανώνυμη σύνδεση στο Steam στέλνει επίσης την έκδοση των Windows σας και ένα αναγνωριστικό υπολογιστή που προκύπτει από κατακερματισμούς (hash) του αναγνωριστικού εγκατάστασης των Windows, των διευθύνσεων των προσαρμογέων δικτύου και του σειριακού αριθμού του δίσκου εκκίνησης. Χωρίς τηλεμετρία, χωρίς υπηρεσία τρίτων, χωρίς λογαριασμό Steam.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Περιηγηθείτε σε διαμορφώσεις χειριστηρίων Steam Input που έχει φτιάξει η κοινότητα και μετατρέψτε τες σε προφίλ PadForge. Το PadForge στέλνει το κείμενο της αναζήτησής σας, τα αναγνωριστικά των σχετικών παιχνιδιών, διαμορφώσεων και δημιουργών, καθώς και την έκδοσή του. Η ανώνυμη σύνδεση στο Steam στέλνει επίσης την έκδοση των Windows σας και ένα αναγνωριστικό υπολογιστή που προκύπτει από κατακερματισμούς (hash) του αναγνωριστικού εγκατάστασης των Windows, των διευθύνσεων των προσαρμογέων δικτύου και του σειριακού αριθμού του δίσκου εκκίνησης. Δεν εμπλέκεται υπηρεσία τρίτων.</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>Το PadForge συνδέεται με τους διακομιστές του Steam μόνο όταν κάνετε αναζήτηση, ανοίγετε μια διαμόρφωση ή ελέγχετε τις εισηγμένες διαμορφώσεις για ενημερώσεις. Χωρίς τηλεμετρία, χωρίς λογαριασμό Steam.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Τι αποστέλλεται</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Ενεργοποίηση διαμορφώσεων κοινότητας</value></data>
@@ -4018,6 +4053,9 @@
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Το Steam δεν παρέχει αρχείο για λήψη για αυτή τη διαμόρφωση και δεν υπάρχει αντίγραφό της στον φάκελο του Steam σας. Εγγραφείτε σε αυτήν στο Steam και το PadForge θα τη διαβάσει από εκεί.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Άνοιγμα στο Εργαστήριο του Steam</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>Παλαιό</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Προφίλ Workshop</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Μακροεντολή Workshop</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Περιοχή δρομέα</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Επιλέξτε μια διαμόρφωση για να δείτε τι μεταφέρεται.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Τι μεταφέρεται</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Γίνεται</value></data>
@@ -4395,6 +4433,7 @@
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Μεσαία (ήπια)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Υψηλή (ήπια)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Προσαρμοσμένη</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Προεπιλογή bs2b</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Συχνότητα αποκοπής</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Συχνότητα διασταύρωσης. Κάτω από αυτήν τα κανάλια αναμειγνύονται προς το μονοφωνικό, πάνω από αυτήν μένουν διαχωρισμένα, επομένως μια χαμηλότερη συχνότητα αποκοπής δίνει λιγότερη διασταυρούμενη τροφοδοσία.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Τροφοδοσία</value></data>
@@ -4414,7 +4453,7 @@
   <data name="Pad_Audio_EqType_HighPass" xml:space="preserve"><value>HP</value></data>
   <data name="Pad_Audio_EqType_LowPass" xml:space="preserve"><value>LP</value></data>
   <data name="Pad_Audio_EqType_Notch" xml:space="preserve"><value>Εγκοπή</value></data>
-  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Συχν. (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Συχνότητα (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Ενίσχυση (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
   <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Προσθήκη ζώνης</value></data>
@@ -4422,7 +4461,8 @@
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Εκκαθάριση</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Εισαγωγή από το πρόχειρο</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Αντιγράψτε στο πρόχειρο ένα προφίλ AutoEq για τα ακουστικά σας και έπειτα κάντε κλικ. Αντικαθιστά τις ζώνες και ορίζει την προενίσχυση. Αν το πρόχειρο δεν περιέχει κάτι αναγνώσιμο, ο τρέχων ισοσταθμιστής μένει αμετάβλητος.</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Εισαγωγή από αρχείο</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Εισαγωγή από αρχείο…</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>Εισαγωγή παραμετρικού ισοσταθμιστή</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Επιλέξτε το αρχείο .txt που κατέβασε το AutoEq. Αυτή είναι η επιλογή που πρέπει να χρησιμοποιήσετε: το autoeq.app σάς δίνει αρχείο και όχι κείμενο που μπορείτε να αντιγράψετε.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Για διόρθωση προσαρμοσμένη στα ακουστικά σας: ανοίξτε το autoeq.app, επιλέξτε το μοντέλο σας, διαλέξτε «Custom Parametric Eq» και κατεβάστε το, και έπειτα επιλέξτε «Εισαγωγή από αρχείο». Η λήψη «Graphic Eq» δεν έχει γραμμές φίλτρων και δεν εισάγεται.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Εισήχθησαν {0} ζώνες με προενίσχυση {1:0.#} dB από {2}.</value></data>
@@ -4475,6 +4515,7 @@
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Αυτό το δίκτυο δεν μπορεί να κάνει απευθείας συνδέσεις (μοιάζει με σημείο πρόσβασης κινητού ή NAT επιπέδου παρόχου). Χρησιμοποιήστε ένα VPN όπως το Tailscale ή συνδεθείτε από οικιακή ευρυζωνική σύνδεση.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Δεν βρέθηκε η δημόσια διεύθυνση αυτού του υπολογιστή (το δίκτυο ίσως αποκλείει την απαραίτητη κίνηση). Οι απευθείας συνδέσεις δεν θα λειτουργούν εδώ. Χρησιμοποιήστε ένα VPN ή τη «Σύνδεση μέσω διεύθυνσης» στο ίδιο δίκτυο.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Χαμηλή μπαταρία χειριστηρίου</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Χειριστήριο</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: απομένει {1}% μπαταρίας</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Ειδοποιήσεις μπαταρίας</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Λάβετε ειδοποίηση όταν η μπαταρία ενός χειριστηρίου πέφτει, πριν αδειάσει στη μέση του παιχνιδιού.</value></data>
@@ -4691,7 +4732,7 @@
     <value>Δημιουργήστε ένα εικονικό χειριστήριο στον άλλον υπολογιστή και έπειτα κάντε ανανέωση.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Αναμονή για τον άλλον υπολογιστή...</value>
+    <value>Αναμονή για τον άλλον υπολογιστή…</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>Tablet σχεδίασης</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>Κοινόχρηστη είσοδος</value></data>
@@ -4753,7 +4794,7 @@
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>Η θέση εγκατάστασης του SteamVR πρέπει να είναι πλήρης διαδρομή, όπως C:\SteamVR.</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>Η θέση εγκατάστασης του SteamVR δεν μπορεί να είναι ρίζα μονάδας δίσκου. Επιλέξτε έναν φάκελο, όπως C:\SteamVR.</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>Το steamcmd δεν ολοκληρώθηκε μέσα σε 60 λεπτά.</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>Το steamcmd εκτελέστηκε, αλλά το SteamVR δεν εγκαταστάθηκε στο {0}. Το steamcmd ανέφερε: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>Το steamcmd εκτελέστηκε, αλλά το SteamVR δεν εγκαταστάθηκε στο {0}. Το steamcmd ανέφερε: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>Το HidHide εγκαταστάθηκε, αλλά η συσκευή ελέγχου του δεν άνοιξε, επομένως δεν προστέθηκε φίλτρο κλάσης.</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>Το HidHide εξακολουθεί να εμφανίζεται ως φίλτρο κλάσης, επομένως το πρόγραμμα οδήγησης παρέμεινε στη θέση του.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Κατάργηση παλαιών προγραμμάτων οδήγησης…</value></data>

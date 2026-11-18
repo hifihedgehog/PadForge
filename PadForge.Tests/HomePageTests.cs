@@ -184,13 +184,13 @@ namespace PadForge.Tests
             // order, and a screen reader hears it whole. It is cold blue
             // while there is a rate, in every state but stopped.
             At(numbers, "AutomationProperties.Name=\"{Binding PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}\"");
-            At(numbers, "<Run Text=\"{Binding PollingRateLead, Mode=OneWay}\"/><Run Text=\"{Binding PollingRateNumber, Mode=OneWay}\" FontSize=\"30\" FontWeight=\"SemiBold\"/><Run Text=\"{Binding PollingRateTail, Mode=OneWay}\"/>");
+            At(numbers, "<Run Text=\"{Binding PollingRateLead, Mode=OneWay}\"/><Run Text=\"{Binding PollingRateNumber, Mode=OneWay}\" FontSize=\"28\" FontWeight=\"SemiBold\"/><Run Text=\"{Binding PollingRateTail, Mode=OneWay}\"/>");
             Assert.DoesNotContain(" Hz", numbers);
             foreach (string state in new[] { "Running", "Idle", "Stopping" })
                 At(numbers, "<DataTrigger Binding=\"{Binding EngineStateKey}\" Value=\"" + state + "\"><Setter Property=\"Foreground\" Value=\"{DynamicResource ColdBrush}\"/></DataTrigger>");
             // How many of the controllers are live, said whole to a screen reader.
             At(numbers, "AutomationProperties.Name=\"{Binding LiveLine, Mode=OneWay, TargetNullValue='', FallbackValue=''}\"");
-            At(numbers, "<Run Text=\"{Binding LiveControllers, Mode=OneWay}\" FontSize=\"30\" FontWeight=\"SemiBold\" Foreground=\"{DynamicResource TextFillColorPrimaryBrush}\"/><Run Text=\" / \"/><Run Text=\"{Binding ControllerCount, Mode=OneWay}\"/>");
+            At(numbers, "<Run Text=\"{Binding LiveControllers, Mode=OneWay}\" FontSize=\"28\" FontWeight=\"SemiBold\" Foreground=\"{DynamicResource TextFillColorPrimaryBrush}\"/><Run Text=\" / \"/><Run Text=\"{Binding ControllerCount, Mode=OneWay}\"/>");
 
             // The numbers close the card: nothing stands after them.
             Assert.Matches(new Regex("</controls:FlexLinePanel>\\s*</controls:FlexLinePanel>\\s*</Grid>\\s*</Border>\\s*$"), engine.TrimEnd().Substring(0, engine.TrimEnd().LastIndexOf("<!--", StringComparison.Ordinal)).TrimEnd());
@@ -390,8 +390,10 @@ namespace PadForge.Tests
 
             // The body: the stage, then the devices.
             string under = card.Substring(bodyAt);
-            At(under, "<controls:FlexLinePanel Grid.Row=\"1\" Margin=\"18,14,18,16\" Gap=\"18\" LineGap=\"14\">");
-            int stage = At(under, "<controls:ClickBorder controls:FlexLinePanel.Basis=\"204\" Height=\"140\" CornerRadius=\"10\" BorderThickness=\"1\"");
+            At(under, "<controls:FlexLinePanel Grid.Row=\"1\" Margin=\"18,14,18,16\" Gap=\"18\" LineGap=\"14\" FillsHeight=\"True\">");
+            // The stage stands at the top of its line, which takes the
+            // card's spare height, so every card's foot sits at its bottom.
+            int stage = At(under, "<controls:ClickBorder controls:FlexLinePanel.Basis=\"204\" Height=\"140\" VerticalAlignment=\"Top\" CornerRadius=\"10\" BorderThickness=\"1\"");
             int driven = At(under, "<Grid controls:FlexLinePanel.Basis=\"220\" controls:FlexLinePanel.Grow=\"1\">");
             Assert.True(stage < driven);
             string picture = under.Substring(stage, driven - stage);
@@ -876,9 +878,14 @@ namespace PadForge.Tests
                 + "<Setter TargetName=\"Card\" Property=\"BorderBrush\" Value=\"\\{DynamicResource CardStrokeColorDefaultBrush\\}\"/>\\s*"
                 + "<Setter TargetName=\"IconSquare\" Property=\"Background\" Value=\"\\{DynamicResource SteelRaisedBrush\\}\"/>\\s*"
                 + "<Setter TargetName=\"Icon\" Property=\"Foreground\" Value=\"\\{DynamicResource TextFillColorTertiaryBrush\\}\"/>"), home);
-            // Under the name: the word On and then the status or the line.
-            At(home, "<Binding Path=\"Summary\" RelativeSource=\"{RelativeSource TemplatedParent}\"/>");
+            // Under the name: the status alone, ember and semibold while it
+            // is live as on the catalog's tile, or the word On and the line
+            // while there is no status.
+            At(home, "<TextBlock x:Name=\"StatusText\" Text=\"{TemplateBinding Status}\" FontSize=\"13\" TextWrapping=\"Wrap\"");
+            At(home, "Foreground=\"{DynamicResource EmberHotBrush}\" FontWeight=\"SemiBold\"/>");
+            At(home, "<Binding Path=\"Line\" RelativeSource=\"{RelativeSource TemplatedParent}\"/>");
             At(home, "<Binding Path=\"Home_ExtraOn_Format\" Source=\"{x:Static strings:Strings.Instance}\"/>");
+            Assert.Matches(new Regex("<Trigger Property=\"Status\" Value=\"\">\\s*<Setter TargetName=\"StatusText\" Property=\"Visibility\" Value=\"Collapsed\"/>\\s*<Setter TargetName=\"OnLine\" Property=\"Visibility\" Value=\"Visible\"/>"), home);
         }
 
         /// <summary>The count Home reads is the twelve catalog switches, one
@@ -1625,7 +1632,7 @@ namespace PadForge.Tests
             // language's own format puts them. A screen reader hears it whole.
             At(engine, "<TextBlock x:Name=\"EngineFootRate\" Grid.Column=\"2\" VerticalAlignment=\"Center\"");
             At(engine, "AutomationProperties.Name=\"{Binding Dashboard.PollingFrequencyText, Mode=OneWay, TargetNullValue='', FallbackValue=''}\"");
-            At(engine, "<Run Text=\"{Binding Dashboard.PollingRateLead, Mode=OneWay}\"/><Run Text=\"{Binding Dashboard.PollingRateNumber, Mode=OneWay}\" FontSize=\"17\" FontWeight=\"SemiBold\"/><Run Text=\"{Binding Dashboard.PollingRateTail, Mode=OneWay}\"/>");
+            At(engine, "<Run Text=\"{Binding Dashboard.PollingRateLead, Mode=OneWay}\"/><Run Text=\"{Binding Dashboard.PollingRateNumber, Mode=OneWay}\" FontFamily=\"{StaticResource DisplayFontFamily}\" FontSize=\"18\" FontWeight=\"SemiBold\"/><Run Text=\"{Binding Dashboard.PollingRateTail, Mode=OneWay}\"/>");
             Assert.DoesNotContain(" Hz", engine);
             foreach (string state in new[] { "Running", "Idle", "Stopping" })
                 Assert.Contains("<DataTrigger Binding=\"{Binding Dashboard.EngineStateKey}\" Value=\"" + state + "\">", engine);

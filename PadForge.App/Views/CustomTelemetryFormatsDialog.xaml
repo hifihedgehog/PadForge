@@ -105,7 +105,7 @@
 
         <ScrollViewer Grid.Column="2" x:Name="EditorScroll" Focusable="False" VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled">
-            <StackPanel x:Name="EditorPanel">
+            <StackPanel x:Name="EditorPanel" controls:SettingRow.Reach="Infinity">
                 <controls:SettingRow MinHeight="42">
                     <TextBlock Style="{StaticResource FormatLabel}"
                                Text="{Binding Telemetry_Formats_Name, Source={x:Static strings:Strings.Instance}}"/>

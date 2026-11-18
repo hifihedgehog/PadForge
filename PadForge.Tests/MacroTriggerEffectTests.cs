@@ -119,6 +119,23 @@ namespace PadForge.Tests
             Assert.Equal("3,1", action.TriggerEffectParameters);
         }
 
+        /// <summary>A parameter's own reset returns that one value to the
+        /// effect's default and leaves the others as they are.</summary>
+        [Fact]
+        public void AParameterRowsReset_RestoresItsOwnDefaultAlone()
+        {
+            var action = Effect(TriggerEffectCatalog.ResistanceMode, MacroTriggerEffectSide.Right, MacroTriggerEffectHold.UntilRelease);
+            var start = action.TriggerEffectRows[0];
+            var strength = action.TriggerEffectRows[1];
+            start.Value = 5;
+            strength.Value = 2;
+            Assert.Equal("5,2", action.TriggerEffectParameters);
+
+            strength.ResetValueCommand.Execute(null);
+            Assert.Equal(TriggerEffectCatalog.Defaults(TriggerEffectCatalog.ResistanceMode)[1], strength.Value);
+            Assert.Equal(5, start.Value);
+        }
+
         [Fact]
         public void TheEffectsReset_RestoresItsValues_EvenWhenTheEffectIsAlreadyFeedback()
         {

@@ -1228,7 +1228,7 @@ namespace PadForge.Tests
             RunSta(() =>
             {
                 var kbm = new KBMPreviewView();
-                kbm.Resources["TelemetryFontFamily"] = new FontFamily("Consolas");
+                kbm.Resources["BodyFontFamily"] = new FontFamily("Segoe UI");
                 kbm.Bind(new PadViewModel(0) { OutputType = VirtualControllerType.KeyboardMouse });
                 Lay(kbm, 975, 726);
                 Assert.True(ClickEachPart(kbm) > 100, "the keys and the mouse's controls");

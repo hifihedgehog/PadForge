@@ -764,7 +764,7 @@ namespace PadForge.ViewModels
         };
 
         /// <summary>True when the detail line is the older runtime's
-        /// version, which the card sets in the telemetry face.</summary>
+        /// version, which the card sets in tabular figures.</summary>
         public bool MidiDetailIsVersion => _activeMidiApi == Common.Input.MidiApiKind.AppSdk;
 
         private void OnMidiCardChanged()

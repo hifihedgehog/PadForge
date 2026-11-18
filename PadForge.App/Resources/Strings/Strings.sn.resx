@@ -71,7 +71,7 @@
   <data name="Common_Stop" xml:space="preserve"><value>Misa</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Tanga</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Rekodha</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>Kurekodha...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Kurekodha…</value></data>
   <data name="Common_None" xml:space="preserve"><value>Hapana</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -83,7 +83,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge iri kuvharwa...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge iri kuvharwa…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge iri kutanga…</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Ratidza PadForge</value></data>
   <data name="Status_RemovingHIDMaestro" xml:space="preserve"><value>Kubvisa HIDMaestro…</value></data>
@@ -103,7 +103,8 @@
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← kuruboshwe)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ kumusoro)</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Kukanganisa: {0}</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Kurekodha...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Kurekodha…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>kana</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>pa</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Mudziyo wabviswa.</value></data>
@@ -122,7 +123,7 @@
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Ramba</value></data>
 
   <!-- ═══ Settings ═══ -->
-  <data name="Settings_AddDots" xml:space="preserve"><value>Wedzera...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>Wedzera…</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Bvisa HIDMaestro</value></data>
   <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Izvi ndizvo zvichabviswa paPC ino. PadForge inoisa HIDMaestro zvakare nekontiroura yenhema inotevera.</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Bvisawo usbip-win2</value></data>
@@ -137,6 +138,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Yachengetwa</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Haina kuverengwa</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Haina kubviswa</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Mudziyo</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Kunyoreswa kweinterface</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Kiyi yeregistry inogovaniswa</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Value yeregistry inogovaniswa</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Kubatanidzwa kwe-WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Kutsiva zita re-OEM</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Kiyi ye-DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Kunyoreswa kwe-OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Pakeji yedhiraivha</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Kiyi yesevhisi ye-WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Kiyi yeregistry</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Chitupa</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Foruda</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Setingi yesevhisi</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Danho rekubvisa</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Inobvumira kontiroura dze-PlayStation 3, PlayStation Move nekontiroura yeNavigation kubatana ne-Bluetooth. Iri mukati ma-PadForge uye inoiswa kekutanga imwe yadzo painobatanidzwa.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Inobatanidza kontiroura dze-PlayStation 3 ne-Bluetooth.</value></data>
@@ -286,7 +302,7 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Mwenje</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Mwenje</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Dzorera lightbar</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Dzorera {0}</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Kupenya kwe-LED</value></data>
@@ -375,6 +391,7 @@
   <data name="Macro_UntilRelease" xml:space="preserve"><value>Kusvikira waregedza</value></data>
   <data name="Macro_DelayMs" xml:space="preserve"><value>Kunonoka</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Macro itsva</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Macro {0}</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Bhatani {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(hapana)</value></data>
   <data name="Macro_Button_Format" xml:space="preserve"><value>Bhatani {0}</value></data>
@@ -608,7 +625,7 @@
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Purofaira iri kushanda:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Hapana kontiroura</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Purofaira itsva</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Gadzirisa</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Gadzirisa…</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Dzima {0}?</value></data>
   <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Tsiva gadziriro yakachengetwa mu“{0}” neiripo izvozvi? Zita rayo nemitambo yayo zvinosara.</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Tsiva</value></data>
@@ -803,7 +820,7 @@
 
   <!-- ═══ Preview Views ═══ -->
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Stick {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Mabhatani</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -1038,6 +1055,7 @@
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Kubatanidza nekodhi…</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Kodhi yePC ino</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Bhatiri rekontiroura rava pasi</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Kontiroura</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% yebhatiri yasara</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Yambiro dzebhatiri</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Ziviswa kana bhatiri rekontiroura rava pasi, risati rapera pakati pemutambo.</value></data>
@@ -1101,7 +1119,7 @@
     <value>Purofaira iri kushanda: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Kumirira imwe PC...</value>
+    <value>Kumirira imwe PC…</value>
   </data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Axis yenhema</value></data>
   <data name="Pad_SteeringAngleRumble_LX" xml:space="preserve"><value>Stick yekuruboshwe X</value></data>
@@ -1384,6 +1402,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Bhatiri</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Nzira</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Nhamba yeserial</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID yeapp</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>GUID ye-SDL</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Shanduro</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Zvimwe zve{0}</value></data>
@@ -1456,4 +1476,8 @@
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Layer ichiri kushanda inochengeta flyout pachiratidziri kusvikira layer yachinja. Kwemasekondi 2 inoiratidza kana layer yabatidzwa, yobva yaenda yoga. Kana wasarudza Kwete, layer iyi hairatidzi flyout, uye Base hairatidzi flyout kana layer yapera.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Kwemasekondi 2 inoratidza zita reBase kana shift layer yapera. Kana wasarudza Kwete, Base hairatidzi flyout.</value></data>
   <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Mifananidzo (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Mafaira ese (*.*)|*.*</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Curve</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Ma-layer eShift</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Yakapidigurwa</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Zvakajairwa zve-bs2b</value></data>
 </root>

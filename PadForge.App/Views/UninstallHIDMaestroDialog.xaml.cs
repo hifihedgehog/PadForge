@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -30,8 +29,8 @@ namespace PadForge.Views
             /// removed. Null for an item the removal takes.</summary>
             public string Detail { get; init; }
 
-            /// <summary>The row's first line: the kind, its first letter
-            /// upper.</summary>
+            /// <summary>The row's first line: the kind, in the app's
+            /// language.</summary>
             public string Title { get; init; }
 
             /// <summary>What becomes of the item, at the row's end.</summary>
@@ -46,10 +45,31 @@ namespace PadForge.Views
                 => string.Join(", ", new[] { Title, Location, Outcome, Detail }.Where(part => !string.IsNullOrEmpty(part)));
         }
 
-        /// <summary>A kind as a row's first line. HIDMaestro writes its
-        /// kinds in lowercase English.</summary>
-        internal static string TitleOf(string kind, CultureInfo culture)
-            => string.IsNullOrEmpty(kind) ? kind : char.ToUpper(kind[0], culture) + kind.Substring(1);
+        /// <summary>A kind as a row's first line, in the app's language.
+        /// HIDMaestro names its kinds in English, KindDevnode to KindStep in
+        /// HIDMaestro.Core's Uninstaller, and they showed untranslated. A
+        /// kind a later HIDMaestro adds shows in its own words, its first
+        /// letter upper.</summary>
+        internal static string KindTitle(string kind) => kind switch
+        {
+            "devnode" => Strings.Instance.HIDMaestroUninstall_KindDevice,
+            "interface registration" => Strings.Instance.HIDMaestroUninstall_KindInterface,
+            "shared registry key" => Strings.Instance.HIDMaestroUninstall_KindSharedKey,
+            "shared registry value" => Strings.Instance.HIDMaestroUninstall_KindSharedValue,
+            "WinUSB binding" => Strings.Instance.HIDMaestroUninstall_KindWinUsb,
+            "OEM name override" => Strings.Instance.HIDMaestroUninstall_KindOemName,
+            "DeviceOverrides key" => Strings.Instance.HIDMaestroUninstall_KindDeviceOverrides,
+            "OpenVR registration" => Strings.Instance.HIDMaestroUninstall_KindOpenVr,
+            "driver package" => Strings.Instance.HIDMaestroUninstall_KindPackage,
+            "WUDF service key" => Strings.Instance.HIDMaestroUninstall_KindWudf,
+            "registry key" => Strings.Instance.HIDMaestroUninstall_KindRegistryKey,
+            "certificate" => Strings.Instance.HIDMaestroUninstall_KindCertificate,
+            "folder" => Strings.Instance.HIDMaestroUninstall_KindFolder,
+            "service setting" => Strings.Instance.HIDMaestroUninstall_KindServiceSetting,
+            "removal step" => Strings.Instance.HIDMaestroUninstall_KindStep,
+            null or "" => kind,
+            _ => char.ToUpperInvariant(kind[0]) + kind.Substring(1),
+        };
 
         private readonly Func<bool, Task<HMUninstallReport>> _preview;
         private int _generation;
@@ -120,7 +140,7 @@ namespace PadForge.Views
                     Kind = e.Kind,
                     Location = e.Location,
                     Detail = format != null && !string.IsNullOrEmpty(e.Reason) ? string.Format(format, e.Reason) : null,
-                    Title = TitleOf(e.Kind, CultureInfo.InvariantCulture),
+                    Title = KindTitle(e.Kind),
                     Outcome = e.Outcome switch
                     {
                         HMUninstallOutcome.Kept => Strings.Instance.HIDMaestroUninstall_OutcomeKept,

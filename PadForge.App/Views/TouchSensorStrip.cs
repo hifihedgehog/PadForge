@@ -176,7 +176,7 @@ namespace PadForge.Views
             foreach (string role in roles)
             {
                 string label = LabelOf(role);
-                var text = new TextBlock { Text = label, FontSize = 11, VerticalAlignment = VerticalAlignment.Center };
+                var text = new TextBlock { Text = label, FontSize = 12, VerticalAlignment = VerticalAlignment.Center };
                 text.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorPrimaryBrush");
                 var capsule = new Border
                 {

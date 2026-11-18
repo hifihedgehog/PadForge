@@ -38,7 +38,8 @@
         </Style>
 
         <!-- The title, the qualifier after it in the quieter color, where it
-             is under them, and the value at the right in the telemetry face.
+             is under them, and the value at the right in tabular figures,
+             cold when it is a number.
              The title's two runs sit on one line of markup, since a line
              break between runs adds a space. -->
         <DataTemplate x:Key="SearchResultTemplate" DataType="{x:Type search:SearchResult}">
@@ -55,8 +56,18 @@
                                Visibility="{Binding Where, Converter={StaticResource StringToVisibility}}"/>
                 </StackPanel>
                 <TextBlock Grid.Column="1" Text="{Binding Value}" Margin="12,0,0,0" VerticalAlignment="Center"
-                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
-                           Foreground="{DynamicResource ColdBrush}"/>
+                           Typography.NumeralAlignment="Tabular" FontSize="12">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ValueIsNumber}" Value="True">
+                                    <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
             </Grid>
         </DataTemplate>
     </UserControl.Resources>

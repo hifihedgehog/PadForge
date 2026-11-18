@@ -88,7 +88,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>Ta para e motor…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Ta kore riba {0}</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>Ta kore, {0} konektá</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Ta skucha riba :{0}</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Ta skucha riba pòrt {0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>Pòrt {0} ta na uso</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Akseso nengá pa pòrt {0} (kore komo administradó)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>No por a kuminsá</value></data>
@@ -106,10 +106,11 @@
   <data name="Common_Stop" xml:space="preserve"><value>Para</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Kuminsá</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Graba</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>Ta graba...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Ta graba…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Limpia</value></data>
   <data name="Common_None" xml:space="preserve"><value>Ningun</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>sekonde</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>No asigná</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -123,7 +124,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>Ta sera PadForge...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>Ta sera PadForge…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Ta kuminsá PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Ta limpia kontrolnan virtual ku a keda di un seshon anterior.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Agregá kontrol</value></data>
@@ -213,8 +214,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ abou)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← robes)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ ariba)</value></data>
-  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll NO A WORDU HAYÁ</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll no a wordu hayá! Pone SDL3.dll banda di PadForge.exe. Deskargá for di https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll no a wordu hayá</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll no a wordu hayá. Pone SDL3.dll banda di PadForge.exe. Deskarg'é for di https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Operashon di driver a faya: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Konfigurashon kopiá na clipboard.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Informashon di aparato kopiá na clipboard.</value></data>
@@ -245,11 +246,11 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>Konfigurashon kargá di nobo for di disko.</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>No a haña archivo di konfigurashon riba disko.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>No tin aparato konektá pa graba for di dje.</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Ta graba: primi un botòn òf move un eje pa "{0}"...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Ta graba: bira òf sakudí un kontrol pa "{0}"...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Ta graba: primi un botòn òf move un eje pa "{0}"…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Ta graba: bira òf sakudí un kontrol pa "{0}"…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>Ningun kontrol riba e slot aki no tin sensor pa "{0}".</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Ta graba "{0}": primi e entrada di direkshon Ariba...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Ta graba "{0}": awor primi e entrada di direkshon Abou...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Ta graba "{0}": primi e entrada di direkshon Ariba…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Ta graba "{0}": awor primi e entrada di direkshon Abou…</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Grabashon kanselá.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Tempu di grabashon a kaba pa "{0}".</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Motor a kuminsá.</value></data>
@@ -265,7 +266,8 @@
   <data name="Profiles_ShortcutMode_Specific" xml:space="preserve"><value>Perfil spesífiko</value></data>
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>Mustra òf skonde PadForge</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Kualke aparato konektá</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Ta graba...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Ta graba…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>ora</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>riba</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>"{0}" kitá for di Kontrol virtual {1}.</value></data>
@@ -298,6 +300,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>Kontrolnan</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Ekstra den uso</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Sendí. {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>Konfigurashon standard</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>Stick robes</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>Stick drechi</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>{0} mas den [Ekstra]. Un ekstra ta pagá te ora bo sende e.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Habri Ekstra</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>Mustra QR</value></data>
@@ -344,8 +351,12 @@
   <data name="Pad_Kind_LeftHand_Format" xml:space="preserve"><value>{0}, man robes</value></data>
   <data name="Pad_Kind_RightHand_Format" xml:space="preserve"><value>{0}, man drechi</value></data>
   <data name="Macro_EmptyHint" xml:space="preserve"><value>Selektá un makro den e lista, òf primi + banda di Makro pa krea un.</value></data>
-  <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
-  <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>Kru</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>Salida</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Kurva</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Kapanan shift</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Invertí</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>Punta</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Server di movementu</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Pòrt</value></data>
   <data name="Dashboard_WebControllerPort" xml:space="preserve"><value>Pòrt di kontrol web</value></data>
@@ -433,7 +444,7 @@
   <data name="Settings_HidHideDesc" xml:space="preserve"><value>Ta skonde aparatonan físiko for di wega pa evitá entrada dobel.</value></data>
   <data name="Settings_HidHideOptions" xml:space="preserve"><value>Opshon di HidHide</value></data>
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Skonde aparatonan for di wega, Tene aparatonan skondí entre lansamentu, Aplikashonnan permití</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>Agregá...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>Agregá…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Deshinstalá HIDMaestro</value></data>
   <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Esaki ta loke lo wòrdu kitá for di e PC aki. PadForge ta instalá HIDMaestro atrobe ku su siguiente kontrol virtual.</value></data>
@@ -450,6 +461,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Wardá</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>No lesá</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>No kitá</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Aparato</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Registro di interfas</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Yabi di registro kompartí</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Balor di registro kompartí</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Asignashon di WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Nòmber OEM personalisá</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Yabi DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Registro di OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Pakete di driver</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Yabi di servisio WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Yabi di registro</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Sertifikado</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Karpeta</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Konfigurashon di servisio</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Paso di eliminashon</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Ta permití kontrolnan di PlayStation 3, e PlayStation Move i e kontrol Navigation konektá via Bluetooth. E ta inkluí den PadForge i ta wòrdu instalá e promé biaha ku un di nan wòrdu pareá.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Ta konektá kontrolnan di PlayStation 3 via Bluetooth.</value></data>
@@ -537,7 +563,7 @@
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(ningun teksto)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Teksto</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detayenan</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minüt (0 = nunka)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minüt</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Deskonektá Bluetooth ora e kable USB ta konektá</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Lesa komo kontrol iCade</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Lesa komo teklado</value></data>
@@ -646,8 +672,13 @@
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>Giroskopio</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>Akselerómetro</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 eje</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} eje</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 botòn</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} botòn</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>Eje {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} eje, {1} botòn, {2} POV</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>Vibrashon</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Giroskopio</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
@@ -718,7 +749,7 @@
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>E kolornan ta pasa via {0}.</value></data>
   <data name="Pad_Lighting_RouteOtherControllerOnly" xml:space="preserve"><value>Kontrol virtual {0} ta iluminá e aparato aki.</value></data>
   <data name="Pad_Lighting_RouteWaiting" xml:space="preserve"><value>Ta warda {0}. E kolornan ta mustra ora e ta kore.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Kita e kolor aki for di e paleta</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Pagá</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Aparato di audio</value></data>
@@ -824,7 +855,7 @@
   <data name="Pad_MapAll" xml:space="preserve"><value>Asigná tur</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Asigná: {0}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Graba tur asignashon un pa un</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopia di...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopia di…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopia konfigurashon di otro aparato konfigurá</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Reset tur</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Limpia tur</value></data>
@@ -1019,6 +1050,7 @@
   <data name="Macro_DelayMs" xml:space="preserve"><value>Atraso</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Sensibilidat</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Makro nobo</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Makro {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Graba aktivadó</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Botòn {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(niun)</value></data>
@@ -1089,9 +1121,9 @@
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>No asigná</value></data>
-  <data name="Mapping_Inv" xml:space="preserve"><value>Inv.</value></data>
+  <data name="Mapping_Inv" xml:space="preserve"><value>Invertí</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>Mitar</value></data>
-  <data name="Mapping_InvHalf" xml:space="preserve"><value>Inv. mitar</value></data>
+  <data name="Mapping_InvHalf" xml:space="preserve"><value>Mitar invertí</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Ningun aparato asigná</value></data>
 
@@ -1395,9 +1427,9 @@
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Perfil aktivo:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Sin kontrol</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Perfil nobo</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>Wardá komo</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Wardá komo…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Wardá e konfigurashon aktual aki</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Editá</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Editá…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Karga</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
@@ -1497,7 +1529,7 @@
   <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>invertí</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Invertí eje</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Mustra OSD di volúmen</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Mustra indikadó di volúmen</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Direkshon</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Kualke</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positivo</value></data>
@@ -1645,7 +1677,7 @@
 
   <!-- ═══ Preview Views ═══ -->
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Stick {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Botonnan</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -1658,7 +1690,6 @@
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Motor robes</value></data>
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Motor drechi</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Nivel</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekonde (0 = nunka)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Agregá kapa</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Agregá un kapa shift: un di dos tabla di asignashon ku ta aktivá miéntras bo ta tene un botòn primí òf ora bo aktivá e botòn.</value></data>
@@ -2082,6 +2113,9 @@
   <data name="Workshop_Retry" xml:space="preserve"><value>Purba atrobe</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Habri den Steam Workshop</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>Bieu</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Perfil di Workshop</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Makro di Workshop</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Region di kursor</value></data>
   <data name="Workshop_SaveProfile" xml:space="preserve"><value>Wardá perfil</value></data>
   <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Wardá i apliká</value></data>
   <data name="Workshop_GroupOther" xml:space="preserve"><value>Asignashon</value></data>
@@ -2276,7 +2310,7 @@
     <value>Perfil aktivo: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Ta warda riba e otro PC...</value>
+    <value>Ta warda riba e otro PC…</value>
   </data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Ta agregá vibrashon kontinuo segun e eje virtual selekshoná ta move leu for di sentro. Ta usa e output asigná di tur fuente asigná. Ku "Dividí pa direkshon", movementu negativo ta aktivá e motor robes i movementu positivo e motor drechi. "Motor robes" òf "Motor drechi" ta pone tur dos direkshon riba e motor ei so. Pa output di Xbox i PlayStation ku aparato ku vibrashon. No ta inkluí stür, otro aparato ku force feedback konstante, ni pedal di Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Eje virtual</value></data>
@@ -2699,6 +2733,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Bateria</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Kaminda</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Number di serie</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID di aplikashon</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>GUID di SDL</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Revishon</value></data>
   <data name="Profiles_InFront_None_Format" xml:space="preserve"><value>Na dilanti awor: {0}, sin perfil pa e</value></data>

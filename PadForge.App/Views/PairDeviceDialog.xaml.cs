@@ -409,8 +409,10 @@ namespace PadForge.Views
                 LastStepText.Visibility = Visibility.Collapsed;
             }
             StatusText.Text = text;
-            string brushKey = success ? "SystemFillColorSuccessBrush"
-                : error ? "SystemFillColorCriticalBrush"
+            // Ember for a pairing that took, as the flame beside it lights,
+            // and the danger ink of Delete and Forget All for one that failed.
+            string brushKey = success ? "EmberHotBrush"
+                : error ? "DangerInkBrush"
                 : secondary ? "TextFillColorSecondaryBrush"
                 : "TextFillColorPrimaryBrush";
             StatusText.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, brushKey);

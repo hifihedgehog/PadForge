@@ -6,6 +6,7 @@ using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
 using PadForge.Engine.Menus;
+using PadForge.Resources.Strings;
 using PadForge.SteamWorkshop.Translation;
 using PadForge.ViewModels;
 
@@ -195,7 +196,7 @@ namespace PadForge.Services
 
             return new ProfileData
             {
-                Name = string.IsNullOrWhiteSpace(translated.Name) ? "Workshop Profile" : translated.Name,
+                Name = string.IsNullOrWhiteSpace(translated.Name) ? Strings.Instance.Workshop_DefaultProfileName : translated.Name,
                 SlotMappingSets = mappingSets,
                 SlotCreated = slotCreated,
                 SlotEnabled = slotEnabled,
@@ -403,7 +404,7 @@ namespace PadForge.Services
             var data = new MacroData
             {
                 PadIndex = xboxSlot,
-                Name = string.IsNullOrWhiteSpace(m.Name) ? "Workshop Macro" : m.Name,
+                Name = string.IsNullOrWhiteSpace(m.Name) ? Strings.Instance.Workshop_DefaultMacroName : m.Name,
                 IsEnabled = true,
                 TriggerSource = MacroTriggerSource.OutputController,
                 TriggerMode = mode,
@@ -532,7 +533,7 @@ namespace PadForge.Services
                 var data = new MacroData
                 {
                     PadIndex = xboxSlot,
-                    Name = $"{(string.IsNullOrWhiteSpace(m.Name) ? "Workshop Macro" : m.Name)} {suffix}",
+                    Name = $"{(string.IsNullOrWhiteSpace(m.Name) ? Strings.Instance.Workshop_DefaultMacroName : m.Name)} {suffix}",
                     IsEnabled = true,
                     TriggerSource = MacroTriggerSource.OutputController,
                     TriggerMode = mode,
@@ -795,7 +796,7 @@ namespace PadForge.Services
                 var data = new MacroData
                 {
                     PadIndex = xboxSlot,
-                    Name = $"{(string.IsNullOrWhiteSpace(m.Name) ? "Cursor region" : m.Name)} {suffix}",
+                    Name = $"{(string.IsNullOrWhiteSpace(m.Name) ? Strings.Instance.Workshop_DefaultCursorRegionName : m.Name)} {suffix}",
                     IsEnabled = true,
                     TriggerSource = MacroTriggerSource.OutputController,
                     TriggerMode = mode,

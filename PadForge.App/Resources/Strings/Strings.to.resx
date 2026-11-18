@@ -81,7 +81,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>ʻOku tāpuni ʻa e PadForge...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>ʻOku tāpuni ʻa e PadForge…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>ʻOku kamata ʻa e PadForge…</value></data>
   <data name="Main_ShowPadForge" xml:space="preserve"><value>Fakahaaʻi ʻa e PadForge</value></data>
   <data name="Main_EngineStopped" xml:space="preserve"><value>Kuo taʻofi ʻa e misini</value></data>
@@ -176,7 +176,7 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Maama</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Maama</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_PlayerLed_All" xml:space="preserve"><value>Kotoa</value></data>
   <data name="Pad_Lighting_PlayerLed_Brightness_High" xml:space="preserve"><value>Māʻolunga</value></data>
   <data name="Pad_Lighting_PlayerLed_Brightness_Medium" xml:space="preserve"><value>Lotoloto</value></data>
@@ -248,6 +248,7 @@
   <data name="Macro_Once" xml:space="preserve"><value>Tuʻo taha</value></data>
   <data name="Macro_DelayMs" xml:space="preserve"><value>Toloi</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Macro foʻou</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Macro {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(ʻikai ha meʻa)</value></data>
 
   <!-- ═══ Macro Action Display ═══ -->
@@ -475,7 +476,7 @@
   <data name="MacroAxis_ZRotation" xml:space="preserve"><value>Trigger toʻomataʻu</value></data>
 
   <!-- ═══ Preview Views ═══ -->
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 
   <!-- ═══ Audio Bass Rumble ═══ -->
@@ -757,6 +758,8 @@
   <data name="Devices_More_TestInputs" xml:space="preserve"><value>Axis, button mo e sensor kotoa pē</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Hala</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Fika serial</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID ʻo e App</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>GUID ʻo e SDL</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Liliu</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>ʻo ka</value></data>
@@ -819,4 +822,5 @@
   <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
   <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
   <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Angamaheni bs2b</value></data>
 </root>

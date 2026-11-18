@@ -15,8 +15,13 @@ namespace PadForge.Views.Controls
 
     public partial class LabeledShapeIcon : UserControl
     {
-        private static readonly FontFamily LabelFontFamily =
-            new FontFamily("Bahnschrift SemiBold Condensed, Bahnschrift, Arial Narrow, Segoe UI");
+        // The widest a label may draw, in the 512 box: two thirds of the
+        // stick's inner disc (208 wide) and about half the trigger's body
+        // (313 wide, narrowing toward its tip). A label in the display face
+        // wider than that is scaled down to it, so "LS" or "RT" stays inside
+        // its shape.
+        private const double StickLabelRoom = 137;
+        private const double TriggerLabelRoom = 165;
 
         public static readonly DependencyProperty ShapeProperty =
             DependencyProperty.Register(nameof(Shape), typeof(LabeledShapeKind), typeof(LabeledShapeIcon),
@@ -88,11 +93,11 @@ namespace PadForge.Views.Controls
                 ? (len <= 1 ? 220 : 170)
                 : (len <= 1 ? 260 : 210);
 
-            // Build the label as a real glyph geometry. Bounds give the
-            // exact visible-glyph rectangle, avoiding all of the line-box
-            // / ascender / descender ambiguity that comes with TextBlock
-            // VerticalAlignment="Center".
-            var typeface = new Typeface(LabelFontFamily, FontStyles.Normal, FontWeights.SemiBold, FontStretches.Normal);
+            // Build the label as a real glyph geometry, in the app's display
+            // face. Bounds give the exact visible-glyph rectangle, avoiding
+            // all of the line-box / ascender / descender ambiguity that comes
+            // with TextBlock VerticalAlignment="Center".
+            var typeface = PadForge.Common.TextFaces.DisplayTypeface(FontWeights.SemiBold);
             var ft = new FormattedText(
                 text,
                 CultureInfo.CurrentCulture,
@@ -110,15 +115,21 @@ namespace PadForge.Views.Controls
             }
 
             var bounds = geometry.Bounds;
+            double room = Shape == LabeledShapeKind.Stick ? StickLabelRoom : TriggerLabelRoom;
+            double scale = bounds.Width > room ? room / bounds.Width : 1.0;
             double cx = 256;
             double cy = Shape == LabeledShapeKind.Stick ? 256 : 240;
-            double tx = cx - (bounds.X + bounds.Width / 2.0);
-            double ty = cy - (bounds.Y + bounds.Height / 2.0);
+            double tx = cx - (bounds.X + bounds.Width / 2.0) * scale;
+            double ty = cy - (bounds.Y + bounds.Height / 2.0) * scale;
 
-            // Flatten and translate. Cloning preserves the original geometry
-            // so subsequent rebuilds aren't affected by accumulated transforms.
+            // Flatten, scale and translate. Cloning preserves the original
+            // geometry so subsequent rebuilds aren't affected by accumulated
+            // transforms.
             var flat = geometry.GetFlattenedPathGeometry();
-            flat.Transform = new TranslateTransform(tx, ty);
+            var place = new TransformGroup();
+            place.Children.Add(new ScaleTransform(scale, scale));
+            place.Children.Add(new TranslateTransform(tx, ty));
+            flat.Transform = place;
             LabelPath.Data = flat;
         }
     }

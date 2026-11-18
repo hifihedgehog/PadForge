@@ -441,13 +441,11 @@ namespace PadForge.Views
             });
         }
 
-        /// <summary>11px mono TextBlock for the wiring readout
-        /// (TelemetryFontFamily per the font canon).</summary>
+        /// <summary>The wiring readout's text at 12: the body face with
+        /// tabular figures.</summary>
         private static TextBlock MakeAnnotationDetailText(string text, string brushKey)
         {
-            var tb = new TextBlock { FontSize = 11, Text = text };
-            if (Application.Current.Resources["TelemetryFontFamily"] is FontFamily telemetry)
-                tb.FontFamily = telemetry;
+            var tb = PadForge.Common.TextFaces.Numbers(new TextBlock { FontSize = 12, Text = text });
             tb.SetResourceReference(TextBlock.ForegroundProperty, brushKey);
             return tb;
         }
@@ -508,21 +506,19 @@ namespace PadForge.Views
                     Margin = new Thickness(0, 0, 5, 0),
                 };
                 glyph.SetResourceReference(PadForge.Controls.KindIcon.ForegroundProperty, "TextFillColorTertiaryBrush");
-                // Source (cold mono) and its device (Body, tertiary) share
-                // one wrapping paragraph so a long pair folds as a unit.
+                // Source (cold) and its device (tertiary) share one
+                // wrapping paragraph so a long pair folds as a unit.
                 var text = new TextBlock
                 {
                     TextWrapping = TextWrapping.Wrap,
                     MaxWidth = srcBudget,
                     VerticalAlignment = VerticalAlignment.Center,
                 };
-                var srcRun = new System.Windows.Documents.Run(wire.SourceName) { FontSize = 11 };
-                if (Application.Current.Resources["TelemetryFontFamily"] is FontFamily telemetry)
-                    srcRun.FontFamily = telemetry;
+                var srcRun = PadForge.Common.TextFaces.Numbers(new System.Windows.Documents.Run(wire.SourceName) { FontSize = 12 });
                 srcRun.SetResourceReference(System.Windows.Documents.TextElement.ForegroundProperty, "ColdBrush");
-                var sep = new System.Windows.Documents.Run("  ·  ") { FontSize = 10 };
+                var sep = new System.Windows.Documents.Run("  ·  ") { FontSize = 12 };
                 sep.SetResourceReference(System.Windows.Documents.TextElement.ForegroundProperty, "TextFillColorTertiaryBrush");
-                var devRun = new System.Windows.Documents.Run(wire.DeviceName) { FontSize = 10 };
+                var devRun = new System.Windows.Documents.Run(wire.DeviceName) { FontSize = 12 };
                 devRun.SetResourceReference(System.Windows.Documents.TextElement.ForegroundProperty, "TextFillColorTertiaryBrush");
                 text.Inlines.Add(srcRun);
                 text.Inlines.Add(sep);
@@ -548,8 +544,7 @@ namespace PadForge.Views
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(10, 0, 10, 0),
             };
-            if (Application.Current.Resources["TelemetryFontFamily"] is FontFamily mono)
-                arrow.FontFamily = mono;
+            PadForge.Common.TextFaces.Body(arrow);
             arrow.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
 
             var outCell = MakeAnnotationDetailText(target, "EmberBrush");
@@ -645,12 +640,11 @@ namespace PadForge.Views
         {
             var text = new TextBlock
             {
-                FontSize = 10,
+                FontSize = 12,
                 VerticalAlignment = VerticalAlignment.Center,
                 Text = CompactChipLabel(row),
             };
-            if (Application.Current.Resources["TelemetryFontFamily"] is FontFamily telemetry)
-                text.FontFamily = telemetry;
+            PadForge.Common.TextFaces.Numbers(text);
             text.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorSecondaryBrush");
 
             var border = new Border

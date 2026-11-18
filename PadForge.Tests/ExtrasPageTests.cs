@@ -404,7 +404,8 @@ namespace PadForge.Tests
             Assert.Equal(new[] { "{Binding ExtrasOnLead, Mode=OneWay}", "{Binding ExtrasOnNumber, Mode=OneWay}", "{Binding ExtrasOnTail, Mode=OneWay}" },
                 runs.Select(r => (string)r.Attribute("Text")));
             Assert.Equal("20", (string)runs[1].Attribute("FontSize"));
-            Assert.Equal("{StaticResource TelemetryFontFamily}", (string)runs[1].Attribute("FontFamily"));
+            Assert.Equal("{StaticResource DisplayFontFamily}", (string)runs[1].Attribute("FontFamily"));
+            Assert.Equal("Tabular", (string)runs[1].Attribute("Typography.NumeralAlignment"));
             Assert.Equal("{DynamicResource EmberHotBrush}", (string)runs[1].Attribute("Foreground"));
             Assert.Contains("\"><Run Text=\"{Binding ExtrasOnLead, Mode=OneWay}\"/><Run Text=\"{Binding ExtrasOnNumber, Mode=OneWay}\"", text);
             Assert.Contains("/><Run Text=\"{Binding ExtrasOnTail, Mode=OneWay}\"/></TextBlock>", text);
@@ -937,7 +938,6 @@ namespace PadForge.Tests
                 + " xmlns:controls=\"clr-namespace:PadForge.Controls;assembly=" + assembly + "\""
                 + " xmlns:conv=\"clr-namespace:PadForge.Converters;assembly=" + assembly + "\""
                 + " xmlns:strings=\"clr-namespace:PadForge.Resources.Strings;assembly=" + assembly + "\">"
-                + "<FontFamily x:Key=\"TelemetryFontFamily\">Consolas</FontFamily>"
                 + "<Style x:Key=\"CardBorder\" TargetType=\"Border\"/>"
                 + "<Style x:Key=\"CardTitle\" TargetType=\"TextBlock\"/>"
                 + "<Style x:Key=\"CardDescription\" TargetType=\"TextBlock\"/>"
@@ -1166,21 +1166,32 @@ namespace PadForge.Tests
             Assert.Equal("Motion Server", AutomationProperties.GetName(open));
             Assert.Equal("Listening on port 26760", AutomationProperties.GetItemStatus(open));
 
-            // What follows the word On: the status while there is one, and
-            // the extra's one line otherwise.
-            Assert.Equal("Listening on port 26760", row.Summary);
-            row.Status = "";
-            Assert.Equal("Sends motion to emulators.", row.Summary);
-            row.Status = null;
-            Assert.Equal("Sends motion to emulators.", row.Summary);
-            row.Line = null;
-            Assert.Equal(string.Empty, row.Summary);
+            // Under the name: the status alone while there is one, semibold
+            // while the extra is live and plain while it is not, as on the
+            // catalog's tile, and the word On with the extra's one line
+            // while there is none.
+            var status = Assert.IsType<TextBlock>(row.Template.FindName("StatusText", row));
+            var onLine = Assert.IsType<TextBlock>(row.Template.FindName("OnLine", row));
+            Assert.Equal("Listening on port 26760", status.Text);
+            Assert.Equal(Visibility.Visible, status.Visibility);
+            Assert.Equal(Visibility.Collapsed, onLine.Visibility);
+            Assert.Equal(TextWrapping.Wrap, status.TextWrapping);
+            Assert.Equal(FontWeights.SemiBold, status.FontWeight);
+            Heat.SetIsLive(row, false);
+            Assert.Equal(FontWeights.Normal, status.FontWeight);
+            Heat.SetIsLive(row, true);
+            Assert.Equal(FontWeights.SemiBold, status.FontWeight);
+            foreach (string none in new[] { "", null })
+            {
+                row.Status = none;
+                Assert.Equal(Visibility.Collapsed, status.Visibility);
+                Assert.Equal(Visibility.Visible, onLine.Visibility);
+                Assert.Equal(string.Format(Strings.Instance.Home_ExtraOn_Format, "Sends motion to emulators."), onLine.Text);
+                Assert.StartsWith(Strings.Instance.Common_On, onLine.Text);
+            }
             row.Status = "Listening on port 26760";
-            // The line under the name is the format of the string table
-            // over that summary, the one text in the face that wraps.
-            var words = Descendants<TextBlock>(open).Single(t => t.TextWrapping == TextWrapping.Wrap);
-            Assert.Equal(string.Format(Strings.Instance.Home_ExtraOn_Format, "Listening on port 26760"), words.Text);
-            Assert.StartsWith(Strings.Instance.Common_On, words.Text);
+            Assert.Equal(Visibility.Visible, status.Visibility);
+            Assert.Equal(Visibility.Collapsed, onLine.Visibility);
 
             var opened = new List<object>();
             row.OpenRequested += (_, e) => opened.Add(e.OriginalSource);

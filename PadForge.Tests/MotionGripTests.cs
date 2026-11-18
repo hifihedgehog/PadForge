@@ -626,7 +626,7 @@ namespace PadForge.Tests
             Assert.Contains("padVm.MotionGrip = string.IsNullOrEmpty(ps.MotionGrip) ? \"Pointing\" : ps.MotionGrip;", svc);
             Assert.Contains("ps.MotionGrip = padVm.MotionGrip ?? \"Pointing\";", svc);
             Assert.Contains("Grip = string.IsNullOrEmpty(ps.MotionGrip) ? \"Pointing\" : ps.MotionGrip,", svc);
-            Assert.Contains("AddToken(parts, \"GRIP \" + ps.MotionGrip);", svc);
+            Assert.Contains("AddToken(parts, StageOn(s.Settings_MotionGrip, StageChoice(PadViewModel.GripChoices, ps.MotionGrip)));", svc);
             Assert.Equal(2, CountOf(svc, "SourceCoercion.ApplyMotionGrip(ud.InstanceGuidString, i, ref"));
 
             string mw = RepoText("PadForge.App", "MainWindow.xaml.cs");

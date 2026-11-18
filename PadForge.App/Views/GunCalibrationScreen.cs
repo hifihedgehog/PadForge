@@ -311,6 +311,9 @@ namespace PadForge.Views
                     Content = root,
                     Cursor = Cursors.None,
                 };
+                // A code-built window is its own root, so the app's face is
+                // set on it for its instructions to inherit.
+                Window.SetResourceReference(Control.FontFamilyProperty, "BodyFontFamily");
                 // The targets are drawn at the screen positions the
                 // calibration reads them at. Mirrored for a right-to-left
                 // language, the top-left target would sit at the top right

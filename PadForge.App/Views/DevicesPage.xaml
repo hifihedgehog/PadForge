@@ -42,7 +42,7 @@
             </Style.Triggers>
         </Style>
         <Style x:Key="RawCellLabel" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
+            <Setter Property="Typography.NumeralAlignment" Value="Tabular"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsPressed}" Value="True">
@@ -109,7 +109,7 @@
             <Setter Property="Foreground" Value="{DynamicResource EmberTextBrush}"/>
         </Style>
         <!-- The Details card's rows: a gray key in a column 96 wide, then
-             its value, which wraps. -->
+             its value, which wraps, with tabular figures for its IDs. -->
         <Style x:Key="DetailKey" TargetType="TextBlock" BasedOn="{StaticResource DeviceSmall}">
             <Setter Property="DockPanel.Dock" Value="Left"/>
             <Setter Property="Width" Value="96"/>
@@ -120,9 +120,7 @@
         <Style x:Key="DetailValue" TargetType="TextBlock" BasedOn="{StaticResource DeviceSmall}">
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
-        </Style>
-        <Style x:Key="DetailMono" TargetType="TextBlock" BasedOn="{StaticResource DetailValue}">
-            <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
+            <Setter Property="Typography.NumeralAlignment" Value="Tabular"/>
         </Style>
         <Style x:Key="RawSectionLabel" TargetType="TextBlock" BasedOn="{StaticResource DeviceSectionTitle}">
             <Setter Property="Margin" Value="0,8,0,6"/>
@@ -135,7 +133,7 @@
             <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
             <Setter Property="Foreground" Value="{DynamicResource SubRowTextBrush}"/>
-            <Setter Property="FontSize" Value="12.5"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -173,7 +171,7 @@
              does) that fills under the pointer. The clear fill takes the
              click inside the edge. -->
         <Style x:Key="NewControllerChip" TargetType="Button">
-            <Setter Property="FontSize" Value="12.5"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
@@ -275,7 +273,7 @@
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <controls:BatteryMeter Percent="{Binding BatteryPercent}" Charging="{Binding BatteryCharging}" Low="{Binding BatteryLow}"/>
                 <TextBlock Text="{Binding BatteryText}" Margin="7,0,0,0"
-                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12.5" VerticalAlignment="Center"
+                           Typography.NumeralAlignment="Tabular" FontSize="13" VerticalAlignment="Center"
                            AutomationProperties.Name="{Binding BatterySpoken, Mode=OneWay, TargetNullValue='', FallbackValue=''}">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
@@ -289,13 +287,31 @@
                     </TextBlock.Style>
                 </TextBlock>
                 <TextBlock Text="{Binding Pad_Battery_Low, Source={x:Static strings:Strings.Instance}}" Margin="7,0,0,0"
-                           FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"
+                           FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"
                            Foreground="{DynamicResource WaitBrush}"
                            Visibility="{Binding BatteryLow, Converter={StaticResource BoolToVisibilityConverter}}"/>
             </StackPanel>
         </DataTemplate>
+        <!-- The X at a row's end removes the row's device, as the list did
+             before PadForge 6: Home's card X, shown while the pointer is on
+             the row or the X has the keyboard. It asks first, since the
+             device's settings go with it. -->
+        <Style x:Key="DeviceRowRemoveButton" TargetType="ui:Button" BasedOn="{StaticResource CardCloseButton}">
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Opacity" Value="0"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                    <Setter Property="Opacity" Value="1"/>
+                </DataTrigger>
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="Opacity" Value="1"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <!-- A row as the table draws it: the device's kind on a tile, its
-             name and type, then three columns the table's head names. Link
+             name and type, then three columns the table's head names, and
+             the X that removes the device at the row's end. Link
              is how the device reaches this PC, where that is known. Battery
              is a meter of the level and the percentage, gold with the word
              Low at or under the level Settings names. Used By is a pill for
@@ -329,6 +345,7 @@
                         <ColumnDefinition Width="Auto" SharedSizeGroup="DeviceLink"/>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="DeviceBattery"/>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="DeviceUsedBy"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="DeviceRemove"/>
                     </Grid.ColumnDefinitions>
                     <!-- The kind, on a tile that lights while the device
                          sends input. Ember is for what is live, so the
@@ -424,7 +441,7 @@
                                                                     HorizontalAlignment="Center" VerticalAlignment="Center"
                                                                     Visibility="{Binding TypeGlyph, Converter={StaticResource StringToVisibility}}"/>
                                             </Grid>
-                                            <TextBlock Text="{Binding Label, Mode=OneWay}" FontSize="12.5" FontWeight="SemiBold"
+                                            <TextBlock Text="{Binding Label, Mode=OneWay}" FontSize="12" FontWeight="SemiBold"
                                                        Margin="6,0,0,0" VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </Border>
@@ -464,6 +481,14 @@
                                        AutomationProperties.AutomationId="Devices_UseIt"/>
                         </Border>
                     </Grid>
+                    <!-- Remove: the X, on every row of both lists. -->
+                    <ui:Button x:Name="RowRemoveButton" Grid.Column="5" Margin="8,0,0,0" Style="{StaticResource DeviceRowRemoveButton}"
+                               ToolTip="{Binding Devices_RemoveTooltip, Source={x:Static strings:Strings.Instance}}"
+                               AutomationProperties.Name="{Binding Devices_RemoveTooltip, Source={x:Static strings:Strings.Instance}}"
+                               AutomationProperties.AutomationId="Devices_RemoveRow"
+                               Click="RemoveDevice_Click">
+                        <controls:DecorativeStrokeIcon Data="{StaticResource CloseLineGeometry}" Size="14" StrokeWidth="1.8"/>
+                    </ui:Button>
                 </Grid>
             </Border>
             <DataTemplate.Triggers>
@@ -519,7 +544,7 @@
                                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                                Text="{Binding Devices_Filter_Other, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBlock Text="{Binding ItemCount}" Margin="8,0,0,1" VerticalAlignment="Bottom"
-                                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                               Typography.NumeralAlignment="Tabular" FontSize="12"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                                 </StackPanel>
                             </Border>
@@ -760,14 +785,15 @@
                     <Border x:Name="DeviceListCard" Style="{StaticResource CardBorder}" Padding="0" Margin="0" VerticalAlignment="Top"
                             SizeChanged="ListCard_SizeChanged">
                         <!-- One scope for the two lists' columns: Link,
-                             Battery and Used By are as wide in every row as
-                             the widest of them needs. -->
+                             Battery, Used By and the rows' X are as wide in
+                             every row as the widest of them needs. -->
                         <StackPanel Grid.IsSharedSizeScope="True">
                             <!-- The table's head: what each column holds. Link
                                  and Battery are named while a row has one to
                                  show and the list is wide enough for the two
-                                 as columns. Each row tells a screen reader
-                                 its own facts, so the head is for the eye. -->
+                                 as columns. The X's column has no name. Each
+                                 row tells a screen reader its own facts, so
+                                 the head is for the eye. -->
                             <Grid x:Name="ListHead" Margin="18,12,16,10">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="40"/>
@@ -775,6 +801,7 @@
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="DeviceLink"/>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="DeviceBattery"/>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="DeviceUsedBy"/>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="DeviceRemove"/>
                                 </Grid.ColumnDefinitions>
                                 <!-- The main list's name: Connected, or Not
                                      Connected under that segment. -->
@@ -1134,8 +1161,8 @@
                                                                                Charging="{Binding SelectedDevice.BatteryCharging}" Low="{Binding SelectedDevice.BatteryLow}"
                                                                                Ground="{DynamicResource SteelGroundBrush}"/>
                                                         <TextBlock Text="{Binding SelectedDevice.BatteryText}" Margin="8,0,0,0"
-                                                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="16" FontWeight="SemiBold"
-                                                                   VerticalAlignment="Center"
+                                                                   Typography.NumeralAlignment="Tabular" FontSize="16" FontWeight="SemiBold"
+                                                                   VerticalAlignment="Bottom"
                                                                    AutomationProperties.Name="{Binding SelectedDevice.BatterySpoken, Mode=OneWay, TargetNullValue='', FallbackValue=''}">
                                                             <TextBlock.Style>
                                                                 <Style TargetType="TextBlock">
@@ -1148,8 +1175,8 @@
                                                                 </Style>
                                                             </TextBlock.Style>
                                                         </TextBlock>
-                                                        <TextBlock Text="{Binding Pad_Battery_Low, Source={x:Static strings:Strings.Instance}}" Margin="8,0,0,0"
-                                                                   FontSize="12.5" FontWeight="SemiBold" VerticalAlignment="Center"
+                                                        <TextBlock Text="{Binding Pad_Battery_Low, Source={x:Static strings:Strings.Instance}}" Margin="8,0,0,1"
+                                                                   FontSize="13" FontWeight="SemiBold" VerticalAlignment="Bottom"
                                                                    Foreground="{DynamicResource WaitBrush}"
                                                                    Visibility="{Binding SelectedDevice.BatteryLow, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                                     </StackPanel>
@@ -1302,22 +1329,26 @@
                                             </Canvas>
                                         </Grid>
                                         </controls:NamedPicture>
-                                        <!-- The triggers: a bar and how far each is
-                                             pulled, in cold blue while it is pulled
-                                             at all. -->
+                                        <!-- The triggers: each one's name and how far
+                                             it is pulled over its bar, in cold blue
+                                             while it is pulled at all. -->
                                         <StackPanel controls:FlexLinePanel.Basis="130" controls:FlexLinePanel.Grow="1" VerticalAlignment="Center">
                                             <Grid Margin="0,0,0,12">
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="30"/>
                                                     <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="42"/>
+                                                    <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="LT" Style="{StaticResource DeviceLabel}"/>
-                                                <ProgressBar Grid.Column="1" Style="{StaticResource ActivityBar}" Foreground="{DynamicResource ColdBrush}"
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Btn_LeftTrigger, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceLabel}"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                                <ProgressBar Grid.Row="1" Grid.ColumnSpan="2" Margin="0,6,0,0" Style="{StaticResource ActivityBar}" Foreground="{DynamicResource ColdBrush}"
                                                              Maximum="1" Value="{Binding TestLeftTrigger, Mode=OneWay}" VerticalAlignment="Center"
                                                              AutomationProperties.Name="{Binding Btn_LeftTrigger, Source={x:Static strings:Strings.Instance}}"/>
-                                                <TextBlock Grid.Column="2" Text="{Binding TestLeftTrigger, StringFormat={}{0:P0}}" TextAlignment="Right"
-                                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" VerticalAlignment="Center">
+                                                <TextBlock Grid.Column="1" Margin="8,0,0,0" Text="{Binding TestLeftTrigger, StringFormat={}{0:P0}}" TextAlignment="Right"
+                                                           Typography.NumeralAlignment="Tabular" FontSize="12" VerticalAlignment="Center">
                                                     <TextBlock.Style>
                                                         <Style TargetType="TextBlock">
                                                             <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
@@ -1332,16 +1363,20 @@
                                             </Grid>
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="30"/>
                                                     <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="42"/>
+                                                    <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="RT" Style="{StaticResource DeviceLabel}"/>
-                                                <ProgressBar Grid.Column="1" Style="{StaticResource ActivityBar}" Foreground="{DynamicResource ColdBrush}"
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Btn_RightTrigger, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceLabel}"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                                <ProgressBar Grid.Row="1" Grid.ColumnSpan="2" Margin="0,6,0,0" Style="{StaticResource ActivityBar}" Foreground="{DynamicResource ColdBrush}"
                                                              Maximum="1" Value="{Binding TestRightTrigger, Mode=OneWay}" VerticalAlignment="Center"
                                                              AutomationProperties.Name="{Binding Btn_RightTrigger, Source={x:Static strings:Strings.Instance}}"/>
-                                                <TextBlock Grid.Column="2" Text="{Binding TestRightTrigger, StringFormat={}{0:P0}}" TextAlignment="Right"
-                                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" VerticalAlignment="Center">
+                                                <TextBlock Grid.Column="1" Margin="8,0,0,0" Text="{Binding TestRightTrigger, StringFormat={}{0:P0}}" TextAlignment="Right"
+                                                           Typography.NumeralAlignment="Tabular" FontSize="12" VerticalAlignment="Center">
                                                     <TextBlock.Style>
                                                         <Style TargetType="TextBlock">
                                                             <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
@@ -1371,7 +1406,7 @@
                                                     <DataTemplate>
                                                         <Border Padding="8,2" CornerRadius="6" Margin="0,0,6,6" BorderThickness="1"
                                                                 Background="{DynamicResource ColdTintBrush}" BorderBrush="{DynamicResource ColdMutedBrush}">
-                                                            <TextBlock Text="{Binding}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                                            <TextBlock Text="{Binding}" FontSize="12"
                                                                        Foreground="{DynamicResource ColdBrush}"/>
                                                         </Border>
                                                     </DataTemplate>
@@ -1511,7 +1546,7 @@
                                                                          Foreground="{DynamicResource ColdBrush}"
                                                                          Margin="4,0"/>
                                                             <TextBlock Grid.Column="2" FontSize="13" Foreground="{DynamicResource ColdBrush}"
-                                                                       FontFamily="{StaticResource TelemetryFontFamily}" VerticalAlignment="Center"
+                                                                       Typography.NumeralAlignment="Tabular" VerticalAlignment="Center"
                                                                        HorizontalAlignment="Right"
                                                                        Text="{Binding RawValue}"/>
                                                         </Grid>
@@ -1662,7 +1697,7 @@
                                                                             </Style>
                                                                         </TextBlock.Style>
                                                                     </TextBlock>
-                                                                    <TextBlock Grid.Column="1" Text="{Binding Uid}" FontFamily="{StaticResource TelemetryFontFamily}"
+                                                                    <TextBlock Grid.Column="1" Text="{Binding Uid}" Typography.NumeralAlignment="Tabular"
                                                                                FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"
                                                                                Margin="8,0,0,0"/>
                                                                 </Grid>
@@ -1729,7 +1764,7 @@
                                                                         <TextBlock Text="{Binding Name}" FontSize="12" TextTrimming="CharacterEllipsis"
                                                                                    Style="{StaticResource RawCellLabel}" VerticalAlignment="Center"/>
                                                                         <TextBlock Grid.Column="1" Text="{Binding DepthText}" FontSize="12" Margin="4,0,0,0"
-                                                                                   FontFamily="{StaticResource TelemetryFontFamily}" VerticalAlignment="Center"
+                                                                                   Typography.NumeralAlignment="Tabular" VerticalAlignment="Center"
                                                                                    Foreground="{DynamicResource ColdBrush}"/>
                                                                     </Grid>
                                                                     <ProgressBar Minimum="0" Maximum="1" Margin="0,3,0,0"
@@ -1748,10 +1783,10 @@
                                                  pressure buttons as chips, the key depth chips' parts,
                                                  each with its pressure as a bar and a percent. The name
                                                  has the chip's first line to itself: German "Steuerkreuz
-                                                 Rechts" is 116 DIP in Cascadia Code at 11 px, about 127
-                                                 at 12, and with the percent beside it all four German
-                                                 D-pad chips trimmed to the same "Steuerkreuz …". A chip
-                                                 142 wide holds it inside its padding and its edge. -->
+                                                 Rechts" is 100 DIP in the body face at 12, and with the
+                                                 percent beside it all four German D-pad chips trimmed to
+                                                 the same "Steuerkreuz …". A chip 142 wide holds it inside
+                                                 its padding and its edge. -->
                                             <StackPanel Visibility="{Binding HasBlissBoxPressure, Converter={StaticResource BoolToVisibilityConverter}}"
                                                         Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Devices_BlissBoxPressure, Source={x:Static strings:Strings.Instance}}"
@@ -1780,7 +1815,7 @@
                                                                                      Style="{StaticResource ActivityBar}"
                                                                                      Foreground="{DynamicResource ColdBrush}"/>
                                                                         <TextBlock Grid.Column="1" Text="{Binding DepthText}" FontSize="12" Margin="6,0,0,0"
-                                                                                   FontFamily="{StaticResource TelemetryFontFamily}" VerticalAlignment="Center"
+                                                                                   Typography.NumeralAlignment="Tabular" VerticalAlignment="Center"
                                                                                    Foreground="{DynamicResource ColdBrush}"/>
                                                                     </Grid>
                                                                 </StackPanel>
@@ -1958,8 +1993,8 @@
                                                                 </Line>
                                                             </Canvas>
                                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
-                                                                <TextBlock FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Devices_POV, Source={x:Static strings:Strings.Instance}}"/>
-                                                                <TextBlock FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Index, Mode=OneWay}"/>
+                                                                <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Devices_POV, Source={x:Static strings:Strings.Instance}}"/>
+                                                                <TextBlock FontSize="12" Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Index, Mode=OneWay}"/>
                                                             </StackPanel>
                                                         </StackPanel>
                                                     </DataTemplate>
@@ -1979,18 +2014,18 @@
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <StackPanel>
-                                                        <TextBlock Text="X" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
-                                                        <TextBlock FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                                        <TextBlock Text="X" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                                        <TextBlock FontSize="13" Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
                                                                    Text="{Binding GyroX, StringFormat='{}{0:F3}'}"/>
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="1">
-                                                        <TextBlock Text="Y" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
-                                                        <TextBlock FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                                        <TextBlock Text="Y" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                                        <TextBlock FontSize="13" Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
                                                                    Text="{Binding GyroY, StringFormat='{}{0:F3}'}"/>
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="2">
-                                                        <TextBlock Text="Z" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
-                                                        <TextBlock FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                                        <TextBlock Text="Z" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                                        <TextBlock FontSize="13" Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
                                                                    Text="{Binding GyroZ, StringFormat='{}{0:F3}'}"/>
                                                     </StackPanel>
                                                 </Grid>
@@ -2009,18 +2044,18 @@
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <StackPanel>
-                                                        <TextBlock Text="X" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
-                                                        <TextBlock FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                                        <TextBlock Text="X" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                                        <TextBlock FontSize="13" Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
                                                                    Text="{Binding AccelX, StringFormat='{}{0:F3}'}"/>
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="1">
-                                                        <TextBlock Text="Y" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
-                                                        <TextBlock FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                                        <TextBlock Text="Y" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                                        <TextBlock FontSize="13" Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
                                                                    Text="{Binding AccelY, StringFormat='{}{0:F3}'}"/>
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="2">
-                                                        <TextBlock Text="Z" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
-                                                        <TextBlock FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                                        <TextBlock Text="Z" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                                        <TextBlock FontSize="13" Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
                                                                    Text="{Binding AccelZ, StringFormat='{}{0:F3}'}"/>
                                                     </StackPanel>
                                                 </Grid>
@@ -2040,18 +2075,18 @@
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <StackPanel>
-                                                        <TextBlock Text="X" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
-                                                        <TextBlock FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                                        <TextBlock Text="X" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                                        <TextBlock FontSize="13" Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
                                                                    Text="{Binding AccelAuxX, StringFormat='{}{0:F3}'}"/>
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="1">
-                                                        <TextBlock Text="Y" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
-                                                        <TextBlock FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                                        <TextBlock Text="Y" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                                        <TextBlock FontSize="13" Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
                                                                    Text="{Binding AccelAuxY, StringFormat='{}{0:F3}'}"/>
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="2">
-                                                        <TextBlock Text="Z" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
-                                                        <TextBlock FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                                        <TextBlock Text="Z" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                                        <TextBlock FontSize="13" Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
                                                                    Text="{Binding AccelAuxZ, StringFormat='{}{0:F3}'}"/>
                                                     </StackPanel>
                                                 </Grid>
@@ -2072,18 +2107,18 @@
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <StackPanel>
-                                                        <TextBlock Text="X" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
-                                                        <TextBlock FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                                        <TextBlock Text="X" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                                        <TextBlock FontSize="13" Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
                                                                    Text="{Binding GyroAuxX, StringFormat='{}{0:F3}'}"/>
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="1">
-                                                        <TextBlock Text="Y" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
-                                                        <TextBlock FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                                        <TextBlock Text="Y" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                                        <TextBlock FontSize="13" Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
                                                                    Text="{Binding GyroAuxY, StringFormat='{}{0:F3}'}"/>
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="2">
-                                                        <TextBlock Text="Z" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
-                                                        <TextBlock FontSize="13" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                                        <TextBlock Text="Z" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                                        <TextBlock FontSize="13" Typography.NumeralAlignment="Tabular" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
                                                                    Text="{Binding GyroAuxZ, StringFormat='{}{0:F3}'}"/>
                                                     </StackPanel>
                                                 </Grid>
@@ -2204,7 +2239,7 @@
                                                                             </Style>
                                                                         </TextBlock.Style>
                                                                     </TextBlock>
-                                                                    <TextBlock Grid.Column="1" Text="{Binding Uid}" FontFamily="{StaticResource TelemetryFontFamily}"
+                                                                    <TextBlock Grid.Column="1" Text="{Binding Uid}" Typography.NumeralAlignment="Tabular"
                                                                                FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"
                                                                                Margin="8,0,0,0" MaxWidth="220" TextTrimming="CharacterEllipsis"/>
                                                                 </Grid>
@@ -2243,7 +2278,7 @@
                                                                             </Style>
                                                                         </TextBlock.Style>
                                                                     </TextBlock>
-                                                                    <TextBlock Grid.Column="1" Text="{Binding Uid}" FontFamily="{StaticResource TelemetryFontFamily}"
+                                                                    <TextBlock Grid.Column="1" Text="{Binding Uid}" Typography.NumeralAlignment="Tabular"
                                                                                FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"
                                                                                Margin="8,0,0,0"/>
                                                                 </Grid>
@@ -2598,7 +2633,7 @@
                                         <DockPanel Margin="0,5"
                                                    Visibility="{Binding SelectedDevice.HasVidPid, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <TextBlock Style="{StaticResource DetailKey}" Text="VID:PID"/>
-                                            <TextBlock Style="{StaticResource DetailMono}"><Run
+                                            <TextBlock Style="{StaticResource DetailValue}"><Run
                                                 Text="{Binding SelectedDevice.VendorIdHex, Mode=OneWay}"/><Run
                                                 Text=":"/><Run
                                                 Text="{Binding SelectedDevice.ProductIdHex, Mode=OneWay}"/></TextBlock>
@@ -2612,7 +2647,7 @@
                                             <!-- The Bluetooth mark, then the word. -->
                                             <TextBlock Style="{StaticResource DetailValue}"
                                                        AutomationProperties.Name="{Binding Pad_Transport_Bluetooth, Source={x:Static strings:Strings.Instance}}"><Run
-                                                Text="&#xE702;" FontFamily="Segoe UI, Segoe MDL2 Assets" BaselineAlignment="Center"/><Run
+                                                Text="&#xE702;" FontFamily="Segoe UI Variable Text, Segoe MDL2 Assets" BaselineAlignment="Center"/><Run
                                                 Text=" "/><Run
                                                 Text="{Binding Pad_Transport_Bluetooth, Source={x:Static strings:Strings.Instance}, Mode=OneWay}"/></TextBlock>
                                         </DockPanel>
@@ -2624,9 +2659,9 @@
                                             <TextBlock Style="{StaticResource DetailKey}" Text="{Binding Devices_Detail_Battery, Source={x:Static strings:Strings.Instance}}"/>
                                             <TextBlock Style="{StaticResource DetailValue}"
                                                        AutomationProperties.Name="{Binding SelectedDevice.BatteryLine, Mode=OneWay, TargetNullValue='', FallbackValue=''}"><Run
-                                                Text="{Binding SelectedDevice.BatteryGlyph, Mode=OneWay}" FontFamily="Segoe UI, Segoe MDL2 Assets" BaselineAlignment="Center"/><Run
+                                                Text="{Binding SelectedDevice.BatteryGlyph, Mode=OneWay}" FontFamily="Segoe UI Variable Text, Segoe MDL2 Assets" BaselineAlignment="Center"/><Run
                                                 Text="{Binding SelectedDevice.BatteryGap, Mode=OneWay}"/><Run
-                                                Text="{Binding SelectedDevice.BatteryText, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}"/><Run
+                                                Text="{Binding SelectedDevice.BatteryText, Mode=OneWay}" Typography.NumeralAlignment="Tabular"/><Run
                                                 Text="{Binding SelectedDevice.LineTail, Mode=OneWay}"/></TextBlock>
                                         </DockPanel>
                                         <!-- The second path is a bridged device's
@@ -2637,12 +2672,12 @@
                                         <DockPanel Margin="0,5"
                                                    Visibility="{Binding SelectedDevice.HidHideInstancePath, Converter={StaticResource StringToVisibility}}">
                                             <TextBlock Style="{StaticResource DetailKey}" Text="{Binding Devices_Detail_Path, Source={x:Static strings:Strings.Instance}}"/>
-                                            <TextBlock Style="{StaticResource DetailMono}" Text="{Binding SelectedDevice.HidHideInstancePath, Mode=OneWay}"/>
+                                            <TextBlock Style="{StaticResource DetailValue}" Text="{Binding SelectedDevice.HidHideInstancePath, Mode=OneWay}"/>
                                         </DockPanel>
                                         <DockPanel Margin="0,5"
                                                    Visibility="{Binding SelectedDevice.DossierConnectionPath, Converter={StaticResource StringToVisibility}}">
                                             <TextBlock Style="{StaticResource DetailKey}" Text="{Binding Devices_Detail_Path, Source={x:Static strings:Strings.Instance}}"/>
-                                            <TextBlock Style="{StaticResource DetailMono}" Text="{Binding SelectedDevice.DossierConnectionPath, Mode=OneWay}"/>
+                                            <TextBlock Style="{StaticResource DetailValue}" Text="{Binding SelectedDevice.DossierConnectionPath, Mode=OneWay}"/>
                                         </DockPanel>
                                         <!-- Serial as SDL reports it (the Bluetooth
                                              address on most wireless pads), the
@@ -2653,26 +2688,26 @@
                                         <DockPanel Margin="0,5"
                                                    Visibility="{Binding SelectedDevice.SerialNumber, Converter={StaticResource StringToVisibility}}">
                                             <TextBlock Style="{StaticResource DetailKey}" Text="{Binding Devices_Detail_Serial, Source={x:Static strings:Strings.Instance}}"/>
-                                            <TextBlock Style="{StaticResource DetailMono}" Text="{Binding SelectedDevice.SerialNumber, Mode=OneWay}"/>
+                                            <TextBlock Style="{StaticResource DetailValue}" Text="{Binding SelectedDevice.SerialNumber, Mode=OneWay}"/>
                                         </DockPanel>
                                         <DockPanel Margin="0,5"
                                                    Visibility="{Binding SelectedDevice.FirmwareVersion, Converter={StaticResource StringToVisibility}}">
                                             <TextBlock Style="{StaticResource DetailKey}" Text="{Binding Devices_Detail_Firmware, Source={x:Static strings:Strings.Instance}}"/>
-                                            <TextBlock Style="{StaticResource DetailMono}" Text="{Binding SelectedDevice.FirmwareVersion, Mode=OneWay}"/>
+                                            <TextBlock Style="{StaticResource DetailValue}" Text="{Binding SelectedDevice.FirmwareVersion, Mode=OneWay}"/>
                                         </DockPanel>
                                         <DockPanel Margin="0,5"
                                                    Visibility="{Binding SelectedDevice.ProductRevision, Converter={StaticResource StringToVisibility}}">
                                             <TextBlock Style="{StaticResource DetailKey}" Text="{Binding Devices_Detail_Revision, Source={x:Static strings:Strings.Instance}}"/>
-                                            <TextBlock Style="{StaticResource DetailMono}" Text="{Binding SelectedDevice.ProductRevision, Mode=OneWay}"/>
+                                            <TextBlock Style="{StaticResource DetailValue}" Text="{Binding SelectedDevice.ProductRevision, Mode=OneWay}"/>
                                         </DockPanel>
                                         <DockPanel Margin="0,5">
-                                            <TextBlock Style="{StaticResource DetailKey}" Text="App GUID"/>
-                                            <TextBlock Style="{StaticResource DetailMono}" Text="{Binding SelectedDevice.InstanceGuid, Mode=OneWay}"/>
+                                            <TextBlock Style="{StaticResource DetailKey}" Text="{Binding Devices_Detail_AppGuid, Source={x:Static strings:Strings.Instance}}"/>
+                                            <TextBlock Style="{StaticResource DetailValue}" Text="{Binding SelectedDevice.InstanceGuid, Mode=OneWay}"/>
                                         </DockPanel>
                                         <DockPanel Margin="0,5"
                                                    Visibility="{Binding SelectedDevice.SdlGuid, Converter={StaticResource StringToVisibility}}">
-                                            <TextBlock Style="{StaticResource DetailKey}" Text="SDL GUID"/>
-                                            <TextBlock Style="{StaticResource DetailMono}" Text="{Binding SelectedDevice.SdlGuid, Mode=OneWay}"/>
+                                            <TextBlock Style="{StaticResource DetailKey}" Text="{Binding Devices_Detail_SdlGuid, Source={x:Static strings:Strings.Instance}}"/>
+                                            <TextBlock Style="{StaticResource DetailValue}" Text="{Binding SelectedDevice.SdlGuid, Mode=OneWay}"/>
                                         </DockPanel>
                                         <!-- Force Raw Joystick Mode: a gamepad row that
                                              is no source of PadForge's own (a web pad, a

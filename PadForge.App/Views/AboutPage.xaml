@@ -23,23 +23,28 @@
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
+            <!-- A credit's name, its description and its license chip stand
+                 at the row's top, so a description that wraps keeps its first
+                 line beside the name. -->
+            <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
         </Style>
         <Style x:Key="CreditDesc" TargetType="TextBlock">
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
         </Style>
-        <!-- The chip's one line stands centered in its 22. -->
+        <!-- The chip's one line stands centered in its 22, and the chip on
+             the row's first line: 2 above the text's top. -->
         <Style x:Key="CreditChip" TargetType="Border" BasedOn="{StaticResource PillChip}">
             <Style.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="VerticalAlignment" Value="Center"/>
                 </Style>
             </Style.Resources>
-            <Setter Property="Margin" Value="12,0,0,0"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="12,-2,0,0"/>
         </Style>
     </UserControl.Resources>
 
@@ -78,7 +83,7 @@
                         <TextBlock FontSize="22" FontWeight="SemiBold" TextWrapping="Wrap"
                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                    ToolTip="{Binding ApplicationVersion}"
-                                   AutomationProperties.AutomationId="About_Version"><Run Text="{Binding Common_PadForge, Source={x:Static strings:Strings.Instance}, Mode=OneWay}"/><Run Text=" "/><Run Text="{Binding VersionNumber, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="14" FontWeight="Normal" Foreground="{DynamicResource ColdBrush}"/></TextBlock>
+                                   AutomationProperties.AutomationId="About_Version"><Run Text="{Binding Common_PadForge, Source={x:Static strings:Strings.Instance}, Mode=OneWay}"/><Run Text=" "/><Run Text="{Binding VersionNumber, Mode=OneWay}" Typography.NumeralAlignment="Tabular" FontSize="14" FontWeight="Normal" Foreground="{DynamicResource ColdBrush}"/></TextBlock>
                         <TextBlock x:Name="AboutSubLine" FontSize="13" TextWrapping="Wrap"
                                    common:LiveText.Polite="True"
                                    common:BidiText.Text="{Binding AboutSubLine}"
@@ -124,7 +129,7 @@
                     <TextBlock Margin="0,10,0,0" FontSize="14" FontStyle="Italic" TextWrapping="Wrap"
                                Foreground="{DynamicResource SubRowTextBrush}"
                                common:BidiText.Text="{Binding About_TestimonyScripture, Source={x:Static strings:Strings.Instance}}"/>
-                    <TextBlock Margin="0,6,0,0" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}"
+                    <TextBlock Margin="0,6,0,0" FontSize="12"
                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                common:BidiText.Text="{Binding About_TestimonyRef, Source={x:Static strings:Strings.Instance}}"/>
                     <TextBlock Margin="0,12,0,0" FontSize="14" TextWrapping="Wrap"

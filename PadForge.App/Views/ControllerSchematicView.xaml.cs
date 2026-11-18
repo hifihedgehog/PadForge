@@ -218,12 +218,13 @@ namespace PadForge.Views
                 x += StickSize + SectionGap;
             }
 
-            // ── Triggers ──
+            // ── Triggers ── Each takes the room its label needs: a word
+            // such as "Trigger 2" is wider than the bar under it.
             for (int i = 0; i < cfg.TriggerCount; i++)
             {
                 var w = CreateTriggerWidget(i, triggerAxis[i], x, topY);
                 _triggerWidgets.Add(w);
-                x += TriggerWidth + SectionGap;
+                x += Math.Max(TriggerWidth, w.LabelWidth) + SectionGap;
             }
 
             // ── POVs ──
@@ -465,6 +466,7 @@ namespace PadForge.Views
             // Label
             var label = CreateLabel(string.Format(Strings.Instance.Preview_Trigger_Format, index + 1), x, y - LabelHeight);
             SchematicCanvas.Children.Add(label);
+            label.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
             // Hover highlight
             bg.MouseEnter += (s, e) =>
@@ -492,7 +494,8 @@ namespace PadForge.Views
                 Background = bg,
                 Fill = fill,
                 X = x,
-                Y = y
+                Y = y,
+                LabelWidth = label.DesiredSize.Width
             };
         }
 
@@ -645,11 +648,11 @@ namespace PadForge.Views
             var text = new TextBlock
             {
                 Text = (index + 1).ToString(),
-                FontFamily = (FontFamily)FindResource("TelemetryFontFamily"),
                 FontSize = 9,
                 IsHitTestVisible = false,
                 TextAlignment = TextAlignment.Center
             };
+            PadForge.Common.TextFaces.Numbers(text);
             text.SetResourceReference(TextBlock.ForegroundProperty, LabelKey);
             text.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             Canvas.SetLeft(text, x + (ButtonSize - text.DesiredSize.Width) / 2);
@@ -912,13 +915,12 @@ namespace PadForge.Views
             var tb = new TextBlock
             {
                 Text = text,
-                FontSize = 11,
+                FontSize = 12,
                 IsHitTestVisible = false
             };
-            // Mono telemetry face like the XAML canvases. Static helper, so
-            // resolve at app scope; skip gracefully if the resource is absent.
-            if (Application.Current.TryFindResource("TelemetryFontFamily") is FontFamily mono)
-                tb.FontFamily = mono;
+            // The body face with tabular figures, as the XAML canvases have
+            // it.
+            PadForge.Common.TextFaces.Numbers(tb);
             tb.SetResourceReference(TextBlock.ForegroundProperty, LabelKey);
             Canvas.SetLeft(tb, x);
             Canvas.SetTop(tb, y);
@@ -945,6 +947,8 @@ namespace PadForge.Views
             public Rectangle Background;
             public Rectangle Fill;
             public double X, Y;
+            /// <summary>The label's width, which the next widget steps past.</summary>
+            public double LabelWidth;
         }
 
         private sealed class PovWidget

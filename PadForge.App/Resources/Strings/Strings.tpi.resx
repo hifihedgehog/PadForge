@@ -92,10 +92,11 @@
   <data name="Common_Stop" xml:space="preserve"><value>Stopim</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Kirapim</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Rekodim</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>I rekodim...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>I rekodim…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Klinim</value></data>
   <data name="Common_None" xml:space="preserve"><value>Nogat</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>sekon</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -107,7 +108,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>Pasim PadForge...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>Pasim PadForge…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Kirapim PadForge…</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Putim kontrola</value></data>
   <data name="AddController_Title" xml:space="preserve"><value>Putim wanpela kontrola</value></data>
@@ -163,8 +164,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ daun)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← han kais)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ antap)</value></data>
-  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll I NO STAP</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll i no stap! Putim SDL3.dll klostu long PadForge.exe. Daunlodim long https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll i no stap</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll i no stap. Putim SDL3.dll klostu long PadForge.exe. Daunlodim em long https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_ProfileCreated_Format" xml:space="preserve"><value>Profail "{0}" i kamap.</value></data>
   <data name="Status_ProfileDeleted_Format" xml:space="preserve"><value>Profail "{0}" i raus pinis.</value></data>
   <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>Rong long lodim ol seting: {0}</value></data>
@@ -180,7 +181,8 @@
   <data name="Profiles_ShortcutMode_Next" xml:space="preserve"><value>Neks profail</value></data>
   <data name="Profiles_ShortcutMode_Previous" xml:space="preserve"><value>Profail bipo</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Wanem masin i konek</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>I rekodim...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>I rekodim…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>taim</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>long</value></data>
   <data name="Status_DeviceRemoved" xml:space="preserve"><value>Masin i raus pinis.</value></data>
@@ -266,7 +268,7 @@
   <data name="Update_InstallFailed_Format" xml:space="preserve"><value>PadForge i no inap instolim apdeit: {0}</value></data>
   <data name="Update_RestartFailed_Format" xml:space="preserve"><value>PadForge i no inap kirap gen: {0}</value></data>
   <data name="Update_DownloadStalled" xml:space="preserve"><value>Daunlod i stop.</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>Putim...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>Putim…</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Rausim HIDMaestro</value></data>
   <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Dispela em i ol samting bai i lusim dispela PC. PadForge bai instolim HIDMaestro gen wantaim neks virtual kontrola bilong en.</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>Rausim tu usbip-win2</value></data>
@@ -280,6 +282,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>I stap yet</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>I no ritim</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>I no rausim</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Masin</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Rejista bilong interface</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Rejistri ki ol i serim</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Rejistri valiu ol i serim</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Pasim long WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>OEM nem i senisim</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>DeviceOverrides ki</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Rejista bilong OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Pekis bilong draiva</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Ki bilong WUDF sevis</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Rejistri ki</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Setifiket</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Folda</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Seting bilong sevis</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Step bilong rausim</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>I larim ol PlayStation 3 kontrola, PlayStation Move na Navigation kontrola i konek long Bluetooth. Em i stap insait long PadForge, na PadForge i instolim long namba wan taim yu pairim wanpela bilong ol.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Konekim ol PlayStation 3 kontrola long Bluetooth.</value></data>
@@ -387,8 +404,13 @@
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>Jairo</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>Akselerometa</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 eksis</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} eksis</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 baten</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} baten</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>Eksis {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} eksis, {1} baten, {2} POV</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>Guria</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Jairo</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
@@ -441,7 +463,7 @@
   <!-- Lighting tab (DS4 / DualSense / DualSense Edge) -->
   <data name="Pad_Lighting" xml:space="preserve"><value>Ol lait</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Ol lait</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Of</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Reset lait</value></data>
   <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>Reset force feedback</value></data>
@@ -487,7 +509,7 @@
   <data name="Pad_TestRightMotor" xml:space="preserve"><value>Klik long traim raithan mota</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Mapin: {0}</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Kopim olgeta mapin na ol seting i go long clipboard</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopim long...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopim long…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Kopim ol seting long narapela masin</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Reset olgeta</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Rausim olgeta</value></data>
@@ -554,6 +576,7 @@
   <data name="Macro_Once" xml:space="preserve"><value>Wanpela taim</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Sensitiviti</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Nupela makro</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Makro {0}</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Baten {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(nogat)</value></data>
   <data name="Macro_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
@@ -808,9 +831,9 @@
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Profail i wok nau:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>I no gat kontrola</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Nupela profail</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>Seivim olsem</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Seivim olsem…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Seivim seting nau long hia</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Senisim</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Senisim…</value></data>
   <data name="Profiles_DeleteConfirmTitle_Format" xml:space="preserve"><value>Rausim {0}?</value></data>
   <data name="Profiles_SaveHereConfirm_Format" xml:space="preserve"><value>Senisim seting i stap long “{0}” long seting bilong nau? Nem na ol gem bilong en i stap yet.</value></data>
   <data name="Profiles_SaveHereConfirm_Action" xml:space="preserve"><value>Senisim</value></data>
@@ -1016,7 +1039,7 @@
 
   <!-- ═══ Preview Views ═══ -->
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Stik {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Triga {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Ol baten</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -1029,7 +1052,6 @@
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Lephan mota</value></data>
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Raithan mota</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Hamas sekon bipo virtual kontrola i raus taim olgeta masin i mapim long en i of. 0 i stopim dispela. Ol narapela kontrola bilong wankain kain i muv i go antap long pulumapim hul na go long ol slot i gat liklik namba.</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekon (0 = nogat)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Putim lea</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Putim wanpela shift lea. Namba tu tebol bilong mapin i wok taim yu holim o tanim on o of wanpela baten.</value></data>
@@ -1488,6 +1510,7 @@
   <data name="RemoteLink_StatusConnectingCode" xml:space="preserve"><value>Konektim wantaim kod…</value></data>
   <data name="Dashboard_RemoteLinkMyCode" xml:space="preserve"><value>Kod bilong dispela PC</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Bateri bilong kontrola i laik pinis</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Kontrola</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% bateri i stap yet</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Toksave bilong bateri</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Kisim toksave taim bateri bilong kontrola i laik pinis, paslain long em i dai namel long gem.</value></data>
@@ -1560,7 +1583,7 @@
     <value>Masin o konek i no stap. Konek gen na opim gen dispela windo.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Wet long narapela PC...</value>
+    <value>Wet long narapela PC…</value>
   </data>
   <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Em i putim guria oltaim taim eksis bilong virtual stik yu makim i muv i go longwe long namel. Em i yusim aut bilong mapin long olgeta sos yu putim. Long "Skelim long sait", muv long sait negatif i kirapim lephan mota na muv long sait positiv i kirapim raithan mota. "Lephan mota" o "Raithan mota" i putim tupela sait long dispela wanpela mota tasol. Em i bilong Xbox na PlayStation aut wantaim ol masin i gat guria. Em i lusim ol stiaring wil, ol narapela masin i gat constant force feedback, na ol pedal bilong Fanatec.</value></data>
   <data name="Pad_SteeringAngleRumble_LX" xml:space="preserve"><value>Stik long han kais X</value></data>
@@ -1875,6 +1898,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Bateri</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Rot</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Siriel namba</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>App GUID</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Femwea</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Rivisen</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Moa bilong {0}</value></data>
@@ -1969,4 +1994,14 @@
   <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Stik bilong stretim liklik</value></data>
   <data name="Pad_Picked_Row" xml:space="preserve"><value>Autput</value></data>
   <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Ol piksa (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Olgeta fail (*.*)|*.*</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>Default seting</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>Lephan stik</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>Raithan stik</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Kev</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Shift lea</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Tanim i go baksait</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>Antap tru</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Default bilong bs2b</value></data>
 </root>

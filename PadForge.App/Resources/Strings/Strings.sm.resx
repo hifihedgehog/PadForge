@@ -80,7 +80,7 @@
   <data name="Common_Stop" xml:space="preserve"><value>Taofi</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Amata</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Puʻe</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>O loʻo puʻe...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>O loʻo puʻe…</value></data>
   <data name="Common_None" xml:space="preserve"><value>Leai</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
 
@@ -107,7 +107,8 @@
   <data name="Status_BthPS3RemovalFailed" xml:space="preserve"><value>Ua aveʻesea se vaega o le BthPS3. O loʻo faʻaalia i le lisi mea na tumau ma le mafuaʻaga.</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Ua faʻaleaogā le puʻeina.</value></data>
   <data name="Status_Error_Format" xml:space="preserve"><value>Mea sese: {0}</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>O loʻo puʻe...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>O loʻo puʻe…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>pe a</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>i</value></data>
 
@@ -136,6 +137,21 @@
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Ua teu</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Le faitauina</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Le aveʻesea</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Masini</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Resitala o le interface</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Ki o le registry e faʻasoa</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Tau o le registry e faʻasoa</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>Fusiga WinUSB</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Suiga o le igoa OEM</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>Ki DeviceOverrides</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>Resitala OpenVR</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Afifi o le driver</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>Ki o le auaunaga WUDF</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Ki o le registry</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Tusi faʻamaonia</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Pusa faila</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Faʻatulagaga o le auaunaga</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Laasaga o le aveʻesega</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>Bluetooth BthPS3</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>E mafai ai e controller PlayStation 3, le PlayStation Move ma le Navigation controller ona fesoʻotaʻi e ala i le Bluetooth. O loʻo i totonu o le PadForge ma e faʻapipiʻi i le taimi muamua e pair ai se tasi o i latou.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Faʻafesoʻotaʻi controller PlayStation 3 e ala i le Bluetooth.</value></data>
@@ -283,7 +299,7 @@
   <data name="Pad_Lighting_RouteAsleep" xml:space="preserve"><value>E leʻi tali mai lenei masini. O le a aliali mai ona lanu pe a ala mai.</value></data>
   <data name="Pad_Lighting_RouteThrough" xml:space="preserve"><value>E alu lanu e ala i {0}.</value></data>
   <data name="Pad_Lighting_RouteWaiting" xml:space="preserve"><value>O loʻo faʻatali mo {0}. O le a aliali mai lanu pe a galue.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Tape</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Toe setiina le lightbar</value></data>
   <data name="Pad_ResetForceFeedback" xml:space="preserve"><value>Toe setiina le force feedback</value></data>
@@ -368,6 +384,7 @@
   <data name="Macro_Repeat" xml:space="preserve"><value>Toe fai</value></data>
   <data name="Macro_DelayMs" xml:space="preserve"><value>Faʻatuai</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Macro fou</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Macro {0}</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Faʻamau {0}</value></data>
   <data name="Macro_None" xml:space="preserve"><value>(leai)</value></data>
   <data name="Macro_Button_Format" xml:space="preserve"><value>Faʻamau {0}</value></data>
@@ -672,7 +689,7 @@
   <data name="MacroAxis_ZRotation" xml:space="preserve"><value>Trigger taumatau</value></data>
 
   <!-- ═══ Preview Views ═══ -->
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Faʻamau</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
 
@@ -680,7 +697,6 @@
   <data name="Settings_AudioRumble_LeftMotor" xml:space="preserve"><value>Afi agavale</value></data>
   <data name="Settings_AudioRumble_RightMotor" xml:space="preserve"><value>Afi taumatau</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Tulaga</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>sekone (0 = leai lava)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_ModeHold" xml:space="preserve"><value>ʻUʻu</value></data>
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Toggle</value></data>
@@ -943,6 +959,7 @@
   <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
   <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Ua maualalo le maa o le controller</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Controller</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: ua totoe le {1}% o le maa</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Tofi</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Mulimuli ane</value></data>
@@ -1001,7 +1018,7 @@
     <value>Profile o loʻo galue: {0}</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>O loʻo faʻatali mo le isi PC...</value>
+    <value>O loʻo faʻatali mo le isi PC…</value>
   </data>
   <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Axis faʻafoliga</value></data>
   <data name="Pad_SteeringAngleRumble_LX" xml:space="preserve"><value>Stick agavale X</value></data>
@@ -1192,6 +1209,8 @@
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Maa</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Ala</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Numera Serial</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>GUID o le app</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>GUID o le SDL</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Toe iloiloga</value></data>
   <data name="Profiles_CardMore_Format" xml:space="preserve"><value>Isi mea mo {0}</value></data>
@@ -1263,4 +1282,8 @@
   <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
   <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Ata (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Faila uma (*.*)|*.*</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Piʻo</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Shift layer</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Faʻafeliuina</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b masani</value></data>
 </root>

@@ -231,14 +231,12 @@ namespace PadForge.Views
             SticksSectionScroll.Resources["FirstRowLabelWidth"] = width;
             SticksSectionScroll.Resources["FirstRowSettingsMost"] = width + FirstRowRest;
 
-            // The readings' captions, in the readings' mono face at 11.
-            var mono = new Typeface(TryFindResource("TelemetryFontFamily") as FontFamily ?? typeface.FontFamily,
-                FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
+            // The readings' captions, in the section's face at 12.
             var captions = new List<double>();
             foreach (string caption in new[] { s.Instr_Raw, s.Instr_Out })
             {
                 if (string.IsNullOrEmpty(caption)) continue;
-                var text = new FormattedText(caption, CultureInfo.CurrentUICulture, FlowDirection, mono, 11, Brushes.Black, dip);
+                var text = new FormattedText(caption, CultureInfo.CurrentUICulture, FlowDirection, typeface, 12, Brushes.Black, dip);
                 captions.Add(text.WidthIncludingTrailingWhitespace);
             }
             SticksSectionScroll.Resources["StickLiveLeast"] = StickLiveLeast(captions);

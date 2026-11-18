@@ -44,8 +44,24 @@ namespace PadForge.Tests
             return pixels;
         }
 
+        /// <summary>Saves a frame beside the test host's other temporary
+        /// files and returns where, for a failure's message: the pixels
+        /// that differed say where to look, and the two frames say what was
+        /// there.</summary>
+        private static string Keep(byte[] pixels, string name)
+        {
+            string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "PadForge.Tests-movingcard-" + name + ".png");
+            var frame = BitmapSource.Create(Width, Height, 96, 96, PixelFormats.Pbgra32, null, pixels, Width * 4);
+            var png = new PngBitmapEncoder();
+            png.Frames.Add(BitmapFrame.Create(frame));
+            using var file = System.IO.File.Create(path);
+            png.Save(file);
+            return path;
+        }
+
         private static void Lay(FrameworkElement ground)
         {
+            PageRenderDump.Flush(ground);
             ground.Measure(new Size(Width, Height));
             ground.Arrange(new Rect(0, 0, Width, Height));
             ground.UpdateLayout();
@@ -119,6 +135,7 @@ namespace PadForge.Tests
                     byte[] held = Shot(ground);
 
                     int inside = 0, outside = 0;
+                    var strays = new System.Collections.Generic.List<string>();
                     for (int y = 0; y < Height; y++)
                         for (int x = 0; x < Width; x++)
                         {
@@ -127,10 +144,22 @@ namespace PadForge.Tests
                                 + Math.Abs(held[i + 2] - rest[i + 2]) + Math.Abs(held[i + 3] - rest[i + 3]);
                             if (d <= 24) continue;
                             if (at.Contains(x + 0.5, y + 0.5)) inside++;
-                            else outside++;
+                            else
+                            {
+                                outside++;
+                                if (strays.Count < 8)
+                                    strays.Add($"({x},{y}) from {rest[i + 2]},{rest[i + 1]},{rest[i]},{rest[i + 3]} to {held[i + 2]},{held[i + 1]},{held[i]},{held[i + 3]}");
+                            }
                         }
                     Assert.True(inside > 100, $"{kind}: a held stick and trigger changed {inside} pixels of the card's picture at {at}");
-                    Assert.True(outside == 0, $"{kind}: a held stick and trigger changed {outside} pixels beside the card's picture");
+                    // Seen once, in the 2D pass, as one pixel in a full run of
+                    // the suite (2026-11-17), and in no run of the test alone.
+                    // A held input redraws the picture alone, clipped to its
+                    // own box, so the pixel came from something else that
+                    // changed between the two frames. The frames are kept
+                    // when it comes again.
+                    Assert.True(outside == 0, $"{kind}: a held stick and trigger changed {outside} pixels beside the card's picture at {at}: "
+                        + $"{string.Join(", ", strays)}. Frames: {(outside == 0 ? string.Empty : Keep(rest, kind + "-rest") + " and " + Keep(held, kind + "-held"))}");
 
                     // Let go, and the card is as it was.
                     slot.ReadHeld(new PadViewModel(0));

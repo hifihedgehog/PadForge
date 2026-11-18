@@ -606,10 +606,10 @@ namespace PadForge.ViewModels
 
         /// <summary>Localized virtual-controller type name (Xbox / PlayStation /
         /// Extended / Keyboard+Mouse / MIDI). Consolidated from the per-type
-        /// Strings so the tier-1 header can render it as one Run beside the mono
+        /// Strings so the tier-1 header can render it as one Run beside the
         /// instance token on a shared text baseline (the two used to be separate
-        /// TextBlocks, and the mono #N sat low). Re-raised on OutputType and
-        /// culture changes.</summary>
+        /// TextBlocks, and the #N sat low). Re-raised on OutputType and culture
+        /// changes.</summary>
         public string OutputTypeDisplayName => _outputType switch
         {
             VirtualControllerType.Xbox => Strings.Instance.ControllerType_Xbox,
@@ -2173,7 +2173,7 @@ namespace PadForge.ViewModels
         //  Pipeline heat chips (#175 item 10)
         //
         //  Five fixed chips above the Mappings grid, one per transform
-        //  pipeline kind (CURVE / GYRO / SHIFT / INV / DZ). Active =
+        //  pipeline kind (Curve, Gyro, Shift Layers, Inverted, Deadzone). Active =
         //  the pipeline carries configuration; Live = an owning row's
         //  live value is past its gate this frame (rowfire flags set by
         //  InputService.UpdateMappingLiveValues, which also calls
@@ -2242,20 +2242,20 @@ namespace PadForge.ViewModels
             _pipelineCurveActive || _pipelineGyroActive || _pipelineShiftActive
             || _pipelineInvertActive || _pipelineDeadZoneActive;
 
-        /// <summary>Row owns the INV pipeline: a mapped primary with the
+        /// <summary>Row owns the Inverted pipeline: a mapped primary with the
         /// invert transform on. Extra-source Invert is excluded on
         /// purpose. On a bipolar pair it encodes the negative direction,
         /// not an inversion transform.</summary>
         public static bool IsInvertPipelineRow(MappingItem m) =>
             m != null && m.IsMapped && m.IsInverted;
 
-        /// <summary>Row owns the DZ pipeline: per-mapping deadzone moved
+        /// <summary>Row owns the Deadzone pipeline: per-mapping deadzone moved
         /// off its 50% default (MappingItem initializer +
         /// ResetDeadZoneCommand) on a row where it applies.</summary>
         public static bool IsDeadZonePipelineRow(MappingItem m) =>
             m != null && m.IsDeadZoneApplicable && m.MappingDeadZone != 50;
 
-        /// <summary>Row owns the GYRO pipeline: primary or any extra
+        /// <summary>Row owns the Gyro pipeline: primary or any extra
         /// source reads a "Gyro *" axis. Motion-passthrough rows use
         /// "Motion *" descriptors, so the auto-created Sony passthrough
         /// never lights this chip.</summary>
@@ -2272,7 +2272,7 @@ namespace PadForge.ViewModels
             return false;
         }
 
-        /// <summary>Row owns the CURVE pipeline: its target is one of the
+        /// <summary>Row owns the Curve pipeline: its target is one of the
         /// six curve-bearing outputs and that output's sensitivity curve
         /// is non-linear (defaults "0" / "0,0;1,1" both parse linear via
         /// CurveLut.IsLinear).</summary>
@@ -2384,7 +2384,7 @@ namespace PadForge.ViewModels
             PipelineInvertLive = PipelineInvertActive && invertLive;
             PipelineDeadZoneLive = PipelineDeadZoneActive && dzLive;
 
-            // SHIFT flames while the engine holds a non-Base layer. The
+            // Shift Layers flames while the engine holds a non-Base layer. The
             // summary swaps between the engaged layer's name and the
             // cached idle layer list.
             bool shiftEngaged = PipelineShiftActive
@@ -2448,7 +2448,7 @@ namespace PadForge.ViewModels
             var dzTip = BuildPipelineTipRows(_pipelineDeadZoneRows, m => m.MappingDeadZone + "%");
             if (!TipRowsEqual(_pipelineDeadZoneTipRows, dzTip)) PipelineDeadZoneTipRows = dzTip;
 
-            // SHIFT: present when the slot has any layer beyond Base.
+            // Shift Layers: present when the slot has any layer beyond Base.
             bool shiftActive = LayerTabs.Count > 1;
             PipelineShiftActive = shiftActive;
             if (shiftActive)
@@ -3659,7 +3659,9 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gyroOutputCurve, value ?? "Linear");
         }
 
-        public System.Collections.Generic.IReadOnlyList<GyroLabeledOption> GyroOutputCurveOptions { get; } = new[]
+        /// <summary>The output curve picker's entries, one list for every
+        /// slot. The Home stage readout names a stored curve from it.</summary>
+        internal static readonly IReadOnlyList<GyroLabeledOption> OutputCurveChoices = new[]
         {
             new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Curve_Linear,     "Linear"),
             new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Curve_Aggressive, "Aggressive"),
@@ -3667,6 +3669,7 @@ namespace PadForge.ViewModels
             new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Curve_Wide,       "Wide"),
             new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Curve_ExtraWide,  "ExtraWide"),
         };
+        public IReadOnlyList<GyroLabeledOption> GyroOutputCurveOptions => OutputCurveChoices;
 
         private string _gyroSensitivityUnits = "Multiplier";
         public string GyroSensitivityUnits
@@ -3699,15 +3702,17 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gyroSpace, string.IsNullOrEmpty(value) ? "Local" : value);
         }
         /// <summary>Localized-display + stored-value pairs for the gyro
-        /// space dropdown. Stored value stays as the canonical English
-        /// identifier so PadForge.xml round-trips are stable across
-        /// locale changes; display text is read from the strings resx.</summary>
-        public IReadOnlyList<GyroLabeledOption> GyroSpaceOptions { get; } = new[]
+        /// space dropdown, one list for every slot. Stored value stays as the
+        /// canonical English identifier so PadForge.xml round-trips are stable
+        /// across locale changes. Display text is read from the strings resx.
+        /// The Home stage readout names a stored space from it.</summary>
+        internal static readonly IReadOnlyList<GyroLabeledOption> SpaceChoices = new[]
         {
             new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Space_Local,  "Local"),
             new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Space_Player, "Player"),
             new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Space_World,  "World"),
         };
+        public IReadOnlyList<GyroLabeledOption> GyroSpaceOptions => SpaceChoices;
 
         // ── Grip (#392): how the controller is held, per (device, slot).
         // Stored as the canonical English identifier like GyroSpace.
@@ -3724,13 +3729,16 @@ namespace PadForge.ViewModels
         /// read it to skip the load-time writes. Plain field, no
         /// notification: it is a scope marker, not a bound property.</summary>
         public bool IsLoadingPadSetting { get; set; }
-        public IReadOnlyList<GyroLabeledOption> MotionGripOptions { get; } = new[]
+        /// <summary>The grip picker's entries, one list for every slot. The
+        /// Home stage readout names a stored grip from it.</summary>
+        internal static readonly IReadOnlyList<GyroLabeledOption> GripChoices = new[]
         {
             new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Grip_Pointing, "Pointing"),
             new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Grip_Sideways, "Sideways"),
             new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Grip_WiiWheel, "WiiWheel"),
             new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Grip_Upright,  "Upright"),
         };
+        public IReadOnlyList<GyroLabeledOption> MotionGripOptions => GripChoices;
 
         // ── Motion Steering (v3.4 #94) — SETTINGS for the "Motion Lean" input.
         // Motion Lean is a first-class input descriptor: the user maps it to an
@@ -6188,7 +6196,7 @@ namespace PadForge.ViewModels
                 var macro = new MacroItem
                 {
                     PadIndex = PadIndex,
-                    Name = $"Macro {Macros.Count + 1}",
+                    Name = string.Format(System.Globalization.CultureInfo.CurrentCulture, Strings.Instance.Macro_Default_Format, Macros.Count + 1),
                     ButtonStyle = MacroButtonNames.DeriveStyle(_outputType, _profileId),
                     RawProfileId = SlotRawProfileId,
                     CarriesPressure = SlotCarriesPressure

@@ -88,7 +88,7 @@
   <data name="Status_StoppingEngine" xml:space="preserve"><value>D'Engine gëtt gestoppt…</value></data>
   <data name="Server_RunningOn_Format" xml:space="preserve"><value>Leeft op {0}</value></data>
   <data name="Server_RunningClients_Format" xml:space="preserve"><value>Leeft, {0} verbonnen</value></data>
-  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Lauschtert op :{0}</value></data>
+  <data name="Server_ListeningOn_Format" xml:space="preserve"><value>Lauschtert um Port {0}</value></data>
   <data name="Server_PortInUse_Format" xml:space="preserve"><value>Port {0} besat</value></data>
   <data name="Server_AccessDenied_Format" xml:space="preserve"><value>Zougrëff op de Port {0} refuséiert (als Admin ausféieren)</value></data>
   <data name="Server_FailedToStart" xml:space="preserve"><value>Starten ass feelgeschloen</value></data>
@@ -106,10 +106,11 @@
   <data name="Common_Stop" xml:space="preserve"><value>Stoppen</value></data>
   <data name="Common_Start" xml:space="preserve"><value>Starten</value></data>
   <data name="Common_Record" xml:space="preserve"><value>Ophuelen</value></data>
-  <data name="Common_Recording" xml:space="preserve"><value>Gëtt opgeholl...</value></data>
+  <data name="Common_Recording" xml:space="preserve"><value>Gëtt opgeholl…</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Eidelmaachen</value></data>
   <data name="Common_None" xml:space="preserve"><value>Keng</value></data>
   <data name="Common_Ms" xml:space="preserve"><value>ms</value></data>
+  <data name="Common_Seconds" xml:space="preserve"><value>Sekonnen</value></data>
   <data name="Common_Hz" xml:space="preserve"><value>Hz</value></data>
   <data name="Common_Unassigned" xml:space="preserve"><value>Net zougewisen</value></data>
   <data name="Common_PadForge" xml:space="preserve"><value>PadForge</value></data>
@@ -124,7 +125,7 @@
   <data name="ControllerType_VR" xml:space="preserve"><value>VR</value></data>
 
   <!-- ═══ MainWindow ═══ -->
-  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge gëtt zougemaach...</value></data>
+  <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge gëtt zougemaach…</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge gëtt gestart…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Virtuell Controller, déi vun enger viregter Sessioun iwwreg sinn, ginn opgeraumt.</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Controller derbäisetzen</value></data>
@@ -226,8 +227,8 @@
   <data name="Status_DirectionDown" xml:space="preserve"><value>(↓ erof)</value></data>
   <data name="Status_DirectionLeft" xml:space="preserve"><value>(← lénks)</value></data>
   <data name="Status_DirectionUp" xml:space="preserve"><value>(↑ erop)</value></data>
-  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll NET FONNT</value></data>
-  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll net fonnt! Leet SDL3.dll niewent PadForge.exe. Eroflueden ënner https://github.com/libsdl-org/SDL/releases</value></data>
+  <data name="Status_SDL3NotFound" xml:space="preserve"><value>SDL3.dll net fonnt</value></data>
+  <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll net fonnt. Leet SDL3.dll niewent PadForge.exe. Luet se erof ënner https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Treiberoperatioun feelgeschloen: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Astellungen an d'Tëschenoflag kopéiert.</value></data>
   <data name="Status_DossierCopied" xml:space="preserve"><value>Apparatinfo an d'Tëschenoflag kopéiert.</value></data>
@@ -258,11 +259,11 @@
   <data name="Status_SettingsReloaded" xml:space="preserve"><value>Astellungen nei vun der Disk gelueden.</value></data>
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>Keng Astellungsdatei op der Disk fonnt.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Keen Apparat verbonnen fir dovun opzehuelen.</value></data>
-  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Opnam: dréckt e Knäppchen oder beweegt eng Achs fir „{0}“...</value></data>
-  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Opnam: dréit oder rëselt e Controller fir „{0}“...</value></data>
+  <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Opnam: dréckt e Knäppchen oder beweegt eng Achs fir „{0}“…</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Opnam: dréit oder rëselt e Controller fir „{0}“…</value></data>
   <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>Kee Controller an dësem Slot huet e Sensor fir „{0}“.</value></data>
-  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Opnam „{0}“: dréckt d'Agab fir d'Richtung Erop...</value></data>
-  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Opnam „{0}“: dréckt elo d'Agab fir d'Richtung Erof...</value></data>
+  <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Opnam „{0}“: dréckt d'Agab fir d'Richtung Erop…</value></data>
+  <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Opnam „{0}“: dréckt elo d'Agab fir d'Richtung Erof…</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Opnam ofgebrach.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>D'Zäit fir d'Opnam vu „{0}“ ass ofgelaf.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Engine gestart.</value></data>
@@ -281,7 +282,8 @@
   <data name="Profiles_ShortcutMode_ToggleWindow" xml:space="preserve"><value>PadForge weisen oder verstoppen</value></data>
   <data name="Profiles_ShortcutMode_ToggleVCsDisabled" xml:space="preserve"><value>Virtuell Controller un- oder ausschalten</value></data>
   <data name="Profiles_ShortcutDevice_Any" xml:space="preserve"><value>Iergendee verbonnenen Apparat</value></data>
-  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Gëtt opgeholl...</value></data>
+  <data name="Profiles_ShortcutLearning" xml:space="preserve"><value>Gëtt opgeholl…</value></data>
+  <data name="Profiles_ShortcutCountdown_Format" xml:space="preserve"><value>({0} s)</value></data>
   <data name="Profiles_Shortcut_When" xml:space="preserve"><value>wann</value></data>
   <data name="Profiles_Shortcut_On" xml:space="preserve"><value>op</value></data>
   <data name="Status_DeviceUnassignedSlot_Format" xml:space="preserve"><value>„{0}“ vum Virtuelle Controller {1} ewechgeholl.</value></data>
@@ -314,6 +316,11 @@
   <data name="Home_Controllers" xml:space="preserve"><value>Controller</value></data>
   <data name="Home_ExtrasInUse" xml:space="preserve"><value>Extraen am Asaz</value></data>
   <data name="Home_ExtraOn_Format" xml:space="preserve"><value>Un. {0}</value></data>
+  <data name="Home_Stage_Defaults" xml:space="preserve"><value>Standardastellungen</value></data>
+  <data name="Home_Stage_Value_Format" xml:space="preserve"><value>{0} {1}</value></data>
+  <data name="Home_Stage_On_Format" xml:space="preserve"><value>{0}: {1}</value></data>
+  <data name="Home_Stage_LeftStick" xml:space="preserve"><value>Lénke Stick</value></data>
+  <data name="Home_Stage_RightStick" xml:space="preserve"><value>Rietse Stick</value></data>
   <data name="Home_MoreExtras" xml:space="preserve"><value>{0} weider an den [Extraen]. En Extra bleift aus, bis Dir en uschalt.</value></data>
   <data name="Home_OpenExtras" xml:space="preserve"><value>Extraen opmaachen</value></data>
   <data name="Home_ShowQr" xml:space="preserve"><value>QR weisen</value></data>
@@ -416,11 +423,11 @@
   <data name="Extras_Note_GameTelemetry" xml:space="preserve"><value>D'Wäerter sinn d'Zeil Spill-Telemetrie op [Apparater]. Ordnt se an der Sektioun Zouuerdnungen vun engem Controller zou oder léist domat Makroen aus.</value></data>
   <data name="Extras_Note_Overlays" xml:space="preserve"><value>Plaz, Gréisst an Opazitéit vun engem Menü ginn um Menü selwer agestallt, an der Sektioun [Makroen an Menüen] vun engem Controller.</value></data>
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Quellen</value></data>
-  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack an alles, wat säin UDP-Format schéckt</value></data>
+  <data name="Extras_HeadTracking_UdpHint" xml:space="preserve"><value>OpenTrack an alles, wat säin UDP-Format schéckt.</value></data>
   <data name="Extras_HeadTracking_Range" xml:space="preserve"><value>Beräich</value></data>
   <data name="Extras_HeadTracking_AxisNote" xml:space="preserve"><value>Beräich pro Achs. Null hält sech un de Beräich uewen.</value></data>
   <data name="Extras_GameTelemetry_UnknownGames" xml:space="preserve"><value>Spiller, déi PadForge net kennt</value></data>
-  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Fir Mods, déi no engem lafenden DSX sichen, ier se schécken</value></data>
+  <data name="Extras_GameMods_StandInHint" xml:space="preserve"><value>Fir Mods, déi no engem lafenden DSX sichen, ier se schécken.</value></data>
   <data name="Extras_Overlays_WhatShows" xml:space="preserve"><value>Wat ugewise gëtt</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>De Rank, d'Gitter oder d'Leescht vun engem Menü, soulaang en op ass</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Den Numm vun der Schicht, wann eng Shift-Schicht aktiv gëtt, fir d'Zäit, déi dës Schicht festleet</value></data>
@@ -679,7 +686,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Settings_HidHideOptions_FoldHint" xml:space="preserve"><value>Apparater virun de Spiller verstoppen, Apparater iwwer Neistarte verstoppt halen, Erlaabt Applikatiounen</value></data>
   <data name="Settings_WhitelistedApps" xml:space="preserve"><value>Erlaabt Applikatiounen</value></data>
   <data name="Settings_WhitelistDesc" xml:space="preserve"><value>Dës Applikatioune gesinn verstoppt Apparater weiderhin. PadForge ass ëmmer automatesch erlaabt.</value></data>
-  <data name="Settings_AddDots" xml:space="preserve"><value>Derbäisetzen...</value></data>
+  <data name="Settings_AddDots" xml:space="preserve"><value>Derbäisetzen…</value></data>
   <data name="Settings_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
   <data name="Settings_HIDMaestroDesc" xml:space="preserve"><value>PadForge installéiert dësen Treiber mam éischte virtuelle Controller, deen Dir erstellt. Desinstalléieren weist, wat HIDMaestro op dësem PC hannerlooss huet, ier et et ewechhëlt.</value></data>
   <data name="Settings_HIDMaestroLine" xml:space="preserve"><value>Erstellt déi virtuell Controller.</value></data>
@@ -698,6 +705,21 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="HIDMaestroUninstall_OutcomeKept" xml:space="preserve"><value>Behalen</value></data>
   <data name="HIDMaestroUninstall_OutcomeUnread" xml:space="preserve"><value>Net gelies</value></data>
   <data name="HIDMaestroUninstall_OutcomeNotRemoved" xml:space="preserve"><value>Net ewechgeholl</value></data>
+  <data name="HIDMaestroUninstall_KindDevice" xml:space="preserve"><value>Apparat</value></data>
+  <data name="HIDMaestroUninstall_KindInterface" xml:space="preserve"><value>Registréierung vum Interface</value></data>
+  <data name="HIDMaestroUninstall_KindSharedKey" xml:space="preserve"><value>Gedeelte Registry-Schlëssel</value></data>
+  <data name="HIDMaestroUninstall_KindSharedValue" xml:space="preserve"><value>Gedeelte Registry-Wäert</value></data>
+  <data name="HIDMaestroUninstall_KindWinUsb" xml:space="preserve"><value>WinUSB-Bindung</value></data>
+  <data name="HIDMaestroUninstall_KindOemName" xml:space="preserve"><value>Iwwerschreiwung vum OEM-Numm</value></data>
+  <data name="HIDMaestroUninstall_KindDeviceOverrides" xml:space="preserve"><value>DeviceOverrides-Schlëssel</value></data>
+  <data name="HIDMaestroUninstall_KindOpenVr" xml:space="preserve"><value>OpenVR-Registréierung</value></data>
+  <data name="HIDMaestroUninstall_KindPackage" xml:space="preserve"><value>Treiberpak</value></data>
+  <data name="HIDMaestroUninstall_KindWudf" xml:space="preserve"><value>WUDF-Serviceschlëssel</value></data>
+  <data name="HIDMaestroUninstall_KindRegistryKey" xml:space="preserve"><value>Registry-Schlëssel</value></data>
+  <data name="HIDMaestroUninstall_KindCertificate" xml:space="preserve"><value>Zertifikat</value></data>
+  <data name="HIDMaestroUninstall_KindFolder" xml:space="preserve"><value>Dossier</value></data>
+  <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Service-Astellung</value></data>
+  <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Schrëtt vum Ewechhuelen</value></data>
   <data name="Settings_BthPS3" xml:space="preserve"><value>BthPS3 Bluetooth</value></data>
   <data name="Settings_BthPS3Desc" xml:space="preserve"><value>Erlaabt de PlayStation-3-Controller, der PlayStation Move an dem Navigation-Controller, sech iwwer Bluetooth ze verbannen. A PadForge integréiert a gëtt installéiert, wann ee vun hinnen déi éischte Kéier gekoppelt gëtt.</value></data>
   <data name="Settings_BthPS3Line" xml:space="preserve"><value>Verbënnt PlayStation-3-Controller iwwer Bluetooth.</value></data>
@@ -886,11 +908,11 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>„{0}“ tippen</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(keen Text)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Text</value></data>
-  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Zeecheverspéidung (ms)</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Verspéidung tëscht de Buschtawen</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekonnen tëscht de getippten Zeechen, bis zu 1000. Bei 0 gëtt de ganzen Text op eemol getippt.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Bei Inaktivitéit trennen</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Detailer</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>Minutten (0 = ni)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>Minutten</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Bluetooth trennen, wann iwwer USB ugeschloss</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Wann dëse Controller mellt, datt e lued, während en iwwer Bluetooth verbonnen ass, gëtt d'Bluetooth-Verbindung getrennt, sou datt e lued, ouni de Funkmodul mat Stroum ze versuergen. All USB-Stroumquell zielt, och Chargeuren fir d'Steckdous. Wann Dir Bluetooth erëm uschalt, während de Kabel dra bleift, gëtt et a Rou gelooss, bis de Kabel déi nächst Kéier erausgezu gëtt.</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Als iCade-Controller liesen</value></data>
@@ -981,7 +1003,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="GunCalibration_WiiInstruction" xml:space="preserve"><value>Riicht d'Wii Remote op d'Zil an dréckt B.</value></data>
   <data name="GunCalibration_WiiOffScreen" xml:space="preserve"><value>D'Wii Remote huet d'Sensor Bar net gesinn. Riicht se op d'Zil an dréckt nach eng Kéier B.</value></data>
   <data name="GunCalibration_WiiCancel" xml:space="preserve"><value>Esc oder Home brécht of.</value></data>
-  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Trennt dëse Bluetooth-Controller no esou ville Minutten ouni Agab, sou datt e schléift a Batterie spuert. Geschitt ni iwwer USB.</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Trennt dëse Bluetooth-Controller no esou ville Minutten ouni Agab, sou datt e schléift a Batterie spuert. 0 schalt et aus. Geschitt ni iwwer USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Un/Aus</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menü</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>
@@ -1069,11 +1091,15 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
   <data name="Devices_Gyroscope" xml:space="preserve"><value>Gyroskop</value></data>
   <data name="Devices_Accelerometer" xml:space="preserve"><value>Beschleunegungssensor</value></data>
+  <data name="Devices_Caps_OneAxis" xml:space="preserve"><value>1 Achs</value></data>
+  <data name="Devices_Caps_Axes_Format" xml:space="preserve"><value>{0} Achsen</value></data>
+  <data name="Devices_Caps_OneButton" xml:space="preserve"><value>1 Knäppchen</value></data>
+  <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} Knäppercher</value></data>
+  <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
+  <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POVs</value></data>
   <data name="Devices_Axis_Format" xml:space="preserve"><value>Achs {0}</value></data>
-  <data name="Devices_CapsSummary_Format" xml:space="preserve"><value>{0} Achsen, {1} Knäppercher, {2} POV(s)</value></data>
   <data name="Devices_Rumble" xml:space="preserve"><value>Vibratioun</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
-  <data name="Devices_Accel" xml:space="preserve"><value>Beschl.</value></data>
   <data name="Devices_Nfc" xml:space="preserve"><value>NFC</value></data>
   <data name="Devices_HideHidAction" xml:space="preserve"><value>dësen Apparat virun Programmer verstoppen, déi en als HID-Apparat opmaachen</value></data>
   <data name="Devices_WarnHideHid_Keyboard" xml:space="preserve"><value>Windows liest ëmmer nach d'Tasten, déi Dir tippt, dofir funktionéiert d'Tippen weiderhin an all Programm, och a Spiller. Eng USB-Tastatur kann Windows mat „{0}“ entzu ginn.</value></data>
@@ -1238,7 +1264,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Lighting_VendorRowExamples_LedSdk" xml:space="preserve"><value>Headsets, Mauspads a Lautsprecher</value></data>
   <data name="Pad_Lighting_VendorRowExamples_GameSense" xml:space="preserve"><value>Headsets</value></data>
   <data name="Pad_Lighting_GamesWin_Hint" xml:space="preserve"><value>Spiller iwwerhuelen, soubal se Beliichtung schreiwen.</value></data>
-  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
+  <data name="Pad_Lighting_Hex" xml:space="preserve"><value>Hex</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Gitt eng sechsstelleg Hex-Faarf an (RRGGBB oder #RRGGBB) an dréckt Enter oder klickt anerwäerts, fir se z'iwwerhuelen.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Dës Faarf aus der Palette ewechhuelen</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Aus</value></data>
@@ -1352,7 +1378,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="ManageProfiles_StatusImportRefused_Format" xml:space="preserve"><value>Et gouf näischt importéiert. {0}</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importéieren</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(HID-Apparat ouni Numm)</value></data>
-  <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} HID-Interface(en) fonnt.</value></data>
+  <data name="ImportFromDevice_StatusFound_Format" xml:space="preserve"><value>{0} HID-Interfacen fonnt.</value></data>
+  <data name="ImportFromDevice_StatusFoundOne" xml:space="preserve"><value>1 HID-Interface fonnt.</value></data>
   <data name="ImportFromDevice_StatusEnumFailed_Format" xml:space="preserve"><value>Oplëschten feelgeschloen: {0}</value></data>
   <data name="ImportFromDevice_StatusExtractFailed_Format" xml:space="preserve"><value>Extraktioun feelgeschloen: {0}</value></data>
   <data name="ImportFromDevice_StatusPersistFailed" xml:space="preserve"><value>Déi extrahéiert Profil-JSON konnt net analyséiert ginn. Et gouf näischt gespäichert.</value></data>
@@ -1465,7 +1492,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>All Zouuerdnungen eng no där anerer ophuelen</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>All Zouuerdnungen an Astellungen an den Zwëschespäicher kopéieren</value></data>
   <data name="Pad_PasteTooltip" xml:space="preserve"><value>Zouuerdnungen an Astellungen aus dem Zwëschespäicher afügen</value></data>
-  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopéieren aus...</value></data>
+  <data name="Pad_CopyFrom" xml:space="preserve"><value>Kopéieren aus…</value></data>
   <data name="Pad_CopyFromTooltip" xml:space="preserve"><value>Astellunge vun engem anere konfiguréierten Apparat kopéieren</value></data>
   <data name="Pad_ResetAll" xml:space="preserve"><value>Alles zrécksetzen</value></data>
   <data name="Pad_ClearAll" xml:space="preserve"><value>Alles läschen</value></data>
@@ -1652,7 +1679,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_More_Trigger" xml:space="preserve"><value>De Beräich an Zuelen, réi Wäerter</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Beräich</value></data>
   <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>„Grenz kalibréieren“ moosst de Rand, deen de Stick erreeche kann, a formt en zu engem volle Krees ëm. Déi véier Regeler begrenzen all nëmmen eng Richtung.</value></data>
-  <data name="Pad_Sampling" xml:space="preserve"><value>Gëtt gemooss...</value></data>
+  <data name="Pad_Sampling" xml:space="preserve"><value>Gëtt gemooss…</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Mëttekorrektur X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Mëttekorrektur Y</value></data>
   <data name="Pad_DeadZoneShape" xml:space="preserve"><value>Doudzonform</value></data>
@@ -1763,6 +1790,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Macro_DelayMs" xml:space="preserve"><value>Verspéidung</value></data>
   <data name="Macro_Sensitivity" xml:space="preserve"><value>Empfindlechkeet</value></data>
   <data name="Macro_NewMacro" xml:space="preserve"><value>Neie Makro</value></data>
+  <data name="Macro_Default_Format" xml:space="preserve"><value>Makro {0}</value></data>
   <data name="Macro_RecordTrigger" xml:space="preserve"><value>Ausléiser ophuelen</value></data>
   <data name="Macro_NotSet" xml:space="preserve"><value>Net festgeluecht. Klickt op Ophuelen.</value></data>
   <data name="Macro_Btn_Format" xml:space="preserve"><value>Knäppchen {0}</value></data>
@@ -1821,6 +1849,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Steiert d'Vibratioun vum physeschen Apparat vum Slot aus engem Makro. Reaktiv leeft wärend der Haltzäit mat voller Stäerkt a blendt dann iwwer d'Ausblendzäit op null aus. Permanent hält voll Stäerkt, bis eng Aktioun „Vibratioun stoppen“ leeft. Gëtt iwwer max() op d'Vibratioun vum Spill geluecht, sou datt d'Feedback vum Benotzer ëmmer ze spieren ass.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Vibratiounspuls {0} ({1} ms)</value></data>
   <data name="MacroAction_Rumble_Sticky_Format" xml:space="preserve"><value>Vibratioun {0} halen, bis se opgehuewe gëtt</value></data>
+  <data name="MacroAction_Rumble_Motors_Format" xml:space="preserve"><value>lénks {0} %, riets {1} %</value></data>
+  <data name="MacroAction_Rumble_Triggers_Format" xml:space="preserve"><value>Trigger lénks {0} %, Trigger riets {1} %</value></data>
   <data name="MacroAction_Type_RumbleStop" xml:space="preserve"><value>Vibratioun stoppen</value></data>
   <data name="MacroAction_RumbleStop" xml:space="preserve"><value>Vibratioun stoppen</value></data>
   <data name="MacroAction_RumbleStop_Tooltip" xml:space="preserve"><value>Hieft all aktiven Vibratiouns-Override um zougewisene Slot op. Kombinéiert et mat enger permanenter Vibratiounsaktioun, fir d'Halen iwwer en anere Makro réckgängeg ze maachen.</value></data>
@@ -1859,7 +1889,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Maus Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Intervall</value></data>
   <data name="Macro_PickOnScreen" xml:space="preserve"><value>Um Bildschierm wielen</value></data>
-  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Opnam an {0}...</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Opnam an {0}…</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Klickt, a beweegt dann de Mauszeiger op d'Zil. Seng Positioun gëtt no engem kuerze Countdown festgehalen.</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>Ofstand X</value></data>
@@ -1886,9 +1916,9 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>Net zougeuerdnet</value></data>
-  <data name="Mapping_Inv" xml:space="preserve"><value>Inv.</value></data>
+  <data name="Mapping_Inv" xml:space="preserve"><value>Invertéiert</value></data>
   <data name="Mapping_Half" xml:space="preserve"><value>Hallef</value></data>
-  <data name="Mapping_InvHalf" xml:space="preserve"><value>Inv. Hallef</value></data>
+  <data name="Mapping_InvHalf" xml:space="preserve"><value>Hallef invertéiert</value></data>
   <data name="Mapping_POV_Format" xml:space="preserve"><value>POV {0} {1}</value></data>
   <data name="Mapping_NoDeviceMapped" xml:space="preserve"><value>Keen Apparat zougeuerdnet</value></data>
 
@@ -2526,9 +2556,9 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Profiles_DropToImport" xml:space="preserve"><value>Ofleeën, fir d'Profil z'importéieren</value></data>
   <data name="Profiles_DropTile" xml:space="preserve"><value>Profil-Fichier hei ofleeën</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Neit Profil</value></data>
-  <data name="Profiles_SaveAs" xml:space="preserve"><value>Späicheren ënner</value></data>
+  <data name="Profiles_SaveAs" xml:space="preserve"><value>Späicheren ënner…</value></data>
   <data name="Profiles_SaveHere" xml:space="preserve"><value>Aktuelle Setup hei späicheren</value></data>
-  <data name="Profiles_Edit" xml:space="preserve"><value>Änneren</value></data>
+  <data name="Profiles_Edit" xml:space="preserve"><value>Änneren…</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Lueden</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Integréiert</value></data>
   <data name="Profiles_Card_NoGame" xml:space="preserve"><value>Kee Spill festgeluecht</value></data>
@@ -2629,8 +2659,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Mëttekorrektur X zrécksetzen</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Grenz kalibréieren</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Grenz nei kalibréieren</value></data>
-  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Rand ëmkreesen... nach {0}</value></data>
-  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Ofgedeckt. Nach eng Ronn, fir ze verfeineren...</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Rand ëmkreesen… nach {0}</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Ofgedeckt. Nach eng Ronn, fir ze verfeineren…</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>De Stick ronderëm säi Rand dréien, fir déi erreechbar Grenz z'erfaassen. Duerno gëtt se zu engem vollen Krees ëmgeformt.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Grenzkalibréierung zrécksetzen</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Mëttekorrektur Y zrécksetzen</value></data>
@@ -2706,7 +2736,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Steiert d'Lautstäerkt vun enger bestëmmter Applikatioun am Windows-Lautstäerktmixer, skaléiert op d'Lautstäerktlimit. Gitt den Numm vum Prozess an (ze gesinn am Task-Manager). Mam Ausléiser „Ëmmer“ benotzen, oder mat engem Knäppchen-/Achsausléiser mat „Wärend gehal“ + „Bis lassgelooss“.</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Ordnet déi gewielten Achs kontinuéierlech der Mausbeweegung (oder dem Scrollen) zou. Mam Ausléiser „Ëmmer“ benotzen, oder mat engem Knäppchen-/Achsausléiser mat „Wärend gehal“ + „Bis lassgelooss“. Fir Stick-op-Maus zwou Aktiounen erstellen: eng fir d'X-Achs, eng fir d'Y-Achs.</value></data>
   <data name="Macro_InvertAxis" xml:space="preserve"><value>Achs invertéieren</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Lautstäerkt-OSD weisen</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Lautstäerkt-Uweisung weisen</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Richtung</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Beléiweg</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positiv</value></data>
@@ -2926,7 +2956,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Preview_CCOutputs" xml:space="preserve"><value>CC-Ausgäng</value></data>
   <data name="Preview_NoteOutputs" xml:space="preserve"><value>Nouten-Ausgäng</value></data>
   <data name="Preview_Stick_Format" xml:space="preserve"><value>Stick {0}</value></data>
-  <data name="Preview_Trigger_Format" xml:space="preserve"><value>T{0}</value></data>
+  <data name="Preview_Trigger_Format" xml:space="preserve"><value>Trigger {0}</value></data>
   <data name="Preview_DPad" xml:space="preserve"><value>D-Pad</value></data>
   <data name="Preview_Buttons" xml:space="preserve"><value>Knäppercher</value></data>
   <data name="Preview_POV_Format" xml:space="preserve"><value>POV {0}</value></data>
@@ -2943,7 +2973,6 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Settings_AudioRumble_Level" xml:space="preserve"><value>Pegel</value></data>
   <data name="Settings_HmInactivityTimeout" xml:space="preserve"><value>Inaktivitéits-Timeout</value></data>
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Sekonnen, bis e virtuelle Controller zerstéiert gëtt, wann all seng zougeuerdent Apparater offline sinn. 0 schalt et aus. Déi verbleiwend Controller vum selwechten Typ réckelen no, fir d'Lück ze fëllen, a gi mat méi niddrege Slots verbonnen.</value></data>
-  <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>Sekonnen (0 = ni)</value></data>
   <!-- Shift mode (Issue #61 Phase 6 v1+) -->
   <data name="Pad_Shift_AddLayer" xml:space="preserve"><value>Schicht derbäisetzen</value></data>
   <data name="Pad_Shift_AddLayer_Tooltip" xml:space="preserve"><value>Eng Shift-Schicht derbäisetzen. Eng zweet Zouuerdnungstabell, déi aktiv ass, soulaang e Knäppchen gehal oder ëmgeschalt ass.</value></data>
@@ -3718,7 +3747,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
     <value>Verzögerung op 0 zrécksetzen (d'Schicht reagéiert direkt).</value>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Community-Konfiguratiounen</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Duerchsicht Steam-Input-Controllerkonfiguratiounen, déi d'Community gemaach huet, a setzt se a PadForge-Profiler ëm. PadForge verbënnt sech nëmmen dann direkt mat de Servere vu Steam, wann Dir sicht, eng Konfiguratioun opmaacht oder Är importéiert Konfiguratiounen op Updates iwwerpréift. Et schéckt Äre Sichtext, d'IDe vun de betraffene Spiller, Konfiguratiounen an Auteuren, an d'Versioun vu PadForge. Déi anonym Steam-Umeldung schéckt och Är Windows-Versioun an eng Maschinn-ID aus Hashwäerter vun Ärer Windows-Installatiouns-ID, den Adresse vun Ären Netzwierkadapteren an der Seriennummer vun Ärer Startplack. Keng Telemetrie, keen Drëttubidderdéngscht, kee Steam-Kont.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Duerchsicht Steam-Input-Controllerkonfiguratiounen, déi d'Community gemaach huet, a setzt se a PadForge-Profiler ëm. PadForge schéckt Äre Sichtext, d'IDe vun de betraffene Spiller, Konfiguratiounen an Auteuren, a seng Versioun. Déi anonym Steam-Umeldung schéckt och Är Windows-Versioun an eng Maschinn-ID aus Hashwäerter vun Ärer Windows-Installatiouns-ID, den Adresse vun Ären Netzwierkadapteren an der Seriennummer vun Ärer Startplack. Keen Drëttubidderdéngscht ass bedeelegt.</value></data>
   <data name="Settings_CommunityConfigs_Line" xml:space="preserve"><value>PadForge verbënnt sech nëmmen dann mat de Servere vu Steam, wann Dir sicht, eng Konfiguratioun opmaacht oder importéiert Konfiguratiounen op Updates iwwerpréift. Keng Telemetrie, kee Steam-Kont.</value></data>
   <data name="Settings_WhatIsSent" xml:space="preserve"><value>Wat geschéckt gëtt</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Community-Konfiguratiounen aktivéieren</value></data>
@@ -3775,6 +3804,9 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Workshop_LegacyBody" xml:space="preserve"><value>Steam weist fir dës Konfiguratioun kee Fichier zum Eroflueden, an an Ärem Steam-Dossier ass keng Kopie dovun. Abonnéiert se a Steam, a PadForge liest se vun do.</value></data>
   <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Am Steam Workshop opmaachen</value></data>
   <data name="Workshop_LegacyTag" xml:space="preserve"><value>Veraalt</value></data>
+  <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Workshop-Profil</value></data>
+  <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Workshop-Makro</value></data>
+  <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Cursorberäich</value></data>
   <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Wielt eng Konfiguratioun, fir ze gesinn, wat iwwerholl gëtt.</value></data>
   <data name="Workshop_WhatComesAcross" xml:space="preserve"><value>Wat iwwerholl gëtt</value></data>
   <data name="Workshop_Becomes" xml:space="preserve"><value>Gëtt</value></data>
@@ -4149,6 +4181,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Mëttel (sanft)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Héich (sanft)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Personaliséiert</value></data>
+  <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b-Standard</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Grenzfrequenz</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Iwwergangsfrequenz. Dorënner gi d'Kanäl a Richtung Mono gemëscht, doriwwer bleiwe se getrennt, eng méi niddreg Grenzfrequenz mëscht also manner iwwer.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Pegelofstand</value></data>
@@ -4168,7 +4201,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Pad_Audio_EqType_HighPass" xml:space="preserve"><value>Héichpass</value></data>
   <data name="Pad_Audio_EqType_LowPass" xml:space="preserve"><value>Déifpass</value></data>
   <data name="Pad_Audio_EqType_Notch" xml:space="preserve"><value>Notch</value></data>
-  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Freq. (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Frequenz (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Verstäerkung (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
   <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Band derbäisetzen</value></data>
@@ -4176,7 +4209,8 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Eidelmaachen</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Aus der Zwëschenoflag importéieren</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Kopéiert en AutoEq-Profil fir Äre Kopfhörer a klickt dann hei. Ersetzt d'Bänner a setzt d'Virverstäerkung. Wann näischt Liesbares an der Zwëschenoflag ass, bleift den aktuellen EQ onverännert.</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Aus Fichier importéieren</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Aus Fichier importéieren…</value></data>
+  <data name="Pad_Audio_EqImportFileTitle" xml:space="preserve"><value>Parametreschen EQ importéieren</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Wielt de .txt-Fichier, deen Dir vun AutoEq erofgelueden hutt. Dat ass de richtege Wee: autoeq.app gëtt Iech e Fichier amplaz vun Text zum Kopéieren.</value></data>
   <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Fir eng Korrektur, déi op Äre Kopfhörer ofgestëmmt ass: maacht autoeq.app op, wielt Äre Modell, wielt Custom Parametric Eq a luet en erof, dann „Aus Fichier importéieren“. Den Download Graphic Eq huet keng Filterzeilen a léisst sech net importéieren.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{0} Bänner mat {1:0.#} dB Virverstäerkung aus {2} importéiert.</value></data>
@@ -4229,6 +4263,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Dëst Netzwierk kann keng direkt Verbindunge maachen (et gesäit aus wéi e mobillen Hotspot oder Carrier-Grade-NAT). Benotzt e VPN wéi Tailscale, oder verbannt Iech vun engem Breetband-Uschloss doheem.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Déi ëffentlech Adress vun dësem PC gouf net fonnt (d'Netzwierk blockéiert eventuell den néidegen Traffic). Direkt Verbindunge funktionéieren hei net. Benotzt e VPN, oder „Iwwer Adress verbannen“ am selwechten Netzwierk.</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Controller-Batterie schwaach</value></data>
+  <data name="Battery_UnnamedController" xml:space="preserve"><value>Controller</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1} % Batterie iwwreg</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Batteriewarnungen</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Gitt informéiert, wann d'Batterie vun engem Controller eidel gëtt, ier se mëtten am Spill ausfält.</value></data>
@@ -4440,7 +4475,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
     <value>Erstellt e virtuelle Controller um anere PC, an aktualiséiert dann.</value>
   </data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
-    <value>Waart op deen anere PC...</value>
+    <value>Waart op deen anere PC…</value>
   </data>
   <data name="DeviceType_Tablet" xml:space="preserve"><value>Grafiktablett</value></data>
   <data name="Tablet_InputShared" xml:space="preserve"><value>Gedeelt Agab</value></data>
@@ -4500,7 +4535,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Status_SteamVRLocationNotFull" xml:space="preserve"><value>D'Installatiounsplaz vu SteamVR muss e komplette Pad sinn, zum Beispill C:\SteamVR.</value></data>
   <data name="Status_SteamVRLocationIsDriveRoot" xml:space="preserve"><value>D'Installatiounsplaz vu SteamVR kann net d'Wuerzel vun engem Laafwierk sinn. Wielt en Dossier, zum Beispill C:\SteamVR.</value></data>
   <data name="Status_SteamCmdTimedOut" xml:space="preserve"><value>steamcmd ass net bannent 60 Minutte fäerdeg ginn.</value></data>
-  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd ass gelaf, mee SteamVR ass net an {0} ukomm. steamcmd sot: ...{1}</value></data>
+  <data name="Status_SteamVRDidNotLand_Format" xml:space="preserve"><value>steamcmd ass gelaf, mee SteamVR ass net an {0} ukomm. steamcmd sot: …{1}</value></data>
   <data name="Status_HidHideDriverDidNotStart" xml:space="preserve"><value>HidHide gouf installéiert, mee säi Steierapparat ass net opgaangen, dofir gouf kee Klassefilter derbäigesat.</value></data>
   <data name="Status_HidHideFilterStillListed" xml:space="preserve"><value>HidHide ass nach ëmmer als Klassefilter agedroen, dofir gouf den Treiber net ewechgeholl.</value></data>
   <data name="Status_RemovingLegacyDrivers" xml:space="preserve"><value>Al Treiber ginn ewechgeholl…</value></data>
@@ -4958,6 +4993,8 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="Devices_Detail_Battery" xml:space="preserve"><value>Batterie</value></data>
   <data name="Devices_Detail_Path" xml:space="preserve"><value>Pad</value></data>
   <data name="Devices_Detail_Serial" xml:space="preserve"><value>Seriennummer</value></data>
+  <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>App-GUID</value></data>
+  <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL-GUID</value></data>
   <data name="Devices_Detail_Firmware" xml:space="preserve"><value>Firmware</value></data>
   <data name="Devices_Detail_Revision" xml:space="preserve"><value>Revisioun</value></data>
   <data name="Settings_More_BatteryAlerts" xml:space="preserve"><value>Och de Controller vibréiere loossen, Notifikatioun widderhuelen all, Notifikatioun, wann voll gelueden</value></data>
@@ -4969,4 +5006,8 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="RemoteLink_PasswordLabel" xml:space="preserve"><value>Passwuert</value></data>
   <data name="MacroAction_Type_MagnifierWhileHeld" xml:space="preserve"><value>Lupp (gehalen)</value></data>
   <data name="MacroAction_MagnifierWhileHeld_Tooltip" xml:space="preserve"><value>Weist d'Lupp, soulaang dëse Makro gehale gëtt, fir iwwer d'Visier ze zillen. Riicht se op der Säit „Lupp“ an.</value></data>
+  <data name="Pad_Chip_Curve" xml:space="preserve"><value>Kurv</value></data>
+  <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Shift-Schichten</value></data>
+  <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Invertéiert</value></data>
+  <data name="Pad_Curve_Peak" xml:space="preserve"><value>Spëtzt</value></data>
 </root>

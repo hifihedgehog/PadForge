@@ -100,12 +100,12 @@ namespace PadForge.Common
 
             // Fork BLE Switch 2: the SDL fork's BLE GATT driver surfaces no
             // device path at all (BLE_PublishController records none,
-            // SDL_ble_switch2joystick.c:643-660, so SDL_GetJoystickPath returns NULL,
+            // SDL_ble_switch2joystick.c:658-675, so SDL_GetJoystickPath returns NULL,
             // SDL_joystick.c:3133-3138, and SDL3Minimal.SDL_GetJoystickPath
             // coalesces that to string.Empty). A Switch 2-family VID/PID with
             // an empty path is therefore that driver, which is Bluetooth LE by
             // construction (BLE_JoystickOpen sets
-            // SDL_JOYSTICK_CONNECTION_WIRELESS, SDL_ble_switch2joystick.c:2626).
+            // SDL_JOYSTICK_CONNECTION_WIRELESS, SDL_ble_switch2joystick.c:2682).
             // A wired Switch 2 rides hidapi/libusb and always carries a real
             // path (HIDAPI_CreateJoystickDevice records the HID device's path,
             // SDL_hidapijoystick.c:1619, which the open copies to the joystick,

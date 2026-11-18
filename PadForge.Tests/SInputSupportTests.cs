@@ -17,7 +17,7 @@ namespace PadForge.Tests
     /// and the packer behind the HIDMaestro <c>sinput</c> persona.
     ///
     /// <para>The wire side is checked against a port of SDL's own SInput code
-    /// at the fork PadForge ships, c82e5afffc: the feature reply parse
+    /// at the fork PadForge ships, 51470ad786: the feature reply parse
     /// (SDL_hidapi_sinput.c:437-557), the style decode (:274-434), the report
     /// decode (:839-1052) and the mapping builder (SDL_gamepad.c:848-1069).
     /// The persona's feature reply is the one HIDMaestro#75 specifies, so the

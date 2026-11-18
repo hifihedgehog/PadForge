@@ -96,7 +96,7 @@ namespace PadForge.Engine
         /// Bluetooth Switch 2 driver when a recovery finds the vibration
         /// characteristic the connect could not, as when the link dropped
         /// during the setup (BLE_FinishRestore,
-        /// SDL_ble_switch2joystick.c:2424-2445), and the HID drivers through
+        /// SDL_ble_switch2joystick.c:2444-2465), and the HID drivers through
         /// HIDAPI_UpdateDeviceProperties (SDL_hidapijoystick.c:1076-1090),
         /// as the PS5 driver does when enhanced mode becomes available
         /// (SDL_hidapi_ps5.c:847-883). The open read the property once, so

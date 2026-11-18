@@ -18,7 +18,7 @@ namespace PadForge.Common.Input
     ///
     /// <para>The frame, report ID at byte 0, as SINPUT-LIB-HID 8dd1e5a builds
     /// it (sinput_lib_protocol.c:81-176, filled at :406-487) and SDL reads it
-    /// (SDL fork c82e5afffc, SDL_hidapi_sinput.c:66-88, decoded at
+    /// (SDL fork 51470ad786, SDL_hidapi_sinput.c:66-88, decoded at
     /// :839-1052):</para>
     /// <list type="bullet">
     /// <item>1 plug status, 2 charge percent.</item>

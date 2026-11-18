@@ -389,10 +389,13 @@ namespace PadForge.Common.Input
         /// payload...]. The fork's BLE_JoystickSendEffect wraps it in the
         /// 0x91 command header with BLE_BuildCommand and writes it without
         /// waiting for a reply, since the pad powers off instead of
-        /// answering (SDL_ble_switch2joystick.c:2716-2742, BLE_BuildCommand
-        /// at 776-793). Returns false when no gamepad is open, or when SDL
+        /// answering (SDL_ble_switch2joystick.c:2777-2807, BLE_BuildCommand
+        /// at 796-813). Returns false when no gamepad is open, or when SDL
         /// refuses or fails the write. SDL refuses it while the driver
-        /// waits for a lost link to come back (:2723-2725).</summary>
+        /// waits for a lost link to come back (:2784-2786). The driver
+        /// remembers a shutdown it delivered (:2802-2805) and removes the
+        /// joystick at the loss that follows, where any other loss waits
+        /// up to 12 s for the link (BLE_LossAfterShutdown, :2475-2491).</summary>
         private static bool TrySwitch2EffectPassthrough(IntPtr gamepadHandle)
         {
             if (OffLimitsForTest) return false;

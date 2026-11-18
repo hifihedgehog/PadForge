@@ -518,6 +518,17 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public int PeripheralOutputs { get; set; }
 
+        /// <summary>The Flydigi Apex model the pad answered with when
+        /// PadForge asked it (#586): 1 Apex 4, 2 Apex 5, 3 Apex 6 Pro, the
+        /// values of <see cref="PadForge.Engine.Flydigi.FlydigiApexModel"/>,
+        /// which only grows at its end. 0 for every other device and for a
+        /// pad not asked yet. Persisted so the pad's Adaptive Triggers,
+        /// Impulse Triggers and Lighting tabs stay up while it sleeps, as
+        /// <see cref="HasRumbleTriggers"/> keeps an Xbox pad's.</summary>
+        [XmlElement]
+        public int FlydigiApexModel { get; set; }
+        public bool ShouldSerializeFlydigiApexModel() => FlydigiApexModel != 0;
+
         /// <summary>The row has a haptic output (#494).</summary>
         [XmlIgnore]
         public bool HasPeripheralHaptics => (PeripheralOutputs & 1) != 0;

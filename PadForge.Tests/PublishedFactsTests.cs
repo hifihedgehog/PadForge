@@ -55,6 +55,7 @@ namespace PadForge.Tests
                 "Jc2Mouse", "JoyShockMapper", "Libinput", "MidiServices", "MvvmToolkit", "NAudio", "NefariusDevMgmt",
                 "DotNet", "Nipplejs", "QrCodeGen", "TriggerEffectGenerator", "TwitchChatRefs", "ViGEmClient",
                 "WiimoteLib", "ModernWpf", "X1nput", "Xbledctl", "MouseArt", "ZstdSharp",
+                "OpenFlydigi", "FlydigiSpaceStationMac", "FlydigiApex4Linux",
             }),
             ("About_License_MitSdkLoader", new[] { "GameInput" }),
             ("About_License_Apache2", new[] { "Bluepad32", "ProtobufNet", "Vosk" }),
@@ -78,7 +79,7 @@ namespace PadForge.Tests
             ("About_License_Gpl3", new[] { "Ds4MapperTest", "Ds4WindowsHbashton", "LegionToolkit", "Touchmote" }),
             ("About_License_Gpl3OrLater", new[]
             {
-                "AntiMicroX", "Ds4Windows", "Eden", "InputPlumber", "SpecialK", "ViiperHbashton",
+                "AntiMicroX", "ApexSenseBridge", "Ds4Windows", "Eden", "InputPlumber", "SpecialK", "ViiperHbashton",
             }),
             ("About_License_Agpl3", new[] { "ChiakiNg", "Ds5Bridge" }),
             ("About_License_Lgpl21OrLater", new[] { "FFmpeg", "Libusb" }),

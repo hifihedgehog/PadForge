@@ -751,6 +751,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Chwazi nimewo jwè pò sa a, 1 rive 4. Adaptatè a sere l epi li rekonekte kòm jwè sa a.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Ekran Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Chwazi sa VMU kontwolè Dreamcast la montre: pwòp imaj adaptatè a, non, nimewo oswa imaj pwofil aktif la, lè a, tan jwe a, oswa yon imaj ou chwazi.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Ekran kontwolè…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Voye yon imaj sou ekran kontwolè a: yon imaj oswa yon GIF ou chwazi, oswa imaj, non oswa nimewo pwofil aktif la. Kontwolè a kenbe l jiskaske pwochen an rive.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Fè kopi Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Anrejistre Controller Pak ki nan kontwolè N64 sa a nan yon fichye .mpk 32 KB, fòma emilatè N64 yo li a.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Retabli Controller Pak…</value></data>
@@ -783,6 +785,45 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Retire imaj pwofil la</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Imaj (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Tout fichye (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Fichye sa a pa gen okenn imaj PadForge ka li.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Ekran kontwolè</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Anyen pa rive nan kontwolè a jiskaske ou voye.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Yon imaj oswa yon GIF ou chwazi, ajiste pou 160 sou 80 piksèl ekran an. Kontwolè a kenbe l jiskaske ou voye yon lòt.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Imaj pwofil aktif la, oswa non li si l pa genyen, jan li ye lè ou voye. Kontwolè a kenbe l menm lè ou chanje pwofil.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Non pwofil aktif la jan li ye lè ou voye. Kontwolè a kenbe l menm lè ou chanje pwofil.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Plas pwofil aktif la nan lis pwofil yo jan li ye lè ou voye. Pwofil pa defo a se 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Ajisteman</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Ranpli ekran an</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Montre tout imaj la</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Lonje sou ekran an</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Imaj (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Tout fichye (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Voye</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Ankadreman: {0}. Voye a pran anviwon {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontwolè a pran {0} ankadreman pou pi plis, kidonk dènye {1} yo te rete deyò.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Konekte kontwolè a ak yon kab. Li rekòmanse pou kont li anviwon 15 segonn apre imaj la fin rive.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Konekte kontwolè a ak yon kab. Pou voye a, PadForge mete l nan mòd Xbox epi li fè l pase soti nan drayvè Xbox Windows lan rive nan WinUSB, apre sa li remete tou de jan yo te ye.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge pral mete kontwolè a nan mòd Xbox, fè l pase sou WinUSB pou voye a, apre sa remèt li bay drayvè Xbox Windows lan epi remete l nan mòd DInput. Debranche tout lòt kontwolè Xbox 360 anvan. Voye kounye a?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Ap kòmanse…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Ap chanje mòd kontwolè a…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Ap tann pò ekran an…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Ap fè kontwolè a pase sou WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Ap fè plas pou imaj la… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Ap voye imaj la… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Ap fini…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Ap remèt kontwolè a bay Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Voye. Kontwolè a ap montre imaj la lè li fin rekòmanse.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Voye. Kontwolè a montre imaj la.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Konekte kontwolè a ak yon kab. Ekran li resevwa imaj sou USB sèlman.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Pò ekran an pa parèt. Etenn kontwolè a epi limen l ak pwòp entèriptè li, konekte l ak yon kab, epi voye ankò.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Plis pase yon ekran kontwolè ap tann yon imaj. Debranche lòt yo epi voye ankò.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Pò ekran an pa louvri. Fèmen Flydigi Space Station epi voye ankò.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Ekran an sispann reponn. Etenn kontwolè a epi limen l ak pwòp entèriptè li, epi voye ankò.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Ekran an refize imaj la. Voye ankò.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Kontwolè a pa retounen kòm yon kontwolè Xbox 360, kidonk anyen pa t voye. Remete l nan mòd DInput ak pwòp entèriptè li epi voye ankò.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Debranche tout lòt kontwolè Xbox 360 epi voye ankò. Chanjman drayvè a ta deplase yo tou. Yon kontwolè ki rete nan mòd Xbox retounen nan mòd DInput ak pwòp entèriptè li.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Kontwolè ki nan mòd Xbox la pa reponn kòm yon Apex 4, kidonk anyen pa t voye epi Windows reprann li. Remete l nan mòd DInput ak pwòp entèriptè li.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows pa t fè kontwolè a pase sou WinUSB, kidonk anyen pa t voye. Remete l nan mòd DInput ak pwòp entèriptè li.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Kanpe. Etenn kontwolè a epi limen l ak pwòp entèriptè li anvan ou voye ankò.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Yon imaj toujou ap ale nan kontwolè a. Kanpe voye a?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Fichye Controller Pak (*.mpk)|*.mpk|Tout fichye (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak pò {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Retabli Controller Pak</value></data>
@@ -947,6 +988,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Gachèt Impulse</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Fòs pa gachèt, chanje plas motè yo, vibrasyon gachèt adaptatif, Fòs konstan sou gachèt</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Voye kòmand motè pou chak gachèt (Xbox Impulse Triggers) soti nan kontwolè vityèl la rive nan kontwolè fizik Xbox One, Elite oswa Series ki asiyen an. Vibrasyon gachèt jwèt la voye pase otomatikman. Kontwòl ki anba yo ajiste fòs la pou chak gachèt.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Jwe kòmand motè pou chak gachèt (Xbox Impulse Triggers) ki soti nan kontwolè vityèl la kòm yon vibrasyon nan gachèt kontwolè sa a. Vibrasyon gachèt jwèt la voye pase otomatikman. Kontwòl ki anba yo ajiste fòs la pou chak gachèt.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gachèt gòch</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gachèt dwat</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Chanje plas motè gachèt gòch ak dwat yo</value></data>
@@ -1010,6 +1052,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Gachèt adaptatif</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfigire efè gachèt yo sou DualSense fizik ki asiyen an. Efè gachèt yon jwèt oswa yon mod jwèt voye pase otomatikman. Paramèt isit yo ajoute yon kouch itilizatè ki mache lè ni youn ni lòt p ap ekri.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Konfigire efè gachèt yo sou gachèt fòs kontwolè sa a. Efè gachèt yon jwèt sou yon DualSense vityèl oswa yon mod jwèt jwe otomatikman. Paramèt isit yo ajoute yon kouch itilizatè ki mache lè ni youn ni lòt p ap ekri.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Konfigire efè gachèt yo sou kontwolè sa a. Gachèt li yo vibre epi yo pa reziste, kidonk chak efè jwe kòm yon vibrasyon ki swiv sa efè a fè: yon kou sèk kote yon gachèt kase, yon tansyon k ap monte ak yon lage pou yon ak ak flèch. Efè gachèt yon jwèt sou yon DualSense vityèl oswa yon mod jwèt jwe otomatikman. Paramèt isit yo ajoute yon kouch itilizatè ki mache lè ni youn ni lòt p ap ekri.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Stick</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Zòn mò, anti-zòn mò, koub sansiblite ak kalibrasyon dekalaj sant pou chak stick. Chak seksyon anba a vize yon stick analòg sou sòti aktif la. Pwofil Extended yo ka gen jiska kat stick. Gamepad estanda yo gen de.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Gachèt</value></data>
@@ -2731,7 +2775,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Desann yo yon oktav</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Limit son</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Jwe aptik DualSense sou kontwolè sa a</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Lè yon jwèt kontwole plas sa a kòm yon DualSense vityèl ak odyo aptik ki prepare pou li, jwe tras sa a sou aktyatè kontwolè sa a. Yon Steam Controller 2026 sou USB oswa sou dongle li jwe tras la li menm. Tout lòt kontwolè, ak sa a sou Bluetooth, resevwa son ki soti nan odyo a, ki apwoche santiman konseptè a san yo pa repwodui l egzakteman.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Lè yon jwèt kontwole plas sa a kòm yon DualSense vityèl ak odyo aptik ki prepare pou li, jwe tras sa a sou aktyatè kontwolè sa a. Yon Steam Controller 2026 sou USB oswa sou dongle li, ak yon Flydigi Apex 6 Pro, jwe tras la yo menm. Tout lòt kontwolè, ak Steam Controller sa a sou Bluetooth, resevwa son ki soti nan odyo a, ki apwoche santiman konseptè a san yo pa repwodui l egzakteman.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Fòs aptik</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Reyinisyalize pa defo (Etenn)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Reyinisyalize pa defo (100%)</value></data>
@@ -3961,6 +4005,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Deplase Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Chwazi sa li montre. Anyen pa chanje jiskaske ou anrejistre.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} mete sou {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Imaj la ale sou ekran kontwolè a.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Ap telechaje SDK S.T.R.I.K.E. 7 Mad Catz la…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 la chaje {0} kounye a.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Ap telechaje epi enstale runtime Visual C++ 2008 Microsoft la…</value></data>
@@ -4373,4 +4418,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Kouch Shift</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Envèse</value></data>
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>Pik</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

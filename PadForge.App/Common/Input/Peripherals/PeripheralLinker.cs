@@ -371,11 +371,19 @@ namespace PadForge.Common.Input.Peripherals
     }
 
     /// <summary>One device row as the linker sees it: an online mouse,
-    /// keyboard or analog keyboard with its container ID, a vendor row, or a
-    /// unit row.</summary>
+    /// keyboard or analog keyboard with its container ID, a vendor row, a
+    /// unit row, or a pad lit through its own unit.</summary>
     internal readonly record struct LinkRow(Guid Device, int CapType, ushort VendorId, ushort ProductId,
         Guid Container, PeripheralRowKind? VendorRow)
     {
+        /// <summary>A gamepad whose lights a family of the shared worker
+        /// drives through PadForge's own session with the pad (#586,
+        /// <see cref="FlydigiApexLighting"/>). Its row takes that unit as a
+        /// mouse or keyboard row takes its own, so the pad's lights sit on
+        /// the pad's own Lighting tab and get no row of their own. No
+        /// other gamepad row is read.</summary>
+        public bool LitPad { get; init; }
+
         /// <summary>For a unit row (<see cref="PeripheralUnitRow"/>), the
         /// one unit it stands for. Null for every other row.</summary>
         public OutputPath? Unit { get; init; }
@@ -754,7 +762,7 @@ namespace PadForge.Common.Input.Peripherals
                         }
                     }
                 }
-                else if (IsLinkable(row.CapType))
+                else if (IsLinkable(row.CapType) || row.LitPad)
                 {
                     var lamps = new List<Candidate>();
                     foreach (var candidate in direct)
@@ -1394,7 +1402,7 @@ namespace PadForge.Common.Input.Peripherals
         /// own container, where a built-in LampArray unit goes too
         /// (<see cref="MatchesLampArray"/>).</summary>
         internal static bool MatchesDevice(DirectUnit unit, LinkRow row)
-            => IsLinkable(row.CapType) && row.VendorRow == null && row.Unit == null
+            => (IsLinkable(row.CapType) || row.LitPad) && row.VendorRow == null && row.Unit == null
                && row.Container != Guid.Empty && unit.ContainerId == row.Container
                && (unit.BuiltInKeyboard
                    ? row.Container == LocalMachineContainer && IsKeyboard(row.CapType)

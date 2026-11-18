@@ -595,6 +595,8 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Kita potrèt di perfil</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Potrèt (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Tur archivo (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>E archivo ei no tin ningun potrèt ku PadForge por lesa.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Pantaya di kontrol</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Nada no ta yega na e kontrol te ora bo manda.</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Archivo di Controller Pak (*.mpk)|*.mpk|Tur archivo (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak pòrt {0}.mpk</value></data>
   <data name="BlissBoxJob_Closed" xml:space="preserve"><value>E pòrt a sera promé ku e transferensia a kaba.</value></data>
@@ -2804,4 +2806,45 @@
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Miéntras e kapa ta aktivo ta tene e flyout riba pantaya te ora e kapa kambia. Pa 2 sekònde ta mustra e flyout ora e kapa aktivá, i despues e ta disparsé su so. Ku Nunka, e kapa aki no ta mustra ningun flyout, i Base tampoko no ta mustra un ora e kapa kaba.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Pa 2 sekònde ta mustra e nòmber di Base ora un kapa shift kaba. Ku Nunka, Base no ta mustra ningun flyout.</value></data>
   <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Potrètnan (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Tur archivo (*.*)|*.*</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Pantaya di kontrol…</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>E potrèt di e perfil aktivo, òf su nòmber si e no tin ningun, manera e ta ora bo manda. E kontrol ta warda esaki ora bo kambia di perfil.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>E nòmber di e perfil aktivo manera e ta ora bo manda. E kontrol ta warda esaki ora bo kambia di perfil.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>E lugá di e perfil aktivo den e lista di perfil manera e ta ora bo manda. E perfil standard ta 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Ahustá</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Yena henter e pantaya</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Mustra henter e potrèt</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Stira na tamaño di e pantaya</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Potrèt (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Tur archivo (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Manda</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Kuadro: {0}. Pa manda ta dura mas o ménos {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>E kontrol ta aseptá máksimo {0} kuadro, pues e último {1} a keda afó.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Konektá e kontrol ku kabel. E ta reinisiá su mes mas o ménos 15 sekonde despues ku e potrèt ta aden.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Konektá e kontrol ku kabel. Pa e envio, PadForge ta kambia e kontrol na modo Xbox i ta move e for di e driver Xbox di Windows pa WinUSB, despues e ta pone tur dos bèk.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge lo kambia e kontrol na modo Xbox, move e pa WinUSB pa e envio, despues duna e bèk na e driver Xbox di Windows i kambia e bèk na modo DInput. Deskonektá tur otro kontrol Xbox 360 promé. Manda awor?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Ta kuminsá…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Ta kambia e kontrol…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Ta warda riba e pòrt di e pantaya…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Ta move e kontrol pa WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Ta traha lugá pa e potrèt… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Ta manda e potrèt… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Ta finalisá…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Ta duna Windows e kontrol bèk…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Mandá. E kontrol ta mustra e potrèt ora e kaba di reinisiá.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Mandá. E kontrol ta mustra e potrèt.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Konektá e kontrol ku kabel. Su pantaya ta aseptá potrèt djis via USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>E pòrt di e pantaya no a aparesé. Paga e kontrol i sende e atrobe ku su propio switch, konektá e ku kabel i manda atrobe.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Mas ku un pantaya di kontrol ta warda riba un potrèt. Deskonektá e otronan i manda atrobe.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>E pòrt di e pantaya no a habri. Sera Flydigi Space Station i manda atrobe.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>E pantaya a stòp di kontestá. Paga e kontrol i sende e atrobe ku su propio switch i manda atrobe.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>E pantaya a refusá e potrèt. Manda atrobe.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>E kontrol no a bolbe komo un kontrol Xbox 360, pues nada no a wordu mandá. Pone e bèk na modo DInput ku su propio switch i manda atrobe.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Deskonektá tur otro kontrol Xbox 360 i manda atrobe. E kambio di driver lo move nan tambe. Un kontrol ku a keda na modo Xbox ta bai bèk na modo DInput ku su propio switch.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>E kontrol na modo Xbox no a kontestá komo un Apex 4, pues nada no a wordu mandá i Windows tin e bèk. Pone e bèk na modo DInput ku su propio switch.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows no a move e kontrol pa WinUSB, pues nada no a wordu mandá. Pone e bèk na modo DInput ku su propio switch.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>A stòp. Paga e kontrol i sende e atrobe ku su propio switch promé ku bo manda atrobe.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Ainda un potrèt ta bayendo pa e kontrol. Stòp e envio?</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

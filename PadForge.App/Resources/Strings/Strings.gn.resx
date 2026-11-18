@@ -1289,4 +1289,13 @@
   <data name="Pad_Chip_Curve" xml:space="preserve"><value>Curva</value></data>
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Capakuéra Shift</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Invertido</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Mba'eve nog̃uahẽi mandope emondo peve.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Ñemohenda</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Henyhẽ mba'erechaha</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Ojehechauka ta'ãnga tuichakue</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Oipyso mba'erechaha peve</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

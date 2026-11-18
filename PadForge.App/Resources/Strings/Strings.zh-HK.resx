@@ -952,6 +952,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>設定此連接埠的玩家編號（1 至 4）。轉接器會儲存編號，並以該玩家身分重新連接。</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast 熒幕…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>設定 Dreamcast 控制器的 VMU 顯示甚麼：轉接器本身的圖片、使用中設定檔的名稱、編號或圖片、時鐘、遊玩時間，或你選擇的圖片。</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>控制器熒幕…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>把圖片傳送到控制器的熒幕：你選擇的圖片或 GIF，或使用中設定檔的圖片、名稱或編號。控制器會保留該圖片，直至下一次傳送。</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>備份 Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>把此 N64 控制器內的 Controller Pak 儲存為 32 KB 的 .mpk 檔案，即 N64 模擬器讀取的格式。</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>還原 Controller Pak…</value></data>
@@ -985,6 +987,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>移除設定檔圖片</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>圖片 (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|所有檔案 (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>該檔案沒有 PadForge 可讀取的圖片。</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>控制器熒幕</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>在你傳送之前，不會有任何內容傳到控制器。</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>你選擇的圖片或 GIF，會配合熒幕的 160 × 80 像素調整。控制器會保留該圖片，直至你傳送另一張。</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>使用中設定檔的圖片，沒有圖片時則顯示其名稱，以傳送當刻的狀態為準。控制器會在切換設定檔後繼續保留。</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>使用中設定檔的名稱，以傳送當刻的狀態為準。控制器會在切換設定檔後繼續保留。</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>使用中設定檔在設定檔清單中的位置，以傳送當刻的狀態為準。預設設定檔為 0。</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>貼合</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>填滿熒幕</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>顯示整張圖片</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>拉伸至熒幕</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>圖片 (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|所有檔案 (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>傳送</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>幀數：{0}。傳送約需 {1}。</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>控制器最多接收 {0} 幀，所以最後 {1} 幀已被略去。</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>請用傳輸線連接控制器。圖片傳送完成約 15 秒後，控制器會自行重新啟動。</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>請用傳輸線連接控制器。傳送時，PadForge 會把它切換到 Xbox 模式，並由 Windows 的 Xbox 驅動程式改用 WinUSB，完成後再把兩者還原。</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge 會把控制器切換到 Xbox 模式，傳送時改用 WinUSB，之後交還給 Windows 的 Xbox 驅動程式，並切換回 DInput 模式。請先拔除其他所有 Xbox 360 控制器。要立即傳送嗎？</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>正在開始…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>正在切換控制器…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>正在等待熒幕的連接埠…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>正在把控制器切換到 WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>正在為圖片騰出空間… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>正在傳送圖片… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>正在完成…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>正在把控制器交還給 Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>已傳送。控制器重新啟動後會顯示該圖片。</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>已傳送。控制器會顯示該圖片。</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>請用傳輸線連接控制器。其熒幕只能經 USB 接收圖片。</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>熒幕的連接埠沒有出現。請用控制器本身的開關把它關閉再開啟，用傳輸線連接，然後再次傳送。</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>有多於一個控制器熒幕正在等待圖片。請拔除其他控制器，然後再次傳送。</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>熒幕的連接埠無法開啟。請關閉 Flydigi Space Station，然後再次傳送。</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>熒幕停止回應。請用控制器本身的開關把它關閉再開啟，然後再次傳送。</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>熒幕拒絕接收圖片。請再次傳送。</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>控制器沒有以 Xbox 360 控制器的身分重新出現，所以沒有傳送任何內容。請用控制器本身的開關把它切換回 DInput 模式，然後再次傳送。</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>請拔除其他所有 Xbox 360 控制器，然後再次傳送。更改驅動程式會連它們一併移動。仍停留在 Xbox 模式的控制器，可用其本身的開關切換回 DInput 模式。</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>處於 Xbox 模式的控制器沒有以 Apex 4 的身分回應，所以沒有傳送任何內容，Windows 已取回該控制器。請用控制器本身的開關把它切換回 DInput 模式。</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows 沒有把控制器切換到 WinUSB，所以沒有傳送任何內容。請用控制器本身的開關把它切換回 DInput 模式。</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>已停止。再次傳送之前，請用控制器本身的開關把它關閉再開啟。</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>圖片仍在傳送到控制器。要停止傳送嗎？</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak 檔案 (*.mpk)|*.mpk|所有檔案 (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak 連接埠 {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>還原 Controller Pak</value></data>
@@ -1218,6 +1259,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>脈衝扳機</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>各扳機增益、對調扳機馬達、自適應扳機震動、恆定扳機力</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>把每個扳機的馬達指令（Xbox 脈衝扳機）由虛擬控制器轉送到已指派的實體 Xbox One、Elite 或 Series 控制器。由遊戲驅動的扳機震動會自動通過。下方的控制項可按扳機調整強度。</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>把每個扳機的馬達指令（Xbox 脈衝扳機）由虛擬控制器轉為此控制器扳機上的震動播放。由遊戲驅動的扳機震動會自動通過。下方的控制項可按扳機調整強度。</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>左扳機</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>右扳機</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>對調左右扳機馬達</value></data>
@@ -1282,6 +1324,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>自適應扳機</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>設定已指派的實體 DualSense 上的扳機回饋效果。遊戲或遊戲模組送來的扳機效果會自動轉送。這裡的設定會加入一層由用戶自訂的效果，在兩者都沒有寫入時運作。</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>設定此控制器力回饋扳機上的扳機回饋效果。虛擬 DualSense 上遊戲送來的扳機效果，或遊戲模組送來的扳機效果會自動播放。這裡的設定會加入一層由用戶自訂的效果，在兩者都沒有寫入時運作。</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>設定此控制器上的扳機回饋效果。其扳機只會震動，不會產生阻力，所以每個效果都會以跟隨該效果特性的震動播放：扳機斷開處是一下爆發，弓則是蓄力和釋放。虛擬 DualSense 上遊戲送來的扳機效果，或遊戲模組送來的扳機效果會自動播放。這裡的設定會加入一層由用戶自訂的效果，在兩者都沒有寫入時運作。</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>搖桿</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>每支搖桿的死區、反死區、靈敏度曲線和中心偏移校準。下方每個區段對應目前輸出上的一支類比搖桿。擴充設定檔最多可有四支搖桿。標準遊戲控制器有兩支。</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>扳機</value></data>
@@ -3457,7 +3501,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>向下摺疊一個八度</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>音調上限</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>在此控制器上播放 DualSense 觸覺回饋</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>當遊戲把此插槽當作虛擬 DualSense 驅動，並附有專門製作的觸覺音訊時，會在此控制器的致動器上播放該音軌。經 USB 或其專用接收器連接的 Steam Controller 2026 會直接播放該音軌。其他所有控制器，以及經藍牙連接的 Steam Controller 2026，則會收到由音訊衍生的音調，只能近似設計者原本的手感，而非如實重現。</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>當遊戲把此插槽當作虛擬 DualSense 驅動，並附有專門製作的觸覺音訊時，會在此控制器的致動器上播放該音軌。經 USB 或其專用接收器連接的 Steam Controller 2026，以及 Flydigi Apex 6 Pro，會直接播放該音軌。其他所有控制器，以及經藍牙連接的該 Steam Controller 2026，則會收到由音訊衍生的音調，只能近似設計者原本的手感，而非如實重現。</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>觸覺回饋增益</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>重設為預設值（關閉）</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>重設為預設值（100%）</value></data>
@@ -3652,6 +3696,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller(2015)的觸覺報告配置和音符週期運算，由 Pila 和 Roboron3042 編寫。</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 和 Steam Deck 的 LFO 音調觸覺配置，由 Pila、Crazy 和 AAGaming 編寫。</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex 的扳機效果轉換和寫入節奏、Apex 6 Pro 的扳機呈現、觸覺串流和燈光區塊，以及 Apex 5 的燈光寫入，由 ReynArts 編寫。</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5 和 Apex 6 的協定筆記、燈光區塊傳輸和熒幕的序列埠上傳，由 Mikalai Kaliaha 編寫。</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4 的燈光區塊、設定檔槽位和 Xbox 模式下的熒幕上傳，由 Uilton Lopes 和其他貢獻者編寫。</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4 的力回饋扳機指令，以及在控制器上量度所得的寫入節奏，由 Jackwmtr 編寫。</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap 模式的 SOCD 清理語意，由 valignatev 編寫。</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>平移 Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>選擇它顯示的內容。在你儲存之前不會有任何改變。</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} 已設為「{1}」。</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>圖片已傳送到控制器的熒幕。</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>正在下載 Mad Catz 的 S.T.R.I.K.E. 7 SDK…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 現在會載入 {0}。</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>正在下載並安裝 Microsoft 的 Visual C++ 2008 執行階段…</value></data>

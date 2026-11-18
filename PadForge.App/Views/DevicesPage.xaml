@@ -2558,6 +2558,10 @@
                                             <Button Content="{Binding SelectedDevice.KeyboardScreenButtonText}" Style="{StaticResource DeviceButton}"
                                                     Click="KeyboardScreen_Click"
                                                     Visibility="{Binding SelectedDevice.ShowKeyboardScreen, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            <Button Content="{Binding Devices_FlydigiScreen, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceButton}"
+                                                    Click="FlydigiScreen_Click"
+                                                    ToolTip="{Binding Devices_FlydigiScreenTooltip, Source={x:Static strings:Strings.Instance}}"
+                                                    Visibility="{Binding SelectedDevice.ShowFlydigiScreen, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                             <Button Content="{Binding Falcon_Calibrate, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceButton}"
                                                     Click="FalconCalibrate_Click"
                                                     ToolTip="{Binding Falcon_Calibrate_Tooltip, Source={x:Static strings:Strings.Instance}}"

@@ -2016,6 +2016,8 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>Referentie-implementatie voor USB-controller-audiopassthrough. Door WujekFoliarz.</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptieve triggers</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configureer trigger-effecten op de toegewezen fysieke DualSense. Trigger-effecten van een game of gamemod worden automatisch doorgestuurd. De instellingen hier voegen een door de gebruiker geconfigureerde laag toe die actief is wanneer geen van beide schrijft.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Configureer trigger-effecten op de krachttriggers van deze controller. Trigger-effecten van een game op een virtuele DualSense of van een gamemod worden automatisch afgespeeld. De instellingen hier voegen een door de gebruiker geconfigureerde laag toe die actief is wanneer geen van beide schrijft.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Configureer trigger-effecten op deze controller. De triggers trillen en bieden geen weerstand, dus elk effect wordt afgespeeld als een trilling die volgt wat het effect doet: een stoot waar een trigger breekt, een opbouw en een loslating bij een boog. Trigger-effecten van een game op een virtuele DualSense of van een gamemod worden automatisch afgespeeld. De instellingen hier voegen een door de gebruiker geconfigureerde laag toe die actief is wanneer geen van beide schrijft.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Per stick: deadzones, anti-deadzones, gevoeligheidskrommen en centeroffset-kalibratie. Elke sectie hieronder geldt voor één analoge stick op de actieve uitvoer. Uitgebreide profielen kunnen tot vier sticks hebben. Standaardcontrollers hebben er twee.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Triggers</value></data>
@@ -2380,6 +2382,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse-triggers</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Triggerversterking, motorwissel, adaptieve triggertrillingen, Constante triggerkracht</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Stuurt motor-opdrachten per trigger (Xbox Impulse-triggers) door van de virtuele controller naar de toegewezen fysieke Xbox One-, Elite- of Series-controller. Door games gestuurde trigger-vibratie wordt automatisch doorgegeven. De regelaars hieronder schalen de sterkte per trigger.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Speelt motor-opdrachten per trigger (Xbox Impulse-triggers) van de virtuele controller af als trilling in de triggers van deze controller. Door games gestuurde trigger-vibratie wordt automatisch doorgegeven. De regelaars hieronder schalen de sterkte per trigger.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Linkertrigger</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Rechtertrigger</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Linker- en rechtertriggermotor verwisselen</value></data>
@@ -2792,7 +2795,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Per octaaf omlaag vouwen</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Toonlimiet</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense-haptiek op deze controller afspelen</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Wanneer een game dit slot als virtuele DualSense aanstuurt met een geautoreerd haptisch audiospoor, wordt dat spoor op de actuatoren van deze controller afgespeeld. Een Steam Controller 2026 via USB of zijn dongle speelt het spoor zelf af. Elke andere controller, en deze via Bluetooth, krijgt tonen die uit de audio zijn afgeleid en het ontworpen gevoel benaderen in plaats van reproduceren.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Wanneer een game dit slot als virtuele DualSense aanstuurt met een geautoreerd haptisch audiospoor, wordt dat spoor op de actuatoren van deze controller afgespeeld. Een Steam Controller 2026 via USB of zijn dongle en een Flydigi Apex 6 Pro spelen het spoor zelf af. Elke andere controller, en die Steam Controller via Bluetooth, krijgt tonen die uit de audio zijn afgeleid en het ontworpen gevoel benaderen in plaats van reproduceren.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptiekversterking</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Standaard herstellen (uit)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Standaard herstellen (100%)</value></data>
@@ -3241,6 +3244,8 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Stelt het spelernummer van deze poort in, 1 tot 4. De adapter slaat het op en maakt opnieuw verbinding als die speler.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast-scherm…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Stelt in wat de VMU van de Dreamcast-controller toont: de eigen afbeelding van de adapter, de naam, het nummer of de afbeelding van het actieve profiel, de klok, de speeltijd of een afbeelding naar keuze.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Controllerscherm…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Stuurt een afbeelding naar het scherm van de controller: een afbeelding of GIF naar keuze, of de afbeelding, naam of het nummer van het actieve profiel. De controller bewaart het tot de volgende.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Controller Pak back-uppen…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Slaat het Controller Pak in deze N64-controller op in een .mpk-bestand van 32 KB, het formaat dat N64-emulators lezen.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Controller Pak herstellen…</value></data>
@@ -3274,6 +3279,45 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Profielafbeelding verwijderen</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Afbeeldingen (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Alle bestanden (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Dat bestand bevat geen afbeelding die PadForge kan lezen.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Controllerscherm</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Er bereikt niets de controller tot je verstuurt.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Een afbeelding of GIF naar keuze, aangepast aan de 160 bij 80 pixels van het scherm. De controller bewaart het tot je een andere verstuurt.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>De afbeelding van het actieve profiel, of de naam als het er geen heeft, zoals het is op het moment van versturen. De controller behoudt het bij profielwissels.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>De naam van het actieve profiel zoals die is op het moment van versturen. De controller behoudt het bij profielwissels.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>De plaats van het actieve profiel in de profiellijst zoals die is op het moment van versturen. Het standaardprofiel is 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Aanpassen</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Scherm vullen</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Hele afbeelding tonen</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Uitrekken tot het scherm</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Afbeeldingen (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Alle bestanden (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Versturen</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Frames: {0}. Versturen duurt ongeveer {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>De controller neemt maximaal {0} frames aan, dus de laatste {1} zijn weggelaten.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Sluit de controller met een kabel aan. Hij herstart zichzelf ongeveer 15 seconden nadat de afbeelding binnen is.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Sluit de controller met een kabel aan. Voor het versturen zet PadForge hem in Xbox-modus en verplaatst hem van het Xbox-stuurprogramma van Windows naar WinUSB, en zet daarna beide terug.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge zet de controller in Xbox-modus, verplaatst hem voor het versturen naar WinUSB, geeft hem daarna terug aan het Xbox-stuurprogramma van Windows en zet hem terug in DInput-modus. Koppel eerst alle andere Xbox 360-controllers los. Nu versturen?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Starten…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Controller omschakelen…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Wachten op de poort van het scherm…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Controller naar WinUSB verplaatsen…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Ruimte maken voor de afbeelding… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Afbeelding versturen… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Afronden…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Controller teruggeven aan Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Verstuurd. De controller toont de afbeelding zodra hij is herstart.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Verstuurd. De controller toont de afbeelding.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Sluit de controller met een kabel aan. Zijn scherm ontvangt een afbeelding alleen via USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>De poort van het scherm verscheen niet. Zet de controller uit en weer aan met zijn eigen schakelaar, sluit hem met een kabel aan en verstuur opnieuw.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Meer dan één controllerscherm wacht op een afbeelding. Koppel de andere los en verstuur opnieuw.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>De poort van het scherm ging niet open. Sluit Flydigi Space Station en verstuur opnieuw.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Het scherm reageert niet meer. Zet de controller uit en weer aan met zijn eigen schakelaar en verstuur opnieuw.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Het scherm weigerde de afbeelding. Verstuur opnieuw.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>De controller kwam niet terug als Xbox 360-controller, dus er is niets verstuurd. Zet hem met zijn eigen schakelaar terug in DInput-modus en verstuur opnieuw.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Koppel alle andere Xbox 360-controllers los en verstuur opnieuw. De wijziging van het stuurprogramma zou ze ook verplaatsen. Een controller die in Xbox-modus is achtergebleven, gaat met zijn eigen schakelaar terug naar DInput-modus.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>De controller in Xbox-modus antwoordde niet als Apex 4, dus er is niets verstuurd en Windows heeft hem terug. Zet hem met zijn eigen schakelaar terug in DInput-modus.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows heeft de controller niet naar WinUSB verplaatst, dus er is niets verstuurd. Zet hem met zijn eigen schakelaar terug in DInput-modus.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Gestopt. Zet de controller uit en weer aan met zijn eigen schakelaar voordat je opnieuw verstuurt.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Er gaat nog een afbeelding naar de controller. Het versturen stoppen?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak-bestanden (*.mpk)|*.mpk|Alle bestanden (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak poort {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak herstellen</value></data>
@@ -3377,6 +3421,14 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Структура тактильных отчетов Steam Controller (2015) и расчет периода нот, от Pila и Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Структура тактильных LFO-тонов Steam Controller 2026 и Steam Deck, от Pila, Crazy и AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Vertaling van Flydigi Apex-triggereffecten en het tempo van de schrijfopdrachten, de triggerweergave, de haptische stream en het verlichtingsblok van de Apex 6 Pro en de verlichtingsopdrachten van de Apex 5, door ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Protocolnotities voor Flydigi Apex 5 en Apex 6, de overdracht van het verlichtingsblok en de seriële upload naar het scherm, door Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Verlichtingsblok, profielslot en de schermupload in Xbox-modus van de Flydigi Apex 4, door Uilton Lopes en bijdragers.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Krachttriggeropdrachten van de Flydigi Apex 4 en het op de controller gemeten tempo, door Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Семантика очистки SOCD для режимов Snap Tap, от valignatev.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -4990,6 +5042,7 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Verschuiven Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Kies wat er wordt getoond. Er verandert niets tot je opslaat.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} ingesteld op {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>De afbeelding is naar het scherm van de controller gegaan.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>De S.T.R.I.K.E. 7-SDK van Mad Catz wordt gedownload…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>De S.T.R.I.K.E. 7 laadt nu {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Microsofts Visual C++ 2008-runtime wordt gedownload en geïnstalleerd…</value></data>

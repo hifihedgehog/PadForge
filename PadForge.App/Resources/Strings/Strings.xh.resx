@@ -1896,4 +1896,13 @@
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Iguquliwe</value></data>
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>Incopho</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Okumiselweyo kwe-bs2b</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Akukho nto ifika kwisilawuli de uthumele.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Lungelelanisa</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Gcwalisa isikrini</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Bonisa umfanekiso wonke</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Yolula ukulingana nesikrini</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

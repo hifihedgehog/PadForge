@@ -939,6 +939,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>يحدد رقم اللاعب لهذا المنفذ، من 1 إلى 4. يخزنه المحول ويعيد الاتصال بصفته ذلك اللاعب.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>شاشة Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>يحدد ما تعرضه وحدة VMU في ذراع تحكم Dreamcast: صورة المحول نفسه، أو اسم ملف التعريف النشط أو رقمه أو صورته، أو الساعة، أو مدة اللعب، أو صورة تختارها.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>شاشة وحدة التحكم…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>يرسل صورة إلى شاشة وحدة التحكم: صورة أو GIF تختارها، أو صورة ملف التعريف النشط أو اسمه أو رقمه. تحتفظ بها وحدة التحكم حتى ترسل غيرها.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>نسخ Controller Pak احتياطيا…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>يحفظ Controller Pak الموجود في وحدة تحكم N64 هذه في ملف mpk بحجم 32 كيلوبايت، وهو التنسيق الذي تقرؤه محاكيات N64.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>استعادة Controller Pak…</value></data>
@@ -972,6 +974,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>إزالة صورة ملف التعريف</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>الصور (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|كل الملفات (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>لا يحتوي هذا الملف على صورة يستطيع PadForge قراءتها.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>شاشة وحدة التحكم</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>لا يصل شيء إلى وحدة التحكم حتى ترسل.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>صورة أو GIF تختارها، تُلائم أبعاد الشاشة 160 في 80 بكسل. تحتفظ بها وحدة التحكم حتى ترسل غيرها.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>صورة ملف التعريف النشط، أو اسمه إن لم تكن له صورة، كما هي لحظة الإرسال. تحتفظ بها وحدة التحكم عند تبديل ملفات التعريف.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>اسم ملف التعريف النشط كما هو لحظة الإرسال. تحتفظ به وحدة التحكم عند تبديل ملفات التعريف.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>ترتيب ملف التعريف النشط في قائمة ملفات التعريف كما هو لحظة الإرسال. ملف التعريف الافتراضي رقمه 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>الملاءمة</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>ملء الشاشة</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>عرض الصورة كاملة</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>تمديد إلى الشاشة</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>الصور (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|كل الملفات (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>إرسال</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>الإطارات: {0}. يستغرق الإرسال نحو {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>تستوعب وحدة التحكم {0} إطارا كحد أقصى، لذلك تم استبعاد آخر {1}.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>وصّل وحدة التحكم بالكابل. تعيد التشغيل من تلقاء نفسها بعد نحو 15 ثانية من وصول الصورة.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>وصّل وحدة التحكم بالكابل. أثناء الإرسال يحوّلها PadForge إلى وضع Xbox وينقلها من برنامج تشغيل Xbox في Windows إلى WinUSB، ثم يعيد الاثنين كما كانا.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>سيحوّل PadForge وحدة التحكم إلى وضع Xbox وينقلها إلى WinUSB أثناء الإرسال، ثم يعيدها إلى برنامج تشغيل Xbox في Windows ويعيدها إلى وضع DInput. افصل كل وحدة تحكم Xbox 360 أخرى أولا. هل ترسل الآن؟</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>جارٍ البدء…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>جارٍ تحويل وحدة التحكم…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>في انتظار منفذ الشاشة…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>جارٍ نقل وحدة التحكم إلى WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>جارٍ تفريغ مساحة للصورة… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>جارٍ إرسال الصورة… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>جارٍ الإنهاء…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>جارٍ إعادة وحدة التحكم إلى Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>تم الإرسال. تعرض وحدة التحكم الصورة بعد إعادة التشغيل.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>تم الإرسال. تعرض وحدة التحكم الصورة.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>وصّل وحدة التحكم بالكابل. شاشتها تستقبل الصورة عبر USB فقط.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>لم يظهر منفذ الشاشة. أطفئ وحدة التحكم وشغّلها بمفتاحها الخاص، ووصّلها بالكابل، ثم أرسل مجددا.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>أكثر من شاشة وحدة تحكم تنتظر صورة. افصل الأخرى ثم أرسل مجددا.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>لم يُفتح منفذ الشاشة. أغلق Flydigi Space Station ثم أرسل مجددا.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>توقفت الشاشة عن الرد. أطفئ وحدة التحكم وشغّلها بمفتاحها الخاص ثم أرسل مجددا.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>رفضت الشاشة الصورة. أرسل مجددا.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>لم تعد وحدة التحكم كوحدة Xbox 360، لذلك لم يُرسل شيء. أعدها إلى وضع DInput بمفتاحها الخاص ثم أرسل مجددا.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>افصل كل وحدة تحكم Xbox 360 أخرى ثم أرسل مجددا. فتغيير برنامج التشغيل سيشملها أيضا. وحدة التحكم التي تبقى في وضع Xbox تعود إلى وضع DInput بمفتاحها الخاص.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>لم ترد وحدة التحكم في وضع Xbox بوصفها Apex 4، لذلك لم يُرسل شيء وقد استعادها Windows. أعدها إلى وضع DInput بمفتاحها الخاص.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>لم ينقل Windows وحدة التحكم إلى WinUSB، لذلك لم يُرسل شيء. أعدها إلى وضع DInput بمفتاحها الخاص.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>تم الإيقاف. أطفئ وحدة التحكم وشغّلها بمفتاحها الخاص قبل أن ترسل مجددا.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>لا تزال صورة في طريقها إلى وحدة التحكم. هل توقف الإرسال؟</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>ملفات Controller Pak (*.mpk)|*.mpk|كل الملفات (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak المنفذ {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>استعادة Controller Pak</value></data>
@@ -1138,6 +1179,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>الأزندة النبضية</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>كسب كل زناد، تبديل المحركين، اهتزازات الأزندة التكيفية، القوة الثابتة على الزناد</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>يمرر أوامر محرك كل زناد (Xbox Impulse Triggers) من وحدة التحكم الظاهرية إلى وحدة التحكم الفعلية المعينة من نوع Xbox One أو Elite أو Series. اهتزاز الأزندة الذي تشغّله اللعبة يمر تلقائيا. عناصر التحكم أدناه تضبط الشدة لكل زناد.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>يشغّل أوامر محرك كل زناد (Xbox Impulse Triggers) من وحدة التحكم الظاهرية على هيئة اهتزاز في أزندة وحدة التحكم هذه. اهتزاز الأزندة الذي تشغّله اللعبة يمر تلقائيا. عناصر التحكم أدناه تضبط الشدة لكل زناد.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>الزناد الأيسر</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>الزناد الأيمن</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>تبديل محركي الزنادين الأيسر والأيمن</value></data>
@@ -1202,6 +1244,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>الأزندة التكيفية</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>إعداد تأثيرات ردود فعل الأزندة على وحدة DualSense الفعلية المعينة. تأثيرات الأزندة الواردة من لعبة أو من تعديل لعبة يتم تمريرها تلقائيا. الإعدادات هنا تضيف طبقة يحددها المستخدم تعمل عندما لا يكتب أي منهما.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>إعداد تأثيرات ردود فعل الأزندة على أزندة القوة في وحدة التحكم هذه. تأثيرات الأزندة الواردة من لعبة على وحدة DualSense ظاهرية أو من تعديل لعبة تعمل تلقائيا. الإعدادات هنا تضيف طبقة يحددها المستخدم تعمل عندما لا يكتب أي منهما.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>إعداد تأثيرات ردود فعل الأزندة على وحدة التحكم هذه. أزندتها تهتز ولا تقاوم، لذلك يعمل كل تأثير كاهتزاز يتبع ما يفعله التأثير: دفعة عند انكسار الزناد، وتصاعد ثم تحرير للقوس. تأثيرات الأزندة الواردة من لعبة على وحدة DualSense ظاهرية أو من تعديل لعبة تعمل تلقائيا. الإعدادات هنا تضيف طبقة يحددها المستخدم تعمل عندما لا يكتب أي منهما.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>العصي</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>المناطق الميتة ومضادات المناطق الميتة ومنحنيات الحساسية ومعايرة إزاحة المركز لكل عصا. كل قسم أدناه يخص عصا تناظرية واحدة في الإخراج النشط. ملفات التعريف الموسعة يمكن أن تحتوي على ما يصل إلى أربع عصي. أذرع التحكم القياسية لها عصوان.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>الأزندة</value></data>
@@ -3266,7 +3310,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>طيها أوكتافا إلى الأسفل</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>حد النغمة</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>تشغيل ردود فعل DualSense اللمسية على وحدة التحكم هذه</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>عندما تشغّل لعبة هذه الخانة كوحدة DualSense ظاهرية بصوت لمسي معد خصيصا، يتم تشغيل ذلك المسار على مشغلات وحدة التحكم هذه. وحدة Steam Controller 2026 عبر USB أو جهاز الاستقبال الخاص بها تشغّل المسار نفسه. كل وحدة تحكم أخرى، وتلك الوحدة نفسها عبر Bluetooth، تحصل على نغمات مشتقة من الصوت، تقارب الإحساس الذي أراده المصمم ولا تعيد إنتاجه.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>عندما تشغّل لعبة هذه الخانة كوحدة DualSense ظاهرية بصوت لمسي معد خصيصا، يتم تشغيل ذلك المسار على مشغلات وحدة التحكم هذه. وحدة Steam Controller 2026 عبر USB أو جهاز الاستقبال الخاص بها، ووحدة Flydigi Apex 6 Pro، تشغّل المسار نفسه. كل وحدة تحكم أخرى، ووحدة Steam Controller تلك عبر Bluetooth، تحصل على نغمات مشتقة من الصوت، تقارب الإحساس الذي أراده المصمم ولا تعيد إنتاجه.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>كسب ردود الفعل اللمسية</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>إعادة الضبط إلى الافتراضي (متوقف)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>إعادة الضبط إلى الافتراضي (100%)</value></data>
@@ -3457,6 +3501,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>تخطيط التقرير اللمسي لوحدة Steam Controller (2015) وحسابات دور النغمة، من إعداد Pila وRoboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>التخطيط اللمسي لنغمات LFO في Steam Controller 2026 وSteam Deck، من إعداد Pila وCrazy وAAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>ترجمة تأثيرات أزندة Flydigi Apex وضبط إيقاع الكتابة، وعرض أزندة Apex 6 Pro وتدفق اللمس وكتلة الإضاءة، وكتابات إضاءة Apex 5، من إعداد ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>ملاحظات بروتوكول Flydigi Apex 5 وApex 6، ونقل كتلة الإضاءة، والرفع التسلسلي للشاشة، من إعداد Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>كتلة إضاءة Flydigi Apex 4 وخانة ملف التعريف ورفع الصورة إلى الشاشة في وضع Xbox، من إعداد Uilton Lopes والمساهمين.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>أوامر أزندة القوة في Flydigi Apex 4 والإيقاع المقيس على الذراع، من إعداد Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>دلالات معالجة SOCD لأوضاع Snap Tap، من إعداد valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4770,6 +4822,7 @@
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>تحريك Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>اختر ما يعرضه. لا يتغير شيء حتى تحفظ.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>تم ضبط {0} على {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>وصلت الصورة إلى شاشة وحدة التحكم.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>جارٍ تنزيل SDK الخاص بـ Mad Catz S.T.R.I.K.E. 7…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>يحمّل S.T.R.I.K.E. 7 الآن {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>جارٍ تنزيل وقت تشغيل Visual C++ 2008 من Microsoft وتثبيته…</value></data>

@@ -937,6 +937,8 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Yn gosod rhif chwaraewr y porth hwn, 1 i 4. Mae'r addasydd yn ei storio ac yn ailgysylltu fel y chwaraewr hwnnw.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Sgrin Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Yn gosod beth mae VMU y pad Dreamcast yn ei ddangos: llun yr addasydd ei hun, enw, rhif neu lun y proffil gweithredol, y cloc, yr amser chwarae, neu lun o'ch dewis.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Sgrin y Rheolydd…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Yn anfon llun i sgrin y rheolydd: llun neu GIF o'ch dewis, neu lun, enw neu rif y proffil gweithredol. Mae'r rheolydd yn ei gadw tan y nesaf.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Gwneud Copi Wrth Gefn o'r Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Yn cadw'r Controller Pak yn y rheolydd N64 hwn i ffeil .mpk 32 KB, y fformat y mae efelychwyr N64 yn ei ddarllen.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Adfer y Controller Pak…</value></data>
@@ -970,6 +972,45 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Dileu Llun y Proffil</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Lluniau (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Pob Ffeil (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Nid oes llun yn y ffeil honno y gall PadForge ei ddarllen.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Sgrin y Rheolydd</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Nid oes dim yn cyrraedd y rheolydd nes i chi anfon.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Llun neu GIF o'ch dewis, wedi'i ffitio i sgrin 160 wrth 80 picsel. Mae'r rheolydd yn ei gadw nes i chi anfon un arall.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Llun y proffil gweithredol, neu ei enw os nad oes ganddo un, fel y mae pan fyddwch yn anfon. Mae'r rheolydd yn ei gadw drwy newidiadau proffil.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Enw'r proffil gweithredol fel y mae pan fyddwch yn anfon. Mae'r rheolydd yn ei gadw drwy newidiadau proffil.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Lle'r proffil gweithredol yn y rhestr proffiliau fel y mae pan fyddwch yn anfon. Y proffil rhagosodedig yw 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Ffit</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Llenwi'r Sgrin</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Dangos y Llun Cyfan</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Ymestyn i'r Sgrin</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Lluniau (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Pob Ffeil (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Anfon</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Fframiau: {0}. Mae anfon yn cymryd tua {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Mae'r rheolydd yn cymryd {0} ffrâm ar y mwyaf, felly gadawyd y {1} olaf allan.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Cysylltwch y rheolydd â chebl. Mae'n ailgychwyn ei hun tua 15 eiliad ar ôl i'r llun fynd i mewn.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Cysylltwch y rheolydd â chebl. Ar gyfer yr anfon, mae PadForge yn ei newid i fodd Xbox ac yn ei symud o yrrwr Xbox Windows i WinUSB, yna'n rhoi'r ddau yn ôl.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>Bydd PadForge yn newid y rheolydd i fodd Xbox, yn ei symud i WinUSB ar gyfer yr anfon, yna'n ei roi yn ôl i yrrwr Xbox Windows ac yn ei newid yn ôl i fodd DInput. Datgysylltwch bob rheolydd Xbox 360 arall yn gyntaf. Anfon nawr?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Dechrau…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Newid y rheolydd…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Aros am borth y sgrin…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Symud y rheolydd i WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Clirio lle i'r llun… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Anfon y llun… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Gorffen…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Rhoi'r rheolydd yn ôl i Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Wedi anfon. Mae'r rheolydd yn dangos y llun ar ôl iddo ailgychwyn.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Wedi anfon. Mae'r rheolydd yn dangos y llun.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Cysylltwch y rheolydd â chebl. Dim ond dros USB y mae ei sgrin yn derbyn llun.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Ni ymddangosodd porth y sgrin. Diffoddwch y rheolydd a'i droi ymlaen eto gyda'i switsh ei hun, cysylltwch ef â chebl, ac anfonwch eto.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Mae mwy nag un sgrin rheolydd yn aros am lun. Datgysylltwch y lleill ac anfonwch eto.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Ni agorodd porth y sgrin. Caewch Flydigi Space Station ac anfonwch eto.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Peidiodd y sgrin ag ateb. Diffoddwch y rheolydd a'i droi ymlaen eto gyda'i switsh ei hun ac anfonwch eto.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Gwrthododd y sgrin y llun. Anfonwch eto.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Ni ddychwelodd y rheolydd fel rheolydd Xbox 360, felly ni anfonwyd dim. Newidiwch ef yn ôl i fodd DInput gyda'i switsh ei hun ac anfonwch eto.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Datgysylltwch bob rheolydd Xbox 360 arall ac anfonwch eto. Byddai newid y gyrrwr yn symud y rheini hefyd. Mae rheolydd a adawyd yn y modd Xbox yn mynd yn ôl i fodd DInput gyda'i switsh ei hun.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Nid atebodd y rheolydd yn y modd Xbox fel Apex 4, felly ni anfonwyd dim ac mae Windows wedi ei gael yn ôl. Newidiwch ef yn ôl i fodd DInput gyda'i switsh ei hun.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Ni symudodd Windows y rheolydd i WinUSB, felly ni anfonwyd dim. Newidiwch ef yn ôl i fodd DInput gyda'i switsh ei hun.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Wedi stopio. Diffoddwch y rheolydd a'i droi ymlaen eto gyda'i switsh ei hun cyn i chi anfon eto.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Mae llun yn dal i fynd i'r rheolydd. Stopio'r anfon?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Ffeiliau Controller Pak (*.mpk)|*.mpk|Pob Ffeil (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak porth {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Adfer y Controller Pak</value></data>
@@ -1136,6 +1177,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Sbardunau Impwls</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ennill pob sbardun, cyfnewid moduron, dirgryniadau sbardun addasol, Grym Sbardun Cyson</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Yn anfon gorchmynion modur fesul sbardun (Sbardunau Impwls Xbox) ymlaen o'r rheolydd rhithwir i'r rheolydd Xbox One, Elite neu Series ffisegol a neilltuwyd. Mae dirgryniad sbardun a yrrir gan gêm yn mynd drwodd yn awtomatig. Mae'r rheolyddion isod yn graddio'r maint fesul sbardun.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Yn chwarae gorchmynion modur fesul sbardun (Sbardunau Impwls Xbox) o'r rheolydd rhithwir fel dirgryniad yn sbardunau'r rheolydd hwn. Mae dirgryniad sbardun a yrrir gan gêm yn mynd drwodd yn awtomatig. Mae'r rheolyddion isod yn graddio'r maint fesul sbardun.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Sbardun Chwith</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Sbardun De</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Cyfnewid Moduron Sbardun Chwith a De</value></data>
@@ -1200,6 +1242,8 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Sbardunau Addasol</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Ffurfweddu effeithiau adborth sbardun ar y DualSense ffisegol a neilltuwyd. Anfonir effeithiau sbardun o gêm neu o fod gêm ymlaen yn awtomatig. Mae'r gosodiadau yma yn ychwanegu haen a ffurfweddwyd gan y defnyddiwr sy'n rhedeg pan nad oes yr un o'r ddau yn ysgrifennu.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Ffurfweddu effeithiau adborth sbardun ar sbardunau grym y rheolydd hwn. Mae effeithiau sbardun o gêm ar DualSense rhithwir neu o fod gêm yn chwarae'n awtomatig. Mae'r gosodiadau yma yn ychwanegu haen a ffurfweddwyd gan y defnyddiwr sy'n rhedeg pan nad oes yr un o'r ddau yn ysgrifennu.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Ffurfweddu effeithiau adborth sbardun ar y rheolydd hwn. Mae ei sbardunau'n dirgrynu ac nid ydynt yn gwrthsefyll, felly mae pob effaith yn chwarae fel dirgryniad sy'n dilyn yr hyn y mae'r effaith yn ei wneud: ffrwydrad lle mae sbardun yn torri, cynnydd a rhyddhad ar gyfer bwa. Mae effeithiau sbardun o gêm ar DualSense rhithwir neu o fod gêm yn chwarae'n awtomatig. Mae'r gosodiadau yma yn ychwanegu haen a ffurfweddwyd gan y defnyddiwr sy'n rhedeg pan nad oes yr un o'r ddau yn ysgrifennu.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Ffyn</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Parthau marw, gwrth-barthau marw, cromliniau sensitifrwydd a graddnodi gwrthbwyso'r canol fesul ffon. Mae pob adran isod yn targedu un ffon analog ar yr allbwn gweithredol. Gall proffiliau Estynedig gael hyd at bedair ffon. Mae gan gamepads safonol ddwy.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Sbardunau</value></data>
@@ -3261,7 +3305,7 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Eu plygu i lawr wythfed</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Terfyn tôn</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Chwarae haptig DualSense ar y rheolydd hwn</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Pan fydd gêm yn gyrru'r slot hwn fel DualSense rhithwir gyda sain haptig a grëwyd, chwaraewch y trac hwnnw ar actiwadyddion y rheolydd hwn. Mae Steam Controller 2026 dros USB neu ei ddongl yn chwarae'r trac ei hun. Mae pob rheolydd arall, a'r un hwnnw dros Bluetooth, yn cael tonau a ddeilliwyd o'r sain, sy'n brasamcanu teimlad y dylunydd yn hytrach na'i atgynhyrchu.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Pan fydd gêm yn gyrru'r slot hwn fel DualSense rhithwir gyda sain haptig a grëwyd, chwaraewch y trac hwnnw ar actiwadyddion y rheolydd hwn. Mae Steam Controller 2026 dros USB neu ei ddongl, a Flydigi Apex 6 Pro, yn chwarae'r trac eu hunain. Mae pob rheolydd arall, a'r Steam Controller hwnnw dros Bluetooth, yn cael tonau a ddeilliwyd o'r sain, sy'n brasamcanu teimlad y dylunydd yn hytrach na'i atgynhyrchu.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Ennill haptig</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Ailosod i'r rhagosodedig (I ffwrdd)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Ailosod i'r rhagosodedig (100%)</value></data>
@@ -3452,6 +3496,14 @@ Mae copi o'r fersiwn flaenorol yn y ffolder hon: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Cynllun adroddiad haptig Steam Controller (2015) a mathemateg cyfnod nodau, gan Pila a Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Cynllun haptig tôn LFO Steam Controller 2026 a Steam Deck, gan Pila, Crazy ac AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Cyfieithu effeithiau sbardun Flydigi Apex a chyflymder ysgrifennu, rendro sbardunau Apex 6 Pro, ffrwd haptig a bloc goleuo, ac ysgrifennu goleuo Apex 5, gan ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Nodiadau protocol Flydigi Apex 5 ac Apex 6, trosglwyddo'r bloc goleuo a llwytho'r sgrin i fyny'n gyfresol, gan Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Bloc goleuo Flydigi Apex 4, slot proffil a llwytho'r sgrin i fyny yn y modd Xbox, gan Uilton Lopes a chyfranwyr.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Gorchmynion sbardun grym Flydigi Apex 4 a'r cyflymder a fesurwyd ar y pad, gan Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Semanteg glanhau SOCD ar gyfer y moddau Snap Tap, gan valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4734,6 +4786,7 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Panio Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Dewiswch yr hyn y mae'n ei ddangos. Nid oes dim yn newid nes i chi gadw.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>Gosodwyd {0} i {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Aeth y llun i sgrin y rheolydd.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Yn lawrlwytho SDK S.T.R.I.K.E. 7 Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>Mae'r S.T.R.I.K.E. 7 bellach yn llwytho {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Yn lawrlwytho ac yn gosod amser rhedeg Visual C++ 2008 Microsoft…</value></data>

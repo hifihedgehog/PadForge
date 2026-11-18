@@ -1800,6 +1800,7 @@
   <data name="KeyboardScreen_Hint_Clock" xml:space="preserve"><value>Ìbòjú náà ń fi aago hàn.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Àwọn àwòrán (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Gbogbo fáìlì (*.*)|*.*</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>A ti yí {0} padà sí {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Àwòrán náà ti dé ìbòjú olùdarí náà.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Ń ṣe ìgbàsílẹ̀ SDK S.T.R.I.K.E. 7 ti Mad Catz…</value></data>
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Ìgbàsílẹ̀ SDK S.T.R.I.K.E. 7 kò bá SHA-256 rẹ̀ tí a mọ̀ mu, nítorí náà a kò pa ohunkóhun mọ́ nínú rẹ̀.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Fi ìbòjú pátákó ìtẹ̀wé hàn</value></data>
@@ -2078,4 +2079,13 @@
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Àwọn ìpele Shift</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Ti yí padà</value></data>
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>Góńgó</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Kò sí ohun tí yóò dé ọ̀dọ̀ olùdarí náà títí o fi fi ránṣẹ́.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Ìbámu</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Kún gbogbo ìbòjú</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Fi gbogbo àwòrán hàn</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Nà á bá ìbòjú mu</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

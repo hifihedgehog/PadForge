@@ -619,6 +619,7 @@
   <data name="KeyboardScreens_Kind_Strike7" xml:space="preserve"><value>S.T.R.I.K.E. 7</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} a siwil ngeni {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Ewe sasing a tori ewe screen an ewe controller.</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
   <data name="Falcon_Name_Format" xml:space="preserve"><value>Falcon {0}</value></data>
@@ -740,4 +741,14 @@
   <data name="Home_Stage_RightStick" xml:space="preserve"><value>Stick peliemwán</value></data>
   <data name="Devices_Detail_AppGuid" xml:space="preserve"><value>App GUID</value></data>
   <data name="Devices_Detail_SdlGuid" xml:space="preserve"><value>SDL GUID</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Esor mettóch epwe tori ewe controller tori ka tiinnóó.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Nonnom</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Ourenó Ewe Screen</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Pwári Unusen Ewe Sasing</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Ámmáchár Ngeni Ewe Screen</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Sasing (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|File meinisin (*.*)|*.*</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

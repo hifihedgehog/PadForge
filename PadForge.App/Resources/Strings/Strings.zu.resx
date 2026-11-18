@@ -499,6 +499,8 @@
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Khetha isithombe…</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Susa isithombe sephrofayela</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Lelo fayela alinaso isithombe i-PadForge engasifunda.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Isikrini sesilawuli</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Akukho okufinyelela esilawulini uze uthumele.</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Buyisela i-Controller Pak</value></data>
   <data name="BlissBoxPak_RestoreAction" xml:space="preserve"><value>Buyisela</value></data>
   <data name="BlissBoxJob_Closed" xml:space="preserve"><value>Imbobo ivaliwe ngaphambi kokuba ukudluliselwa kuqedwe.</value></data>
@@ -635,6 +637,8 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Setha kabusha ithrigha yesokunxele</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Setha kabusha ithrigha yesokudla</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Lungiselela imiphumela yempendulo yamathrigha ku-DualSense yangempela enikeziwe. Imiphumela yamathrigha evela emdlalweni noma ku-mod yomdlalo idluliselwa ngokuzenzakalelayo. Izilungiselelo ezilapha zengeza ungqimba olusethwe ngumsebenzisi olusebenza uma kungekho noyedwa kubo obhalayo.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Lungiselela imiphumela yempendulo yamathrigha kumathrigha aphikisayo alesi silawuli. Imiphumela yamathrigha evela emdlalweni ku-DualSense ebonakalayo noma ku-mod yomdlalo idlala ngokuzenzakalelayo. Izilungiselelo ezilapha zengeza ungqimba olusethwe ngumsebenzisi olusebenza uma kungekho noyedwa kubo obhalayo.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Lungiselela imiphumela yempendulo yamathrigha kulesi silawuli. Amathrigha aso ayadlidliza futhi awaphikisi, ngakho umphumela ngamunye udlala njengokudlidliza okulandela lokho okwenziwa umphumela: ukuqhuma lapho ithrigha liphuka khona, ukwakheka nokukhululwa komnsalo. Imiphumela yamathrigha evela emdlalweni ku-DualSense ebonakalayo noma ku-mod yomdlalo idlala ngokuzenzakalelayo. Izilungiselelo ezilapha zengeza ungqimba olusethwe ngumsebenzisi olusebenza uma kungekho noyedwa kubo obhalayo.</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Izinduku</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Amathrigha</value></data>
@@ -2374,6 +2378,7 @@
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Hambisa Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Khetha okuboniswayo. Akukho okushintshayo uze ulondoloze.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0}: kusethwe ku-{1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Isithombe sithunyelwe esikrinini sesilawuli.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Kulandwa i-SDK ye-S.T.R.I.K.E. 7 ye-Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>I-S.T.R.I.K.E. 7 manje isebenzisa {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Kulandwa futhi kufakwa i-Visual C++ 2008 runtime ye-Microsoft…</value></data>
@@ -2723,4 +2728,43 @@
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Izingqimba ze-Shift</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Kuphendulwe</value></data>
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>Isiqongo</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Isikrini sesilawuli…</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Igama lephrofayela esebenzayo njengoba linjalo ngesikhathi uthumela. Isilawuli siyaligcina noma kushintshwa amaphrofayela.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Indawo yephrofayela esebenzayo ohlwini lwamaphrofayela njengoba injalo ngesikhathi uthumela. Iphrofayela ezenzakalelayo ingu-0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Ukulingana</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Gcwalisa isikrini</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Bonisa isithombe sonke</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Nweba silingane nesikrini</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Thumela</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Amafreyimu: {0}. Ukuthumela kuthatha cishe {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Isilawuli samukela amafreyimu angafika ku-{0} kuphela, ngakho okokugcina okungu-{1} kushiywe ngaphandle.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Xhuma isilawuli ngekhebula. Siziqalela kabusha cishe imizuzwana engu-15 ngemuva kokuba isithombe singenile.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Xhuma isilawuli ngekhebula. Ukuze kuthunyelwe, i-PadForge isishintshela kumodi ye-Xbox futhi isisusa kudrayiva ye-Xbox ye-Windows isiyise ku-WinUSB, bese ibuyisela kokubili.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>I-PadForge izoshintshela isilawuli kumodi ye-Xbox, isiyise ku-WinUSB ukuze kuthunyelwe, bese isibuyisela kudrayiva ye-Xbox ye-Windows futhi isibuyisele kumodi ye-DInput. Qala ngokukhipha zonke ezinye izilawuli ze-Xbox 360. Thumela manje?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Kuyaqalwa…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Kushintshwa isilawuli…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Kulindwe imbobo yesikrini…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Isilawuli siyiswa ku-WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Kwenziwa indawo yesithombe… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Kuthunyelwa isithombe… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Kuyaqedwa…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Isilawuli sibuyiselwa ku-Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Kuthunyelwe. Isilawuli sizobonisa isithombe uma sesiqale kabusha.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Kuthunyelwe. Isilawuli sibonisa isithombe.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Xhuma isilawuli ngekhebula. Isikrini saso samukela isithombe nge-USB kuphela.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Imbobo yesikrini ayivelanga. Cisha bese uvula isilawuli ngeswishi yaso, usixhume ngekhebula, bese uthumela futhi.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Izikrini zezilawuli ezingaphezu kweyodwa zilinde isithombe. Khipha ezinye bese uthumela futhi.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Imbobo yesikrini ayivulekanga. Vala i-Flydigi Space Station bese uthumela futhi.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Isikrini siyekile ukuphendula. Cisha bese uvula isilawuli ngeswishi yaso bese uthumela futhi.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Isikrini senqabile isithombe. Thumela futhi.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Isilawuli asibuyanga njengesilawuli se-Xbox 360, ngakho akukho okuthunyelwe. Sibuyisele kumodi ye-DInput ngeswishi yaso bese uthumela futhi.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Khipha zonke ezinye izilawuli ze-Xbox 360 bese uthumela futhi. Ukushintsha kwedrayiva kungazisusa nazo. Isilawuli esisele kumodi ye-Xbox sibuyela kumodi ye-DInput ngeswishi yaso.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Isilawuli esikumodi ye-Xbox asiphendulanga njenge-Apex 4, ngakho akukho okuthunyelwe futhi i-Windows isiphinde yasithola. Sibuyisele kumodi ye-DInput ngeswishi yaso.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>I-Windows ayisisusanga isilawuli ukusiyisa ku-WinUSB, ngakho akukho okuthunyelwe. Sibuyisele kumodi ye-DInput ngeswishi yaso.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Kumisiwe. Cisha bese uvula isilawuli ngeswishi yaso ngaphambi kokuthi uthumele futhi.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Isithombe sisathunyelwa esilawulini. Misa ukuthumela?</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

@@ -1544,4 +1544,14 @@
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Mga shift layer</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Ginbaliskara</value></data>
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>Kinatas-an</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Waray naabot ha controller tubtob nga magpadara ka.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Paghaom</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Tabuni an screen</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Ipakita an kompleto nga litrato</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Ibitad ha screen</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Mga litrato (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Ngatanan nga file (*.*)|*.*</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

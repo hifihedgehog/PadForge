@@ -938,6 +938,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>ຕັ້ງໝາຍເລກຜູ້ຫຼິ້ນຂອງພອດນີ້, 1 ຫາ 4. ອະແດັບເຕີຈະເກັບມັນໄວ້ ແລະ ເຊື່ອມຕໍ່ຄືນໃໝ່ເປັນຜູ້ຫຼິ້ນຄົນນັ້ນ.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>ໜ້າຈໍ Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>ຕັ້ງສິ່ງທີ່ VMU ຂອງແພດ Dreamcast ສະແດງ: ຮູບຂອງອະແດັບເຕີເອງ, ຊື່, ໝາຍເລກ ຫຼື ຮູບຂອງໂປຣໄຟລ໌ທີ່ໃຊ້ຢູ່, ໂມງ, ເວລາຫຼິ້ນ ຫຼື ຮູບທີ່ທ່ານເລືອກ.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>ໜ້າຈໍຕົວຄວບຄຸມ…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>ສົ່ງຮູບໄປທີ່ໜ້າຈໍຂອງຕົວຄວບຄຸມ: ຮູບ ຫຼື GIF ທີ່ທ່ານເລືອກ ຫຼື ຮູບ, ຊື່ ຫຼື ໝາຍເລກຂອງໂປຣໄຟລ໌ທີ່ໃຊ້ຢູ່. ຕົວຄວບຄຸມຈະເກັບມັນໄວ້ຈົນກວ່າຈະມີຮູບໃໝ່.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>ສຳຮອງ Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>ບັນທຶກ Controller Pak ໃນຕົວຄວບຄຸມ N64 ນີ້ເປັນໄຟລ໌ .mpk ຂະໜາດ 32 KB, ຮູບແບບທີ່ໂປຣແກຣມຈຳລອງ N64 ອ່ານໄດ້.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>ກູ້ຄືນ Controller Pak…</value></data>
@@ -971,6 +973,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>ລຶບຮູບໂປຣໄຟລ໌</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>ຮູບພາບ (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|ທຸກໄຟລ໌ (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>ໄຟລ໌ນັ້ນບໍ່ມີຮູບທີ່ PadForge ອ່ານໄດ້.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>ໜ້າຈໍຕົວຄວບຄຸມ</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>ບໍ່ມີຫຍັງໄປຮອດຕົວຄວບຄຸມຈົນກວ່າທ່ານຈະສົ່ງ.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>ຮູບ ຫຼື GIF ທີ່ທ່ານເລືອກ ປັບໃຫ້ພໍດີກັບໜ້າຈໍຂະໜາດ 160 × 80 ພິກເຊວ. ຕົວຄວບຄຸມຈະເກັບມັນໄວ້ຈົນກວ່າທ່ານຈະສົ່ງຮູບອື່ນ.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>ຮູບຂອງໂປຣໄຟລ໌ທີ່ໃຊ້ຢູ່ ຫຼື ຊື່ຂອງມັນເມື່ອບໍ່ມີຮູບ ຕາມທີ່ເປັນຢູ່ຕອນທ່ານສົ່ງ. ຕົວຄວບຄຸມຈະເກັບມັນໄວ້ເຖິງວ່າຈະສະຫຼັບໂປຣໄຟລ໌.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>ຊື່ຂອງໂປຣໄຟລ໌ທີ່ໃຊ້ຢູ່ ຕາມທີ່ເປັນຢູ່ຕອນທ່ານສົ່ງ. ຕົວຄວບຄຸມຈະເກັບມັນໄວ້ເຖິງວ່າຈະສະຫຼັບໂປຣໄຟລ໌.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>ລຳດັບຂອງໂປຣໄຟລ໌ທີ່ໃຊ້ຢູ່ໃນລາຍການໂປຣໄຟລ໌ ຕາມທີ່ເປັນຢູ່ຕອນທ່ານສົ່ງ. ໂປຣໄຟລ໌ຄ່າເລີ່ມຕົ້ນແມ່ນ 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>ການປັບຂະໜາດ</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>ເຕັມໜ້າຈໍ</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>ສະແດງຮູບທັງໝົດ</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>ຢືດໃຫ້ເຕັມໜ້າຈໍ</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>ຮູບພາບ (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|ທຸກໄຟລ໌ (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>ສົ່ງ</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>ຈຳນວນເຟຣມ: {0}. ການສົ່ງໃຊ້ເວລາປະມານ {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>ຕົວຄວບຄຸມຮັບໄດ້ສູງສຸດ {0} ເຟຣມ ຈຶ່ງໄດ້ຕັດ {1} ເຟຣມສຸດທ້າຍອອກ.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>ເຊື່ອມຕໍ່ຕົວຄວບຄຸມດ້ວຍສາຍ. ມັນຈະເລີ່ມໃໝ່ເອງປະມານ 15 ວິນາທີຫຼັງຈາກຮູບເຂົ້າໄປແລ້ວ.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>ເຊື່ອມຕໍ່ຕົວຄວບຄຸມດ້ວຍສາຍ. ສຳລັບການສົ່ງ PadForge ຈະສະຫຼັບມັນເປັນໂໝດ Xbox ແລະ ຍ້າຍມັນຈາກໄດຣເວີ Xbox ຂອງ Windows ໄປ WinUSB ແລ້ວຈຶ່ງກັບຄືນທັງສອງຢ່າງ.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge ຈະສະຫຼັບຕົວຄວບຄຸມເປັນໂໝດ Xbox, ຍ້າຍມັນໄປ WinUSB ເພື່ອສົ່ງ, ແລ້ວຄືນມັນໃຫ້ໄດຣເວີ Xbox ຂອງ Windows ແລະ ສະຫຼັບມັນກັບເປັນໂໝດ DInput. ກະລຸນາຖອດຕົວຄວບຄຸມ Xbox 360 ອື່ນທັງໝົດອອກກ່ອນ. ສົ່ງດຽວນີ້ບໍ?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>ກຳລັງເລີ່ມ…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>ກຳລັງສະຫຼັບຕົວຄວບຄຸມ…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>ກຳລັງລໍພອດຂອງໜ້າຈໍ…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>ກຳລັງຍ້າຍຕົວຄວບຄຸມໄປ WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>ກຳລັງລຶບບ່ອນສຳລັບຮູບ… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>ກຳລັງສົ່ງຮູບ… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>ກຳລັງສຳເລັດ…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>ກຳລັງຄືນຕົວຄວບຄຸມໃຫ້ Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>ສົ່ງແລ້ວ. ຕົວຄວບຄຸມຈະສະແດງຮູບເມື່ອມັນເລີ່ມໃໝ່ແລ້ວ.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>ສົ່ງແລ້ວ. ຕົວຄວບຄຸມສະແດງຮູບແລ້ວ.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>ເຊື່ອມຕໍ່ຕົວຄວບຄຸມດ້ວຍສາຍ. ໜ້າຈໍຂອງມັນຮັບຮູບຜ່ານ USB ເທົ່ານັ້ນ.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>ພອດຂອງໜ້າຈໍບໍ່ປາກົດ. ປິດ ແລະ ເປີດຕົວຄວບຄຸມດ້ວຍສະວິດຂອງມັນເອງ, ເຊື່ອມຕໍ່ມັນດ້ວຍສາຍ ແລ້ວສົ່ງອີກຄັ້ງ.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>ມີໜ້າຈໍຕົວຄວບຄຸມຫຼາຍກວ່າໜຶ່ງກຳລັງລໍຖ້າຮູບ. ຖອດຕົວອື່ນອອກ ແລ້ວສົ່ງອີກຄັ້ງ.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>ພອດຂອງໜ້າຈໍບໍ່ເປີດ. ປິດ Flydigi Space Station ແລ້ວສົ່ງອີກຄັ້ງ.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>ໜ້າຈໍຢຸດຕອບສະໜອງ. ປິດ ແລະ ເປີດຕົວຄວບຄຸມດ້ວຍສະວິດຂອງມັນເອງ ແລ້ວສົ່ງອີກຄັ້ງ.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>ໜ້າຈໍປະຕິເສດຮູບ. ສົ່ງອີກຄັ້ງ.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>ຕົວຄວບຄຸມບໍ່ໄດ້ກັບມາເປັນຕົວຄວບຄຸມ Xbox 360 ຈຶ່ງບໍ່ມີຫຍັງຖືກສົ່ງ. ສະຫຼັບມັນກັບເປັນໂໝດ DInput ດ້ວຍສະວິດຂອງມັນເອງ ແລ້ວສົ່ງອີກຄັ້ງ.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>ຖອດຕົວຄວບຄຸມ Xbox 360 ອື່ນທັງໝົດອອກ ແລ້ວສົ່ງອີກຄັ້ງ. ການປ່ຽນໄດຣເວີຈະຍ້າຍພວກມັນໄປນຳ. ຕົວຄວບຄຸມທີ່ຍັງຢູ່ໃນໂໝດ Xbox ຈະກັບເປັນໂໝດ DInput ດ້ວຍສະວິດຂອງມັນເອງ.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>ຕົວຄວບຄຸມໃນໂໝດ Xbox ບໍ່ໄດ້ຕອບເປັນ Apex 4 ຈຶ່ງບໍ່ມີຫຍັງຖືກສົ່ງ ແລະ Windows ໄດ້ມັນຄືນແລ້ວ. ສະຫຼັບມັນກັບເປັນໂໝດ DInput ດ້ວຍສະວິດຂອງມັນເອງ.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows ບໍ່ໄດ້ຍ້າຍຕົວຄວບຄຸມໄປ WinUSB ຈຶ່ງບໍ່ມີຫຍັງຖືກສົ່ງ. ສະຫຼັບມັນກັບເປັນໂໝດ DInput ດ້ວຍສະວິດຂອງມັນເອງ.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>ຢຸດແລ້ວ. ປິດ ແລະ ເປີດຕົວຄວບຄຸມດ້ວຍສະວິດຂອງມັນເອງ ກ່ອນທີ່ທ່ານຈະສົ່ງອີກຄັ້ງ.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>ຮູບຍັງກຳລັງສົ່ງໄປຫາຕົວຄວບຄຸມ. ຢຸດການສົ່ງບໍ?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>ໄຟລ໌ Controller Pak (*.mpk)|*.mpk|ທຸກໄຟລ໌ (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak ພອດ {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>ກູ້ຄືນ Controller Pak</value></data>
@@ -1137,6 +1178,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ທຣິກເກີ Impulse</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ຄວາມແຮງແຕ່ລະທຣິກເກີ, ສັບປ່ຽນມໍເຕີ, ການສັ່ນຂອງທຣິກເກີປັບຕົວ, ແຮງທຣິກເກີຄົງທີ່</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ສົ່ງຕໍ່ຄຳສັ່ງມໍເຕີແຍກແຕ່ລະທຣິກເກີ (Xbox Impulse Triggers) ຈາກຕົວຄວບຄຸມສະເໝືອນ ໄປຫາຕົວຄວບຄຸມ Xbox One, Elite ຫຼື Series ຕົວຈິງທີ່ກຳນົດໄວ້. ການສັ່ນທຣິກເກີທີ່ເກມສັ່ງຈະຜ່ານໄປໂດຍອັດຕະໂນມັດ. ຕົວຄວບຄຸມດ້ານລຸ່ມປັບຂະໜາດຄວາມແຮງຂອງແຕ່ລະທຣິກເກີ.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>ຫຼິ້ນຄຳສັ່ງມໍເຕີແຍກແຕ່ລະທຣິກເກີ (Xbox Impulse Triggers) ຈາກຕົວຄວບຄຸມສະເໝືອນ ເປັນການສັ່ນໃນທຣິກເກີຂອງຕົວຄວບຄຸມນີ້. ການສັ່ນທຣິກເກີທີ່ເກມສັ່ງຈະຜ່ານໄປໂດຍອັດຕະໂນມັດ. ຕົວຄວບຄຸມດ້ານລຸ່ມປັບຂະໜາດຄວາມແຮງຂອງແຕ່ລະທຣິກເກີ.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>ທຣິກເກີຊ້າຍ</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>ທຣິກເກີຂວາ</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>ສັບປ່ຽນມໍເຕີທຣິກເກີຊ້າຍ ແລະ ຂວາ</value></data>
@@ -1201,6 +1243,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>ທຣິກເກີປັບຕົວ</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>ຕັ້ງຄ່າເອັບເຟັກການຕອບສະໜອງຂອງທຣິກເກີເທິງ DualSense ຕົວຈິງທີ່ກຳນົດໄວ້. ເອັບເຟັກທຣິກເກີຈາກເກມ ຫຼື ມອດເກມຈະຖືກສົ່ງຕໍ່ໂດຍອັດຕະໂນມັດ. ການຕັ້ງຄ່າຢູ່ນີ້ເພີ່ມຊັ້ນທີ່ຜູ້ໃຊ້ກຳນົດ ເຊິ່ງເຮັດວຽກເມື່ອທັງສອງບໍ່ໄດ້ກຳລັງຂຽນ.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>ຕັ້ງຄ່າເອັບເຟັກການຕອບສະໜອງຂອງທຣິກເກີເທິງທຣິກເກີແຮງຕ້ານຂອງຕົວຄວບຄຸມນີ້. ເອັບເຟັກທຣິກເກີຈາກເກມເທິງ DualSense ສະເໝືອນ ຫຼື ຈາກມອດເກມຈະຫຼິ້ນໂດຍອັດຕະໂນມັດ. ການຕັ້ງຄ່າຢູ່ນີ້ເພີ່ມຊັ້ນທີ່ຜູ້ໃຊ້ກຳນົດ ເຊິ່ງເຮັດວຽກເມື່ອທັງສອງບໍ່ໄດ້ກຳລັງຂຽນ.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>ຕັ້ງຄ່າເອັບເຟັກການຕອບສະໜອງຂອງທຣິກເກີເທິງຕົວຄວບຄຸມນີ້. ທຣິກເກີຂອງມັນສັ່ນ ແລະ ບໍ່ຕ້ານ ດັ່ງນັ້ນແຕ່ລະເອັບເຟັກຈະຫຼິ້ນເປັນການສັ່ນທີ່ຕາມສິ່ງທີ່ເອັບເຟັກເຮັດ: ການສັ່ນແຮງໆບ່ອນທີ່ທຣິກເກີແຕກ, ການສັ່ນທີ່ເພີ່ມຂຶ້ນ ແລະ ການປ່ອຍສຳລັບຄັນທະນູ. ເອັບເຟັກທຣິກເກີຈາກເກມເທິງ DualSense ສະເໝືອນ ຫຼື ຈາກມອດເກມຈະຫຼິ້ນໂດຍອັດຕະໂນມັດ. ການຕັ້ງຄ່າຢູ່ນີ້ເພີ່ມຊັ້ນທີ່ຜູ້ໃຊ້ກຳນົດ ເຊິ່ງເຮັດວຽກເມື່ອທັງສອງບໍ່ໄດ້ກຳລັງຂຽນ.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>ສະຕິກ</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>ເດດໂຊນ, ແອນຕີເດດໂຊນ, ເສັ້ນໂຄ້ງຄວາມອ່ອນໄຫວ ແລະ ການປັບທຽບການຊົດເຊີຍຈຸດກາງ ແຍກຕາມແຕ່ລະສະຕິກ. ແຕ່ລະພາກສ່ວນດ້ານລຸ່ມໃຊ້ກັບສະຕິກອະນາລັອກໜຶ່ງອັນຂອງເອົາພຸດທີ່ໃຊ້ຢູ່. ໂປຣໄຟລ໌ Extended ມີສະຕິກໄດ້ເຖິງສີ່ອັນ. ເກມແພດມາດຕະຖານມີສອງອັນ.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ທຣິກເກີ</value></data>
@@ -3248,7 +3292,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>ພັບລົງໜຶ່ງອັອກເທັບ</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>ຂີດຈຳກັດໂທນ</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>ຫຼິ້ນແຮັບຕິກ DualSense ໃນຕົວຄວບຄຸມນີ້</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ເມື່ອເກມຂັບຊ່ອງນີ້ເປັນ DualSense ສະເໝືອນທີ່ມີສຽງແຮັບຕິກທີ່ອອກແບບໄວ້, ໃຫ້ຫຼິ້ນແທຣັກນັ້ນໃນຕົວສັ່ນຂອງຕົວຄວບຄຸມນີ້. Steam Controller 2026 ຜ່ານ USB ຫຼື ດອງເກິນຂອງມັນ ຈະຫຼິ້ນແທຣັກນັ້ນເອງ. ຕົວຄວບຄຸມອື່ນທັງໝົດ, ແລະ ຕົວນັ້ນເມື່ອຜ່ານ Bluetooth, ຈະໄດ້ໂທນທີ່ສ້າງຈາກສຽງ ເຊິ່ງໃກ້ຄຽງກັບຄວາມຮູ້ສຶກທີ່ຜູ້ອອກແບບຕັ້ງໃຈ ແຕ່ບໍ່ໄດ້ສ້າງຄືນມັນແທ້.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ເມື່ອເກມຂັບຊ່ອງນີ້ເປັນ DualSense ສະເໝືອນທີ່ມີສຽງແຮັບຕິກທີ່ອອກແບບໄວ້, ໃຫ້ຫຼິ້ນແທຣັກນັ້ນໃນຕົວສັ່ນຂອງຕົວຄວບຄຸມນີ້. Steam Controller 2026 ຜ່ານ USB ຫຼື ດອງເກິນຂອງມັນ ແລະ Flydigi Apex 6 Pro ຈະຫຼິ້ນແທຣັກນັ້ນເອງ. ຕົວຄວບຄຸມອື່ນທັງໝົດ, ແລະ Steam Controller ນັ້ນເມື່ອຜ່ານ Bluetooth, ຈະໄດ້ໂທນທີ່ສ້າງຈາກສຽງ ເຊິ່ງໃກ້ຄຽງກັບຄວາມຮູ້ສຶກທີ່ຜູ້ອອກແບບຕັ້ງໃຈ ແຕ່ບໍ່ໄດ້ສ້າງຄືນມັນແທ້.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>ອັດຕາຂະຫຍາຍແຮັບຕິກ</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>ຄືນເປັນຄ່າເລີ່ມຕົ້ນ (ປິດ)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>ຄືນເປັນຄ່າເລີ່ມຕົ້ນ (100%)</value></data>
@@ -3438,6 +3482,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>ໂຄງສ້າງລາຍງານແຮັບຕິກຂອງ Steam Controller (2015) ແລະ ຄະນິດສາດຄາບຂອງໂນດ, ໂດຍ Pila ແລະ Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>ໂຄງສ້າງແຮັບຕິກແບບໂທນ LFO ຂອງ Steam Controller 2026 ແລະ Steam Deck, ໂດຍ Pila, Crazy ແລະ AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>ການແປງເອັບເຟັກທຣິກເກີ ແລະ ຈັງຫວະການຂຽນຂອງ Flydigi Apex, ການສະແດງຜົນທຣິກເກີ, ສະຕຣີມແຮັບຕິກ ແລະ ບລັອກໄຟຂອງ Apex 6 Pro, ແລະ ການຂຽນໄຟຂອງ Apex 5, ໂດຍ ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>ບັນທຶກໂປຣໂຕຄໍຂອງ Flydigi Apex 5 ແລະ Apex 6, ການໂອນບລັອກໄຟ ແລະ ການອັບໂຫຼດຜ່ານພອດຊີຣຽວຂອງໜ້າຈໍ, ໂດຍ Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>ບລັອກໄຟ, ຊ່ອງໂປຣໄຟລ໌ ແລະ ການອັບໂຫຼດໜ້າຈໍໃນໂໝດ Xbox ຂອງ Flydigi Apex 4, ໂດຍ Uilton Lopes ແລະ ຜູ້ຮ່ວມພັດທະນາ.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>ຄຳສັ່ງທຣິກເກີແຮງຕ້ານຂອງ Flydigi Apex 4 ແລະ ຈັງຫວະທີ່ວັດໄດ້ເທິງແພດ, ໂດຍ Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>ຄວາມໝາຍຂອງການລ້າງ SOCD ສຳລັບໂໝດ Snap Tap, ໂດຍ valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4742,6 +4794,7 @@
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>ເລື່ອນ Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>ເລືອກສິ່ງທີ່ມັນສະແດງ. ບໍ່ມີຫຍັງປ່ຽນຈົນກວ່າທ່ານຈະບັນທຶກ.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>ຕັ້ງ {0} ເປັນ {1} ແລ້ວ.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>ຮູບໄດ້ໄປຮອດໜ້າຈໍຂອງຕົວຄວບຄຸມແລ້ວ.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>ກຳລັງດາວໂຫຼດ SDK S.T.R.I.K.E. 7 ຂອງ Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>ດຽວນີ້ S.T.R.I.K.E. 7 ໂຫຼດ {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>ກຳລັງດາວໂຫຼດ ແລະ ຕິດຕັ້ງຣັນທາມ Visual C++ 2008 ຂອງ Microsoft…</value></data>

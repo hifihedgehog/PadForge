@@ -460,6 +460,7 @@ namespace PadForge.Common.Input.Peripherals
             GameSirLighting.Instance,
             TurtleBeachKP7Lighting.Instance,
             LegoDimensionsToypadLighting.Instance,
+            FlydigiApexLighting.Instance,
             CreativeSoundBlasterLighting.Instance,
             EdifierHaloLighting.Instance,
             SkydimoHidLighting.Instance,

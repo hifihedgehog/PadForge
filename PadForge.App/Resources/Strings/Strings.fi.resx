@@ -952,6 +952,8 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Asettaa tämän portin pelaajanumeron (1–4). Sovitin tallentaa sen ja yhdistää uudelleen kyseisenä pelaajana.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast-näyttö…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Määrittää, mitä Dreamcast-ohjaimen VMU näyttää: sovittimen oman kuvan, aktiivisen profiilin nimen, numeron tai kuvan, kellon, peliajan tai valitsemasi kuvan.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Ohjaimen näyttö…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Lähettää kuvan ohjaimen näyttöön: valitsemasi kuvan tai GIF-animaation tai aktiivisen profiilin kuvan, nimen tai numeron. Ohjain säilyttää sen seuraavaan lähetykseen asti.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Varmuuskopioi Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Tallentaa tämän N64-ohjaimen Controller Pakin 32 kt:n .mpk-tiedostoon, jota N64-emulaattorit lukevat.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Palauta Controller Pak…</value></data>
@@ -985,6 +987,45 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Poista profiilin kuva</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Kuvat (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Kaikki tiedostot (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Tiedostossa ei ole kuvaa, jota PadForge osaa lukea.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Ohjaimen näyttö</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Mikään ei mene ohjaimeen ennen kuin lähetät.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Valitsemasi kuva tai GIF-animaatio, sovitettuna näytön 160 × 80 pikseliin. Ohjain säilyttää sen, kunnes lähetät toisen.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Aktiivisen profiilin oma kuva tai sen nimi, jos kuvaa ei ole, sellaisena kuin se on lähettäessäsi. Ohjain säilyttää sen profiilinvaihtojen yli.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Aktiivisen profiilin nimi sellaisena kuin se on lähettäessäsi. Ohjain säilyttää sen profiilinvaihtojen yli.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Aktiivisen profiilin sijainti profiililuettelossa sellaisena kuin se on lähettäessäsi. Oletusprofiili on 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Sovitus</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Täytä näyttö</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Näytä koko kuva</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Venytä näytölle</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Kuvat (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Kaikki tiedostot (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Lähetä</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Kuvia: {0}. Lähetys kestää noin {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Ohjain ottaa vastaan enintään {0} kuvaa, joten viimeiset {1} jätettiin pois.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Yhdistä ohjain kaapelilla. Se käynnistyy itsestään uudelleen noin 15 sekuntia kuvan siirron jälkeen.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Yhdistä ohjain kaapelilla. Lähetystä varten PadForge vaihtaa sen Xbox-tilaan ja siirtää sen Windowsin Xbox-ajurista WinUSB:hen ja palauttaa sitten molemmat.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge vaihtaa ohjaimen Xbox-tilaan, siirtää sen lähetystä varten WinUSB:hen, antaa sen sitten takaisin Windowsin Xbox-ajurille ja vaihtaa sen takaisin DInput-tilaan. Irrota ensin kaikki muut Xbox 360 -ohjaimet. Lähetetäänkö nyt?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Aloitetaan…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Vaihdetaan ohjaimen tilaa…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Odotetaan näytön porttia…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Siirretään ohjain WinUSB:hen…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Tehdään tilaa kuvalle… {0} %</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Lähetetään kuvaa… {0} %</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Viimeistellään…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Annetaan ohjain takaisin Windowsille…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Lähetetty. Ohjain näyttää kuvan, kun se on käynnistynyt uudelleen.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Lähetetty. Ohjain näyttää kuvan.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Yhdistä ohjain kaapelilla. Sen näyttö ottaa kuvan vastaan vain USB:n kautta.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Näytön porttia ei ilmestynyt. Katkaise ohjaimesta virta ja kytke se takaisin ohjaimen omalla kytkimellä, yhdistä se kaapelilla ja lähetä uudelleen.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Useampi kuin yksi ohjaimen näyttö odottaa kuvaa. Irrota muut ja lähetä uudelleen.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Näytön portti ei avautunut. Sulje Flydigi Space Station ja lähetä uudelleen.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Näyttö lakkasi vastaamasta. Katkaise ohjaimesta virta ja kytke se takaisin ohjaimen omalla kytkimellä ja lähetä uudelleen.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Näyttö hylkäsi kuvan. Lähetä uudelleen.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Ohjain ei palannut Xbox 360 -ohjaimena, joten mitään ei lähetetty. Vaihda se takaisin DInput-tilaan ohjaimen omalla kytkimellä ja lähetä uudelleen.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Irrota kaikki muut Xbox 360 -ohjaimet ja lähetä uudelleen. Ajurin vaihto siirtäisi nekin. Xbox-tilaan jäänyt ohjain palaa DInput-tilaan ohjaimen omalla kytkimellä.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox-tilassa ollut ohjain ei vastannut Apex 4 -ohjaimena, joten mitään ei lähetetty ja Windows sai sen takaisin. Vaihda se takaisin DInput-tilaan ohjaimen omalla kytkimellä.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows ei siirtänyt ohjainta WinUSB:hen, joten mitään ei lähetetty. Vaihda se takaisin DInput-tilaan ohjaimen omalla kytkimellä.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Pysäytetty. Katkaise ohjaimesta virta ja kytke se takaisin ohjaimen omalla kytkimellä ennen kuin lähetät uudelleen.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Kuvaa lähetetään vielä ohjaimeen. Pysäytetäänkö lähetys?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak -tiedostot (*.mpk)|*.mpk|Kaikki tiedostot (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak portti {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Palauta Controller Pak</value></data>
@@ -1218,6 +1259,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulssiliipaisimet</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Vahvistus, moottorien vaihto, mukautuvien liipaisimien värinät, Jatkuva liipaisinvoima</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Välittää liipaisinkohtaiset moottorikomennot (Xbox Impulse Triggers) virtuaaliohjaimelta liitettyyn fyysiseen Xbox One-, Elite- tai Series-ohjaimeen. Pelin ohjaama liipaisintärinä välittyy automaattisesti. Alla olevat säätimet skaalaavat voimakkuutta liipaisinkohtaisesti.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Toistaa liipaisinkohtaiset moottorikomennot (Xbox Impulse Triggers) virtuaaliohjaimelta värinänä tämän ohjaimen liipaisimissa. Pelin ohjaama liipaisintärinä välittyy automaattisesti. Alla olevat säätimet skaalaavat voimakkuutta liipaisinkohtaisesti.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Vasen liipaisin</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Oikea liipaisin</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Vaihda vasemman ja oikean liipaisimen moottorit keskenään</value></data>
@@ -1282,6 +1324,8 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Mukautuvat liipaisimet</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Määritä liipaisimien palaute-efektit liitetylle fyysiselle DualSense-ohjaimelle. Pelin tai pelimodin lähettämät liipaisinefektit välitetään automaattisesti. Täällä tehdyt asetukset lisäävät käyttäjän määrittämän tason, joka toimii, kun kumpikaan ei kirjoita efektejä.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Määritä liipaisimien palaute-efektit tämän ohjaimen voimaliipaisimille. Virtuaalisen DualSense-ohjaimen pelin tai pelimodin lähettämät liipaisinefektit toistetaan automaattisesti. Täällä tehdyt asetukset lisäävät käyttäjän määrittämän tason, joka toimii, kun kumpikaan ei kirjoita efektejä.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Määritä liipaisimien palaute-efektit tälle ohjaimelle. Sen liipaisimet värisevät eivätkä vastusta, joten jokainen efekti toistetaan värinänä, joka seuraa efektin toimintaa: purske liipaisimen katkeamiskohdassa, jännittyminen ja vapautus jousen kohdalla. Virtuaalisen DualSense-ohjaimen pelin tai pelimodin lähettämät liipaisinefektit toistetaan automaattisesti. Täällä tehdyt asetukset lisäävät käyttäjän määrittämän tason, joka toimii, kun kumpikaan ei kirjoita efektejä.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Sauvat</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Sauvakohtaiset kuolleet alueet, kuolleen alueen kompensoinnit, herkkyyskäyrät ja keskipisteen korjauksen kalibrointi. Kukin alla oleva osio koskee yhtä aktiivisen lähdön analogista sauvaa. Laajennetuissa profiileissa voi olla enintään neljä sauvaa. Tavallisissa peliohjaimissa niitä on kaksi.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Liipaisimet</value></data>
@@ -3457,7 +3501,7 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Laske oktaavi alemmas</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Sävyraja</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Toista DualSense-haptiikka tällä ohjaimella</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kun peli ohjaa tätä paikkaa virtuaalisena DualSense-ohjaimena, jolla on suunniteltu haptinen ääniraita, raita toistetaan tämän ohjaimen toimilaitteilla. Steam Controller 2026 USB-yhteydellä tai omalla sovittimellaan toistaa raidan itse. Kaikki muut ohjaimet sekä Steam Controller 2026 Bluetooth-yhteydellä saavat äänestä johdettuja sävyjä, jotka jäljittelevät suunnittelijan tarkoittamaa tuntumaa mutta eivät toista sitä täsmälleen.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kun peli ohjaa tätä paikkaa virtuaalisena DualSense-ohjaimena, jolla on suunniteltu haptinen ääniraita, raita toistetaan tämän ohjaimen toimilaitteilla. Steam Controller 2026 USB-yhteydellä tai omalla sovittimellaan sekä Flydigi Apex 6 Pro toistavat raidan itse. Kaikki muut ohjaimet sekä tämä Steam Controller Bluetooth-yhteydellä saavat äänestä johdettuja sävyjä, jotka jäljittelevät suunnittelijan tarkoittamaa tuntumaa mutta eivät toista sitä täsmälleen.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptiikan vahvistus</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Palauta oletus (pois)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Palauta oletus (100 %)</value></data>
@@ -3652,6 +3696,14 @@ Kopio edellisestä versiosta on tässä kansiossa: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) -ohjaimen haptisten raporttien rakenne ja nuottien jaksonpituuksien matematiikka, tekijät Pila ja Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026- ja Steam Deck -laitteiden LFO-sävyihin perustuva haptinen rakenne, tekijät Pila, Crazy ja AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex -liipaisinefektien käännös ja kirjoitusten ajoitus, Apex 6 Pro -liipaisinten toteutus, haptinen virta ja valaistuslohko sekä Apex 5 -valaistuksen kirjoitukset, tekijä ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5- ja Apex 6 -protokollamuistiinpanot, valaistuslohkon siirto ja näytön sarjaportti-lataus, tekijä Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4 -valaistuslohko, profiilipaikka ja näytön lataus Xbox-tilassa, tekijät Uilton Lopes ja muut avustajat.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4 -voimaliipaisinten komennot ja ohjaimella mitattu ajoitus, tekijä Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD-siivouksen semantiikka Snap Tap -tiloille, tekijä valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Panoroi Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Valitse, mitä se näyttää. Mikään ei muutu ennen kuin tallennat.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0}: asetus {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Kuva lähetettiin ohjaimen näyttöön.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Ladataan Mad Catzin S.T.R.I.K.E. 7 SDK:ta…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 lataa nyt tiedoston {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Ladataan ja asennetaan Microsoftin Visual C++ 2008 -ajoympäristö…</value></data>

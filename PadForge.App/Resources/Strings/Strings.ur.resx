@@ -952,6 +952,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>اس پورٹ کا پلیئر نمبر سیٹ کرتا ہے، 1 سے 4 تک۔ اڈاپٹر اسے محفوظ کر لیتا ہے اور اسی پلیئر کے طور پر دوبارہ منسلک ہوتا ہے۔</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast اسکرین…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>طے کرتا ہے کہ Dreamcast پیڈ کا VMU کیا دکھائے: اڈاپٹر کی اپنی تصویر، فعال پروفائل کا نام، نمبر یا تصویر، گھڑی، کھیلنے کا وقت، یا آپ کی منتخب کردہ تصویر۔</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>کنٹرولر اسکرین…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>کنٹرولر کی اسکرین پر تصویر بھیجتا ہے: آپ کی منتخب کردہ تصویر یا GIF، یا فعال پروفائل کی تصویر، نام یا نمبر۔ کنٹرولر اسے اگلی تصویر آنے تک رکھتا ہے۔</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Controller Pak کا بیک اپ لیں…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>اس N64 کنٹرولر میں لگے Controller Pak کو 32 KB کی .mpk فائل میں محفوظ کرتا ہے، یہ وہ فارمیٹ ہے جسے N64 ایمولیٹر پڑھتے ہیں۔</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Controller Pak بحال کریں…</value></data>
@@ -985,6 +987,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>پروفائل کی تصویر ہٹائیں</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>تصاویر (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|تمام فائلیں (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>اس فائل میں ایسی کوئی تصویر نہیں جسے PadForge پڑھ سکے۔</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>کنٹرولر اسکرین</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>بھیجنے تک کنٹرولر تک کچھ نہیں پہنچتا۔</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>آپ کی منتخب کردہ تصویر یا GIF، جو اسکرین کے 160 × 80 پکسلز میں فٹ کی جاتی ہے۔ کنٹرولر اسے اس وقت تک رکھتا ہے جب تک آپ دوسری نہ بھیجیں۔</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>فعال پروفائل کی تصویر، یا تصویر نہ ہو تو اس کا نام، جیسی وہ بھیجتے وقت ہو۔ کنٹرولر اسے پروفائل بدلنے کے بعد بھی رکھتا ہے۔</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>فعال پروفائل کا نام، جیسا وہ بھیجتے وقت ہو۔ کنٹرولر اسے پروفائل بدلنے کے بعد بھی رکھتا ہے۔</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>پروفائل فہرست میں فعال پروفائل کا نمبر، جیسا وہ بھیجتے وقت ہو۔ ڈیفالٹ پروفائل 0 ہے۔</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>فٹ</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>پوری اسکرین بھر دیں</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>پوری تصویر دکھائیں</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>اسکرین پر کھینچیں</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>تصاویر (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|تمام فائلیں (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>بھیجیں</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>فریمز: {0}۔ بھیجنے میں تقریباً {1} لگتے ہیں۔</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>کنٹرولر زیادہ سے زیادہ {0} فریمز لیتا ہے، اس لیے آخری {1} چھوڑ دیے گئے۔</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>کنٹرولر کو کیبل سے جوڑیں۔ تصویر پہنچنے کے تقریباً 15 سیکنڈ بعد یہ خود ری اسٹارٹ ہو جاتا ہے۔</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>کنٹرولر کو کیبل سے جوڑیں۔ بھیجنے کے لیے PadForge اسے Xbox موڈ میں بدلتا ہے اور Windows کے Xbox ڈرائیور سے WinUSB پر لے جاتا ہے، پھر دونوں واپس رکھ دیتا ہے۔</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge کنٹرولر کو Xbox موڈ میں بدلے گا، بھیجنے کے لیے اسے WinUSB پر لے جائے گا، پھر اسے Windows کے Xbox ڈرائیور کو واپس دے گا اور DInput موڈ میں لوٹا دے گا۔ پہلے باقی تمام Xbox 360 کنٹرولرز نکال دیں۔ ابھی بھیجیں؟</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>شروع ہو رہا ہے…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>کنٹرولر کو بدلا جا رہا ہے…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>اسکرین کے پورٹ کا انتظار ہے…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>کنٹرولر کو WinUSB پر لے جایا جا رہا ہے…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>تصویر کے لیے جگہ خالی کی جا رہی ہے… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>تصویر بھیجی جا رہی ہے… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>مکمل ہو رہا ہے…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>کنٹرولر Windows کو واپس دیا جا رہا ہے…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>بھیج دی گئی۔ ری اسٹارٹ ہونے کے بعد کنٹرولر تصویر دکھاتا ہے۔</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>بھیج دی گئی۔ کنٹرولر تصویر دکھاتا ہے۔</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>کنٹرولر کو کیبل سے جوڑیں۔ اس کی اسکرین تصویر صرف USB پر لیتی ہے۔</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>اسکرین کا پورٹ ظاہر نہیں ہوا۔ کنٹرولر کو اس کے اپنے سوئچ سے بند کر کے دوبارہ چالو کریں، کیبل سے جوڑیں اور دوبارہ بھیجیں۔</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>ایک سے زیادہ کنٹرولر اسکرینیں تصویر کے انتظار میں ہیں۔ باقی نکال دیں اور دوبارہ بھیجیں۔</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>اسکرین کا پورٹ نہیں کھلا۔ Flydigi Space Station بند کریں اور دوبارہ بھیجیں۔</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>اسکرین نے جواب دینا بند کر دیا۔ کنٹرولر کو اس کے اپنے سوئچ سے بند کر کے دوبارہ چالو کریں اور دوبارہ بھیجیں۔</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>اسکرین نے تصویر قبول نہیں کی۔ دوبارہ بھیجیں۔</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>کنٹرولر Xbox 360 کنٹرولر کے طور پر واپس نہیں آیا، اس لیے کچھ نہیں بھیجا گیا۔ اسے اس کے اپنے سوئچ سے واپس DInput موڈ میں کریں اور دوبارہ بھیجیں۔</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>باقی تمام Xbox 360 کنٹرولرز نکال دیں اور دوبارہ بھیجیں۔ ڈرائیور کی تبدیلی انہیں بھی لے جاتی۔ Xbox موڈ میں رہ جانے والا کنٹرولر اپنے سوئچ سے واپس DInput موڈ میں جاتا ہے۔</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox موڈ میں کنٹرولر نے Apex 4 کے طور پر جواب نہیں دیا، اس لیے کچھ نہیں بھیجا گیا اور Windows کو وہ واپس مل گیا ہے۔ اسے اس کے اپنے سوئچ سے واپس DInput موڈ میں کریں۔</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows نے کنٹرولر کو WinUSB پر نہیں لے جایا، اس لیے کچھ نہیں بھیجا گیا۔ اسے اس کے اپنے سوئچ سے واپس DInput موڈ میں کریں۔</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>روک دیا گیا۔ دوبارہ بھیجنے سے پہلے کنٹرولر کو اس کے اپنے سوئچ سے بند کر کے دوبارہ چالو کریں۔</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>ابھی کنٹرولر کو تصویر بھیجی جا رہی ہے۔ بھیجنا روک دیں؟</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak فائلیں (*.mpk)|*.mpk|تمام فائلیں (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak پورٹ {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak بحال کریں</value></data>
@@ -1218,6 +1259,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>امپلس ٹرگرز</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ہر ٹرگر کی گین، موٹروں کی ادلا بدلی، ایڈاپٹو ٹرگر وائبریشنز، مستقل ٹرگر فورس</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ورچوئل کنٹرولر سے ہر ٹرگر کی موٹر کمانڈز (Xbox Impulse Triggers) تفویض کردہ فزیکل Xbox One، Elite یا Series کنٹرولر کو آگے بھیجتا ہے۔ گیم کی طرف سے آنے والا ٹرگر رمبل خودکار طور پر گزر جاتا ہے۔ نیچے دیے گئے کنٹرولز ہر ٹرگر کی شدت کو اسکیل کرتے ہیں۔</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>ورچوئل کنٹرولر سے ہر ٹرگر کی موٹر کمانڈز (Xbox Impulse Triggers) کو اس کنٹرولر کے ٹرگرز میں وائبریشن کے طور پر چلاتا ہے۔ گیم کی طرف سے آنے والا ٹرگر رمبل خودکار طور پر گزر جاتا ہے۔ نیچے دیے گئے کنٹرولز ہر ٹرگر کی شدت کو اسکیل کرتے ہیں۔</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>بایاں ٹرگر</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>دایاں ٹرگر</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>بائیں اور دائیں ٹرگر کی موٹریں آپس میں بدلیں</value></data>
@@ -1282,6 +1324,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>ایڈاپٹو ٹرگرز</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>تفویض کردہ فزیکل DualSense پر ٹرگر فیڈبیک ایفیکٹس ترتیب دیں۔ گیم یا گیم موڈ کے ٹرگر ایفیکٹس خودکار طور پر آگے بھیج دیے جاتے ہیں۔ یہاں کی ترتیبات صارف کی ترتیب دی ہوئی ایک ایسی تہہ شامل کرتی ہیں جو اس وقت چلتی ہے جب ان دونوں میں سے کوئی نہ لکھ رہا ہو۔</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>اس کنٹرولر کے فورس ٹرگرز پر ٹرگر فیڈبیک ایفیکٹس ترتیب دیں۔ ورچوئل DualSense پر گیم کے یا گیم موڈ کے ٹرگر ایفیکٹس خودکار طور پر چلتے ہیں۔ یہاں کی ترتیبات صارف کی ترتیب دی ہوئی ایک ایسی تہہ شامل کرتی ہیں جو اس وقت چلتی ہے جب ان دونوں میں سے کوئی نہ لکھ رہا ہو۔</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>اس کنٹرولر پر ٹرگر فیڈبیک ایفیکٹس ترتیب دیں۔ اس کے ٹرگرز وائبریٹ کرتے ہیں اور مزاحمت نہیں کرتے، اس لیے ہر ایفیکٹ ایک وائبریشن کے طور پر چلتا ہے جو ایفیکٹ کے عمل کی پیروی کرتی ہے: جہاں ٹرگر ٹوٹتا ہے وہاں ایک جھٹکا، اور کمان کے لیے بتدریج بڑھنا اور پھر چھوٹنا۔ ورچوئل DualSense پر گیم کے یا گیم موڈ کے ٹرگر ایفیکٹس خودکار طور پر چلتے ہیں۔ یہاں کی ترتیبات صارف کی ترتیب دی ہوئی ایک ایسی تہہ شامل کرتی ہیں جو اس وقت چلتی ہے جب ان دونوں میں سے کوئی نہ لکھ رہا ہو۔</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>اسٹکس</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>ہر اسٹک کے ڈیڈ زون، اینٹی ڈیڈ زون، حساسیت کے خم اور مرکز کے آفسیٹ کی کیلیبریشن۔ نیچے کا ہر حصہ فعال آؤٹ پٹ کی ایک اینالاگ اسٹک کے لیے ہے۔ توسیعی پروفائلز میں چار تک اسٹکس ہو سکتی ہیں۔ عام گیم پیڈز میں دو ہوتی ہیں۔</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ٹرگرز</value></data>
@@ -3457,7 +3501,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>ایک آکٹیو نیچے لائیں</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>ٹون کی حد</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>اس کنٹرولر پر DualSense ہیپٹکس چلائیں</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>جب کوئی گیم اس سلاٹ کو ورچوئل DualSense کے طور پر تیار شدہ ہیپٹک آڈیو کے ساتھ چلائے تو وہ ٹریک اس کنٹرولر کے ایکچویٹرز پر چلائیں۔ Steam Controller 2026، USB یا اپنے ڈونگل پر، ٹریک کو جوں کا توں چلاتا ہے۔ باقی ہر کنٹرولر، اور بلوٹوتھ پر یہ کنٹرولر بھی، آڈیو سے اخذ کردہ ٹونز پاتا ہے، جو ڈیزائنر کے احساس کو ہو بہو دہرانے کے بجائے اس کے قریب تر ہوتے ہیں۔</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>جب کوئی گیم اس سلاٹ کو ورچوئل DualSense کے طور پر تیار شدہ ہیپٹک آڈیو کے ساتھ چلائے تو وہ ٹریک اس کنٹرولر کے ایکچویٹرز پر چلائیں۔ Steam Controller 2026، USB یا اپنے ڈونگل پر، اور Flydigi Apex 6 Pro ٹریک کو جوں کا توں چلاتے ہیں۔ باقی ہر کنٹرولر، اور بلوٹوتھ پر وہ Steam Controller بھی، آڈیو سے اخذ کردہ ٹونز پاتا ہے، جو ڈیزائنر کے احساس کو ہو بہو دہرانے کے بجائے اس کے قریب تر ہوتے ہیں۔</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>ہیپٹکس گین</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>ڈیفالٹ (آف) پر ری سیٹ کریں</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>ڈیفالٹ (100%) پر ری سیٹ کریں</value></data>
@@ -3652,6 +3696,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) کا ہیپٹک رپورٹ لے آؤٹ اور نوٹ پیریڈ کا حساب، از Pila اور Roboron3042۔</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 اور Steam Deck کا LFO ٹون ہیپٹک لے آؤٹ، از Pila، Crazy اور AAGaming۔</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex ٹرگر ایفیکٹ کا ترجمہ اور تحریر کی رفتار، Apex 6 Pro کی ٹرگر رینڈرنگ، ہیپٹک اسٹریم اور لائٹنگ بلاک، اور Apex 5 کی لائٹنگ تحریریں، از ReynArts۔</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5 اور Apex 6 کے پروٹوکول نوٹس، لائٹنگ بلاک کی منتقلی اور اسکرین کی سیریل اپلوڈ، از Mikalai Kaliaha۔</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4 کا لائٹنگ بلاک، پروفائل سلاٹ اور Xbox موڈ میں اسکرین اپلوڈ، از Uilton Lopes اور معاونین۔</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4 کی فورس ٹرگر کمانڈز اور پیڈ پر ناپی گئی رفتار، از Jackwmtr۔</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap موڈز کے لیے SOCD کلیننگ کے اصول، از valignatev۔</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>پین Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>منتخب کریں کہ یہ کیا دکھائے۔ محفوظ کرنے تک کچھ نہیں بدلتا۔</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} کو {1} پر سیٹ کیا گیا۔</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>تصویر کنٹرولر کی اسکرین پر بھیج دی گئی۔</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mad Catz کا S.T.R.I.K.E. 7 SDK ڈاؤن لوڈ ہو رہا ہے…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 اب {0} لوڈ کرتا ہے۔</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Microsoft کا Visual C++ 2008 رن ٹائم ڈاؤن لوڈ اور انسٹال ہو رہا ہے…</value></data>

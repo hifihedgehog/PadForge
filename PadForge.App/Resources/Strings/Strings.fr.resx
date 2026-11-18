@@ -1996,6 +1996,8 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>Implémentation de référence pour le passthrough audio USB de la manette. Par WujekFoliarz.</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Gâchettes adaptatives</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configure les effets des gâchettes sur la DualSense physique assignée. Les effets de gâchette venant d'un jeu ou d'un mod de jeu sont transmis automatiquement. Les réglages ici ajoutent une couche utilisateur qui s'applique quand ni l'un ni l'autre n'écrit.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Configure les effets de retour des gâchettes sur les gâchettes à force de cette manette. Les effets de gâchette venant d'un jeu sur une DualSense virtuelle ou d'un mod de jeu sont joués automatiquement. Les réglages ici ajoutent une couche utilisateur qui s'applique quand ni l'un ni l'autre n'écrit.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Configure les effets de retour des gâchettes sur cette manette. Ses gâchettes vibrent sans résister, donc chaque effet est joué sous forme de vibration qui suit ce que fait l'effet : une rafale quand une gâchette cède, une montée puis un relâchement pour un arc. Les effets de gâchette venant d'un jeu sur une DualSense virtuelle ou d'un mod de jeu sont joués automatiquement. Les réglages ici ajoutent une couche utilisateur qui s'applique quand ni l'un ni l'autre n'écrit.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Par stick : zones mortes, anti-zones mortes, courbes de sensibilité et calibrage du décalage du centre. Chaque section ci-dessous cible un stick analogique de la sortie active. Les profils étendus peuvent avoir jusqu'à quatre sticks. Les manettes standard en ont deux.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Gâchettes</value></data>
@@ -2360,6 +2362,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Gâchettes Impulse</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain par gâchette, inversion des moteurs, vibrations des gâchettes adaptatives, Force constante sur gâchettes</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Transmet les commandes par moteur de gâchette (gâchettes Impulse Xbox) du contrôleur virtuel vers le contrôleur physique Xbox One, Elite ou Series assigné. La vibration de gâchette générée par un jeu est transmise automatiquement. Les contrôles ci-dessous ajustent l'amplitude par gâchette.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Joue les commandes par moteur de gâchette (gâchettes Impulse Xbox) du contrôleur virtuel sous forme de vibration dans les gâchettes de cette manette. La vibration de gâchette générée par un jeu est transmise automatiquement. Les contrôles ci-dessous ajustent l'amplitude par gâchette.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gâchette gauche</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gâchette droite</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Inverser les moteurs des gâchettes gauche et droite</value></data>
@@ -2772,7 +2775,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Les replier d'une octave</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Limite de tonalité</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Jouer les retours haptiques DualSense sur cette manette</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Quand un jeu pilote cet emplacement comme une DualSense virtuelle avec une piste haptique d'auteur, cette piste est jouée sur les actionneurs de cette manette. Une Steam Controller 2026 en USB ou via son dongle joue la piste elle-même. Toute autre manette, et celle-ci en Bluetooth, reçoit des tonalités dérivées de l'audio, qui approchent le ressenti conçu au lieu de le reproduire.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Quand un jeu pilote cet emplacement comme une DualSense virtuelle avec une piste haptique d'auteur, cette piste est jouée sur les actionneurs de cette manette. Une Steam Controller 2026 en USB ou via son dongle, et une Flydigi Apex 6 Pro, jouent la piste elles-mêmes. Toute autre manette, et cette Steam Controller en Bluetooth, reçoit des tonalités dérivées de l'audio, qui approchent le ressenti conçu au lieu de le reproduire.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Gain haptique</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Réinitialiser par défaut (désactivé)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Réinitialiser par défaut (100 %)</value></data>
@@ -3221,6 +3224,8 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Définit le numéro de joueur de ce port, de 1 à 4. L'adaptateur l'enregistre et se reconnecte comme ce joueur.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Écran Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Définit ce qu'affiche la VMU de la manette Dreamcast : l'image propre à l'adaptateur, le nom, le numéro ou l'image du profil actif, l'horloge, le temps de jeu ou une image de votre choix.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Écran de la manette…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Envoie une image à l'écran de la manette : une image ou un GIF de votre choix, ou l'image, le nom ou le numéro du profil actif. La manette la garde jusqu'à la suivante.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Sauvegarder le Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Enregistre le Controller Pak de cette manette N64 dans un fichier .mpk de 32 Ko, le format que lisent les émulateurs N64.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Restaurer le Controller Pak…</value></data>
@@ -3254,6 +3259,45 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Retirer l'image du profil</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Images (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Tous les fichiers (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Ce fichier ne contient aucune image que PadForge sait lire.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Écran de la manette</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Rien n'atteint la manette avant l'envoi.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Une image ou un GIF de votre choix, ajusté aux 160 sur 80 pixels de l'écran. La manette la garde jusqu'à l'envoi d'une autre.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>L'image du profil actif, ou son nom s'il n'en a pas, telle qu'elle est au moment de l'envoi. La manette la garde malgré les changements de profil.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Le nom du profil actif tel qu'il est au moment de l'envoi. La manette le garde malgré les changements de profil.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>La place du profil actif dans la liste des profils telle qu'elle est au moment de l'envoi. Le profil par défaut est le 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Ajustement</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Remplir l'écran</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Afficher l'image entière</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Étirer à l'écran</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Images (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Tous les fichiers (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Envoyer</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Images : {0}. L'envoi prend environ {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>La manette accepte {0} images au maximum, les {1} dernières ont donc été omises.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Branchez la manette par câble. Elle redémarre toute seule environ 15 secondes après l'arrivée de l'image.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Branchez la manette par câble. Pour l'envoi, PadForge la passe en mode Xbox et la fait passer du pilote Xbox de Windows à WinUSB, puis remet les deux comme avant.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge va passer la manette en mode Xbox, la faire passer à WinUSB pour l'envoi, puis la rendre au pilote Xbox de Windows et la repasser en mode DInput. Débranchez d'abord toutes les autres manettes Xbox 360. Envoyer maintenant ?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Démarrage…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Changement de mode de la manette…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Attente du port de l'écran…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Passage de la manette à WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Libération de la place pour l'image… {0} %</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Envoi de l'image… {0} %</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Finalisation…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Restitution de la manette à Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Envoyée. La manette affiche l'image une fois redémarrée.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Envoyée. La manette affiche l'image.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Branchez la manette par câble. Son écran ne reçoit une image que par USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Le port de l'écran n'est pas apparu. Éteignez et rallumez la manette avec son propre interrupteur, branchez-la par câble, puis envoyez de nouveau.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Plusieurs écrans de manette attendent une image. Débranchez les autres et envoyez de nouveau.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Le port de l'écran ne s'est pas ouvert. Fermez Flydigi Space Station et envoyez de nouveau.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>L'écran ne répond plus. Éteignez et rallumez la manette avec son propre interrupteur, puis envoyez de nouveau.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>L'écran a refusé l'image. Envoyez de nouveau.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>La manette n'est pas revenue en manette Xbox 360, donc rien n'a été envoyé. Repassez-la en mode DInput avec son propre interrupteur, puis envoyez de nouveau.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Débranchez toutes les autres manettes Xbox 360 et envoyez de nouveau. Le changement de pilote les déplacerait aussi. Une manette restée en mode Xbox repasse en mode DInput avec son propre interrupteur.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>La manette en mode Xbox n'a pas répondu comme une Apex 4, donc rien n'a été envoyé et Windows l'a récupérée. Repassez-la en mode DInput avec son propre interrupteur.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows n'a pas fait passer la manette à WinUSB, donc rien n'a été envoyé. Repassez-la en mode DInput avec son propre interrupteur.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Interrompu. Éteignez et rallumez la manette avec son propre interrupteur avant d'envoyer de nouveau.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Une image est encore en route vers la manette. Interrompre l'envoi ?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Fichiers Controller Pak (*.mpk)|*.mpk|Tous les fichiers (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Restaurer le Controller Pak</value></data>
@@ -3357,6 +3401,14 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Structure du rapport haptique du Steam Controller (2015) et calcul de la durée des notes, par Pila et Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Structure haptique à tonalité LFO pour Steam Controller 2026 et Steam Deck, par Pila, Crazy et AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Traduction des effets de gâchette et cadence d'écriture pour Flydigi Apex, rendu des gâchettes, flux haptique et bloc d'éclairage de l'Apex 6 Pro, et écritures d'éclairage de l'Apex 5, par ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Notes de protocole des Flydigi Apex 5 et Apex 6, transfert du bloc d'éclairage et envoi série vers l'écran, par Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Bloc d'éclairage, emplacement de profil et envoi vers l'écran en mode Xbox de la Flydigi Apex 4, par Uilton Lopes et ses contributeurs.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Commandes des gâchettes à force de la Flydigi Apex 4 et cadence mesurée sur la manette, par Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Sémantique de nettoyage SOCD pour les modes Snap Tap, par valignatev.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -4970,6 +5022,7 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Panoramique Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Choisissez ce qu'il affiche. Rien ne change avant l'enregistrement.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} réglé sur {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>L'image est partie vers l'écran de la manette.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Téléchargement du SDK S.T.R.I.K.E. 7 de Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>Le S.T.R.I.K.E. 7 charge désormais {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Téléchargement et installation du runtime Visual C++ 2008 de Microsoft…</value></data>

@@ -939,6 +939,8 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Menetapkan nombor pemain port ini, 1 hingga 4. Penyesuai menyimpannya dan menyambung semula sebagai pemain itu.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Skrin Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Menetapkan apa yang dipaparkan oleh VMU pad Dreamcast: gambar penyesuai sendiri, nama, nombor atau gambar profil aktif, jam, masa bermain, atau gambar yang anda pilih.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Skrin Pengawal…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Menghantar gambar ke skrin pengawal: gambar atau GIF yang anda pilih, atau gambar, nama atau nombor profil aktif. Pengawal menyimpannya sehingga gambar seterusnya.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Sandar Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Menyimpan Controller Pak dalam pengawal N64 ini ke fail .mpk 32 KB, format yang dibaca oleh emulator N64.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Pulihkan Controller Pak…</value></data>
@@ -972,6 +974,45 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Alih Keluar Gambar Profil</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Gambar (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Semua Fail (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Fail itu tidak mengandungi gambar yang boleh dibaca oleh PadForge.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Skrin Pengawal</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Tiada apa-apa sampai ke pengawal sehingga anda menghantar.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Gambar atau GIF yang anda pilih, disesuaikan dengan skrin 160 kali 80 piksel. Pengawal menyimpannya sehingga anda menghantar gambar lain.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Gambar profil aktif, atau namanya jika tiada gambar, seperti keadaannya semasa anda menghantar. Pengawal menyimpannya walaupun profil ditukar.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Nama profil aktif seperti keadaannya semasa anda menghantar. Pengawal menyimpannya walaupun profil ditukar.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Kedudukan profil aktif dalam senarai profil seperti keadaannya semasa anda menghantar. Profil Lalai ialah 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Muat</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Penuhi Skrin</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Papar Seluruh Gambar</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Regang ke Skrin</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Gambar (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Semua Fail (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Hantar</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Bingkai: {0}. Penghantaran mengambil masa kira-kira {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Pengawal menerima paling banyak {0} bingkai, jadi {1} bingkai terakhir ditinggalkan.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Sambungkan pengawal dengan kabel. Ia dimulakan semula sendiri kira-kira 15 saat selepas gambar dimasukkan.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Sambungkan pengawal dengan kabel. Untuk penghantaran, PadForge menukarnya ke mod Xbox dan memindahkannya daripada pemacu Xbox Windows ke WinUSB, kemudian memulihkan kedua-duanya.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge akan menukar pengawal ke mod Xbox, memindahkannya ke WinUSB untuk penghantaran, kemudian memulangkannya kepada pemacu Xbox Windows dan menukarnya semula ke mod DInput. Cabut dahulu setiap pengawal Xbox 360 yang lain. Hantar sekarang?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Memulakan…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Menukar mod pengawal…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Menunggu port skrin…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Memindahkan pengawal ke WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Mengosongkan ruang untuk gambar… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Menghantar gambar… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Menyiapkan…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Memulangkan pengawal kepada Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Dihantar. Pengawal memaparkan gambar selepas dimulakan semula.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Dihantar. Pengawal memaparkan gambar.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Sambungkan pengawal dengan kabel. Skrinnya hanya menerima gambar melalui USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Port skrin tidak muncul. Matikan dan hidupkan pengawal dengan suisnya sendiri, sambungkannya dengan kabel, dan hantar semula.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Lebih daripada satu skrin pengawal sedang menunggu gambar. Cabut yang lain dan hantar semula.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Port skrin tidak dapat dibuka. Tutup Flydigi Space Station dan hantar semula.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Skrin berhenti menjawab. Matikan dan hidupkan pengawal dengan suisnya sendiri dan hantar semula.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Skrin menolak gambar itu. Hantar semula.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Pengawal tidak kembali sebagai pengawal Xbox 360, jadi tiada apa-apa dihantar. Tukar semula ke mod DInput dengan suisnya sendiri dan hantar semula.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Cabut setiap pengawal Xbox 360 yang lain dan hantar semula. Perubahan pemacu akan memindahkannya juga. Pengawal yang ditinggalkan dalam mod Xbox kembali ke mod DInput dengan suisnya sendiri.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Pengawal dalam mod Xbox tidak menjawab sebagai Apex 4, jadi tiada apa-apa dihantar dan Windows telah mendapatnya semula. Tukar semula ke mod DInput dengan suisnya sendiri.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows tidak memindahkan pengawal ke WinUSB, jadi tiada apa-apa dihantar. Tukar semula ke mod DInput dengan suisnya sendiri.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Dihentikan. Matikan dan hidupkan pengawal dengan suisnya sendiri sebelum anda menghantar semula.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Gambar masih sedang dihantar ke pengawal. Hentikan penghantaran?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Fail Controller Pak (*.mpk)|*.mpk|Semua Fail (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Pulihkan Controller Pak</value></data>
@@ -1138,6 +1179,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Pencetus Impuls</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gandaan setiap pencetus, tukar motor, getaran pencetus adaptif, Daya Pencetus Malar</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Memajukan arahan motor bagi setiap pencetus (Xbox Impulse Triggers) daripada pengawal maya ke pengawal Xbox One, Elite atau Series fizikal yang ditetapkan. Getaran pencetus yang dipacu permainan lalu secara automatik. Kawalan di bawah menskala magnitud bagi setiap pencetus.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Memainkan arahan motor bagi setiap pencetus (Xbox Impulse Triggers) daripada pengawal maya sebagai getaran pada pencetus pengawal ini. Getaran pencetus yang dipacu permainan lalu secara automatik. Kawalan di bawah menskala magnitud bagi setiap pencetus.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Pencetus Kiri</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Pencetus Kanan</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Tukar Motor Pencetus Kiri dan Kanan</value></data>
@@ -1202,6 +1244,8 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Pencetus Adaptif</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfigurasikan kesan maklum balas pencetus pada DualSense fizikal yang ditetapkan. Kesan pencetus daripada permainan atau mod permainan dimajukan secara automatik. Tetapan di sini menambah lapisan konfigurasi pengguna yang berjalan apabila tiada satu pun daripadanya menulis.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Konfigurasikan kesan maklum balas pencetus pada pencetus daya pengawal ini. Kesan pencetus daripada permainan pada DualSense maya atau daripada mod permainan dimainkan secara automatik. Tetapan di sini menambah lapisan konfigurasi pengguna yang berjalan apabila tiada satu pun daripadanya menulis.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Konfigurasikan kesan maklum balas pencetus pada pengawal ini. Pencetusnya bergetar dan tidak menentang, jadi setiap kesan dimainkan sebagai getaran yang mengikut perbuatan kesan itu: satu letusan apabila pencetus patah, pembinaan dan pelepasan untuk busur. Kesan pencetus daripada permainan pada DualSense maya atau daripada mod permainan dimainkan secara automatik. Tetapan di sini menambah lapisan konfigurasi pengguna yang berjalan apabila tiada satu pun daripadanya menulis.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Kayu Bedik</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Zon mati, anti-zon mati, lengkung kepekaan dan penentukuran ofset tengah bagi setiap kayu bedik. Setiap bahagian di bawah menyasarkan satu kayu bedik analog pada output aktif. Profil Extended boleh mempunyai sehingga empat kayu bedik. Pad permainan standard mempunyai dua.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Pencetus</value></data>
@@ -3261,7 +3305,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Lipat Turun Satu Oktaf</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Had Nada</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Mainkan Haptik DualSense pada Pengawal Ini</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Apabila permainan memacu slot ini sebagai DualSense maya dengan audio haptik yang dikarang, mainkan trek itu pada penggerak pengawal ini. Steam Controller 2026 melalui USB atau dongelnya memainkan trek itu sendiri. Setiap pengawal lain, dan yang itu melalui Bluetooth, mendapat nada yang diterbitkan daripada audio, yang menghampiri rasa pereka dan bukan menghasilkannya semula.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Apabila permainan memacu slot ini sebagai DualSense maya dengan audio haptik yang dikarang, mainkan trek itu pada penggerak pengawal ini. Steam Controller 2026 melalui USB atau dongelnya, dan Flydigi Apex 6 Pro, memainkan trek itu sendiri. Setiap pengawal lain, dan Steam Controller itu melalui Bluetooth, mendapat nada yang diterbitkan daripada audio, yang menghampiri rasa pereka dan bukan menghasilkannya semula.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Gandaan Haptik</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Tetap Semula kepada Lalai (Mati)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Tetap Semula kepada Lalai (100%)</value></data>
@@ -3452,6 +3496,14 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Susun atur laporan haptik Steam Controller (2015) dan matematik tempoh nota, oleh Pila dan Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Susun atur haptik nada LFO Steam Controller 2026 dan Steam Deck, oleh Pila, Crazy dan AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Terjemahan kesan pencetus dan kadar penulisan Flydigi Apex, perenderan pencetus Apex 6 Pro, strim haptik dan blok pencahayaan, serta penulisan pencahayaan Apex 5, oleh ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Nota protokol Flydigi Apex 5 dan Apex 6, pemindahan blok pencahayaan dan muat naik bersiri skrin, oleh Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Blok pencahayaan Flydigi Apex 4, slot profil dan muat naik skrin dalam mod Xbox, oleh Uilton Lopes dan penyumbang.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Arahan pencetus daya Flydigi Apex 4 dan kadar yang diukur pada pad, oleh Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantik pembersihan SOCD untuk mod Snap Tap, oleh valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4758,6 +4810,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Pan Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Pilih apa yang dipaparkan. Tiada apa-apa berubah sehingga anda menyimpan.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} ditetapkan kepada {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Gambar telah dihantar ke skrin pengawal.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Memuat turun SDK S.T.R.I.K.E. 7 Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 kini memuatkan {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Memuat turun dan memasang masa jalan Visual C++ 2008 Microsoft…</value></data>

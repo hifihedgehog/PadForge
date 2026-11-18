@@ -1098,6 +1098,7 @@
   <data name="KeyboardScreens_Status_NoPicture_Format" xml:space="preserve"><value>{0}, e leai se ata ua filifilia</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Ata (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Faila uma (*.*)|*.*</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>Ua setiina le {0} i le {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Ua auina atu le ata i le lau o le controller.</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>E faʻaali e le {0} le {1}</value></data>
   <data name="Common_Pixels" xml:space="preserve"><value>px</value></data>
   <data name="DeviceType_NovintFalcon" xml:space="preserve"><value>Novint Falcon</value></data>
@@ -1286,4 +1287,13 @@
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Shift layer</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Faʻafeliuina</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b masani</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>E leai se mea e oʻo i le controller seʻia e auina atu.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Fetaui</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Faʻatumu le lau</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Faʻaali le ata atoa</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Faʻaloloa i le lau</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

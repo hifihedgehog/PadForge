@@ -61,6 +61,7 @@ namespace SDL3
         public const string SDL_HINT_JOYSTICK_HIDAPI_SWITCH_NFC = "SDL_JOYSTICK_HIDAPI_SWITCH_NFC";
         public const string SDL_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER = "SDL_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER";
         public const string SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI = "SDL_JOYSTICK_HIDAPI_FLYDIGI";
+        public const string SDL_HINT_JOYSTICK_HIDAPI_XBOX_360 = "SDL_JOYSTICK_HIDAPI_XBOX_360";
         // Fork additions (hifihedgehog/SDL#33). InputManager.InitializeSdl
         // says what each one turns on and why PadForge sets it.
         public const string SDL_HINT_JOYSTICK_BLE = "SDL_JOYSTICK_BLE";

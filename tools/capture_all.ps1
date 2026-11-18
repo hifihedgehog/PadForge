@@ -3950,10 +3950,11 @@ try {
                 $n = $d.SelectSingleNode($tag); if ($n) { $n.RemoveAll() }
             }
             # Written only when the source device reported them
-            # (UserDevice.ShouldSerializeCapTouchpadPressure and its twin, and
+            # (UserDevice.ShouldSerializeCapTouchpadPressure and its twin,
             # ShouldSerializeCapSenseChannelMask for a pad with capacitive
-            # sensors), so a new record has none of them.
-            foreach ($tag in @("CapTouchpadPressure", "CapTouchpadClick", "CapSenseChannelMask")) {
+            # sensors, and ShouldSerializeFlydigiApexModel for a Flydigi Apex
+            # pad that answered, #586), so a new record has none of them.
+            foreach ($tag in @("CapTouchpadPressure", "CapTouchpadClick", "CapSenseChannelMask", "FlydigiApexModel")) {
                 $n = $d.SelectSingleNode($tag); if ($n) { [void]$d.RemoveChild($n) }
             }
         }

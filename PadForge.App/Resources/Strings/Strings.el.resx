@@ -952,6 +952,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Ορίζει τον αριθμό παίκτη αυτής της θύρας, από 1 έως 4. Ο προσαρμογέας τον αποθηκεύει και επανασυνδέεται ως αυτός ο παίκτης.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Οθόνη Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Ορίζει τι δείχνει η VMU του χειριστηρίου Dreamcast: την εικόνα του ίδιου του προσαρμογέα, το όνομα, τον αριθμό ή την εικόνα του ενεργού προφίλ, το ρολόι, τον χρόνο παιχνιδιού ή μια εικόνα της επιλογής σας.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Οθόνη χειριστηρίου…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Στέλνει μια εικόνα στην οθόνη του χειριστηρίου: μια εικόνα ή ένα GIF της επιλογής σας ή την εικόνα, το όνομα ή τον αριθμό του ενεργού προφίλ. Το χειριστήριο τη διατηρεί μέχρι την επόμενη.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Αντίγραφο ασφαλείας του Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Αποθηκεύει το Controller Pak αυτού του χειριστηρίου N64 σε αρχείο .mpk των 32 KB, τη μορφή που διαβάζουν οι εξομοιωτές N64.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Επαναφορά του Controller Pak…</value></data>
@@ -985,6 +987,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Αφαίρεση εικόνας προφίλ</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Εικόνες (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Όλα τα αρχεία (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Αυτό το αρχείο δεν περιέχει εικόνα που να μπορεί να διαβάσει το PadForge.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Οθόνη χειριστηρίου</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Τίποτα δεν φτάνει στο χειριστήριο μέχρι να πατήσετε αποστολή.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Μια εικόνα ή ένα GIF της επιλογής σας, προσαρμοσμένο στα 160 επί 80 εικονοστοιχεία της οθόνης. Το χειριστήριο το διατηρεί μέχρι να στείλετε άλλο.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Η εικόνα του ενεργού προφίλ ή το όνομά του, όταν δεν έχει εικόνα, όπως είναι τη στιγμή της αποστολής. Το χειριστήριο τη διατηρεί και μετά από αλλαγές προφίλ.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Το όνομα του ενεργού προφίλ όπως είναι τη στιγμή της αποστολής. Το χειριστήριο το διατηρεί και μετά από αλλαγές προφίλ.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Η θέση του ενεργού προφίλ στη λίστα προφίλ όπως είναι τη στιγμή της αποστολής. Το Προεπιλεγμένο προφίλ είναι το 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Προσαρμογή</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Γέμισμα της οθόνης</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Εμφάνιση ολόκληρης της εικόνας</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Επέκταση στην οθόνη</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Εικόνες (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Όλα τα αρχεία (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Αποστολή</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Καρέ: {0}. Η αποστολή διαρκεί περίπου {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Το χειριστήριο δέχεται το πολύ {0} καρέ, οπότε τα τελευταία {1} παραλείφθηκαν.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Συνδέστε το χειριστήριο με καλώδιο. Επανεκκινείται από μόνο του περίπου 15 δευτερόλεπτα αφότου μπει η εικόνα.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Συνδέστε το χειριστήριο με καλώδιο. Για την αποστολή, το PadForge το περνά σε λειτουργία Xbox και το μετακινεί από το πρόγραμμα οδήγησης Xbox των Windows στο WinUSB και μετά επαναφέρει και τα δύο.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>Το PadForge θα περάσει το χειριστήριο σε λειτουργία Xbox, θα το μετακινήσει στο WinUSB για την αποστολή, έπειτα θα το επιστρέψει στο πρόγραμμα οδήγησης Xbox των Windows και θα το περάσει ξανά σε λειτουργία DInput. Αποσυνδέστε πρώτα κάθε άλλο χειριστήριο Xbox 360. Να γίνει αποστολή τώρα?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Εκκίνηση…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Αλλαγή λειτουργίας του χειριστηρίου…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Αναμονή για τη θύρα της οθόνης…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Μετακίνηση του χειριστηρίου στο WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Δημιουργία χώρου για την εικόνα… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Αποστολή της εικόνας… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Ολοκλήρωση…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Επιστροφή του χειριστηρίου στα Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Στάλθηκε. Το χειριστήριο δείχνει την εικόνα μόλις επανεκκινηθεί.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Στάλθηκε. Το χειριστήριο δείχνει την εικόνα.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Συνδέστε το χειριστήριο με καλώδιο. Η οθόνη του δέχεται εικόνα μόνο μέσω USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Η θύρα της οθόνης δεν εμφανίστηκε. Απενεργοποιήστε και ενεργοποιήστε το χειριστήριο με τον δικό του διακόπτη, συνδέστε το με καλώδιο και στείλτε ξανά.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Περισσότερες από μία οθόνες χειριστηρίου περιμένουν εικόνα. Αποσυνδέστε τις άλλες και στείλτε ξανά.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Η θύρα της οθόνης δεν άνοιξε. Κλείστε το Flydigi Space Station και στείλτε ξανά.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Η οθόνη σταμάτησε να απαντά. Απενεργοποιήστε και ενεργοποιήστε το χειριστήριο με τον δικό του διακόπτη και στείλτε ξανά.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Η οθόνη απέρριψε την εικόνα. Στείλτε ξανά.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Το χειριστήριο δεν επανήλθε ως χειριστήριο Xbox 360, οπότε δεν στάλθηκε τίποτα. Επαναφέρετέ το σε λειτουργία DInput με τον δικό του διακόπτη και στείλτε ξανά.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Αποσυνδέστε κάθε άλλο χειριστήριο Xbox 360 και στείλτε ξανά. Η αλλαγή του προγράμματος οδήγησης θα μετακινούσε και αυτά. Ένα χειριστήριο που έμεινε σε λειτουργία Xbox επιστρέφει σε λειτουργία DInput με τον δικό του διακόπτη.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Το χειριστήριο σε λειτουργία Xbox δεν απάντησε ως Apex 4, οπότε δεν στάλθηκε τίποτα και τα Windows το έχουν ξανά. Επαναφέρετέ το σε λειτουργία DInput με τον δικό του διακόπτη.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Τα Windows δεν μετακίνησαν το χειριστήριο στο WinUSB, οπότε δεν στάλθηκε τίποτα. Επαναφέρετέ το σε λειτουργία DInput με τον δικό του διακόπτη.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Διακόπηκε. Απενεργοποιήστε και ενεργοποιήστε το χειριστήριο με τον δικό του διακόπτη πριν στείλετε ξανά.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Μια εικόνα εξακολουθεί να στέλνεται στο χειριστήριο. Να διακοπεί η αποστολή?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Αρχεία Controller Pak (*.mpk)|*.mpk|Όλα τα αρχεία (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak θύρα {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Επαναφορά του Controller Pak</value></data>
@@ -1218,6 +1259,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Σκανδάλες ώθησης</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ενίσχυση ανά σκανδάλη, αντιμετάθεση κινητήρων, δονήσεις προσαρμοζόμενων σκανδαλών, Σταθερή δύναμη σκανδάλης</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Προωθεί τις εντολές κινητήρα ανά σκανδάλη (σκανδάλες ώθησης Xbox) από το εικονικό χειριστήριο στο φυσικό χειριστήριο Xbox One, Elite ή Series που έχει ανατεθεί. Η δόνηση σκανδάλης που προκαλεί το παιχνίδι περνά αυτόματα. Τα παρακάτω στοιχεία ελέγχου κλιμακώνουν την ένταση ανά σκανδάλη.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Αναπαράγει τις εντολές κινητήρα ανά σκανδάλη (σκανδάλες ώθησης Xbox) από το εικονικό χειριστήριο ως δόνηση στις σκανδάλες αυτού του χειριστηρίου. Η δόνηση σκανδάλης που προκαλεί το παιχνίδι περνά αυτόματα. Τα παρακάτω στοιχεία ελέγχου κλιμακώνουν την ένταση ανά σκανδάλη.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Αριστερή σκανδάλη</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Δεξιά σκανδάλη</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Αντιμετάθεση κινητήρων αριστερής και δεξιάς σκανδάλης</value></data>
@@ -1282,6 +1324,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Προσαρμοζόμενες σκανδάλες</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Ρυθμίστε τα εφέ ανάδρασης σκανδαλών στο φυσικό DualSense που έχει ανατεθεί. Τα εφέ σκανδαλών από ένα παιχνίδι ή ένα mod παιχνιδιού προωθούνται αυτόματα. Οι ρυθμίσεις εδώ προσθέτουν ένα επίπεδο ρυθμισμένο από τον χρήστη, που ισχύει όταν δεν γράφει κανένα από τα δύο.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Ρυθμίστε τα εφέ ανάδρασης σκανδαλών στις σκανδάλες δύναμης αυτού του χειριστηρίου. Τα εφέ σκανδαλών από ένα παιχνίδι σε εικονικό DualSense ή από ένα mod παιχνιδιού αναπαράγονται αυτόματα. Οι ρυθμίσεις εδώ προσθέτουν ένα επίπεδο ρυθμισμένο από τον χρήστη, που ισχύει όταν δεν γράφει κανένα από τα δύο.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Ρυθμίστε τα εφέ ανάδρασης σκανδαλών σε αυτό το χειριστήριο. Οι σκανδάλες του δονούνται και δεν αντιστέκονται, οπότε κάθε εφέ αναπαράγεται ως δόνηση που ακολουθεί αυτό που κάνει το εφέ: μια έντονη ριπή εκεί που σπάει μια σκανδάλη, μια σταδιακή αύξηση και μια απελευθέρωση για ένα τόξο. Τα εφέ σκανδαλών από ένα παιχνίδι σε εικονικό DualSense ή από ένα mod παιχνιδιού αναπαράγονται αυτόματα. Οι ρυθμίσεις εδώ προσθέτουν ένα επίπεδο ρυθμισμένο από τον χρήστη, που ισχύει όταν δεν γράφει κανένα από τα δύο.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Μοχλοί</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Νεκρές ζώνες, αντι-νεκρές ζώνες, καμπύλες ευαισθησίας και βαθμονόμηση μετατόπισης κέντρου ανά μοχλό. Κάθε ενότητα παρακάτω αφορά έναν αναλογικό μοχλό της ενεργής εξόδου. Τα Εκτεταμένα προφίλ μπορούν να έχουν έως τέσσερις μοχλούς. Τα τυπικά χειριστήρια έχουν δύο.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Σκανδάλες</value></data>
@@ -3457,7 +3501,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Μεταφορά μία οκτάβα κάτω</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Όριο τόνου</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Αναπαραγωγή απτικής ανάδρασης DualSense σε αυτό το χειριστήριο</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Όταν ένα παιχνίδι οδηγεί αυτή την υποδοχή ως εικονικό DualSense με σχεδιασμένο απτικό ήχο, το κομμάτι αυτό αναπαράγεται στους επενεργητές αυτού του χειριστηρίου. Ένα Steam Controller 2026 μέσω USB ή του dongle του αναπαράγει το ίδιο το κομμάτι. Κάθε άλλο χειριστήριο, καθώς και το ίδιο μέσω Bluetooth, λαμβάνει τόνους που προκύπτουν από τον ήχο, οι οποίοι προσεγγίζουν την αίσθηση που σχεδίασε ο δημιουργός αντί να την αναπαράγουν.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Όταν ένα παιχνίδι οδηγεί αυτή την υποδοχή ως εικονικό DualSense με σχεδιασμένο απτικό ήχο, το κομμάτι αυτό αναπαράγεται στους επενεργητές αυτού του χειριστηρίου. Ένα Steam Controller 2026 μέσω USB ή του dongle του, καθώς και ένα Flydigi Apex 6 Pro, αναπαράγουν το ίδιο το κομμάτι. Κάθε άλλο χειριστήριο, καθώς και αυτό το Steam Controller μέσω Bluetooth, λαμβάνει τόνους που προκύπτουν από τον ήχο, οι οποίοι προσεγγίζουν την αίσθηση που σχεδίασε ο δημιουργός αντί να την αναπαράγουν.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Ενίσχυση απτικής ανάδρασης</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Επαναφορά στην προεπιλογή (ανενεργό)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Επαναφορά στην προεπιλογή (100%)</value></data>
@@ -3652,6 +3696,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Διάταξη απτικών αναφορών του Steam Controller (2015) και μαθηματικά περιόδου νότας, των Pila και Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Διάταξη απτικής ανάδρασης με τόνους LFO για τα Steam Controller 2026 και Steam Deck, των Pila, Crazy και AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Μετάφραση των εφέ σκανδαλών και ρύθμιση του ρυθμού εγγραφής για Flydigi Apex, απόδοση σκανδαλών, ροή απτικής ανάδρασης και μπλοκ φωτισμού του Apex 6 Pro, και εγγραφές φωτισμού του Apex 5, των ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Σημειώσεις πρωτοκόλλου για Flydigi Apex 5 και Apex 6, μεταφορά του μπλοκ φωτισμού και σειριακή αποστολή εικόνας στην οθόνη, του Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Μπλοκ φωτισμού, θέση προφίλ και αποστολή εικόνας στην οθόνη σε λειτουργία Xbox για Flydigi Apex 4, των Uilton Lopes και συνεργατών.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Εντολές των σκανδαλών δύναμης του Flydigi Apex 4 και ο ρυθμός που μετρήθηκε στο χειριστήριο, του Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Σημασιολογία καθαρισμού SOCD για τις λειτουργίες Snap Tap, του valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Μετακίνηση Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Επιλέξτε τι εμφανίζει. Τίποτα δεν αλλάζει μέχρι να αποθηκεύσετε.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0}: ορίστηκε σε {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Η εικόνα στάλθηκε στην οθόνη του χειριστηρίου.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Λήψη του SDK του S.T.R.I.K.E. 7 της Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>Το S.T.R.I.K.E. 7 φορτώνει πλέον το {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Λήψη και εγκατάσταση του περιβάλλοντος εκτέλεσης Visual C++ 2008 της Microsoft…</value></data>

@@ -1099,6 +1099,7 @@
   <data name="KeyboardScreen_Hint_ProfilePicture" xml:space="preserve"><value>Ipakpakita ti screen ti bukod a ladawan ti aktibo a profile, wenno ti naganna no awan. Tunggal profile ket addaan iti bukodna a ladawan.</value></data>
   <data name="KeyboardScreen_Hint_Clock" xml:space="preserve"><value>Ipakpakita ti screen ti oras.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} naikeddeng iti {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Napan ti ladawan iti screen ti controller.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Ipakita ti screen ti keyboard</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Mode ti screen ti keyboard</value></data>
   <data name="MacroAction_KeyboardScreenMode_Format" xml:space="preserve"><value>Ipakita ti {0} ti {1}</value></data>
@@ -1367,4 +1368,13 @@
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Dagiti shift layer</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Nabaliktad</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Kasisigud ti bs2b</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Awan ti dumanon iti controller agingga a ipatulodmo.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Pannakaiyannatup</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Punnuen ti screen</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Ipakita ti intero a ladawan</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Iyunnat iti screen</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

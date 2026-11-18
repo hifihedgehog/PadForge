@@ -952,6 +952,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Sets this port’s player number, 1 to 4. The adapter stores it and reconnects as that player.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast Screen…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Sets what the Dreamcast pad’s VMU shows: the adapter’s own picture, the active profile’s name, number or picture, the clock, the play time, or a picture you choose.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Controller Screen…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Sends a picture to the controller’s screen: a picture or GIF you choose, or the active profile’s picture, name or number. The controller keeps it until the next one.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Back Up Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Saves the Controller Pak in this N64 controller to a 32 KB .mpk file, the format N64 emulators read.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Restore Controller Pak…</value></data>
@@ -985,6 +987,45 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Remove Profile Picture</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Pictures (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|All Files (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>That file holds no picture PadForge can read.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Controller Screen</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Nothing reaches the controller until you send.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>A picture or GIF you choose, fitted to the screen’s 160 by 80 pixels. The controller keeps it until you send another.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>The active profile’s picture, or its name when it has none, as it is when you send. The controller keeps it through profile switches.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>The active profile’s name as it is when you send. The controller keeps it through profile switches.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>The active profile’s place in the profile list as it is when you send. The Default profile is 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Fit</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Fill the Screen</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Show the Whole Picture</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Stretch to the Screen</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Pictures (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|All Files (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Send</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Frames: {0}. Sending takes about {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>The controller takes {0} frames at most, so the last {1} were left out.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Connect the controller by cable. It restarts on its own about 15 seconds after the picture is in.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Connect the controller by cable. For the send, PadForge switches it to Xbox mode and moves it from Windows’ Xbox driver to WinUSB, then puts both back.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge will switch the controller to Xbox mode, move it to WinUSB for the send, then give it back to Windows’ Xbox driver and switch it back to DInput mode. Unplug every other Xbox 360 controller first. Send now?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Starting…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Switching the controller…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Waiting for the screen’s port…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Moving the controller to WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Clearing room for the picture… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Sending the picture… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Finishing…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Giving the controller back to Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Sent. The controller shows the picture once it has restarted.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Sent. The controller shows the picture.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Connect the controller by cable. Its screen takes a picture over USB only.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>The screen’s port did not appear. Switch the controller off and on with its own switch, connect it by cable, and send again.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>More than one controller screen is waiting for a picture. Unplug the others and send again.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>The screen’s port did not open. Close Flydigi Space Station and send again.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>The screen stopped answering. Switch the controller off and on with its own switch and send again.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>The screen refused the picture. Send again.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>The controller did not come back as an Xbox 360 controller, so nothing was sent. Switch it back to DInput mode with its own switch and send again.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Unplug every other Xbox 360 controller and send again. The driver change would move them too. A controller left in Xbox mode goes back to DInput mode with its own switch.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>The controller in Xbox mode did not answer as an Apex 4, so nothing was sent and Windows has it back. Switch it back to DInput mode with its own switch.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows did not move the controller to WinUSB, so nothing was sent. Switch it back to DInput mode with its own switch.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Stopped. Switch the controller off and on with its own switch before you send again.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>A picture is still going to the controller. Stop the send?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak Files (*.mpk)|*.mpk|All Files (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Restore Controller Pak</value></data>
@@ -1218,6 +1259,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse Triggers</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Per-trigger gain, motor swap, adaptive trigger vibrations, Constant Trigger Force</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Forwards per-trigger motor commands (Xbox Impulse Triggers) from the virtual controller to the assigned physical Xbox One, Elite, or Series controller. Game-driven trigger rumble passes through automatically. The controls below scale the magnitude per trigger.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Plays per-trigger motor commands (Xbox Impulse Triggers) from the virtual controller as a vibration in this controller’s triggers. Game-driven trigger rumble passes through automatically. The controls below scale the magnitude per trigger.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Left Trigger</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Right Trigger</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Swap Left and Right Trigger Motors</value></data>
@@ -1282,6 +1324,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptive Triggers</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configure trigger feedback effects on the assigned physical DualSense. Trigger effects from a game or a game mod are forwarded automatically. Settings here add a user-configured layer that runs when neither is writing.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Configure trigger feedback effects on this controller’s force triggers. Trigger effects from a game on a virtual DualSense or from a game mod play automatically. Settings here add a user-configured layer that runs when neither is writing.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Configure trigger feedback effects on this controller. Its triggers vibrate and do not resist, so each effect plays as a vibration that follows what the effect does: a burst where a trigger breaks, a build-up and a release for a bow. Trigger effects from a game on a virtual DualSense or from a game mod play automatically. Settings here add a user-configured layer that runs when neither is writing.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Per-stick deadzones, anti-deadzones, sensitivity curves, and center-offset calibration. Each section below targets one analog stick on the active output. Extended profiles can have up to four sticks. Standard gamepads have two.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Triggers</value></data>
@@ -3471,7 +3515,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Fold Them Down an Octave</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Tone Limit</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Play DualSense Haptics on This Controller</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>When a game drives this slot as a virtual DualSense with authored haptic audio, play that track on this controller’s actuators. A Steam Controller 2026 over USB or its dongle plays the track itself. Every other controller, and that one over Bluetooth, gets tones derived from the audio, which approximate the designer’s feel rather than reproduce it.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>When a game drives this slot as a virtual DualSense with authored haptic audio, play that track on this controller’s actuators. A Steam Controller 2026 over USB or its dongle, and a Flydigi Apex 6 Pro, play the track itself. Every other controller, and that Steam Controller over Bluetooth, gets tones derived from the audio, which approximate the designer’s feel rather than reproduce it.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptics Gain</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Reset to Default (Off)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Reset to Default (100%)</value></data>
@@ -3666,6 +3710,14 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) haptic report layout and note-period math, by Pila and Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 and Steam Deck LFO-tone haptic layout, by Pila, Crazy, and AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex trigger effect translation and write pacing, the Apex 6 Pro trigger rendering, haptic stream and lighting block, and the Apex 5 lighting writes, by ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5 and Apex 6 protocol notes, the lighting block transfer and the screen’s serial upload, by Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4 lighting block, profile slot and the screen upload in Xbox mode, by Uilton Lopes and contributors.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4 force trigger commands and the pacing measured on the pad, by Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD cleaning semantics for the Snap Tap modes, by valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5068,6 +5120,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Pan Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Pick what it shows. Nothing changes until you save.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} set to {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>The picture went to the controller’s screen.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Downloading Mad Catz’s S.T.R.I.K.E. 7 SDK…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>The S.T.R.I.K.E. 7 now loads {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Downloading and installing Microsoft’s Visual C++ 2008 runtime…</value></data>

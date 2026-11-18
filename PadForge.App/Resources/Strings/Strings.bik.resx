@@ -1376,4 +1376,13 @@
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Mga shift layer</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Baliktad</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Default kan bs2b</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Mayong makakaabot sa controller sagkod na dai ka nagpadara.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Sukat</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Punuon an screen</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Ipahiling an bilog na litrato</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Ibanat sa sukat kan screen</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

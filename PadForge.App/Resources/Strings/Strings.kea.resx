@@ -3147,4 +3147,14 @@
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Kamadas shift</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Invertidu</value></data>
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>Piku</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Nada ka ta txiga komandu ti bu manda.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Nómi di perfil ativu sima el sta óra ki bu manda. Komandu ta fika ku el mesmu ku troka di perfil.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Ajusta</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Intxi ekran</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Mostra imajen interu</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Stika pa ekran</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

@@ -2283,6 +2283,9 @@ namespace PadForge.Services
             PadForge.Common.Input.WiiSpeakerService.EnsureStarted();
             // Switch HD Rumble + Steam Controller haptic-tone sinks (#147).
             PadForge.Common.Input.HapticToneService.EnsureStarted();
+            // Flydigi Apex sessions (#586) open again after an engine stop
+            // closed them.
+            PadForge.Common.Input.Flydigi.FlydigiApexService.Restart();
 
             // 250 ms snapshot: invoked per (slot, device, pad) per poll from
             // the Step 2 gesture walk, so the SyncRoot walk and the per-call
@@ -6121,6 +6124,11 @@ namespace PadForge.Services
         {
             UpdateBlissBoxDeviceRow(row, ud);
             UpdateKeyboardScreenDeviceRow(row, ud);
+            // A Flydigi Apex pad's screen (#586): its dialog sends through the
+            // session, so the button shows while the pad has one.
+            row.ShowFlydigiScreen = ud.IsOnline
+                && PadForge.Common.Input.Flydigi.FlydigiApexService.SessionOf(ud.InstanceGuid) is { } flydigi
+                && flydigi.Identity.HasScreen;
             UpdateFalconDeviceRow(row, ud);
             UpdateAnalogKeyboardDeviceRow(row, ud);
             UpdateGameModDeviceRow(row, ud);
@@ -11907,6 +11915,13 @@ namespace PadForge.Services
             host.SlotHasController = pad => inputManager.HasVirtualControllerAt(pad);
             host.CapabilitiesChanged += OnPeripheralCapabilitiesChanged;
             _peripheralHost = host;
+            // A Flydigi Apex pad's lights are listed once the pad has
+            // answered what it is, which no change in the HID collections
+            // announces (#586), so its session asks for the walk. The
+            // model it answered with goes on its record and is saved
+            // with it, as a row's outputs are.
+            PadForge.Common.Input.Flydigi.FlydigiApexService.Changed += RequestPeripheralRescan;
+            PadForge.Common.Input.Flydigi.FlydigiApexService.ModelRecorded += OnPeripheralCapabilitiesChanged;
             host.Start();
         }
 
@@ -11915,6 +11930,8 @@ namespace PadForge.Services
             var host = _peripheralHost;
             _peripheralHost = null;
             if (host == null) return;
+            PadForge.Common.Input.Flydigi.FlydigiApexService.Changed -= RequestPeripheralRescan;
+            PadForge.Common.Input.Flydigi.FlydigiApexService.ModelRecorded -= OnPeripheralCapabilitiesChanged;
             host.CapabilitiesChanged -= OnPeripheralCapabilitiesChanged;
             host.Dispose();
         }
@@ -11927,9 +11944,10 @@ namespace PadForge.Services
         /// ask while the engine is stopped.</summary>
         public void RequestPeripheralRescan() => _peripheralHost?.RequestRescan();
 
-        /// <summary>A row found or lost an output. The record is persisted
-        /// so the row's tabs stay up while it sleeps, and the device list
-        /// shows its rumble chip by it.</summary>
+        /// <summary>A row found or lost an output, or a Flydigi Apex pad's
+        /// record took the model the pad answered with. The record is
+        /// persisted so the row's tabs stay up while it sleeps, and the
+        /// device list shows a row's rumble chip by its outputs.</summary>
         private void OnPeripheralCapabilitiesChanged()
         {
             _dispatcher.BeginInvoke(new Action(() =>

@@ -933,6 +933,8 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Nustato šio prievado žaidėjo numerį nuo 1 iki 4. Adapteris jį įsimena ir vėl prisijungia kaip tas žaidėjas.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>„Dreamcast“ ekranas…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Nustato, ką rodo „Dreamcast“ pulto VMU: paties adapterio paveikslėlį, aktyvaus profilio pavadinimą, numerį ar paveikslėlį, laikrodį, žaidimo laiką arba jūsų pasirinktą paveikslėlį.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Valdiklio ekranas…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Nusiunčia paveikslėlį į valdiklio ekraną: jūsų pasirinktą paveikslėlį ar GIF arba aktyvaus profilio paveikslėlį, pavadinimą ar numerį. Valdiklis jį išlaiko iki kito.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Sukurti „Controller Pak“ atsarginę kopiją…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Išsaugo šio N64 valdiklio „Controller Pak“ turinį į 32 KB .mpk failą – formatą, kurį skaito N64 emuliatoriai.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Atkurti „Controller Pak“…</value></data>
@@ -966,6 +968,45 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Pašalinti profilio paveikslėlį</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Paveikslėliai (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Visi failai (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Tame faile nėra paveikslėlio, kurį „PadForge“ galėtų perskaityti.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Valdiklio ekranas</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Nieko nepasieks valdiklio, kol nesiųsite.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Jūsų pasirinktas paveikslėlis ar GIF, pritaikytas ekrano 160 × 80 pikselių. Valdiklis jį išlaiko, kol nusiųsite kitą.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Aktyvaus profilio paveikslėlis arba, jei jo nėra, profilio pavadinimas, koks jis yra siunčiant. Valdiklis jį išlaiko perjungus profilius.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Aktyvaus profilio pavadinimas, koks jis yra siunčiant. Valdiklis jį išlaiko perjungus profilius.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Aktyvaus profilio vieta profilių sąraše, kokia ji yra siunčiant. Numatytasis profilis yra 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Pritaikymas</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Užpildyti ekraną</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Rodyti visą paveikslėlį</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Ištempti per ekraną</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Paveikslėliai (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Visi failai (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Siųsti</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Kadrų: {0}. Siuntimas užtrunka apie {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Valdiklis priima daugiausia {0} kadrų, todėl paskutiniai {1} buvo praleisti.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Prijunkite valdiklį laidu. Praėjus maždaug 15 sekundžių po paveikslėlio įkėlimo jis pats persikrauna.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Prijunkite valdiklį laidu. Siuntimui „PadForge“ perjungia jį į „Xbox“ režimą ir perkelia iš „Windows“ „Xbox“ tvarkyklės į „WinUSB“, paskui abu grąžina atgal.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>„PadForge“ perjungs valdiklį į „Xbox“ režimą, siuntimui perkels jį į „WinUSB“, paskui grąžins „Windows“ „Xbox“ tvarkyklei ir perjungs atgal į „DInput“ režimą. Pirmiausia atjunkite visus kitus „Xbox 360“ valdiklius. Siųsti dabar?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Pradedama…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Perjungiamas valdiklis…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Laukiama ekrano prievado…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Valdiklis perkeliamas į „WinUSB“…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Ruošiama vieta paveikslėliui… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Siunčiamas paveikslėlis… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Baigiama…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Valdiklis grąžinamas „Windows“…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Nusiųsta. Valdiklis parodys paveikslėlį, kai persikraus.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Nusiųsta. Valdiklis rodo paveikslėlį.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Prijunkite valdiklį laidu. Jo ekranas priima paveikslėlį tik per USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Ekrano prievadas nepasirodė. Išjunkite ir vėl įjunkite valdiklį jo paties jungikliu, prijunkite laidu ir siųskite dar kartą.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Paveikslėlio laukia daugiau nei vieno valdiklio ekranas. Atjunkite kitus ir siųskite dar kartą.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Ekrano prievadas neatsidarė. Uždarykite „Flydigi Space Station“ ir siųskite dar kartą.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Ekranas nebeatsako. Išjunkite ir vėl įjunkite valdiklį jo paties jungikliu ir siųskite dar kartą.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Ekranas atmetė paveikslėlį. Siųskite dar kartą.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Valdiklis negrįžo kaip „Xbox 360“ valdiklis, todėl nieko nenusiųsta. Perjunkite jį atgal į „DInput“ režimą jo paties jungikliu ir siųskite dar kartą.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Atjunkite visus kitus „Xbox 360“ valdiklius ir siųskite dar kartą. Tvarkyklės pakeitimas paveiktų ir juos. Valdiklis, likęs „Xbox“ režimu, į „DInput“ režimą grąžinamas jo paties jungikliu.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Valdiklis „Xbox“ režimu neatsakė kaip „Apex 4“, todėl nieko nenusiųsta, o „Windows“ jį atgavo. Perjunkite jį atgal į „DInput“ režimą jo paties jungikliu.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>„Windows“ neperkėlė valdiklio į „WinUSB“, todėl nieko nenusiųsta. Perjunkite jį atgal į „DInput“ režimą jo paties jungikliu.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Sustabdyta. Prieš siųsdami dar kartą, išjunkite ir vėl įjunkite valdiklį jo paties jungikliu.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Paveikslėlis dar siunčiamas į valdiklį. Sustabdyti siuntimą?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>„Controller Pak“ failai (*.mpk)|*.mpk|Visi failai (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak prievadas {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Atkurti „Controller Pak“</value></data>
@@ -1132,6 +1173,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulsiniai gaidukai</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gaidukų stiprinimas, variklių sukeitimas, adaptyviųjų gaidukų vibracijos, pastovi gaidukų jėga</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Perduoda kiekvieno gaiduko variklių komandas („Xbox Impulse Triggers“) iš virtualaus valdiklio priskirtam fiziniam „Xbox One“, „Elite“ ar „Series“ valdikliui. Žaidimo valdoma gaidukų vibracija perduodama automatiškai. Toliau esantys nustatymai keičia kiekvieno gaiduko vibracijos stiprumą.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Perduoda kiekvieno gaiduko variklių komandas („Xbox Impulse Triggers“) iš virtualaus valdiklio kaip vibraciją šio valdiklio gaidukuose. Žaidimo valdoma gaidukų vibracija perduodama automatiškai. Toliau esantys nustatymai keičia kiekvieno gaiduko vibracijos stiprumą.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Kairysis gaidukas</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Dešinysis gaidukas</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Sukeisti kairiojo ir dešiniojo gaiduko variklius</value></data>
@@ -1196,6 +1238,8 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptyvieji gaidukai</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfigūruokite priskirto fizinio „DualSense“ gaidukų grįžtamojo ryšio efektus. Gaidukų efektai iš žaidimo ar žaidimo modifikacijos perduodami automatiškai. Čia esantys nustatymai prideda naudotojo sukonfigūruotą sluoksnį, kuris veikia, kai nė vienas iš jų nesiunčia efektų.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Konfigūruokite gaidukų grįžtamojo ryšio efektus šio valdiklio jėgos gaiduose. Gaidukų efektai iš žaidimo virtualiame „DualSense“ ar iš žaidimo modifikacijos veikia automatiškai. Čia esantys nustatymai prideda naudotojo sukonfigūruotą sluoksnį, kuris veikia, kai nė vienas iš jų nesiunčia efektų.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Konfigūruokite gaidukų grįžtamojo ryšio efektus šiame valdiklyje. Jo gaidukai vibruoja ir nesipriešina, todėl kiekvienas efektas atliekamas kaip vibracija, atitinkanti efekto veikimą: trumpas smūgis, kai gaidukas lūžta, o lankui stiprėjimas ir atleidimas. Gaidukų efektai iš žaidimo virtualiame „DualSense“ ar iš žaidimo modifikacijos veikia automatiškai. Čia esantys nustatymai prideda naudotojo sukonfigūruotą sluoksnį, kuris veikia, kai nė vienas iš jų nesiunčia efektų.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Svirtelės</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Kiekvienos svirtelės nejautros zonos, nejautros zonų kompensacija, jautrumo kreivės ir centro poslinkio kalibravimas. Kiekviena toliau esanti skiltis skirta vienai aktyvios išvesties analoginei svirtelei. Išplėstiniai profiliai gali turėti iki keturių svirtelių. Standartiniai žaidimų pultai turi dvi.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Gaidukai</value></data>
@@ -3256,7 +3300,7 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Perkelti oktava žemyn</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Tono riba</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Leisti „DualSense“ haptiką šiame valdiklyje</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kai žaidimas valdo šį lizdą kaip virtualų „DualSense“ su sukurtu haptiniu garsu, tas takelis leidžiamas šio valdiklio vykdikliais. „Steam Controller 2026“, prijungtas per USB ar savo imtuvą, leidžia patį takelį. Visi kiti valdikliai, taip pat ir šis per „Bluetooth“, gauna iš garso išvestus tonus, kurie apytiksliai perteikia kūrėjo sumanytą pojūtį, bet jo neatkuria.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kai žaidimas valdo šį lizdą kaip virtualų „DualSense“ su sukurtu haptiniu garsu, tas takelis leidžiamas šio valdiklio vykdikliais. „Steam Controller 2026“, prijungtas per USB ar savo imtuvą, ir „Flydigi Apex 6 Pro“ leidžia patį takelį. Visi kiti valdikliai, taip pat ir tas „Steam Controller“ per „Bluetooth“, gauna iš garso išvestus tonus, kurie apytiksliai perteikia kūrėjo sumanytą pojūtį, bet jo neatkuria.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptikos stiprinimas</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Atkurti numatytąjį (išjungta)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Atkurti numatytąjį (100%)</value></data>
@@ -3447,6 +3491,14 @@ Ankstesnės versijos kopija yra šiame aplanke: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>„Steam Controller“ (2015) haptinės ataskaitos struktūra ir natų periodo matematika, autoriai Pila ir Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>„Steam Controller 2026“ ir „Steam Deck“ LFO tonų haptinė struktūra, autoriai Pila, Crazy ir AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>„Flydigi Apex“ gaidukų efektų vertimas ir rašymo tempas, „Apex 6 Pro“ gaidukų atvaizdavimas, haptinis srautas ir apšvietimo blokas bei „Apex 5“ apšvietimo rašymai, autorius ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>„Flydigi Apex 5“ ir „Apex 6“ protokolo pastabos, apšvietimo bloko perdavimas ir ekrano įkėlimas nuosekliuoju prievadu, autorius Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>„Flydigi Apex 4“ apšvietimo blokas, profilio lizdas ir ekrano įkėlimas „Xbox“ režimu, autorius Uilton Lopes ir bendraautoriai.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>„Flydigi Apex 4“ jėgos gaidukų komandos ir pulte išmatuotas tempas, autorius Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD valymo semantika „Snap Tap“ režimams, autorius valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4753,6 +4805,7 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Panoravimas Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Pasirinkite, ką rodyti. Nieko nepasikeis, kol neišsaugosite.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0}: nustatyta {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Paveikslėlis nusiųstas į valdiklio ekraną.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Atsisiunčiamas „Mad Catz“ S.T.R.I.K.E. 7 SDK…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 dabar įkelia {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Atsisiunčiama ir diegiama „Microsoft Visual C++ 2008“ vykdymo aplinka…</value></data>

@@ -823,4 +823,13 @@
   <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
   <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Angamaheni bs2b</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>ʻOku ʻikai aʻu ha meʻa ki he controller kae ʻoua ke ke ʻave.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Fakahoa</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Fakafonu ʻa e sikilini</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Fakahā ʻa e fakatātā kotoa</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Fakamafao ki he sikilini</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

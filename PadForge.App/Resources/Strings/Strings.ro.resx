@@ -952,6 +952,8 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Setează numărul de jucător al acestui port, de la 1 la 4. Adaptorul îl memorează și se reconectează ca acel jucător.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Ecran Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Setează ce afișează VMU-ul controlerului Dreamcast: imaginea proprie a adaptorului, numele, numărul sau imaginea profilului activ, ceasul, timpul de joc sau o imagine aleasă de dvs.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Ecranul controlerului…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Trimite o imagine pe ecranul controlerului: o imagine sau un GIF ales de dvs., ori imaginea, numele sau numărul profilului activ. Controlerul o păstrează până la următoarea.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Copie de rezervă Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Salvează conținutul Controller Pak din acest controler N64 într-un fișier .mpk de 32 KB, formatul pe care îl citesc emulatoarele N64.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Restaurare Controller Pak…</value></data>
@@ -985,6 +987,45 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Eliminare imagine profil</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Imagini (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Toate fișierele (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Fișierul respectiv nu conține nicio imagine pe care PadForge să o poată citi.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Ecranul controlerului</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Nimic nu ajunge la controler până nu trimiteți.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>O imagine sau un GIF ales de dvs., adaptat la cei 160 pe 80 de pixeli ai ecranului. Controlerul o păstrează până trimiteți alta.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Imaginea profilului activ sau numele acestuia când nu are imagine, așa cum sunt în momentul trimiterii. Controlerul le păstrează la schimbarea profilului.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Numele profilului activ, așa cum este în momentul trimiterii. Controlerul îl păstrează la schimbarea profilului.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Poziția profilului activ în lista de profiluri, așa cum este în momentul trimiterii. Profilul Implicit este 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Potrivire</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Umplerea ecranului</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Toată imaginea</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Întindere pe ecran</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Imagini (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Toate fișierele (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Trimitere</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Cadre: {0}. Trimiterea durează aproximativ {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Controlerul acceptă cel mult {0} cadre, așa că ultimele {1} au fost omise.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Conectați controlerul prin cablu. Se repornește singur la aproximativ 15 secunde după ce imaginea a ajuns.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Conectați controlerul prin cablu. Pentru trimitere, PadForge îl trece în modul Xbox și îl mută de la driverul Xbox al Windows la WinUSB, apoi le repune pe amândouă.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge va trece controlerul în modul Xbox, îl va muta la WinUSB pentru trimitere, apoi îl va da înapoi driverului Xbox al Windows și îl va trece din nou în modul DInput. Deconectați mai întâi orice alt controler Xbox 360. Trimiteți acum?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Pornire…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Se comută controlerul…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Se așteaptă portul ecranului…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Se mută controlerul la WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Se face loc pentru imagine… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Se trimite imaginea… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Finalizare…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Controlerul se dă înapoi Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Trimis. Controlerul afișează imaginea după ce se repornește.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Trimis. Controlerul afișează imaginea.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Conectați controlerul prin cablu. Ecranul său primește o imagine numai prin USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Portul ecranului nu a apărut. Opriți și porniți controlerul din comutatorul său, conectați controlerul prin cablu și trimiteți din nou.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Mai multe ecrane de controler așteaptă o imagine. Deconectați celelalte controlere și trimiteți din nou.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Portul ecranului nu a putut fi deschis. Închideți Flydigi Space Station și trimiteți din nou.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Ecranul nu a mai răspuns. Opriți și porniți controlerul din comutatorul său și trimiteți din nou.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Ecranul a refuzat imaginea. Trimiteți din nou.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Controlerul nu a revenit ca Xbox 360, așa că nu a fost trimis nimic. Treceți controlerul înapoi în modul DInput din comutatorul său și trimiteți din nou.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Deconectați orice alt controler Xbox 360 și trimiteți din nou. Schimbarea driverului ar muta și celelalte controlere. Un controler rămas în modul Xbox revine în modul DInput din comutatorul său.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Controlerul aflat în modul Xbox nu a răspuns ca Apex 4, așa că nu a fost trimis nimic și Windows a primit controlerul înapoi. Treceți controlerul înapoi în modul DInput din comutatorul său.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows nu a mutat controlerul la WinUSB, așa că nu a fost trimis nimic. Treceți controlerul înapoi în modul DInput din comutatorul său.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Oprit. Opriți și porniți controlerul din comutatorul său înainte de a trimite din nou.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>O imagine încă se trimite la controler. Opriți trimiterea?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Fișiere Controller Pak (*.mpk)|*.mpk|Toate fișierele (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Restaurare Controller Pak</value></data>
@@ -1218,6 +1259,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Trăgace cu impuls</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Amplificare per trăgaci, interschimbare motoare, vibrații trăgace adaptive, Forță constantă pe trăgace</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Transmite comenzile pentru motoarele fiecărui trăgaci (Xbox Impulse Triggers) de la controlerul virtual la controlerul fizic Xbox One, Elite sau Series atribuit. Vibrațiile trăgacelor comandate de joc trec automat. Comenzile de mai jos scalează intensitatea pentru fiecare trăgaci.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Redă comenzile pentru motoarele fiecărui trăgaci (Xbox Impulse Triggers) de la controlerul virtual sub formă de vibrație în trăgacii acestui controler. Vibrațiile trăgacelor comandate de joc trec automat. Comenzile de mai jos scalează intensitatea pentru fiecare trăgaci.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Trăgaci stâng</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Trăgaci drept</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Interschimbare motoare trăgaci stâng și drept</value></data>
@@ -1282,6 +1324,8 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Trăgace adaptive</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configurați efectele de feedback ale trăgacelor pe controlerul fizic DualSense atribuit. Efectele trăgacelor provenite de la un joc sau de la o modificare de joc sunt transmise automat. Setările de aici adaugă un nivel configurat de utilizator, care rulează când niciuna dintre ele nu scrie efecte.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Configurați efectele de feedback ale trăgacelor pe trăgacii cu forță ai acestui controler. Efectele trăgacelor provenite de la un joc pe un DualSense virtual sau de la o modificare de joc sunt redate automat. Setările de aici adaugă un nivel configurat de utilizator, care rulează când niciuna dintre ele nu scrie efecte.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Configurați efectele de feedback ale trăgacelor pe acest controler. Trăgacii lui vibrează și nu opun rezistență, așa că fiecare efect este redat ca o vibrație care urmează ce face efectul: o izbucnire la punctul în care cedează un trăgaci, o creștere și o eliberare pentru un arc. Efectele trăgacelor provenite de la un joc pe un DualSense virtual sau de la o modificare de joc sunt redate automat. Setările de aici adaugă un nivel configurat de utilizator, care rulează când niciuna dintre ele nu scrie efecte.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Stickuri</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Zone moarte, anti-zone moarte, curbe de sensibilitate și calibrarea decalajului centrului pentru fiecare stick. Fiecare secțiune de mai jos vizează un stick analogic de pe ieșirea activă. Profilurile de tip Extins pot avea până la patru stickuri. Gamepadurile standard au două.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Trăgace</value></data>
@@ -3457,7 +3501,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Coborâre cu câte o octavă</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Limită de ton</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Redare haptică DualSense pe acest controler</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Când un joc controlează acest slot ca DualSense virtual cu audio haptic creat de dezvoltatori, redă acea pistă pe actuatoarele acestui controler. Un Steam Controller 2026 conectat prin USB sau prin dongle-ul său redă pista ca atare. Toate celelalte controlere, precum și acesta prin Bluetooth, primesc tonuri derivate din audio, care aproximează senzația dorită de designer, fără a o reproduce.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Când un joc controlează acest slot ca DualSense virtual cu audio haptic creat de dezvoltatori, redă acea pistă pe actuatoarele acestui controler. Un Steam Controller 2026 conectat prin USB sau prin receptorul său și un Flydigi Apex 6 Pro redau pista ca atare. Toate celelalte controlere, precum și acel Steam Controller prin Bluetooth, primesc tonuri derivate din audio, care aproximează senzația dorită de designer, fără a o reproduce.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Amplificare haptică</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Resetare la valoarea implicită (dezactivat)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Resetare la valoarea implicită (100%)</value></data>
@@ -3652,6 +3696,14 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Structura raportului haptic al Steam Controller (2015) și calculele perioadei notelor, de Pila și Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Structura haptică cu tonuri LFO pentru Steam Controller 2026 și Steam Deck, de Pila, Crazy și AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Traducerea efectelor trăgacelor Flydigi Apex și ritmul de scriere, randarea trăgacelor Apex 6 Pro, fluxul haptic și blocul de iluminare, plus scrierile de iluminare Apex 5, de ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Note de protocol Flydigi Apex 5 și Apex 6, transferul blocului de iluminare și încărcarea serială pe ecran, de Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Blocul de iluminare Flydigi Apex 4, slotul de profil și încărcarea pe ecran în modul Xbox, de Uilton Lopes și colaboratori.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Comenzile trăgacelor cu forță Flydigi Apex 4 și ritmul măsurat pe controler, de Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantica de curățare SOCD pentru modurile Snap Tap, de valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Panoramare Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Alegeți ce afișează. Nimic nu se schimbă până nu salvați.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} a fost setat la {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Imaginea a ajuns pe ecranul controlerului.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Se descarcă SDK-ul S.T.R.I.K.E. 7 de la Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 încarcă acum {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Se descarcă și se instalează mediul de execuție Visual C++ 2008 de la Microsoft…</value></data>

@@ -1312,6 +1312,7 @@
   <data name="DeviceType_KeyboardScreenKeys" xml:space="preserve"><value>Screen ntawm keyboard</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Duab (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Txhua cov ntaub ntawv (*.*)|*.*</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} teeb tsa rau {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Daim duab tau mus txog lub vijtsam ntawm lub controller.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Tab tom rub Mad Catz S.T.R.I.K.E. 7 SDK…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 tam sim no siv {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Tab tom rub thiab nruab Microsoft Visual C++ 2008 runtime…</value></data>
@@ -1584,4 +1585,13 @@
   <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
   <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Qhov qub bs2b</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Tsis muaj dab tsi mus txog lub controller kom txog thaum koj xa.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Haum</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Npog tag lub vijtsam</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Qhia tag nrho daim duab</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Ncab kom haum lub vijtsam</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

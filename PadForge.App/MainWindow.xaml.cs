@@ -883,6 +883,7 @@ namespace PadForge
 
             // The Keyboard Screens card (#519).
             WireKeyboardScreens();
+            WireFlydigiScreen();
 
             // The Novint Falcon card and a Falcon row's Calibrate Reach on
             // the Devices page (#521).
@@ -3204,6 +3205,7 @@ namespace PadForge
         /// not an engine starts to look for it.</summary>
         private void CheckOptedInDrivers()
         {
+            GiveBackFlydigiScreenBindings();
             var ids = _viewModel.Settings.WinUsbOptIns.ToList();
             var takeovers = _viewModel.Settings.KeyboardTakeovers
                 .Select(Common.Input.WinUsbKeyboards.KeyboardTakeovers.Copy).ToList();

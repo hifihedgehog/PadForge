@@ -2456,6 +2456,13 @@ namespace PadForge.Services
                     if (!string.IsNullOrWhiteSpace(id))
                         vm.WinUsbOptIns.Add(id);
             }
+            vm.FlydigiScreenBindings.Clear();
+            if (appSettings.FlydigiScreenBindings != null)
+            {
+                foreach (var id in appSettings.FlydigiScreenBindings)
+                    if (!string.IsNullOrWhiteSpace(id) && !vm.FlydigiScreenBindings.Contains(id))
+                        vm.FlydigiScreenBindings.Add(id);
+            }
             vm.KeyboardTakeovers.Clear();
             if (appSettings.KeyboardTakeovers != null)
             {
@@ -5236,6 +5243,9 @@ namespace PadForge.Services
                 WinUsbOptIns = vm.WinUsbOptIns.Count > 0
                     ? vm.WinUsbOptIns.ToArray()
                     : null,
+                FlydigiScreenBindings = vm.FlydigiScreenBindings.Count > 0
+                    ? vm.FlydigiScreenBindings.ToArray()
+                    : null,
                 KeyboardTakeovers = vm.KeyboardTakeovers.Count > 0
                     ? vm.KeyboardTakeovers.ToArray()
                     : null,
@@ -7607,6 +7617,13 @@ namespace PadForge.Services
         [XmlArray("WinUsbOptIns")]
         [XmlArrayItem("Id")]
         public string[] WinUsbOptIns { get; set; }
+
+        /// <summary>The Flydigi Apex 4 nodes a screen send moved to WinUSB
+        /// and has not given back (#586), which the next start gives back.
+        /// Null when there are none.</summary>
+        [XmlArray("FlydigiScreenBindings")]
+        [XmlArrayItem("Id")]
+        public string[] FlydigiScreenBindings { get; set; }
 
         /// <summary>The keyboards the user took from Windows for PadForge
         /// alone from the Devices page (#549): the bound node, the ID its

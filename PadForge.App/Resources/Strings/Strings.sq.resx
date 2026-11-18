@@ -938,6 +938,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Cakton numrin e lojtarit të kësaj porte, nga 1 deri në 4. Përshtatësi e ruan dhe rilidhet si ai lojtar.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Ekrani Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Cakton çfarë shfaq VMU-ja e pad-it Dreamcast: imazhin e vetë përshtatësit, emrin, numrin ose imazhin e profilit aktiv, orën, kohën e lojës ose një imazh që zgjidhni.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Ekrani i kontrolluesit…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Dërgon një imazh në ekranin e kontrolluesit: një imazh ose GIF që zgjidhni, ose imazhin, emrin ose numrin e profilit aktiv. Kontrolluesi e mban deri te i radhës.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Kopjeruaj Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>E ruan Controller Pak në këtë kontrollues N64 në një skedar .mpk 32 KB, formatin që lexojnë emulatorët N64.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Rikthe Controller Pak…</value></data>
@@ -971,6 +973,45 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Hiq imazhin e profilit</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Imazhe (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Të gjithë skedarët (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Ky skedar nuk përmban asnjë imazh që PadForge mund ta lexojë.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Ekrani i kontrolluesit</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Asgjë nuk arrin te kontrolluesi derisa të dërgosh.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Një imazh ose GIF që zgjidhni, i përshtatur në 160 me 80 pikselat e ekranit. Kontrolluesi e mban derisa të dërgoni një tjetër.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Imazhi i profilit aktiv, ose emri i tij kur nuk ka imazh, siç është në çastin e dërgimit. Kontrolluesi e mban gjatë ndërrimit të profileve.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Emri i profilit aktiv siç është në çastin e dërgimit. Kontrolluesi e mban gjatë ndërrimit të profileve.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Vendi i profilit aktiv në listën e profileve siç është në çastin e dërgimit. Profili parazgjedhje është 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Përshtatja</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Mbush ekranin</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Shfaq imazhin e plotë</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Shtrije në ekran</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Imazhe (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Të gjithë skedarët (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Dërgo</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Kuadro: {0}. Dërgimi zgjat rreth {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontrolluesi pranon më së shumti {0} kuadro, prandaj {1} të fundit u lanë jashtë.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Lidhe kontrolluesin me kabllo. Ai rindizet vetë rreth 15 sekonda pasi imazhi të jetë brenda.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Lidhe kontrolluesin me kabllo. Për dërgimin, PadForge e kalon në modalitetin Xbox dhe e lëviz nga drejtuesi Xbox i Windows te WinUSB, pastaj i kthen të dyja.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge do ta kalojë kontrolluesin në modalitetin Xbox, do ta lëvizë te WinUSB për dërgimin, pastaj do t’ia kthejë drejtuesit Xbox të Windows dhe do ta kalojë përsëri në modalitetin DInput. Shkëput më parë çdo kontrollues tjetër Xbox 360. Të dërgohet tani?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Po niset…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Po ndërrohet kontrolluesi…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Po pritet porta e ekranit…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Kontrolluesi po lëvizet te WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Po lirohet vend për imazhin… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Po dërgohet imazhi… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Po përfundon…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Kontrolluesi po i kthehet Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>U dërgua. Kontrolluesi e shfaq imazhin pasi të rindizet.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>U dërgua. Kontrolluesi e shfaq imazhin.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Lidhe kontrolluesin me kabllo. Ekrani i tij merr imazh vetëm përmes USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Porta e ekranit nuk u shfaq. Fike dhe ndize kontrolluesin me çelësin e tij, lidhe me kabllo dhe dërgo përsëri.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Më shumë se një ekran kontrolluesi po pret një imazh. Shkëputi të tjerët dhe dërgo përsëri.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Porta e ekranit nuk u hap. Mbyll Flydigi Space Station dhe dërgo përsëri.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Ekrani pushoi së përgjigjuri. Fike dhe ndize kontrolluesin me çelësin e tij dhe dërgo përsëri.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Ekrani e refuzoi imazhin. Dërgo përsëri.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Kontrolluesi nuk u kthye si kontrollues Xbox 360, ndaj nuk u dërgua asgjë. Ktheje në modalitetin DInput me çelësin e tij dhe dërgo përsëri.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Shkëput çdo kontrollues tjetër Xbox 360 dhe dërgo përsëri. Ndryshimi i drejtuesit do t’i lëvizte edhe ata. Një kontrollues i lënë në modalitetin Xbox kthehet në modalitetin DInput me çelësin e tij.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Kontrolluesi në modalitetin Xbox nuk u përgjigj si Apex 4, ndaj nuk u dërgua asgjë dhe Windows e ka përsëri. Ktheje në modalitetin DInput me çelësin e tij.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows nuk e lëvizi kontrolluesin te WinUSB, ndaj nuk u dërgua asgjë. Ktheje në modalitetin DInput me çelësin e tij.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>U ndal. Fike dhe ndize kontrolluesin me çelësin e tij para se të dërgosh përsëri.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Një imazh po shkon ende te kontrolluesi. Të ndalohet dërgimi?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Skedarë Controller Pak (*.mpk)|*.mpk|Të gjithë skedarët (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak porta {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Rikthe Controller Pak</value></data>
@@ -1137,6 +1178,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Këmbëza impulsi</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Forca për çdo këmbëz, këmbimi i motorëve, dridhjet e këmbëzave adaptive, Forca e vazhdueshme e këmbëzës</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Përcjell komandat e motorit për çdo këmbëz (Xbox Impulse Triggers) nga kontrolluesi virtual te kontrolluesi fizik i caktuar Xbox One, Elite ose Series. Dridhja e këmbëzave e drejtuar nga loja kalon automatikisht. Kontrollet më poshtë shkallëzojnë madhësinë për çdo këmbëz.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Luan komandat e motorit për çdo këmbëz (Xbox Impulse Triggers) nga kontrolluesi virtual si dridhje në këmbëzat e këtij kontrolluesi. Dridhja e këmbëzave e drejtuar nga loja kalon automatikisht. Kontrollet më poshtë shkallëzojnë madhësinë për çdo këmbëz.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Këmbëza e majtë</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Këmbëza e djathtë</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Shkëmbe motorët e këmbëzës së majtë dhe të djathtë</value></data>
@@ -1201,6 +1243,8 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Këmbëza adaptive</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfiguron efektet e reagimit të këmbëzave në DualSense-in fizik të caktuar. Efektet e këmbëzave nga një lojë ose një mod loje përcillen automatikisht. Cilësimet këtu shtojnë një shtresë të konfiguruar nga përdoruesi që punon kur asnjëra nuk po shkruan.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Konfiguron efektet e reagimit të këmbëzave në këmbëzat me forcë të këtij kontrolluesi. Efektet e këmbëzave nga një lojë në një DualSense virtual ose nga një mod loje luhen automatikisht. Cilësimet këtu shtojnë një shtresë të konfiguruar nga përdoruesi që punon kur asnjëra nuk po shkruan.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Konfiguron efektet e reagimit të këmbëzave në këtë kontrollues. Këmbëzat e tij dridhen dhe nuk bëjnë rezistencë, ndaj çdo efekt luhet si dridhje që ndjek atë që bën efekti: një shpërthim ku këputet një këmbëz, një rritje dhe një lëshim për një hark. Efektet e këmbëzave nga një lojë në një DualSense virtual ose nga një mod loje luhen automatikisht. Cilësimet këtu shtojnë një shtresë të konfiguruar nga përdoruesi që punon kur asnjëra nuk po shkruan.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Levat</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Zona të vdekura për çdo levë, anti-zona të vdekura, kurba ndjeshmërie dhe kalibrim i zhvendosjes së qendrës. Çdo seksion më poshtë synon një levë analoge në daljen aktive. Profilet e zgjeruara mund të kenë deri në katër leva. Gamepad-et standardë kanë dy.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Këmbëzat</value></data>
@@ -3211,7 +3255,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Palosi një oktavë më poshtë</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Kufiri i tonit</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Luaj haptikën DualSense në këtë kontrollues</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kur një lojë e drejton këtë slot si DualSense virtual me audio haptike të autorizuar, luaj atë pistë në aktuatorët e këtij kontrolluesi. Një Steam Controller 2026 me USB ose me dongle luan vetë pistën. Çdo kontrollues tjetër, edhe ai me Bluetooth, merr tone të nxjerra nga audioja, që i përafrojnë ndjesinë e dizajnerit në vend që ta riprodhojnë.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kur një lojë e drejton këtë slot si DualSense virtual me audio haptike të autorizuar, luaj atë pistë në aktuatorët e këtij kontrolluesi. Një Steam Controller 2026 me USB ose me dongle, dhe një Flydigi Apex 6 Pro, luajnë vetë pistën. Çdo kontrollues tjetër, edhe ai Steam Controller me Bluetooth, merr tone të nxjerra nga audioja, që i përafrojnë ndjesinë e dizajnerit në vend që ta riprodhojnë.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Përforcimi i haptikës</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Rivendos në parazgjedhje (Joaktiv)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Rivendos në parazgjedhje (100%)</value></data>
@@ -3402,6 +3446,14 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Struktura e raportit haptik të Steam Controller (2015) dhe matematika e periudhës së notës, nga Pila dhe Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Struktura haptike me ton LFO për Steam Controller 2026 dhe Steam Deck, nga Pila, Crazy dhe AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Përkthimi i efekteve të këmbëzave të Flydigi Apex dhe ritmi i shkrimit, vizatimi i këmbëzave të Apex 6 Pro, rrjedha haptike dhe blloku i ndriçimit, si dhe shkrimet e ndriçimit të Apex 5, nga ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Shënimet e protokollit të Flydigi Apex 5 dhe Apex 6, transferimi i bllokut të ndriçimit dhe ngarkimi serial i ekranit, nga Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Blloku i ndriçimit të Flydigi Apex 4, vendi i profilit dhe ngarkimi i ekranit në modalitetin Xbox, nga Uilton Lopes dhe kontribuesit.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Komandat e këmbëzave me forcë të Flydigi Apex 4 dhe ritmi i matur në pad, nga Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantika e pastrimit SOCD për mënyrat Snap Tap, nga valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4708,6 +4760,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Lëviz Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Zgjidh çfarë shfaq. Asgjë nuk ndryshon derisa të ruash.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} u caktua në {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Imazhi shkoi te ekrani i kontrolluesit.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Po shkarkohet SDK-ja e S.T.R.I.K.E. 7 e Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 tani ngarkon {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Po shkarkohet dhe instalohet runtime-i Visual C++ 2008 i Microsoft…</value></data>

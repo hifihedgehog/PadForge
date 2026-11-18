@@ -939,6 +939,8 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Itinatakda ang numero ng player ng port na ito, 1 hanggang 4. Iniimbak ito ng adapter at muling kumokonekta bilang player na iyon.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Screen ng Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Itinatakda kung ano ang ipinapakita ng VMU ng Dreamcast pad: ang sariling larawan ng adapter, ang pangalan, numero o larawan ng aktibong profile, ang orasan, ang oras ng paglalaro, o larawang pipiliin mo.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Screen ng Controller…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Nagpapadala ng larawan sa screen ng controller: larawan o GIF na pipiliin mo, o ang larawan, pangalan o numero ng aktibong profile. Iniingatan ito ng controller hanggang sa susunod.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>I-back Up ang Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Sine-save ang Controller Pak sa N64 controller na ito sa isang 32 KB na .mpk file, ang format na binabasa ng mga N64 emulator.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>I-restore ang Controller Pak…</value></data>
@@ -972,6 +974,45 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Alisin ang Larawan ng Profile</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Mga Larawan (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Lahat ng File (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Walang larawang mababasa ng PadForge sa file na iyon.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Screen ng Controller</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Walang makakarating sa controller hangga't hindi ka nagpapadala.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Larawan o GIF na pipiliin mo, iaangkop sa 160 by 80 pixel ng screen. Iniingatan ito ng controller hanggang sa magpadala ka ng iba.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Ang larawan ng aktibong profile, o ang pangalan nito kung wala itong larawan, ayon sa kalagayan nito kapag nagpadala ka. Iniingatan ito ng controller kahit magpalit ng profile.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Ang pangalan ng aktibong profile ayon sa kalagayan nito kapag nagpadala ka. Iniingatan ito ng controller kahit magpalit ng profile.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Ang puwesto ng aktibong profile sa listahan ng mga profile ayon sa kalagayan nito kapag nagpadala ka. Ang Default na profile ay 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Angkop</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Punuin ang Screen</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Ipakita ang Buong Larawan</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>I-unat sa Screen</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Mga Larawan (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Lahat ng File (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Ipadala</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Mga frame: {0}. Aabutin nang humigit kumulang {1} ang pagpapadala.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>{0} frame lang ang kayang tanggapin ng controller, kaya iniwan ang huling {1}.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Ikonekta ang controller gamit ang cable. Kusa itong magre-restart mga 15 segundo matapos mailagay ang larawan.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Ikonekta ang controller gamit ang cable. Para sa pagpapadala, inilalagay ito ng PadForge sa Xbox mode at inililipat mula sa Xbox driver ng Windows papunta sa WinUSB, saka ibinabalik ang dalawa.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>Ililipat ng PadForge ang controller sa Xbox mode, ilalagay ito sa WinUSB para sa pagpapadala, saka ibabalik sa Xbox driver ng Windows at ibabalik sa DInput mode. Tanggalin muna sa saksakan ang bawat ibang Xbox 360 controller. Magpadala na ngayon?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Nagsisimula…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Inililipat ang controller…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Hinihintay ang port ng screen…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Inililipat ang controller sa WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Naglilinis ng espasyo para sa larawan… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Ipinapadala ang larawan… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Tinatapos…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Ibinabalik ang controller sa Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Naipadala. Ipapakita ng controller ang larawan pagkatapos nitong mag-restart.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Naipadala. Ipinapakita ng controller ang larawan.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Ikonekta ang controller gamit ang cable. Sa USB lang tumatanggap ng larawan ang screen nito.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Hindi lumitaw ang port ng screen. I-off at i-on ang controller gamit ang sarili nitong switch, ikonekta ito gamit ang cable, at magpadala ulit.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Mahigit isang screen ng controller ang naghihintay ng larawan. Tanggalin sa saksakan ang iba at magpadala ulit.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Hindi nabuksan ang port ng screen. Isara ang Flydigi Space Station at magpadala ulit.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Tumigil sa pagsagot ang screen. I-off at i-on ang controller gamit ang sarili nitong switch at magpadala ulit.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Tinanggihan ng screen ang larawan. Magpadala ulit.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Hindi bumalik ang controller bilang Xbox 360 controller, kaya walang naipadala. Ibalik ito sa DInput mode gamit ang sarili nitong switch at magpadala ulit.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Tanggalin sa saksakan ang bawat ibang Xbox 360 controller at magpadala ulit. Madadamay rin sila sa pagpapalit ng driver. Ang controller na naiwan sa Xbox mode ay ibinabalik sa DInput mode gamit ang sarili nitong switch.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Hindi sumagot bilang Apex 4 ang controller sa Xbox mode, kaya walang naipadala at nasa Windows na ulit ito. Ibalik ito sa DInput mode gamit ang sarili nitong switch.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Hindi nailipat ng Windows ang controller sa WinUSB, kaya walang naipadala. Ibalik ito sa DInput mode gamit ang sarili nitong switch.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Itinigil. I-off at i-on ang controller gamit ang sarili nitong switch bago magpadala ulit.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>May larawang ipinapadala pa sa controller. Ihinto ang pagpapadala?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Mga File ng Controller Pak (*.mpk)|*.mpk|Lahat ng File (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>I-restore ang Controller Pak</value></data>
@@ -1138,6 +1179,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Mga Impulse Trigger</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain bawat trigger, palit ng motor, adaptive trigger vibration, Constant Trigger Force</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Ipinapasa ang mga motor command ng bawat trigger (Xbox Impulse Triggers) mula sa virtual controller papunta sa nakatalagang pisikal na Xbox One, Elite, o Series controller. Awtomatikong dumadaan ang trigger rumble na galing sa laro. Ini-scale ng mga kontrol sa ibaba ang lakas bawat trigger.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Pinapatugtog ang mga motor command ng bawat trigger (Xbox Impulse Triggers) mula sa virtual controller bilang vibration sa mga trigger ng controller na ito. Awtomatikong dumadaan ang trigger rumble na galing sa laro. Ini-scale ng mga kontrol sa ibaba ang lakas bawat trigger.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Kaliwang Trigger</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Kanang Trigger</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Ipagpalit ang Kaliwa at Kanang Trigger Motor</value></data>
@@ -1202,6 +1244,8 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Mga Adaptive Trigger</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>I-configure ang mga trigger feedback effect sa nakatalagang pisikal na DualSense. Awtomatikong ipinapasa ang mga trigger effect na galing sa laro o game mod. Ang mga setting dito ay nagdaragdag ng layer na itinakda ng user na tumatakbo kapag wala sa dalawa ang sumusulat.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>I-configure ang mga trigger feedback effect sa mga force trigger ng controller na ito. Awtomatikong tumutugtog ang mga trigger effect na galing sa laro sa virtual DualSense o sa game mod. Ang mga setting dito ay nagdaragdag ng layer na itinakda ng user na tumatakbo kapag wala sa dalawa ang sumusulat.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>I-configure ang mga trigger feedback effect sa controller na ito. Nagva-vibrate at hindi lumalaban ang mga trigger nito, kaya bawat effect ay tumutugtog bilang vibration na sumusunod sa ginagawa ng effect: isang biglang pagputok kapag bumabaklas ang trigger, at pagbuo at pagbitaw para sa pana. Awtomatikong tumutugtog ang mga trigger effect na galing sa laro sa virtual DualSense o sa game mod. Ang mga setting dito ay nagdaragdag ng layer na itinakda ng user na tumatakbo kapag wala sa dalawa ang sumusulat.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Mga Stick</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Mga deadzone, anti-deadzone, sensitivity curve, at center-offset calibration bawat stick. Ang bawat seksyon sa ibaba ay para sa isang analog stick sa aktibong output. Ang mga Extended profile ay maaaring magkaroon ng hanggang apat na stick. Ang mga karaniwang gamepad ay may dalawa.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Mga Trigger</value></data>
@@ -3076,7 +3120,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Ibaba nang Isang Octave</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Limitasyon ng Tono</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Magpatugtog ng DualSense Haptics sa Controller na Ito</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kapag minamaneho ng laro ang slot na ito bilang virtual DualSense na may authored haptic audio, patugtugin ang track na iyon sa mga actuator ng controller na ito. Ang Steam Controller 2026 sa USB o sa dongle nito ay mismong nagpapatugtog ng track. Ang bawat ibang controller, at ang isang iyon sa Bluetooth, ay nakakakuha ng mga tono na hango sa audio, na lumalapit sa pakiramdam na ginawa ng designer pero hindi ito eksaktong ginagaya.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kapag minamaneho ng laro ang slot na ito bilang virtual DualSense na may authored haptic audio, patugtugin ang track na iyon sa mga actuator ng controller na ito. Ang Steam Controller 2026 sa USB o sa dongle nito, at ang Flydigi Apex 6 Pro, ay mismong nagpapatugtog ng track. Ang bawat ibang controller, at ang Steam Controller na iyon sa Bluetooth, ay nakakakuha ng mga tono na hango sa audio, na lumalapit sa pakiramdam na ginawa ng designer pero hindi ito eksaktong ginagaya.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Gain ng Haptics</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>I-reset sa Default (Off)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>I-reset sa Default (100%)</value></data>
@@ -3267,6 +3311,14 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Layout ng haptic report ng Steam Controller (2015) at note-period math, nina Pila at Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Layout ng LFO-tone haptic ng Steam Controller 2026 at Steam Deck, nina Pila, Crazy, at AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Pagsasalin ng trigger effect ng Flydigi Apex at pacing ng pagsulat, ang trigger rendering, haptic stream at lighting block ng Apex 6 Pro, at ang mga lighting write ng Apex 5, ni ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Mga tala sa protocol ng Flydigi Apex 5 at Apex 6, ang paglilipat ng lighting block at ang serial upload ng screen, ni Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Lighting block ng Flydigi Apex 4, profile slot at ang pag-upload sa screen sa Xbox mode, nina Uilton Lopes at mga contributor.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Mga force trigger command ng Flydigi Apex 4 at ang pacing na sinukat sa pad, ni Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantics ng SOCD cleaning para sa mga Snap Tap mode, ni valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4573,6 +4625,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Pan Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Piliin kung ano ang ipapakita nito. Walang magbabago hangga't hindi ka nagse-save.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>Itinakda ang {0} sa {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Naipadala ang larawan sa screen ng controller.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Dina-download ang SDK ng S.T.R.I.K.E. 7 ng Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>Nilo-load na ng S.T.R.I.K.E. 7 ang {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Dina-download at ini-install ang Visual C++ 2008 runtime ng Microsoft…</value></data>

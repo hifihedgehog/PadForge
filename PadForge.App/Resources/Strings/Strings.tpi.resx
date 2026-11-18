@@ -372,6 +372,8 @@
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Makim piksa bilong {0}…</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Rausim piksa bilong profail</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Dispela fail i nogat piksa PadForge inap ritim.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Skrin bilong kontrola</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>I no gat samting i go long kontrola inap yu salim.</value></data>
   <data name="Status_PakFileFailed_Format" xml:space="preserve"><value>Fail i no inap wok: {0}</value></data>
   <data name="Devices_GunCalibration" xml:space="preserve"><value>Kalibresen bilong gun</value></data>
   <data name="Devices_GunCalibrate" xml:space="preserve"><value>Mekim kalibresen</value></data>
@@ -1705,6 +1707,7 @@
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Muvim Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Makim wanem em i soim. I no gat samting i senis inap yu seivim.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} i senis i go long {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Piksa i go pinis long skrin bilong kontrola.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>I daunlodim SDK bilong Mad Catz S.T.R.I.K.E. 7…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 i yusim {0} nau.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>I daunlodim na i instolim runtime bilong Visual C++ 2008 bilong Microsoft…</value></data>
@@ -2004,4 +2007,41 @@
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Tanim i go baksait</value></data>
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>Antap tru</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Default bilong bs2b</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Skrin bilong kontrola…</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Fitim</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Pulapim skrin</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Soim olgeta piksa</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Pulim i go long skrin</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Salim</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Ol fraim: {0}. Long salim, em i kisim klostu {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontrola i ken kisim {0} fraim tasol, olsem na laspela {1} i no i go.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Konektim kontrola long waia. Em i statim gen em yet klostu 15 sekon bihain long piksa i go insait.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Konektim kontrola long waia. Bilong salim, PadForge i senisim em i go long Xbox mod na muvim em long Xbox draiva bilong Windows i go long WinUSB, na bihain em i putim tupela i go bek.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge bai senisim kontrola i go long Xbox mod, muvim em i go long WinUSB bilong salim, na bihain givim em i go bek long Xbox draiva bilong Windows na senisim em i go bek long DInput mod. Pastaim, rausim plak bilong olgeta narapela Xbox 360 kontrola. Salim nau?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Statim…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Senisim kontrola…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Wetim pot bilong skrin…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Muvim kontrola i go long WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Klinim ples bilong piksa… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Salim piksa… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Pinisim…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Givim kontrola i go bek long Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Em i go pinis. Kontrola bai soim piksa taim em i statim gen pinis.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Em i go pinis. Kontrola i soim piksa.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Konektim kontrola long waia. Skrin bilong en i kisim piksa long USB tasol.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Pot bilong skrin i no kamap. Ofim kontrola na onim gen long swis bilong en yet, konektim em long waia, na salim gen.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>I gat moa long wanpela skrin bilong kontrola i wetim piksa. Rausim plak bilong ol narapela na salim gen.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Pot bilong skrin i no op. Pasim Flydigi Space Station na salim gen.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Skrin i no bekim moa. Ofim kontrola na onim gen long swis bilong en yet na salim gen.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Skrin i no laik kisim piksa. Salim gen.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Kontrola i no kam bek olsem Xbox 360 kontrola, olsem na i no gat samting i go. Senisim em i go bek long DInput mod long swis bilong en yet na salim gen.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Rausim plak bilong olgeta narapela Xbox 360 kontrola na salim gen. Senis bilong draiva bai muvim ol tu. Kontrola i stap yet long Xbox mod i go bek long DInput mod long swis bilong en yet.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Kontrola long Xbox mod i no bekim olsem Apex 4, olsem na i no gat samting i go na Windows i kisim em bek. Senisim em i go bek long DInput mod long swis bilong en yet.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows i no muvim kontrola i go long WinUSB, olsem na i no gat samting i go. Senisim em i go bek long DInput mod long swis bilong en yet.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Em i stop. Ofim kontrola na onim gen long swis bilong en yet bipo yu salim gen.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Wanpela piksa i go yet long kontrola. Stopim salim?</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

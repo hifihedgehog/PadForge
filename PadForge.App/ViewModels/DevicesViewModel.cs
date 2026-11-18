@@ -208,6 +208,10 @@ namespace PadForge.ViewModels
         public event EventHandler KeyboardScreenRequested;
         public void RequestKeyboardScreen() => KeyboardScreenRequested?.Invoke(this, EventArgs.Empty);
 
+        /// <summary>A Flydigi Apex pad's screen dialog (#586).</summary>
+        public event EventHandler FlydigiScreenRequested;
+        public void RequestFlydigiScreen() => FlydigiScreenRequested?.Invoke(this, EventArgs.Empty);
+
         /// <summary>Raised by a Falcon row's Calibrate Reach (issue #521).
         /// MainWindow runs the sweep and keeps the result on the
         /// device.</summary>

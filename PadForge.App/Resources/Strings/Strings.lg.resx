@@ -832,4 +832,13 @@
   <data name="HIDMaestroUninstall_KindServiceSetting" xml:space="preserve"><value>Ensengeka ya service</value></data>
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Omutendera gw'okuggyawo</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b eya bulijjo</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Tewali kituuka ku controller okutuusa lw'osindika.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Okutuuka</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Jjuza screen yonna</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Laga ekifaananyi kyonna</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Gaziya okutuuka ku screen</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

@@ -939,6 +939,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>កំណត់លេខអ្នកលេងរបស់ច្រកនេះ ពី 1 ដល់ 4។ អាដាប់ទ័ររក្សាទុកវា ហើយភ្ជាប់ឡើងវិញជាអ្នកលេងនោះ។</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>អេក្រង់ Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>កំណត់អ្វីដែល VMU របស់ឧបករណ៍បញ្ជា Dreamcast បង្ហាញ៖ រូបភាពផ្ទាល់របស់អាដាប់ទ័រ ឈ្មោះ លេខ ឬរូបភាពរបស់ប្រូហ្វាល់សកម្ម នាឡិកា រយៈពេលលេង ឬរូបភាពដែលអ្នកជ្រើស។</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>អេក្រង់ឧបករណ៍បញ្ជា…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>ផ្ញើរូបភាពទៅអេក្រង់របស់ឧបករណ៍បញ្ជា៖ រូបភាព ឬ GIF ដែលអ្នកជ្រើស ឬរូបភាព ឈ្មោះ ឬលេខរបស់ប្រូហ្វាល់សកម្ម។ ឧបករណ៍បញ្ជារក្សាវាទុករហូតដល់រូបភាពបន្ទាប់។</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>បម្រុងទុក Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>រក្សាទុក Controller Pak ក្នុងឧបករណ៍បញ្ជា N64 នេះទៅជាឯកសារ .mpk ទំហំ 32 KB ដែលជាទម្រង់ដែលកម្មវិធីត្រាប់ N64 អាន។</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>ស្ដារ Controller Pak…</value></data>
@@ -972,6 +974,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>លុបរូបភាពប្រូហ្វាល់</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>រូបភាព (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|ឯកសារទាំងអស់ (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>ឯកសារនោះគ្មានរូបភាពដែល PadForge អាចអានបានទេ។</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>អេក្រង់ឧបករណ៍បញ្ជា</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>គ្មានអ្វីទៅដល់ឧបករណ៍បញ្ជារហូតដល់អ្នកផ្ញើ។</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>រូបភាព ឬ GIF ដែលអ្នកជ្រើស ដែលត្រូវបានសម្រួលឱ្យត្រូវនឹងទំហំ 160 គុណ 80 ភីកសែលរបស់អេក្រង់។ ឧបករណ៍បញ្ជារក្សាវាទុករហូតដល់អ្នកផ្ញើរូបភាពមួយទៀត។</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>រូបភាពរបស់ប្រូហ្វាល់សកម្ម ឬឈ្មោះរបស់វា នៅពេលវាគ្មានរូបភាព ដូចដែលវាមាននៅពេលអ្នកផ្ញើ។ ឧបករណ៍បញ្ជារក្សាវាទុក ទោះបីប្ដូរប្រូហ្វាល់ក៏ដោយ។</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>ឈ្មោះរបស់ប្រូហ្វាល់សកម្ម ដូចដែលវាមាននៅពេលអ្នកផ្ញើ។ ឧបករណ៍បញ្ជារក្សាវាទុក ទោះបីប្ដូរប្រូហ្វាល់ក៏ដោយ។</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>ទីតាំងរបស់ប្រូហ្វាល់សកម្មក្នុងបញ្ជីប្រូហ្វាល់ ដូចដែលវាមាននៅពេលអ្នកផ្ញើ។ ប្រូហ្វាល់លំនាំដើមគឺ 0។</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>សម្រួល</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>ពេញអេក្រង់</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>បង្ហាញរូបភាពទាំងមូល</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>ទាញពន្លាតឱ្យត្រូវអេក្រង់</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>រូបភាព (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|ឯកសារទាំងអស់ (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>ផ្ញើ</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>ស៊ុម៖ {0}។ ការផ្ញើចំណាយពេលប្រហែល {1}។</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>ឧបករណ៍បញ្ជាទទួលបានយ៉ាងច្រើន {0} ស៊ុម ដូច្នេះ {1} ស៊ុមចុងក្រោយត្រូវបានទុកចោល។</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>ភ្ជាប់ឧបករណ៍បញ្ជាដោយខ្សែ។ វាចាប់ផ្ដើមឡើងវិញដោយខ្លួនឯងប្រហែល 15 វិនាទីបន្ទាប់ពីរូបភាពបានចូល។</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>ភ្ជាប់ឧបករណ៍បញ្ជាដោយខ្សែ។ សម្រាប់ការផ្ញើ PadForge ប្ដូរវាទៅរបៀប Xbox ហើយផ្លាស់វាពីកម្មវិធីបញ្ជា Xbox របស់ Windows ទៅ WinUSB រួចដាក់ទាំងពីរមកវិញ។</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge នឹងប្ដូរឧបករណ៍បញ្ជាទៅរបៀប Xbox ផ្លាស់វាទៅ WinUSB សម្រាប់ការផ្ញើ រួចប្រគល់វាវិញទៅកម្មវិធីបញ្ជា Xbox របស់ Windows ហើយប្ដូរវាត្រឡប់ទៅរបៀប DInput វិញ។ ដកឧបករណ៍បញ្ជា Xbox 360 ផ្សេងទៀតទាំងអស់ចេញជាមុនសិន។ ផ្ញើឥឡូវនេះ?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>កំពុងចាប់ផ្ដើម…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>កំពុងប្ដូរឧបករណ៍បញ្ជា…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>កំពុងរង់ចាំច្រករបស់អេក្រង់…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>កំពុងផ្លាស់ឧបករណ៍បញ្ជាទៅ WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>កំពុងសម្អាតកន្លែងសម្រាប់រូបភាព… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>កំពុងផ្ញើរូបភាព… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>កំពុងបញ្ចប់…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>កំពុងប្រគល់ឧបករណ៍បញ្ជាវិញទៅ Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>បានផ្ញើ។ ឧបករណ៍បញ្ជាបង្ហាញរូបភាព នៅពេលវាចាប់ផ្ដើមឡើងវិញរួច។</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>បានផ្ញើ។ ឧបករណ៍បញ្ជាបង្ហាញរូបភាព។</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>ភ្ជាប់ឧបករណ៍បញ្ជាដោយខ្សែ។ អេក្រង់របស់វាទទួលរូបភាពតាម USB តែប៉ុណ្ណោះ។</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>ច្រករបស់អេក្រង់មិនបានលេចឡើងទេ។ បិទ ហើយបើកឧបករណ៍បញ្ជាវិញដោយកុងតាក់ផ្ទាល់របស់វា ភ្ជាប់វាដោយខ្សែ ហើយផ្ញើម្ដងទៀត។</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>អេក្រង់ឧបករណ៍បញ្ជាច្រើនជាងមួយកំពុងរង់ចាំរូបភាព។ ដកឧបករណ៍ផ្សេងទៀតចេញ ហើយផ្ញើម្ដងទៀត។</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>ច្រករបស់អេក្រង់មិនបានបើកទេ។ បិទ Flydigi Space Station ហើយផ្ញើម្ដងទៀត។</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>អេក្រង់បានឈប់ឆ្លើយតប។ បិទ ហើយបើកឧបករណ៍បញ្ជាវិញដោយកុងតាក់ផ្ទាល់របស់វា ហើយផ្ញើម្ដងទៀត។</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>អេក្រង់បានបដិសេធរូបភាព។ ផ្ញើម្ដងទៀត។</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>ឧបករណ៍បញ្ជាមិនបានត្រឡប់មកវិញជាឧបករណ៍បញ្ជា Xbox 360 ទេ ដូច្នេះគ្មានអ្វីត្រូវបានផ្ញើទេ។ ប្ដូរវាត្រឡប់ទៅរបៀប DInput វិញដោយកុងតាក់ផ្ទាល់របស់វា ហើយផ្ញើម្ដងទៀត។</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>ដកឧបករណ៍បញ្ជា Xbox 360 ផ្សេងទៀតទាំងអស់ចេញ ហើយផ្ញើម្ដងទៀត។ ការប្ដូរកម្មវិធីបញ្ជានឹងផ្លាស់ពួកវាផងដែរ។ ឧបករណ៍បញ្ជាដែលនៅក្នុងរបៀប Xbox ត្រឡប់ទៅរបៀប DInput វិញដោយកុងតាក់ផ្ទាល់របស់វា។</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>ឧបករណ៍បញ្ជាក្នុងរបៀប Xbox មិនបានឆ្លើយតបជា Apex 4 ទេ ដូច្នេះគ្មានអ្វីត្រូវបានផ្ញើទេ ហើយ Windows បានទទួលវាវិញហើយ។ ប្ដូរវាត្រឡប់ទៅរបៀប DInput វិញដោយកុងតាក់ផ្ទាល់របស់វា។</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows មិនបានផ្លាស់ឧបករណ៍បញ្ជាទៅ WinUSB ទេ ដូច្នេះគ្មានអ្វីត្រូវបានផ្ញើទេ។ ប្ដូរវាត្រឡប់ទៅរបៀប DInput វិញដោយកុងតាក់ផ្ទាល់របស់វា។</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>បានបញ្ឈប់។ បិទ ហើយបើកឧបករណ៍បញ្ជាវិញដោយកុងតាក់ផ្ទាល់របស់វា មុនពេលអ្នកផ្ញើម្ដងទៀត។</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>រូបភាពមួយនៅតែកំពុងទៅឧបករណ៍បញ្ជា។ បញ្ឈប់ការផ្ញើ?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>ឯកសារ Controller Pak (*.mpk)|*.mpk|ឯកសារទាំងអស់ (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak ច្រក {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>ស្ដារ Controller Pak</value></data>
@@ -1138,6 +1179,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ទ្រីហ្គឺ Impulse</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>កម្លាំងទ្រីហ្គឺនីមួយៗ, ការប្ដូរម៉ូទ័រ, ការញ័រទ្រីហ្គឺបន្សាំ, កម្លាំងទ្រីហ្គឺថេរ</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>បញ្ជូនពាក្យបញ្ជាម៉ូទ័រតាមទ្រីហ្គឺនីមួយៗ (Xbox Impulse Triggers) ពីឧបករណ៍បញ្ជានិម្មិតទៅឧបករណ៍បញ្ជា Xbox One, Elite ឬ Series ពិតដែលបានកំណត់។ ការញ័រទ្រីហ្គឺដែលហ្គេមបញ្ជា ឆ្លងកាត់ដោយស្វ័យប្រវត្តិ។ ការគ្រប់គ្រងខាងក្រោមកំណត់មាត្រដ្ឋានកម្លាំងតាមទ្រីហ្គឺនីមួយៗ។</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>ចាក់ពាក្យបញ្ជាម៉ូទ័រតាមទ្រីហ្គឺនីមួយៗ (Xbox Impulse Triggers) ពីឧបករណ៍បញ្ជានិម្មិត ជាការញ័រនៅក្នុងទ្រីហ្គឺរបស់ឧបករណ៍បញ្ជានេះ។ ការញ័រទ្រីហ្គឺដែលហ្គេមបញ្ជា ឆ្លងកាត់ដោយស្វ័យប្រវត្តិ។ ការគ្រប់គ្រងខាងក្រោមកំណត់មាត្រដ្ឋានកម្លាំងតាមទ្រីហ្គឺនីមួយៗ។</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>ទ្រីហ្គឺឆ្វេង</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>ទ្រីហ្គឺស្ដាំ</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>ប្ដូរម៉ូទ័រទ្រីហ្គឺឆ្វេង និងស្ដាំ</value></data>
@@ -1202,6 +1244,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>ទ្រីហ្គឺបន្សាំ</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>កំណត់បែបផែនតបរបស់ទ្រីហ្គឺ លើ DualSense ពិតដែលបានកំណត់។ បែបផែនទ្រីហ្គឺពីហ្គេម ឬពីម៉ូដហ្គេម ត្រូវបានបញ្ជូនបន្តដោយស្វ័យប្រវត្តិ។ ការកំណត់នៅទីនេះបន្ថែមស្រទាប់មួយដែលអ្នកប្រើកំណត់ ដែលដំណើរការនៅពេលគ្មានមួយណាកំពុងសរសេរ។</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>កំណត់បែបផែនតបរបស់ទ្រីហ្គឺ លើទ្រីហ្គឺទប់កម្លាំងរបស់ឧបករណ៍បញ្ជានេះ។ បែបផែនទ្រីហ្គឺពីហ្គេមលើ DualSense និម្មិត ឬពីម៉ូដហ្គេម ចាក់ដោយស្វ័យប្រវត្តិ។ ការកំណត់នៅទីនេះបន្ថែមស្រទាប់មួយដែលអ្នកប្រើកំណត់ ដែលដំណើរការនៅពេលគ្មានមួយណាកំពុងសរសេរ។</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>កំណត់បែបផែនតបរបស់ទ្រីហ្គឺ លើឧបករណ៍បញ្ជានេះ។ ទ្រីហ្គឺរបស់វាញ័រ ហើយមិនទប់ទេ ដូច្នេះបែបផែននីមួយៗចាក់ជាការញ័រដែលធ្វើតាមអ្វីដែលបែបផែននោះធ្វើ៖ ការញ័រខ្លាំងភ្លាមៗនៅកន្លែងដែលទ្រីហ្គឺបាក់ ការកើនឡើងបន្តិចម្ដងៗ និងការបញ្ចេញសម្រាប់ធ្នូ។ បែបផែនទ្រីហ្គឺពីហ្គេមលើ DualSense និម្មិត ឬពីម៉ូដហ្គេម ចាក់ដោយស្វ័យប្រវត្តិ។ ការកំណត់នៅទីនេះបន្ថែមស្រទាប់មួយដែលអ្នកប្រើកំណត់ ដែលដំណើរការនៅពេលគ្មានមួយណាកំពុងសរសេរ។</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>ដងបញ្ជា</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>តំបន់ងាប់ តំបន់ប្រឆាំងតំបន់ងាប់ ខ្សែកោងភាពរសើប និងការក្រិតគម្លាតកណ្ដាល សម្រាប់ដងបញ្ជានីមួយៗ។ ផ្នែកនីមួយៗខាងក្រោមសំដៅលើដងបញ្ជាអាណាឡូកមួយ នៅលើលទ្ធផលសកម្ម។ ប្រូហ្វាល់ Extended អាចមានដងបញ្ជារហូតដល់បួន។ ហ្គេមផេតស្តង់ដារមានពីរ។</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ទ្រីហ្គឺ</value></data>
@@ -3262,7 +3306,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>បត់ចុះមួយអុកតាវ</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>ដែនកំណត់សំឡេង</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>ចាក់ការញ័រលម្អិត DualSense លើឧបករណ៍បញ្ជានេះ</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ពេលហ្គេមបញ្ជារន្ធនេះជា DualSense និម្មិតដែលមានសំឡេងញ័រលម្អិតដែលបានរចនា ចាក់បទនោះលើឧបករណ៍ញ័ររបស់ឧបករណ៍បញ្ជានេះ។ Steam Controller 2026 តាម USB ឬឧបករណ៍ទទួលរបស់វា ចាក់បទនោះដោយផ្ទាល់។ ឧបករណ៍បញ្ជាផ្សេងទៀតទាំងអស់ និងឧបករណ៍នោះតាម Bluetooth ទទួលបានសំឡេងដែលទាញចេញពីសំឡេងនោះ ដែលប្រហាក់ប្រហែលនឹងអារម្មណ៍ដែលអ្នករចនាចង់បាន ជាជាងបង្កើតឡើងវិញដូចដើម។</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ពេលហ្គេមបញ្ជារន្ធនេះជា DualSense និម្មិតដែលមានសំឡេងញ័រលម្អិតដែលបានរចនា ចាក់បទនោះលើឧបករណ៍ញ័ររបស់ឧបករណ៍បញ្ជានេះ។ Steam Controller 2026 តាម USB ឬឧបករណ៍ទទួលរបស់វា និង Flydigi Apex 6 Pro ចាក់បទនោះដោយផ្ទាល់។ ឧបករណ៍បញ្ជាផ្សេងទៀតទាំងអស់ និង Steam Controller នោះតាម Bluetooth ទទួលបានសំឡេងដែលទាញចេញពីសំឡេងនោះ ដែលប្រហាក់ប្រហែលនឹងអារម្មណ៍ដែលអ្នករចនាចង់បាន ជាជាងបង្កើតឡើងវិញដូចដើម។</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>កម្រិតពង្រីកការញ័រលម្អិត</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>កំណត់ទៅលំនាំដើមវិញ (បិទ)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>កំណត់ទៅលំនាំដើមវិញ (100%)</value></data>
@@ -3453,6 +3497,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>ប្លង់របាយការណ៍ការញ័រលម្អិតរបស់ Steam Controller (2015) និងគណិតវិទ្យារយៈពេលណោត ដោយ Pila និង Roboron3042។</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>ប្លង់ការញ័រលម្អិតសំឡេង LFO របស់ Steam Controller 2026 និង Steam Deck ដោយ Pila, Crazy និង AAGaming។</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>ការបកប្រែបែបផែនទ្រីហ្គឺ និងចង្វាក់សរសេររបស់ Flydigi Apex ការបង្ហាញទ្រីហ្គឺ ស្ទ្រីមការញ័រលម្អិត និងប្លុកភ្លើងរបស់ Apex 6 Pro និងការសរសេរភ្លើងរបស់ Apex 5 ដោយ ReynArts។</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>កំណត់ចំណាំពិធីការរបស់ Flydigi Apex 5 និង Apex 6 ការផ្ទេរប្លុកភ្លើង និងការផ្ទុកឡើងតាមសៀរៀលរបស់អេក្រង់ ដោយ Mikalai Kaliaha។</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>ប្លុកភ្លើង រន្ធប្រូហ្វាល់ និងការផ្ទុកឡើងអេក្រង់ក្នុងរបៀប Xbox របស់ Flydigi Apex 4 ដោយ Uilton Lopes និងអ្នករួមចំណែក។</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>ពាក្យបញ្ជាទ្រីហ្គឺទប់កម្លាំងរបស់ Flydigi Apex 4 និងចង្វាក់ដែលបានវាស់លើឧបករណ៍បញ្ជា ដោយ Jackwmtr។</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>អត្ថន័យនៃការសម្អាត SOCD សម្រាប់របៀប Snap Tap ដោយ valignatev។</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4757,6 +4809,7 @@
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>រំកិល Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>ជ្រើសអ្វីដែលវាបង្ហាញ។ គ្មានអ្វីផ្លាស់ប្ដូររហូតដល់អ្នករក្សាទុក។</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>បានកំណត់ {0} ទៅ {1}។</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>រូបភាពបានទៅដល់អេក្រង់របស់ឧបករណ៍បញ្ជា។</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>កំពុងទាញយក SDK S.T.R.I.K.E. 7 របស់ Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>ឥឡូវនេះ S.T.R.I.K.E. 7 ផ្ទុក {0}។</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>កំពុងទាញយក និងដំឡើងកម្មវិធីដំណើរការ Visual C++ 2008 របស់ Microsoft…</value></data>

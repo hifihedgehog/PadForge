@@ -1746,4 +1746,9 @@
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Baliskad</value></data>
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>Peak</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Default sang bs2b</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Wala sing makaabot sa controller tubtob nga magpadala ka.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Paghaum</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Pun-on ang screen</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Ipakita ang bug-os nga litrato</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Iunat sa screen</value></data>
 </root>

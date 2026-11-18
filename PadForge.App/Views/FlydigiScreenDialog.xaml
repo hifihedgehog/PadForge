@@ -1,0 +1,86 @@
+<views:DialogWindow AutomationProperties.IsDialog="True" x:Class="PadForge.Views.FlydigiScreenDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        xmlns:controls="clr-namespace:PadForge.Controls"
+        xmlns:common="clr-namespace:PadForge.Common"
+        xmlns:views="clr-namespace:PadForge.Views"
+        Title="{Binding FlydigiScreen_Title, Source={x:Static strings:Strings.Instance}}"
+        Subtitle="{Binding FlydigiScreen_Subtitle, Source={x:Static strings:Strings.Instance}}">
+
+    <!-- A Flydigi Apex screen's picture (#586), in the Dreamcast Screen
+         dialog's shape: at the left the screen as the frames that go out
+         will draw it, at the right what it shows, how a picture is fitted,
+         and a line that says how long the send takes. The controller stores
+         the picture, so it goes out on Send and never on its own. -->
+    <views:DialogWindow.Foot>
+        <controls:FlexLinePanel Style="{StaticResource DialogFootPanel}">
+            <Button x:Name="CloseButton" Style="{StaticResource DialogButton}" IsCancel="True"
+                    Content="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}"/>
+            <Button x:Name="SendButton" Style="{StaticResource DialogPrimaryButton}" IsDefault="True" Click="SendButton_Click"
+                    Content="{Binding FlydigiScreen_Send, Source={x:Static strings:Strings.Instance}}"/>
+        </controls:FlexLinePanel>
+    </views:DialogWindow.Foot>
+
+    <Grid common:InitialFocus.First="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="322"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- The screen's 160 by 80 pixels, two screen pixels each. -->
+        <Border Width="322" Height="162" HorizontalAlignment="Left" VerticalAlignment="Top"
+                CornerRadius="6" Background="#FF000000" BorderBrush="{DynamicResource SteelPillLineBrush}" BorderThickness="1">
+            <Image x:Name="PreviewImage" FlowDirection="LeftToRight" Width="320" Height="160"
+                   RenderOptions.BitmapScalingMode="NearestNeighbor"
+                   AutomationProperties.Name="{Binding Pad_Tab_Preview, Source={x:Static strings:Strings.Instance}}">
+                <Image.Clip>
+                    <RectangleGeometry Rect="0,0,320,160" RadiusX="5" RadiusY="5"/>
+                </Image.Clip>
+            </Image>
+        </Border>
+
+        <StackPanel Grid.Column="2" MinWidth="300">
+            <controls:SettingRow MinHeight="44">
+                <TextBlock MinWidth="50" Margin="0,0,10,0" VerticalAlignment="Center"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                           Text="{Binding DreamcastScreen_Mode_Label, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBox x:Name="SourceBox" Style="{StaticResource DialogSelect}" controls:SettingRow.Fills="True"
+                          SelectionChanged="SourceBox_SelectionChanged"
+                          AutomationProperties.Name="{Binding DreamcastScreen_Mode_Label, Source={x:Static strings:Strings.Instance}}"/>
+            </controls:SettingRow>
+            <TextBlock x:Name="HintText" Style="{StaticResource DialogNote}" Margin="0,4,0,8"/>
+
+            <controls:SettingRow x:Name="FitRow" MinHeight="44">
+                <TextBlock MinWidth="50" Margin="0,0,10,0" VerticalAlignment="Center"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                           Text="{Binding FlydigiScreen_Fit_Label, Source={x:Static strings:Strings.Instance}}"/>
+                <ComboBox x:Name="FitBox" Style="{StaticResource DialogSelect}" controls:SettingRow.Fills="True"
+                          SelectionChanged="FitBox_SelectionChanged"
+                          AutomationProperties.Name="{Binding FlydigiScreen_Fit_Label, Source={x:Static strings:Strings.Instance}}"/>
+            </controls:SettingRow>
+
+            <Button x:Name="ChoosePictureButton" Style="{StaticResource DialogButton}" HorizontalAlignment="Left"
+                    Margin="0,4,0,4" Click="ChoosePicture_Click"
+                    Content="{Binding DreamcastScreen_ChoosePicture, Source={x:Static strings:Strings.Instance}}"/>
+            <!-- The active profile's own picture, the one its keyboard
+                 screens show. Its button names the profile, in words the
+                 code sets. -->
+            <StackPanel x:Name="ProfilePicturePanel" Visibility="Collapsed">
+                <Button x:Name="ChooseProfilePictureButton" Style="{StaticResource DialogButton}" HorizontalAlignment="Left"
+                        MaxWidth="300" Margin="0,4,0,4" Click="ChooseProfilePicture_Click"/>
+                <Button x:Name="RemoveProfilePictureButton" Style="{StaticResource DialogButton}" HorizontalAlignment="Left"
+                        Margin="0,4,0,4" Click="RemoveProfilePicture_Click"
+                        Content="{Binding DreamcastScreen_RemoveProfilePicture, Source={x:Static strings:Strings.Instance}}"/>
+            </StackPanel>
+
+            <TextBlock x:Name="SizeText" Style="{StaticResource DialogNote}" Margin="0,8,0,0"/>
+            <TextBlock x:Name="NoteText" Style="{StaticResource DialogNote}" Margin="0,4,0,0"/>
+            <ProgressBar x:Name="SendProgress" Height="4" Margin="0,12,0,0" Minimum="0" Maximum="1" Visibility="Collapsed"
+                         AutomationProperties.Name="{Binding FlydigiScreen_Send, Source={x:Static strings:Strings.Instance}}"/>
+            <TextBlock x:Name="StatusText" Style="{StaticResource DialogNote}" Margin="0,6,0,0" common:LiveText.Polite="True"
+                       TextWrapping="Wrap"/>
+        </StackPanel>
+    </Grid>
+</views:DialogWindow>

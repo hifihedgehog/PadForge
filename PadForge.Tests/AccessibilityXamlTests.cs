@@ -68,6 +68,8 @@ namespace PadForge.Tests
                 "The dialog sets the button's text in code (ActionButton.Content = actionText)."),
             ("PadForge.App/Views/DreamcastScreenDialog.xaml", XamlA11yAudit.BtnNoTooltip, "Button|ChooseProfilePictureButton",
                 "The dialog gives the button a TextBlock of text in code."),
+            ("PadForge.App/Views/FlydigiScreenDialog.xaml", XamlA11yAudit.BtnNoTooltip, "Button|ChooseProfilePictureButton",
+                "The dialog gives the button a TextBlock of text in code."),
             ("PadForge.App/Views/KeyboardScreenDialog.xaml", XamlA11yAudit.BtnNoTooltip, "Button|ChooseProfilePictureButton",
                 "The dialog gives the button a TextBlock of text in code."),
             ("PadForge.App/Views/IconPicker.xaml", XamlA11yAudit.BtnNoTooltip, "Button|ClearButton",

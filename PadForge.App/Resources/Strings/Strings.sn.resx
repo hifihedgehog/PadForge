@@ -1480,4 +1480,14 @@
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Ma-layer eShift</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Yakapidigurwa</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Zvakajairwa zve-bs2b</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Hapana chinosvika pacontroller kusvikira watumira.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Zita repurofaira iri kushanda sezvarinenge rakaita paunotumira. Controller inorichengeta kunyangwe purofaira ikachinjwa.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Kukwana</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Zadza sikirini</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Ratidza mufananidzo wose</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Tambanudza kusvika pasikirini</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

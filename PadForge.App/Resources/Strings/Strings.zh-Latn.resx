@@ -938,6 +938,8 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Shèzhì cǐ duānkǒu de wánjiā biānhào, 1 dào 4. Shìpèiqì huì bǎocún biānhào, bìng yǐ gāi wánjiā shēnfèn chóngxīn liánjiē.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast píngmù…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Shèzhì Dreamcast shǒubǐng de VMU xiǎnshì de nèiróng: shìpèiqì zìjǐ de túpiàn, dāngqián pèizhì wénjiàn de míngchēng, biānhào huò túpiàn, shízhōng, yóuxì shíjiān, huò nǐ xuǎnzé de túpiàn.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Kòngzhìqì píngmù…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Xiàng kòngzhìqì de píngmù fāsòng túpiàn: nǐ xuǎnzé de túpiàn huò GIF, huò dāngqián pèizhì wénjiàn de túpiàn, míngchēng huò biānhào. Kòngzhìqì huì yìzhí bǎoliú, zhídào xià yí cì fāsòng.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Bèifèn kòngzhìqì jìyìkǎ…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Bǎ cǐ N64 kòngzhìqì zhōng de kòngzhìqì jìyìkǎ bǎocún wéi 32 KB de .mpk wénjiàn, jí N64 mónǐqì dúqǔ de géshì.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Huīfù kòngzhìqì jìyìkǎ…</value></data>
@@ -971,6 +973,45 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Yǐchú pèizhì wénjiàn túpiàn</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Túpiàn (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Suǒyǒu wénjiàn (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Gāi wénjiàn zhōng méiyǒu PadForge néng dúqǔ de túpiàn.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Kòngzhìqì píngmù</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Fāsòng zhīqián, rènhé nèiróng dōu bú huì dàodá kòngzhìqì.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Nǐ xuǎnzé de túpiàn huò GIF, shìpèi wéi píngmù de 160 × 80 xiàngsù. Kòngzhìqì huì yìzhí bǎoliú, zhídào nǐ fāsòng lìng yì zhāng.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Fāsòng shí dāngqián pèizhì wénjiàn de túpiàn, méiyǒu túpiàn shí wéi qí míngchēng. Qiēhuàn pèizhì wénjiàn shí, kòngzhìqì réng bǎoliú tā.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Fāsòng shí dāngqián pèizhì wénjiàn de míngchēng. Qiēhuàn pèizhì wénjiàn shí, kòngzhìqì réng bǎoliú tā.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Fāsòng shí dāngqián pèizhì wénjiàn zài pèizhì wénjiàn lièbiǎo zhōng de wèizhì. Mòrèn pèizhì wénjiàn shì 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Shìpèi</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Chōngmǎn píngmù</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Xiǎnshì zhěng zhāng túpiàn</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Lāshēn zhì píngmù</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Túpiàn (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Suǒyǒu wénjiàn (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Fāsòng</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Zhēnshù: {0}. Fāsòng dàyuē xūyào {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kòngzhìqì zuìduō jiēshòu {0} zhēn, yīncǐ zuìhòu {1} zhēn wèi fāsòng.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Qǐng yòng xiànlǎn liánjiē kòngzhìqì. Túpiàn xiěrù hòu dàyuē 15 miǎo, kòngzhìqì huì zìxíng chóngqǐ.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Qǐng yòng xiànlǎn liánjiē kòngzhìqì. Fāsòng shí, PadForge huì jiāng qí qiēhuàn dào Xbox móshì, bìng cóng Windows de Xbox qūdòng chéngxù gǎi wéi WinUSB, wánchéng hòu zài quánbù huīfù.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge jiāng bǎ kòngzhìqì qiēhuàn dào Xbox móshì, fāsòng shí gǎi yòng WinUSB, ránhòu jiāng qí jiāo huán gěi Windows de Xbox qūdòng chéngxù, bìng qiēhuàn huí DInput móshì. Qǐng xiān bá chū qítā suǒyǒu Xbox 360 kòngzhìqì. Xiànzài fāsòng ma?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Zhèngzài kāishǐ…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Zhèngzài qiēhuàn kòngzhìqì…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Zhèngzài děngdài píngmù de duānkǒu…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Zhèngzài jiāng kòngzhìqì gǎi wéi WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Zhèngzài wèi túpiàn téngchū kōngjiān… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Zhèngzài fāsòng túpiàn… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Zhèngzài wánchéng…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Zhèngzài jiāng kòngzhìqì jiāo huán gěi Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Yǐ fāsòng. Kòngzhìqì chóngqǐ hòu huì xiǎnshì gāi túpiàn.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Yǐ fāsòng. Kòngzhìqì xiànzài xiǎnshì gāi túpiàn.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Qǐng yòng xiànlǎn liánjiē kòngzhìqì. Qí píngmù zhǐ néng tōngguò USB jiēshōu túpiàn.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Píngmù de duānkǒu wèi chūxiàn. Qǐng yòng kòngzhìqì zìshēn de kāiguān jiāng qí guānbì zài dǎkāi, yòng xiànlǎn liánjiē, ránhòu chóngxīn fāsòng.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Yǒu duō gè kòngzhìqì píngmù zhèngzài děngdài túpiàn. Qǐng bá chū qítā kòngzhìqì, ránhòu chóngxīn fāsòng.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Wúfǎ dǎkāi píngmù de duānkǒu. Qǐng guānbì Flydigi Space Station, ránhòu chóngxīn fāsòng.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Píngmù tíngzhǐ le yìngdá. Qǐng yòng kòngzhìqì zìshēn de kāiguān jiāng qí guānbì zài dǎkāi, ránhòu chóngxīn fāsòng.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Píngmù jùjué le gāi túpiàn. Qǐng chóngxīn fāsòng.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Kòngzhìqì wèi yǐ Xbox 360 kòngzhìqì de shēnfèn chóngxīn chūxiàn, yīncǐ wèi fāsòng rènhé nèiróng. Qǐng yòng qí zìshēn de kāiguān qiēhuàn huí DInput móshì, ránhòu chóngxīn fāsòng.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Qǐng bá chū qítā suǒyǒu Xbox 360 kòngzhìqì, ránhòu chóngxīn fāsòng. Gēnggǎi qūdòng chéngxù yě huì yǐngxiǎng tāmen. Liú zài Xbox móshì de kòngzhìqì kě yòng qí zìshēn de kāiguān qiēhuàn huí DInput móshì.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Chǔyú Xbox móshì de kòngzhìqì wèi yǐ Apex 4 de shēnfèn yìngdá, yīncǐ wèi fāsòng rènhé nèiróng, Windows yǐ chóngxīn jiēguǎn gāi kòngzhìqì. Qǐng yòng qí zìshēn de kāiguān qiēhuàn huí DInput móshì.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows wèi néng jiāng kòngzhìqì gǎi wéi WinUSB, yīncǐ wèi fāsòng rènhé nèiróng. Qǐng yòng qí zìshēn de kāiguān qiēhuàn huí DInput móshì.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Yǐ tíngzhǐ. Chóngxīn fāsòng zhīqián, qǐng yòng kòngzhìqì zìshēn de kāiguān jiāng qí guānbì zài dǎkāi.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Túpiàn réng zài fāsòng dào kòngzhìqì. Yào tíngzhǐ fāsòng ma?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Kòngzhìqì jìyìkǎ wénjiàn (*.mpk)|*.mpk|Suǒyǒu wénjiàn (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Kòngzhìqì jìyìkǎ duānkǒu {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Huīfù kòngzhìqì jìyìkǎ</value></data>
@@ -1137,6 +1178,7 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Chōngjī bānjī</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gè bānjī zēngyì, jiāohuàn mǎdá, zìshìyìng bānjī zhèndòng, Bānjī chíxù lì</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Bǎ měi gè bānjī de mǎdá zhǐlìng (Xbox Impulse Triggers) cóng xūnǐ kòngzhìqì zhuǎnfā dào suǒ fēnpèi de wùlǐ Xbox One, Elite huò Series kòngzhìqì. Yóuxì chǎnshēng de bānjī zhèndòng zìdòng tōngguò. Xiàfāng kòngjiàn kě fēnbié tiáojié měi gè bānjī de qiángdù.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Bǎ měi gè bānjī de mǎdá zhǐlìng (Xbox Impulse Triggers) cóng xūnǐ kòngzhìqì zhuǎnwéi cǐ kòngzhìqì bānjī zhōng de zhèndòng. Yóuxì chǎnshēng de bānjī zhèndòng zìdòng tōngguò. Xiàfāng kòngjiàn kě fēnbié tiáojié měi gè bānjī de qiángdù.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Zuǒ bānjī</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Yòu bānjī</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Jiāohuàn zuǒ yòu bānjī mǎdá</value></data>
@@ -1201,6 +1243,8 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Zìshìyìng bānjī</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Pèizhì suǒ fēnpèi de wùlǐ DualSense shàng de bānjī xiàoguǒ. Lái zì yóuxì huò yóuxì mózǔ de bānjī xiàoguǒ huì zìdòng zhuǎnfā. Cǐ chù de shèzhì huì diéjiā yí gè yònghù zìdìngyì céng, zài èrzhě dōu méiyǒu xiěrù shí yùnxíng.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Pèizhì cǐ kòngzhìqì lìfǎnkuì bānjī shàng de bānjī xiàoguǒ. Lái zì xūnǐ DualSense shàng de yóuxì huò yóuxì mózǔ de bānjī xiàoguǒ huì zìdòng bōfàng. Cǐ chù de shèzhì huì diéjiā yí gè yònghù zìdìngyì céng, zài èrzhě dōu méiyǒu xiěrù shí yùnxíng.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Pèizhì cǐ kòngzhìqì shàng de bānjī xiàoguǒ. Qí bānjī zhǐ zhèndòng ér bù tígōng zǔlì, yīncǐ měi zhǒng xiàoguǒ dōu yǐ zhèndòng bōfàng, bìng gēnsuí xiàoguǒ běnshēn: bānjī duàn kāi shí shì yí zhèn chōngjī, gōng zé shì xùlì yǔ shìfàng. Lái zì xūnǐ DualSense shàng de yóuxì huò yóuxì mózǔ de bānjī xiàoguǒ huì zìdòng bōfàng. Cǐ chù de shèzhì huì diéjiā yí gè yònghù zìdìngyì céng, zài èrzhě dōu méiyǒu xiěrù shí yùnxíng.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Yáogǎn</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Měi gēn yáogǎn de sǐqū, fǎn sǐqū, língmǐndù qūxiàn hé zhōngxīn piānyí jiàozhǔn. Xiàfāng měi gè fēnqū zhēnduì dāngqián shūchū de yì gēn mónǐ yáogǎn. Kuòzhǎn pèizhì wénjiàn zuì duō kěyǒu sì gēn yáogǎn. Biāozhǔn shǒubǐng yǒu liǎng gēn.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Bānjī</value></data>
@@ -3240,7 +3284,7 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Àn bādù xiàzhé</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Yīndiào shàngxiàn</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Zài cǐ kòngzhìqì shàng bōfàng DualSense chùgǎn fǎnkuì</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Dāng yóuxì jiāng cǐ cáowèi zuòwéi xūnǐ DualSense qūdòng bìng shūchū chuàngzuò de chùgǎn yīnpín shí, gāi yīnguǐ jiāng zài cǐ kòngzhìqì de zhíxíngqì shàng bōfàng. Tōngguò USB huò pèitào jiēshōuqì liánjiē de Steam Controller 2026 huì zhíjiē bōfàng gāi yīnguǐ. Qítā kòngzhìqì, yǐjí tōngguò lányá liánjiē de gāi kòngzhìqì, jiāng bōfàng yóu yīnpín tuīdǎo chū de yīndiào, zhè zhǐshì duì shèjìshī shǒugǎn de jìnsì, ér bú shì huányuán.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Dāng yóuxì jiāng cǐ cáowèi zuòwéi xūnǐ DualSense qūdòng bìng shūchū chuàngzuò de chùgǎn yīnpín shí, gāi yīnguǐ jiāng zài cǐ kòngzhìqì de zhíxíngqì shàng bōfàng. Tōngguò USB huò pèitào jiēshōuqì liánjiē de Steam Controller 2026 yǐjí Flydigi Apex 6 Pro huì zhíjiē bōfàng gāi yīnguǐ. Qítā kòngzhìqì, yǐjí tōngguò lányá liánjiē de gāi Steam Controller, jiāng bōfàng yóu yīnpín tuīdǎo chū de yīndiào, zhè zhǐshì duì shèjìshī shǒugǎn de jìnsì, ér bú shì huányuán.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Chùgǎn zēngyì</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Chóngzhì wéi mòrèn (guānbì)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Chóngzhì wéi mòrèn (100%)</value></data>
@@ -3431,6 +3475,14 @@ Zhī qián bǎnběn de fùběn wèiyú cǐ wénjiànjiā: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) chùgǎn bàogào bùjú hé yīnfú zhōuqī jìsuàn, yóu Pila hé Roboron3042 tígōng.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 yǔ Steam Deck de LFO yīndiào chùgǎn bùjú, yóu Pila, Crazy hé AAGaming tígōng.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex de bānjī xiàoguǒ zhuǎnhuàn yǔ xiěrù jiézòu, Apex 6 Pro de bānjī xuànrǎn, chùgǎn shùjùliú yǔ dēngguāng shùjùkuài, yǐjí Apex 5 de dēngguāng xiěrù, yóu ReynArts tígōng.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5 yǔ Apex 6 de xiéyì shuōmíng, dēngguāng shùjùkuài chuánshū yǐjí píngmù de chuànkǒu shàngchuán, yóu Mikalai Kaliaha tígōng.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4 de dēngguāng shùjùkuài, pèizhì cáowèi yǐjí Xbox móshì xià de píngmù shàngchuán, yóu Uilton Lopes jí gòngxiànzhě tígōng.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4 de lìfǎnkuì bānjī zhǐlìng yǐjí zài shǒubǐng shàng cèdé de jiézòu, yóu Jackwmtr tígōng.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap móshì de SOCD qīnglǐ yǔyì, yóu valignatev tígōng.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4659,6 +4711,7 @@ Yào ràng PadForge xiànzài xièzài tāmen ma? Cǐ cāozuò xūyào tíshēng
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Píngyí Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Xuǎnzé tā xiǎnshì de nèiróng. Bǎocún zhīqián bú huì yǒu rènhé gǎibiàn.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} yǐ shèwéi {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Túpiàn yǐ fāsòng dào kòngzhìqì de píngmù.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Zhèngzài xiàzài Mad Catz de S.T.R.I.K.E. 7 SDK…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 xiànzài jiāzài {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Zhèngzài xiàzài bìng ānzhuāng Microsoft Visual C++ 2008 yùnxíngshí…</value></data>

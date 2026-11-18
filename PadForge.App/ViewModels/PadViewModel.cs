@@ -1808,6 +1808,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SelectedDeviceHasOutputPath));
                     OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
                     OnPropertyChanged(nameof(SelectedDeviceIsTritonPcm));
+                    OnPropertyChanged(nameof(SelectedDeviceHasToneFilter));
                     OnPropertyChanged(nameof(SelectedDeviceHasTouchpadPulse));
                     // The EQ bands are per device and live on DeviceConfig as
                     // one encoded attribute, so the grid rows are rebuilt on
@@ -1887,6 +1888,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(SelectedDeviceHasOutputPath));
             OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
             OnPropertyChanged(nameof(SelectedDeviceIsTritonPcm));
+            OnPropertyChanged(nameof(SelectedDeviceHasToneFilter));
             OnPropertyChanged(nameof(SelectedDeviceHasTouchpadPulse));
             RefreshEqBands();
             if (IsTabShown(AudioTabIndex)) RefreshMirrorSources();
@@ -6593,6 +6595,23 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>True when the SELECTED assigned device reduces what it
+        /// plays to one pitch a tick, which is what the high-tone filter
+        /// acts on. A Flydigi Apex 6 Pro plays the mix as samples (#586),
+        /// so the filter has nothing to act on there and is not
+        /// shown.</summary>
+        public bool SelectedDeviceHasToneFilter
+        {
+            get
+            {
+                var sel = SelectedMappedDevice;
+                if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
+                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
+                return ud != null && PadForge.Common.Input.HapticToneService.DeviceHasHaptics(ud)
+                    && !PadForge.Common.Input.Flydigi.FlydigiApexService.HasVoiceCoils(ud);
+            }
+        }
+
         /// <summary>True when the SELECTED assigned device is a Steam
         /// Controller 2026 on a PCM-capable transport (wired 0x1302 or a
         /// dongle 0x1304/0x1305), the set the #381 native PCM stream
@@ -8458,6 +8477,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(SelectedDeviceHasOutputPath));
             OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
             OnPropertyChanged(nameof(SelectedDeviceIsTritonPcm));
+            OnPropertyChanged(nameof(SelectedDeviceHasToneFilter));
             OnPropertyChanged(nameof(MirrorEngageSelectedInput));
             RefreshMirrorSources();
         }

@@ -362,7 +362,11 @@ namespace PadForge.Common.Input.Peripherals
         private static DirectUnit RefusedUnit(UserDevice ud)
         {
             var row = new LinkRow(ud.InstanceGuid, ud.CapType, ud.VendorId, ud.ProdId,
-                PeripheralOutputs.Links.ContainerOf(ud.InstanceGuid), null);
+                PeripheralOutputs.Links.ContainerOf(ud.InstanceGuid), null)
+            {
+                LitPad = !PeripheralLinker.IsLinkable(ud.CapType)
+                    && Flydigi.FlydigiApexService.IsCandidate(ud.VendorId, ud.ProdId),
+            };
             foreach (var unit in PeripheralOutputs.Direct.Units)
             {
                 if (!unit.Refused && !unit.WindowsHolds && !unit.HeldByProgram) continue;

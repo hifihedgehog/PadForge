@@ -952,6 +952,8 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Iestata šī porta spēlētāja numuru no 1 līdz 4. Adapteris to saglabā un atkārtoti savienojas kā šis spēlētājs.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast ekrāns…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Iestata, ko rāda Dreamcast spēļu pults VMU: paša adaptera attēlu, aktīvā profila nosaukumu, numuru vai attēlu, pulksteni, spēles laiku vai jūsu izvēlētu attēlu.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Kontrollera ekrāns…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Nosūta attēlu uz kontrollera ekrānu: jūsu izvēlētu attēlu vai GIF, vai aktīvā profila attēlu, nosaukumu vai numuru. Kontrolleris to saglabā līdz nākamajam.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Dublēt Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Saglabā šī N64 kontrollera Controller Pak 32 KB .mpk failā, kura formātu lasa N64 emulatori.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Atjaunot Controller Pak…</value></data>
@@ -985,6 +987,45 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Noņemt profila attēlu</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Attēli (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Visi faili (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Šajā failā nav attēla, ko PadForge varētu nolasīt.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Kontrollera ekrāns</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Nekas nenonāk kontrollerī, kamēr nenosūtāt.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Jūsu izvēlēts attēls vai GIF, pielāgots ekrāna 160 × 80 pikseļiem. Kontrolleris to saglabā, līdz nosūtāt citu.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Aktīvā profila attēls vai tā nosaukums, ja attēla nav, tādi, kādi tie ir nosūtīšanas brīdī. Kontrolleris tos saglabā arī pēc profila pārslēgšanas.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Aktīvā profila nosaukums, kāds tas ir nosūtīšanas brīdī. Kontrolleris to saglabā arī pēc profila pārslēgšanas.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Aktīvā profila vieta profilu sarakstā, kāda tā ir nosūtīšanas brīdī. Profils „Noklusējums” ir 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Pielāgot</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Aizpildīt ekrānu</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Rādīt visu attēlu</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Izstiept līdz ekrānam</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Attēli (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Visi faili (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Nosūtīt</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Kadri: {0}. Nosūtīšana aizņem apmēram {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontrolleris pieņem ne vairāk kā {0} kadrus, tāpēc pēdējie {1} tika izlaisti.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Pievienojiet kontrolleri ar kabeli. Apmēram 15 sekundes pēc attēla ierakstīšanas tas pats restartējas.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Pievienojiet kontrolleri ar kabeli. Nosūtīšanai PadForge pārslēdz to Xbox režīmā un pārvieto no Windows Xbox draivera uz WinUSB, pēc tam atjauno abus.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge pārslēgs kontrolleri Xbox režīmā, nosūtīšanai pārvietos to uz WinUSB, pēc tam atdos Windows Xbox draiverim un pārslēgs atpakaļ DInput režīmā. Vispirms atvienojiet visus citus Xbox 360 kontrollerus. Vai nosūtīt tagad?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Sākšana…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Kontrollera pārslēgšana…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Gaida ekrāna portu…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Kontrollera pārvietošana uz WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Vietas atbrīvošana attēlam… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Attēla nosūtīšana… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Pabeigšana…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Kontrollera atdošana Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Nosūtīts. Kontrolleris parādīs attēlu pēc restartēšanās.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Nosūtīts. Kontrolleris rāda attēlu.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Pievienojiet kontrolleri ar kabeli. Tā ekrāns pieņem attēlu tikai pa USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Ekrāna ports neparādījās. Izslēdziet un ieslēdziet kontrolleri ar tā paša slēdzi, pievienojiet to ar kabeli un nosūtiet vēlreiz.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Attēlu gaida vairāk nekā viens kontrollera ekrāns. Atvienojiet pārējos un nosūtiet vēlreiz.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Ekrāna ports neatvērās. Aizveriet Flydigi Space Station un nosūtiet vēlreiz.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Ekrāns pārstāja atbildēt. Izslēdziet un ieslēdziet kontrolleri ar tā paša slēdzi un nosūtiet vēlreiz.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Ekrāns noraidīja attēlu. Nosūtiet vēlreiz.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Kontrolleris neatgriezās kā Xbox 360 kontrolleris, tāpēc nekas netika nosūtīts. Pārslēdziet to atpakaļ DInput režīmā ar tā paša slēdzi un nosūtiet vēlreiz.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Atvienojiet visus citus Xbox 360 kontrollerus un nosūtiet vēlreiz. Draivera maiņa pārvietotu arī tos. Kontrolleri, kas palicis Xbox režīmā, atpakaļ DInput režīmā pārslēdz ar tā paša slēdzi.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox režīmā esošais kontrolleris neatbildēja kā Apex 4, tāpēc nekas netika nosūtīts un Windows to ir saņēmis atpakaļ. Pārslēdziet to atpakaļ DInput režīmā ar tā paša slēdzi.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows nepārvietoja kontrolleri uz WinUSB, tāpēc nekas netika nosūtīts. Pārslēdziet to atpakaļ DInput režīmā ar tā paša slēdzi.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Apturēts. Pirms nosūtāt vēlreiz, izslēdziet un ieslēdziet kontrolleri ar tā paša slēdzi.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Attēls vēl tiek sūtīts uz kontrolleri. Vai apturēt nosūtīšanu?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak faili (*.mpk)|*.mpk|Visi faili (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak ports {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Atjaunot Controller Pak</value></data>
@@ -1218,6 +1259,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulsa mēlītes</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Mēlīšu pastiprinājums, motoru maiņa, adaptīvo mēlīšu vibrācijas, pastāvīgs mēlīšu spēks</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Pārsūta katras mēlītes motora komandas (Xbox Impulse Triggers) no virtuālā kontrollera uz piešķirto fizisko Xbox One, Elite vai Series kontrolleri. Spēles radītā mēlīšu vibrācija tiek pārsūtīta automātiski. Tālāk esošās vadīklas mērogo stiprumu katrai mēlītei atsevišķi.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Atskaņo katras mēlītes motora komandas (Xbox Impulse Triggers) no virtuālā kontrollera kā vibrāciju šī kontrollera mēlītēs. Spēles radītā mēlīšu vibrācija tiek pārsūtīta automātiski. Tālāk esošās vadīklas mērogo stiprumu katrai mēlītei atsevišķi.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Kreisā mēlīte</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Labā mēlīte</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Samainīt kreisās un labās mēlītes motorus</value></data>
@@ -1282,6 +1324,8 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptīvās mēlītes</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfigurējiet mēlīšu atgriezeniskās saites efektus piešķirtajam fiziskajam DualSense. Spēles vai spēles modifikācijas radītie mēlīšu efekti tiek pārsūtīti automātiski. Šeit esošie iestatījumi pievieno lietotāja konfigurētu slāni, kas darbojas, kad neviens no tiem neraksta efektus.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Konfigurējiet mēlīšu atgriezeniskās saites efektus šī kontrollera spēka mēlītēm. Spēles virtuālajā DualSense vai spēles modifikācijas radītie mēlīšu efekti tiek atskaņoti automātiski. Šeit esošie iestatījumi pievieno lietotāja konfigurētu slāni, kas darbojas, kad neviens no tiem neraksta efektus.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Konfigurējiet mēlīšu atgriezeniskās saites efektus šim kontrollerim. Tā mēlītes vibrē un nepretojas, tāpēc katrs efekts tiek atskaņots kā vibrācija, kas seko efekta būtībai: pēkšņs impulss, kur mēlīte atslēdzas, un pieaugums ar atlaišanu loka šāvienam. Spēles virtuālajā DualSense vai spēles modifikācijas radītie mēlīšu efekti tiek atskaņoti automātiski. Šeit esošie iestatījumi pievieno lietotāja konfigurētu slāni, kas darbojas, kad neviens no tiem neraksta efektus.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Sviras</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Katras sviras nejutības zonas, nejutības zonas kompensācija, jutības līknes un centra nobīdes kalibrēšana. Katra tālāk esošā sadaļa attiecas uz vienu aktīvās izvades analogo sviru. Paplašinātajos profilos var būt līdz četrām svirām. Standarta spēļu pultīm ir divas.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Mēlītes</value></data>
@@ -3457,7 +3501,7 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Pazemināt par oktāvu</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Toņu robeža</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Atskaņot DualSense haptiku šajā kontrollerī</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kad spēle vada šo slotu kā virtuālu DualSense ar izveidotu haptisko audio, šis celiņš tiek atskaņots šī kontrollera izpildmehānismos. Steam Controller 2026, kas pievienots ar USB vai savu uztvērēju, atskaņo pašu celiņu. Visi citi kontrolleri, kā arī šis, ja pievienots ar Bluetooth, saņem no audio iegūtus toņus, kas tikai aptuveni atveido dizainera iecerēto sajūtu.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kad spēle vada šo slotu kā virtuālu DualSense ar izveidotu haptisko audio, šis celiņš tiek atskaņots šī kontrollera izpildmehānismos. Steam Controller 2026, kas pievienots ar USB vai savu uztvērēju, un Flydigi Apex 6 Pro atskaņo pašu celiņu. Visi citi kontrolleri, kā arī šis Steam Controller, ja pievienots ar Bluetooth, saņem no audio iegūtus toņus, kas tikai aptuveni atveido dizainera iecerēto sajūtu.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptikas pastiprinājums</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Atiestatīt uz noklusējumu (izslēgts)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Atiestatīt uz noklusējumu (100%)</value></data>
@@ -3652,6 +3696,14 @@ Iepriekšējās versijas kopija atrodas šajā mapē: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) haptisko ziņojumu izkārtojums un nošu perioda matemātika, autori Pila un Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 un Steam Deck LFO toņu haptiskais izkārtojums, autori Pila, Crazy un AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex mēlīšu efektu pārveide un rakstīšanas ritms, Apex 6 Pro mēlīšu attēlošana, haptiskā plūsma un apgaismojuma bloks, kā arī Apex 5 apgaismojuma rakstīšana, autors ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5 un Apex 6 protokola piezīmes, apgaismojuma bloka pārsūtīšana un ekrāna augšupielāde pa seriālo portu, autors Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4 apgaismojuma bloks, profila vieta un ekrāna augšupielāde Xbox režīmā, autori Uilton Lopes un līdzautori.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4 spēka mēlīšu komandas un uz pults izmērītais ritms, autors Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD apstrādes semantika Snap Tap režīmiem, autors valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Pārvietot Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Izvēlieties, ko tas rāda. Nekas nemainās, kamēr nesaglabājat.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} iestatīts: {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Attēls nonāca kontrollera ekrānā.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Notiek Mad Catz S.T.R.I.K.E. 7 SDK lejupielāde…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 tagad ielādē {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Notiek Microsoft Visual C++ 2008 izpildlaika lejupielāde un instalēšana…</value></data>

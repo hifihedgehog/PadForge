@@ -1187,4 +1187,14 @@
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Di-layer tsa shift</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>E kgelositswe</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Ya kamehla ya bs2b</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Ha ho letho le fihlang taolong ho fihlela o romela.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Lebitso la profaele e sebetsang kamoo le leng kateng ha o romela. Taolo e le boloka le ha profaele e fetoha.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Lekanya</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Tlatsa skrine</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Bontsha setshwantsho sohle</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Holisa ho lekana skrine</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

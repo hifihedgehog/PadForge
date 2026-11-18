@@ -952,6 +952,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Задае нумар гульца для гэтага порта, ад 1 да 4. Адаптар захоўвае яго і перападключаецца як гэты гулец.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Экран Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Задае, што паказвае VMU геймпада Dreamcast: уласную выяву адаптара, назву, нумар або выяву актыўнага профілю, гадзіннік, час гульні або выбраную вамі выяву.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Экран кантролера…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Адпраўляе выяву на экран кантролера: выбраную вамі выяву або GIF, а таксама выяву, назву ці нумар актыўнага профілю. Кантролер захоўвае яе да наступнай.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Рэзервовая копія Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Захоўвае Controller Pak з гэтага кантролера N64 у файл .mpk памерам 32 КБ. Гэты фармат чытаюць эмулятары N64.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Аднавіць Controller Pak…</value></data>
@@ -985,6 +987,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Прыбраць выяву профілю</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Выявы (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Усе файлы (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>У гэтым файле няма выявы, якую PadForge можа прачытаць.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Экран кантролера</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Нічога не трапляе на кантролер, пакуль вы не адправіце.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Выбраная вамі выява або GIF, падагнаная пад 160 на 80 пікселяў экрана. Кантролер захоўвае яе, пакуль вы не адправіце іншую.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Уласная выява актыўнага профілю або яго назва, калі выявы няма, у тым выглядзе, у якім яна ёсць у момант адпраўкі. Кантролер захоўвае яе пры змене профілю.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Назва актыўнага профілю ў тым выглядзе, у якім яна ёсць у момант адпраўкі. Кантролер захоўвае яе пры змене профілю.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Месца актыўнага профілю ў спісе профіляў у момант адпраўкі. Профіль «Па змаўчанні» мае нумар 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Падгонка</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Запоўніць экран</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Паказаць выяву цалкам</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Расцягнуць на экран</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Выявы (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Усе файлы (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Адправіць</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Кадры: {0}. Адпраўка зойме каля {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Найбольшая колькасць кадраў, якую прымае кантролер: {0}. Апошніх кадраў прапушчана: {1}.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Падключыце кантролер кабелем. Праз каля 15 секунд пасля запісу выявы ён перазапускаецца сам.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Падключыце кантролер кабелем. Для адпраўкі PadForge пераключае яго ў рэжым Xbox і пераносіць з драйвера Xbox у Windows на WinUSB, а потым вяртае ўсё назад.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge пераключыць кантролер у рэжым Xbox, перанясе яго на WinUSB для адпраўкі, потым верне драйверу Xbox у Windows і пераключыць назад у рэжым DInput. Спачатку адключыце ўсе іншыя кантролеры Xbox 360. Адправіць зараз?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Пачатак…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Пераключэнне кантролера…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Чаканне порта экрана…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Перанос кантролера на WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Вызваленне месца для выявы… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Адпраўка выявы… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Завяршэнне…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Вяртанне кантролера Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Адпраўлена. Кантролер пакажа выяву пасля перазапуску.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Адпраўлена. Кантролер паказвае выяву.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Падключыце кантролер кабелем. Яго экран прымае выяву толькі праз USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Порт экрана не з’явіўся. Выключыце і ўключыце кантролер яго ўласным пераключальнікам, падключыце кабелем і адпраўце яшчэ раз.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Выяву чакае экран больш чым аднаго кантролера. Адключыце астатнія і адпраўце яшчэ раз.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Порт экрана не адкрыўся. Закрыйце Flydigi Space Station і адпраўце яшчэ раз.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Экран перастаў адказваць. Выключыце і ўключыце кантролер яго ўласным пераключальнікам і адпраўце яшчэ раз.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Экран адхіліў выяву. Адпраўце яшчэ раз.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Кантролер не вярнуўся як кантролер Xbox 360, таму нічога не адпраўлена. Вярніце яго ў рэжым DInput ўласным пераключальнікам і адпраўце яшчэ раз.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Адключыце ўсе іншыя кантролеры Xbox 360 і адпраўце яшчэ раз. Змена драйвера закранула б і іх. Кантролер, які застаўся ў рэжыме Xbox, вяртаецца ў рэжым DInput ўласным пераключальнікам.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Кантролер у рэжыме Xbox не адказаў як Apex 4, таму нічога не адпраўлена, і Windows атрымала яго назад. Вярніце яго ў рэжым DInput ўласным пераключальнікам.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows не перанесла кантролер на WinUSB, таму нічога не адпраўлена. Вярніце яго ў рэжым DInput ўласным пераключальнікам.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Спынена. Перад новай адпраўкай выключыце і ўключыце кантролер яго ўласным пераключальнікам.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Выява яшчэ ідзе на кантролер. Спыніць адпраўку?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Файлы Controller Pak (*.mpk)|*.mpk|Усе файлы (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak порт {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Аднавіць Controller Pak</value></data>
@@ -1218,6 +1259,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Імпульсныя куркі</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Узмацненне куркоў, абмен матораў, вібрацыі адаптыўных куркоў, Пастаянная сіла куркоў</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Перадае каманды матораў асобных куркоў (Xbox Impulse Triggers) з віртуальнага кантролера на прызначаны фізічны кантролер Xbox One, Elite або Series. Вібрацыя куркоў, якой кіруе гульня, праходзіць аўтаматычна. Элементы кіравання ніжэй змяняюць сілу для кожнага курка асобна.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Прайграе каманды матораў асобных куркоў (Xbox Impulse Triggers) з віртуальнага кантролера як вібрацыю ў куроках гэтага кантролера. Вібрацыя куркоў, якой кіруе гульня, праходзіць аўтаматычна. Элементы кіравання ніжэй змяняюць сілу для кожнага курка асобна.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Левы курок</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Правы курок</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Памяняць месцамі маторы левага і правага куркоў</value></data>
@@ -1282,6 +1324,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Адаптыўныя куркі</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Наладжвайце эфекты зваротнай сувязі куркоў на прызначаным фізічным DualSense. Эфекты куркоў ад гульні або мода гульні перадаюцца аўтаматычна. Налады тут дадаюць карыстальніцкі слой, які працуе, калі ні адзін з іх нічога не запісвае.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Наладжвайце эфекты зваротнай сувязі куркоў на сілавых куроках гэтага кантролера. Эфекты куркоў ад гульні на віртуальным DualSense або ад мода гульні прайграюцца аўтаматычна. Налады тут дадаюць карыстальніцкі слой, які працуе, калі ні адзін з іх нічога не запісвае.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Наладжвайце эфекты зваротнай сувязі куркоў на гэтым кантролеры. Яго куркі вібруюць і не аказваюць супраціву, таму кожны эфект прайграецца як вібрацыя, якая адпавядае дзеянню эфекту: імпульс у момант зрыву курка, нарастанне і спуск для лука. Эфекты куркоў ад гульні на віртуальным DualSense або ад мода гульні прайграюцца аўтаматычна. Налады тут дадаюць карыстальніцкі слой, які працуе, калі ні адзін з іх нічога не запісвае.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Стыкі</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Мёртвыя зоны, антымёртвыя зоны, крывыя адчувальнасці і каліброўка зруху цэнтра для кожнага стыка. Кожны раздзел ніжэй адносіцца да аднаго аналагавага стыка на актыўным выхадзе. Пашыраныя профілі могуць мець да чатырох стыкаў. Стандартныя геймпады маюць два.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Куркі</value></data>
@@ -3457,7 +3501,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Зрушыць уніз на актаву</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Мяжа тону</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Прайграваць тактыльную аддачу DualSense на гэтым кантролеры</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Калі гульня кіруе гэтым слотам як віртуальным DualSense з падрыхтаваным тактыльным гукам, гэты трэк прайграецца на актуатарах гэтага кантролера. Steam Controller 2026 па USB або праз свой адаптар прайграе сам трэк. Усе іншыя кантролеры, а таксама гэты па Bluetooth, атрымліваюць тоны, вылічаныя з гуку, якія прыблізна перадаюць задуму распрацоўшчыка, а не ўзнаўляюць яе дакладна.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Калі гульня кіруе гэтым слотам як віртуальным DualSense з падрыхтаваным тактыльным гукам, гэты трэк прайграецца на актуатарах гэтага кантролера. Steam Controller 2026 па USB або праз свой адаптар, а таксама Flydigi Apex 6 Pro прайграюць сам трэк. Усе іншыя кантролеры, а таксама гэты Steam Controller па Bluetooth, атрымліваюць тоны, вылічаныя з гуку, якія прыблізна перадаюць задуму распрацоўшчыка, а не ўзнаўляюць яе дакладна.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Узмацненне тактыльнай аддачы</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Вярнуць значэнне па змаўчанні (выключана)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Вярнуць значэнне па змаўчанні (100%)</value></data>
@@ -3652,6 +3696,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Структура тактыльных справаздач Steam Controller (2015) і матэматыка перыядаў нот, аўтары Pila і Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Структура тактыльных LFO-тонаў Steam Controller 2026 і Steam Deck, аўтары Pila, Crazy і AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Пераклад эфектаў куркоў Flydigi Apex і тэмп запісу, апісанне куркоў Apex 6 Pro, струмень тактыльнай аддачы і блок падсветкі, а таксама запісы падсветкі Apex 5, аўтар ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Заметкі аб пратаколе Flydigi Apex 5 і Apex 6, перадача блока падсветкі і паслядоўная загрузка экрана, аўтар Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Блок падсветкі Flydigi Apex 4, слот профілю і загрузка экрана ў рэжыме Xbox, аўтары Uilton Lopes і ўдзельнікі праекта.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Каманды сілавых куркоў Flydigi Apex 4 і тэмп, вымераны на геймпадзе, аўтар Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Семантыка ачысткі SOCD для рэжымаў Snap Tap, аўтар valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Зрух Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Абярыце, што паказваць. Нічога не змяняецца, пакуль вы не захаваеце.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0}: {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Выява пайшла на экран кантролера.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Спампоўванне SDK Mad Catz для S.T.R.I.K.E. 7…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 цяпер загружае {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Спампоўванне і ўсталяванне асяроддзя выканання Microsoft Visual C++ 2008…</value></data>

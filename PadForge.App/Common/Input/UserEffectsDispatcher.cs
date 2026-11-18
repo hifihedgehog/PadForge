@@ -58,7 +58,7 @@ namespace PadForge.Common.Input
     /// computed in <c>InputService.SlotRumbleForDeviceProvider</c>.</para>
     /// <para>See memory: sony-rumble-sole-writer-architecture.md.</para>
     /// </summary>
-    internal sealed class UserEffectsDispatcher : IDisposable
+    internal sealed partial class UserEffectsDispatcher : IDisposable
     {
         private const ushort SonyVid = 0x054C;
         private const ushort PidStandard = 0x0CE6;  // DualSense
@@ -1522,6 +1522,7 @@ namespace PadForge.Common.Input
             byte rumbleVf2 = effectPayload[38];
             long now = Environment.TickCount64;
             string rumbleTransition = null;
+            bool triggerChanged = false;
 
             lock (s_externalStateLock)
             {
@@ -1582,6 +1583,8 @@ namespace PadForge.Common.Input
                 if ((vf0 & 0x04) != 0)
                 {
                     st.RightTrigTick = now;
+                    triggerChanged |= st.RightTrig == null
+                        || !effectPayload.Slice(10, 11).SequenceEqual(st.RightTrig);
                     st.RightTrig ??= new byte[11];
                     effectPayload.Slice(10, 11).CopyTo(st.RightTrig);
                 }
@@ -1590,6 +1593,8 @@ namespace PadForge.Common.Input
                 if ((vf0 & 0x08) != 0)
                 {
                     st.LeftTrigTick = now;
+                    triggerChanged |= st.LeftTrig == null
+                        || !effectPayload.Slice(21, 11).SequenceEqual(st.LeftTrig);
                     st.LeftTrig ??= new byte[11];
                     effectPayload.Slice(21, 11).CopyTo(st.LeftTrig);
                 }
@@ -1650,6 +1655,13 @@ namespace PadForge.Common.Input
             if (rumbleTransition != null)
                 LogRumbleTransition(padIndex, rumbleTransition, vf0, vf1, rumbleVf2,
                     effectPayload[2], effectPayload[3]);
+
+            // A Flydigi Apex pad on the slot plays the game's trigger effect
+            // through this dispatcher (#586), which no pass-through lane
+            // feeds, so a changed effect queues a pass, off this thread, the
+            // way a game mod's change does.
+            if (triggerChanged && SlotHasFlydigi(padIndex))
+                NotifyModEffectsChanged(padIndex);
         }
 
         private const int MirrorLogPerSecond = 200;
@@ -1684,11 +1696,20 @@ namespace PadForge.Common.Input
         /// backing arrays are rewritten in place under the lock on every
         /// external effect packet.</summary>
         public static bool TryGetInboundTriggerEffects(int padIndex, Span<byte> left, Span<byte> right)
+            => TryGetInboundTriggerEffects(padIndex, left, right, out _, out _);
+
+        /// <summary><see cref="TryGetInboundTriggerEffects(int, Span{byte}, Span{byte})"/>
+        /// with a flag per side: whether a game, a game mod or a macro
+        /// holds that trigger, which a zeroed block alone does not say
+        /// (#586, the Flydigi lane).</summary>
+        public static bool TryGetInboundTriggerEffects(int padIndex, Span<byte> left, Span<byte> right,
+            out bool haveLeft, out bool haveRight)
         {
+            haveLeft = false;
+            haveRight = false;
             if (left.Length < 11 || right.Length < 11) return false;
             left.Slice(0, 11).Clear();
             right.Slice(0, 11).Clear();
-            bool haveLeft = false, haveRight = false;
             lock (s_externalStateLock)
             {
                 if (s_externalState.TryGetValue(padIndex, out var st))
@@ -2288,6 +2309,9 @@ namespace PadForge.Common.Input
             }
             else if (ConfigNeedsTimer(_config)) return true;
             return !_failedDeliveries.IsEmpty || !_usbRouteRetryAt.IsEmpty || _slotNeedsRumbleTimer
+                // A Flydigi pad shows a game's, a mod's or a macro's trigger
+                // effect (#586), which ends at a time no event announces.
+                || _flydigiHoldsExternal
                 || AudioPassthroughService.SlotWantsSpeakerPath(_padIndex)
                 // An armed DualShock 4 microphone lapses after about four
                 // seconds without a 0xA1 effects report (#528).
@@ -3047,6 +3071,7 @@ namespace PadForge.Common.Input
             {
                 _litPeripherals = 0;
                 _peripheralKinds = EmptyPeripheralKinds;
+                NoteFlydigiSlot(false, false);
                 return;
             }
 
@@ -3072,6 +3097,7 @@ namespace PadForge.Common.Input
                 (int HeadphoneVolume, int OutputPath, bool Ds4MicArmed, int Ds4UsbRoute) Audio)>();
             int litPeripherals = 0;
             Dictionary<Guid, bool> peripheralKinds = null;
+            bool flydigiAny = false, flydigiHeld = false;
 
             lock (devices.SyncRoot)
             {
@@ -3307,6 +3333,30 @@ namespace PadForge.Common.Input
                             }
                         }
                         continue;
+                    }
+
+                    // A Flydigi Apex pad with a session (#586): its two
+                    // triggers take this slot's effect blocks. The lowest
+                    // live slot the pad is assigned to drives it, the Move
+                    // lane's rule. No I/O: the session queues what it is
+                    // handed. The pad's lights are a lit peripheral's and go
+                    // on below.
+                    if (!isPs)
+                    {
+                        var flydigi = Flydigi.FlydigiApexService.SessionOf(ud.InstanceGuid);
+                        if (flydigi != null
+                            && !(owners.TryGetValue(ud.InstanceGuid, out int flydigiOwner) && flydigiOwner != _padIndex))
+                        {
+                            DeviceSlotConfig flydigiCfg = null;
+                            if (perDeviceCfgs != null && perDeviceCfgs.TryGetValue(ud.InstanceGuid, out var resolvedFlydigi))
+                                flydigiCfg = resolvedFlydigi;
+                            flydigiCfg ??= cfg;
+                            if (flydigiCfg != null)
+                            {
+                                flydigiAny = true;
+                                flydigiHeld |= DriveFlydigiTriggers(ud, flydigi, flydigiCfg, testTarget, nowMs);
+                            }
+                        }
                     }
 
                     // Mice, keyboards, the vendor lighting rows and the unit
@@ -3972,6 +4022,7 @@ namespace PadForge.Common.Input
 
             _litPeripherals = litPeripherals;
             _peripheralKinds = peripheralKinds ?? EmptyPeripheralKinds;
+            if (!peripheralsOnly) NoteFlydigiSlot(flydigiAny, flydigiHeld);
 
             // Lock released. Do the blocking HID I/O here, serialized against
             // every other dispatch's writes and ordered by capture sequence so

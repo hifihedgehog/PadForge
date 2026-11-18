@@ -939,6 +939,8 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Ataka honen jokalari-zenbakia ezartzen du, 1etik 4ra. Egokigailuak gorde egiten du eta jokalari hori bezala birkonektatzen da.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast pantaila…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Dreamcast kontrolagailuaren VMUak zer erakusten duen ezartzen du: egokigailuaren beraren irudia, profil aktiboaren izena, zenbakia edo irudia, erlojua, jolas-denbora edo zuk aukeratutako irudi bat.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Kontrolagailuaren pantaila…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Irudi bat bidaltzen dio kontrolagailuaren pantailari: zuk aukeratutako irudi edo GIF bat, edo profil aktiboaren irudia, izena edo zenbakia. Kontrolagailuak hurrengoa jaso arte gordetzen du.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Egin Controller Pak-aren babeskopia…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>N64 kontrolagailu honetako Controller Pak-a 32 KB-ko .mpk fitxategi batean gordetzen du, N64 emulatzaileek irakurtzen duten formatuan.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Leheneratu Controller Pak-a…</value></data>
@@ -972,6 +974,45 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Kendu profilaren irudia</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Irudiak (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Fitxategi guztiak (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Fitxategi horrek ez du PadForge-k irakur dezakeen irudirik.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Kontrolagailuaren pantaila</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Ez da ezer kontrolagailura iristen bidali arte.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Zuk aukeratutako irudi edo GIF bat, pantailaren 160 × 80 pixelei egokitua. Kontrolagailuak beste bat bidali arte gordetzen du.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Profil aktiboaren irudia, edo haren izena irudirik ez badu, bidaltzen duzun unean dagoen bezala. Kontrolagailuak profil-aldaketetan zehar gordetzen du.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Profil aktiboaren izena, bidaltzen duzun unean dagoen bezala. Kontrolagailuak profil-aldaketetan zehar gordetzen du.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Profil aktiboak profil-zerrendan duen lekua, bidaltzen duzun unean dagoen bezala. Lehenetsia profila 0 da.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Doitu</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Bete pantaila</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Erakutsi irudi osoa</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Luzatu pantailara</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Irudiak (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Fitxategi guztiak (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Bidali</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Fotogramak: {0}. Bidaltzeak {1} inguru behar ditu.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontrolagailuak gehienez {0} fotograma hartzen ditu, beraz azken {1} kanpoan utzi dira.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Konektatu kontrolagailua kablez. Irudia sartu eta 15 segundo inguruara bere kabuz berrabiarazten da.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Konektatu kontrolagailua kablez. Bidalketarako, PadForge-k Xbox modura aldatzen du eta Windows-eko Xbox kontrolatzailetik WinUSB-ra mugitzen du, eta gero biak lehengoratzen ditu.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge-k kontrolagailua Xbox modura aldatuko du, bidalketarako WinUSB-ra mugituko du, gero Windows-eko Xbox kontrolatzaileari itzuliko dio eta DInput modura aldatuko du berriro. Deskonektatu aurrez beste Xbox 360 kontrolagailu guztiak. Orain bidali?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Hasten…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Kontrolagailua aldatzen…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Pantailaren atakaren zain…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Kontrolagailua WinUSB-ra mugitzen…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Irudiarentzako lekua husten… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Irudia bidaltzen… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Amaitzen…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Kontrolagailua Windows-i itzultzen…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Bidalita. Kontrolagailuak irudia erakutsiko du berrabiarazi ondoren.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Bidalita. Kontrolagailuak irudia erakusten du.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Konektatu kontrolagailua kablez. Bere pantailak USB bidez soilik jasotzen du irudia.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Pantailaren atakak ez du agertu. Itzali eta piztu kontrolagailua bere etengailuarekin, konektatu kablez eta bidali berriro.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Kontrolagailu-pantaila bat baino gehiago daude irudi baten zain. Deskonektatu besteak eta bidali berriro.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Pantailaren atakak ez du ireki. Itxi Flydigi Space Station eta bidali berriro.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Pantailak erantzuteari utzi dio. Itzali eta piztu kontrolagailua bere etengailuarekin eta bidali berriro.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Pantailak irudia baztertu du. Bidali berriro.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Kontrolagailua ez da Xbox 360 kontrolagailu gisa itzuli, beraz ez da ezer bidali. Aldatu berriro DInput modura bere etengailuarekin eta bidali berriro.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Deskonektatu beste Xbox 360 kontrolagailu guztiak eta bidali berriro. Kontrolatzailearen aldaketak horiek ere mugituko lituzke. Xbox moduan geratu den kontrolagailua DInput modura itzultzen da bere etengailuarekin.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox moduko kontrolagailuak ez du Apex 4 gisa erantzun, beraz ez da ezer bidali eta Windows-ek berreskuratu du. Aldatu berriro DInput modura bere etengailuarekin.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows-ek ez du kontrolagailua WinUSB-ra mugitu, beraz ez da ezer bidali. Aldatu berriro DInput modura bere etengailuarekin.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Geldituta. Itzali eta piztu kontrolagailua bere etengailuarekin berriro bidali aurretik.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Irudi bat oraindik kontrolagailura doa. Bidalketa gelditu?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak fitxategiak (*.mpk)|*.mpk|Fitxategi guztiak (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak ataka {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Leheneratu Controller Pak-a</value></data>
@@ -1138,6 +1179,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Inpultso-katuak</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Katu bakoitzaren irabazia, motorren trukea, katu moldagarrien bibrazioak, Katuen indar konstantea</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Katu bakoitzeko motor-komandoak (Xbox Impulse Triggers) kontrolagailu birtualetik esleitutako Xbox One, Elite edo Series kontrolagailu fisikora birbidaltzen ditu. Jokoak eragindako katuen bibrazioa automatikoki igarotzen da. Beheko kontrolek katu bakoitzaren intentsitatea eskalatzen dute.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Katu bakoitzeko motor-komandoak (Xbox Impulse Triggers) kontrolagailu birtualetik kontrolagailu honen katuetan bibrazio gisa erreproduzitzen ditu. Jokoak eragindako katuen bibrazioa automatikoki igarotzen da. Beheko kontrolek katu bakoitzaren intentsitatea eskalatzen dute.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Ezkerreko katua</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Eskuineko katua</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Trukatu ezkerreko eta eskuineko katuen motorrak</value></data>
@@ -1202,6 +1244,8 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Katu moldagarriak</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfiguratu katuen erantzun-efektuak esleitutako DualSense fisikoan. Jokoaren edo joko-modaren katu-efektuak automatikoki birbidaltzen dira. Hemengo ezarpenek erabiltzaileak konfiguratutako geruza bat gehitzen dute, bietako inork idazten ari ez denean exekutatzen dena.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Konfiguratu katuen erantzun-efektuak kontrolagailu honen indar-katuetan. DualSense birtual batean jokoak edo joko-modak sortutako katu-efektuak automatikoki erreproduzitzen dira. Hemengo ezarpenek erabiltzaileak konfiguratutako geruza bat gehitzen dute, bietako inork idazten ari ez denean exekutatzen dena.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Konfiguratu katuen erantzun-efektuak kontrolagailu honetan. Bere katuek bibratu egiten dute eta ez dute erresistentziarik jartzen, beraz efektu bakoitza efektuak egiten duenari jarraitzen dion bibrazio gisa erreproduzitzen da: eztanda bat katua hausten den tokian, pilaketa eta askapen bat arku baterako. DualSense birtual batean jokoak edo joko-modak sortutako katu-efektuak automatikoki erreproduzitzen dira. Hemengo ezarpenek erabiltzaileak konfiguratutako geruza bat gehitzen dute, bietako inork idazten ari ez denean exekutatzen dena.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Palankak</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Palanka bakoitzeko gune hilak, gune hilaren konpentsazioak, sentikortasun-kurbak eta erdigunearen desplazamenduaren kalibrazioa. Beheko atal bakoitzak irteera aktiboko palanka analogiko bat du helburu. Profil hedatuek lau palanka izan ditzakete gehienez. Gamepad estandarrek bi dituzte.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Katuak</value></data>
@@ -3257,7 +3301,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Tolestu zortzidun bat behera</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Tonu-muga</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Erreproduzitu DualSense haptika kontrolagailu honetan</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Joko batek zirrikitu hau DualSense birtual gisa kontrolatzen duenean, egileak sortutako audio haptikoarekin, erreproduzitu pista hori kontrolagailu honen eragingailuetan. Steam Controller 2026 batek, USB bidez edo bere hartzailearekin, pista bera erreproduzitzen du. Gainerako kontrolagailuek, eta hori bera Bluetooth bidez, audiotik eratorritako tonuak jasotzen dituzte, diseinatzailearen sentsazioa hurbiltzen dutenak, ez zehazki erreproduzitzen dutenak.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Joko batek zirrikitu hau DualSense birtual gisa kontrolatzen duenean, egileak sortutako audio haptikoarekin, erreproduzitu pista hori kontrolagailu honen eragingailuetan. Steam Controller 2026 batek, USB bidez edo bere hartzailearekin, eta Flydigi Apex 6 Pro batek pista bera erreproduzitzen dute. Gainerako kontrolagailuek, eta Steam Controller hori bera Bluetooth bidez, audiotik eratorritako tonuak jasotzen dituzte, diseinatzailearen sentsazioa hurbiltzen dutenak, ez zehazki erreproduzitzen dutenak.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptikaren irabazia</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Berrezarri lehenetsira (desaktibatuta)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Berrezarri lehenetsira (%100)</value></data>
@@ -3448,6 +3492,14 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) kontrolagailuaren txosten haptikoaren egitura eta noten periodoaren matematika. Egileak: Pila eta Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 eta Steam Deck gailuetarako LFO tonuen egitura haptikoa. Egileak: Pila, Crazy eta AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex gailuen katu-efektuen itzulpena eta idazketa-erritmoa, Apex 6 Pro gailuaren katuen errendatzea, haptika-korrontea eta argi-blokea, eta Apex 5 gailuaren argi-idazketak. Egilea: ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5 eta Apex 6 gailuen protokolo-oharrak, argi-blokearen transferentzia eta pantailaren serie bidezko igoera. Egilea: Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4 gailuaren argi-blokea, profil-zirrikitua eta pantailaren igoera Xbox moduan. Egileak: Uilton Lopes eta laguntzaileak.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4 gailuaren indar-katuen komandoak eta kontrolagailuan neurtutako erritmoa. Egilea: Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap moduetarako SOCD garbiketaren semantika. Egilea: valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4754,6 +4806,7 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Y desplazamendua</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Aukeratu zer erakusten duen. Ez da ezer aldatzen gorde arte.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} ezarrita: {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Irudia kontrolagailuaren pantailara bidali da.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mad Catz-en S.T.R.I.K.E. 7 SDK deskargatzen…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7-k {0} kargatuko du orain.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Microsoft-en Visual C++ 2008 exekuzio-ingurunea deskargatzen eta instalatzen…</value></data>

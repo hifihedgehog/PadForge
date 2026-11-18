@@ -1297,6 +1297,15 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _showKeyboardScreen, value);
         }
 
+        private bool _showFlydigiScreen;
+        /// <summary>The row is a Flydigi Apex pad with a screen and a session
+        /// (#586), so its screen's dialog can open.</summary>
+        public bool ShowFlydigiScreen
+        {
+            get => _showFlydigiScreen;
+            set => SetProperty(ref _showFlydigiScreen, value);
+        }
+
         private string _gameModLine = string.Empty;
         /// <summary>What a DSX game mod sets on this controller (#529), shown
         /// with Clear Mod Effects. Empty while no mod reaches it.</summary>

@@ -952,6 +952,8 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Anger portens spelarnummer, 1 till 4. Adaptern sparar det och återansluter som den spelaren.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast-skärm…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Anger vad VMU:n i Dreamcast-handkontrollen visar: adapterns egen bild, den aktiva profilens namn, nummer eller bild, klockan, speltiden eller en bild du väljer.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Handkontrollens skärm…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Skickar en bild till handkontrollens skärm: en bild eller GIF som du väljer, eller den aktiva profilens bild, namn eller nummer. Handkontrollen behåller den tills nästa kommer.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Säkerhetskopiera Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Sparar Controller Pak i den här N64-handkontrollen till en .mpk-fil på 32 kB, det format som N64-emulatorer läser.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Återställ Controller Pak…</value></data>
@@ -985,6 +987,45 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Ta bort profilbild</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Bilder (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Alla filer (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Filen innehåller ingen bild som PadForge kan läsa.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Handkontrollens skärm</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Ingenting når handkontrollen förrän du skickar.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>En bild eller GIF som du väljer, anpassad till skärmens 160 gånger 80 bildpunkter. Handkontrollen behåller den tills du skickar en ny.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Den aktiva profilens bild, eller dess namn om den inte har någon, så som den är när du skickar. Handkontrollen behåller den när du byter profil.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Den aktiva profilens namn så som det är när du skickar. Handkontrollen behåller det när du byter profil.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Den aktiva profilens plats i profillistan så som den är när du skickar. Profilen Standard är 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Anpassning</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Fyll skärmen</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Visa hela bilden</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Sträck ut till skärmen</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Bilder (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Alla filer (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Skicka</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Bildrutor: {0}. Att skicka tar ungefär {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Handkontrollen tar högst {0} bildrutor, så de sista {1} utelämnades.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Anslut handkontrollen med kabel. Den startar om av sig själv ungefär 15 sekunder efter att bilden har kommit in.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Anslut handkontrollen med kabel. För sändningen växlar PadForge den till Xbox-läge och flyttar den från Windows Xbox-drivrutin till WinUSB, och återställer sedan båda.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge växlar handkontrollen till Xbox-läge, flyttar den till WinUSB under sändningen, lämnar sedan tillbaka den till Windows Xbox-drivrutin och växlar tillbaka den till DInput-läge. Koppla först ur alla andra Xbox 360-handkontroller. Skicka nu?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Startar…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Växlar handkontrollen…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Väntar på skärmens port…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Flyttar handkontrollen till WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Gör plats för bilden… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Skickar bilden… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Avslutar…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Lämnar tillbaka handkontrollen till Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Skickat. Handkontrollen visar bilden när den har startat om.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Skickat. Handkontrollen visar bilden.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Anslut handkontrollen med kabel. Skärmen tar emot en bild endast via USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Skärmens port dök inte upp. Stäng av och slå på handkontrollen med dess egen strömbrytare, anslut den med kabel och skicka igen.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Fler än en handkontrollsskärm väntar på en bild. Koppla ur de andra och skicka igen.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Skärmens port öppnades inte. Stäng Flydigi Space Station och skicka igen.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Skärmen slutade svara. Stäng av och slå på handkontrollen med dess egen strömbrytare och skicka igen.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Skärmen avvisade bilden. Skicka igen.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Handkontrollen kom inte tillbaka som en Xbox 360-handkontroll, så ingenting skickades. Växla tillbaka den till DInput-läge med dess egen omkopplare och skicka igen.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Koppla ur alla andra Xbox 360-handkontroller och skicka igen. Drivrutinsbytet skulle flytta dem också. En handkontroll som lämnats i Xbox-läge växlas tillbaka till DInput-läge med dess egen omkopplare.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Handkontrollen i Xbox-läge svarade inte som en Apex 4, så ingenting skickades och Windows har fått tillbaka den. Växla tillbaka den till DInput-läge med dess egen omkopplare.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows flyttade inte handkontrollen till WinUSB, så ingenting skickades. Växla tillbaka den till DInput-läge med dess egen omkopplare.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Stoppad. Stäng av och slå på handkontrollen med dess egen strömbrytare innan du skickar igen.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>En bild är fortfarande på väg till handkontrollen. Stoppa sändningen?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak-filer (*.mpk)|*.mpk|Alla filer (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Återställ Controller Pak</value></data>
@@ -1218,6 +1259,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulsavtryckare</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Avtryckarförstärkning, motorbyte, vibrationer från adaptiva avtryckare, Konstant avtryckarkraft</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Vidarebefordrar motorkommandon per avtryckare (Xbox Impulse Triggers) från den virtuella handkontrollen till den tilldelade fysiska Xbox One-, Elite- eller Series-handkontrollen. Avtryckarvibration som styrs av spelet släpps igenom automatiskt. Reglagen nedan skalar styrkan per avtryckare.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Spelar upp motorkommandon per avtryckare (Xbox Impulse Triggers) från den virtuella handkontrollen som en vibration i den här handkontrollens avtryckare. Avtryckarvibration som styrs av spelet släpps igenom automatiskt. Reglagen nedan skalar styrkan per avtryckare.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Vänster avtryckare</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Höger avtryckare</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Byt plats på vänster och höger avtryckarmotor</value></data>
@@ -1282,6 +1324,8 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptiva avtryckare</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfigurera återkopplingseffekter för avtryckarna på den tilldelade fysiska DualSense-handkontrollen. Avtryckareffekter från ett spel eller en spelmodd vidarebefordras automatiskt. Inställningarna här lägger till ett användarkonfigurerat lager som körs när ingen av dem skriver.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Konfigurera återkopplingseffekter för avtryckarna på den här handkontrollens kraftavtryckare. Avtryckareffekter från ett spel på en virtuell DualSense eller från en spelmodd spelas upp automatiskt. Inställningarna här lägger till ett användarkonfigurerat lager som körs när ingen av dem skriver.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Konfigurera återkopplingseffekter för avtryckarna på den här handkontrollen. Dess avtryckare vibrerar och ger inget motstånd, så varje effekt spelas upp som en vibration som följer vad effekten gör: ett ryck där en avtryckare brister, en uppbyggnad och ett släpp för en pilbåge. Avtryckareffekter från ett spel på en virtuell DualSense eller från en spelmodd spelas upp automatiskt. Inställningarna här lägger till ett användarkonfigurerat lager som körs när ingen av dem skriver.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Spakar</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Dödzoner, anti-dödzoner, känslighetskurvor och kalibrering av centrumförskjutning per spak. Varje avsnitt nedan gäller en analog spak på den aktiva utdataenheten. Utökade profiler kan ha upp till fyra spakar. Vanliga handkontroller har två.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Avtryckare</value></data>
@@ -3457,7 +3501,7 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Vik ned dem en oktav</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Tongräns</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Spela upp DualSense-haptik på den här handkontrollen</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>När ett spel styr den här platsen som en virtuell DualSense med särskilt framtaget haptiskt ljud spelas det spåret upp på den här handkontrollens aktuatorer. En Steam Controller 2026 via USB eller sin dongel spelar upp själva spåret. Alla andra handkontroller, och även den via Bluetooth, får toner som härleds från ljudet och som efterliknar den känsla som designern avsåg snarare än återger den.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>När ett spel styr den här platsen som en virtuell DualSense med särskilt framtaget haptiskt ljud spelas det spåret upp på den här handkontrollens aktuatorer. En Steam Controller 2026 via USB eller sin dongel, och en Flydigi Apex 6 Pro, spelar upp själva spåret. Alla andra handkontroller, och den Steam Controller via Bluetooth, får toner som härleds från ljudet och som efterliknar den känsla som designern avsåg snarare än återger den.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptikförstärkning</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Återställ till standard (av)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Återställ till standard (100 %)</value></data>
@@ -3652,6 +3696,14 @@ En kopia av den föregående versionen finns i den här mappen: {1}</value></dat
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Layout för haptikrapporter och matematik för notperioder för Steam Controller (2015), av Pila och Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Haptiklayout för LFO-toner på Steam Controller 2026 och Steam Deck, av Pila, Crazy och AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Översättning av avtryckareffekter och skrivtakt för Flydigi Apex, avtryckarrendering, haptikström och ljusblock för Apex 6 Pro samt ljusskrivningarna för Apex 5, av ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Protokollanteckningar för Flydigi Apex 5 och Apex 6, överföringen av ljusblocket och skärmens seriella uppladdning, av Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Ljusblock och profilplats för Flydigi Apex 4 samt skärmuppladdningen i Xbox-läge, av Uilton Lopes och medverkande.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Kommandon för kraftavtryckarna på Flydigi Apex 4 och den takt som uppmätts på handkontrollen, av Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantik för SOCD-rensning i Snap Tap-lägena, av valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Panorera Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Välj vad den visar. Inget ändras förrän du sparar.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} är inställd på {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Bilden skickades till handkontrollens skärm.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Laddar ned Mad Catz S.T.R.I.K.E. 7 SDK…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 läser nu in {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Laddar ned och installerar Microsofts Visual C++ 2008-körmiljö…</value></data>

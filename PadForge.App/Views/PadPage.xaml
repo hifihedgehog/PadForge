@@ -6921,10 +6921,20 @@
                               AutomationProperties.Name="{Binding Pad_ImpulseTriggers_Header, Source={x:Static strings:Strings.Instance}}">
                     <StackPanel>
                         <!-- A DSX game mod's trigger effects (#529), which
-                             Translate Adaptive Trigger Vibrations plays here. -->
-                        <TextBlock Text="{Binding GameModImpulseLine}" Visibility="{Binding GameModImpulseLine, Converter={StaticResource StringToVisibility}}"
-                                   Foreground="{DynamicResource EmberTextBrush}"
-                                   TextWrapping="Wrap" Margin="0,0,0,12"/>
+                             Translate Adaptive Trigger Vibrations plays here.
+                             A Flydigi Apex pad (#586) plays the effects
+                             themselves and has no such switch, so it shows
+                             the Adaptive Triggers tab's line in its place. -->
+                        <Border x:Name="GameModImpulseLineHost">
+                            <TextBlock Text="{Binding GameModImpulseLine}" Visibility="{Binding GameModImpulseLine, Converter={StaticResource StringToVisibility}}"
+                                       Foreground="{DynamicResource EmberTextBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,12"/>
+                        </Border>
+                        <Border x:Name="GameModFlydigiLineHost" Visibility="Collapsed">
+                            <TextBlock Text="{Binding GameModTriggersLine}" Visibility="{Binding GameModTriggersLine, Converter={StaticResource StringToVisibility}}"
+                                       Foreground="{DynamicResource EmberTextBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,12"/>
+                        </Border>
 
                         <!-- Impulse Triggers: the card follows Force Feedback's.
                              Overall Gain and the trigger motors' live activity
@@ -6945,7 +6955,7 @@
                                                   Data="M445,180 L475,200 L445,220 L455,220 L485,200 L455,180 Z M445,280 L475,300 L445,320 L455,320 L485,300 L455,280 Z"/>
                                         </Grid>
                                     </Viewbox>
-                                    <TextBlock Text="{Binding Pad_ImpulseTriggers_Header, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock x:Name="ImpulseTriggersTitle" Text="{Binding Pad_ImpulseTriggers_Header, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource HeroCardTitle}"
                                                ToolTip="{Binding Pad_ImpulseTriggers_Subtitle, Source={x:Static strings:Strings.Instance}}"/>
                                     <Border Style="{StaticResource ChipSteel}" Margin="10,0,0,0">
@@ -7068,8 +7078,10 @@
                                             <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ImpulseSwapTriggers" SettingLabel="{Binding Pad_ImpulseTriggers_SwapTriggers, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_ImpulseSwapTriggers_10319"/>
                                         </controls:SettingRow>
 
-                                        <!-- Selective adaptive-trigger translation (#271 item 3) -->
-                                        <controls:SettingRow controls:SettingRow.Ends="True" MinHeight="44">
+                                        <!-- Selective adaptive-trigger translation (#271 item 3).
+                                             Hidden for a Flydigi Apex pad (#586), which
+                                             plays the whole effect. -->
+                                        <controls:SettingRow x:Name="AtTranslateRow" controls:SettingRow.Ends="True" MinHeight="44">
                                             <TextBlock Text="{Binding Pad_ImpulseTriggers_AtTranslate, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource EndsLabel}"/>
                                             <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Pad_ImpulseTriggers_AtTranslate, Source={x:Static strings:Strings.Instance}}"
                                                       ToolTip="{Binding Pad_ImpulseTriggers_AtTranslate_Tooltip, Source={x:Static strings:Strings.Instance}}"
@@ -7227,7 +7239,7 @@
                                                   Data="M445,180 L475,200 L445,220 L455,220 L485,200 L455,180 Z M445,280 L475,300 L445,320 L455,320 L485,300 L455,280 Z"/>
                                         </Grid>
                                     </Viewbox>
-                                    <TextBlock Text="{Binding Pad_AdaptiveTriggers_Header, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock x:Name="AdaptiveTriggersTitle" Text="{Binding Pad_AdaptiveTriggers_Header, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource HeroCardTitle}"
                                                ToolTip="{Binding Pad_AdaptiveTriggers_Subtitle, Source={x:Static strings:Strings.Instance}}"/>
                                     <Border Style="{StaticResource ChipSteel}" Margin="10,0,0,0">
@@ -11898,9 +11910,11 @@
                                      Test) to one pitch per tick, so beeps above the limit
                                      can be cut, or folded down an octave at a time keeping
                                      their pitch class. Independent of the mirror toggle:
-                                     macro sounds are filtered too, so no IsEnabled gate. -->
+                                     macro sounds are filtered too, so no IsEnabled gate.
+                                     A pad that plays samples has no pitch to filter and
+                                     does not show it. -->
                                 <StackPanel Margin="0,0,0,8"
-                                            Visibility="{Binding SelectedDeviceHasHapticTones, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            Visibility="{Binding SelectedDeviceHasToneFilter, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <controls:SettingRow Grow="True" ValueWidth="66" MinHeight="44">
                                         <TextBlock Text="{Binding Pad_Audio_ToneFilter_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                   />

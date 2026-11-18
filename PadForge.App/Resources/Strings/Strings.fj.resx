@@ -841,4 +841,13 @@
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Shift layer</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Vukici</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b taumada</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>E sega ni dua na ka e yaco ki na controller me yacova ni o vakauta.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Vakarautaka</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Vakasinaita na Sikirini</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Vakaraitaka na Iyaloyalo Taucoko</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Dodoka ki na Sikirini</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

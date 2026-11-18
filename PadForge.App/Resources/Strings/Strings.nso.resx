@@ -1307,4 +1307,43 @@
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Macro ya Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Karolo ya cursor</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Tlwaelo ya bs2b</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Sekirini sa khontroulara…</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Sekirini sa khontroulara</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Ga go selo seo se fihlago khontroulareng go fihlela o romela.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Lekanya</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Tlatša sekirini</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Bontšha seswantšho ka moka</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Goga go lekana le sekirini</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Romela</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Diforeime: {0}. Go romela go tšea nako e ka bago {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Khontroulara e amogela diforeime tše {0} fela go feta, ka gona tša mafelelo tše {1} di tlogetšwe.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Kgokaganya khontroulara ka thapo. E thoma gape e nnoši metsotswana e ka bago 15 ka morago ga ge seswantšho se tsene.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Kgokaganya khontroulara ka thapo. Go romela, PadForge e e fetošetša go mokgwa wa Xbox gomme e e tloša go draebara ya Xbox ya Windows go ya go WinUSB, ke moka e bušetša tšohle morago.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge e tla fetošetša khontroulara go mokgwa wa Xbox, e e iše go WinUSB go romela, ke moka e e bušetše go draebara ya Xbox ya Windows gomme e e bušetše go mokgwa wa DInput. Pele, ntšha khontroulara ye nngwe le ye nngwe ya Xbox 360. Romela bjale?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>E a thoma…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>E fetoša khontroulara…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>E letetše porota ya sekirini…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>E iša khontroulara go WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>E hlakola sekgoba sa seswantšho… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>E romela seswantšho… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>E a feleletša…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>E bušetša khontroulara go Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Se romilwe. Khontroulara e bontšha seswantšho ge e thomile gape.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Se romilwe. Khontroulara e bontšha seswantšho.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Kgokaganya khontroulara ka thapo. Sekirini sa yona se amogela seswantšho ka USB fela.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Porota ya sekirini ga se ya tšwelela. Tima khontroulara o e tšhume gape ka switšhi ya yona, o e kgokaganye ka thapo, gomme o romele gape.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Disekirini tša khontroulara tše di fetago se tee di letetše seswantšho. Ntšha tše dingwe gomme o romele gape.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Porota ya sekirini ga se ya bulega. Tswalela Flydigi Space Station gomme o romele gape.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Sekirini se emišitše go araba. Tima khontroulara o e tšhume gape ka switšhi ya yona gomme o romele gape.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Sekirini se ganne seswantšho. Romela gape.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Khontroulara ga se ya boa bjalo ka khontroulara ya Xbox 360, ka gona ga go selo seo se romilwego. E bušetše go mokgwa wa DInput ka switšhi ya yona gomme o romele gape.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Ntšha khontroulara ye nngwe le ye nngwe ya Xbox 360 gomme o romele gape. Phetošo ya draebara e be e tla di tloša le tšona. Khontroulara yeo e šetšego mokgweng wa Xbox e boela mokgweng wa DInput ka switšhi ya yona.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Khontroulara yeo e lego mokgweng wa Xbox ga se ya araba bjalo ka Apex 4, ka gona ga go selo seo se romilwego gomme e bušeditšwe go Windows. E bušetše go mokgwa wa DInput ka switšhi ya yona.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows ga se ya iša khontroulara go WinUSB, ka gona ga go selo seo se romilwego. E bušetše go mokgwa wa DInput ka switšhi ya yona.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Go emišitšwe. Tima khontroulara o e tšhume gape ka switšhi ya yona pele o romela gape.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Seswantšho se sa ntše se ya khontroulareng. Emiša go romela?</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

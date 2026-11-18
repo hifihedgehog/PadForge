@@ -279,6 +279,8 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Longola elili ya profil</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Bilili (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Ba fichier nyonso (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Fichier wana ezali na elili moko te oyo PadForge ekoki kotanga.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Écran ya manette</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Eloko moko te ekokoma na manette tii okotinda.</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Ba fichier Controller Pak (*.mpk)|*.mpk|Ba fichier nyonso (*.*)|*.*</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Zongisa Controller Pak</value></data>
   <data name="BlissBoxPak_RestoreAction" xml:space="preserve"><value>Zongisa</value></data>
@@ -394,6 +396,8 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Zongisa gâchette ya loboko ya mwasi</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Zongisa gâchette ya loboko ya mobali</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Bongisa ba effet ya gâchette na DualSense ya solo oyo epesami. Ba effet ya gâchette oyo euti na lisano to na mod ya lisano etindamaka yango moko. Ba paramètres ya awa ebakisaka couche moko ya mosaleli oyo esalaka ntango moko te kati na yango ezali kokoma.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Bongisa ba effet ya gâchette na ba gâchette ya makasi ya manette oyo. Ba effet ya gâchette oyo euti na lisano na DualSense ya virtuel to na mod ya lisano esalaka yango moko. Ba paramètres ya awa ebakisaka couche moko ya mosaleli oyo esalaka ntango moko te kati na yango ezali kokoma.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Bongisa ba effet ya gâchette na manette oyo. Ba gâchette na yango eninganaka mpe etelemelaka te, yango wana effet moko na moko esalemaka lokola vibration oyo elandaka oyo effet esalaka: kopanzana ntango gâchette ebukani, komata mpe kotika mpo na arc. Ba effet ya gâchette oyo euti na lisano na DualSense ya virtuel to na mod ya lisano esalaka yango moko. Ba paramètres ya awa ebakisaka couche moko ya mosaleli oyo esalaka ntango moko te kati na yango ezali kokoma.</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Ba stick</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Ba gâchette</value></data>
@@ -1968,4 +1972,45 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Ebalolami</value></data>
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>Nsonge</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b ya ebandeli</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Écran ya manette…</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Elili ya profil oyo ezali kosala, to nkombo na yango soki ezali na elili te, ndenge ezali ntango okotinda. Manette ebombaka yango ata soki ba profil ebongwani.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Nkombo ya profil oyo ezali kosala ndenge ezali ntango okotinda. Manette ebombaka yango ata soki ba profil ebongwani.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Esika ya profil oyo ezali kosala na liste ya ba profil ndenge ezali ntango okotinda. Profil par défaut ezali 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Kotya</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Tondisa écran</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Lakisa elili mobimba</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Benda na bonene ya écran</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Bilili (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Ba fichier nyonso (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Tinda</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Ba frame: {0}. Kotinda ezwaka pene na {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Manette ezwaka ba frame {0} kaka, yango wana ba frame ya suka etikamaki: {1}.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Kangisa manette na nsinga. Ekobanda lisusu yango moko pene na basekonde 15 sima elili ekoti.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Kangisa manette na nsinga. Mpo na kotinda, PadForge ebongolaka yango na mode Xbox mpe elongolaka yango na driver ya Xbox ya Windows mpo na WinUSB, sima ezongisaka nyonso mibale.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge ekobongola manette na mode Xbox, ekotya yango na WinUSB mpo na kotinda, sima ekozongisa yango na driver ya Xbox ya Windows mpe ekozongisa yango na mode DInput. Liboso, longola ba manette mosusu nyonso ya Xbox 360. Kotinda sikoyo?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Kobanda…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Kobongola manette…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Kozela port ya écran…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Kotya manette na WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Kopetola esika mpo na elili… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Kotinda elili… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Kosilisa…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Kozongisa manette epai ya Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Etindami. Manette ekolakisa elili soki esili kobanda lisusu.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Etindami. Manette ezali kolakisa elili.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Kangisa manette na nsinga. Écran na yango ezwaka elili na USB kaka.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Port ya écran ebimaki te. Kufisa mpe pelisa manette na interrupteur na yango moko, kangisa yango na nsinga, mpe tinda lisusu.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Écran ya manette koleka moko ezali kozela elili. Longola ba mosusu mpe tinda lisusu.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Port ya écran efungwamaki te. Kanga Flydigi Space Station mpe tinda lisusu.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Écran etiki koyanola. Kufisa mpe pelisa manette na interrupteur na yango moko mpe tinda lisusu.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Écran eboyi elili. Tinda lisusu.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Manette ezongaki te lokola manette ya Xbox 360, yango wana eloko moko te etindamaki. Zongisa yango na mode DInput na interrupteur na yango moko mpe tinda lisusu.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Longola ba manette mosusu nyonso ya Xbox 360 mpe tinda lisusu. Mbongwana ya driver ekobongola mpe yango. Mpo na manette oyo etikali na mode Xbox, zongisa yango na mode DInput na interrupteur na yango moko.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Manette na mode Xbox eyanolaki te lokola Apex 4, yango wana eloko moko te etindamaki mpe Windows ezwi yango lisusu. Zongisa yango na mode DInput na interrupteur na yango moko.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows etyaki manette na WinUSB te, yango wana eloko moko te etindamaki. Zongisa yango na mode DInput na interrupteur na yango moko.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Etelemi. Kufisa mpe pelisa manette na interrupteur na yango moko liboso otinda lisusu.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Elili ezali kaka kokende na manette. Kotelemisa kotinda?</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

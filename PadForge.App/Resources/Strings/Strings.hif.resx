@@ -1155,4 +1155,13 @@
   <data name="HIDMaestroUninstall_KindStep" xml:space="preserve"><value>Hatae ke step</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>bs2b default</value></data>
   <data name="Battery_UnnamedController" xml:space="preserve"><value>Controller</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Send kare tak controller tak kuch nai pahunche.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Fit</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Pura Screen Bharo</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Pura Picture Dekhao</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Screen Tak Khincho</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

@@ -952,6 +952,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>இந்தப் போர்ட்டின் பிளேயர் எண்ணை 1 முதல் 4 வரை அமைக்கும். அடாப்டர் அதைச் சேமித்து, அந்தப் பிளேயராக மீண்டும் இணையும்.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast திரை…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Dreamcast பேடின் VMU எதைக் காட்ட வேண்டும் என்பதை அமைக்கும்: அடாப்டரின் சொந்தப் படம், செயலிலுள்ள சுயவிவரத்தின் பெயர், எண் அல்லது படம், கடிகாரம், விளையாடிய நேரம், அல்லது நீங்கள் தேர்ந்தெடுக்கும் படம்.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>கட்டுப்படுத்தித் திரை…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>கட்டுப்படுத்தியின் திரைக்குப் படத்தை அனுப்பும்: நீங்கள் தேர்ந்தெடுக்கும் படம் அல்லது GIF, அல்லது செயலிலுள்ள சுயவிவரத்தின் படம், பெயர் அல்லது எண். அடுத்த படம் வரும் வரை கட்டுப்படுத்தி இதை வைத்திருக்கும்.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Controller Pak-ஐக் காப்புப்பிரதி எடு…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>இந்த N64 கட்டுப்படுத்தியிலுள்ள Controller Pak-ஐ, N64 எமுலேட்டர்கள் படிக்கும் வடிவமான 32 KB .mpk கோப்பில் சேமிக்கும்.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Controller Pak-ஐ மீட்டெடு…</value></data>
@@ -985,6 +987,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>சுயவிவரப் படத்தை அகற்று</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>படங்கள் (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|அனைத்துக் கோப்புகள் (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>அந்தக் கோப்பில் PadForge படிக்கக்கூடிய படம் எதுவும் இல்லை.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>கட்டுப்படுத்தித் திரை</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>அனுப்பும் வரை கட்டுப்படுத்திக்கு எதுவும் செல்லாது.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>நீங்கள் தேர்ந்தெடுக்கும் படம் அல்லது GIF, திரையின் 160 × 80 பிக்சலுக்குப் பொருத்தப்படும். நீங்கள் வேறொன்றை அனுப்பும் வரை கட்டுப்படுத்தி இதை வைத்திருக்கும்.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>செயலிலுள்ள சுயவிவரத்தின் படம், படம் இல்லையெனில் அதன் பெயர், நீங்கள் அனுப்பும் நேரத்தில் இருப்பது போல. சுயவிவர மாற்றங்களுக்குப் பிறகும் கட்டுப்படுத்தி இதை வைத்திருக்கும்.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>செயலிலுள்ள சுயவிவரத்தின் பெயர், நீங்கள் அனுப்பும் நேரத்தில் இருப்பது போல. சுயவிவர மாற்றங்களுக்குப் பிறகும் கட்டுப்படுத்தி இதை வைத்திருக்கும்.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>சுயவிவரப் பட்டியலில் செயலிலுள்ள சுயவிவரத்தின் இடம், நீங்கள் அனுப்பும் நேரத்தில் இருப்பது போல. இயல்புநிலைச் சுயவிவரம் 0 ஆகும்.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>பொருத்தம்</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>திரையை நிரப்பு</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>முழுப் படத்தையும் காட்டு</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>திரைக்கு இழு</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>படங்கள் (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|அனைத்துக் கோப்புகள் (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>அனுப்பு</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>பிரேம்கள்: {0}. அனுப்ப சுமார் {1} ஆகும்.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>கட்டுப்படுத்தி அதிகபட்சம் {0} பிரேம்களையே ஏற்கும், எனவே கடைசி {1} விடப்பட்டன.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>கட்டுப்படுத்தியை கேபிள் மூலம் இணைக்கவும். படம் சென்ற சுமார் 15 விநாடிகளுக்குப் பிறகு அது தானாக மறுதொடங்கும்.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>கட்டுப்படுத்தியை கேபிள் மூலம் இணைக்கவும். அனுப்புவதற்காக PadForge அதை Xbox பயன்முறைக்கு மாற்றி, Windows இன் Xbox இயக்கியிலிருந்து WinUSB க்கு நகர்த்தும், பின்னர் இரண்டையும் மீண்டும் முன்பு போல வைக்கும்.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge கட்டுப்படுத்தியை Xbox பயன்முறைக்கு மாற்றி, அனுப்புவதற்காக WinUSB க்கு நகர்த்தும், பின்னர் அதை Windows இன் Xbox இயக்கிக்கே திருப்பிக் கொடுத்து DInput பயன்முறைக்கு மாற்றும். முதலில் மற்ற எல்லா Xbox 360 கட்டுப்படுத்திகளையும் துண்டிக்கவும். இப்போது அனுப்பவா?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>தொடங்குகிறது…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>கட்டுப்படுத்தியை மாற்றுகிறது…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>திரையின் போர்ட்டுக்காகக் காத்திருக்கிறது…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>கட்டுப்படுத்தியை WinUSB க்கு நகர்த்துகிறது…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>படத்துக்கு இடம் உருவாக்குகிறது… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>படத்தை அனுப்புகிறது… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>முடிக்கிறது…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>கட்டுப்படுத்தியை Windows இடம் திருப்பிக் கொடுக்கிறது…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>அனுப்பப்பட்டது. கட்டுப்படுத்தி மறுதொடங்கிய பிறகு படத்தைக் காட்டும்.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>அனுப்பப்பட்டது. கட்டுப்படுத்தி படத்தைக் காட்டுகிறது.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>கட்டுப்படுத்தியை கேபிள் மூலம் இணைக்கவும். அதன் திரை USB வழியாக மட்டுமே படத்தை ஏற்கும்.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>திரையின் போர்ட் தோன்றவில்லை. கட்டுப்படுத்தியை அதன் சொந்த சுவிட்சால் அணைத்து இயக்கி, கேபிள் மூலம் இணைத்து, மீண்டும் அனுப்பவும்.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>ஒன்றுக்கு மேற்பட்ட கட்டுப்படுத்தித் திரைகள் படத்துக்காகக் காத்திருக்கின்றன. மற்றவற்றைத் துண்டித்து மீண்டும் அனுப்பவும்.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>திரையின் போர்ட் திறக்கவில்லை. Flydigi Space Station ஐ மூடி மீண்டும் அனுப்பவும்.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>திரை பதிலளிப்பதை நிறுத்தியது. கட்டுப்படுத்தியை அதன் சொந்த சுவிட்சால் அணைத்து இயக்கி மீண்டும் அனுப்பவும்.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>திரை படத்தை ஏற்கவில்லை. மீண்டும் அனுப்பவும்.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>கட்டுப்படுத்தி Xbox 360 கட்டுப்படுத்தியாகத் திரும்பி வரவில்லை, எனவே எதுவும் அனுப்பப்படவில்லை. அதை அதன் சொந்த சுவிட்சால் மீண்டும் DInput பயன்முறைக்கு மாற்றி, மீண்டும் அனுப்பவும்.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>மற்ற எல்லா Xbox 360 கட்டுப்படுத்திகளையும் துண்டித்து மீண்டும் அனுப்பவும். இயக்கி மாற்றம் அவற்றையும் மாற்றிவிடும். Xbox பயன்முறையில் விடப்பட்ட கட்டுப்படுத்தி, அதன் சொந்த சுவிட்சால் DInput பயன்முறைக்குத் திரும்பும்.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox பயன்முறையிலிருந்த கட்டுப்படுத்தி Apex 4 ஆகப் பதிலளிக்கவில்லை, எனவே எதுவும் அனுப்பப்படவில்லை, Windows அதைத் திரும்பப் பெற்றுவிட்டது. அதை அதன் சொந்த சுவிட்சால் மீண்டும் DInput பயன்முறைக்கு மாற்றவும்.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows கட்டுப்படுத்தியை WinUSB க்கு நகர்த்தவில்லை, எனவே எதுவும் அனுப்பப்படவில்லை. அதை அதன் சொந்த சுவிட்சால் மீண்டும் DInput பயன்முறைக்கு மாற்றவும்.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>நிறுத்தப்பட்டது. மீண்டும் அனுப்பும் முன் கட்டுப்படுத்தியை அதன் சொந்த சுவிட்சால் அணைத்து இயக்கவும்.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>ஒரு படம் இன்னும் கட்டுப்படுத்திக்குச் சென்றுகொண்டிருக்கிறது. அனுப்புவதை நிறுத்தவா?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak கோப்புகள் (*.mpk)|*.mpk|அனைத்துக் கோப்புகள் (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak போர்ட் {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak-ஐ மீட்டெடு</value></data>
@@ -1218,6 +1259,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>இம்பல்ஸ் டிரிகர்கள்</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ஒவ்வொரு டிரிகருக்கும் வலிமை, மோட்டார் இடமாற்றம், அடாப்டிவ் டிரிகர் அதிர்வுகள், நிலையான டிரிகர் ஃபோர்ஸ்</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ஒவ்வொரு டிரிகருக்குமான மோட்டார் கட்டளைகளை (Xbox இம்பல்ஸ் டிரிகர்கள்) மெய்நிகர் கட்டுப்படுத்தியிலிருந்து ஒதுக்கப்பட்ட இயற்பியல் Xbox One, Elite அல்லது Series கட்டுப்படுத்திக்கு அனுப்பும். கேம் இயக்கும் டிரிகர் அதிர்வு தானாகவே கடந்து செல்லும். கீழே உள்ள கட்டுப்பாடுகள் ஒவ்வொரு டிரிகருக்கும் அதன் வலிமையைக் கூட்டிக் குறைக்கும்.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>ஒவ்வொரு டிரிகருக்குமான மோட்டார் கட்டளைகளை (Xbox இம்பல்ஸ் டிரிகர்கள்) மெய்நிகர் கட்டுப்படுத்தியிலிருந்து, இந்தக் கட்டுப்படுத்தியின் டிரிகர்களில் அதிர்வாக இயக்கும். கேம் இயக்கும் டிரிகர் அதிர்வு தானாகவே கடந்து செல்லும். கீழே உள்ள கட்டுப்பாடுகள் ஒவ்வொரு டிரிகருக்கும் அதன் வலிமையைக் கூட்டிக் குறைக்கும்.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>இடது டிரிகர்</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>வலது டிரிகர்</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>இடது மற்றும் வலது டிரிகர் மோட்டார்களை இடமாற்று</value></data>
@@ -1282,6 +1324,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>அடாப்டிவ் டிரிகர்கள்</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>ஒதுக்கப்பட்ட இயற்பியல் DualSense-இல் டிரிகர் ஃபீட்பேக் விளைவுகளை உள்ளமைக்கவும். கேம் அல்லது கேம் மோட்டிலிருந்து வரும் டிரிகர் விளைவுகள் தானாகவே அனுப்பப்படும். இங்குள்ள அமைப்புகள், இவை இரண்டும் எழுதாதபோது இயங்கும் பயனர் உள்ளமைத்த ஓர் அடுக்கைச் சேர்க்கும்.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>இந்தக் கட்டுப்படுத்தியின் விசை டிரிகர்களில் டிரிகர் ஃபீட்பேக் விளைவுகளை உள்ளமைக்கவும். மெய்நிகர் DualSense இல் இயங்கும் கேம் அல்லது கேம் மோட்டிலிருந்து வரும் டிரிகர் விளைவுகள் தானாகவே இயங்கும். இங்குள்ள அமைப்புகள், இவை இரண்டும் எழுதாதபோது இயங்கும் பயனர் உள்ளமைத்த ஓர் அடுக்கைச் சேர்க்கும்.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>இந்தக் கட்டுப்படுத்தியில் டிரிகர் ஃபீட்பேக் விளைவுகளை உள்ளமைக்கவும். இதன் டிரிகர்கள் அதிர்கின்றன, எதிர்ப்பைத் தருவதில்லை, எனவே ஒவ்வொரு விளைவும் அது செய்வதைப் பின்தொடரும் அதிர்வாக இயங்கும்: டிரிகர் உடையும் இடத்தில் ஒரு வெடிப்பு, வில்லுக்கு ஏறிவரும் அதிர்வும் விடுவிப்பும். மெய்நிகர் DualSense இல் இயங்கும் கேம் அல்லது கேம் மோட்டிலிருந்து வரும் டிரிகர் விளைவுகள் தானாகவே இயங்கும். இங்குள்ள அமைப்புகள், இவை இரண்டும் எழுதாதபோது இயங்கும் பயனர் உள்ளமைத்த ஓர் அடுக்கைச் சேர்க்கும்.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>ஸ்டிக்குகள்</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>ஒவ்வொரு ஸ்டிக்குக்குமான டெட்ஜோன்கள், ஆன்டி-டெட்ஜோன்கள், உணர்திறன் வளைவுகள், மைய ஆஃப்செட் அளவுத்திருத்தம். கீழே உள்ள ஒவ்வொரு பிரிவும் செயலிலுள்ள வெளியீட்டின் ஓர் அனலாக் ஸ்டிக்கைக் குறிக்கும். விரிவாக்கப்பட்ட சுயவிவரங்களில் நான்கு ஸ்டிக்குகள் வரை இருக்கலாம். வழக்கமான கேம்பேடுகளில் இரண்டு இருக்கும்.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>டிரிகர்கள்</value></data>
@@ -3457,7 +3501,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>அவற்றை ஓர் ஆக்டேவ் கீழே மடி</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>தொனி வரம்பு</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>இந்தக் கட்டுப்படுத்தியில் DualSense ஹாப்டிக்ஸை இயக்கு</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ஒரு கேம் இந்த ஸ்லாட்டை, உருவாக்கப்பட்ட ஹாப்டிக் ஆடியோவுடன் மெய்நிகர் DualSense ஆக இயக்கும்போது, அந்த டிராக்கை இந்தக் கட்டுப்படுத்தியின் ஆக்சுவேட்டர்களில் இயக்கும். USB அல்லது அதன் டாங்கிள் வழியாக இணைந்த Steam Controller 2026 அந்த டிராக்கையே இயக்கும். மற்ற எல்லாக் கட்டுப்படுத்திகளும், Bluetooth வழியாக இணைந்த அதுவும், ஆடியோவிலிருந்து பெறப்பட்ட தொனிகளைப் பெறும், அவை வடிவமைப்பாளர் உருவாக்கிய உணர்வை அப்படியே மீளுருவாக்காமல் தோராயமாகத் தரும்.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ஒரு கேம் இந்த ஸ்லாட்டை, உருவாக்கப்பட்ட ஹாப்டிக் ஆடியோவுடன் மெய்நிகர் DualSense ஆக இயக்கும்போது, அந்த டிராக்கை இந்தக் கட்டுப்படுத்தியின் ஆக்சுவேட்டர்களில் இயக்கும். USB அல்லது அதன் டாங்கிள் வழியாக இணைந்த Steam Controller 2026, மற்றும் Flydigi Apex 6 Pro, அந்த டிராக்கையே இயக்கும். மற்ற எல்லாக் கட்டுப்படுத்திகளும், Bluetooth வழியாக இணைந்த அந்த Steam Controller உம், ஆடியோவிலிருந்து பெறப்பட்ட தொனிகளைப் பெறும், அவை வடிவமைப்பாளர் உருவாக்கிய உணர்வை அப்படியே மீளுருவாக்காமல் தோராயமாகத் தரும்.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>ஹாப்டிக்ஸ் கெயின்</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>இயல்புநிலைக்கு மீட்டமை (ஆஃப்)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>இயல்புநிலைக்கு மீட்டமை (100%)</value></data>
@@ -3652,6 +3696,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) ஹாப்டிக் ரிப்போர்ட் அமைப்பும் நோட்-கால அளவுக் கணிதமும், Pila மற்றும் Roboron3042 உருவாக்கியது.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 மற்றும் Steam Deck LFO-தொனி ஹாப்டிக் அமைப்பு, Pila, Crazy, AAGaming உருவாக்கியது.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex டிரிகர் விளைவு மொழிபெயர்ப்பும் எழுதும் வேக ஒழுங்கும், Apex 6 Pro டிரிகர் உருவாக்கம், ஹாப்டிக் ஸ்ட்ரீம் மற்றும் ஒளி தொகுதி, Apex 5 ஒளி எழுதுதல்கள், ReynArts உருவாக்கியது.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5 மற்றும் Apex 6 நெறிமுறைக் குறிப்புகள், ஒளி தொகுதிப் பரிமாற்றம் மற்றும் திரையின் சீரியல் பதிவேற்றம், Mikalai Kaliaha உருவாக்கியது.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4 ஒளி தொகுதி, சுயவிவர இடம் மற்றும் Xbox பயன்முறையில் திரைப் பதிவேற்றம், Uilton Lopes மற்றும் பங்களிப்பாளர்கள் உருவாக்கியது.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4 விசை டிரிகர் கட்டளைகளும் பேடில் அளக்கப்பட்ட வேக ஒழுங்கும், Jackwmtr உருவாக்கியது.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap பயன்முறைகளுக்கான SOCD சீர்செய்தல் விதிமுறைகள், valignatev உருவாக்கியது.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Y நகர்வு</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>அது எதைக் காட்ட வேண்டும் என்பதைத் தேர்ந்தெடுக்கவும். சேமிக்கும் வரை எதுவும் மாறாது.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} {1} என அமைக்கப்பட்டது.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>படம் கட்டுப்படுத்தியின் திரைக்குச் சென்றது.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mad Catz-இன் S.T.R.I.K.E. 7 SDK-ஐப் பதிவிறக்குகிறது…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 இப்போது {0}-ஐ ஏற்றுகிறது.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Microsoft-இன் Visual C++ 2008 ரன்டைமைப் பதிவிறக்கி நிறுவுகிறது…</value></data>

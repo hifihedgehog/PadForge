@@ -939,6 +939,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>ადგენს ამ პორტის მოთამაშის ნომერს, 1-დან 4-მდე. ადაპტერი მას ინახავს და ხელახლა უკავშირდება ამ მოთამაშედ.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast-ის ეკრანი…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>ადგენს, რას აჩვენებს Dreamcast-ის გეიმპადის VMU: ადაპტერის საკუთარ სურათს, აქტიური პროფილის სახელს, ნომერს ან სურათს, საათს, თამაშის დროს ან თქვენ მიერ არჩეულ სურათს.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>კონტროლერის ეკრანი…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>კონტროლერის ეკრანზე აგზავნის სურათს: თქვენ მიერ არჩეულ სურათს ან GIF-ს, ან აქტიური პროფილის სურათს, სახელს ან ნომერს. კონტროლერი მას ინახავს შემდეგი სურათის გაგზავნამდე.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Controller Pak-ის სარეზერვო ასლი…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>ინახავს ამ N64 კონტროლერის Controller Pak-ს 32 KB .mpk ფაილში, რომელსაც N64 ემულატორები კითხულობენ.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Controller Pak-ის აღდგენა…</value></data>
@@ -972,6 +974,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>პროფილის სურათის წაშლა</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>სურათები (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|ყველა ფაილი (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>ამ ფაილში არ არის სურათი, რომლის წაკითხვაც PadForge-ს შეუძლია.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>კონტროლერის ეკრანი</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>კონტროლერამდე არაფერი აღწევს, სანამ არ გააგზავნით.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>თქვენ მიერ არჩეული სურათი ან GIF, მორგებული ეკრანის 160 × 80 პიქსელზე. კონტროლერი მას ინახავს, სანამ სხვას არ გააგზავნით.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>აქტიური პროფილის სურათი, ხოლო თუ არ აქვს, მისი სახელი, ისეთი, როგორიც გაგზავნის მომენტშია. კონტროლერი მას ინახავს პროფილების გადართვისას.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>აქტიური პროფილის სახელი, ისეთი, როგორიც გაგზავნის მომენტშია. კონტროლერი მას ინახავს პროფილების გადართვისას.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>აქტიური პროფილის ადგილი პროფილების სიაში, ისეთი, როგორიც გაგზავნის მომენტშია. ნაგულისხმევი პროფილი 0-ია.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>მორგება</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>ეკრანის შევსება</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>მთლიანი სურათის ჩვენება</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>ეკრანზე გაწელვა</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>სურათები (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|ყველა ფაილი (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>გაგზავნა</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>კადრები: {0}. გაგზავნას დასჭირდება დაახლოებით {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>კონტროლერი მაქსიმუმ {0} კადრს იღებს, ამიტომ ბოლო {1} გამოტოვებულია.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>შეაერთეთ კონტროლერი კაბელით. სურათის ჩაწერიდან დაახლოებით 15 წამში ის თავისით გადაიტვირთება.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>შეაერთეთ კონტროლერი კაბელით. გაგზავნისთვის PadForge გადართავს მას Xbox რეჟიმზე და Windows-ის Xbox დრაივერიდან გადაიყვანს WinUSB-ზე, შემდეგ კი ორივეს უკან დააბრუნებს.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge გადართავს კონტროლერს Xbox რეჟიმზე, გაგზავნისთვის გადაიყვანს WinUSB-ზე, შემდეგ დაუბრუნებს Windows-ის Xbox დრაივერს და უკან გადართავს DInput რეჟიმზე. ჯერ გამორთეთ ყველა სხვა Xbox 360 კონტროლერი. გავაგზავნო ახლა?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>იწყება…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>კონტროლერი გადაირთვება…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>ეკრანის პორტის მოლოდინი…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>კონტროლერი გადადის WinUSB-ზე…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>სურათისთვის ადგილი თავისუფლდება… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>სურათი იგზავნება… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>მთავრდება…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>კონტროლერი უბრუნდება Windows-ს…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>გაიგზავნა. კონტროლერი სურათს გადატვირთვის შემდეგ აჩვენებს.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>გაიგზავნა. კონტროლერი სურათს აჩვენებს.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>შეაერთეთ კონტროლერი კაბელით. მისი ეკრანი სურათს მხოლოდ USB-ით იღებს.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>ეკრანის პორტი არ გამოჩნდა. გამორთეთ და ჩართეთ კონტროლერი მისივე გადამრთველით, შეაერთეთ კაბელით და თავიდან გააგზავნეთ.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>სურათს ერთზე მეტი კონტროლერის ეკრანი ელოდება. გამორთეთ დანარჩენები და თავიდან გააგზავნეთ.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>ეკრანის პორტი არ გაიხსნა. დახურეთ Flydigi Space Station და თავიდან გააგზავნეთ.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>ეკრანმა პასუხი შეწყვიტა. გამორთეთ და ჩართეთ კონტროლერი მისივე გადამრთველით და თავიდან გააგზავნეთ.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>ეკრანმა სურათი არ მიიღო. თავიდან გააგზავნეთ.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>კონტროლერი Xbox 360 კონტროლერად არ დაბრუნდა, ამიტომ არაფერი გაიგზავნა. მისივე გადამრთველით დააბრუნეთ DInput რეჟიმზე და თავიდან გააგზავნეთ.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>გამორთეთ ყველა სხვა Xbox 360 კონტროლერი და თავიდან გააგზავნეთ. დრაივერის ცვლილება მათაც გადაიყვანდა. Xbox რეჟიმში დარჩენილი კონტროლერი DInput რეჟიმზე მისივე გადამრთველით ბრუნდება.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox რეჟიმში კონტროლერმა Apex 4-ის სახით არ უპასუხა, ამიტომ არაფერი გაიგზავნა და Windows-ს დაუბრუნდა. მისივე გადამრთველით დააბრუნეთ DInput რეჟიმზე.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows-მა კონტროლერი WinUSB-ზე არ გადაიყვანა, ამიტომ არაფერი გაიგზავნა. მისივე გადამრთველით დააბრუნეთ DInput რეჟიმზე.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>შეჩერდა. თავიდან გაგზავნამდე გამორთეთ და ჩართეთ კონტროლერი მისივე გადამრთველით.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>სურათი ჯერ კიდევ იგზავნება კონტროლერზე. შეწყდეს გაგზავნა?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak-ის ფაილები (*.mpk)|*.mpk|ყველა ფაილი (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak პორტი {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak-ის აღდგენა</value></data>
@@ -1138,6 +1179,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>იმპულსური ტრიგერები</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ტრიგერის გაძლიერება, ძრავების გაცვლა, ადაპტური ტრიგერის ვიბრაციები, ტრიგერის მუდმივი ძალა</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ვირტუალური კონტროლერიდან მინიჭებულ ფიზიკურ Xbox One, Elite ან Series კონტროლერს გადასცემს თითოეული ტრიგერის ძრავის ბრძანებებს (Xbox იმპულსური ტრიგერები). თამაშის მიერ მართული ტრიგერის ვიბრაცია ავტომატურად გადის. ქვემოთ მოცემული საკონტროლო ელემენტები თითოეული ტრიგერისთვის სიდიდის მასშტაბს ცვლის.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>ვირტუალური კონტროლერიდან თითოეული ტრიგერის ძრავის ბრძანებებს (Xbox იმპულსური ტრიგერები) უკრავს ვიბრაციის სახით ამ კონტროლერის ტრიგერებში. თამაშის მიერ მართული ტრიგერის ვიბრაცია ავტომატურად გადის. ქვემოთ მოცემული საკონტროლო ელემენტები თითოეული ტრიგერისთვის სიდიდის მასშტაბს ცვლის.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>მარცხენა ტრიგერი</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>მარჯვენა ტრიგერი</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>მარცხენა და მარჯვენა ტრიგერის ძრავების გაცვლა</value></data>
@@ -1202,6 +1244,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>ადაპტური ტრიგერები</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>მინიჭებულ ფიზიკურ DualSense-ზე ტრიგერის უკუკავშირის ეფექტების კონფიგურაცია. თამაშის ან თამაშის მოდის ტრიგერის ეფექტები ავტომატურად გადაიგზავნება. აქ მოცემული პარამეტრები ამატებს მომხმარებლის მიერ კონფიგურირებულ შრეს, რომელიც მაშინ მუშაობს, როცა არცერთი არაფერს წერს.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>ამ კონტროლერის ძალური ტრიგერებზე ტრიგერის უკუკავშირის ეფექტების კონფიგურაცია. ვირტუალურ DualSense-ზე თამაშის ან თამაშის მოდის ტრიგერის ეფექტები ავტომატურად უკრავს. აქ მოცემული პარამეტრები ამატებს მომხმარებლის მიერ კონფიგურირებულ შრეს, რომელიც მაშინ მუშაობს, როცა არცერთი არაფერს წერს.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>ამ კონტროლერზე ტრიგერის უკუკავშირის ეფექტების კონფიგურაცია. მისი ტრიგერები ვიბრირებს და წინააღმდეგობას არ უწევს, ამიტომ თითოეული ეფექტი უკრავს ვიბრაციის სახით, რომელიც ეფექტის მოქმედებას მიჰყვება: იმპულსი იქ, სადაც ტრიგერი ტყდება, ზრდა და მოშვება მშვილდისთვის. ვირტუალურ DualSense-ზე თამაშის ან თამაშის მოდის ტრიგერის ეფექტები ავტომატურად უკრავს. აქ მოცემული პარამეტრები ამატებს მომხმარებლის მიერ კონფიგურირებულ შრეს, რომელიც მაშინ მუშაობს, როცა არცერთი არაფერს წერს.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>სტიკები</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>სტიკებისთვის ცალ-ცალკე მკვდარი ზონები, ანტი-მკვდარი ზონები, მგრძნობელობის მრუდები და ცენტრის წანაცვლების კალიბრაცია. ქვემოთ თითოეული განყოფილება აქტიური გამოსავლის ერთ ანალოგურ სტიკს ეხება. გაფართოებულ პროფილებს ოთხამდე სტიკი შეიძლება ჰქონდეს. სტანდარტულ გეიმპადებს ორი აქვს.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ტრიგერები</value></data>
@@ -3263,7 +3307,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>ოქტავით ჩამოწევა</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>ტონის ზღვარი</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense-ის ჰაპტიკის დაკვრა ამ კონტროლერზე</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>როცა თამაში ამ სლოტს ვირტუალურ DualSense-ად მართავს და ავტორისეულ ჰაპტიკურ აუდიოს იყენებს, ეს ჩანაწერი ამ კონტროლერის აქტუატორებზე უკრავს. Steam Controller 2026 USB-ით ან დონგლით ჩანაწერს თავად უკრავს. ყველა სხვა კონტროლერი, და ისიც Bluetooth-ით, იღებს აუდიოდან გამოყვანილ ტონებს, რომლებიც დიზაინერის შეგრძნებას უახლოვდება და არ იმეორებს.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>როცა თამაში ამ სლოტს ვირტუალურ DualSense-ად მართავს და ავტორისეულ ჰაპტიკურ აუდიოს იყენებს, ეს ჩანაწერი ამ კონტროლერის აქტუატორებზე უკრავს. Steam Controller 2026 USB-ით ან დონგლით და Flydigi Apex 6 Pro ჩანაწერს თავად უკრავენ. ყველა სხვა კონტროლერი, და ის Steam Controller Bluetooth-ით, იღებს აუდიოდან გამოყვანილ ტონებს, რომლებიც დიზაინერის შეგრძნებას უახლოვდება და არ იმეორებს.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>ჰაპტიკის გაძლიერება</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>ნაგულისხმევზე დაბრუნება (გამორთული)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>ნაგულისხმევზე დაბრუნება (100%)</value></data>
@@ -3454,6 +3498,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller-ის (2015) ჰაპტიკური ანგარიშის განლაგება და ნოტის პერიოდის მათემატიკა, ავტორები Pila და Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026-ისა და Steam Deck-ის LFO-ტონური ჰაპტიკის განლაგება, ავტორები Pila, Crazy და AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex-ის ტრიგერის ეფექტების თარგმნა და ჩაწერის ტემპი, Apex 6 Pro-ს ტრიგერების რენდერი, ჰაპტიკური ნაკადი და განათების ბლოკი, ასევე Apex 5-ის განათების ჩაწერები, ავტორი ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5-ისა და Apex 6-ის პროტოკოლის ჩანაწერები, განათების ბლოკის გადაცემა და ეკრანის სერიული ატვირთვა, ავტორი Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4-ის განათების ბლოკი, პროფილის სლოტი და ეკრანის ატვირთვა Xbox რეჟიმში, ავტორები Uilton Lopes და თანაავტორები.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4-ის ძალური ტრიგერების ბრძანებები და გეიმპადზე გაზომილი ტემპი, ავტორი Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD-ის გასუფთავების სემანტიკა Snap Tap რეჟიმებისთვის, ავტორი valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4748,6 +4800,7 @@
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>გადაადგილება Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>აირჩიეთ, რას აჩვენებს. არაფერი იცვლება, სანამ არ შეინახავთ.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0}: დაყენებულია {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>სურათი კონტროლერის ეკრანზე გაიგზავნა.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>მიმდინარეობს Mad Catz-ის S.T.R.I.K.E. 7 SDK-ს ჩამოტვირთვა…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 ახლა ტვირთავს {0}-ს.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>მიმდინარეობს Microsoft-ის Visual C++ 2008 გაშვების გარემოს ჩამოტვირთვა და დაყენება…</value></data>

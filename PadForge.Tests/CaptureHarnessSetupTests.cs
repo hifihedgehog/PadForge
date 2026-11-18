@@ -1779,6 +1779,7 @@ namespace PadForge.Tests
             Assert.False(ud.HomeOfferPending, who);
             Assert.Equal(0, ud.IdleDisconnectSeconds);
             Assert.Equal(0, ud.PeripheralOutputs);
+            Assert.Equal(0, ud.FlydigiApexModel);
             Assert.False(ud.HasAccelAux, who);
             Assert.False(ud.HasGyroAux, who);
             Assert.Equal(0, ud.CapTouchpadCount);

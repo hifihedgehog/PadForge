@@ -952,6 +952,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Mengatur nomor pemain port ini, 1 sampai 4. Adaptor menyimpannya dan tersambung kembali sebagai pemain tersebut.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Layar Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Mengatur apa yang ditampilkan VMU pada gamepad Dreamcast: gambar milik adaptor, nama, nomor, atau gambar profil aktif, jam, waktu bermain, atau gambar pilihan Anda.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Layar kontroler…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Mengirim gambar ke layar kontroler: gambar atau GIF pilihan Anda, atau gambar, nama, atau nomor profil aktif. Kontroler menyimpannya sampai gambar berikutnya dikirim.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Cadangkan Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Menyimpan Controller Pak di kontroler N64 ini ke file .mpk 32 KB, format yang dibaca emulator N64.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Pulihkan Controller Pak…</value></data>
@@ -985,6 +987,45 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Hapus gambar profil</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Gambar (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Semua file (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>File itu tidak berisi gambar yang dapat dibaca PadForge.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Layar kontroler</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Tidak ada yang sampai ke kontroler sebelum Anda mengirim.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Gambar atau GIF pilihan Anda, disesuaikan dengan layar berukuran 160 kali 80 piksel. Kontroler menyimpannya sampai Anda mengirim gambar lain.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Gambar milik profil aktif, atau namanya jika profil itu tidak memiliki gambar, sesuai keadaan saat Anda mengirim. Kontroler tetap menyimpannya saat profil berganti.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Nama profil aktif sesuai keadaan saat Anda mengirim. Kontroler tetap menyimpannya saat profil berganti.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Urutan profil aktif dalam daftar profil sesuai keadaan saat Anda mengirim. Profil Default bernomor 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Penyesuaian</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Penuhi layar</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Tampilkan seluruh gambar</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Regangkan ke layar</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Gambar (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Semua file (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Kirim</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Bingkai: {0}. Pengiriman memakan waktu sekitar {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontroler hanya menerima maksimal {0} bingkai, jadi {1} bingkai terakhir dihilangkan.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Sambungkan kontroler dengan kabel. Kontroler restart sendiri sekitar 15 detik setelah gambar masuk.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Sambungkan kontroler dengan kabel. Untuk pengiriman, PadForge mengalihkannya ke mode Xbox dan memindahkannya dari driver Xbox Windows ke WinUSB, lalu mengembalikan keduanya.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge akan mengalihkan kontroler ke mode Xbox, memindahkannya ke WinUSB untuk pengiriman, lalu mengembalikannya ke driver Xbox Windows dan mengalihkannya kembali ke mode DInput. Cabut dulu semua kontroler Xbox 360 lainnya. Kirim sekarang?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Memulai…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Mengalihkan kontroler…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Menunggu port layar…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Memindahkan kontroler ke WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Mengosongkan ruang untuk gambar… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Mengirim gambar… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Menyelesaikan…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Mengembalikan kontroler ke Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Terkirim. Kontroler menampilkan gambar setelah restart.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Terkirim. Kontroler menampilkan gambar.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Sambungkan kontroler dengan kabel. Layarnya hanya menerima gambar lewat USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Port layar tidak muncul. Matikan lalu nyalakan kontroler dengan sakelarnya sendiri, sambungkan dengan kabel, lalu kirim lagi.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Lebih dari satu layar kontroler sedang menunggu gambar. Cabut yang lain lalu kirim lagi.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Port layar tidak dapat dibuka. Tutup Flydigi Space Station lalu kirim lagi.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Layar berhenti merespons. Matikan lalu nyalakan kontroler dengan sakelarnya sendiri, lalu kirim lagi.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Layar menolak gambar itu. Kirim lagi.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Kontroler tidak kembali sebagai kontroler Xbox 360, jadi tidak ada yang terkirim. Alihkan kembali ke mode DInput dengan sakelarnya sendiri lalu kirim lagi.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Cabut semua kontroler Xbox 360 lainnya lalu kirim lagi. Perubahan driver akan ikut memindahkannya. Kontroler yang tertinggal di mode Xbox kembali ke mode DInput dengan sakelarnya sendiri.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Kontroler dalam mode Xbox tidak merespons sebagai Apex 4, jadi tidak ada yang terkirim dan Windows sudah mendapatkannya kembali. Alihkan kembali ke mode DInput dengan sakelarnya sendiri.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows tidak berhasil memindahkan kontroler ke WinUSB, jadi tidak ada yang terkirim. Alihkan kembali ke mode DInput dengan sakelarnya sendiri.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Dihentikan. Matikan lalu nyalakan kontroler dengan sakelarnya sendiri sebelum mengirim lagi.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Gambar masih dikirim ke kontroler. Hentikan pengiriman?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>File Controller Pak (*.mpk)|*.mpk|Semua file (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Pulihkan Controller Pak</value></data>
@@ -1218,6 +1259,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Pelatuk impuls</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain per pelatuk, tukar motor, getaran pelatuk adaptif, Gaya pelatuk konstan</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Meneruskan perintah motor per pelatuk (Xbox Impulse Triggers) dari kontroler virtual ke kontroler fisik Xbox One, Elite, atau Series yang ditetapkan. Getaran pelatuk yang dikendalikan game diteruskan secara otomatis. Kontrol di bawah menskalakan besarnya per pelatuk.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Memutar perintah motor per pelatuk (Xbox Impulse Triggers) dari kontroler virtual sebagai getaran pada pelatuk kontroler ini. Getaran pelatuk yang dikendalikan game diteruskan secara otomatis. Kontrol di bawah menskalakan besarnya per pelatuk.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Pelatuk kiri</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Pelatuk kanan</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Tukar motor pelatuk kiri dan kanan</value></data>
@@ -1282,6 +1324,8 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Pelatuk adaptif</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfigurasikan efek umpan balik pelatuk pada DualSense fisik yang ditetapkan. Efek pelatuk dari game atau mod game diteruskan secara otomatis. Pengaturan di sini menambahkan lapisan buatan pengguna yang berjalan saat keduanya tidak menulis.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Konfigurasikan efek umpan balik pelatuk pada pelatuk gaya kontroler ini. Efek pelatuk dari game pada DualSense virtual atau dari mod game diputar secara otomatis. Pengaturan di sini menambahkan lapisan buatan pengguna yang berjalan saat keduanya tidak menulis.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Konfigurasikan efek umpan balik pelatuk pada kontroler ini. Pelatuknya bergetar dan tidak memberi perlawanan, sehingga setiap efek diputar sebagai getaran yang mengikuti cara kerja efek itu: hentakan saat pelatuk patah, penguatan lalu pelepasan untuk busur. Efek pelatuk dari game pada DualSense virtual atau dari mod game diputar secara otomatis. Pengaturan di sini menambahkan lapisan buatan pengguna yang berjalan saat keduanya tidak menulis.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Stik</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Zona mati, anti-zona mati, kurva sensitivitas, dan kalibrasi offset tengah per stik. Setiap bagian di bawah menyasar satu stik analog pada output aktif. Profil Diperluas dapat memiliki hingga empat stik. Gamepad standar memiliki dua.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Pelatuk</value></data>
@@ -3457,7 +3501,7 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Turunkan satu oktaf</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Batas nada</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Putar haptik DualSense pada kontroler ini</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Saat game menggerakkan slot ini sebagai DualSense virtual dengan audio haptik buatan pengembang, putar trek itu pada aktuator kontroler ini. Steam Controller 2026 lewat USB atau dongle-nya memutar trek itu sendiri. Setiap kontroler lain, dan kontroler itu lewat Bluetooth, mendapat nada yang diturunkan dari audio, yang mendekati rasa rancangan pembuatnya, bukan mereproduksinya.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Saat game menggerakkan slot ini sebagai DualSense virtual dengan audio haptik buatan pengembang, putar trek itu pada aktuator kontroler ini. Steam Controller 2026 lewat USB atau dongle-nya, dan Flydigi Apex 6 Pro, memutar trek itu sendiri. Setiap kontroler lain, dan Steam Controller itu lewat Bluetooth, mendapat nada yang diturunkan dari audio, yang mendekati rasa rancangan pembuatnya, bukan mereproduksinya.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Gain haptik</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Atur ulang ke default (nonaktif)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Atur ulang ke default (100%)</value></data>
@@ -3652,6 +3696,14 @@ Salinan versi sebelumnya ada di folder ini: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Tata letak laporan haptik Steam Controller (2015) dan matematika periode not, karya Pila dan Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Tata letak haptik nada LFO Steam Controller 2026 dan Steam Deck, karya Pila, Crazy, dan AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Penerjemahan efek pelatuk dan pengaturan laju penulisan Flydigi Apex, rendering pelatuk Apex 6 Pro, aliran haptik dan blok pencahayaan, serta penulisan pencahayaan Apex 5, karya ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Catatan protokol Flydigi Apex 5 dan Apex 6, transfer blok pencahayaan, dan unggahan serial ke layar, karya Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Blok pencahayaan Flydigi Apex 4, slot profil, dan unggahan gambar ke layar dalam mode Xbox, karya Uilton Lopes dan kontributor.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Perintah pelatuk gaya Flydigi Apex 4 dan laju yang diukur pada pad, karya Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantik pembersihan SOCD untuk mode Snap Tap, karya valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Geser Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Pilih apa yang ditampilkan. Tidak ada yang berubah sampai Anda menyimpan.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} diatur ke {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Gambar terkirim ke layar kontroler.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mengunduh SDK S.T.R.I.K.E. 7 dari Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 kini memuat {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Mengunduh dan menginstal runtime Visual C++ 2008 dari Microsoft…</value></data>

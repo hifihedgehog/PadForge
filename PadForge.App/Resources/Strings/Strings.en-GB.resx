@@ -605,4 +605,6 @@
   <data name="Extras_Magnifier_Follow" xml:space="preserve"><value>Centre On</value></data>
   <data name="Extras_Magnifier_Follow_Center" xml:space="preserve"><value>Display Centre</value></data>
   <data name="Extras_Magnifier_BorderColor" xml:space="preserve"><value>Border Colour</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex trigger effect translation and write pacing, the Apex 6 Pro trigger rendering, haptic stream and lighting block and the Apex 5 lighting writes, by ReynArts.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>The screen’s port did not appear. Switch the controller off and on with its own switch, connect it by cable and send again.</value></data>
 </root>

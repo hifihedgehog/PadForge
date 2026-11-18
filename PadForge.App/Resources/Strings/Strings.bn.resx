@@ -952,6 +952,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>এই পোর্টের প্লেয়ার নম্বর ঠিক করে, 1 থেকে 4। অ্যাডাপ্টার এটি মনে রাখে এবং ওই প্লেয়ার হিসেবে আবার সংযুক্ত হয়।</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast স্ক্রিন…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Dreamcast প্যাডের VMU কী দেখাবে তা ঠিক করে: অ্যাডাপ্টারের নিজস্ব ছবি, সক্রিয় প্রোফাইলের নাম, নম্বর বা ছবি, ঘড়ি, খেলার সময়, অথবা আপনার বেছে নেওয়া ছবি।</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>কন্ট্রোলার স্ক্রিন…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>কন্ট্রোলারের স্ক্রিনে একটি ছবি পাঠায়: আপনার বেছে নেওয়া ছবি বা GIF, অথবা সক্রিয় প্রোফাইলের ছবি, নাম বা নম্বর। পরেরটি না আসা পর্যন্ত কন্ট্রোলার সেটি ধরে রাখে।</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Controller Pak ব্যাকআপ করুন…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>এই N64 কন্ট্রোলারের Controller Pak-টি একটি 32 KB .mpk ফাইলে সংরক্ষণ করে, যে ফরম্যাট N64 ইমুলেটর পড়তে পারে।</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Controller Pak পুনরুদ্ধার করুন…</value></data>
@@ -985,6 +987,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>প্রোফাইলের ছবি সরান</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>ছবি (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|সব ফাইল (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>ওই ফাইলে PadForge পড়তে পারে এমন কোনো ছবি নেই।</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>কন্ট্রোলার স্ক্রিন</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>পাঠানো না পর্যন্ত কন্ট্রোলারে কিছু পৌঁছায় না।</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>আপনার বেছে নেওয়া একটি ছবি বা GIF, স্ক্রিনের 160 বাই 80 পিক্সেলে বসানো। আরেকটি না পাঠানো পর্যন্ত কন্ট্রোলার সেটি ধরে রাখে।</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>সক্রিয় প্রোফাইলের ছবি, ছবি না থাকলে তার নাম, পাঠানোর সময় যেমন আছে। প্রোফাইল বদলালেও কন্ট্রোলার সেটি ধরে রাখে।</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>সক্রিয় প্রোফাইলের নাম, পাঠানোর সময় যেমন আছে। প্রোফাইল বদলালেও কন্ট্রোলার সেটি ধরে রাখে।</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>প্রোফাইল তালিকায় সক্রিয় প্রোফাইলের অবস্থান, পাঠানোর সময় যেমন আছে। ডিফল্ট প্রোফাইল হলো 0।</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>বসানো</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>স্ক্রিন ভরে দিন</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>পুরো ছবি দেখান</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>স্ক্রিনের মাপে টানুন</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>ছবি (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|সব ফাইল (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>পাঠান</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>ফ্রেম: {0}। পাঠাতে প্রায় {1} লাগে।</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>কন্ট্রোলার সর্বোচ্চ {0}টি ফ্রেম নেয়, তাই শেষের {1}টি বাদ দেওয়া হয়েছে।</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>কন্ট্রোলারটি কেবল দিয়ে সংযুক্ত করুন। ছবি ঢোকার প্রায় 15 সেকেন্ড পরে এটি নিজে থেকে রিস্টার্ট হয়।</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>কন্ট্রোলারটি কেবল দিয়ে সংযুক্ত করুন। পাঠানোর জন্য PadForge এটিকে Xbox মোডে নেয় এবং Windows-এর Xbox ড্রাইভার থেকে WinUSB-তে সরায়, তারপর দুটোই আগের অবস্থায় ফিরিয়ে দেয়।</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge কন্ট্রোলারটিকে Xbox মোডে নেবে, পাঠানোর জন্য WinUSB-তে সরাবে, তারপর Windows-এর Xbox ড্রাইভারে ফিরিয়ে দেবে এবং DInput মোডে ফেরাবে। আগে অন্য সব Xbox 360 কন্ট্রোলার খুলে নিন। এখনই পাঠাবেন?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>শুরু হচ্ছে…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>কন্ট্রোলার বদলানো হচ্ছে…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>স্ক্রিনের পোর্টের অপেক্ষা চলছে…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>কন্ট্রোলারকে WinUSB-তে সরানো হচ্ছে…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>ছবির জায়গা খালি করা হচ্ছে… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>ছবি পাঠানো হচ্ছে… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>শেষ হচ্ছে…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>কন্ট্রোলার Windows-কে ফিরিয়ে দেওয়া হচ্ছে…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>পাঠানো হয়েছে। রিস্টার্টের পর কন্ট্রোলার ছবিটি দেখাবে।</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>পাঠানো হয়েছে। কন্ট্রোলার ছবিটি দেখাচ্ছে।</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>কন্ট্রোলারটি কেবল দিয়ে সংযুক্ত করুন। এর স্ক্রিন শুধু USB-তে ছবি নেয়।</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>স্ক্রিনের পোর্ট দেখা যায়নি। কন্ট্রোলারের নিজস্ব সুইচে এটি বন্ধ করে আবার চালু করুন, কেবল দিয়ে সংযুক্ত করুন এবং আবার পাঠান।</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>একাধিক কন্ট্রোলার স্ক্রিন ছবির অপেক্ষায় আছে। বাকিগুলো খুলে নিন এবং আবার পাঠান।</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>স্ক্রিনের পোর্ট খোলেনি। Flydigi Space Station বন্ধ করুন এবং আবার পাঠান।</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>স্ক্রিন সাড়া দেওয়া বন্ধ করেছে। কন্ট্রোলারের নিজস্ব সুইচে এটি বন্ধ করে আবার চালু করুন এবং আবার পাঠান।</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>স্ক্রিন ছবিটি নেয়নি। আবার পাঠান।</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>কন্ট্রোলারটি Xbox 360 কন্ট্রোলার হিসেবে ফিরে আসেনি, তাই কিছু পাঠানো হয়নি। নিজস্ব সুইচে এটিকে আবার DInput মোডে নিন এবং আবার পাঠান।</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>অন্য সব Xbox 360 কন্ট্রোলার খুলে নিন এবং আবার পাঠান। ড্রাইভার বদলালে সেগুলোও সরে যাবে। Xbox মোডে থেকে যাওয়া কন্ট্রোলার নিজস্ব সুইচে আবার DInput মোডে ফেরে।</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox মোডে থাকা কন্ট্রোলার Apex 4 হিসেবে সাড়া দেয়নি, তাই কিছু পাঠানো হয়নি এবং Windows এটি ফিরে পেয়েছে। নিজস্ব সুইচে এটিকে আবার DInput মোডে নিন।</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows কন্ট্রোলারটিকে WinUSB-তে সরায়নি, তাই কিছু পাঠানো হয়নি। নিজস্ব সুইচে এটিকে আবার DInput মোডে নিন।</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>থামানো হয়েছে। আবার পাঠানোর আগে কন্ট্রোলারের নিজস্ব সুইচে এটি বন্ধ করে আবার চালু করুন।</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>একটি ছবি এখনও কন্ট্রোলারে যাচ্ছে। পাঠানো থামাবেন?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak ফাইল (*.mpk)|*.mpk|সব ফাইল (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak পোর্ট {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak পুনরুদ্ধার করুন</value></data>
@@ -1218,6 +1259,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ইমপালস ট্রিগার</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ট্রিগার অনুযায়ী গেইন, মোটর অদলবদল, অ্যাডাপ্টিভ ট্রিগারের কম্পন, স্থির ট্রিগার ফোর্স</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলার থেকে প্রতিটি ট্রিগারের আলাদা মোটর কমান্ড (Xbox Impulse Triggers) বরাদ্দ করা ফিজিক্যাল Xbox One, Elite বা Series কন্ট্রোলারে পাঠায়। গেমের চালানো ট্রিগার রাম্বল স্বয়ংক্রিয়ভাবে পৌঁছে যায়। নিচের কন্ট্রোলগুলো প্রতিটি ট্রিগারের মাত্রা ঠিক করে।</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>ভার্চুয়াল কন্ট্রোলার থেকে প্রতিটি ট্রিগারের আলাদা মোটর কমান্ড (Xbox Impulse Triggers) এই কন্ট্রোলারের ট্রিগারে কম্পন হিসেবে চালায়। গেমের চালানো ট্রিগার রাম্বল স্বয়ংক্রিয়ভাবে পৌঁছে যায়। নিচের কন্ট্রোলগুলো প্রতিটি ট্রিগারের মাত্রা ঠিক করে।</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>বাম ট্রিগার</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>ডান ট্রিগার</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>বাম ও ডান ট্রিগার মোটর অদলবদল করুন</value></data>
@@ -1282,6 +1324,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>অ্যাডাপ্টিভ ট্রিগার</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>বরাদ্দ করা ফিজিক্যাল DualSense-এ ট্রিগার ফিডব্যাক ইফেক্ট কনফিগার করুন। গেম বা গেম মড থেকে আসা ট্রিগার ইফেক্ট স্বয়ংক্রিয়ভাবে পাঠানো হয়। এখানকার সেটিংস ব্যবহারকারীর কনফিগার করা একটি স্তর যোগ করে, যা এ দুটির কেউ না লিখলে চলে।</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>এই কন্ট্রোলারের ফোর্স ট্রিগারে ট্রিগার ফিডব্যাক ইফেক্ট কনফিগার করুন। ভার্চুয়াল DualSense-এ গেম থেকে বা গেম মড থেকে আসা ট্রিগার ইফেক্ট স্বয়ংক্রিয়ভাবে চলে। এখানকার সেটিংস ব্যবহারকারীর কনফিগার করা একটি স্তর যোগ করে, যা এ দুটির কেউ না লিখলে চলে।</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>এই কন্ট্রোলারে ট্রিগার ফিডব্যাক ইফেক্ট কনফিগার করুন। এর ট্রিগার কাঁপে, বাধা দেয় না, তাই প্রতিটি ইফেক্ট ইফেক্টের কাজ অনুসরণ করা কম্পন হিসেবে চলে: ট্রিগার যেখানে ভাঙে সেখানে একটি ঝটকা, ধনুকের জন্য ক্রমশ বাড়া ও তারপর ছেড়ে দেওয়া। ভার্চুয়াল DualSense-এ গেম থেকে বা গেম মড থেকে আসা ট্রিগার ইফেক্ট স্বয়ংক্রিয়ভাবে চলে। এখানকার সেটিংস ব্যবহারকারীর কনফিগার করা একটি স্তর যোগ করে, যা এ দুটির কেউ না লিখলে চলে।</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>স্টিক</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>প্রতিটি স্টিকের আলাদা ডেডজোন, অ্যান্টি-ডেডজোন, সংবেদনশীলতার কার্ভ ও কেন্দ্র অফসেট ক্যালিব্রেশন। নিচের প্রতিটি অংশ সক্রিয় আউটপুটের একটি অ্যানালগ স্টিকের জন্য। বর্ধিত প্রোফাইলে সর্বোচ্চ চারটি স্টিক থাকতে পারে। সাধারণ গেমপ্যাডে থাকে দুটি।</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ট্রিগার</value></data>
@@ -3457,7 +3501,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>এক অক্টেভ নামিয়ে আনুন</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>টোনের সীমা</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>এই কন্ট্রোলারে DualSense হ্যাপটিক্স চালান</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>কোনো গেম এই স্লটকে আলাদাভাবে তৈরি হ্যাপটিক অডিওসহ ভার্চুয়াল DualSense হিসেবে চালালে সেই ট্র্যাকটি এই কন্ট্রোলারের অ্যাকচুয়েটরে চালায়। USB বা নিজস্ব ডঙ্গলে সংযুক্ত Steam Controller 2026 ট্র্যাকটি হুবহু চালায়। বাকি সব কন্ট্রোলার, এবং Bluetooth-এ সংযুক্ত ওই কন্ট্রোলারও, অডিও থেকে তৈরি টোন পায়, যা ডিজাইনারের অনুভূতি হুবহু নয়, কাছাকাছি ফুটিয়ে তোলে।</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>কোনো গেম এই স্লটকে আলাদাভাবে তৈরি হ্যাপটিক অডিওসহ ভার্চুয়াল DualSense হিসেবে চালালে সেই ট্র্যাকটি এই কন্ট্রোলারের অ্যাকচুয়েটরে চালায়। USB বা নিজস্ব ডঙ্গলে সংযুক্ত Steam Controller 2026 এবং Flydigi Apex 6 Pro ট্র্যাকটি হুবহু চালায়। বাকি সব কন্ট্রোলার, এবং Bluetooth-এ সংযুক্ত ওই Steam Controller-ও, অডিও থেকে তৈরি টোন পায়, যা ডিজাইনারের অনুভূতি হুবহু নয়, কাছাকাছি ফুটিয়ে তোলে।</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>হ্যাপটিক্স গেইন</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>ডিফল্টে রিসেট করুন (বন্ধ)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>ডিফল্টে রিসেট করুন (100%)</value></data>
@@ -3652,6 +3696,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015)-এর হ্যাপটিক রিপোর্ট লেআউট ও নোট-পিরিয়ডের হিসাব, নির্মাতা Pila ও Roboron3042।</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 ও Steam Deck-এর LFO-টোন হ্যাপটিক লেআউট, নির্মাতা Pila, Crazy ও AAGaming।</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex-এর ট্রিগার ইফেক্ট অনুবাদ ও লেখার গতি নিয়ন্ত্রণ, Apex 6 Pro-র ট্রিগার রেন্ডারিং, হ্যাপটিক স্ট্রিম ও লাইটিং ব্লক, এবং Apex 5-এর লাইটিং লেখা, নির্মাতা ReynArts।</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5 ও Apex 6-এর প্রোটোকল নোট, লাইটিং ব্লক স্থানান্তর এবং স্ক্রিনের সিরিয়াল আপলোড, নির্মাতা Mikalai Kaliaha।</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4-এর লাইটিং ব্লক, প্রোফাইল স্লট এবং Xbox মোডে স্ক্রিন আপলোড, নির্মাতা Uilton Lopes ও অবদানকারীরা।</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4-এর ফোর্স ট্রিগার কমান্ড এবং প্যাডে মাপা গতি, নির্মাতা Jackwmtr।</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap মোডগুলোর জন্য SOCD ক্লিনিংয়ের নিয়ম, নির্মাতা valignatev।</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>প্যান Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>কী দেখাবে তা বেছে নিন। সংরক্ষণ না করা পর্যন্ত কিছু বদলায় না।</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} এখন {1}।</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>ছবিটি কন্ট্রোলারের স্ক্রিনে গেছে।</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mad Catz-এর S.T.R.I.K.E. 7 SDK ডাউনলোড হচ্ছে…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 এখন {0} লোড করে।</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Microsoft-এর Visual C++ 2008 রানটাইম ডাউনলোড ও ইনস্টল হচ্ছে…</value></data>

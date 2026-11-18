@@ -496,6 +496,9 @@ namespace PadForge.Views
             PadForge.Common.Input.Peripherals.PeripheralOutputs.StatusChanged += OnPeripheralOutputsChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.ClaimsChanged -= OnPeripheralOutputsChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.ClaimsChanged += OnPeripheralOutputsChanged;
+            // A Flydigi Apex pad's tabs follow the model it answers with (#586).
+            PadForge.Common.Input.Flydigi.FlydigiApexService.Changed -= OnPeripheralOutputsChanged;
+            PadForge.Common.Input.Flydigi.FlydigiApexService.Changed += OnPeripheralOutputsChanged;
             // A device whose lights become known one by one gains its Key
             // Colors card (#557).
             PadForge.Common.Input.Peripherals.PeripheralLightMaps.Changed -= OnPeripheralOutputsChanged;
@@ -512,6 +515,7 @@ namespace PadForge.Views
             PadForge.Common.Input.Peripherals.PeripheralOutputs.StatusChanged -= OnPeripheralOutputsChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.ClaimsChanged -= OnPeripheralOutputsChanged;
             PadForge.Common.Input.Peripherals.PeripheralLightMaps.Changed -= OnPeripheralOutputsChanged;
+            PadForge.Common.Input.Flydigi.FlydigiApexService.Changed -= OnPeripheralOutputsChanged;
         }
 
         /// <summary>Raised on the peripheral host's thread. One refresh per
@@ -910,6 +914,8 @@ namespace PadForge.Views
             //   Other keyboards, mice, touchpads and MIDI controllers have
             //   nothing to play rumble on, so the tab would be a no-op.
             bool hasAdaptiveTriggers = false;
+            // A Flydigi Apex 4, 5 or 6 Pro that answered as one (#586).
+            var flydigiModel = PadForge.Engine.Flydigi.FlydigiApexModel.None;
             bool hasLightbar = false;
             bool lightbarIsDs4 = false;
             bool hasIndicatorLeds = false;
@@ -1078,6 +1084,18 @@ namespace PadForge.Views
                             // (#147, #584): macro sounds play as tones through the actuator.
                             hasAudio = true;
                         }
+                        // A Flydigi Apex pad (#586): its triggers play the
+                        // Adaptive Triggers tab's effects and the Impulse
+                        // Triggers tab's levels, an Apex 4 and 5 by force and
+                        // an Apex 6 Pro by vibration. By the model the pad
+                        // answered with, which its record keeps while it
+                        // sleeps.
+                        flydigiModel = PadForge.Common.Input.Flydigi.FlydigiApexService.ModelOf(ud);
+                        if (flydigiModel != PadForge.Engine.Flydigi.FlydigiApexModel.None)
+                        {
+                            hasAdaptiveTriggers = true;
+                            hasImpulseTriggers = true;
+                        }
                         // Grip-motor rumble: modern Xbox (impulse-trigger devices), the
                         // Sony lightbar family (DualSense / Edge / DS4 all rumble), and any
                         // generic SDL gamepad reporting rumble (covers Xbox 360 etc.).
@@ -1138,6 +1156,27 @@ namespace PadForge.Views
             }
             if (TabAdaptiveTriggers != null)
                 TabAdaptiveTriggers.Visibility = hasAdaptiveTriggers ? Visibility.Visible : Visibility.Collapsed;
+            // Each trigger tab's title says in its tooltip what the tab
+            // drives, and a Flydigi pad's triggers are neither a DualSense's
+            // nor an Xbox pad's (#586). The switch that plays a DualSense's
+            // trigger vibrations on impulse motors is for a pad whose
+            // triggers only vibrate through SDL: a Flydigi pad takes the
+            // whole effect, so the switch would act on nothing there.
+            bool isFlydigi = flydigiModel != PadForge.Engine.Flydigi.FlydigiApexModel.None;
+            var words = PadForge.Resources.Strings.Strings.Instance;
+            if (ImpulseTriggersTitle != null)
+                ImpulseTriggersTitle.ToolTip = isFlydigi
+                    ? words.Pad_ImpulseTriggers_Subtitle_Flydigi : words.Pad_ImpulseTriggers_Subtitle;
+            if (AdaptiveTriggersTitle != null)
+                AdaptiveTriggersTitle.ToolTip = flydigiModel == PadForge.Engine.Flydigi.FlydigiApexModel.Apex6Pro
+                    ? words.Pad_AdaptiveTriggers_Subtitle_FlydigiVibration
+                    : isFlydigi ? words.Pad_AdaptiveTriggers_Subtitle_Flydigi : words.Pad_AdaptiveTriggers_Subtitle;
+            if (AtTranslateRow != null)
+                AtTranslateRow.Visibility = isFlydigi ? Visibility.Collapsed : Visibility.Visible;
+            if (GameModImpulseLineHost != null)
+                GameModImpulseLineHost.Visibility = isFlydigi ? Visibility.Collapsed : Visibility.Visible;
+            if (GameModFlydigiLineHost != null)
+                GameModFlydigiLineHost.Visibility = isFlydigi ? Visibility.Visible : Visibility.Collapsed;
             if (TabLighting != null)
                 TabLighting.Visibility = (hasLightbar || hasGuideLed || hasPeripheralLighting)
                     ? Visibility.Visible : Visibility.Collapsed;

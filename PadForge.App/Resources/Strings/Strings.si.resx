@@ -938,6 +938,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>මෙම තොටේ ක්‍රීඩක අංකය 1 සිට 4 දක්වා සකසයි. ඇඩැප්ටරය එය ගබඩා කර එම ක්‍රීඩකයා ලෙස නැවත සම්බන්ධ වේ.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast තිරය…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Dreamcast පෑඩයේ VMU පෙන්වන දේ සකසයි: ඇඩැප්ටරයේම පින්තූරය, සක්‍රිය පැතිකඩේ නම, අංකය හෝ පින්තූරය, ඔරලෝසුව, ක්‍රීඩා කාලය, හෝ ඔබ තෝරන පින්තූරයක්.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>පාලක තිරය…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>පාලකයේ තිරයට පින්තූරයක් යවයි: ඔබ තෝරන පින්තූරයක් හෝ GIF එකක්, නැතහොත් සක්‍රිය පැතිකඩේ පින්තූරය, නම හෝ අංකය. ඊළඟ එක එන තෙක් පාලකය එය තබා ගනී.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Controller Pak උපස්ථ කරන්න…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>මෙම N64 පාලකයේ ඇති Controller Pak එක, N64 ඉමියුලේටර් කියවන ආකෘතිය වන 32 KB .mpk ගොනුවකට සුරකියි.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Controller Pak ප්‍රතිසාධනය කරන්න…</value></data>
@@ -971,6 +973,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>පැතිකඩ පින්තූරය ඉවත් කරන්න</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>පින්තූර (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|සියලු ගොනු (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>එම ගොනුවේ PadForge හට කියවිය හැකි පින්තූරයක් නැත.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>පාලක තිරය</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>ඔබ යවන තෙක් පාලකයට කිසිවක් නොයයි.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>ඔබ තෝරන පින්තූරයක් හෝ GIF එකක්, තිරයේ පික්සල 160 × 80 ප්‍රමාණයට ගළපනු ලැබේ. ඔබ තවත් එකක් යවන තෙක් පාලකය එය තබා ගනී.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>ඔබ යවන මොහොතේ පවතින පරිදි සක්‍රිය පැතිකඩේ පින්තූරය, නැතහොත් පින්තූරයක් නැති විට එහි නම. පැතිකඩ මාරු වුවද පාලකය එය තබා ගනී.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>ඔබ යවන මොහොතේ පවතින පරිදි සක්‍රිය පැතිකඩේ නම. පැතිකඩ මාරු වුවද පාලකය එය තබා ගනී.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>ඔබ යවන මොහොතේ පවතින පරිදි පැතිකඩ ලැයිස්තුවේ සක්‍රිය පැතිකඩේ ස්ථානය. පෙරනිමි පැතිකඩ 0 වේ.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>ගැළපීම</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>තිරය පුරවන්න</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>සම්පූර්ණ පින්තූරය පෙන්වන්න</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>තිරයට ගැළපෙන සේ අදින්න</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>පින්තූර (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|සියලු ගොනු (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>යවන්න</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>රාමු: {0}. යැවීමට ගතවන දළ කාලය: {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>පාලකයට ගත හැකි උපරිම රාමු ගණන {0} වේ, එබැවින් අවසාන රාමු {1} අත්හැරිණි.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>පාලකය කේබලයකින් සම්බන්ධ කරන්න. පින්තූරය ඇතුළු වී තත්පර 15 කට පමණ පසු එය ස්වයංක්‍රීයව නැවත ආරම්භ වේ.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>පාලකය කේබලයකින් සම්බන්ධ කරන්න. යැවීම සඳහා PadForge එය Xbox ප්‍රකාරයට මාරු කර Windows හි Xbox ධාවකයෙන් WinUSB වෙත ගෙන යයි, ඉන්පසු දෙකම පෙර තත්ත්වයට පත් කරයි.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge පාලකය Xbox ප්‍රකාරයට මාරු කර, යැවීම සඳහා WinUSB වෙත ගෙන ගොස්, ඉන්පසු එය නැවත Windows හි Xbox ධාවකයට ලබා දී DInput ප්‍රකාරයට මාරු කරයි. පළමුව අනෙක් සෑම Xbox 360 පාලකයක්ම ගලවන්න. දැන් යවන්නද?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>ආරම්භ කරමින්…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>පාලකය මාරු කරමින්…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>තිරයේ තොට එන තෙක් රැඳී සිටිමින්…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>පාලකය WinUSB වෙත ගෙන යමින්…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>පින්තූරයට ඉඩ හිස් කරමින්… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>පින්තූරය යවමින්… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>අවසන් කරමින්…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>පාලකය නැවත Windows වෙත ලබා දෙමින්…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>යවන ලදී. පාලකය නැවත ආරම්භ වූ පසු පින්තූරය පෙන්වයි.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>යවන ලදී. පාලකය පින්තූරය පෙන්වයි.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>පාලකය කේබලයකින් සම්බන්ධ කරන්න. එහි තිරය පින්තූර ලබා ගන්නේ USB හරහා පමණි.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>තිරයේ තොට දිස් නොවීය. පාලකය එහිම ස්විචයෙන් අක්‍රිය කර නැවත සක්‍රිය කරන්න, එය කේබලයකින් සම්බන්ධ කර නැවත යවන්න.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>පාලක තිර එකකට වඩා පින්තූරයක් සඳහා රැඳී සිටියි. අනෙක් ඒවා ගලවා නැවත යවන්න.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>තිරයේ තොට විවෘත නොවීය. Flydigi Space Station වසා නැවත යවන්න.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>තිරය පිළිතුරු දීම නැවැත්වීය. පාලකය එහිම ස්විචයෙන් අක්‍රිය කර නැවත සක්‍රිය කර නැවත යවන්න.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>තිරය පින්තූරය ප්‍රතික්ෂේප කළේය. නැවත යවන්න.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>පාලකය Xbox 360 පාලකයක් ලෙස නැවත නොපැමිණි බැවින් කිසිවක් යවා නැත. එහිම ස්විචයෙන් එය නැවත DInput ප්‍රකාරයට මාරු කර නැවත යවන්න.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>අනෙක් සෑම Xbox 360 පාලකයක්ම ගලවා නැවත යවන්න. ධාවක වෙනස ඒවාද ගෙන යනු ඇත. Xbox ප්‍රකාරයේ ඉතිරි වූ පාලකයක් එහිම ස්විචයෙන් නැවත DInput ප්‍රකාරයට යයි.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox ප්‍රකාරයේ පාලකය Apex 4 එකක් ලෙස පිළිතුරු නොදුන් බැවින් කිසිවක් යවා නැත, Windows එය නැවත ලබාගෙන ඇත. එහිම ස්විචයෙන් එය නැවත DInput ප්‍රකාරයට මාරු කරන්න.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows පාලකය WinUSB වෙත ගෙන නොගිය බැවින් කිසිවක් යවා නැත. එහිම ස්විචයෙන් එය නැවත DInput ප්‍රකාරයට මාරු කරන්න.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>නවත්වන ලදී. නැවත යැවීමට පෙර පාලකය එහිම ස්විචයෙන් අක්‍රිය කර නැවත සක්‍රිය කරන්න.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>පින්තූරයක් තවමත් පාලකය වෙත යමින් පවතී. යැවීම නවත්වන්නද?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak ගොනු (*.mpk)|*.mpk|සියලු ගොනු (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak තොට {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak ප්‍රතිසාධනය කරන්න</value></data>
@@ -1137,6 +1178,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ආවේග ට්‍රිගර</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>එක් එක් ට්‍රිගරයේ ලාභය, මෝටර මාරු කිරීම, අනුවර්තී ට්‍රිගර කම්පන, නියත ට්‍රිගර බලය</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>අතථ්‍ය පාලකයෙන් පවරා ඇති භෞතික Xbox One, Elite, හෝ Series පාලකය වෙත එක් එක් ට්‍රිගරයේ මෝටර් විධාන (Xbox Impulse Triggers) යොමු කරයි. ක්‍රීඩාව මඟින් පාලනය වන ට්‍රිගර කම්පනය ස්වයංක්‍රීයව හරහා යයි. පහත පාලන එක් එක් ට්‍රිගරය සඳහා ප්‍රබලතාව පරිමාණය කරයි.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>අතථ්‍ය පාලකයෙන් එන එක් එක් ට්‍රිගරයේ මෝටර් විධාන (Xbox Impulse Triggers) මෙම පාලකයේ ට්‍රිගර තුළ කම්පනයක් ලෙස වාදනය කරයි. ක්‍රීඩාව මඟින් පාලනය වන ට්‍රිගර කම්පනය ස්වයංක්‍රීයව හරහා යයි. පහත පාලන එක් එක් ට්‍රිගරය සඳහා ප්‍රබලතාව පරිමාණය කරයි.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>වම් ට්‍රිගරය</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>දකුණු ට්‍රිගරය</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>වම් සහ දකුණු ට්‍රිගර මෝටර මාරු කරන්න</value></data>
@@ -1201,6 +1243,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>අනුවර්තී ට්‍රිගර</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>පවරා ඇති භෞතික DualSense මත ට්‍රිගර ප්‍රතිපෝෂණ ප්‍රයෝග වින්‍යාස කරන්න. ක්‍රීඩාවකින් හෝ ක්‍රීඩා මොඩ් එකකින් එන ට්‍රිගර ප්‍රයෝග ස්වයංක්‍රීයව යොමු කෙරේ. මෙහි සැකසීම්, ඒ දෙකෙන් කිසිවක් ලියන්නේ නැති විට ක්‍රියාත්මක වන පරිශීලක-වින්‍යාසගත ස්ථරයක් එක් කරයි.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>මෙම පාලකයේ බල ට්‍රිගර මත ට්‍රිගර ප්‍රතිපෝෂණ ප්‍රයෝග වින්‍යාස කරන්න. අතථ්‍ය DualSense එකක් මත ක්‍රීඩාවකින් හෝ ක්‍රීඩා මොඩ් එකකින් එන ට්‍රිගර ප්‍රයෝග ස්වයංක්‍රීයව වාදනය වේ. මෙහි සැකසීම්, ඒ දෙකෙන් කිසිවක් ලියන්නේ නැති විට ක්‍රියාත්මක වන පරිශීලක-වින්‍යාසගත ස්ථරයක් එක් කරයි.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>මෙම පාලකය මත ට්‍රිගර ප්‍රතිපෝෂණ ප්‍රයෝග වින්‍යාස කරන්න. එහි ට්‍රිගර කම්පනය වන නමුත් ප්‍රතිරෝධය නොදක්වයි, එබැවින් සෑම ප්‍රයෝගයක්ම එය කරන දේ අනුගමනය කරන කම්පනයක් ලෙස වාදනය වේ: ට්‍රිගරයක් බිඳෙන තැන හදිසි ස්පන්දනයක්, දුන්නක් සඳහා ක්‍රමයෙන් වැඩිවීමක් සහ මුදාහැරීමක්. අතථ්‍ය DualSense එකක් මත ක්‍රීඩාවකින් හෝ ක්‍රීඩා මොඩ් එකකින් එන ට්‍රිගර ප්‍රයෝග ස්වයංක්‍රීයව වාදනය වේ. මෙහි සැකසීම්, ඒ දෙකෙන් කිසිවක් ලියන්නේ නැති විට ක්‍රියාත්මක වන පරිශීලක-වින්‍යාසගත ස්ථරයක් එක් කරයි.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>ස්ටික්</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>එක් එක් ස්ටික් සඳහා ඩෙඩ්සෝන්, ප්‍රති-ඩෙඩ්සෝන්, සංවේදීතා වක්‍ර සහ මධ්‍ය ඕෆ්සෙට් ක්‍රමාංකනය. පහත සෑම කොටසක්ම සක්‍රිය ප්‍රතිදානයේ එක් ඇනලොග් ස්ටික් එකක් ඉලක්ක කරයි. විස්තෘත පැතිකඩවලට ස්ටික් හතරක් දක්වා තිබිය හැක. සම්මත ගේම්පෑඩවල ස්ටික් දෙකක් ඇත.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ට්‍රිගර</value></data>
@@ -3225,7 +3269,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>ඒවා අෂ්ටකයකින් පහළට නවන්න</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>නාද සීමාව</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>මෙම පාලකයේ DualSense හැප්ටික්ස් වාදනය කරන්න</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ක්‍රීඩාවක් මෙම ස්ලොට් එක, සකස් කළ හැප්ටික් ශ්‍රව්‍ය සහිත අතථ්‍ය DualSense එකක් ලෙස ධාවනය කරන විට, එම පථය මෙම පාලකයේ ක්‍රියාකාරක මත වාදනය කරන්න. USB හෝ එහි ඩොංගලය හරහා සම්බන්ධ Steam Controller 2026 එකක් පථය එයම වාදනය කරයි. අනෙක් සෑම පාලකයක්ම, සහ Bluetooth හරහා සම්බන්ධ එම පාලකය, ශ්‍රව්‍යයෙන් ව්‍යුත්පන්න නාද ලබයි. ඒවා නිර්මාණකරුගේ හැඟීම ප්‍රතිනිෂ්පාදනය නොකරයි, දළ වශයෙන් ආසන්න කරයි.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ක්‍රීඩාවක් මෙම ස්ලොට් එක, සකස් කළ හැප්ටික් ශ්‍රව්‍ය සහිත අතථ්‍ය DualSense එකක් ලෙස ධාවනය කරන විට, එම පථය මෙම පාලකයේ ක්‍රියාකාරක මත වාදනය කරන්න. USB හෝ එහි ඩොංගලය හරහා සම්බන්ධ Steam Controller 2026 එකක් සහ Flydigi Apex 6 Pro එකක් පථය එයම වාදනය කරයි. අනෙක් සෑම පාලකයක්ම, සහ Bluetooth හරහා සම්බන්ධ එම Steam Controller එක, ශ්‍රව්‍යයෙන් ව්‍යුත්පන්න නාද ලබයි. ඒවා නිර්මාණකරුගේ හැඟීම ප්‍රතිනිෂ්පාදනය නොකරයි, දළ වශයෙන් ආසන්න කරයි.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>හැප්ටික්ස් වර්ධනය</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>පෙරනිමියට යළි සකසන්න (අක්‍රිය)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>පෙරනිමියට යළි සකසන්න (100%)</value></data>
@@ -3416,6 +3460,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) හැප්ටික් වාර්තා පිරිසැලසුම සහ ස්වර-කාල ගණිතය, Pila සහ Roboron3042 විසිනි.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 සහ Steam Deck LFO-නාද හැප්ටික් පිරිසැලසුම, Pila, Crazy සහ AAGaming විසිනි.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex ට්‍රිගර ප්‍රයෝග පරිවර්තනය සහ ලිවීමේ වේග පාලනය, Apex 6 Pro ට්‍රිගර විදැහුම, හැප්ටික් ප්‍රවාහය සහ ආලෝක කොටස, සහ Apex 5 ආලෝක ලිවීම්, ReynArts විසිනි.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5 සහ Apex 6 ප්‍රොටෝකෝල සටහන්, ආලෝක කොටස් හුවමාරුව සහ තිරයේ අනුක්‍රමික උඩුගත කිරීම, Mikalai Kaliaha විසිනි.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4 ආලෝක කොටස, පැතිකඩ ස්ලොට් එක සහ Xbox ප්‍රකාරයේදී තිරයට උඩුගත කිරීම, Uilton Lopes සහ දායකයින් විසිනි.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4 බල ට්‍රිගර විධාන සහ පෑඩය මත මනින ලද වේග පාලනය, Jackwmtr විසිනි.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap ප්‍රකාර සඳහා SOCD පිරිසිදු කිරීමේ අර්ථ නිරූපණය, valignatev විසිනි.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4718,6 +4770,7 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Y ගෙනයාම</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>එය පෙන්වන දේ තෝරන්න. ඔබ සුරකින තෙක් කිසිවක් වෙනස් නොවේ.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} {1} ලෙස සකසා ඇත.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>පින්තූරය පාලකයේ තිරයට යවන ලදී.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mad Catz හි S.T.R.I.K.E. 7 SDK බාගත කරමින්…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 දැන් {0} පූරණය කරයි.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Microsoft හි Visual C++ 2008 ධාවන කාලය බාගත කර ස්ථාපනය කරමින්…</value></data>

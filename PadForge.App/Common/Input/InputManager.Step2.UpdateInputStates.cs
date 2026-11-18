@@ -153,6 +153,10 @@ namespace PadForge.Common.Input
                     // Atomic reference swap, safe for cross-thread reading.
                     ud.InputState = newState;
                     ud.InputStateSeq++;
+                    // A Flydigi Apex pad (#586): its session is kept here, and
+                    // takes the triggers' real positions, which a bow, a zone
+                    // curve and the Apex 6 Pro's renderer follow.
+                    PadForge.Common.Input.Flydigi.FlydigiApexService.OnPolled(ud, rawState);
                     if (Ds5WriteTrace.Enabled && ud.VendorId == 0x054C && newState.Accel != null)
                         Ds5WriteTrace.Sample(ud.InstanceGuid, ud.InstanceName, newState.Accel);
                     UpdateGyroTiltGravity(ud, inputDevice, newState, gyroTiltTimestamp);
@@ -884,6 +888,10 @@ namespace PadForge.Common.Input
             int slotCount = settings.FindByInstanceGuid(ud.InstanceGuid, _instanceGuidBuffer);
             if (slotCount == 0)
             {
+                // A Flydigi Apex pad no slot is assigned (#586): its
+                // triggers hold their last effect and its session its last
+                // rumble until told otherwise, so they are let go once.
+                PadForge.Common.Input.Flydigi.FlydigiApexService.Unassigned(ud.InstanceGuid);
                 // A Falcon no slot is assigned holds itself up and does
                 // nothing else (#521), unless a peer's game drives it.
                 if (isFalcon)
@@ -1303,6 +1311,25 @@ namespace PadForge.Common.Input
             if (RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)) return;
             // Every write below is local: the last writer is no longer the peer.
             RemoteLinkOutputRouter.NoteLocalWrite(ud.DevicePath);
+
+            // A Flydigi Apex pad whose session is up (#586): the session
+            // writes the rumble beside the trigger effects, so one writer
+            // paces every packet to the pad (an Apex 4 wants its writes 25
+            // ms apart, an Apex 5 on its receiver wants rumble 30 ms after a
+            // trigger write). SDL's rumble call is not made for it then. An
+            // Apex 6 Pro's session takes the rumble only while its stream
+            // runs, where the pad's own rumble is off. The trigger levels are
+            // not folded into the grips: the dispatcher's Flydigi lane plays
+            // them on the triggers. On the pass the writer changes, SDL lets
+            // go of the level it held.
+            if (PadForge.Common.Input.Flydigi.FlydigiApexService.IsCandidate(ud.VendorId, ud.ProdId))
+            {
+                bool sessionRumbles = PadForge.Common.Input.Flydigi.FlydigiApexService.TakeRumble(
+                    ud, (byte)(combinedL >> 8), (byte)(combinedR >> 8), out bool changedHands);
+                if (changedHands && sessionRumbles && ud.Device != null)
+                    ud.ForceFeedbackState.StopDeviceForces(ud.Device);
+                if (sessionRumbles) return;
+            }
 
             if (isXboxImpulse)
             {

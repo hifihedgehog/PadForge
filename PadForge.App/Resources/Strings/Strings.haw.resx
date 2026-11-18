@@ -1137,4 +1137,13 @@
   <data name="Pad_Row_TrimStick" xml:space="preserve"><value>Lāʻau hoʻoponopono</value></data>
   <data name="Pad_Picked_Row" xml:space="preserve"><value>Hoʻopuka</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Paʻamau bs2b</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>ʻAʻohe mea e hiki i ka controller a hoʻouna ʻoe.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Hoʻokūpono</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Hoʻopiha i ka pākū</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Hōʻike i ke kiʻi holoʻokoʻa</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Hoʻomālō i ke ana o ka pākū</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

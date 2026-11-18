@@ -939,6 +939,8 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Jissettja n-numru tal-plejer ta' dan il-port, minn 1 sa 4. L-adapter jaħżnu u jerġa' jikkonnettja bħala dak il-plejer.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Skrin tad-Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Jissettja x'juri l-VMU tal-pad tad-Dreamcast: l-istampa tal-adapter innifsu, l-isem, in-numru jew l-istampa tal-profil attiv, l-arloġġ, il-ħin tal-logħob, jew stampa li tagħżel int.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Skrin tal-kontrollur…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Jibgħat stampa fl-iskrin tal-kontrollur: stampa jew GIF li tagħżel int, jew l-istampa, l-isem jew in-numru tal-profil attiv. Il-kontrollur iżommha sakemm tibgħat oħra.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Agħmel backup tal-Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Jaħżen il-Controller Pak ta' dan il-kontrollur N64 f'fajl .mpk ta' 32 KB, il-format li jaqraw l-emulaturi tal-N64.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Irrestawra l-Controller Pak…</value></data>
@@ -972,6 +974,45 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Neħħi l-istampa tal-profil</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Stampi (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Il-fajls kollha (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Dak il-fajl ma fih l-ebda stampa li PadForge jista' jaqra.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Skrin tal-kontrollur</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Xejn ma jasal fil-kontrollur sakemm tibgħat.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Stampa jew GIF li tagħżel int, imfassla għall-160 b'80 pixel tal-iskrin. Il-kontrollur iżommha sakemm tibgħat oħra.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>L-istampa tal-profil attiv, jew ismu meta ma jkollux waħda, kif inhi meta tibgħat. Il-kontrollur iżommha matul il-bidliet ta' profil.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>L-isem tal-profil attiv kif inhu meta tibgħat. Il-kontrollur iżommu matul il-bidliet ta' profil.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Il-post tal-profil attiv fil-lista tal-profili kif inhu meta tibgħat. Il-profil default huwa 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Adatta</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Imla l-iskrin</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Uri l-istampa kollha</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Ifrex mal-iskrin</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Stampi (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Il-fajls kollha (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Ibgħat</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Frejms: {0}. L-ibgħat jieħu madwar {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Il-kontrollur jieħu l-aktar frejms: {0}. Frejms li tħallew barra: {1}.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Qabbad il-kontrollur bil-kejbil. Jerġa' jibda waħdu madwar 15-il sekonda wara li tidħol l-istampa.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Qabbad il-kontrollur bil-kejbil. Għall-ibgħat, PadForge jqiegħdu fil-modalità Xbox u jmexxih mid-driver Xbox ta' Windows għal WinUSB, imbagħad iroddhom it-tnejn lura.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge ser iqiegħed il-kontrollur fil-modalità Xbox, imexxih għal WinUSB għall-ibgħat, imbagħad jagħtih lura lid-driver Xbox ta' Windows u jerġa' jqiegħdu fil-modalità DInput. Aqla' kull kontrollur ieħor Xbox 360 l-ewwel. Tibgħat issa?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Qed jibda…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Qed jinbidel il-kontrollur…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Qed jistenna l-port tal-iskrin…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Qed jitmexxa l-kontrollur għal WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Qed jitnaddaf l-ispazju għall-istampa… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Qed tintbagħat l-istampa… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Qed jintemm…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Qed jingħata lura l-kontrollur lil Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Intbagħtet. Il-kontrollur juri l-istampa wara li jerġa' jibda.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Intbagħtet. Il-kontrollur juri l-istampa.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Qabbad il-kontrollur bil-kejbil. L-iskrin tiegħu jaċċetta stampa biss minn USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Il-port tal-iskrin ma deherx. Itfi u ixgħel il-kontrollur bl-iswiċċ tiegħu, qabbdu bil-kejbil, u ibgħat mill-ġdid.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Iktar minn skrin wieħed ta' kontrollur qed jistenna stampa. Aqla' l-oħrajn u ibgħat mill-ġdid.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Il-port tal-iskrin ma nfetaħx. Agħlaq Flydigi Space Station u ibgħat mill-ġdid.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>L-iskrin waqaf iwieġeb. Itfi u ixgħel il-kontrollur bl-iswiċċ tiegħu u ibgħat mill-ġdid.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>L-iskrin irrifjuta l-istampa. Ibgħat mill-ġdid.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Il-kontrollur ma reġax deher bħala kontrollur Xbox 360, għalhekk ma nbagħat xejn. Irġġa' ibdlu għall-modalità DInput bl-iswiċċ tiegħu u ibgħat mill-ġdid.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Aqla' kull kontrollur ieħor Xbox 360 u ibgħat mill-ġdid. Il-bidla tad-driver tmexxihom ukoll. Kontrollur li jibqa' fil-modalità Xbox jerġa' għall-modalità DInput bl-iswiċċ tiegħu.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Il-kontrollur fil-modalità Xbox ma wieġebx bħala Apex 4, għalhekk ma nbagħat xejn u Windows reġa' ħadu. Irġġa' ibdlu għall-modalità DInput bl-iswiċċ tiegħu.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows ma mexxiex il-kontrollur għal WinUSB, għalhekk ma nbagħat xejn. Irġġa' ibdlu għall-modalità DInput bl-iswiċċ tiegħu.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Twaqqaf. Itfi u ixgħel il-kontrollur bl-iswiċċ tiegħu qabel ma tibgħat mill-ġdid.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Stampa għadha sejra lejn il-kontrollur. Twaqqaf l-ibgħat?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Fajls tal-Controller Pak (*.mpk)|*.mpk|Il-fajls kollha (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Irrestawra l-Controller Pak</value></data>
@@ -1137,6 +1178,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse Triggers</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain għal kull trigger, tibdil tal-muturi, vibrazzjonijiet tat-triggers adattivi, Forza kostanti fit-triggers</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Jgħaddi l-kmandi tal-mutur għal kull trigger (Xbox Impulse Triggers) mill-kontrollur virtwali għall-kontrollur fiżiku Xbox One, Elite jew Series assenjat. Ir-rumble tat-triggers li tibgħat il-logħba jgħaddi awtomatikament. Il-kontrolli hawn taħt jiskalaw l-intensità għal kull trigger.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Idoqq il-kmandi tal-mutur għal kull trigger (Xbox Impulse Triggers) mill-kontrollur virtwali bħala vibrazzjoni fit-triggers ta' dan il-kontrollur. Ir-rumble tat-triggers li tibgħat il-logħba jgħaddi awtomatikament. Il-kontrolli hawn taħt jiskalaw l-intensità għal kull trigger.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Trigger tax-xellug</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Trigger tal-lemin</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Aqleb il-muturi tat-trigger tax-xellug u tal-lemin</value></data>
@@ -1201,6 +1243,8 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Triggers adattivi</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Ikkonfigura l-effetti ta' feedback tat-triggers fuq id-DualSense fiżiku assenjat. L-effetti tat-triggers minn logħba jew minn mod ta' logħba jintbagħtu awtomatikament. Is-settings hawn iżidu saff ikkonfigurat mill-utent li jaħdem meta l-ebda wieħed minnhom ma jkun qed jikteb.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Ikkonfigura l-effetti ta' feedback tat-triggers fuq it-triggers tal-forza ta' dan il-kontrollur. L-effetti tat-triggers minn logħba fuq DualSense virtwali jew minn mod ta' logħba jindaqqu awtomatikament. Is-settings hawn iżidu saff ikkonfigurat mill-utent li jaħdem meta l-ebda wieħed minnhom ma jkun qed jikteb.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Ikkonfigura l-effetti ta' feedback tat-triggers fuq dan il-kontrollur. It-triggers tiegħu jivvibraw u ma joffrux reżistenza, għalhekk kull effett jindaqq bħala vibrazzjoni li ssegwi dak li jagħmel l-effett: ksur f'daqqa fejn trigger jinkiser, tisħiħ gradwali u rilaxx għal qaws. L-effetti tat-triggers minn logħba fuq DualSense virtwali jew minn mod ta' logħba jindaqqu awtomatikament. Is-settings hawn iżidu saff ikkonfigurat mill-utent li jaħdem meta l-ebda wieħed minnhom ma jkun qed jikteb.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Żoni mejta, anti-żoni mejta, kurvi tas-sensittività u kalibrazzjoni tal-offset taċ-ċentru għal kull stick. Kull taqsima hawn taħt hija għal stick analogu wieħed fuq l-output attiv. Il-profili Extended jista' jkollhom sa erba' sticks. Il-gamepads standard għandhom tnejn.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Triggers</value></data>
@@ -3205,7 +3249,7 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Niżżilhom oktava</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Limitu tat-ton</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Doqq il-haptics tad-DualSense fuq dan il-kontrollur</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Meta logħba tmexxi dan is-slot bħala DualSense virtwali b'awdjo haptic maħluq apposta, doqq dik it-trakka fuq l-attwaturi ta' dan il-kontrollur. Steam Controller 2026 permezz ta' USB jew bid-dongle tiegħu jdoqq it-trakka nnifisha. Kull kontrollur ieħor, u dak permezz ta' Bluetooth, jirċievi toni derivati mill-awdjo, li joqorbu lejn is-sensazzjoni li ried id-disinjatur iżda ma jirriproduċuhiex.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Meta logħba tmexxi dan is-slot bħala DualSense virtwali b'awdjo haptic maħluq apposta, doqq dik it-trakka fuq l-attwaturi ta' dan il-kontrollur. Steam Controller 2026 permezz ta' USB jew bid-dongle tiegħu, u Flydigi Apex 6 Pro, idoqqu t-trakka nnifisha. Kull kontrollur ieħor, u dak is-Steam Controller permezz ta' Bluetooth, jirċievi toni derivati mill-awdjo, li joqorbu lejn is-sensazzjoni li ried id-disinjatur iżda ma jirriproduċuhiex.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Qawwa tal-haptics</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Irrisettja għad-default (Mitfi)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Irrisettja għad-default (100%)</value></data>
@@ -3396,6 +3440,14 @@ Kopja tal-verżjoni ta' qabel tinsab f'dan il-folder: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Tqassim tar-reports haptic tal-Steam Controller (2015) u l-matematika tal-perjodu tan-noti, minn Pila u Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Tqassim haptic b'toni LFO għall-Steam Controller 2026 u s-Steam Deck, minn Pila, Crazy u AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Traduzzjoni tal-effetti tat-triggers tal-Flydigi Apex u l-ippaċjar tal-kitbiet, ir-rendering tat-triggers, il-fluss haptic u l-blokk tad-dwal tal-Apex 6 Pro, u l-kitbiet tad-dwal tal-Apex 5, minn ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Noti dwar il-protokoll tal-Flydigi Apex 5 u Apex 6, it-trasferiment tal-blokk tad-dwal u t-tbaxxija serjali tal-iskrin, minn Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Il-blokk tad-dwal, is-slot tal-profil u t-tbaxxija tal-iskrin fil-modalità Xbox tal-Flydigi Apex 4, minn Uilton Lopes u kontributuri.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Kmandi tat-triggers tal-forza tal-Flydigi Apex 4 u l-ippaċjar imkejjel fuq il-pad, minn Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantika tat-tindif SOCD għall-modalitajiet Snap Tap, minn valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4693,6 +4745,7 @@ Trid li PadForge jiddiżinstallahom issa? Dan jeħtieġ permessi ta' amministrat
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Ċaqlaq Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Agħżel dak li juri. Xejn ma jinbidel sakemm issejvja.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} issettjat għal {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>L-istampa intbagħtet fl-iskrin tal-kontrollur.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Qed jitniżżel l-SDK tas-S.T.R.I.K.E. 7 ta' Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>Is-S.T.R.I.K.E. 7 issa jgħabbi {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Qed jitniżżel u jiġi installat ir-runtime Visual C++ 2008 ta' Microsoft…</value></data>

@@ -952,6 +952,8 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Nastavi številko igralca za ta priključek, od 1 do 4. Adapter jo shrani in se znova poveže kot ta igralec.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Zaslon Dreamcast …</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Nastavi, kaj prikazuje VMU krmilnika Dreamcast: sliko adapterja, ime, številko ali sliko aktivnega profila, uro, čas igranja ali sliko po vaši izbiri.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Zaslon krmilnika …</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Pošlje sliko na zaslon krmilnika: sliko ali GIF po vaši izbiri ali sliko, ime ali številko aktivnega profila. Krmilnik jo hrani do naslednje.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Varnostno kopiraj Controller Pak …</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Shrani Controller Pak v tem krmilniku N64 v datoteko .mpk velikosti 32 KB, v obliki, ki jo berejo emulatorji N64.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Obnovi Controller Pak …</value></data>
@@ -985,6 +987,45 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Odstrani sliko profila</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Slike (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Vse datoteke (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Ta datoteka ne vsebuje slike, ki bi jo PadForge lahko prebral.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Zaslon krmilnika</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Nič ne doseže krmilnika, dokler ne pošljete.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Slika ali GIF po vaši izbiri, prilagojena 160 × 80 slikovnim pikam zaslona. Krmilnik jo hrani, dokler ne pošljete druge.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Slika aktivnega profila ali njegovo ime, če slike nima, kakršna je ob pošiljanju. Krmilnik jo ohrani tudi ob zamenjavi profila.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Ime aktivnega profila, kakršno je ob pošiljanju. Krmilnik ga ohrani tudi ob zamenjavi profila.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Mesto aktivnega profila na seznamu profilov, kakršno je ob pošiljanju. Profil „Privzeto“ je 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Prilagoditev</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Zapolni zaslon</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Prikaži celotno sliko</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Raztegni na zaslon</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Slike (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Vse datoteke (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Pošlji</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Sličice: {0}. Pošiljanje traja približno {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Krmilnik sprejme omejeno število sličic. Največ: {0}. Izpuščenih zadnjih: {1}.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Povežite krmilnik s kablom. Približno 15 sekund po prenosu slike se samodejno znova zažene.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Povežite krmilnik s kablom. PadForge ga za pošiljanje preklopi v način Xbox in ga s Windowsovega gonilnika Xbox premakne na WinUSB, nato pa vse vrne.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge bo krmilnik preklopil v način Xbox, ga za pošiljanje premaknil na WinUSB, nato pa ga vrnil Windowsovemu gonilniku Xbox in preklopil nazaj v način DInput. Najprej odklopite vse druge krmilnike Xbox 360. Želite poslati zdaj?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Začenjanje …</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Preklapljanje krmilnika …</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Čakanje na vrata zaslona …</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Premikanje krmilnika na WinUSB …</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Sprostitev prostora za sliko … {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Pošiljanje slike … {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Zaključevanje …</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Vračanje krmilnika Windowsu …</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Poslano. Krmilnik pokaže sliko, ko se znova zažene.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Poslano. Krmilnik prikazuje sliko.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Povežite krmilnik s kablom. Njegov zaslon sprejme sliko samo prek USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Vrata zaslona se niso pojavila. Krmilnik izklopite in vklopite z njegovim stikalom, ga povežite s kablom in znova pošljite.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Na sliko čaka več zaslonov krmilnikov. Odklopite druge in znova pošljite.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Vrata zaslona se niso odprla. Zaprite Flydigi Space Station in znova pošljite.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Zaslon se je prenehal odzivati. Krmilnik izklopite in vklopite z njegovim stikalom ter znova pošljite.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Zaslon je sliko zavrnil. Pošljite znova.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Krmilnik se ni vrnil kot krmilnik Xbox 360, zato ni bilo poslano nič. Z njegovim stikalom ga preklopite nazaj v način DInput in znova pošljite.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Odklopite vse druge krmilnike Xbox 360 in znova pošljite. Sprememba gonilnika bi premaknila tudi njih. Krmilnik, ki ostane v načinu Xbox, se z njegovim stikalom vrne v način DInput.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Krmilnik v načinu Xbox se ni odzval kot Apex 4, zato ni bilo poslano nič in ga ima Windows nazaj. Z njegovim stikalom ga preklopite nazaj v način DInput.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows krmilnika ni premaknil na WinUSB, zato ni bilo poslano nič. Z njegovim stikalom ga preklopite nazaj v način DInput.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Ustavljeno. Preden znova pošljete, krmilnik izklopite in vklopite z njegovim stikalom.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Slika se še pošilja na krmilnik. Želite ustaviti pošiljanje?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Datoteke Controller Pak (*.mpk)|*.mpk|Vse datoteke (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak priključek {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Obnovi Controller Pak</value></data>
@@ -1218,6 +1259,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulzni sprožilci</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ojačitev po sprožilcu, zamenjava motorjev, vibracije prilagodljivih sprožilcev, Stalna sila sprožilcev</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Ukaze za motorje posameznih sprožilcev (Xbox Impulse Triggers) posreduje iz navideznega krmilnika dodeljenemu fizičnemu krmilniku Xbox One, Elite ali Series. Vibriranje sprožilcev, ki ga upravlja igra, se samodejno prepušča. Spodnji kontrolniki prilagodijo jakost za vsak sprožilec posebej.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Ukaze za motorje posameznih sprožilcev (Xbox Impulse Triggers) iz navideznega krmilnika predvaja kot vibriranje v sprožilcih tega krmilnika. Vibriranje sprožilcev, ki ga upravlja igra, se samodejno prepušča. Spodnji kontrolniki prilagodijo jakost za vsak sprožilec posebej.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Levi sprožilec</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Desni sprožilec</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Zamenjaj motorja levega in desnega sprožilca</value></data>
@@ -1282,6 +1324,8 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Prilagodljivi sprožilci</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Nastavite učinke odziva sprožilcev na dodeljenem fizičnem krmilniku DualSense. Učinki sprožilcev iz igre ali modifikacije igre se posredujejo samodejno. Te nastavitve dodajo uporabniško plast, ki deluje, ko ne piše nobena od njiju.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Nastavite učinke odziva sprožilcev na silovnih sprožilcih tega krmilnika. Učinki sprožilcev iz igre na navideznem krmilniku DualSense ali iz modifikacije igre se predvajajo samodejno. Te nastavitve dodajo uporabniško plast, ki deluje, ko ne piše nobena od njiju.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Nastavite učinke odziva sprožilcev na tem krmilniku. Njegovi sprožilci vibrirajo in se ne upirajo, zato se vsak učinek predvaja kot vibriranje, ki sledi temu, kar učinek počne: sunek, ko sprožilec poči, ter stopnjevanje in sprostitev pri loku. Učinki sprožilcev iz igre na navideznem krmilniku DualSense ali iz modifikacije igre se predvajajo samodejno. Te nastavitve dodajo uporabniško plast, ki deluje, ko ne piše nobena od njiju.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Palice</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Mrtva območja, izravnave mrtvega območja, krivulje občutljivosti in umerjanje zamika središča za vsako palico. Vsak spodnji razdelek velja za eno analogno palico na aktivnem izhodu. Razširjeni profili imajo lahko do štiri palice. Standardni igralni krmilniki imajo dve.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Sprožilci</value></data>
@@ -3457,7 +3501,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Prestavi jih oktavo nižje</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Meja tonov</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Predvajaj haptiko DualSense na tem krmilniku</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Ko igra to režo upravlja kot navidezni DualSense z avtorskim haptičnim zvokom, se ta posnetek predvaja na aktuatorjih tega krmilnika. Steam Controller 2026 prek USB ali svojega ključka predvaja sam posnetek. Vsi drugi krmilniki, in ta prek Bluetootha, dobijo tone, izpeljane iz zvoka, ki se oblikovalčevemu občutku le približajo in ga ne reproducirajo.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Ko igra to režo upravlja kot navidezni DualSense z avtorskim haptičnim zvokom, se ta posnetek predvaja na aktuatorjih tega krmilnika. Steam Controller 2026 prek USB ali svojega ključka ter Flydigi Apex 6 Pro predvajata sam posnetek. Vsi drugi krmilniki, in ta Steam Controller prek Bluetootha, dobijo tone, izpeljane iz zvoka, ki se oblikovalčevemu občutku le približajo in ga ne reproducirajo.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Ojačitev haptike</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Ponastavi na privzeto (izklopljeno)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Ponastavi na privzeto (100%)</value></data>
@@ -3652,6 +3696,14 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Razporeditev haptičnih poročil krmilnika Steam Controller (2015) in matematika period not. Avtorja: Pila in Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Haptična razporeditev s toni LFO za Steam Controller 2026 in Steam Deck. Avtorji: Pila, Crazy in AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Prevajanje učinkov sprožilcev Flydigi Apex in usklajevanje zapisov, prikaz sprožilcev, haptični tok in svetlobni blok za Apex 6 Pro ter svetlobni zapisi za Apex 5. Avtor: ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Opombe o protokolu Flydigi Apex 5 in Apex 6, prenos svetlobnega bloka in serijsko nalaganje na zaslon. Avtor: Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Svetlobni blok in profilna reža za Flydigi Apex 4 ter nalaganje na zaslon v načinu Xbox. Avtor: Uilton Lopes in sodelavci.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Ukazi za silovne sprožilce Flydigi Apex 4 in usklajevanje, izmerjeno na krmilniku. Avtor: Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantika čiščenja SOCD za načina Snap Tap. Avtor: valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Premik Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Izberite, kaj prikazuje. Nič se ne spremeni, dokler ne shranite.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0}: nastavljeno na {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Slika je šla na zaslon krmilnika.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Prenašanje SDK za Mad Catz S.T.R.I.K.E. 7 …</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 zdaj nalaga {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Prenašanje in nameščanje izvajalnega okolja Microsoft Visual C++ 2008 …</value></data>

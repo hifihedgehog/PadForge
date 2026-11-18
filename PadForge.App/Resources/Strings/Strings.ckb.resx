@@ -936,6 +936,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>ژمارەی یاریزانی ئەم پۆرتە دادەنێت، 1 تا 4. ئەداپتەرەکە هەڵیدەگرێت و وەک ئەو یاریزانە دووبارە پەیوەندی دەکاتەوە.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>شاشەی Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>دیاری دەکات VMU ی پادی Dreamcast چی پیشان بدات: وێنەی خودی ئەداپتەرەکە، ناو، ژمارە یان وێنەی پرۆفایلی چالاک، کاتژمێر، کاتی یاریکردن، یان وێنەیەک کە خۆت هەڵیدەبژێریت.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>شاشەی کۆنترۆڵەر…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>وێنەیەک دەنێرێت بۆ شاشەی کۆنترۆڵەرەکە: وێنەیەک یان GIF کە خۆت هەڵیدەبژێریت، یان وێنە، ناو یان ژمارەی پرۆفایلی چالاک. کۆنترۆڵەرەکە هەڵیدەگرێت تا وێنەی داهاتوو.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>یەدەگگرتنی Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Controller Pak ی ناو ئەم کۆنترۆڵەرەی N64 لە فایلێکی .mpk ی 32 KB دا پاشەکەوت دەکات، ئەو فۆرماتەی ئیمولەیتەرەکانی N64 دەیخوێننەوە.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>گەڕاندنەوەی Controller Pak…</value></data>
@@ -969,6 +971,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>لابردنی وێنەی پرۆفایل</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>وێنەکان (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|هەموو فایلەکان (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>ئەو فایلە هیچ وێنەیەکی تێدا نییە کە PadForge بتوانێت بیخوێنێتەوە.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>شاشەی کۆنترۆڵەر</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>هیچ شتێک ناگاتە کۆنترۆڵەرەکە تا نەینێریت.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>وێنەیەک یان GIF کە خۆت هەڵیدەبژێریت، گونجێنراو بۆ 160 لە 80 پیکسڵی شاشەکە. کۆنترۆڵەرەکە هەڵیدەگرێت تا یەکێکی تر دەنێریت.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>وێنەی پرۆفایلی چالاک، یان ناوەکەی ئەگەر وێنەی نەبێت، وەک ئەوەی لە کاتی ناردندا هەیە. کۆنترۆڵەرەکە لە کاتی گۆڕینی پرۆفایلیشدا هەڵیدەگرێت.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>ناوی پرۆفایلی چالاک وەک ئەوەی لە کاتی ناردندا هەیە. کۆنترۆڵەرەکە لە کاتی گۆڕینی پرۆفایلیشدا هەڵیدەگرێت.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>شوێنی پرۆفایلی چالاک لە لیستی پرۆفایلەکاندا وەک ئەوەی لە کاتی ناردندا هەیە. ژمارەی پرۆفایلی بنەڕەت 0 یە.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>گونجاندن</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>پڕکردنەوەی شاشە</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>پیشاندانی هەموو وێنەکە</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>کێشان بۆ قەبارەی شاشە</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>وێنەکان (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|هەموو فایلەکان (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>ناردن</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>چوارچێوەکان: {0}. ناردن نزیکەی {1} دەخایەنێت.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>کۆنترۆڵەرەکە زۆرترین {0} چوارچێوە وەردەگرێت، بۆیە {1} چوارچێوەی کۆتایی لابران.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>کۆنترۆڵەرەکە بە کێبڵ ببەستەوە. نزیکەی 15 چرکە دوای گەیشتنی وێنەکە خۆی لە نوێوە دەست پێ دەکاتەوە.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>کۆنترۆڵەرەکە بە کێبڵ ببەستەوە. بۆ ناردن، PadForge دەیگوازێتەوە بۆ دۆخی Xbox و لە درایڤەری Xbox ی Windows ەوە دەیباتە سەر WinUSB، پاشان هەردووکیان دەگەڕێنێتەوە.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge کۆنترۆڵەرەکە دەگوازێتەوە بۆ دۆخی Xbox، بۆ ناردن دەیباتە سەر WinUSB، پاشان دەیداتەوە بە درایڤەری Xbox ی Windows و دەیگەڕێنێتەوە بۆ دۆخی DInput. سەرەتا هەموو کۆنترۆڵەرەکانی تری Xbox 360 جیا بکەرەوە. ئێستا بنێردرێت؟</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>دەستپێکردن…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>گۆڕینی دۆخی کۆنترۆڵەرەکە…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>چاوەڕوانی پۆرتی شاشەکە…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>گواستنەوەی کۆنترۆڵەرەکە بۆ WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>چۆڵکردنی شوێن بۆ وێنەکە… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>ناردنی وێنەکە… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>تەواوکردن…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>گەڕاندنەوەی کۆنترۆڵەرەکە بۆ Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>نێردرا. کۆنترۆڵەرەکە دوای دەستپێکردنەوەی وێنەکە پیشان دەدات.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>نێردرا. کۆنترۆڵەرەکە وێنەکە پیشان دەدات.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>کۆنترۆڵەرەکە بە کێبڵ ببەستەوە. شاشەکەی تەنها لە ڕێگەی USB وە وێنە وەردەگرێت.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>پۆرتی شاشەکە دەرنەکەوت. کۆنترۆڵەرەکە بە سویچی خۆی بکوژێنەوە و دایبگیرسێنەوە، بە کێبڵ بیبەستەوە، و دووبارە بنێرەوە.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>زیاتر لە یەک شاشەی کۆنترۆڵەر چاوەڕوانی وێنەیەکن. ئەوانی تر جیا بکەرەوە و دووبارە بنێرەوە.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>پۆرتی شاشەکە نەکرایەوە. Flydigi Space Station دابخە و دووبارە بنێرەوە.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>شاشەکە وەڵامدانەوەی ڕاگرت. کۆنترۆڵەرەکە بە سویچی خۆی بکوژێنەوە و دایبگیرسێنەوە و دووبارە بنێرەوە.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>شاشەکە وێنەکەی ڕەتکردەوە. دووبارە بنێرەوە.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>کۆنترۆڵەرەکە وەک کۆنترۆڵەرێکی Xbox 360 نەگەڕایەوە، بۆیە هیچ شتێک نەنێردرا. بە سویچی خۆی بیگەڕێنەوە بۆ دۆخی DInput و دووبارە بنێرەوە.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>هەموو کۆنترۆڵەرەکانی تری Xbox 360 جیا بکەرەوە و دووبارە بنێرەوە. گۆڕینی درایڤەر ئەوانیش دەگوازێتەوە. کۆنترۆڵەرێک کە لە دۆخی Xbox ماوەتەوە بە سویچی خۆی دەگەڕێتەوە بۆ دۆخی DInput.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>کۆنترۆڵەرەکە لە دۆخی Xbox دا وەک Apex 4 وەڵامی نەدایەوە، بۆیە هیچ شتێک نەنێردرا و Windows وەریگرتەوە. بە سویچی خۆی بیگەڕێنەوە بۆ دۆخی DInput.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows کۆنترۆڵەرەکەی نەگواستەوە بۆ WinUSB، بۆیە هیچ شتێک نەنێردرا. بە سویچی خۆی بیگەڕێنەوە بۆ دۆخی DInput.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>ڕاگیرا. پێش ئەوەی دووبارە بنێریتەوە، کۆنترۆڵەرەکە بە سویچی خۆی بکوژێنەوە و دایبگیرسێنەوە.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>وێنەیەک هێشتا دەچێت بۆ کۆنترۆڵەرەکە. ناردنەکە ڕابگیرێت؟</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>فایلەکانی Controller Pak (*.mpk)|*.mpk|هەموو فایلەکان (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak پۆرتی {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>گەڕاندنەوەی Controller Pak</value></data>
@@ -1135,6 +1176,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>تریگەرەکانی Impulse</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>هێزی هەر تریگەرێک، گۆڕینەوەی مۆتۆرەکان، لەرزینەکانی تریگەری ئەداپتیڤ، هێزی نەگۆڕی تریگەر</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>فەرمانەکانی مۆتۆری هەر تریگەرێک (Xbox Impulse Triggers) لە کۆنترۆڵەری مەجازییەوە دەگوازێتەوە بۆ کۆنترۆڵەری فیزیکیی دیاریکراوی Xbox One، Elite یان Series. ئەو لەرزینەی تریگەر کە یارییەکە دەینێرێت خۆکارانە تێدەپەڕێت. کۆنترۆڵەکانی خوارەوە بڕی لەرزینی هەر تریگەرێک ڕێک دەخەن.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>فەرمانەکانی مۆتۆری هەر تریگەرێک (Xbox Impulse Triggers) لە کۆنترۆڵەری مەجازییەوە وەک لەرزین لە تریگەرەکانی ئەم کۆنترۆڵەرەدا لێدەدات. ئەو لەرزینەی تریگەر کە یارییەکە دەینێرێت خۆکارانە تێدەپەڕێت. کۆنترۆڵەکانی خوارەوە بڕی لەرزینی هەر تریگەرێک ڕێک دەخەن.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>تریگەری چەپ</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>تریگەری ڕاست</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>گۆڕینەوەی مۆتۆرەکانی تریگەری چەپ و ڕاست</value></data>
@@ -1199,6 +1241,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>تریگەرە ئەداپتیڤەکان</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>کاریگەرییەکانی فیدباکی تریگەر لەسەر DualSense ی فیزیکیی دیاریکراو ڕێک بخە. ئەو کاریگەرییانەی تریگەر کە لە یارییەک یان مۆدێکی یارییەوە دێن خۆکارانە دەگوازرێنەوە. ڕێکخستنەکانی ئێرە چینێکی ڕێکخراو لەلایەن بەکارهێنەرەوە زیاد دەکەن کە کاتێک هیچ کامیان نانووسن کار دەکات.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>کاریگەرییەکانی فیدباکی تریگەر لەسەر تریگەرە هێزدارەکانی ئەم کۆنترۆڵەرە ڕێک بخە. ئەو کاریگەرییانەی تریگەر کە لە یارییەک لەسەر DualSense ی مەجازی یان لە مۆدێکی یارییەوە دێن خۆکارانە لێدەدرێن. ڕێکخستنەکانی ئێرە چینێکی ڕێکخراو لەلایەن بەکارهێنەرەوە زیاد دەکەن کە کاتێک هیچ کامیان نانووسن کار دەکات.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>کاریگەرییەکانی فیدباکی تریگەر لەسەر ئەم کۆنترۆڵەرە ڕێک بخە. تریگەرەکانی دەلەرزن و بەرگری ناکەن، بۆیە هەر کاریگەرییەک وەک لەرزینێک لێدەدرێت کە بەدوای کاری کاریگەرییەکەدا دەڕوات: تەقینەوەیەکی کورت لەو شوێنەی تریگەرێک دەشکێت، زیادبوونێکی هێواش و بەردانێک بۆ کەوان. ئەو کاریگەرییانەی تریگەر کە لە یارییەک لەسەر DualSense ی مەجازی یان لە مۆدێکی یارییەوە دێن خۆکارانە لێدەدرێن. ڕێکخستنەکانی ئێرە چینێکی ڕێکخراو لەلایەن بەکارهێنەرەوە زیاد دەکەن کە کاتێک هیچ کامیان نانووسن کار دەکات.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>ستیکەکان</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>ناوچەی مردوو، دژە-ناوچەی مردوو، چەماوەی هەستیاری و کالیبرەکردنی لادانی ناوەند بۆ هەر ستیکێک. هەر بەشێکی خوارەوە یەک ستیکی ئەنالۆگ لەسەر دەرچوونی چالاک دەکاتە ئامانج. پرۆفایلە فراوانکراوەکان دەتوانن تا چوار ستیکیان هەبێت. گەیمپادە ستانداردەکان دووانیان هەیە.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>تریگەرەکان</value></data>
@@ -3252,7 +3296,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>دابەزاندنیان یەک ئۆکتاڤ</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>سنووری تۆن</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>لێدانی هاپتیکی DualSense لەسەر ئەم کۆنترۆڵەرە</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>کاتێک یارییەک ئەم شوێنە وەک DualSenseێکی مەجازی بەکاردەهێنێت لەگەڵ دەنگی هاپتیکی دیزاینکراو، ئەو تراکە لەسەر کاراکەرەکانی ئەم کۆنترۆڵەرە لێبدە. Steam Controller 2026 لە ڕێگەی USB یان دۆنگڵەکەیەوە خۆی تراکەکە لێدەدات. هەموو کۆنترۆڵەرەکانی تر، و هەمان ئەو کۆنترۆڵەرە لە ڕێگەی بلووتوس، تۆنێک وەردەگرن کە لە دەنگەکە دەرهێنراوە، کە لە هەستی دیزاینەرەکە نزیک دەبێتەوە بەڵام وەک خۆی دووبارەی ناکاتەوە.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>کاتێک یارییەک ئەم شوێنە وەک DualSenseێکی مەجازی بەکاردەهێنێت لەگەڵ دەنگی هاپتیکی دیزاینکراو، ئەو تراکە لەسەر کاراکەرەکانی ئەم کۆنترۆڵەرە لێبدە. Steam Controller 2026 لە ڕێگەی USB یان دۆنگڵەکەیەوە، و Flydigi Apex 6 Pro، خۆیان تراکەکە لێدەدەن. هەموو کۆنترۆڵەرەکانی تر، و ئەو Steam Controller ە لە ڕێگەی بلووتوس، تۆنێک وەردەگرن کە لە دەنگەکە دەرهێنراوە، کە لە هەستی دیزاینەرەکە نزیک دەبێتەوە بەڵام وەک خۆی دووبارەی ناکاتەوە.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>بەهێزکردنی هاپتیک</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>گەڕاندنەوە بۆ بنەڕەت (کوژاوە)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>گەڕاندنەوە بۆ بنەڕەت (100%)</value></data>
@@ -3442,6 +3486,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>شێوازی ڕاپۆرتی هاپتیکی Steam Controller (2015) و بیرکاریی ماوەی نۆتەکان، لەلایەن Pila و Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>شێوازی هاپتیکی تۆنی LFO بۆ Steam Controller 2026 و Steam Deck، لەلایەن Pila، Crazy و AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>وەرگێڕانی کاریگەریی تریگەر و ڕێکخستنی خێرایی نووسین بۆ Flydigi Apex، دروستکردنی کاریگەریی تریگەر، ستریمی هاپتیک و بلۆکی ڕووناکیی Apex 6 Pro، و نووسینەکانی ڕووناکیی Apex 5، لەلایەن ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>تێبینییەکانی پرۆتۆکۆڵی Flydigi Apex 5 و Apex 6، گواستنەوەی بلۆکی ڕووناکی و بارکردنی سێریاڵی شاشەکە، لەلایەن Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>بلۆکی ڕووناکی، شوێنی پرۆفایل و بارکردنی شاشە لە دۆخی Xbox بۆ Flydigi Apex 4، لەلایەن Uilton Lopes و بەشداربووان.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>فەرمانەکانی تریگەری هێزداری Flydigi Apex 4 و ئەو خێرایی ناردنەی لەسەر پادەکە پێوراوە، لەلایەن Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>واتاکانی پاککردنەوەی SOCD بۆ دۆخەکانی Snap Tap، لەلایەن valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4755,6 +4807,7 @@
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>جووڵاندنی Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>هەڵبژێرە چی پیشان بدات. هیچ شتێک ناگۆڕێت تا پاشەکەوتی نەکەیت.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} دانرا بۆ {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>وێنەکە نێردرا بۆ شاشەی کۆنترۆڵەرەکە.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>داگرتنی SDK ی S.T.R.I.K.E. 7 ی Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 ئێستا {0} بار دەکات.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>داگرتن و دامەزراندنی ڕەنتایمی Visual C++ 2008 ی Microsoft…</value></data>

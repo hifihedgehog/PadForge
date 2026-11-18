@@ -952,6 +952,8 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Ustawia numer gracza tego portu, od 1 do 4. Adapter zapisuje go i łączy się ponownie jako ten gracz.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Ekran Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Ustawia, co pokazuje VMU pada Dreamcast: własny obraz adaptera, nazwę, numer lub obraz aktywnego profilu, zegar, czas gry albo wybrany obraz.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Ekran kontrolera…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Wysyła obraz na ekran kontrolera: wybrany obraz lub GIF albo obraz, nazwę lub numer aktywnego profilu. Kontroler zachowuje go do czasu wysłania kolejnego.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Utwórz kopię zapasową Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Zapisuje Controller Pak z tego kontrolera N64 do pliku .mpk o rozmiarze 32 KB, w formacie odczytywanym przez emulatory N64.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Przywróć Controller Pak…</value></data>
@@ -985,6 +987,45 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Usuń obraz profilu</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Obrazy (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Wszystkie pliki (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Ten plik nie zawiera obrazu, który PadForge potrafi odczytać.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Ekran kontrolera</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Nic nie dotrze do kontrolera, dopóki nie klikniesz Wyślij.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Wybrany obraz lub GIF, dopasowany do ekranu o rozdzielczości 160 na 80 pikseli. Kontroler zachowuje go do czasu wysłania kolejnego.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Własny obraz aktywnego profilu albo jego nazwa, jeśli profil nie ma obrazu, w stanie z chwili wysłania. Kontroler zachowuje go po przełączeniu profilu.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Nazwa aktywnego profilu w stanie z chwili wysłania. Kontroler zachowuje ją po przełączeniu profilu.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Pozycja aktywnego profilu na liście profili w stanie z chwili wysłania. Profil Domyślny ma numer 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Dopasuj</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Wypełnij ekran</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Pokaż cały obraz</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Rozciągnij do ekranu</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Obrazy (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Wszystkie pliki (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Wyślij</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Klatki: {0}. Wysyłanie potrwa około {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Limit klatek kontrolera: {0}. Pominięto ostatnie: {1}.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Podłącz kontroler kablem. Około 15 sekund po wgraniu obrazu uruchomi się on ponownie samoczynnie.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Podłącz kontroler kablem. Na czas wysyłania PadForge przełącza go w tryb Xbox i przenosi z sterownika Xbox systemu Windows na WinUSB, a potem przywraca jedno i drugie.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge przełączy kontroler w tryb Xbox, na czas wysyłania przeniesie go na WinUSB, a potem odda sterownikowi Xbox systemu Windows i przełączy z powrotem w tryb DInput. Najpierw odłącz każdy inny kontroler Xbox 360. Wysłać teraz?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Rozpoczynanie…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Przełączanie kontrolera…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Oczekiwanie na port ekranu…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Przenoszenie kontrolera na WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Zwalnianie miejsca na obraz… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Wysyłanie obrazu… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Kończenie…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Oddawanie kontrolera systemowi Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Wysłano. Kontroler pokaże obraz po ponownym uruchomieniu.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Wysłano. Kontroler pokazuje obraz.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Podłącz kontroler kablem. Jego ekran przyjmuje obraz tylko przez USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Port ekranu nie pojawił się. Wyłącz i włącz kontroler jego własnym przełącznikiem, podłącz go kablem i wyślij ponownie.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Obrazu oczekuje więcej niż jeden ekran kontrolera. Odłącz pozostałe i wyślij ponownie.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Port ekranu nie otworzył się. Zamknij Flydigi Space Station i wyślij ponownie.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Ekran przestał odpowiadać. Wyłącz i włącz kontroler jego własnym przełącznikiem i wyślij ponownie.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Ekran odrzucił obraz. Wyślij ponownie.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Kontroler nie wrócił jako kontroler Xbox 360, więc nic nie wysłano. Przełącz go z powrotem w tryb DInput jego własnym przełącznikiem i wyślij ponownie.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Odłącz każdy inny kontroler Xbox 360 i wyślij ponownie. Zmiana sterownika dotknęłaby także ich. Kontroler pozostawiony w trybie Xbox wraca do trybu DInput za pomocą własnego przełącznika.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Kontroler w trybie Xbox nie odpowiedział jako Apex 4, więc nic nie wysłano, a system Windows ma go z powrotem. Przełącz go z powrotem w tryb DInput jego własnym przełącznikiem.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>System Windows nie przeniósł kontrolera na WinUSB, więc nic nie wysłano. Przełącz go z powrotem w tryb DInput jego własnym przełącznikiem.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Zatrzymano. Zanim wyślesz ponownie, wyłącz i włącz kontroler jego własnym przełącznikiem.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Obraz nadal jest wysyłany do kontrolera. Zatrzymać wysyłanie?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Pliki Controller Pak (*.mpk)|*.mpk|Wszystkie pliki (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Przywróć Controller Pak</value></data>
@@ -1218,6 +1259,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Spusty impulsowe</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Wzmocnienie spustów, zamiana silników, adaptacyjne wibracje spustów, Stała siła spustów</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Przekazuje polecenia silników poszczególnych spustów (spusty impulsowe Xbox) z wirtualnego kontrolera do przypisanego fizycznego kontrolera Xbox One, Elite lub Series. Wibracje spustów sterowane przez grę są przekazywane automatycznie. Poniższe ustawienia skalują siłę dla każdego spustu.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Odtwarza polecenia silników poszczególnych spustów (spusty impulsowe Xbox) z wirtualnego kontrolera jako wibrację w spustach tego kontrolera. Wibracje spustów sterowane przez grę są przekazywane automatycznie. Poniższe ustawienia skalują siłę dla każdego spustu.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Lewy spust</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Prawy spust</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Zamień silniki lewego i prawego spustu</value></data>
@@ -1282,6 +1324,8 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptacyjne spusty</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfiguruje efekty spustów na przypisanym fizycznym kontrolerze DualSense. Efekty spustów z gry lub moda do gry są przekazywane automatycznie. Te ustawienia dodają warstwę użytkownika, która działa, gdy żadne z nich nie wysyła efektów.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Konfiguruje efekty spustów na siłowych spustach tego kontrolera. Efekty spustów z gry na wirtualnym DualSense lub z moda do gry są odtwarzane automatycznie. Te ustawienia dodają warstwę użytkownika, która działa, gdy żadne z nich nie wysyła efektów.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Konfiguruje efekty spustów na tym kontrolerze. Jego spusty wibrują i nie stawiają oporu, więc każdy efekt jest odtwarzany jako wibracja podążająca za tym, co robi efekt: impuls w miejscu, gdzie spust się przełamuje, narastanie i zwolnienie dla łuku. Efekty spustów z gry na wirtualnym DualSense lub z moda do gry są odtwarzane automatycznie. Te ustawienia dodają warstwę użytkownika, która działa, gdy żadne z nich nie wysyła efektów.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Drążki</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Martwe strefy, antymartwe strefy, krzywe czułości i kalibracja przesunięcia środka dla każdego drążka. Każda sekcja poniżej dotyczy jednego drążka analogowego aktywnego wyjścia. Profile rozszerzone mogą mieć do czterech drążków. Standardowe gamepady mają dwa.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Spusty</value></data>
@@ -3457,7 +3501,7 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Obniż je o oktawę</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Limit tonu</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Odtwarzaj haptykę DualSense na tym kontrolerze</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Gdy gra obsługuje ten slot jako wirtualny DualSense z przygotowanym dźwiękiem haptycznym, ta ścieżka jest odtwarzana na aktuatorach tego kontrolera. Steam Controller 2026 przez USB lub swój odbiornik odtwarza samą ścieżkę. Każdy inny kontroler, a także ten przez Bluetooth, otrzymuje tony wyprowadzone z dźwięku, które przybliżają wrażenia zamierzone przez projektanta, ale ich nie odtwarzają.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Gdy gra obsługuje ten slot jako wirtualny DualSense z przygotowanym dźwiękiem haptycznym, ta ścieżka jest odtwarzana na aktuatorach tego kontrolera. Steam Controller 2026 przez USB lub swój odbiornik oraz Flydigi Apex 6 Pro odtwarzają samą ścieżkę. Każdy inny kontroler, a także ten Steam Controller przez Bluetooth, otrzymuje tony wyprowadzone z dźwięku, które przybliżają wrażenia zamierzone przez projektanta, ale ich nie odtwarzają.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Wzmocnienie haptyki</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Przywróć domyślne (wyłączone)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Przywróć domyślne (100%)</value></data>
@@ -3652,6 +3696,14 @@ Kopia poprzedniej wersji znajduje się w tym folderze: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Układ raportów haptycznych kontrolera Steam Controller (2015) i obliczenia okresów nut. Autorzy: Pila i Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Układ haptyki tonów LFO dla Steam Controller 2026 i Steam Deck. Autorzy: Pila, Crazy i AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Tłumaczenie efektów spustów Flydigi Apex i tempo zapisu, obsługa spustów Apex 6 Pro, strumień haptyczny i blok oświetlenia oraz zapisy oświetlenia Apex 5. Autor: ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Notatki o protokole Flydigi Apex 5 i Apex 6, przesyłanie bloku oświetlenia i wgrywanie obrazu ekranu przez port szeregowy. Autor: Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Blok oświetlenia Flydigi Apex 4, slot profilu i wgrywanie obrazu ekranu w trybie Xbox. Autorzy: Uilton Lopes i współtwórcy.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Polecenia siłowych spustów Flydigi Apex 4 i tempo zmierzone na padzie. Autor: Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantyka czyszczenia SOCD dla trybów Snap Tap. Autor: valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Przesunięcie Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Wybierz, co ma pokazywać. Nic się nie zmieni, dopóki nie zapiszesz.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} ustawiono na: {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Obraz trafił na ekran kontrolera.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Pobieranie pakietu SDK do S.T.R.I.K.E. 7 firmy Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 ładuje teraz {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Pobieranie i instalowanie środowiska uruchomieniowego Microsoft Visual C++ 2008…</value></data>

@@ -952,6 +952,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Beállítja a port játékosszámát 1 és 4 között. Az adapter eltárolja, és ezzel a játékosszámmal csatlakozik újra.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast-képernyő…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Beállítja, mit mutasson a Dreamcast-kontroller VMU-ja: az adapter saját képét, az aktív profil nevét, számát vagy képét, az órát, a játékidőt vagy egy Ön által választott képet.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Kontrollerképernyő…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Képet küld a kontroller képernyőjére: egy Ön által választott képet vagy GIF-et, vagy az aktív profil képét, nevét vagy számát. A kontroller a következő küldésig megtartja.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Controller Pak biztonsági mentése…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Az N64 kontrollerben lévő Controller Pak tartalmát 32 KB-os .mpk fájlba menti, abba a formátumba, amelyet az N64 emulátorok olvasnak.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Controller Pak visszaállítása…</value></data>
@@ -985,6 +987,45 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Profilkép eltávolítása</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Képek (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Minden fájl (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>A fájl nem tartalmaz olyan képet, amelyet a PadForge olvasni tud.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Kontrollerképernyő</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Semmi sem jut el a kontrollerhez a küldésig.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Az Ön által választott kép vagy GIF, a képernyő 160 × 80 képpontjára igazítva. A kontroller egy újabb küldésig megtartja.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Az aktív profil képe, vagy a neve, ha nincs képe, olyan állapotban, ahogy a küldéskor van. A kontroller megtartja a profilváltásokon át.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Az aktív profil neve olyan állapotban, ahogy a küldéskor van. A kontroller megtartja a profilváltásokon át.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Az aktív profil helye a profillistában olyan állapotban, ahogy a küldéskor van. Az Alapértelmezett profil a 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Illesztés</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Kitöltés a képernyőre</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Teljes kép mutatása</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Nyújtás a képernyőre</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Képek (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Minden fájl (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Küldés</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Képkockák: {0}. A küldés körülbelül {1} ideig tart.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>A kontroller legfeljebb {0} képkockát fogad, ezért az utolsó {1} kimaradt.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Csatlakoztassa a kontrollert kábellel. A kép beírása után körülbelül 15 másodperccel magától újraindul.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Csatlakoztassa a kontrollert kábellel. A küldéshez a PadForge Xbox módba kapcsolja, és a Windows Xbox illesztőprogramjáról WinUSB-re helyezi át, majd mindkettőt visszaállítja.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>A PadForge Xbox módba kapcsolja a kontrollert, a küldés idejére WinUSB-re helyezi át, majd visszaadja a Windows Xbox illesztőprogramjának, és visszakapcsolja DInput módba. Előbb húzza ki az összes többi Xbox 360 kontrollert. Küldi most?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Indítás…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>A kontroller átkapcsolása…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Várakozás a képernyő portjára…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>A kontroller áthelyezése WinUSB-re…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Hely felszabadítása a képnek… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>A kép küldése… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Befejezés…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>A kontroller visszaadása a Windowsnak…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Elküldve. A kontroller az újraindulás után mutatja a képet.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Elküldve. A kontroller mutatja a képet.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Csatlakoztassa a kontrollert kábellel. A képernyője csak USB-n fogad képet.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>A képernyő portja nem jelent meg. Kapcsolja ki és be a kontrollert a saját kapcsolójával, csatlakoztassa kábellel, és küldje újra.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Egynél több kontrollerképernyő vár képre. Húzza ki a többit, és küldje újra.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>A képernyő portja nem nyílt meg. Zárja be a Flydigi Space Station programot, és küldje újra.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>A képernyő nem válaszol többé. Kapcsolja ki és be a kontrollert a saját kapcsolójával, és küldje újra.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>A képernyő visszautasította a képet. Küldje újra.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>A kontroller nem Xbox 360 kontrollerként jött vissza, ezért nem ment el semmi. Kapcsolja vissza DInput módba a saját kapcsolójával, és küldje újra.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Húzza ki az összes többi Xbox 360 kontrollert, és küldje újra. Az illesztőprogram cseréje őket is áthelyezné. Az Xbox módban maradt kontrollert a saját kapcsolójával kapcsolhatja vissza DInput módba.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Az Xbox módban lévő kontroller nem Apex 4 kontrollerként válaszolt, ezért nem ment el semmi, és a Windows visszakapta. Kapcsolja vissza DInput módba a saját kapcsolójával.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>A Windows nem helyezte át a kontrollert WinUSB-re, ezért nem ment el semmi. Kapcsolja vissza DInput módba a saját kapcsolójával.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Leállítva. Kapcsolja ki és be a kontrollert a saját kapcsolójával, mielőtt újra küldene.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Még folyamatban van egy kép küldése a kontrollerre. Leállítja a küldést?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak fájlok (*.mpk)|*.mpk|Minden fájl (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak {0}. port.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak visszaállítása</value></data>
@@ -1218,6 +1259,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulzusravaszok</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ravaszonkénti erősítés, motorcsere, adaptív ravasz vibrációi, Állandó ravaszerő</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>A ravaszonkénti motorparancsokat (Xbox impulzusravaszok) továbbítja a virtuális kontrollerről a hozzárendelt fizikai Xbox One, Elite vagy Series kontrollerre. A játék által vezérelt ravaszrezgés automatikusan átjut. Az alábbi vezérlők ravaszonként skálázzák az erősséget.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>A ravaszonkénti motorparancsokat (Xbox impulzusravaszok) a virtuális kontrollerről rezgésként játssza le a kontroller ravaszaiban. A játék által vezérelt ravaszrezgés automatikusan átjut. Az alábbi vezérlők ravaszonként skálázzák az erősséget.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Bal ravasz</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Jobb ravasz</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>A bal és a jobb ravaszmotor felcserélése</value></data>
@@ -1282,6 +1324,8 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptív ravaszok</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>A ravaszok visszajelzési effektusainak beállítása a hozzárendelt fizikai DualSense kontrolleren. A játékból vagy játékmodból érkező ravaszeffektusok automatikusan továbbítódnak. Az itteni beállítások egy felhasználó által beállított réteget adnak hozzá, amely akkor fut, ha egyik sem ír.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>A ravaszok visszajelzési effektusainak beállítása a kontroller erőellenállású ravaszain. A virtuális DualSense-on futó játékból vagy játékmodból érkező ravaszeffektusok automatikusan lejátszódnak. Az itteni beállítások egy felhasználó által beállított réteget adnak hozzá, amely akkor fut, ha egyik sem ír.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>A ravaszok visszajelzési effektusainak beállítása ezen a kontrolleren. A ravaszai rezegnek, és nem fejtenek ki ellenállást, ezért minden effektus rezgésként szólal meg, amely követi az effektus működését: löketként ott, ahol a ravasz átvált, felfutásként és elengedésként az íjnál. A virtuális DualSense-on futó játékból vagy játékmodból érkező ravaszeffektusok automatikusan lejátszódnak. Az itteni beállítások egy felhasználó által beállított réteget adnak hozzá, amely akkor fut, ha egyik sem ír.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Karok</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Karonkénti holtzónák, antiholtzónák, érzékenységi görbék és a középpont-eltolás kalibrálása. Az alábbi szakaszok mindegyike az aktív kimenet egy-egy analóg karjára vonatkozik. A Bővített profilokban legfeljebb négy kar lehet. A szabványos gamepadeken kettő van.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Ravaszok</value></data>
@@ -3457,7 +3501,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Lejjebb hajtás egy oktávval</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Hanghatár</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense-haptika lejátszása ezen a kontrolleren</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Ha egy játék virtuális DualSense-ként hajtja ezt a foglalatot, előre megírt haptikus hanggal, a program ezt a sávot ennek a kontrollernek az aktuátorain játssza le. A Steam Controller 2026 USB-n vagy a saját vevőegységén keresztül magát a sávot játssza le. Minden más kontroller, és Bluetooth-on ez is, a hangból származtatott hangokat kap, amelyek csak megközelítik a tervező által szánt érzetet, nem adják vissza pontosan.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Ha egy játék virtuális DualSense-ként hajtja ezt a foglalatot, előre megírt haptikus hanggal, a program ezt a sávot ennek a kontrollernek az aktuátorain játssza le. A Steam Controller 2026 USB-n vagy a saját vevőegységén keresztül, valamint a Flydigi Apex 6 Pro magát a sávot játssza le. Minden más kontroller, és Bluetooth-on az a Steam Controller is, a hangból származtatott hangokat kap, amelyek csak megközelítik a tervező által szánt érzetet, nem adják vissza pontosan.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptika erősítése</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Visszaállítás az alapértelmezettre (ki)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Visszaállítás az alapértelmezettre (100%)</value></data>
@@ -3652,6 +3696,14 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>A Steam Controller (2015) haptikus jelentésének felépítése és a hangjegyperiódus számítása, készítette: Pila és Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>A Steam Controller 2026 és a Steam Deck LFO-hangos haptikájának felépítése, készítette: Pila, Crazy és AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>A Flydigi Apex ravaszeffektusainak átalakítása és az írások ütemezése, az Apex 6 Pro ravaszainak megjelenítése, haptikai adatfolyama és fényblokkja, valamint az Apex 5 fényírásai, készítette: ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>A Flydigi Apex 5 és az Apex 6 protokolljegyzetei, a fényblokk átvitele és a képernyő soros feltöltése, készítette: Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>A Flydigi Apex 4 fényblokkja, profilhelye és a képernyő feltöltése Xbox módban, készítette: Uilton Lopes és közreműködők.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>A Flydigi Apex 4 erőellenállású ravaszparancsai és a kontrolleren mért ütemezés, készítette: Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD-tisztítási szemantika a Snap Tap módokhoz, készítette: valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Pásztázás Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Válassza ki, mit mutasson. Semmi sem változik a mentésig.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} beállítva: {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>A kép elment a kontroller képernyőjére.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>A Mad Catz S.T.R.I.K.E. 7 SDK-jának letöltése…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>Az S.T.R.I.K.E. 7 mostantól ezt tölti be: {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>A Microsoft Visual C++ 2008 futtatókörnyezetének letöltése és telepítése…</value></data>

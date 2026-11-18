@@ -1677,6 +1677,7 @@
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Mugaragaza yerekana ibara rya lightbar ya DualShock 4 cyangwa DualSense iri mu mwanya ufite nomero ntoya mu yo iyi mugaragaza ihujwe na yo, cyangwa mu mwanya ufite nomero ntoya kuruta iyindi yose iyo nta wo ihujwe na wo. Mugaragaza y'umukara n'umweru yerekana urumuri rwaryo mu ishusho y'utudomo. Igihe nta bara riragera kuri lightbar, PadForge nta cyo yerekana.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Amafoto (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Dosiye zose (*.*)|*.*</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} yashyizwe kuri {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Ifoto yoherejwe kuri mugaragaza ya kontorola.</value></data>
   <data name="MacroAction_Type_ShowKeyboardScreen" xml:space="preserve"><value>Erekana mugaragaza ya mwandikisho</value></data>
   <data name="MacroAction_ShowKeyboardScreen_Format" xml:space="preserve"><value>Erekana amafoto {0}: {1} × {2} ms, inshuro zo gusubiramo {3}</value></data>
   <data name="MacroAction_Type_KeyboardScreenMode" xml:space="preserve"><value>Uburyo bwa mugaragaza ya mwandikisho</value></data>
@@ -1932,4 +1933,13 @@
   <data name="Workshop_DefaultProfileName" xml:space="preserve"><value>Umwirondoro wa Workshop</value></data>
   <data name="Workshop_DefaultMacroName" xml:space="preserve"><value>Macro ya Workshop</value></data>
   <data name="Workshop_DefaultCursorRegionName" xml:space="preserve"><value>Agace k'imbeba</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Nta kigera kuri kontorola kugeza wohereje.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Ingano</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Uzuza mugaragaza</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Erekana ifoto yose</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Rambura ku mugaragaza</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

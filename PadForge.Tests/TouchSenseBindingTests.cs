@@ -347,13 +347,29 @@ namespace PadForge.Tests
             Assert.Equal(1, window.Split("SwitchDriverAsync(bind: true)").Length - 1);
 
             // Every call of the bind in the app: this one, the automatic
-            // binder's and the G19 screen's.
+            // binder's, the G19 screen's and the Flydigi Apex 4 screen's.
             var callers = Sources("PadForge.App")
                 .Select(file => (File: Path.GetFileName(file), Calls: File.ReadAllText(file).Split("VendorUsbDriverInstaller.Bind(").Length - 1))
                 .Where(c => c.Calls > 0)
                 .OrderBy(c => c.File, StringComparer.Ordinal)
                 .ToArray();
-            Assert.Equal(new[] { ("G19UsbScreen.cs", 1), ("MainWindow.xaml.cs", 1), ("VendorUsbBindingService.cs", 1) }, callers);
+            Assert.Equal(new[] { ("FlydigiScreenSender.cs", 1), ("G19UsbScreen.cs", 1), ("MainWindow.xaml.cs", 1), ("VendorUsbBindingService.cs", 1) }, callers);
+
+            // The Apex 4's screen binds, from xusb22 alone, the one 045E:028E
+            // node its switch to Xbox mode brought: none may be there before
+            // the switch, one alone after it, and its product string must
+            // name Flydigi. The send starts only behind the dialog's confirm,
+            // which says what the send does to the pad (#586).
+            string flydigi = AuditDelta20261002Tests.RepoText("PadForge.App", "Common", "Input", "Flydigi", "FlydigiScreenSender.cs");
+            Assert.Contains("(plan, id, nodes, ct) => VendorUsbDriverInstaller.Bind(plan, id, nodes, Log, ct, from: new[] { \"xusb22\" });", flydigi);
+            Assert.Contains("if (XboxPads(UsbNodes()).Any()) throw new FlydigiScreenException(FlydigiScreenFailure.OtherXboxPads);", flydigi);
+            Assert.Contains("if (pads.Count > 1) throw new FlydigiScreenException(FlydigiScreenFailure.OtherXboxPads);", flydigi);
+            Assert.Contains("name.IndexOf(\"Flydigi\", StringComparison.OrdinalIgnoreCase) < 0", flydigi);
+            Assert.DoesNotContain("OptIn", flydigi);
+            string screenDialog = AuditDelta20261002Tests.RepoText("PadForge.App", "Views", "FlydigiScreenDialog.xaml.cs");
+            int ask = screenDialog.IndexOf("MessageBox.Show(this, s.FlydigiScreen_Apex4Confirm,", StringComparison.Ordinal);
+            int send = screenDialog.IndexOf("await FlydigiScreenSender.SendAsync(", StringComparison.Ordinal);
+            Assert.True(ask >= 0 && send > ask, "the Apex 4's confirm comes before the send");
 
             // The G19 screen binds interface 0 of 046D:C229 alone, from the
             // bind's own default drivers (none and HidUsb), only while LGS

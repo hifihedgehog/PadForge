@@ -886,6 +886,9 @@ namespace PadForge.Views
         private void KeyboardScreen_Click(object sender, RoutedEventArgs e)
             => (DataContext as ViewModels.DevicesViewModel)?.RequestKeyboardScreen();
 
+        private void FlydigiScreen_Click(object sender, RoutedEventArgs e)
+            => (DataContext as ViewModels.DevicesViewModel)?.RequestFlydigiScreen();
+
         private void FalconCalibrate_Click(object sender, RoutedEventArgs e)
             => (DataContext as ViewModels.DevicesViewModel)?.RequestFalconCalibrate();
 

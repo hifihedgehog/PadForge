@@ -937,6 +937,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Կը սահմանէ այս փորթին խաղացողի թիւը՝ 1-էն 4։ Յարմարիչը զայն կը պահէ եւ կը վերամիանայ որպէս այդ խաղացողը։</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast-ի պաստառ…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Կը սահմանէ, թէ Dreamcast կառավարիչին VMU-ն ինչ կը ցուցադրէ՝ յարմարիչին սեփական պատկերը, գործօն փրոֆիլին անունը, թիւը կամ պատկերը, ժամացոյցը, խաղի ժամանակը կամ ձեր ընտրած պատկեր մը։</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Կառավարիչի պաստառ…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Պատկեր մը կը ղրկէ կառավարիչին պաստառին՝ ձեր ընտրած պատկեր մը կամ GIF մը, կամ գործօն փրոֆիլին պատկերը, անունը կամ թիւը։ Կառավարիչը զայն կը պահէ մինչեւ յաջորդը։</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Պահուստաւորել Controller Pak-ը…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Այս N64 կառավարիչին մէջի Controller Pak-ը կը պահէ 32 KB .mpk նիշքի մը մէջ, որ N64 նմանակիչներուն կարդացած ձեւաչափն է։</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Վերականգնել Controller Pak-ը…</value></data>
@@ -970,6 +972,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Հեռացնել փրոֆիլին պատկերը</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Պատկերներ (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Բոլոր նիշքերը (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Այդ նիշքը պատկեր չի պարունակեր, որ PadForge կարենայ կարդալ։</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Կառավարիչի պաստառ</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Ոչինչ կը հասնի կառավարիչին, մինչեւ որ ղրկէք։</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Ձեր ընտրած պատկեր մը կամ GIF մը՝ յարմարցուած պաստառին 160×80 փիքսելին։ Կառավարիչը զայն կը պահէ, մինչեւ որ ուրիշ մը ղրկէք։</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Գործօն փրոֆիլին պատկերը, կամ անոր անունը, երբ պատկեր չունի, ինչպէս որ է ղրկելու պահուն։ Կառավարիչը զայն կը պահէ նաեւ փրոֆիլի փոփոխութիւններէն ետք։</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Գործօն փրոֆիլին անունը, ինչպէս որ է ղրկելու պահուն։ Կառավարիչը զայն կը պահէ նաեւ փրոֆիլի փոփոխութիւններէն ետք։</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Գործօն փրոֆիլին տեղը փրոֆիլներու ցանկին մէջ, ինչպէս որ է ղրկելու պահուն։ Լռելեայն փրոֆիլը 0 է։</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Յարմարցում</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Լեցնել պաստառը</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Ցուցադրել ամբողջ պատկերը</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Ձգել պաստառին չափով</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Պատկերներ (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Բոլոր նիշքերը (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Ղրկել</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Կադրեր՝ {0}։ Ղրկելը կը տեւէ մօտաւորապէս {1}։</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Կառավարիչը առաւելագոյնը {0} կադր կ'ընդունի, ուստի վերջին {1} կադրը դուրս մնաց։</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Կառավարիչը միացուցէք մալուխով։ Պատկերը հասնելէն մօտ 15 վայրկեան ետք անիկա ինքնիրեն կը վերագործարկուի։</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Կառավարիչը միացուցէք մալուխով։ Ղրկելու համար PadForge զայն կը փոխէ Xbox ռեժիմի եւ Windows-ի Xbox վարիչէն կը փոխադրէ WinUSB-ի, ապա երկուքն ալ կը վերադարձնէ։</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge կառավարիչը պիտի փոխէ Xbox ռեժիմի, ղրկելու համար պիտի փոխադրէ WinUSB-ի, ապա պիտի վերադարձնէ Windows-ի Xbox վարիչին եւ պիտի փոխէ DInput ռեժիմի։ Նախ անջատեցէք միւս բոլոր Xbox 360 կառավարիչները։ Ղրկե՞լ հիմա։</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Կը սկսի…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Կառավարիչին ռեժիմը կը փոխուի…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Պաստառին փորթին կը սպասուի…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Կառավարիչը կը փոխադրուի WinUSB-ի…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Պատկերին համար տեղ կը բացուի… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Պատկերը կը ղրկուի… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Կ'աւարտի…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Կառավարիչը կը վերադարձուի Windows-ին…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Ղրկուեցաւ։ Կառավարիչը պատկերը պիտի ցուցադրէ վերագործարկուելէն ետք։</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Ղրկուեցաւ։ Կառավարիչը կը ցուցադրէ պատկերը։</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Կառավարիչը միացուցէք մալուխով։ Անոր պաստառը պատկեր կ'ընդունի միայն USB-ով։</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Պաստառին փորթը չերեւցաւ։ Կառավարիչը իր սեփական անջատիչով մարեցէք ու վառեցէք, մալուխով միացուցէք եւ նորէն ղրկեցէք։</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Կառավարիչի մէկէ աւելի պաստառ պատկերի կը սպասէ։ Անջատեցէք միւսները եւ նորէն ղրկեցէք։</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Պաստառին փորթը չբացուեցաւ։ Գոցեցէք Flydigi Space Station-ը եւ նորէն ղրկեցէք։</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Պաստառը դադրեցաւ պատասխանելէ։ Կառավարիչը իր սեփական անջատիչով մարեցէք ու վառեցէք եւ նորէն ղրկեցէք։</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Պաստառը մերժեց պատկերը։ Նորէն ղրկեցէք։</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Կառավարիչը չվերադարձաւ որպէս Xbox 360 կառավարիչ, ուստի ոչինչ ղրկուեցաւ։ Իր սեփական անջատիչով զայն վերադարձուցէք DInput ռեժիմի եւ նորէն ղրկեցէք։</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Անջատեցէք միւս բոլոր Xbox 360 կառավարիչները եւ նորէն ղրկեցէք։ Վարիչի փոփոխութիւնը զանոնք ալ պիտի փոխադրէր։ Xbox ռեժիմի մէջ մնացած կառավարիչը իր սեփական անջատիչով կը վերադառնայ DInput ռեժիմի։</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox ռեժիմի մէջ եղող կառավարիչը չպատասխանեց որպէս Apex 4, ուստի ոչինչ ղրկուեցաւ եւ Windows զայն ետ ստացաւ։ Իր սեփական անջատիչով զայն վերադարձուցէք DInput ռեժիմի։</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows կառավարիչը չփոխադրեց WinUSB-ի, ուստի ոչինչ ղրկուեցաւ։ Իր սեփական անջատիչով զայն վերադարձուցէք DInput ռեժիմի։</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Կասեցուեցաւ։ Նորէն ղրկելէ առաջ կառավարիչը իր սեփական անջատիչով մարեցէք ու վառեցէք։</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Պատկեր մը տակաւին կառավարիչին կը ղրկուի։ Կասեցնե՞լ ղրկումը։</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak նիշքեր (*.mpk)|*.mpk|Բոլոր նիշքերը (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak փորթ {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Վերականգնել Controller Pak-ը</value></data>
@@ -1136,6 +1177,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse ձգաններ</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Ձգաններու ուժգնութիւն, մոթորներու փոխանակում, յարմարուող ձգանի թրթռումներ, Ձգանի մշտական ուժ</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Վիրթուալ կառավարիչէն ձգանի մոթորներու հրամանները (Xbox Impulse Triggers) կը փոխանցէ յատկացուած ֆիզիքական Xbox One, Elite կամ Series կառավարիչին։ Խաղէն եկող ձգանի թրթռումը ինքնաշխատօրէն կ'անցնի։ Ստորեւ գտնուող կառավարումները իւրաքանչիւր ձգանի համար կը չափաւորեն ուժգնութիւնը։</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Վիրթուալ կառավարիչէն ձգանի մոթորներու հրամանները (Xbox Impulse Triggers) կը վերածէ թրթռումի այս կառավարիչին ձգաններուն մէջ։ Խաղէն եկող ձգանի թրթռումը ինքնաշխատօրէն կ'անցնի։ Ստորեւ գտնուող կառավարումները իւրաքանչիւր ձգանի համար կը չափաւորեն ուժգնութիւնը։</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Ձախ ձգան</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Աջ ձգան</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Փոխանակել ձախ եւ աջ ձգանի մոթորները</value></data>
@@ -1200,6 +1242,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Յարմարուող ձգաններ</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Կարգաւորեցէք ձգանի արձագանգի էֆեքթները յատկացուած ֆիզիքական DualSense-ին վրայ։ Խաղէն կամ խաղի յաւելուածէն եկող ձգանի էֆեքթները ինքնաշխատօրէն կը փոխանցուին։ Հոսկէ կարգաւորումները կ'աւելցնեն օգտատիրոջ կարգաւորած շերտ մը, որ կ'աշխատի, երբ անոնցմէ ոչ մէկը կը գրէ։</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Կարգաւորեցէք ձգանի արձագանգի էֆեքթները այս կառավարիչին ուժային ձգաններուն վրայ։ Վիրթուալ DualSense-ի վրայ խաղէն կամ խաղի յաւելուածէն եկող ձգանի էֆեքթները ինքնաշխատօրէն կը գործադրուին։ Հոսկէ կարգաւորումները կ'աւելցնեն օգտատիրոջ կարգաւորած շերտ մը, որ կ'աշխատի, երբ անոնցմէ ոչ մէկը կը գրէ։</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Կարգաւորեցէք ձգանի արձագանգի էֆեքթները այս կառավարիչին վրայ։ Անոր ձգանները կը թրթռան եւ չեն դիմադրեր, ուստի իւրաքանչիւր էֆեքթ կը գործադրուի որպէս թրթռում, որ կը հետեւի էֆեքթին ըրածին՝ պոռթկում մը, ուր ձգանը կը կոտրի, աճող լարում եւ արձակում՝ աղեղի համար։ Վիրթուալ DualSense-ի վրայ խաղէն կամ խաղի յաւելուածէն եկող ձգանի էֆեքթները ինքնաշխատօրէն կը գործադրուին։ Հոսկէ կարգաւորումները կ'աւելցնեն օգտատիրոջ կարգաւորած շերտ մը, որ կ'աշխատի, երբ անոնցմէ ոչ մէկը կը գրէ։</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Լծակներ</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Իւրաքանչիւր լծակի մեռեալ գօտիներ, հակամեռեալ գօտիներ, զգայնութեան կորեր եւ կեդրոնի շեղման չափաբերում։ Ստորեւ իւրաքանչիւր բաժին կը վերաբերի գործօն ելքին մէկ անալոկ լծակին։ Ընդլայնուած փրոֆիլները կրնան ունենալ մինչեւ չորս լծակ։ Սովորական խաղային կառավարիչները երկու ունին։</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Ձգաններ</value></data>
@@ -3229,7 +3273,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Իջեցնել մէկ ութնեակով</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Հնչերանգի սահման</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Հնչեցնել DualSense-ի հպական արձագանգը այս կառավարիչին վրայ</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Երբ խաղ մը այս խցիկը կը վարէ որպէս վիրթուալ DualSense՝ պատրաստուած հպական ձայնով, այդ ձայնագրութիւնը կը հնչէ այս կառավարիչի թրթռիչներուն վրայ։ Steam Controller 2026-ը USB-ով կամ իր ընդունիչով ձայնագրութիւնը ինք կը հնչեցնէ։ Միւս բոլոր կառավարիչները, ինչպէս նաեւ անիկա Bluetooth-ով, կը ստանան ձայնէն ստացուած հնչերանգներ, որոնք մօտաւորապէս կը վերարտադրեն դիզայներին զգացողութիւնը, բայց ոչ ճշգրիտ։</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Երբ խաղ մը այս խցիկը կը վարէ որպէս վիրթուալ DualSense՝ պատրաստուած հպական ձայնով, այդ ձայնագրութիւնը կը հնչէ այս կառավարիչի թրթռիչներուն վրայ։ Steam Controller 2026-ը USB-ով կամ իր ընդունիչով, ինչպէս նաեւ Flydigi Apex 6 Pro-ն, ձայնագրութիւնը իրենք կը հնչեցնեն։ Միւս բոլոր կառավարիչները, ինչպէս նաեւ այդ Steam Controller-ը Bluetooth-ով, կը ստանան ձայնէն ստացուած հնչերանգներ, որոնք մօտաւորապէս կը վերարտադրեն դիզայներին զգացողութիւնը, բայց ոչ ճշգրիտ։</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Հպական արձագանգի ուժեղացում</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Վերակայել լռելեայնին (անջատ)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Վերակայել լռելեայնին (100%)</value></data>
@@ -3420,6 +3464,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller-ի (2015) հպական զեկոյցի կառուցուածքը եւ նոտայի պարբերութեան հաշուարկները, հեղինակներ՝ Pila եւ Roboron3042։</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026-ի եւ Steam Deck-ի LFO հնչերանգային հպական կառուցուածքը, հեղինակներ՝ Pila, Crazy եւ AAGaming։</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex ձգանի էֆեքթներու թարգմանութիւնը եւ գրելու արագութեան կարգաւորումը, Apex 6 Pro-ի ձգաններու վերարտադրութիւնը, հպական հոսքը եւ լոյսերու բլոկը, ինչպէս նաեւ Apex 5-ի լոյսերու գրառումները, հեղինակ՝ ReynArts։</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5 եւ Apex 6 արձանագրութեան նոթեր, լոյսերու բլոկի փոխանցումը եւ պաստառին սերիական վերբեռնումը, հեղինակ՝ Mikalai Kaliaha։</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4 լոյսերու բլոկը, փրոֆիլի խցիկը եւ պաստառին վերբեռնումը Xbox ռեժիմի մէջ, հեղինակներ՝ Uilton Lopes եւ այլ մասնակիցներ։</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4 ուժային ձգաններու հրամանները եւ կառավարիչին վրայ չափուած արագութեան կարգաւորումը, հեղինակ՝ Jackwmtr։</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD մաքրման իմաստաբանութիւն Snap Tap կերպերուն համար, հեղինակ՝ valignatev։</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4716,6 +4768,7 @@
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Տեղաշարժ Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Ընտրեցէք, թէ ինչ կը ցուցադրէ։ Ոչինչ կը փոխուի, մինչեւ որ պահէք։</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} սահմանուեցաւ՝ {1}։</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Պատկերը ղրկուեցաւ կառավարիչին պաստառին։</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Կը ներբեռնուի Mad Catz-ի S.T.R.I.K.E. 7 SDK-ն…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7-ը այսուհետեւ կը բեռնէ՝ {0}։</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Կը ներբեռնուի եւ կը տեղադրուի Microsoft-ի Visual C++ 2008 գործարկման միջավայրը…</value></data>

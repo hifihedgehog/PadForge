@@ -73,7 +73,7 @@ namespace PadForge.Common.Input
         // Protocol per family is verified against SteamHapticsSinger / SteamControllerSinger
         // / joycon-singer; same-family PIDs are the same controller over a different
         // transport (wired / BLE / dongle) and share the report format.
-        private enum Family { None, JoyConL, JoyConR, Pro, JoyConPair, Steam, Steam2026, SteamDeck, SInput }
+        private enum Family { None, JoyConL, JoyConR, Pro, JoyConPair, Steam, Steam2026, SteamDeck, SInput, FlydigiApex6 }
 
         private static bool IsJoyConGen1(Family f) => f == Family.JoyConL || f == Family.JoyConR || f == Family.Pro || f == Family.JoyConPair;
 
@@ -128,6 +128,14 @@ namespace PadForge.Common.Input
             else if (Engine.SInputControllerIdentity.IsSInput(ud.VendorId, ud.ProdId))
             {
                 return Family.SInput;
+            }
+            // Flydigi Apex 6 Pro (#586): its grips are voice coils that take
+            // samples, so the mix plays there as it is and is not reduced to
+            // a tone. By the pad's own answer, since the plain Apex 6 shares
+            // its IDs and has no such coils.
+            else if (Flydigi.FlydigiApexService.HasVoiceCoils(ud))
+            {
+                return Family.FlydigiApex6;
             }
             return Family.None;
         }
@@ -775,6 +783,10 @@ namespace PadForge.Common.Input
             public float PcmInputHz;
             public float PcmInputAmp;
             public float[] PcmFloatBuf;
+            // #586: the Apex 6 Pro's grip samples waiting to fill a block of
+            // eight. Stream-thread only.
+            public sbyte[] GripLeft, GripRight;
+            public int GripCount;
             public short[] PcmPending;
             public int PcmPendingCount;
             public byte[] PcmPktScratch;
@@ -1710,6 +1722,17 @@ namespace PadForge.Common.Input
                     if (s.Family == Family.SInput)
                         s.UseWriteFile = true;
 
+                    // Flydigi Apex 6 Pro (#586): the samples go out through the
+                    // session PadForge has with the pad, which owns every write
+                    // to it, so nothing is written through this handle. It
+                    // stands for the pad being there, the rule every family
+                    // here follows: a pad that does not open gets no sink.
+                    if (s.Family == Family.FlydigiApex6)
+                    {
+                        s.PcmCapable = true;
+                        s.PcmCfgHz = FlydigiLowPassHz;
+                    }
+
                     if (IsJoyConGen1(s.Family))
                     {
                         // Joy-Con gen-1 init: set input report mode 0x30 then enable
@@ -1848,6 +1871,9 @@ namespace PadForge.Common.Input
                         case Family.SInput:                          // SInput: the all-zero type 1 frame
                             SInputWrite(s, HapticToneEncoder.EncodeSInputHaptics(0f, 0f, 0f));
                             s.SInputOn = false;
+                            break;
+                        case Family.FlydigiApex6:                    // the grips go back to the pad's own rumble
+                            Flydigi.FlydigiApexService.SessionOf(s.DeviceGuid)?.SetGripPcmWanted(false);
                             break;
                         default:
                             // Joy-Con note-off. A dual-handle pair (#223) quiets
@@ -2297,7 +2323,9 @@ namespace PadForge.Common.Input
                 if (sink.TestUntilMs > now || (request != null && request.UntilMs > now && request.IsCurrent))
                     return (false, false);
                 if (sink.Handle == IntPtr.Zero) return (false, false);
-                return (true, StreamTritonPcmTick(sink, 0f, 0f, testActive: false, remoteActive: false, now));
+                return (true, sink.Family == Family.FlydigiApex6
+                    ? StreamFlydigiPcmTick(sink, 0f, 0f, testActive: false, remoteActive: false, now)
+                    : StreamTritonPcmTick(sink, 0f, 0f, testActive: false, remoteActive: false, now));
             }
         }
 
@@ -2454,6 +2482,119 @@ namespace PadForge.Common.Input
             return true;
         }
 
+        // ── #586 Flydigi Apex 6 Pro grip lane ─────────────────────────
+        //    The grips take one sample a millisecond, eight to a report,
+        //    which the pad's session streams (FlydigiApexSession.StreamLoop).
+        //    The mix arrives here at 8 kHz behind a low-pass, the chain the
+        //    Triton lane reads, and each millisecond's eight frames are
+        //    averaged into one sample: ApexSenseBridge's driver averages
+        //    each millisecond of the 48 kHz haptic track the same way
+        //    (viiper-v0.7.0-asb.patch consumeAudioHaptics). A sample becomes
+        //    a signed byte as that program scales it, 127 for full scale
+        //    (Apex6PcmGain.h scaleApex6Pcm at gain 100).
+
+        /// <summary>The cutoff ahead of the Apex 6 Pro's 1 kHz samples,
+        /// under their 500 Hz limit with room for the filter's slope.</summary>
+        internal const int FlydigiLowPassHz = 400;
+
+        /// <summary>Eight 8 kHz frames to one sample.</summary>
+        internal const int FlydigiFramesPerSample = ReduceRate / 1000;
+
+        /// <summary>One millisecond's frames as a grip sample: their mean,
+        /// times 127, cut to the pad's range.</summary>
+        internal static sbyte FlydigiSample(ReadOnlySpan<float> frames, int channel)
+        {
+            float sum = 0f;
+            int count = 0;
+            for (int i = channel; i < frames.Length; i += 2)
+            {
+                sum += frames[i];
+                count++;
+            }
+            if (count == 0) return 0;
+            return (sbyte)Math.Clamp((int)(sum / count * 127f), -127, 127);
+        }
+
+        private static bool StreamFlydigiPcmTick(Sink s, float toneHz, float amp,
+            bool testActive, bool remoteActive, long nowMs)
+        {
+            if (s.PcmSource == null) return false;
+            var pad = Flydigi.FlydigiApexService.SessionOf(s.DeviceGuid);
+            if (pad == null) return false;
+            s.PcmFloatBuf ??= new float[PcmFramesPerTick * 2];
+            s.GripLeft ??= new sbyte[Engine.Flydigi.FlydigiApexProtocol.Apex6SamplesPerReport * 3];
+            s.GripRight ??= new sbyte[s.GripLeft.Length];
+            var f = s.PcmFloatBuf;
+
+            bool audible;
+            if (testActive || remoteActive)
+            {
+                // The Test button and a linked pad's tone play as a sine, as
+                // on the Triton's stream. A tone above the samples' limit
+                // would fold back, so it is held under it.
+                float hz = Math.Clamp(toneHz, 1f, FlydigiLowPassHz);
+                float step = (float)(2 * Math.PI * hz / ReduceRate);
+                float a = Math.Clamp(amp, 0f, 1f);
+                for (int i = 0; i < PcmFramesPerTick; i++)
+                {
+                    float v = a * (float)Math.Sin(s.PcmSynthPhase);
+                    s.PcmSynthPhase += step;
+                    f[i * 2] = v;
+                    f[i * 2 + 1] = v;
+                }
+                if (s.PcmSynthPhase > 64f) s.PcmSynthPhase %= (float)(2 * Math.PI);
+                audible = a > 0.02f;
+            }
+            else
+            {
+                int got = 0;
+                try { got = s.PcmSource.Read(f, 0, f.Length); } catch { }
+                for (int i = got; i < f.Length; i++) f[i] = 0f;
+                float vol = Math.Clamp(SoundMacroService.GetSlotVolume(s.Slot) / 100f, 0f, 1f);
+                float peak = 0f;
+                for (int i = 0; i < f.Length; i++)
+                {
+                    float v = f[i] * vol;
+                    f[i] = v;
+                    if (v < 0f) v = -v;
+                    if (v > peak) peak = v;
+                }
+                audible = peak > 0.002f;
+                s.PcmSynthPhase = 0f;
+            }
+
+            if (audible) s.PcmLastContentMs = nowMs;
+            bool want = testActive || (nowMs - s.PcmLastContentMs) < PcmHangoverMs;
+            if (want != s.PcmArmed)
+            {
+                // The pad's stream stays up through the quiet inside a cue,
+                // and goes back to the pad's own rumble once the cue is over.
+                s.PcmArmed = want;
+                pad.SetGripPcmWanted(want);
+            }
+            if (!audible)
+            {
+                // A grip with no samples plays the rumble, and samples left
+                // over from this cue must not open the next.
+                s.GripCount = 0;
+                return want;
+            }
+
+            int perSample = FlydigiFramesPerSample * 2;
+            for (int at = 0; at + perSample <= f.Length; at += perSample)
+            {
+                var frames = new ReadOnlySpan<float>(f, at, perSample);
+                s.GripLeft[s.GripCount] = FlydigiSample(frames, 0);
+                s.GripRight[s.GripCount] = FlydigiSample(frames, 1);
+                s.GripCount++;
+                int block = Engine.Flydigi.FlydigiApexProtocol.Apex6SamplesPerReport;
+                if (s.GripCount < block) continue;
+                pad.SubmitGripPcm(new ReadOnlySpan<sbyte>(s.GripLeft, 0, block), new ReadOnlySpan<sbyte>(s.GripRight, 0, block));
+                s.GripCount = 0;
+            }
+            return true;
+        }
+
         private static bool AddPcmPulse(float[] samples, int side, ref float envelope, ref float phase)
         {
             if (envelope <= 0.003f)
@@ -2556,6 +2697,9 @@ namespace PadForge.Common.Input
                         break;
                     case Family.SteamDeck: StreamSteamDeckTick(s, toneHz, amp, streaming); break;
                     case Family.SInput: StreamSInputTick(s, toneHz, amp, streaming, nowMs); break;
+                    case Family.FlydigiApex6:
+                        streaming = StreamFlydigiPcmTick(s, toneHz, amp, testActive, remoteActive, nowMs);
+                        break;
                     default: StreamJoyConTick(s, toneHz, amp, streaming, testActive, nowMs); break;
                 }
             }
@@ -2692,7 +2836,7 @@ namespace PadForge.Common.Input
                         // #381: PCM low-pass cutoff refresh, same cadence.
                         // SetCutoff runs on this thread between reads, the
                         // MirrorDsp swap discipline.
-                        if (s.PcmFilter != null)
+                        if (s.PcmFilter != null && s.Family == Family.Steam2026)
                         {
                             try
                             {

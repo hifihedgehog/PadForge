@@ -549,6 +549,22 @@ namespace PadForge.Common.Input.Peripherals
                         paths.Add(null);
                         continue;
                     }
+                    // A Flydigi Apex pad's lights are driven through the
+                    // session PadForge has with the pad, and they belong on
+                    // the pad's own row (#586). Only the shared worker lists
+                    // such a unit, and only for a pad that answered.
+                    if (!PeripheralLinker.IsLinkable(ud.CapType) && _direct.Count > 0
+                        && Flydigi.FlydigiApexService.IsCandidate(ud.VendorId, ud.ProdId)
+                        && !RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath))
+                    {
+                        rows.Add(new LinkRow(ud.InstanceGuid, ud.CapType, ud.VendorId, ud.ProdId, Guid.Empty, null)
+                        {
+                            LitPad = true,
+                        });
+                        users.Add(ud);
+                        paths.Add(ContainerPath(ud));
+                        continue;
+                    }
                     if (!PeripheralLinker.IsLinkable(ud.CapType)) continue;
                     // A device forwarded from another PC plays its rumble
                     // there, so only that PC links it to its vendor channel.

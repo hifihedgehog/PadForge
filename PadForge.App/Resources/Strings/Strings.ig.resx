@@ -235,6 +235,8 @@
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Họrọ foto maka {0}…</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Wepụ foto profile</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Faịlụ ahụ enweghị foto PadForge nwere ike ịgụ.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Ihuenyo njikwa</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Ọ dịghị ihe na-eru njikwa ahụ ruo mgbe ị zigara.</value></data>
   <data name="BlissBoxJob_WrongController" xml:space="preserve"><value>Nke a chọrọ controller N64 n'ime port ahụ.</value></data>
   <data name="BlissBoxJob_NoReply" xml:space="preserve"><value>Adapter ahụ azaghị. Lelee ma e jikọtara controller ahụ, wee nwaa ọzọ.</value></data>
   <data name="BlissBoxJob_PlayerUnchanged" xml:space="preserve"><value>Adapter ahụ debere nọmba onye egwuregwu ya. Nwaa ọzọ.</value></data>
@@ -1443,4 +1445,41 @@
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Maka sekọnd 2 na-egosi aha Base mgbe shift layer kwụsịrị. Na Ọ dịghị mgbe, Base anaghị egosi flyout.</value></data>
   <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Foto (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Faịlụ niile (*.*)|*.*</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Ndabara bs2b</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Ihuenyo njikwa…</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Nhazi</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Jupụta ihuenyo</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Gosi foto niile</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Gbatịa ruo ihuenyo</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Zipu</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Fremu: {0}. Izipu na-ewe ihe dịka {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Njikwa ahụ na-anabata fremu {0} kacha, ya mere a hapụrụ {1} ikpeazụ.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Jikọọ njikwa ahụ site na eriri. Ọ na-amalitegharị onwe ya ihe dịka sekọnd 15 mgbe foto ahụ banyere.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Jikọọ njikwa ahụ site na eriri. Maka izipu, PadForge na-agbanwe ya gaa na ọnọdụ Xbox ma bufee ya site na draịva Xbox nke Windows gaa na WinUSB, wee weghachi ha abụọ.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge ga-agbanwe njikwa ahụ gaa na ọnọdụ Xbox, bufee ya na WinUSB maka izipu, wee weghachi ya na draịva Xbox nke Windows ma gbanwee ya laghachi na ọnọdụ DInput. Buru ụzọ wepụ njikwa Xbox 360 ọ bụla ọzọ. Zipu ugbu a?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Na-amalite…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Na-agbanwe njikwa ahụ…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Na-eche port ihuenyo ahụ…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Na-ebufe njikwa ahụ na WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Na-ehichapụ ohere maka foto ahụ… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Na-ezipu foto ahụ… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Na-emecha…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Na-enyeghachi Windows njikwa ahụ…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Ezigala. Njikwa ahụ ga-egosi foto ahụ ozugbo ọ malitegharịrị.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Ezigala. Njikwa ahụ na-egosi foto ahụ.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Jikọọ njikwa ahụ site na eriri. Ihuenyo ya na-anata foto naanị site na USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Port ihuenyo ahụ apụtaghị. Jiri mgba ọkụ nke ya gbanyụọ njikwa ahụ ma gbanwuo ya, jikọọ ya site na eriri, ma zipu ọzọ.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Ihuenyo njikwa karịrị otu na-eche foto. Wepụ ndị ọzọ ma zipu ọzọ.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Port ihuenyo ahụ emegheghị. Mechie Flydigi Space Station ma zipu ọzọ.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Ihuenyo ahụ akwụsịla ịza. Jiri mgba ọkụ nke ya gbanyụọ njikwa ahụ ma gbanwuo ya, ma zipu ọzọ.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Ihuenyo ahụ jụrụ foto ahụ. Zipu ọzọ.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Njikwa ahụ alọghachighị dịka njikwa Xbox 360, ya mere ọ dịghị ihe e zigara. Jiri mgba nke ya gbanwee ya laghachi na ọnọdụ DInput ma zipu ọzọ.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Wepụ njikwa Xbox 360 ọ bụla ọzọ ma zipu ọzọ. Mgbanwe draịva ahụ ga-ebufekwa ha. Jiri mgba nke ya weghachi njikwa ọ bụla fọdụrụ na ọnọdụ Xbox na ọnọdụ DInput.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Njikwa ahụ nọ na ọnọdụ Xbox azaghị dịka Apex 4, ya mere ọ dịghị ihe e zigara, Windows enwetaghachikwala ya. Jiri mgba nke ya gbanwee ya laghachi na ọnọdụ DInput.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows ebufeghị njikwa ahụ na WinUSB, ya mere ọ dịghị ihe e zigara. Jiri mgba nke ya gbanwee ya laghachi na ọnọdụ DInput.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Akwụsịla. Jiri mgba ọkụ nke ya gbanyụọ njikwa ahụ ma gbanwuo ya tupu i zipu ọzọ.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>A ka na-ezipu foto gaa na njikwa ahụ. Kwụsị izipu ahụ?</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

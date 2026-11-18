@@ -445,6 +445,8 @@
   <data name="Pad_ResetAudioLeftTrigger" xml:space="preserve"><value>Putum bak lef triga</value></data>
   <data name="Pad_ResetAudioRightTrigger" xml:space="preserve"><value>Putum bak raet triga</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Setemap ol efek blong triga long DualSense we i stap long slot ia. Ol efek blong triga we oli kam long wan gem o long wan mod blong gem oli go stret long hem. Ol seting long ples ia oli putum wan layer we yu yu setem, we i wok taem i no gat wan long tufala i stap sendem efek.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Setemap ol efek blong triga long ol fos triga blong kontrola ia. Ol efek blong triga we oli kam long wan gem long wan virtual DualSense o long wan mod blong gem oli plei stret nomo. Ol seting long ples ia oli putum wan layer we yu yu setem, we i wok taem i no gat wan long tufala i stap sendem efek.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Setemap ol efek blong triga long kontrola ia. Ol triga blong hem oli seksek mo oli no pusum baek, ale evri efek i plei olsem wan seksek we i folem wanem we efek i mekem: wan strong seksek taem wan triga i brok, wan seksek we i kam strong mo i lego blong wan bonara. Ol efek blong triga we oli kam long wan gem long wan virtual DualSense o long wan mod blong gem oli plei stret nomo. Ol seting long ples ia oli putum wan layer we yu yu setem, we i wok taem i no gat wan long tufala i stap sendem efek.</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Ol stik</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Ol triga</value></data>
@@ -1813,4 +1815,13 @@
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Ol layer</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>I tanem raon</value></data>
   <data name="Pad_Curve_Peak" xml:space="preserve"><value>Antap</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>I no gat samting i kasem kontrola kasem we yu sendem.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Fitim</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Fulumap skrin</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Soem fulwan pikja</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Pulum pikja i fitim skrin</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

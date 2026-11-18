@@ -952,6 +952,8 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Stillir númer spilara fyrir þetta tengi, 1 til 4. Millistykkið vistar það og tengist aftur sem sá spilari.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast-skjár…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Stillir hvað VMU Dreamcast-leikjastýringarinnar sýnir: eigin mynd millistykkisins, heiti, númer eða mynd virka sniðsins, klukkuna, spilatímann eða mynd sem þú velur.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Skjár stýringar…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Sendir mynd á skjá leikjastýringarinnar: mynd eða GIF sem þú velur, eða mynd, heiti eða númer virka sniðsins. Leikjastýringin geymir hana þar til næsta kemur.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Taka afrit af Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Vistar Controller Pak í þessari N64-leikjastýringu í 32 KB .mpk-skrá, skráargerðina sem N64-hermar lesa.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Endurheimta Controller Pak…</value></data>
@@ -985,6 +987,45 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Fjarlægja mynd sniðs</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Myndir (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Allar skrár (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Þessi skrá inniheldur enga mynd sem PadForge getur lesið.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Skjár stýringar</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Ekkert berst til leikjastýringarinnar fyrr en þú sendir.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Mynd eða GIF sem þú velur, löguð að 160 sinnum 80 díla skjánum. Leikjastýringin geymir hana þar til þú sendir aðra.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Eigin mynd virka sniðsins, eða heiti þess ef það hefur enga, eins og það er þegar þú sendir. Leikjastýringin heldur henni þótt skipt sé um snið.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Heiti virka sniðsins eins og það er þegar þú sendir. Leikjastýringin heldur því þótt skipt sé um snið.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Sæti virka sniðsins í sniðalistanum eins og það er þegar þú sendir. Sniðið „Sjálfgefið“ er 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Aðlögun</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Fylla skjáinn</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Sýna alla myndina</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Teygja á skjáinn</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Myndir (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Allar skrár (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Senda</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Rammar: {0}. Sendingin tekur um {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Leikjastýringin tekur í mesta lagi {0} ramma. Römmum sem sleppt var aftast: {1}.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Tengdu leikjastýringuna með snúru. Hún endurræsir sig sjálf um 15 sekúndum eftir að myndin er komin inn.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Tengdu leikjastýringuna með snúru. Fyrir sendinguna skiptir PadForge henni yfir í Xbox-ham og flytur hana úr Xbox-rekli Windows yfir í WinUSB, og setur síðan hvort tveggja aftur til baka.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge skiptir leikjastýringunni yfir í Xbox-ham, flytur hana yfir í WinUSB fyrir sendinguna, skilar henni síðan til Xbox-rekils Windows og skiptir henni aftur í DInput-ham. Taktu fyrst úr sambandi allar aðrar leikjastýringar af gerðinni Xbox 360. Senda núna?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Ræsi…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Skipti um ham leikjastýringarinnar…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Bíð eftir tengi skjásins…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Flyt leikjastýringuna yfir í WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Rými til fyrir myndina… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Sendi myndina… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Lýk…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Skila leikjastýringunni til Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Sent. Leikjastýringin sýnir myndina þegar hún hefur endurræst sig.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Sent. Leikjastýringin sýnir myndina.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Tengdu leikjastýringuna með snúru. Skjárinn tekur við mynd aðeins yfir USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Tengi skjásins birtist ekki. Slökktu og kveiktu á leikjastýringunni með eigin rofa hennar, tengdu hana með snúru og sendu aftur.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Fleiri en einn stýringarskjár bíða eftir mynd. Taktu hina úr sambandi og sendu aftur.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Tengi skjásins opnaðist ekki. Lokaðu Flydigi Space Station og sendu aftur.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Skjárinn hætti að svara. Slökktu og kveiktu á leikjastýringunni með eigin rofa hennar og sendu aftur.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Skjárinn hafnaði myndinni. Sendu aftur.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Leikjastýringin kom ekki aftur sem Xbox 360 leikjastýring, svo ekkert var sent. Skiptu henni aftur í DInput-ham með eigin rofa hennar og sendu aftur.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Taktu úr sambandi allar aðrar leikjastýringar af gerðinni Xbox 360 og sendu aftur. Breyting á rekli myndi færa þær líka. Leikjastýring sem verður eftir í Xbox-ham fer aftur í DInput-ham með eigin rofa sínum.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Leikjastýringin í Xbox-ham svaraði ekki sem Apex 4, svo ekkert var sent og Windows hefur hana aftur. Skiptu henni aftur í DInput-ham með eigin rofa hennar.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows flutti leikjastýringuna ekki yfir í WinUSB, svo ekkert var sent. Skiptu henni aftur í DInput-ham með eigin rofa hennar.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Stöðvað. Slökktu og kveiktu á leikjastýringunni með eigin rofa hennar áður en þú sendir aftur.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Mynd er enn á leið til leikjastýringarinnar. Stöðva sendinguna?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak-skrár (*.mpk)|*.mpk|Allar skrár (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak tengi {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Endurheimta Controller Pak</value></data>
@@ -1218,6 +1259,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse Triggers</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Styrkur hvers gikks, víxlun mótora, titringur aðlögunarhæfra gikkja, Stöðugur kraftur á gikki</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Framsendir mótorskipanir hvers gikks (Xbox Impulse Triggers) frá sýndarstýringunni til úthlutaðrar Xbox One-, Elite- eða Series-leikjastýringar. Gikkjatitringur frá leikjum fer sjálfkrafa í gegn. Stillingarnar hér fyrir neðan kvarða styrkinn fyrir hvern gikk.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Spilar mótorskipanir hvers gikks (Xbox Impulse Triggers) frá sýndarstýringunni sem titring í gikkjum þessarar leikjastýringar. Gikkjatitringur frá leikjum fer sjálfkrafa í gegn. Stillingarnar hér fyrir neðan kvarða styrkinn fyrir hvern gikk.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Vinstri gikkur</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Hægri gikkur</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Víxla mótorum vinstri og hægri gikks</value></data>
@@ -1282,6 +1324,8 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Aðlögunarhæfir gikkir</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Stilla svörunaráhrif gikkja á úthlutaðri DualSense-leikjastýringu. Gikkjaáhrif frá leik eða leikjabreytingu eru framsend sjálfkrafa. Stillingarnar hér bæta við lagi sem notandinn stillir og keyrir þegar hvorugt skrifar.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Stilla svörunaráhrif gikkja á kraftgikkjum þessarar leikjastýringar. Gikkjaáhrif frá leik á sýndar-DualSense eða frá leikjabreytingu spilast sjálfkrafa. Stillingarnar hér bæta við lagi sem notandinn stillir og keyrir þegar hvorugt skrifar.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Stilla svörunaráhrif gikkja á þessari leikjastýringu. Gikkar hennar titra en veita ekki viðnám, þannig að hver áhrif spilast sem titringur sem fylgir því sem áhrifin gera: hvellur þar sem gikkur brestur, uppbygging og losun fyrir boga. Gikkjaáhrif frá leik á sýndar-DualSense eða frá leikjabreytingu spilast sjálfkrafa. Stillingarnar hér bæta við lagi sem notandinn stillir og keyrir þegar hvorugt skrifar.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Pinnar</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Dauð svæði, mótvægi við dauð svæði, næmiferlar og kvörðun miðjuhliðrunar fyrir hvern pinna. Hver hluti hér fyrir neðan á við einn hliðrænan pinna á virka úttakinu. Útvíkkuð snið geta haft allt að fjóra pinna. Venjulegar leikjastýringar hafa tvo.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Gikkir</value></data>
@@ -3457,7 +3501,7 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Brjóta þá niður um áttund</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Tónmörk</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Spila snertisvörun DualSense á þessari leikjastýringu</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Þegar leikur stýrir þessari rauf sem sýndar-DualSense með sérsmíðuðu snertisvörunarhljóði er það spilað á snertisvörunarbúnaði þessarar leikjastýringar. Steam Controller 2026 um USB eða eigin móttakara spilar hljóðrásina sjálf. Allar aðrar leikjastýringar, og sú yfir Bluetooth, fá tóna sem leiddir eru út frá hljóðinu og nálgast tilfinninguna sem hönnuðurinn ætlaði sér frekar en að endurskapa hana.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Þegar leikur stýrir þessari rauf sem sýndar-DualSense með sérsmíðuðu snertisvörunarhljóði er það spilað á snertisvörunarbúnaði þessarar leikjastýringar. Steam Controller 2026 um USB eða eigin móttakara, og Flydigi Apex 6 Pro, spila hljóðrásina sjálf. Allar aðrar leikjastýringar, og Steam Controller yfir Bluetooth, fá tóna sem leiddir eru út frá hljóðinu og nálgast tilfinninguna sem hönnuðurinn ætlaði sér frekar en að endurskapa hana.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Mögnun snertisvörunar</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Endurstilla á sjálfgefið (slökkt)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Endurstilla á sjálfgefið (100%)</value></data>
@@ -3652,6 +3696,14 @@ Afrit af fyrri útgáfu er í þessari möppu: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Uppsetning snertisvörunarskýrslna Steam Controller (2015) og stærðfræði nótnalotu, eftir Pila og Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Uppsetning snertisvörunar með LFO-tónum fyrir Steam Controller 2026 og Steam Deck, eftir Pila, Crazy og AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Þýðing gikkjaáhrifa og hraðastýring skrifa fyrir Flydigi Apex, gikkjaútfærsla, snertisvörunarstraumur og ljósablokk Apex 6 Pro og ljósaskrif Apex 5, eftir ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Samskiptareglur Flydigi Apex 5 og Apex 6, flutningur ljósablokkar og raðupphleðsla skjásins, eftir Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Ljósablokk Flydigi Apex 4, sniðrauf og upphleðsla á skjá í Xbox-ham, eftir Uilton Lopes og fleiri þátttakendur.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Kraftgikkjaskipanir Flydigi Apex 4 og hraðinn sem mældist á stýringunni, eftir Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Merking SOCD-hreinsunar fyrir Snap Tap-hamina, eftir valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Færa Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Veldu hvað það sýnir. Ekkert breytist fyrr en þú vistar.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} stillt á {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Myndin fór á skjá leikjastýringarinnar.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Sæki S.T.R.I.K.E. 7 SDK frá Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 hleður nú {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Sæki og set upp Visual C++ 2008 keyrsluumhverfi frá Microsoft…</value></data>

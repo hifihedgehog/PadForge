@@ -45,7 +45,7 @@ namespace PadForge.ViewModels
             || (SelectedDevice is { } d && (d.ShowReadAsICade || d.ShowReadAsKeyboard || d.ShowUsioTekken || d.ShowUsioTaiko
                 || d.ShowRegisterNfcTag || d.ShowManageVoicePhrases || d.ShowManageChatCommands || d.ShowLearnHandheldButton
                 || d.ShowMapKeyLights || d.ShowBlissBoxPlayer || d.ShowDreamcastScreen || d.ShowControllerPak
-                || d.ShowKeyboardScreen || d.ShowFalconCalibrate));
+                || d.ShowKeyboardScreen || d.ShowFlydigiScreen || d.ShowFalconCalibrate));
 
         /// <summary>Whether the Settings card shows at all: the device has a
         /// setting of its own or a tool.</summary>

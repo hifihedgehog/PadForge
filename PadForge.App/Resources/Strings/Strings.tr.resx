@@ -952,6 +952,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Bu portun oyuncu numarasını 1 ile 4 arasında ayarlar. Adaptör numarayı saklar ve o oyuncu olarak yeniden bağlanır.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast ekranı…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Dreamcast kumandasının VMU'sunda neyin gösterileceğini ayarlar: adaptörün kendi resmi, etkin profilin adı, numarası veya resmi, saat, oyun süresi ya da seçtiğiniz bir resim.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Kontrolcü ekranı…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Kontrolcünün ekranına bir resim gönderir: seçtiğiniz bir resim ya da GIF veya etkin profilin resmi, adı ya da numarası. Kontrolcü, bir sonrakine kadar onu saklar.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Controller Pak'i yedekle…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Bu N64 kontrolcüsündeki Controller Pak'i, N64 emülatörlerinin okuduğu biçim olan 32 KB'lık bir .mpk dosyasına kaydeder.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Controller Pak'i geri yükle…</value></data>
@@ -985,6 +987,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Profil resmini kaldır</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Resimler (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Tüm dosyalar (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Bu dosyada PadForge'un okuyabileceği bir resim yok.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Kontrolcü ekranı</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Gönderene kadar kontrolcüye hiçbir şey ulaşmaz.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Seçtiğiniz bir resim ya da GIF, ekranın 160 x 80 pikseline sığdırılır. Kontrolcü, siz başka bir tane gönderene kadar onu saklar.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Etkin profilin resmi, resmi yoksa adı, gönderdiğiniz andaki haliyle. Kontrolcü, profil değişimlerinde onu saklar.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Etkin profilin adı, gönderdiğiniz andaki haliyle. Kontrolcü, profil değişimlerinde onu saklar.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Etkin profilin profil listesindeki sırası, gönderdiğiniz andaki haliyle. Varsayılan profil 0'dır.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Sığdır</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Ekranı doldur</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Resmin tamamını göster</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Ekrana esnet</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Resimler (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Tüm dosyalar (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Gönder</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Kare sayısı: {0}. Göndermek yaklaşık {1} sürer.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontrolcü en fazla {0} kare alır, bu yüzden son {1} kare dışarıda bırakıldı.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Kontrolcüyü kabloyla bağlayın. Resim girdikten yaklaşık 15 saniye sonra kendiliğinden yeniden başlar.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Kontrolcüyü kabloyla bağlayın. Göndermek için PadForge onu Xbox moduna alır, Windows'un Xbox sürücüsünden WinUSB'ye geçirir, sonra ikisini de geri koyar.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge kontrolcüyü Xbox moduna alacak, göndermek için WinUSB'ye geçirecek, sonra Windows'un Xbox sürücüsüne geri verip DInput moduna döndürecek. Önce diğer tüm Xbox 360 kontrolcülerini çıkarın. Şimdi gönderilsin mi?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Başlatılıyor…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Kontrolcü değiştiriliyor…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Ekranın portu bekleniyor…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Kontrolcü WinUSB'ye geçiriliyor…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Resme yer açılıyor… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Resim gönderiliyor… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Bitiriliyor…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Kontrolcü Windows'a geri veriliyor…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Gönderildi. Kontrolcü, yeniden başladıktan sonra resmi gösterir.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Gönderildi. Kontrolcü resmi gösteriyor.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Kontrolcüyü kabloyla bağlayın. Ekranı resmi yalnızca USB üzerinden alır.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Ekranın portu görünmedi. Kontrolcüyü kendi anahtarıyla kapatıp açın, kabloyla bağlayın ve yeniden gönderin.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Birden fazla kontrolcü ekranı resim bekliyor. Diğerlerini çıkarın ve yeniden gönderin.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Ekranın portu açılmadı. Flydigi Space Station'ı kapatın ve yeniden gönderin.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Ekran yanıt vermeyi bıraktı. Kontrolcüyü kendi anahtarıyla kapatıp açın ve yeniden gönderin.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Ekran resmi reddetti. Yeniden gönderin.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Kontrolcü Xbox 360 kontrolcüsü olarak geri gelmedi, bu yüzden hiçbir şey gönderilmedi. Onu kendi anahtarıyla DInput moduna geri alın ve yeniden gönderin.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Diğer tüm Xbox 360 kontrolcülerini çıkarın ve yeniden gönderin. Sürücü değişikliği onları da taşırdı. Xbox modunda kalan bir kontrolcü, kendi anahtarıyla DInput moduna geri alınır.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox modundaki kontrolcü Apex 4 olarak yanıt vermedi, bu yüzden hiçbir şey gönderilmedi ve Windows onu geri aldı. Onu kendi anahtarıyla DInput moduna geri alın.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows kontrolcüyü WinUSB'ye geçirmedi, bu yüzden hiçbir şey gönderilmedi. Onu kendi anahtarıyla DInput moduna geri alın.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Durduruldu. Yeniden göndermeden önce kontrolcüyü kendi anahtarıyla kapatıp açın.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Kontrolcüye hâlâ bir resim gidiyor. Gönderme durdurulsun mu?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak dosyaları (*.mpk)|*.mpk|Tüm dosyalar (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak'i geri yükle</value></data>
@@ -1218,6 +1259,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse tetikleri</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Tetik başına kazanç, motor değişimi, uyarlanabilir tetik titreşimleri, Sabit tetik kuvveti</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Tetik başına motor komutlarını (Xbox Impulse Triggers) sanal kontrolcüden atanmış fiziksel Xbox One, Elite veya Series kontrolcüsüne iletir. Oyunun yönettiği tetik titreşimi otomatik olarak aktarılır. Aşağıdaki denetimler büyüklüğü tetik başına ölçekler.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Tetik başına motor komutlarını (Xbox Impulse Triggers) sanal kontrolcüden bu kontrolcünün tetiklerinde titreşim olarak çalar. Oyunun yönettiği tetik titreşimi otomatik olarak aktarılır. Aşağıdaki denetimler büyüklüğü tetik başına ölçekler.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Sol tetik</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Sağ tetik</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Sol ve sağ tetik motorlarının yerini değiştir</value></data>
@@ -1282,6 +1324,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Uyarlanabilir tetikler</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Atanmış fiziksel DualSense üzerindeki tetik geri bildirim efektlerini yapılandırın. Bir oyundan veya oyun modundan gelen tetik efektleri otomatik olarak iletilir. Buradaki ayarlar, ikisi de yazmadığında çalışan, kullanıcı tarafından yapılandırılmış bir katman ekler.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Bu kontrolcünün kuvvet tetikleri üzerindeki tetik geri bildirim efektlerini yapılandırın. Sanal DualSense üzerindeki bir oyundan veya oyun modundan gelen tetik efektleri otomatik olarak çalınır. Buradaki ayarlar, ikisi de yazmadığında çalışan, kullanıcı tarafından yapılandırılmış bir katman ekler.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Bu kontrolcü üzerindeki tetik geri bildirim efektlerini yapılandırın. Tetikleri titreşir, direnç göstermez. Bu yüzden her efekt, efektin yaptığı işi izleyen bir titreşim olarak çalınır: tetiğin kırıldığı yerde bir patlama, yay için bir gerilme ve bir bırakma. Sanal DualSense üzerindeki bir oyundan veya oyun modundan gelen tetik efektleri otomatik olarak çalınır. Buradaki ayarlar, ikisi de yazmadığında çalışan, kullanıcı tarafından yapılandırılmış bir katman ekler.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Çubuklar</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Çubuk başına ölü bölgeler, anti ölü bölgeler, hassasiyet eğrileri ve merkez ofseti kalibrasyonu. Aşağıdaki her bölüm, etkin çıkıştaki bir analog çubuğu hedefler. Genişletilmiş profillerde en fazla dört çubuk olabilir. Standart oyun kumandalarında iki tane vardır.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Tetikler</value></data>
@@ -3457,7 +3501,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Bir oktav aşağı katla</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Ton sınırı</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense haptiğini bu kontrolcüde çal</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Bir oyun bu yuvayı, özel hazırlanmış haptik sesle sanal DualSense olarak kullandığında o parçayı bu kontrolcünün aktüatörlerinde çalar. USB veya kendi alıcısı üzerinden bağlı bir Steam Controller 2026 parçanın kendisini çalar. Diğer tüm kontrolcüler ve Bluetooth üzerinden bağlı Steam Controller 2026, sesten türetilen tonlar alır. Bu tonlar tasarımcının hissini birebir üretmez, ona yaklaşır.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Bir oyun bu yuvayı, özel hazırlanmış haptik sesle sanal DualSense olarak kullandığında o parçayı bu kontrolcünün aktüatörlerinde çalar. USB veya kendi alıcısı üzerinden bağlı bir Steam Controller 2026 ve bir Flydigi Apex 6 Pro parçanın kendisini çalar. Diğer tüm kontrolcüler ve Bluetooth üzerinden bağlı o Steam Controller, sesten türetilen tonlar alır. Bu tonlar tasarımcının hissini birebir üretmez, ona yaklaşır.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptik kazancı</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Varsayılana sıfırla (kapalı)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Varsayılana sıfırla (%100)</value></data>
@@ -3652,6 +3696,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) haptik rapor düzeni ve nota periyodu matematiği. Geliştirenler: Pila ve Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 ve Steam Deck LFO tonlu haptik düzeni. Geliştirenler: Pila, Crazy ve AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex tetik efekti çevirisi ve yazma hızı ayarı, Apex 6 Pro tetik işleme, haptik akış ve ışık bloğu ile Apex 5 ışık yazmaları. Geliştiren: ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5 ve Apex 6 protokol notları, ışık bloğu aktarımı ve ekranın seri yüklemesi. Geliştiren: Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4 ışık bloğu, profil yuvası ve Xbox modunda ekran yüklemesi. Geliştirenler: Uilton Lopes ve katkıda bulunanlar.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4 kuvvet tetiği komutları ve kontrolcüde ölçülen hız ayarı. Geliştiren: Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap modları için SOCD temizleme mantığı. Geliştiren: valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Kaydır Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Neyin gösterileceğini seçin. Kaydedene kadar hiçbir şey değişmez.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} şuna ayarlandı: {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Resim kontrolcünün ekranına gönderildi.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mad Catz'in S.T.R.I.K.E. 7 SDK'sı indiriliyor…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 artık {0} dosyasını yüklüyor.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Microsoft'un Visual C++ 2008 çalışma zamanı indirilip kuruluyor…</value></data>

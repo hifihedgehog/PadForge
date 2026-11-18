@@ -927,6 +927,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Setzt d'Spillernummer vun dësem Port, 1 bis 4. Den Adapter späichert se a mellt sech als dee Spiller nei un.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast-Écran…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Leet fest, wat d'VMU vum Dreamcast-Pad weist: dem Adapter säin eegent Bild, den Numm, d'Nummer oder d'Bild vum aktive Profil, d'Auer, d'Spillzäit oder e Bild, dat Dir wielt.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Controller-Écran…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Schéckt e Bild op den Écran vum Controller: e Bild oder GIF, dat Dir wielt, oder d'Bild, den Numm oder d'Nummer vum aktive Profil. De Controller behält et bis zum nächsten.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Controller Pak sécheren…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Späichert de Controller Pak an dësem N64-Controller an engem 32-KB-.mpk-Fichier, dem Format, dat N64-Emulatore liesen.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Controller Pak erëmhierstellen…</value></data>
@@ -960,6 +962,45 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Profilbild ewechhuelen</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Biller (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|All Fichieren (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>An dësem Fichier ass kee Bild, dat PadForge liese kann.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Controller-Écran</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Näischt erreecht de Controller, bis Dir schéckt.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>E Bild oder GIF, dat Dir wielt, op d'160 op 80 Pixele vum Écran ugepasst. De Controller behält et, bis Dir en anert schéckt.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>D'Bild vum aktive Profil oder säin Numm, wann et keent huet, sou wéi et ass, wann Dir schéckt. De Controller behält et och no engem Profilwiessel.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Den Numm vum aktive Profil, sou wéi en ass, wann Dir schéckt. De Controller behält en och no engem Profilwiessel.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>D'Plaz vum aktive Profil an der Profillëscht, sou wéi se ass, wann Dir schéckt. D'Standardprofil ass 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Upassen</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Écran ausfëllen</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Ganzt Bild weisen</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Op den Écran zéien</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Biller (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|All Fichieren (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Schécken</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Biller: {0}. D'Schécken dauert ongeféier {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>De Controller hëlt héchstens {0} Biller, dofir goufen déi lescht {1} ewechgelooss.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Verbannt de Controller mat engem Kabel. En start ongeféier 15 Sekonnen, nodeems d'Bild drop ass, vu selwer nei.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Verbannt de Controller mat engem Kabel. Fir d'Schécken setzt PadForge en an den Xbox-Modus a wiesselt en vum Xbox-Treiber vu Windows op WinUSB, duerno setzt et béides zréck.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge setzt de Controller an den Xbox-Modus, wiesselt en fir d'Schécken op WinUSB, gëtt en duerno dem Xbox-Treiber vu Windows zréck a setzt en erëm an den DInput-Modus. Maacht fir d'éischt all aner Xbox 360-Controller of. Elo schécken?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Gëtt gestart…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Controller gëtt ëmgeschalt…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Waarden op de Port vum Écran…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Controller gëtt op WinUSB gewiesselt…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Plaz fir d'Bild gëtt fräigemaach… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>D'Bild gëtt geschéckt… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Gëtt ofgeschloss…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Controller gëtt Windows zréckginn…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Geschéckt. De Controller weist d'Bild, soubal en nei gestart ass.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Geschéckt. De Controller weist d'Bild.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Verbannt de Controller mat engem Kabel. Säin Écran hëlt e Bild nëmmen iwwer USB un.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>De Port vum Écran ass net opgedaucht. Schalt de Controller mat sengem eegene Schalter aus an erëm un, verbannt en mat engem Kabel a schéckt nach eng Kéier.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Méi wéi een Controller-Écran waart op e Bild. Maacht déi aner of a schéckt nach eng Kéier.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>De Port vum Écran ass net opgaangen. Maacht Flydigi Space Station zou a schéckt nach eng Kéier.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Den Écran äntwert net méi. Schalt de Controller mat sengem eegene Schalter aus an erëm un a schéckt nach eng Kéier.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Den Écran huet d'Bild refuséiert. Schéckt nach eng Kéier.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>De Controller ass net als Xbox 360-Controller zréckkomm, dofir gouf näischt geschéckt. Setzt en mat sengem eegene Schalter erëm an den DInput-Modus a schéckt nach eng Kéier.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Maacht all aner Xbox 360-Controller of a schéckt nach eng Kéier. Den Treiberwiessel géif se och ëmsetzen. E Controller, deen am Xbox-Modus bliwwen ass, kënnt mat sengem eegene Schalter erëm an den DInput-Modus.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>De Controller am Xbox-Modus huet net als Apex 4 geäntwert, dofir gouf näischt geschéckt a Windows huet en erëm. Setzt en mat sengem eegene Schalter erëm an den DInput-Modus.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows huet de Controller net op WinUSB gewiesselt, dofir gouf näischt geschéckt. Setzt en mat sengem eegene Schalter erëm an den DInput-Modus.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Gestoppt. Schalt de Controller mat sengem eegene Schalter aus an erëm un, ier Dir nach eng Kéier schéckt.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>E Bild gëtt nach ëmmer un de Controller geschéckt. D'Schécken stoppen?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller-Pak-Fichieren (*.mpk)|*.mpk|All Fichieren (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak Port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak erëmhierstellen</value></data>
@@ -1125,6 +1166,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse Triggers</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Verstäerkung pro Trigger, Motoren tauschen, Vibratioune vun adaptiven Trigger, Konstant Trigger-Kraaft</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Leet d'Motorbefeeler pro Trigger (Xbox Impulse Triggers) vum virtuelle Controller un den zougewisene physesche Xbox-One-, Elite- oder Series-Controller weider. Vibratioun vun den Trigger, déi d'Spill steiert, geet automatesch duerch. D'Regler hei ënnendrënner skaléieren d'Stäerkt pro Trigger.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Spillt d'Motorbefeeler pro Trigger (Xbox Impulse Triggers) vum virtuelle Controller als Vibratioun an den Trigger vun dësem Controller. Vibratioun vun den Trigger, déi d'Spill steiert, geet automatesch duerch. D'Regler hei ënnendrënner skaléieren d'Stäerkt pro Trigger.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Lénken Trigger</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Rietsen Trigger</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Lénks a riets Trigger-Motoren tauschen</value></data>
@@ -1189,6 +1231,8 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptiv Trigger</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfiguréiert d'Trigger-Effekter um zougewisene physeschen DualSense. Trigger-Effekter vun engem Spill oder engem Spill-Mod ginn automatesch weidergeleet. D'Astellungen hei bilden eng Schicht, déi Dir selwer konfiguréiert an déi leeft, wa weder d'Spill nach de Mod schreift.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Konfiguréiert d'Trigger-Effekter op de Krafttrigger vun dësem Controller. Trigger-Effekter vun engem Spill op engem virtuellen DualSense oder vun engem Spill-Mod gi automatesch gespillt. D'Astellungen hei bilden eng Schicht, déi Dir selwer konfiguréiert an déi leeft, wa weder d'Spill nach de Mod schreift.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Konfiguréiert d'Trigger-Effekter op dësem Controller. Seng Trigger vibréieren a leeschte kee Widderstand, dofir gëtt all Effekt als Vibratioun gespillt, déi deem follegt, wat den Effekt mécht: e Stouss, wou en Trigger bréckt, en Opbau an eng Fräiloossung fir e Bou. Trigger-Effekter vun engem Spill op engem virtuellen DualSense oder vun engem Spill-Mod gi automatesch gespillt. D'Astellungen hei bilden eng Schicht, déi Dir selwer konfiguréiert an déi leeft, wa weder d'Spill nach de Mod schreift.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Doudzonen, Anti-Doudzonen, Empfindlechkeetskurven a Kalibréierung vun der Mëttekorrektur, fir all Stick eenzel. All Sektioun hei ënnendrënner betrëfft een Analogstick um aktiven Ausgang. Erweidert Profiler kënne bis zu véier Sticks hunn. Standard-Gamepads hunn zwee.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Trigger</value></data>
@@ -3238,7 +3282,7 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Oktav fir Oktav no ënne transposéieren</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Tounlimit</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense-Haptik op dësem Controller spillen</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Wann e Spill dëse Slot als virtuellen DualSense mat enger gestalter haptescher Audiospuer steiert, gëtt déi Spuer op den Aktuatoren vun dësem Controller gespillt. E Steam Controller 2026 iwwer USB oder säin Dongle spillt d'Spuer selwer. All anere Controller, an dee selwechten iwwer Bluetooth, kritt Téin, déi aus dem Audio ofgeleet sinn an d'Gefill vum Designer nëmmen ongeféier erreechen.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Wann e Spill dëse Slot als virtuellen DualSense mat enger gestalter haptescher Audiospuer steiert, gëtt déi Spuer op den Aktuatoren vun dësem Controller gespillt. E Steam Controller 2026 iwwer USB oder säin Dongle an e Flydigi Apex 6 Pro spillen d'Spuer selwer. All anere Controller, an dee Steam Controller iwwer Bluetooth, kritt Téin, déi aus dem Audio ofgeleet sinn an d'Gefill vum Designer nëmmen ongeféier erreechen.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptik-Verstäerkung</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Op Standard zrécksetzen (Aus)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Op Standard zrécksetzen (100%)</value></data>
@@ -3429,6 +3473,14 @@ Eng Kopie vun der viregter Versioun ass an dësem Dossier: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Haptik-Report-Layout vum Steam Controller (2015) a Berechnung vun der Notteperiod, vum Pila an Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Haptik-Layout mat LFO-Téin fir de Steam Controller 2026 an de Steam Deck, vum Pila, Crazy an AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Iwwersetzung vun den Trigger-Effekter fir de Flydigi Apex an den Tempo vun de Schreifzougrëffer, d'Trigger-Duerstellung, den Haptik-Stream an de Liichtblock vum Apex 6 Pro an d'Liichtbefeeler fir den Apex 5, vum ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Protokollnotizen zum Flydigi Apex 5 an Apex 6, den Transfert vum Liichtblock an de serielle Upload op den Écran, vum Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Liichtblock, Profilslot an Upload op den Écran am Xbox-Modus fir de Flydigi Apex 4, vum Uilton Lopes a Mataarbechter.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Krafttrigger-Befeeler fir de Flydigi Apex 4 an den Tempo, deen um Pad gemooss gouf, vum Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD-Botzsemantik fir d'Snap-Tap-Modi, vum valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4733,6 +4785,7 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Y-Verschiebung</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Wielt, wat en uweist. Näischt ännert sech, bis Dir späichert.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} op {1} gesat.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>D'Bild gouf op den Écran vum Controller geschéckt.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>D'S.T.R.I.K.E. 7-SDK vu Mad Catz gëtt erofgelueden…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>D'S.T.R.I.K.E. 7 luet elo {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>D'Visual C++ 2008-Runtime vu Microsoft gëtt erofgelueden an installéiert…</value></data>

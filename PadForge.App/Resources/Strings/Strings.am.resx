@@ -938,6 +938,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>የዚህን ወደብ የተጫዋች ቁጥር ያዘጋጃል፣ ከ1 እስከ 4። አስማሚው ያስቀምጠዋል፣ እንደዚያ ተጫዋችም እንደገና ይገናኛል።</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>የDreamcast ማያ ገጽ…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>የDreamcast ፓዱ VMU የሚያሳየውን ያዘጋጃል: የአስማሚውን የራሱን ምስል፣ የንቁ መገለጫውን ስም፣ ቁጥር ወይም ምስል፣ ሰዓቱን፣ የጨዋታ ጊዜውን፣ ወይም የምትመርጠውን ምስል።</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>የመቆጣጠሪያ ማያ ገጽ…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>ወደ መቆጣጠሪያው ማያ ገጽ ምስል ይልካል: የምትመርጠውን ምስል ወይም GIF፣ ወይም የንቁ መገለጫውን ምስል፣ ስም ወይም ቁጥር። መቆጣጠሪያው እስከሚቀጥለው ድረስ ይይዘዋል።</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Controller Pak ምትኬ አስቀምጥ…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>በዚህ N64 መቆጣጠሪያ ውስጥ ያለውን Controller Pak የN64 ኢሙሌተሮች ወደሚያነቡት ቅርጸት፣ ወደ 32 KB .mpk ፋይል ያስቀምጣል።</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Controller Pak መልስ…</value></data>
@@ -971,6 +973,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>የመገለጫ ምስልን አስወግድ</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>ምስሎች (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|ሁሉም ፋይሎች (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>ያ ፋይል PadForge ሊያነበው የሚችል ምስል የለውም።</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>የመቆጣጠሪያ ማያ ገጽ</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>እስኪልኩ ድረስ ምንም ወደ መቆጣጠሪያው አይደርስም።</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>የምትመርጠው ምስል ወይም GIF፣ ከማያ ገጹ 160 በ80 ፒክሰሎች ጋር ተገጣጥሞ። መቆጣጠሪያው ሌላ እስክትልክ ድረስ ይይዘዋል።</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>የንቁ መገለጫው ምስል፣ ምስል ከሌለው ደግሞ ስሙ፣ በምትልክበት ጊዜ እንዳለው። መገለጫ ሲቀየርም መቆጣጠሪያው ይይዘዋል።</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>የንቁ መገለጫው ስም በምትልክበት ጊዜ እንዳለው። መገለጫ ሲቀየርም መቆጣጠሪያው ይይዘዋል።</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>ንቁው መገለጫ በምትልክበት ጊዜ በመገለጫ ዝርዝሩ ውስጥ ያለው ቦታ። ነባሪው መገለጫ 0 ነው።</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>አገጣጠም</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>ማያ ገጹን ሙላ</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>ሙሉውን ምስል አሳይ</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>ወደ ማያ ገጹ ዘርጋ</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>ምስሎች (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|ሁሉም ፋይሎች (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>ላክ</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>ፍሬሞች: {0}። መላኩ {1} ገደማ ይወስዳል።</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>መቆጣጠሪያው የሚቀበለው የፍሬም ብዛት ቢበዛ {0} ነው፣ ስለዚህ የመጨረሻዎቹ {1} ቀርተዋል።</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>መቆጣጠሪያውን በገመድ አገናኝ። ምስሉ ከገባ ከ15 ሰከንድ ገደማ በኋላ በራሱ እንደገና ይጀምራል።</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>መቆጣጠሪያውን በገመድ አገናኝ። ለመላኩ PadForge ወደ Xbox ሁነታ ይቀይረዋል፣ ከWindows የXbox ሾፌር ወደ WinUSB ያዛውረዋል፣ ከዚያም ሁለቱንም ይመልሳል።</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge መቆጣጠሪያውን ወደ Xbox ሁነታ ይቀይረዋል፣ ለመላኩ ወደ WinUSB ያዛውረዋል፣ ከዚያም ለWindows የXbox ሾፌር ይመልሰዋል፣ ወደ DInput ሁነታም መልሶ ይቀይረዋል። መጀመሪያ ሌሎች Xbox 360 መቆጣጠሪያዎችን ሁሉ ንቀል። አሁን ይላክ?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>በመጀመር ላይ…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>መቆጣጠሪያውን በመቀየር ላይ…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>የማያ ገጹን ወደብ በመጠበቅ ላይ…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>መቆጣጠሪያውን ወደ WinUSB በማዛወር ላይ…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>ለምስሉ ቦታ በማጽዳት ላይ… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>ምስሉን በመላክ ላይ… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>በማጠናቀቅ ላይ…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>መቆጣጠሪያውን ለWindows በመመለስ ላይ…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>ተልኳል። መቆጣጠሪያው እንደገና ከጀመረ በኋላ ምስሉን ያሳያል።</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>ተልኳል። መቆጣጠሪያው ምስሉን ያሳያል።</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>መቆጣጠሪያውን በገመድ አገናኝ። ማያ ገጹ ምስል የሚቀበለው በUSB ብቻ ነው።</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>የማያ ገጹ ወደብ አልታየም። መቆጣጠሪያውን በራሱ ማብሪያ አጥፍተህ አብራው፣ በገመድ አገናኘው፣ እንደገና ላክ።</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>ከአንድ በላይ የመቆጣጠሪያ ማያ ገጽ ምስል እየጠበቀ ነው። ሌሎቹን ነቅለህ እንደገና ላክ።</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>የማያ ገጹ ወደብ አልተከፈተም። Flydigi Space Stationን ዝጋና እንደገና ላክ።</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>ማያ ገጹ መመለስ አቁሟል። መቆጣጠሪያውን በራሱ ማብሪያ አጥፍተህ አብራውና እንደገና ላክ።</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>ማያ ገጹ ምስሉን አልተቀበለም። እንደገና ላክ።</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>መቆጣጠሪያው እንደ Xbox 360 መቆጣጠሪያ አልተመለሰም፣ ስለዚህ ምንም አልተላከም። በራሱ ማብሪያ ወደ DInput ሁነታ መልሰህ ቀይረውና እንደገና ላክ።</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>ሌሎች Xbox 360 መቆጣጠሪያዎችን ሁሉ ነቅለህ እንደገና ላክ። የሾፌሩ ለውጥ እነሱንም ያዛውራቸዋል። በXbox ሁነታ የቀረ መቆጣጠሪያ በራሱ ማብሪያ ወደ DInput ሁነታ ይመለሳል።</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>በXbox ሁነታ ያለው መቆጣጠሪያ እንደ Apex 4 አልመለሰም፣ ስለዚህ ምንም አልተላከም፣ Windowsም መልሶ ይዞታል። በራሱ ማብሪያ ወደ DInput ሁነታ መልሰህ ቀይረው።</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows መቆጣጠሪያውን ወደ WinUSB አላዛወረውም፣ ስለዚህ ምንም አልተላከም። በራሱ ማብሪያ ወደ DInput ሁነታ መልሰህ ቀይረው።</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>ቆሟል። እንደገና ከመላክህ በፊት መቆጣጠሪያውን በራሱ ማብሪያ አጥፍተህ አብራው።</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>ምስል አሁንም ወደ መቆጣጠሪያው እየሄደ ነው። መላኩ ይቁም?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>የController Pak ፋይሎች (*.mpk)|*.mpk|ሁሉም ፋይሎች (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak ወደብ {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak መልስ</value></data>
@@ -1137,6 +1178,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ኢምፐልስ ትሪገሮች</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>የእያንዳንዱ ትሪገር ማጉላት፣ ሞተሮችን ማለዋወጥ፣ የአዳፕቲቭ ትሪገር ንዝረቶች፣ ቋሚ የትሪገር ኃይል</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ለእያንዳንዱ ትሪገር የሞተር ትዕዛዞችን (Xbox Impulse Triggers) ከምናባዊ መቆጣጠሪያው ወደ ተመደበው አካላዊ Xbox One፣ Elite ወይም Series መቆጣጠሪያ ያስተላልፋል። በጨዋታ የሚነዳ የትሪገር ንዝረት በራስ-ሰር ያልፋል። ከታች ያሉት መቆጣጠሪያዎች ለእያንዳንዱ ትሪገር መጠኑን ያስተካክላሉ።</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>ለእያንዳንዱ ትሪገር የሞተር ትዕዛዞችን (Xbox Impulse Triggers) ከምናባዊ መቆጣጠሪያው በዚህ መቆጣጠሪያ ትሪገሮች ውስጥ እንደ ንዝረት ያጫውታል። በጨዋታ የሚነዳ የትሪገር ንዝረት በራስ-ሰር ያልፋል። ከታች ያሉት መቆጣጠሪያዎች ለእያንዳንዱ ትሪገር መጠኑን ያስተካክላሉ።</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>ግራ ትሪገር</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>ቀኝ ትሪገር</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>የግራ እና የቀኝ ትሪገር ሞተሮችን አለዋውጥ</value></data>
@@ -1201,6 +1243,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>አዳፕቲቭ ትሪገሮች</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>በተመደበው አካላዊ DualSense ላይ የትሪገር ግብረመልስ ውጤቶችን አዋቅር። ከጨዋታ ወይም ከጨዋታ ሞድ የሚመጡ የትሪገር ውጤቶች በራስ-ሰር ይተላለፋሉ። እዚህ ያሉት ቅንብሮች አንዳቸውም በማይጽፉበት ጊዜ የሚሠራ፣ በተጠቃሚ የተዋቀረ ንብርብር ያክላሉ።</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>በዚህ መቆጣጠሪያ የኃይል ትሪገሮች ላይ የትሪገር ግብረመልስ ውጤቶችን አዋቅር። በምናባዊ DualSense ላይ ካለ ጨዋታ ወይም ከጨዋታ ሞድ የሚመጡ የትሪገር ውጤቶች በራስ-ሰር ይጫወታሉ። እዚህ ያሉት ቅንብሮች አንዳቸውም በማይጽፉበት ጊዜ የሚሠራ፣ በተጠቃሚ የተዋቀረ ንብርብር ያክላሉ።</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>በዚህ መቆጣጠሪያ ላይ የትሪገር ግብረመልስ ውጤቶችን አዋቅር። ትሪገሮቹ ይርገበገባሉ እንጂ አይቋቋሙም፣ ስለዚህ እያንዳንዱ ውጤት ውጤቱ የሚያደርገውን የሚከተል ንዝረት ሆኖ ይጫወታል: ትሪገር በሚሰበርበት ቦታ ድንገተኛ ንዝረት፣ ለቀስት ደግሞ እየጨመረ የሚሄድ ንዝረትና መለቀቅ። በምናባዊ DualSense ላይ ካለ ጨዋታ ወይም ከጨዋታ ሞድ የሚመጡ የትሪገር ውጤቶች በራስ-ሰር ይጫወታሉ። እዚህ ያሉት ቅንብሮች አንዳቸውም በማይጽፉበት ጊዜ የሚሠራ፣ በተጠቃሚ የተዋቀረ ንብርብር ያክላሉ።</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>ስቲኮች</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>ለእያንዳንዱ ስቲክ የሞተ ቀጠናዎች፣ ፀረ-የሞተ ቀጠናዎች፣ የትብነት ኩርባዎች እና የመሃል ማካካሻ ማስተካከያ። ከታች ያለው እያንዳንዱ ክፍል በንቁ ውፅዓቱ ላይ ያለውን አንድ አናሎግ ስቲክ ይመለከታል። የተራዘሙ መገለጫዎች እስከ አራት ስቲኮች ሊኖራቸው ይችላሉ። መደበኛ ጌምፓዶች ሁለት አላቸው።</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ትሪገሮች</value></data>
@@ -3228,7 +3272,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>በኦክታቭ ወደ ታች እጠፋቸው</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>የቃና ገደብ</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense ሃፕቲክስን በዚህ መቆጣጠሪያ ላይ አጫውት</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>አንድ ጨዋታ ይህን ቦታ እንደ ምናባዊ DualSense በተዘጋጀ የሃፕቲክ ድምጽ ሲነዳ፣ ያንን ትራክ በዚህ መቆጣጠሪያ አንቀሳቃሾች ላይ ያጫውታል። Steam Controller 2026 በUSB ወይም በዶንግሉ ሲገናኝ ትራኩን ራሱ ያጫውታል። ሌሎች መቆጣጠሪያዎች ሁሉ፣ እንዲሁም ያ መቆጣጠሪያ በBluetooth ሲገናኝ፣ ከድምጹ የተገኙ ቃናዎችን ያገኛሉ። እነዚህ ቃናዎች የንድፍ አውጪውን ስሜት ይገምታሉ እንጂ በትክክል አይደግሙትም።</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>አንድ ጨዋታ ይህን ቦታ እንደ ምናባዊ DualSense በተዘጋጀ የሃፕቲክ ድምጽ ሲነዳ፣ ያንን ትራክ በዚህ መቆጣጠሪያ አንቀሳቃሾች ላይ ያጫውታል። Steam Controller 2026 በUSB ወይም በዶንግሉ ሲገናኝ፣ እንዲሁም Flydigi Apex 6 Pro፣ ትራኩን ራሳቸው ያጫውታሉ። ሌሎች መቆጣጠሪያዎች ሁሉ፣ እንዲሁም ያ Steam Controller በBluetooth ሲገናኝ፣ ከድምጹ የተገኙ ቃናዎችን ያገኛሉ። እነዚህ ቃናዎች የንድፍ አውጪውን ስሜት ይገምታሉ እንጂ በትክክል አይደግሙትም።</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>የሃፕቲክስ ማጉላት</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>ወደ ነባሪ ዳግም አስጀምር (ጠፍቷል)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>ወደ ነባሪ ዳግም አስጀምር (100%)</value></data>
@@ -3419,6 +3463,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>የSteam Controller (2015) ሃፕቲክ ሪፖርት አቀማመጥ እና የኖታ ጊዜ ሂሳብ፣ በPila እና Roboron3042።</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>የSteam Controller 2026 እና Steam Deck LFO ቃና ሃፕቲክ አቀማመጥ፣ በPila፣ Crazy እና AAGaming።</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>የFlydigi Apex ትሪገር ውጤት ትርጉምና የአጻጻፍ ምት፣ የApex 6 Pro ትሪገር አተረጓጎም፣ የሃፕቲክ ዥረትና የብርሃን ብሎክ፣ እንዲሁም የApex 5 የብርሃን አጻጻፎች፣ በReynArts።</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>የFlydigi Apex 5 እና Apex 6 ፕሮቶኮል ማስታወሻዎች፣ የብርሃን ብሎክ ዝውውር እና የማያ ገጹ የሲሪያል ጭነት፣ በMikalai Kaliaha።</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>የFlydigi Apex 4 የብርሃን ብሎክ፣ የመገለጫ ማስገቢያ እና በXbox ሁነታ የማያ ገጹ ጭነት፣ በUilton Lopes እና አስተዋጽኦ አበርካቾች።</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>የFlydigi Apex 4 የኃይል ትሪገር ትዕዛዞችና በፓዱ ላይ የተለካው ምት፣ በJackwmtr።</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>ለSnap Tap ሁነታዎች የSOCD ማጽዳት ደንቦች፣ በvalignatev።</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4732,6 +4784,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>ማንቀሳቀሻ Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>የሚያሳየውን ይምረጡ። እስኪያስቀምጡ ድረስ ምንም አይለወጥም።</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} ወደ {1} ተዘጋጅቷል።</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>ምስሉ ወደ መቆጣጠሪያው ማያ ገጽ ተልኳል።</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>የMad Catz S.T.R.I.K.E. 7 SDK በማውረድ ላይ…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 አሁን {0} ይጭናል።</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>የMicrosoft Visual C++ 2008 ራንታይምን በማውረድና በመጫን ላይ…</value></data>

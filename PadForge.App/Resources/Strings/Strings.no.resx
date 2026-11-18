@@ -952,6 +952,8 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Angir spillernummeret for denne porten, 1 til 4. Adapteren lagrer det og kobler til igjen som den spilleren.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast-skjerm…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Angir hva VMU-en i Dreamcast-kontrolleren viser: adapterens eget bilde, navnet, nummeret eller bildet til den aktive profilen, klokken, spilletiden eller et bilde du velger.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Kontrollerskjerm…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Sender et bilde til skjermen på kontrolleren: et bilde eller en GIF du velger, eller bildet, navnet eller nummeret til den aktive profilen. Kontrolleren beholder det til neste bilde kommer.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Sikkerhetskopier Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Lagrer Controller Pak i denne N64-kontrolleren til en .mpk-fil på 32 KB, formatet som N64-emulatorer leser.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Gjenopprett Controller Pak…</value></data>
@@ -985,6 +987,45 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Fjern profilbilde</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Bilder (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Alle filer (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Filen inneholder ikke noe bilde som PadForge kan lese.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Kontrollerskjerm</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Ingenting når kontrolleren før du sender.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Et bilde eller en GIF du velger, tilpasset skjermens 160 ganger 80 piksler. Kontrolleren beholder det til du sender et nytt.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Bildet til den aktive profilen, eller navnet når profilen ikke har noe bilde, slik det er når du sender. Kontrolleren beholder det gjennom profilbytter.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Navnet på den aktive profilen slik det er når du sender. Kontrolleren beholder det gjennom profilbytter.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Plasseringen til den aktive profilen i profillisten slik den er når du sender. Standardprofilen er 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Tilpass</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Fyll skjermen</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Vis hele bildet</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Strekk til skjermen</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Bilder (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Alle filer (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Send</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Bilder: {0}. Sendingen tar omtrent {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontrolleren tar høyst {0} bilder, så de siste {1} ble utelatt.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Koble kontrolleren til med kabel. Den starter på nytt av seg selv omtrent 15 sekunder etter at bildet er overført.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Koble kontrolleren til med kabel. Under sendingen setter PadForge den i Xbox modus og flytter den fra Windows sin Xbox driver til WinUSB, og setter begge tilbake etterpå.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge setter kontrolleren i Xbox modus, flytter den til WinUSB under sendingen, gir den så tilbake til Windows sin Xbox driver og setter den tilbake i DInput modus. Koble først fra alle andre Xbox 360 kontrollere. Sende nå?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Starter…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Bytter modus på kontrolleren…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Venter på skjermens port…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Flytter kontrolleren til WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Gjør plass til bildet… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Sender bildet… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Avslutter…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Gir kontrolleren tilbake til Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Sendt. Kontrolleren viser bildet når den har startet på nytt.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Sendt. Kontrolleren viser bildet.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Koble kontrolleren til med kabel. Skjermen tar imot bilder bare over USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Skjermens port dukket ikke opp. Slå kontrolleren av og på med dens egen bryter, koble den til med kabel og send på nytt.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Mer enn én kontrollerskjerm venter på et bilde. Koble fra de andre og send på nytt.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Skjermens port ble ikke åpnet. Lukk Flydigi Space Station og send på nytt.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Skjermen sluttet å svare. Slå kontrolleren av og på med dens egen bryter og send på nytt.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Skjermen avviste bildet. Send på nytt.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Kontrolleren kom ikke tilbake som en Xbox 360 kontroller, så ingenting ble sendt. Sett den tilbake i DInput modus med dens egen bryter og send på nytt.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Koble fra alle andre Xbox 360 kontrollere og send på nytt. Driverbyttet ville flyttet dem også. En kontroller som står igjen i Xbox modus settes tilbake i DInput modus med dens egen bryter.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Kontrolleren i Xbox modus svarte ikke som en Apex 4, så ingenting ble sendt og Windows har den tilbake. Sett den tilbake i DInput modus med dens egen bryter.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows flyttet ikke kontrolleren til WinUSB, så ingenting ble sendt. Sett den tilbake i DInput modus med dens egen bryter.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Stoppet. Slå kontrolleren av og på med dens egen bryter før du sender på nytt.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Et bilde er fortsatt på vei til kontrolleren. Stoppe sendingen?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak-filer (*.mpk)|*.mpk|Alle filer (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Gjenopprett Controller Pak</value></data>
@@ -1218,6 +1259,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse Triggers</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Avtrekkerstyrke, motorbytte, adaptive avtrekkervibrasjoner, Konstant avtrekkerkraft</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Videresender motorkommandoer per avtrekker (Xbox Impulse Triggers) fra den virtuelle kontrolleren til den tilordnede fysiske Xbox One-, Elite- eller Series-kontrolleren. Avtrekkervibrasjon fra spillet sendes automatisk gjennom. Kontrollene nedenfor skalerer styrken per avtrekker.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Spiller av motorkommandoer per avtrekker (Xbox Impulse Triggers) fra den virtuelle kontrolleren som en vibrasjon i avtrekkerne på denne kontrolleren. Avtrekkervibrasjon fra spillet sendes automatisk gjennom. Kontrollene nedenfor skalerer styrken per avtrekker.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Venstre avtrekker</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Høyre avtrekker</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Bytt om motorene i venstre og høyre avtrekker</value></data>
@@ -1282,6 +1324,8 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptive avtrekkere</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfigurer tilbakemeldingseffekter for avtrekkerne på den tilordnede fysiske DualSense-kontrolleren. Avtrekkereffekter fra et spill eller en spillmod videresendes automatisk. Innstillingene her legger til et brukerdefinert lag som kjører når ingen av dem skriver.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Konfigurer tilbakemeldingseffekter for avtrekkerne på de kraftfølende avtrekkerne i denne kontrolleren. Avtrekkereffekter fra et spill på en virtuell DualSense eller fra en spillmod spilles av automatisk. Innstillingene her legger til et brukerdefinert lag som kjører når ingen av dem skriver.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Konfigurer tilbakemeldingseffekter for avtrekkerne på denne kontrolleren. Avtrekkerne vibrerer og gir ikke motstand, så hver effekt spilles av som en vibrasjon som følger det effekten gjør: et støt der en avtrekker brekker, en oppbygging og en utløsning for en bue. Avtrekkereffekter fra et spill på en virtuell DualSense eller fra en spillmod spilles av automatisk. Innstillingene her legger til et brukerdefinert lag som kjører når ingen av dem skriver.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Stikker</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Dødsoner, anti-dødsoner, følsomhetskurver og kalibrering av senterforskyvning per stikke. Hver del nedenfor gjelder én analog stikke på den aktive utgangen. Utvidede profiler kan ha opptil fire stikker. Vanlige gamepader har to.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Avtrekkere</value></data>
@@ -3457,7 +3501,7 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Flytt dem ned en oktav</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Tonegrense</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Spill av DualSense-haptikk på denne kontrolleren</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Når et spill styrer dette sporet som en virtuell DualSense med egenkomponert haptisk lyd, spilles det lydsporet av på aktuatorene i denne kontrolleren. En Steam Controller 2026 over USB eller via sin egen dongle spiller av lydsporet direkte. Alle andre kontrollere, og den samme over Bluetooth, får toner utledet fra lyden, som etterligner følelsen designeren har laget, men ikke gjengir den nøyaktig.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Når et spill styrer dette sporet som en virtuell DualSense med egenkomponert haptisk lyd, spilles det lydsporet av på aktuatorene i denne kontrolleren. En Steam Controller 2026 over USB eller via sin egen dongle, og en Flydigi Apex 6 Pro, spiller av lydsporet direkte. Alle andre kontrollere, og den Steam Controller over Bluetooth, får toner utledet fra lyden, som etterligner følelsen designeren har laget, men ikke gjengir den nøyaktig.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptikkforsterkning</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Tilbakestill til standard (av)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Tilbakestill til standard (100 %)</value></data>
@@ -3652,6 +3696,14 @@ En kopi av den forrige versjonen ligger i denne mappen: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Oppsett for haptiske rapporter og matematikk for noteperioder for Steam Controller (2015), av Pila og Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Haptisk oppsett med LFO-toner for Steam Controller 2026 og Steam Deck, av Pila, Crazy og AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Oversettelse av avtrekkereffekter og skrivetakt for Flydigi Apex, avtrekkergjengivelsen, haptikkstrømmen og lysblokken for Apex 6 Pro, og lysskrivingen for Apex 5, av ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Protokollnotater for Flydigi Apex 5 og Apex 6, overføringen av lysblokken og den serielle opplastingen til skjermen, av Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Lysblokk, profilplass og skjermopplasting i Xbox modus for Flydigi Apex 4, av Uilton Lopes og bidragsytere.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Kommandoer for kraftavtrekkerne på Flydigi Apex 4 og takten målt på kontrolleren, av Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD-rensingssemantikk for Snap Tap-modusene, av valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Panorer Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Velg hva den viser. Ingenting endres før du lagrer.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} er satt til {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Bildet ble sendt til kontrollerens skjerm.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Laster ned Mad Catz' S.T.R.I.K.E. 7 SDK…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 laster nå {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Laster ned og installerer Microsofts Visual C++ 2008-kjøretidsmiljø…</value></data>

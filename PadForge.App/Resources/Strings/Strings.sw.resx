@@ -932,6 +932,8 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Huweka nambari ya mchezaji ya mlango huu, 1 hadi 4. Adapta huihifadhi na kuunganisha tena kama mchezaji huyo.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Skrini ya Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Huweka kile ambacho VMU ya pedi ya Dreamcast inaonyesha: picha ya adapta yenyewe, jina, nambari au picha ya wasifu unaotumika, saa, muda wa kucheza, au picha unayochagua.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Skrini ya Kidhibiti…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Hutuma picha kwenye skrini ya kidhibiti: picha au GIF unayochagua, au picha, jina au nambari ya wasifu unaotumika. Kidhibiti huihifadhi hadi nyingine ifike.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Hifadhi Nakala ya Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Huhifadhi Controller Pak iliyo kwenye kidhibiti hiki cha N64 kwenye faili ya .mpk ya KB 32, umbizo ambalo emulator za N64 husoma.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Rejesha Controller Pak…</value></data>
@@ -965,6 +967,45 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Ondoa Picha ya Wasifu</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Picha (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Faili Zote (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Faili hiyo haina picha ambayo PadForge inaweza kusoma.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Skrini ya Kidhibiti</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Hakuna kinachofika kwenye kidhibiti hadi utume.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Picha au GIF unayochagua, inayolinganishwa na pikseli 160 kwa 80 za skrini. Kidhibiti huihifadhi hadi utume nyingine.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Picha ya wasifu unaotumika, au jina lake ikiwa haina picha, kama ilivyo unapotuma. Kidhibiti huihifadhi wakati wasifu unabadilishwa.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Jina la wasifu unaotumika kama lilivyo unapotuma. Kidhibiti huihifadhi wakati wasifu unabadilishwa.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Nafasi ya wasifu unaotumika katika orodha ya wasifu kama ilivyo unapotuma. Wasifu chaguomsingi ni 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Mpangilio</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Jaza Skrini</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Onyesha Picha Nzima</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Nyoosha Hadi Skrini</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Picha (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Faili Zote (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Tuma</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Fremu: {0}. Kutuma huchukua takriban {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kidhibiti huchukua fremu {0} tu, kwa hiyo za mwisho {1} ziliachwa.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Unganisha kidhibiti kwa kebo. Hujizima na kuwaka chenyewe takriban sekunde 15 baada ya picha kuingia.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Unganisha kidhibiti kwa kebo. Kwa ajili ya kutuma, PadForge hukibadilisha kuwa hali ya Xbox na kukihamisha kutoka kwa kiendeshi cha Xbox cha Windows hadi WinUSB, kisha hurudisha vyote viwili.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge itabadilisha kidhibiti kuwa hali ya Xbox, kukihamisha hadi WinUSB kwa ajili ya kutuma, kisha kukirudisha kwa kiendeshi cha Xbox cha Windows na kukibadilisha tena kuwa hali ya DInput. Chomoa kwanza kila kidhibiti kingine cha Xbox 360. Tuma sasa?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Inaanza…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Inabadilisha kidhibiti…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Inasubiri mlango wa skrini…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Inahamisha kidhibiti hadi WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Inaandaa nafasi ya picha… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Inatuma picha… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Inamaliza…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Inarudisha kidhibiti kwa Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Imetumwa. Kidhibiti kitaonyesha picha kikishawaka tena.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Imetumwa. Kidhibiti kinaonyesha picha.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Unganisha kidhibiti kwa kebo. Skrini yake hupokea picha kupitia USB pekee.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Mlango wa skrini haukuonekana. Zima kidhibiti na uwashe kwa swichi yake, kiunganishe kwa kebo, kisha utume tena.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Skrini za vidhibiti zaidi ya moja zinasubiri picha. Chomoa nyingine kisha utume tena.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Mlango wa skrini haukufunguka. Funga Flydigi Space Station kisha utume tena.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Skrini iliacha kujibu. Zima kidhibiti na uwashe kwa swichi yake kisha utume tena.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Skrini ilikataa picha. Tuma tena.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Kidhibiti hakikurudi kama kidhibiti cha Xbox 360, kwa hiyo hakuna kilichotumwa. Kirudishe kwenye hali ya DInput kwa swichi yake kisha utume tena.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Chomoa kila kidhibiti kingine cha Xbox 360 kisha utume tena. Mabadiliko ya kiendeshi yangevihamisha pia. Kidhibiti kilichobaki katika hali ya Xbox hurudi kwenye hali ya DInput kwa swichi yake.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Kidhibiti katika hali ya Xbox hakikujibu kama Apex 4, kwa hiyo hakuna kilichotumwa na Windows imekirudisha. Kirudishe kwenye hali ya DInput kwa swichi yake.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows haikuhamisha kidhibiti hadi WinUSB, kwa hiyo hakuna kilichotumwa. Kirudishe kwenye hali ya DInput kwa swichi yake.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Imesimamishwa. Zima kidhibiti na uwashe kwa swichi yake kabla ya kutuma tena.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Picha bado inaelekea kwenye kidhibiti. Simamisha kutuma?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Faili za Controller Pak (*.mpk)|*.mpk|Faili Zote (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak mlango {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Rejesha Controller Pak</value></data>
@@ -1131,6 +1172,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Vichochezi vya Impulse</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Gain ya kila kichochezi, kubadilishana motor, mitetemo ya vichochezi vinavyojirekebisha, Nguvu Endelevu ya Kichochezi</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Hupitisha amri za motor kwa kila kichochezi (Xbox Impulse Triggers) kutoka kidhibiti pepe hadi kidhibiti halisi kilichogawiwa cha Xbox One, Elite, au Series. Mtetemo wa vichochezi unaoendeshwa na mchezo hupita kiotomatiki. Vidhibiti vilivyo hapa chini hupima ukubwa kwa kila kichochezi.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Hucheza amri za motor kwa kila kichochezi (Xbox Impulse Triggers) kutoka kidhibiti pepe kama mtetemo kwenye vichochezi vya kidhibiti hiki. Mtetemo wa vichochezi unaoendeshwa na mchezo hupita kiotomatiki. Vidhibiti vilivyo hapa chini hupima ukubwa kwa kila kichochezi.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Kichochezi cha Kushoto</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Kichochezi cha Kulia</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Badilishana Motor za Vichochezi vya Kushoto na Kulia</value></data>
@@ -1195,6 +1237,8 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Vichochezi Vinavyojirekebisha</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Sanidi athari za mrejesho wa vichochezi kwenye DualSense halisi iliyogawiwa. Athari za vichochezi kutoka kwa mchezo au mod ya mchezo hupelekwa kiotomatiki. Mipangilio ya hapa huongeza tabaka lililosanidiwa na mtumiaji linalofanya kazi pale ambapo mchezo wala mod ya mchezo haviandiki.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Sanidi athari za mrejesho wa vichochezi kwenye vichochezi vya nguvu vya kidhibiti hiki. Athari za vichochezi kutoka kwa mchezo kwenye DualSense pepe au kutoka kwa mod ya mchezo huchezwa kiotomatiki. Mipangilio ya hapa huongeza tabaka lililosanidiwa na mtumiaji linalofanya kazi pale ambapo mchezo wala mod ya mchezo haviandiki.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Sanidi athari za mrejesho wa vichochezi kwenye kidhibiti hiki. Vichochezi vyake hutetemeka na havipingi, kwa hiyo kila athari huchezwa kama mtetemo unaofuata kile athari inachofanya: mlipuko mfupi pale kichochezi kinapovunjika, kupanda na kuachilia kwa upinde. Athari za vichochezi kutoka kwa mchezo kwenye DualSense pepe au kutoka kwa mod ya mchezo huchezwa kiotomatiki. Mipangilio ya hapa huongeza tabaka lililosanidiwa na mtumiaji linalofanya kazi pale ambapo mchezo wala mod ya mchezo haviandiki.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Vijiti</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Deadzone kwa kila kijiti, anti-deadzone, mikunjo ya unyeti, na usawazishaji wa mkengeuko wa kituo. Kila sehemu iliyo hapa chini inalenga kijiti kimoja cha analogi kwenye matokeo yanayotumika. Wasifu uliopanuliwa unaweza kuwa na hadi vijiti vinne. Gamepad za kawaida zina viwili.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Vichochezi</value></data>
@@ -3202,7 +3246,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Zikunje Chini Oktava Moja</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Kikomo cha Toni</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Cheza Haptics za DualSense kwenye Kidhibiti Hiki</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Mchezo unapoendesha nafasi hii kama DualSense pepe yenye sauti ya haptics iliyoandaliwa, cheza wimbo huo kwenye actuator za kidhibiti hiki. Steam Controller 2026 kupitia USB au dongle yake hucheza wimbo wenyewe. Kila kidhibiti kingine, na hicho kupitia Bluetooth, hupata toni zinazotokana na sauti, ambazo hukadiria hisia ya mbunifu badala ya kuirudia.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Mchezo unapoendesha nafasi hii kama DualSense pepe yenye sauti ya haptics iliyoandaliwa, cheza wimbo huo kwenye actuator za kidhibiti hiki. Steam Controller 2026 kupitia USB au dongle yake, na Flydigi Apex 6 Pro, hucheza wimbo wenyewe. Kila kidhibiti kingine, na Steam Controller hicho kupitia Bluetooth, hupata toni zinazotokana na sauti, ambazo hukadiria hisia ya mbunifu badala ya kuirudia.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Ukuzaji wa Haptics</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Weka Upya hadi Chaguomsingi (Imezimwa)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Weka Upya hadi Chaguomsingi (100%)</value></data>
@@ -3393,6 +3437,14 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Mpangilio wa ripoti ya haptics ya Steam Controller (2015) na hisabati ya kipindi cha noti, na Pila na Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Mpangilio wa haptics wa toni za LFO wa Steam Controller 2026 na Steam Deck, na Pila, Crazy, na AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Tafsiri ya athari za vichochezi vya Flydigi Apex na kasi ya uandishi, uchoraji wa vichochezi vya Apex 6 Pro, mtiririko wa haptics na kizuizi cha taa, na uandishi wa taa za Apex 5, na ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Maelezo ya itifaki ya Flydigi Apex 5 na Apex 6, uhamishaji wa kizuizi cha taa na upakiaji wa skrini kwa mlango wa serial, na Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Kizuizi cha taa cha Flydigi Apex 4, nafasi ya wasifu na upakiaji wa skrini katika hali ya Xbox, na Uilton Lopes na wachangiaji.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Amri za vichochezi vya nguvu vya Flydigi Apex 4 na kasi iliyopimwa kwenye pedi, na Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantiki za usafishaji wa SOCD kwa hali za Snap Tap, na valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4688,6 +4740,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Sogeza Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Chagua kinachoonyeshwa. Hakuna kinachobadilika hadi uhifadhi.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} imewekwa kuwa {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Picha ilitumwa kwenye skrini ya kidhibiti.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Inapakua SDK ya Mad Catz ya S.T.R.I.K.E. 7…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 sasa inapakia {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Inapakua na kusakinisha runtime ya Visual C++ 2008 ya Microsoft…</value></data>

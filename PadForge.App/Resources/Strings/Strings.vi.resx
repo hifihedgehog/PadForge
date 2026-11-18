@@ -952,6 +952,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Đặt số thứ tự người chơi của cổng này, từ 1 đến 4. Bộ chuyển đổi lưu lại và kết nối lại với tư cách người chơi đó.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Màn hình Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Đặt nội dung mà VMU của tay cầm Dreamcast hiển thị: hình riêng của bộ chuyển đổi, tên, số hoặc hình của hồ sơ đang hoạt động, đồng hồ, thời gian chơi, hoặc một hình bạn chọn.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Màn hình tay cầm…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Gửi một hình đến màn hình của tay cầm: hình hoặc GIF bạn chọn, hoặc hình, tên hay số của hồ sơ đang hoạt động. Tay cầm giữ hình đó cho đến khi có hình tiếp theo.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Sao lưu Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Lưu Controller Pak trong tay cầm N64 này vào một tệp .mpk 32 KB, định dạng mà các trình giả lập N64 đọc được.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Khôi phục Controller Pak…</value></data>
@@ -985,6 +987,45 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Gỡ bỏ hình hồ sơ</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Hình ảnh (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Tất cả tệp (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Tệp đó không chứa hình nào mà PadForge đọc được.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Màn hình tay cầm</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Chưa có gì đến tay cầm cho đến khi bạn gửi.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Một hình hoặc GIF bạn chọn, được điều chỉnh vừa với màn hình 160 x 80 điểm ảnh. Tay cầm giữ hình đó cho đến khi bạn gửi hình khác.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Hình của hồ sơ đang hoạt động, hoặc tên của nó nếu không có hình, đúng như lúc bạn gửi. Tay cầm giữ nguyên khi bạn chuyển hồ sơ.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Tên của hồ sơ đang hoạt động, đúng như lúc bạn gửi. Tay cầm giữ nguyên khi bạn chuyển hồ sơ.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Vị trí của hồ sơ đang hoạt động trong danh sách hồ sơ, đúng như lúc bạn gửi. Hồ sơ Mặc định là 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Vừa</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Lấp đầy màn hình</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Hiện toàn bộ hình</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Kéo giãn theo màn hình</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Hình ảnh (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Tất cả tệp (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Gửi</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Số khung hình: {0}. Việc gửi mất khoảng {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Tay cầm chỉ nhận tối đa {0} khung hình nên {1} khung hình cuối đã bị bỏ.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Hãy kết nối tay cầm bằng cáp. Tay cầm tự khởi động lại khoảng 15 giây sau khi nhận hình.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Hãy kết nối tay cầm bằng cáp. Để gửi, PadForge chuyển tay cầm sang chế độ Xbox và chuyển nó từ trình điều khiển Xbox của Windows sang WinUSB, rồi trả cả hai về như cũ.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge sẽ chuyển tay cầm sang chế độ Xbox, chuyển nó sang WinUSB để gửi, rồi trả nó về trình điều khiển Xbox của Windows và chuyển lại chế độ DInput. Hãy rút mọi tay cầm Xbox 360 khác trước. Gửi ngay?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Đang bắt đầu…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Đang chuyển chế độ tay cầm…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Đang chờ cổng của màn hình…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Đang chuyển tay cầm sang WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Đang dọn chỗ cho hình… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Đang gửi hình… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Đang hoàn tất…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Đang trả tay cầm lại cho Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Đã gửi. Tay cầm sẽ hiển thị hình sau khi khởi động lại.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Đã gửi. Tay cầm đang hiển thị hình.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Hãy kết nối tay cầm bằng cáp. Màn hình của nó chỉ nhận hình qua USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Cổng của màn hình không xuất hiện. Hãy tắt rồi bật tay cầm bằng công tắc riêng của nó, kết nối bằng cáp và gửi lại.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Có nhiều hơn một màn hình tay cầm đang chờ nhận hình. Hãy rút các tay cầm khác và gửi lại.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Không mở được cổng của màn hình. Hãy đóng Flydigi Space Station và gửi lại.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Màn hình không còn phản hồi. Hãy tắt rồi bật tay cầm bằng công tắc riêng của nó và gửi lại.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Màn hình đã từ chối hình. Hãy gửi lại.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Tay cầm không trở lại thành tay cầm Xbox 360 nên chưa có gì được gửi. Hãy chuyển nó về chế độ DInput bằng công tắc riêng của nó và gửi lại.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Hãy rút mọi tay cầm Xbox 360 khác và gửi lại. Việc đổi trình điều khiển cũng sẽ chuyển cả chúng. Tay cầm còn ở chế độ Xbox thì chuyển về chế độ DInput bằng công tắc riêng của nó.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Tay cầm ở chế độ Xbox không phản hồi như một Apex 4 nên chưa có gì được gửi và Windows đã nhận lại nó. Hãy chuyển nó về chế độ DInput bằng công tắc riêng của nó.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows không chuyển được tay cầm sang WinUSB nên chưa có gì được gửi. Hãy chuyển nó về chế độ DInput bằng công tắc riêng của nó.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Đã dừng. Hãy tắt rồi bật tay cầm bằng công tắc riêng của nó trước khi gửi lại.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Một hình vẫn đang được gửi đến tay cầm. Dừng việc gửi?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Tệp Controller Pak (*.mpk)|*.mpk|Tất cả tệp (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak cổng {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Khôi phục Controller Pak</value></data>
@@ -1218,6 +1259,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Cò xung lực</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Độ lợi từng cò, hoán đổi mô-tơ, chuyển đổi rung của cò thích ứng, Lực cò không đổi</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Chuyển tiếp lệnh mô-tơ của từng cò (Xbox Impulse Triggers) từ tay cầm ảo đến tay cầm vật lý Xbox One, Elite hoặc Series đã gán. Rung cò do trò chơi điều khiển được tự động truyền qua. Các điều khiển bên dưới chỉnh tỷ lệ cường độ cho từng cò.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Phát lệnh mô-tơ của từng cò (Xbox Impulse Triggers) từ tay cầm ảo dưới dạng rung ở các cò của tay cầm này. Rung cò do trò chơi điều khiển được tự động truyền qua. Các điều khiển bên dưới chỉnh tỷ lệ cường độ cho từng cò.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Cò trái</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Cò phải</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Hoán đổi mô-tơ cò trái và phải</value></data>
@@ -1282,6 +1324,8 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Cò thích ứng</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Cấu hình các hiệu ứng phản hồi cò trên DualSense vật lý đã gán. Hiệu ứng cò từ trò chơi hoặc mod trò chơi được tự động chuyển tiếp. Thiết lập ở đây thêm một lớp do người dùng cấu hình, chạy khi cả hai đều không ghi.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Cấu hình các hiệu ứng phản hồi cò trên các cò lực của tay cầm này. Hiệu ứng cò từ trò chơi trên DualSense ảo hoặc từ mod trò chơi được phát tự động. Thiết lập ở đây thêm một lớp do người dùng cấu hình, chạy khi cả hai đều không ghi.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Cấu hình các hiệu ứng phản hồi cò trên tay cầm này. Các cò của nó rung chứ không có lực cản, nên mỗi hiệu ứng được phát dưới dạng rung theo đúng việc hiệu ứng đó làm: một nhịp rung ở chỗ cò bật nảy, rung tăng dần rồi nhả ra với cung tên. Hiệu ứng cò từ trò chơi trên DualSense ảo hoặc từ mod trò chơi được phát tự động. Thiết lập ở đây thêm một lớp do người dùng cấu hình, chạy khi cả hai đều không ghi.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Cần analog</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Vùng chết, chống vùng chết, đường cong độ nhạy và hiệu chỉnh bù lệch tâm cho từng cần analog. Mỗi phần bên dưới ứng với một cần analog trên đầu ra đang hoạt động. Hồ sơ Mở rộng có thể có tối đa bốn cần analog. Tay cầm tiêu chuẩn có hai.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Cò</value></data>
@@ -3457,7 +3501,7 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Hạ xuống một quãng tám</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Giới hạn âm</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Phát phản hồi xúc giác DualSense trên tay cầm này</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Khi trò chơi điều khiển khe này như một DualSense ảo có âm thanh xúc giác được biên soạn sẵn, hãy phát bản đó trên các bộ truyền động của tay cầm này. Steam Controller 2026 qua USB hoặc dongle của nó sẽ phát chính bản đó. Mọi tay cầm khác, và cả tay cầm đó khi dùng Bluetooth, nhận các âm được suy ra từ âm thanh, chỉ xấp xỉ cảm giác của nhà thiết kế chứ không tái tạo nó.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Khi trò chơi điều khiển khe này như một DualSense ảo có âm thanh xúc giác được biên soạn sẵn, hãy phát bản đó trên các bộ truyền động của tay cầm này. Steam Controller 2026 qua USB hoặc dongle của nó, và Flydigi Apex 6 Pro, sẽ phát chính bản đó. Mọi tay cầm khác, và cả Steam Controller đó khi dùng Bluetooth, nhận các âm được suy ra từ âm thanh, chỉ xấp xỉ cảm giác của nhà thiết kế chứ không tái tạo nó.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Độ lợi xúc giác</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Đặt lại về mặc định (tắt)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Đặt lại về mặc định (100%)</value></data>
@@ -3652,6 +3696,14 @@ Bản sao của phiên bản trước nằm trong thư mục này: {1}</value></
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Bố cục report xúc giác của Steam Controller (2015) và phép toán chu kỳ nốt, của Pila và Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Bố cục xúc giác âm LFO của Steam Controller 2026 và Steam Deck, của Pila, Crazy và AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Chuyển đổi hiệu ứng cò và nhịp ghi của Flydigi Apex, kết xuất cò, luồng xúc giác và khối đèn của Apex 6 Pro, cùng các lệnh ghi đèn của Apex 5, của ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Ghi chú giao thức Flydigi Apex 5 và Apex 6, việc truyền khối đèn và tải lên màn hình qua cổng nối tiếp, của Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Khối đèn, khe hồ sơ của Flydigi Apex 4 và việc tải hình lên màn hình ở chế độ Xbox, của Uilton Lopes và những người đóng góp.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Các lệnh cò lực của Flydigi Apex 4 và nhịp ghi đo được trên tay cầm, của Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Ngữ nghĩa xử lý SOCD cho các chế độ Snap Tap, của valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Dịch khung Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Chọn nội dung hiển thị. Chưa có gì thay đổi cho đến khi bạn lưu.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>Đã đặt {0} thành {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Hình đã được gửi đến màn hình của tay cầm.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Đang tải xuống SDK S.T.R.I.K.E. 7 của Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 hiện tải {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Đang tải xuống và cài đặt runtime Visual C++ 2008 của Microsoft…</value></data>

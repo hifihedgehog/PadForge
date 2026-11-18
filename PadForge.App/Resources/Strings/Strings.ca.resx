@@ -933,6 +933,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Defineix el número de jugador d'aquest port, de l'1 al 4. L'adaptador el desa i es torna a connectar com a aquest jugador.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Pantalla de Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Defineix què mostra la VMU del comandament de Dreamcast: la imatge pròpia de l'adaptador, el nom, el número o la imatge del perfil actiu, el rellotge, el temps de joc o una imatge que triïs.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Pantalla del comandament…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Envia una imatge a la pantalla del comandament: una imatge o un GIF que triïs, o la imatge, el nom o el número del perfil actiu. El comandament la conserva fins a la següent.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Fes una còpia del Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Desa el Controller Pak d'aquest comandament de la N64 en un fitxer .mpk de 32 KB, el format que llegeixen els emuladors de la N64.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Restaura el Controller Pak…</value></data>
@@ -966,6 +968,45 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Elimina la imatge del perfil</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Imatges (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Tots els fitxers (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Aquest fitxer no conté cap imatge que PadForge pugui llegir.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Pantalla del comandament</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>No arriba res al comandament fins que enviïs.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Una imatge o un GIF que triïs, ajustat als 160 per 80 píxels de la pantalla. El comandament la conserva fins que n'enviïs una altra.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>La imatge del perfil actiu, o el seu nom quan no en té, tal com és quan envies. El comandament la conserva en canviar de perfil.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>El nom del perfil actiu tal com és quan envies. El comandament el conserva en canviar de perfil.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>La posició del perfil actiu a la llista de perfils tal com és quan envies. El perfil Per defecte és el 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Ajusta</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Omple la pantalla</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Mostra la imatge sencera</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Estira a la pantalla</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Imatges (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Tots els fitxers (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Envia</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Fotogrames: {0}. L'enviament triga aproximadament {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>El comandament admet {0} fotogrames com a màxim, de manera que els últims {1} s'han deixat fora.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Connecta el comandament amb un cable. Es reinicia sol uns 15 segons després que la imatge hi sigui.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Connecta el comandament amb un cable. Per a l'enviament, PadForge el canvia al mode Xbox i el passa del controlador Xbox de Windows a WinUSB, i després ho torna tot a com estava.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge canviarà el comandament al mode Xbox, el passarà a WinUSB per a l'enviament, després el retornarà al controlador Xbox de Windows i el canviarà de nou al mode DInput. Desconnecta abans qualsevol altre comandament Xbox 360. Vols enviar ara?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Iniciant…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Canviant el comandament de mode…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Esperant el port de la pantalla…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Passant el comandament a WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Fent lloc per a la imatge… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Enviant la imatge… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Acabant…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Retornant el comandament a Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Enviat. El comandament mostra la imatge quan s'ha reiniciat.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Enviat. El comandament mostra la imatge.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Connecta el comandament amb un cable. La seva pantalla només rep una imatge per USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>El port de la pantalla no ha aparegut. Apaga i torna a encendre el comandament amb el seu interruptor, connecta'l amb un cable i torna a enviar.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Hi ha més d'una pantalla de comandament esperant una imatge. Desconnecta les altres i torna a enviar.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>El port de la pantalla no s'ha pogut obrir. Tanca Flydigi Space Station i torna a enviar.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>La pantalla ha deixat de respondre. Apaga i torna a encendre el comandament amb el seu interruptor i torna a enviar.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>La pantalla ha rebutjat la imatge. Torna a enviar.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>El comandament no ha tornat com a comandament Xbox 360, de manera que no s'ha enviat res. Torna'l al mode DInput amb el seu interruptor i torna a enviar.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Desconnecta qualsevol altre comandament Xbox 360 i torna a enviar. El canvi de controlador també els afectaria. Un comandament que hagi quedat al mode Xbox torna al mode DInput amb el seu interruptor.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>El comandament al mode Xbox no ha respost com un Apex 4, de manera que no s'ha enviat res i Windows el té de nou. Torna'l al mode DInput amb el seu interruptor.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows no ha passat el comandament a WinUSB, de manera que no s'ha enviat res. Torna'l al mode DInput amb el seu interruptor.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Aturat. Apaga i torna a encendre el comandament amb el seu interruptor abans de tornar a enviar.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Encara s'està enviant una imatge al comandament. Vols aturar l'enviament?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Fitxers de Controller Pak (*.mpk)|*.mpk|Tots els fitxers (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak del port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Restaura el Controller Pak</value></data>
@@ -1132,6 +1173,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Gallets d'impuls</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Guany per gallet, intercanvi de motors, vibracions dels gallets adaptatius, força constant</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Reenvia les ordres dels motors de cada gallet (gallets d'impuls de Xbox) del comandament virtual al comandament físic Xbox One, Elite o Series assignat. La vibració dels gallets que genera el joc passa automàticament. Els controls de sota escalen la intensitat de cada gallet.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Reprodueix les ordres dels motors de cada gallet (gallets d'impuls de Xbox) del comandament virtual com una vibració als gallets d'aquest comandament. La vibració dels gallets que genera el joc passa automàticament. Els controls de sota escalen la intensitat de cada gallet.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gallet esquerre</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gallet dret</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Intercanvia els motors dels gallets esquerre i dret</value></data>
@@ -1196,6 +1238,8 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Gallets adaptatius</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configura els efectes de resposta dels gallets al DualSense físic assignat. Els efectes de gallet d'un joc o d'un mod de joc es reenvien automàticament. Aquesta configuració hi afegeix una capa definida per l'usuari que funciona quan cap dels dos hi escriu.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Configura els efectes de resposta dels gallets als gallets de força d'aquest comandament. Els efectes de gallet d'un joc en un DualSense virtual o d'un mod de joc es reprodueixen automàticament. Aquesta configuració hi afegeix una capa definida per l'usuari que funciona quan cap dels dos hi escriu.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Configura els efectes de resposta dels gallets en aquest comandament. Els seus gallets vibren i no ofereixen resistència, de manera que cada efecte es reprodueix com una vibració que segueix el que fa l'efecte: una ràfega on cedeix un gallet, una pujada i un alliberament en un arc. Els efectes de gallet d'un joc en un DualSense virtual o d'un mod de joc es reprodueixen automàticament. Aquesta configuració hi afegeix una capa definida per l'usuari que funciona quan cap dels dos hi escriu.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Palanques</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Zones mortes, antizones mortes, corbes de sensibilitat i calibratge del desplaçament del centre per a cada palanca. Cada secció de sota correspon a una palanca analògica de la sortida activa. Els perfils ampliats poden tenir fins a quatre palanques. Els comandaments estàndard en tenen dues.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Gallets</value></data>
@@ -3261,7 +3305,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Baixa'ls una octava</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Límit de to</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Reprodueix la resposta hàptica del DualSense en aquest comandament</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Quan un joc controla aquesta ranura com a DualSense virtual amb àudio hàptic dissenyat, reprodueix aquesta pista als actuadors d'aquest comandament. Un Steam Controller 2026 per USB o amb el seu receptor reprodueix la pista tal qual. Qualsevol altre comandament, i aquest mateix per Bluetooth, rep tons derivats de l'àudio, que s'aproximen a la sensació dissenyada en lloc de reproduir-la.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Quan un joc controla aquesta ranura com a DualSense virtual amb àudio hàptic dissenyat, reprodueix aquesta pista als actuadors d'aquest comandament. Un Steam Controller 2026 per USB o amb el seu receptor, i un Flydigi Apex 6 Pro, reprodueixen la pista tal qual. Qualsevol altre comandament, i aquest Steam Controller per Bluetooth, rep tons derivats de l'àudio, que s'aproximen a la sensació dissenyada en lloc de reproduir-la.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Guany de la resposta hàptica</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Restableix el valor per defecte (desactivat)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Restableix el valor per defecte (100%)</value></data>
@@ -3452,6 +3496,14 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Disposició dels informes hàptics del Steam Controller (2015) i càlcul del període de les notes, de Pila i Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Disposició hàptica de tons LFO del Steam Controller 2026 i la Steam Deck, de Pila, Crazy i AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Traducció dels efectes de gallet del Flydigi Apex i ritme d'escriptura, el renderitzat dels gallets de l'Apex 6 Pro, el flux hàptic i el bloc d'il·luminació, i les escriptures d'il·luminació de l'Apex 5, de ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Notes de protocol del Flydigi Apex 5 i l'Apex 6, la transferència del bloc d'il·luminació i la càrrega serial de la pantalla, de Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Bloc d'il·luminació, ranura de perfil i càrrega de la pantalla al mode Xbox del Flydigi Apex 4, d'Uilton Lopes i col·laboradors.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Ordres dels gallets de força del Flydigi Apex 4 i el ritme mesurat al comandament, de Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Semàntica de la depuració SOCD per als modes Snap Tap, de valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4765,6 +4817,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Desplaçament Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Tria què mostra. No canvia res fins que desis.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} s'ha establert a {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>La imatge ha arribat a la pantalla del comandament.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>S'està baixant el SDK del S.T.R.I.K.E. 7 de Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>El S.T.R.I.K.E. 7 ara carrega {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>S'està baixant i instal·lant l'entorn d'execució de Visual C++ 2008 de Microsoft…</value></data>

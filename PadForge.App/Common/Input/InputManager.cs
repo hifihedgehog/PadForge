@@ -1850,6 +1850,22 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Holds SDL's HIDAPI Xbox 360 driver off while a Flydigi
+        /// Apex 4 screen send has the pad on WinUSB (#586), and lets it read
+        /// again after. WinUSB gives a device one handle, and that driver
+        /// opens a 045E:028E pad on WinUSB on sight (the fork's
+        /// docs/README-vendor-usb.md), so the send could not open it. The
+        /// driver's hint callback closes and reopens its devices live, the
+        /// mechanism <see cref="ApplyFlydigiEnhancedProtocol"/> uses. "1" is
+        /// the driver's default, since PadForge sets no Xbox hint, and SDL_Quit
+        /// drops the hint with the rest.</summary>
+        public static bool HoldXbox360HidapiDriver(bool off)
+        {
+            bool accepted = WriteHintUnderJoystickLock(SDL_HINT_JOYSTICK_HIDAPI_XBOX_360, off ? "0" : "1");
+            Engine.SdlDiagLog.WriteLine($"XBOX360 hint {SDL_HINT_JOYSTICK_HIDAPI_XBOX_360}={(off ? 0 : 1)} accepted={accepted}");
+            return accepted;
+        }
+
         private static bool WriteHintUnderJoystickLock(string name, string value)
         {
             try
@@ -2032,6 +2048,10 @@ namespace PadForge.Common.Input
             // tears them down here, mirroring RumbleAudioService below.
             try { WiiSpeakerService.Shutdown(); } catch { }
             try { HapticToneService.Shutdown(); } catch { }
+            // A Flydigi Apex pad's session (#586) ends with the engine: its
+            // triggers are released, its rumble stopped and an Apex 6 Pro's
+            // motors handed back as each session closes.
+            try { PadForge.Common.Input.Flydigi.FlydigiApexService.Shutdown(); } catch { }
 
             // #236: engine stop is an explicit silence edge. _running is
             // already false, so no in-flight poll can reassert a pack
@@ -2586,6 +2606,10 @@ namespace PadForge.Common.Input
             // the process dies (#546). The release waits at most 250 ms for
             // a write in progress.
             try { UserEffectsDispatcher.ReleaseAudioRoutes(); } catch { }
+            // A Flydigi Apex 4 or 5 holds a trigger effect until it is told
+            // to drop it, and an Apex 6 Pro's motors stay on the stream
+            // (#586), so each gets its stop frames on this thread.
+            try { PadForge.Common.Input.Flydigi.FlydigiApexService.QuietAllNow(); } catch { }
         }
 
         private void StopAllForceFeedback()
@@ -2595,6 +2619,9 @@ namespace PadForge.Common.Input
             // waits for the GameSense and Razer Sensa workers' next tick
             // (PeripheralOutputHost.WaitForSilence).
             PadForge.Common.Input.Peripherals.PeripheralOutputs.SilenceHaptics();
+            // A Flydigi Apex pad's session (#586) releases its triggers and
+            // stops its rumble through its own writer.
+            PadForge.Common.Input.Flydigi.FlydigiApexService.QuietAll();
             // A Falcon (#521) keeps its feel and loses the game's force. Its
             // haptic thread renders the zero at its next pass.
             SilenceFalcons();

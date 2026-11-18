@@ -338,6 +338,8 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Tango i te pikitia kōtaha</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Ngā pikitia (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Ngā kōnae katoa (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Kāore he pikitia i taua kōnae e taea ana e PadForge te pānui.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Mata pūwhakahaere</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Kāore he mea e tae ki te pūwhakahaere kia tuku rā anō koe.</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Ngā kōnae Controller Pak (*.mpk)|*.mpk|Ngā kōnae katoa (*.*)|*.*</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Whakahoki i te Controller Pak</value></data>
   <data name="BlissBoxPak_RestoreMessage_Format" xml:space="preserve"><value>Ka whakakapia ia tiaki i te Controller Pak i te port {0} ki ngā ihirangi o te kōnae.</value></data>
@@ -1700,6 +1702,7 @@
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Ka whakaatu te mata i te tae o te lightbar o te DualShock 4, o te DualSense rānei i te slot iti rawa e whāngaia ana e tēnei mata, i te slot iti rawa o te katoa rānei ina kāore he slot e whāngaia ana e ia. Ka whakaaturia e tētahi mata tae kotahi tōna brightness hei tauira ira. Kia tae rā anō tētahi tae ki tētahi lightbar, kāore a PadForge e whakaatu i tētahi mea.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Ngā pikitia (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Ngā kōnae katoa (*.*)|*.*</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>Kua tautuhia a {0} ki {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Kua tae te pikitia ki te mata o te pūwhakahaere.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>E tikiake ana i te SDK S.T.R.I.K.E. 7 a Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>Ka uta te S.T.R.I.K.E. 7 i a {0} ināianei.</value></data>
   <data name="Status_Strike7SdkHashMismatch" xml:space="preserve"><value>Kāore te tikiake SDK S.T.R.I.K.E. 7 e ōrite ki tōna SHA-256 e mōhiotia ana, nō reira kāore tētahi mea i puritia.</value></data>
@@ -2020,4 +2023,45 @@
   <data name="Devices_Caps_Buttons_Format" xml:space="preserve"><value>{0} pātene</value></data>
   <data name="Devices_Caps_OnePov" xml:space="preserve"><value>1 POV</value></data>
   <data name="Devices_Caps_Povs_Format" xml:space="preserve"><value>{0} POV</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Mata pūwhakahaere…</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Ko te pikitia o te kōtaha hohe, ko tōna ingoa rānei ki te kore he pikitia, i te āhua o te wā e tuku ai koe. Ka puritia e te pūwhakahaere i ngā huringa kōtaha.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Ko te ingoa o te kōtaha hohe i te wā e tuku ai koe. Ka puritia e te pūwhakahaere i ngā huringa kōtaha.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Ko te tūranga o te kōtaha hohe i te rārangi kōtaha i te wā e tuku ai koe. Ko te kōtaha taunoa te 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Whakauru</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Whakakī i te mata</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Whakaatu i te pikitia katoa</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Toro kia rite ki te mata</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Ngā pikitia (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Ngā kōnae katoa (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Tukua</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Anga: {0}. Ka tata ki te {1} te roa o te tuku.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Ko {0} te nui rawa o ngā anga ka tangohia e te pūwhakahaere, nā reira i waiho {1} o ngā anga whakamutunga.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Honoa te pūwhakahaere mā te taura. Ka tīmata anō ia i a ia anō, tata ki te 15 hēkona i muri i te taenga mai o te pikitia.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Honoa te pūwhakahaere mā te taura. Mō te tuku, ka huri a PadForge i a ia ki te aratau Xbox, ka nuku i a ia i te taraiwa Xbox o Windows ki WinUSB, kātahi ka whakahoki i ngā mea e rua.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>Ka huri a PadForge i te pūwhakahaere ki te aratau Xbox, ka nuku i a ia ki WinUSB mō te tuku, kātahi ka whakahoki i a ia ki te taraiwa Xbox o Windows, ka huri anō ki te aratau DInput. Tangohia i te tuatahi ia pūwhakahaere Xbox 360 kē atu. Me tuku ināianei?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Kei te tīmata…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Kei te huri i te pūwhakahaere…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Kei te tatari mō te port o te mata…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Kei te nuku i te pūwhakahaere ki WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Kei te whakawātea wāhi mō te pikitia… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Kei te tuku i te pikitia… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Kei te whakaoti…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Kei te whakahoki i te pūwhakahaere ki Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Kua tukuna. Ka whakaatu te pūwhakahaere i te pikitia ina oti tana tīmata anō.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Kua tukuna. Ka whakaatu te pūwhakahaere i te pikitia.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Honoa te pūwhakahaere mā te taura. Mā te USB anake e tae ai he pikitia ki tōna mata.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Kāore te port o te mata i puta. Whakawetohia, whakakāngia te pūwhakahaere mā tōna ake pana, honoa mā te taura, ā, tukua anō.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Neke atu i te kotahi te mata pūwhakahaere e tatari ana mō tētahi pikitia. Tangohia ērā atu, ā, tukua anō.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Kāore te port o te mata i tuwhera. Katia a Flydigi Space Station, ā, tukua anō.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Kua mutu te whakautu a te mata. Whakawetohia, whakakāngia te pūwhakahaere mā tōna ake pana, ā, tukua anō.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>I whakakāhoretia te pikitia e te mata. Tukua anō.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Kāore te pūwhakahaere i hoki mai hei pūwhakahaere Xbox 360, nā reira kāore he mea i tukuna. Whakahokia ki te aratau DInput mā tōna ake pana, ā, tukua anō.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Tangohia ia pūwhakahaere Xbox 360 kē atu, ā, tukua anō. Ka nukuhia anō rātou e te huringa taraiwa. Ka hoki tētahi pūwhakahaere i mahue ki te aratau Xbox ki te aratau DInput mā tōna ake pana.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Kāore te pūwhakahaere i te aratau Xbox i whakautu hei Apex 4, nā reira kāore he mea i tukuna, ā, kua whakahokia ki Windows. Whakahokia ki te aratau DInput mā tōna ake pana.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Kāore a Windows i nuku i te pūwhakahaere ki WinUSB, nā reira kāore he mea i tukuna. Whakahokia ki te aratau DInput mā tōna ake pana.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Kua mutu. Whakawetohia, whakakāngia te pūwhakahaere mā tōna ake pana i mua i tō tuku anō.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Kei te haere tonu tētahi pikitia ki te pūwhakahaere. Me whakamutu te tuku?</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

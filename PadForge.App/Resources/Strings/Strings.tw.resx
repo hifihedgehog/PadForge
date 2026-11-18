@@ -812,4 +812,13 @@
   <data name="Pad_Transport_Usb" xml:space="preserve"><value>USB</value></data>
   <data name="Pad_Transport_Ps2" xml:space="preserve"><value>PS/2</value></data>
   <data name="Pad_Transport_I2c" xml:space="preserve"><value>I2C</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Biribiara nkɔ controller no so kosi sɛ wobɛsoma.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Nhyehyɛe</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Hyɛ Screen no ma</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Kyerɛ Mfonini no nyinaa</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Twe kɔ Screen no so</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

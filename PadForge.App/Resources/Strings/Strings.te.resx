@@ -952,6 +952,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>ఈ పోర్ట్ ప్లేయర్ సంఖ్యను 1 నుండి 4 వరకు సెట్ చేస్తుంది. అడాప్టర్ దాన్ని నిల్వ చేసి ఆ ప్లేయర్గా మళ్లీ కనెక్ట్ అవుతుంది.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast స్క్రీన్…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Dreamcast ప్యాడ్ VMU ఏమి చూపాలో సెట్ చేస్తుంది: అడాప్టర్ స్వంత చిత్రం, చురుకైన ప్రొఫైల్ పేరు, సంఖ్య లేదా చిత్రం, గడియారం, ఆట సమయం, లేదా మీరు ఎంచుకున్న చిత్రం.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>కంట్రోలర్ స్క్రీన్…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>కంట్రోలర్ స్క్రీన్‌కు చిత్రాన్ని పంపుతుంది: మీరు ఎంచుకున్న చిత్రం లేదా GIF, లేదా చురుకైన ప్రొఫైల్ చిత్రం, పేరు లేదా సంఖ్య. తదుపరిది వచ్చే వరకు కంట్రోలర్ దాన్ని ఉంచుకుంటుంది.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>కంట్రోలర్ పాక్ బ్యాకప్ చేయి…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>ఈ N64 కంట్రోలర్లోని కంట్రోలర్ పాక్ను 32 KB .mpk ఫైల్గా సేవ్ చేస్తుంది. N64 ఎమ్యులేటర్లు చదివే ఫార్మాట్ ఇదే.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>కంట్రోలర్ పాక్ పునరుద్ధరించు…</value></data>
@@ -985,6 +987,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>ప్రొఫైల్ చిత్రాన్ని తీసివేయి</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>చిత్రాలు (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|అన్ని ఫైళ్లు (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>ఆ ఫైల్లో PadForge చదవగల చిత్రం లేదు.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>కంట్రోలర్ స్క్రీన్</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>మీరు పంపే వరకు ఏదీ కంట్రోలర్‌కు చేరదు.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>మీరు ఎంచుకున్న చిత్రం లేదా GIF, స్క్రీన్ 160 బై 80 పిక్సెల్స్‌కు సరిపోయేలా మార్చబడుతుంది. మీరు మరొకటి పంపే వరకు కంట్రోలర్ దాన్ని ఉంచుకుంటుంది.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>చురుకైన ప్రొఫైల్ చిత్రం, అది లేకపోతే దాని పేరు, మీరు పంపే సమయంలో ఉన్నట్లుగా. ప్రొఫైల్ మారినా కంట్రోలర్ దాన్ని ఉంచుకుంటుంది.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>చురుకైన ప్రొఫైల్ పేరు, మీరు పంపే సమయంలో ఉన్నట్లుగా. ప్రొఫైల్ మారినా కంట్రోలర్ దాన్ని ఉంచుకుంటుంది.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>ప్రొఫైల్ జాబితాలో చురుకైన ప్రొఫైల్ స్థానం, మీరు పంపే సమయంలో ఉన్నట్లుగా. డిఫాల్ట్ ప్రొఫైల్ 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>అమరిక</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>స్క్రీన్ నింపు</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>మొత్తం చిత్రాన్ని చూపు</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>స్క్రీన్‌కు సాగదీయి</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>చిత్రాలు (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|అన్ని ఫైళ్లు (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>పంపు</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>ఫ్రేమ్‌లు: {0}. పంపడానికి సుమారు {1} పడుతుంది.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>కంట్రోలర్ గరిష్ఠంగా {0} ఫ్రేమ్‌లు తీసుకుంటుంది, కాబట్టి చివరి {1} వదిలివేయబడ్డాయి.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>కంట్రోలర్‌ను కేబుల్‌తో కనెక్ట్ చేయండి. చిత్రం చేరిన సుమారు 15 సెకన్ల తర్వాత అది తనంతట తానే రీస్టార్ట్ అవుతుంది.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>కంట్రోలర్‌ను కేబుల్‌తో కనెక్ట్ చేయండి. పంపడం కోసం PadForge దాన్ని Xbox మోడ్‌కు మార్చి, Windows Xbox డ్రైవర్ నుండి WinUSBకి మారుస్తుంది, తర్వాత రెండింటినీ తిరిగి ఉంచుతుంది.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge కంట్రోలర్‌ను Xbox మోడ్‌కు మార్చి, పంపడం కోసం WinUSBకి మారుస్తుంది, తర్వాత దాన్ని Windows Xbox డ్రైవర్‌కు తిరిగి ఇచ్చి DInput మోడ్‌కు మారుస్తుంది. ముందుగా ఇతర ప్రతి Xbox 360 కంట్రోలర్‌ను తీసివేయండి. ఇప్పుడు పంపాలా?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>ప్రారంభిస్తోంది…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>కంట్రోలర్‌ను మారుస్తోంది…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>స్క్రీన్ పోర్ట్ కోసం వేచి ఉంది…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>కంట్రోలర్‌ను WinUSBకి మారుస్తోంది…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>చిత్రం కోసం చోటు ఖాళీ చేస్తోంది… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>చిత్రాన్ని పంపుతోంది… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>ముగిస్తోంది…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>కంట్రోలర్‌ను Windowsకు తిరిగి ఇస్తోంది…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>పంపబడింది. కంట్రోలర్ రీస్టార్ట్ అయిన తర్వాత చిత్రాన్ని చూపుతుంది.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>పంపబడింది. కంట్రోలర్ చిత్రాన్ని చూపుతుంది.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>కంట్రోలర్‌ను కేబుల్‌తో కనెక్ట్ చేయండి. దాని స్క్రీన్ USB ద్వారా మాత్రమే చిత్రాన్ని తీసుకుంటుంది.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>స్క్రీన్ పోర్ట్ కనిపించలేదు. కంట్రోలర్‌ను దాని స్వంత స్విచ్‌తో ఆఫ్ చేసి ఆన్ చేయండి, కేబుల్‌తో కనెక్ట్ చేసి, మళ్లీ పంపండి.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>ఒకటి కంటే ఎక్కువ కంట్రోలర్ స్క్రీన్లు చిత్రం కోసం వేచి ఉన్నాయి. ఇతరాలను తీసివేసి మళ్లీ పంపండి.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>స్క్రీన్ పోర్ట్ తెరుచుకోలేదు. Flydigi Space Station మూసివేసి మళ్లీ పంపండి.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>స్క్రీన్ స్పందించడం ఆగిపోయింది. కంట్రోలర్‌ను దాని స్వంత స్విచ్‌తో ఆఫ్ చేసి ఆన్ చేసి మళ్లీ పంపండి.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>స్క్రీన్ చిత్రాన్ని తిరస్కరించింది. మళ్లీ పంపండి.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>కంట్రోలర్ Xbox 360 కంట్రోలర్‌గా తిరిగి రాలేదు, కాబట్టి ఏదీ పంపబడలేదు. దాన్ని దాని స్వంత స్విచ్‌తో DInput మోడ్‌కు మార్చి మళ్లీ పంపండి.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>ఇతర ప్రతి Xbox 360 కంట్రోలర్‌ను తీసివేసి మళ్లీ పంపండి. డ్రైవర్ మార్పు వాటినీ మారుస్తుంది. Xbox మోడ్‌లో మిగిలిన కంట్రోలర్ దాని స్వంత స్విచ్‌తో DInput మోడ్‌కు తిరిగి వెళ్తుంది.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox మోడ్‌లోని కంట్రోలర్ Apex 4గా స్పందించలేదు, కాబట్టి ఏదీ పంపబడలేదు మరియు Windowsకు అది తిరిగి వచ్చింది. దాన్ని దాని స్వంత స్విచ్‌తో DInput మోడ్‌కు మార్చండి.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows కంట్రోలర్‌ను WinUSBకి మార్చలేదు, కాబట్టి ఏదీ పంపబడలేదు. దాన్ని దాని స్వంత స్విచ్‌తో DInput మోడ్‌కు మార్చండి.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>ఆపబడింది. మళ్లీ పంపే ముందు కంట్రోలర్‌ను దాని స్వంత స్విచ్‌తో ఆఫ్ చేసి ఆన్ చేయండి.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>చిత్రం ఇంకా కంట్రోలర్‌కు వెళ్తోంది. పంపడం ఆపాలా?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>కంట్రోలర్ పాక్ ఫైళ్లు (*.mpk)|*.mpk|అన్ని ఫైళ్లు (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>కంట్రోలర్ పాక్ పోర్ట్ {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>కంట్రోలర్ పాక్ పునరుద్ధరించు</value></data>
@@ -1218,6 +1259,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ఇంపల్స్ ట్రిగ్గర్లు</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ఒక్కో ట్రిగ్గర్ గెయిన్, మోటార్ల మార్పిడి, అడాప్టివ్ ట్రిగ్గర్ వైబ్రేషన్లు, స్థిర ట్రిగ్గర్ బలం</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్ నుండి ప్రతి ట్రిగ్గర్ మోటార్ ఆదేశాలను (Xbox ఇంపల్స్ ట్రిగ్గర్లు) కేటాయించిన భౌతిక Xbox One, Elite లేదా Series కంట్రోలర్కు పంపుతుంది. గేమ్ నడిపే ట్రిగ్గర్ రంబుల్ ఆటోమేటిక్గా వెళ్తుంది. కింది నియంత్రణలు ప్రతి ట్రిగ్గర్ తీవ్రతను స్కేల్ చేస్తాయి.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>వర్చువల్ కంట్రోలర్ నుండి ప్రతి ట్రిగ్గర్ మోటార్ ఆదేశాలను (Xbox ఇంపల్స్ ట్రిగ్గర్లు) ఈ కంట్రోలర్ ట్రిగ్గర్లలో వైబ్రేషన్‌గా ప్లే చేస్తుంది. గేమ్ నడిపే ట్రిగ్గర్ రంబుల్ ఆటోమేటిక్‌గా వెళ్తుంది. కింది నియంత్రణలు ప్రతి ట్రిగ్గర్ తీవ్రతను స్కేల్ చేస్తాయి.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>ఎడమ ట్రిగ్గర్</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>కుడి ట్రిగ్గర్</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>ఎడమ, కుడి ట్రిగ్గర్ మోటార్లను మార్చు</value></data>
@@ -1282,6 +1324,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>అడాప్టివ్ ట్రిగ్గర్లు</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>కేటాయించిన భౌతిక DualSenseపై ట్రిగ్గర్ ఫీడ్బ్యాక్ ప్రభావాలను కాన్ఫిగర్ చేయండి. గేమ్ లేదా గేమ్ మోడ్ నుండి వచ్చే ట్రిగ్గర్ ప్రభావాలు ఆటోమేటిక్గా ఫార్వర్డ్ అవుతాయి. ఇక్కడి సెట్టింగులు ఈ రెండూ రాయనప్పుడు నడిచే వినియోగదారు కాన్ఫిగర్ చేసిన పొరను జోడిస్తాయి.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>ఈ కంట్రోలర్ ఫోర్స్ ట్రిగ్గర్లపై ట్రిగ్గర్ ఫీడ్‌బ్యాక్ ప్రభావాలను కాన్ఫిగర్ చేయండి. వర్చువల్ DualSenseపై గేమ్ నుండి లేదా గేమ్ మోడ్ నుండి వచ్చే ట్రిగ్గర్ ప్రభావాలు ఆటోమేటిక్‌గా ప్లే అవుతాయి. ఇక్కడి సెట్టింగులు ఈ రెండూ రాయనప్పుడు నడిచే వినియోగదారు కాన్ఫిగర్ చేసిన పొరను జోడిస్తాయి.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>ఈ కంట్రోలర్‌పై ట్రిగ్గర్ ఫీడ్‌బ్యాక్ ప్రభావాలను కాన్ఫిగర్ చేయండి. దీని ట్రిగ్గర్లు వైబ్రేట్ అవుతాయి, ప్రతిఘటించవు, కాబట్టి ప్రతి ప్రభావం దాని పనిని అనుసరించే వైబ్రేషన్‌గా ప్లే అవుతుంది: ట్రిగ్గర్ విరిగే చోట ఒక ఉప్పెన, విల్లుకు పెరుగుదల మరియు విడుదల. వర్చువల్ DualSenseపై గేమ్ నుండి లేదా గేమ్ మోడ్ నుండి వచ్చే ట్రిగ్గర్ ప్రభావాలు ఆటోమేటిక్‌గా ప్లే అవుతాయి. ఇక్కడి సెట్టింగులు ఈ రెండూ రాయనప్పుడు నడిచే వినియోగదారు కాన్ఫిగర్ చేసిన పొరను జోడిస్తాయి.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>స్టిక్లు</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>ప్రతి స్టిక్కు డెడ్ జోన్లు, యాంటీ-డెడ్ జోన్లు, సున్నితత్వ వక్రరేఖలు, మధ్య ఆఫ్సెట్ క్రమాంకనం. కింది ప్రతి విభాగం చురుకైన అవుట్పుట్పై ఒక అనలాగ్ స్టిక్ను లక్ష్యంగా చేసుకుంటుంది. ఎక్స్టెండెడ్ ప్రొఫైల్లకు నాలుగు స్టిక్ల వరకు ఉండవచ్చు. ప్రామాణిక గేమ్ప్యాడ్లకు రెండు ఉంటాయి.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ట్రిగ్గర్లు</value></data>
@@ -3457,7 +3501,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>ఒక ఆక్టేవ్ కిందికి మడువు</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>టోన్ పరిమితి</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>ఈ కంట్రోలర్లో DualSense హాప్టిక్స్ ప్లే చేయి</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ఒక గేమ్ ఈ స్లాట్ను రచించిన హాప్టిక్ ఆడియోతో వర్చువల్ DualSense వలె నడిపినప్పుడు, ఆ ట్రాక్ను ఈ కంట్రోలర్ యాక్చుయేటర్లలో ప్లే చేస్తుంది. USB లేదా దాని డాంగిల్ ద్వారా Steam Controller 2026 ఆ ట్రాక్ను తానే ప్లే చేస్తుంది. ఇతర ప్రతి కంట్రోలర్, బ్లూటూత్ ద్వారా ఆ కంట్రోలర్ కూడా, ఆడియో నుండి రూపొందించిన టోన్లను పొందుతుంది, అవి డిజైనర్ అనుభూతిని పునరుత్పత్తి చేయకుండా సుమారుగా సూచిస్తాయి.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ఒక గేమ్ ఈ స్లాట్‌ను రచించిన హాప్టిక్ ఆడియోతో వర్చువల్ DualSense వలె నడిపినప్పుడు, ఆ ట్రాక్‌ను ఈ కంట్రోలర్ యాక్చుయేటర్లలో ప్లే చేస్తుంది. USB లేదా దాని డాంగిల్ ద్వారా Steam Controller 2026, మరియు Flydigi Apex 6 Pro, ఆ ట్రాక్‌ను తామే ప్లే చేస్తాయి. ఇతర ప్రతి కంట్రోలర్, బ్లూటూత్ ద్వారా ఆ Steam Controller కూడా, ఆడియో నుండి రూపొందించిన టోన్లను పొందుతుంది, అవి డిజైనర్ అనుభూతిని పునరుత్పత్తి చేయకుండా సుమారుగా సూచిస్తాయి.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>హాప్టిక్స్ గెయిన్</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>డిఫాల్ట్కు రీసెట్ చేయి (ఆఫ్)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>డిఫాల్ట్కు రీసెట్ చేయి (100%)</value></data>
@@ -3652,6 +3696,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) హాప్టిక్ రిపోర్ట్ లేఅవుట్, నోట్-పీరియడ్ గణితం, Pila, Roboron3042 రచన.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026, Steam Deck LFO-టోన్ హాప్టిక్ లేఅవుట్, Pila, Crazy, AAGaming రచన.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex ట్రిగ్గర్ ప్రభావాల అనువాదం మరియు రాత వేగం, Apex 6 Pro ట్రిగ్గర్ రెండరింగ్, హాప్టిక్ స్ట్రీమ్ మరియు లైటింగ్ బ్లాక్, Apex 5 లైటింగ్ రాతలు, ReynArts రచన.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5 మరియు Apex 6 ప్రోటోకాల్ గమనికలు, లైటింగ్ బ్లాక్ బదిలీ మరియు స్క్రీన్ సీరియల్ అప్‌లోడ్, Mikalai Kaliaha రచన.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4 లైటింగ్ బ్లాక్, ప్రొఫైల్ స్లాట్ మరియు Xbox మోడ్‌లో స్క్రీన్ అప్‌లోడ్, Uilton Lopes మరియు సహకారుల రచన.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4 ఫోర్స్ ట్రిగ్గర్ ఆదేశాలు మరియు ప్యాడ్‌పై కొలిచిన వేగం, Jackwmtr రచన.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap మోడ్ల కోసం SOCD క్లీనింగ్ సెమాంటిక్స్, valignatev రచన.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>పాన్ Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>ఇది ఏమి చూపాలో ఎంచుకోండి. సేవ్ చేసే వరకు ఏదీ మారదు.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} {1} కు సెట్ చేయబడింది.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>చిత్రం కంట్రోలర్ స్క్రీన్‌కు వెళ్లింది.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mad Catz S.T.R.I.K.E. 7 SDK డౌన్లోడ్ చేస్తోంది…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 ఇప్పుడు {0} లోడ్ చేస్తుంది.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Microsoft Visual C++ 2008 రన్టైమ్ డౌన్లోడ్ చేసి ఇన్స్టాల్ చేస్తోంది…</value></data>

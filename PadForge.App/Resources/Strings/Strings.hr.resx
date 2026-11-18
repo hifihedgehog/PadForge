@@ -939,6 +939,8 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Postavlja broj igrača za ovaj priključak, od 1 do 4. Adapter ga sprema i ponovno se povezuje kao taj igrač.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast zaslon…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Postavlja što prikazuje VMU Dreamcast kontrolera: vlastitu sliku adaptera, naziv, broj ili sliku aktivnog profila, sat, vrijeme igranja ili sliku koju odaberete.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Zaslon kontrolera…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Šalje sliku na zaslon kontrolera: sliku ili GIF koji odaberete ili sliku, naziv ili broj aktivnog profila. Kontroler je čuva do sljedeće slike.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Sigurnosno kopiraj Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Sprema Controller Pak iz ovog N64 kontrolera u datoteku .mpk od 32 KB, format koji čitaju N64 emulatori.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Vrati Controller Pak…</value></data>
@@ -972,6 +974,45 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Ukloni sliku profila</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Slike (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Sve datoteke (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Ta datoteka ne sadrži sliku koju PadForge može pročitati.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Zaslon kontrolera</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Ništa ne dolazi do kontrolera dok ne pošaljete.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Slika ili GIF koji odaberete, prilagođen zaslonu od 160 × 80 piksela. Kontroler je čuva dok ne pošaljete drugu.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Slika aktivnog profila ili njegov naziv ako slike nema, onakvi kakvi su u trenutku slanja. Kontroler ih čuva i nakon promjene profila.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Naziv aktivnog profila onakav kakav je u trenutku slanja. Kontroler ga čuva i nakon promjene profila.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Mjesto aktivnog profila na popisu profila onakvo kakvo je u trenutku slanja. Profil Zadani je 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Prilagodba</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Ispuni zaslon</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Prikaži cijelu sliku</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Razvuci na zaslon</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Slike (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Sve datoteke (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Pošalji</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Okviri: {0}. Slanje traje oko {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontroler prima najviše {0} okvira, pa je posljednjih {1} izostavljeno.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Spojite kontroler kabelom. Sam se ponovno pokreće otprilike 15 sekundi nakon što slika stigne.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Spojite kontroler kabelom. Za slanje ga PadForge prebacuje u Xbox način rada i premješta s Windowsova Xbox upravljačkog programa na WinUSB, a zatim sve vraća.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge će prebaciti kontroler u Xbox način rada, premjestiti ga na WinUSB za slanje, zatim ga vratiti Windowsovu Xbox upravljačkom programu i prebaciti natrag u DInput način rada. Prvo iskopčajte sve ostale Xbox 360 kontrolere. Poslati sada?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Pokretanje…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Prebacivanje kontrolera…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Čekanje na priključak zaslona…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Premještanje kontrolera na WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Oslobađanje mjesta za sliku… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Slanje slike… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Završavanje…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Vraćanje kontrolera Windowsima…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Poslano. Kontroler prikazuje sliku nakon ponovnog pokretanja.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Poslano. Kontroler prikazuje sliku.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Spojite kontroler kabelom. Njegov zaslon prima sliku samo preko USB-a.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Priključak zaslona nije se pojavio. Isključite i uključite kontroler njegovim vlastitim prekidačem, spojite ga kabelom i pošaljite ponovno.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Sliku čeka više od jednog zaslona kontrolera. Iskopčajte ostale i pošaljite ponovno.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Priključak zaslona nije se otvorio. Zatvorite Flydigi Space Station i pošaljite ponovno.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Zaslon više ne odgovara. Isključite i uključite kontroler njegovim vlastitim prekidačem i pošaljite ponovno.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Zaslon je odbio sliku. Pošaljite ponovno.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Kontroler se nije vratio kao Xbox 360 kontroler, pa ništa nije poslano. Njegovim vlastitim prekidačem prebacite ga natrag u DInput način rada i pošaljite ponovno.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Iskopčajte sve ostale Xbox 360 kontrolere i pošaljite ponovno. Promjena upravljačkog programa premjestila bi i njih. Kontroler koji ostane u Xbox načinu rada vraća se u DInput način rada njegovim vlastitim prekidačem.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Kontroler u Xbox načinu rada nije odgovorio kao Apex 4, pa ništa nije poslano, a Windows ga je dobio natrag. Njegovim vlastitim prekidačem prebacite ga natrag u DInput način rada.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows nije premjestio kontroler na WinUSB, pa ništa nije poslano. Njegovim vlastitim prekidačem prebacite ga natrag u DInput način rada.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Zaustavljeno. Prije ponovnog slanja isključite i uključite kontroler njegovim vlastitim prekidačem.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Slika se još šalje na kontroler. Zaustaviti slanje?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Datoteke Controller Pak (*.mpk)|*.mpk|Sve datoteke (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak priključak {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Vrati Controller Pak</value></data>
@@ -1138,6 +1179,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulsni okidači</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Pojačanje po okidaču, zamjena motora, vibracije adaptivnih okidača, Stalna sila okidača</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Prosljeđuje naredbe motora za svaki okidač (Xbox Impulse Triggers) s virtualnog kontrolera na dodijeljeni fizički kontroler Xbox One, Elite ili Series. Vibracija okidača koju pokreće igra automatski se propušta. Kontrole u nastavku skaliraju jačinu za svaki okidač.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Reproducira naredbe motora za svaki okidač (Xbox Impulse Triggers) s virtualnog kontrolera kao vibraciju u okidačima ovog kontrolera. Vibracija okidača koju pokreće igra automatski se propušta. Kontrole u nastavku skaliraju jačinu za svaki okidač.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Lijevi okidač</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Desni okidač</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Zamijeni motore lijevog i desnog okidača</value></data>
@@ -1202,6 +1244,8 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptivni okidači</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Konfigurirajte efekte povratne reakcije okidača na dodijeljenom fizičkom kontroleru DualSense. Efekti okidača iz igre ili modifikacije igre prosljeđuju se automatski. Ove postavke dodaju korisničke efekte koji se izvode kada nijedno od toga ne šalje svoje.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Konfigurirajte efekte povratne reakcije okidača na silovitim okidačima ovog kontrolera. Efekti okidača iz igre na virtualnom kontroleru DualSense ili iz modifikacije igre reproduciraju se automatski. Ove postavke dodaju korisničke efekte koji se izvode kada nijedno od toga ne šalje svoje.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Konfigurirajte efekte povratne reakcije okidača na ovom kontroleru. Njegovi okidači vibriraju i ne pružaju otpor, pa se svaki efekt reproducira kao vibracija koja prati ono što efekt radi: udar tamo gdje okidač popušta, a nakupljanje i otpuštanje za luk. Efekti okidača iz igre na virtualnom kontroleru DualSense ili iz modifikacije igre reproduciraju se automatski. Ove postavke dodaju korisničke efekte koji se izvode kada nijedno od toga ne šalje svoje.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Palice</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Mrtve zone, anti-mrtve zone, krivulje osjetljivosti i kalibracija pomaka središta za svaku palicu. Svaki odjeljak u nastavku odnosi se na jednu analognu palicu aktivnog izlaza. Prošireni profili mogu imati do četiri palice. Standardni gamepadi imaju dvije.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Okidači</value></data>
@@ -3266,7 +3310,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Spusti ih za oktavu</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Granica tona</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Reproduciraj DualSense haptiku na ovom kontroleru</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kada igra upravlja ovim utorom kao virtualnim kontrolerom DualSense s izrađenim haptičkim zvukom, taj se zapis reproducira na aktuatorima ovog kontrolera. Steam Controller 2026 putem USB-a ili svog prijamnika reproducira sam zapis. Svaki drugi kontroler, kao i taj putem Bluetootha, dobiva tonove izvedene iz zvuka, koji približno dočaravaju osjećaj koji je dizajner zamislio, ali ga ne reproduciraju.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kada igra upravlja ovim utorom kao virtualnim kontrolerom DualSense s izrađenim haptičkim zvukom, taj se zapis reproducira na aktuatorima ovog kontrolera. Steam Controller 2026 putem USB-a ili svog prijamnika i Flydigi Apex 6 Pro reproduciraju sam zapis. Svaki drugi kontroler, kao i taj Steam Controller putem Bluetootha, dobiva tonove izvedene iz zvuka, koji približno dočaravaju osjećaj koji je dizajner zamislio, ali ga ne reproduciraju.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Pojačanje haptike</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Vrati na zadano (isključeno)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Vrati na zadano (100%)</value></data>
@@ -3457,6 +3501,14 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Raspored haptičkog izvješća kontrolera Steam Controller (2015) i matematika perioda nota, autori Pila i Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Haptički raspored s LFO tonovima za Steam Controller 2026 i Steam Deck, autori Pila, Crazy i AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Prevođenje efekata okidača i tempo slanja za Flydigi Apex, prikaz okidača, haptički tok i blok osvjetljenja za Apex 6 Pro te zapisi osvjetljenja za Apex 5, autor ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Bilješke o protokolu za Flydigi Apex 5 i Apex 6, prijenos bloka osvjetljenja i serijsko slanje slike na zaslon, autor Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Blok osvjetljenja za Flydigi Apex 4, mjesto profila i slanje slike na zaslon u Xbox načinu rada, autori Uilton Lopes i suradnici.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Naredbe silovitih okidača za Flydigi Apex 4 i tempo izmjeren na kontroleru, autor Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantika SOCD razrješavanja za načine Snap Tap, autor valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4761,6 +4813,7 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Pomicanje Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Odaberite što prikazuje. Ništa se ne mijenja dok ne spremite.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0}: postavljeno na {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Slika je poslana na zaslon kontrolera.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Preuzimanje SDK-a tvrtke Mad Catz za S.T.R.I.K.E. 7…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 sada učitava {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Preuzimanje i instaliranje Microsoftova izvršnog okruženja Visual C++ 2008…</value></data>

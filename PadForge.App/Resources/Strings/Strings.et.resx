@@ -939,6 +939,8 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Määrab selle pordi mängija numbri, 1 kuni 4. Adapter salvestab selle ja ühendub uuesti selle mängijana.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcasti ekraan…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Määrab, mida Dreamcasti mängupuldi VMU näitab: adapteri enda pilti, aktiivse profiili nime, numbrit või pilti, kella, mänguaega või teie valitud pilti.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Kontrolleri ekraan…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Saadab kontrolleri ekraanile pildi: teie valitud pildi või GIF-i või aktiivse profiili pildi, nime või numbri. Kontroller hoiab seda kuni järgmise pildini.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Varunda Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Salvestab selle N64 kontrolleri Controller Paki 32 KB suurusesse .mpk-faili, mida N64 emulaatorid loevad.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Taasta Controller Pak…</value></data>
@@ -972,6 +974,45 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Eemalda profiili pilt</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Pildid (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Kõik failid (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Selles failis pole pilti, mida PadForge suudaks lugeda.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Kontrolleri ekraan</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Kontrollerini ei jõua miski enne saatmist.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Teie valitud pilt või GIF, sobitatud ekraani 160 × 80 piksliga. Kontroller hoiab seda kuni uue saatmiseni.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Aktiivse profiili enda pilt või selle puudumisel profiili nimi, sellisena nagu see on saatmise hetkel. Kontroller hoiab seda profiilivahetuste järel alles.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Aktiivse profiili nimi sellisena, nagu see on saatmise hetkel. Kontroller hoiab seda profiilivahetuste järel alles.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Aktiivse profiili koht profiililoendis sellisena, nagu see on saatmise hetkel. Profiil „Vaikimisi“ on 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Sobitus</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Täida ekraan</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Näita kogu pilti</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Venita ekraanile</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Pildid (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Kõik failid (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Saada</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Kaadreid: {0}. Saatmine võtab umbes {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Kontroller võtab vastu kuni {0} kaadrit, seega viimased {1} jäeti välja.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Ühendage kontroller kaabliga. See taaskäivitub ise umbes 15 sekundit pärast pildi kohalejõudmist.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Ühendage kontroller kaabliga. Saatmiseks lülitab PadForge selle Xboxi režiimi ja viib Windowsi Xboxi draiverilt üle WinUSB-le, seejärel taastab mõlemad.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge lülitab kontrolleri Xboxi režiimi, viib selle saatmiseks WinUSB-le, annab selle seejärel tagasi Windowsi Xboxi draiverile ja lülitab tagasi DInputi režiimi. Eemaldage esmalt kõik muud Xbox 360 kontrollerid. Kas saata nüüd?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Alustamine…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Kontrolleri ümberlülitamine…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Ootan ekraani porti…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Kontrolleri viimine WinUSB-le…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Ruumi vabastamine pildile… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Pildi saatmine… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Lõpetamine…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Kontrolleri andmine tagasi Windowsile…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Saadetud. Kontroller näitab pilti pärast taaskäivitumist.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Saadetud. Kontroller näitab pilti.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Ühendage kontroller kaabliga. Selle ekraan võtab pildi vastu ainult USB kaudu.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Ekraani port ei ilmunud. Lülitage kontroller selle enda lülitiga välja ja uuesti sisse, ühendage see kaabliga ning saatke uuesti.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Pilti ootab rohkem kui üks kontrolleri ekraan. Eemaldage teised ja saatke uuesti.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Ekraani port ei avanenud. Sulgege Flydigi Space Station ja saatke uuesti.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Ekraan lakkas vastamast. Lülitage kontroller selle enda lülitiga välja ja uuesti sisse ning saatke uuesti.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Ekraan keeldus pildist. Saatke uuesti.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Kontroller ei tulnud tagasi Xbox 360 kontrollerina, seega ei saadetud midagi. Lülitage see selle enda lülitiga tagasi DInputi režiimi ja saatke uuesti.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Eemaldage kõik muud Xbox 360 kontrollerid ja saatke uuesti. Draiverimuudatus viiks needki ümber. Xboxi režiimi jäänud kontrolleri saab selle enda lülitiga tagasi DInputi režiimi viia.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xboxi režiimis kontroller ei vastanud Apex 4-na, seega ei saadetud midagi ja Windows sai selle tagasi. Lülitage see selle enda lülitiga tagasi DInputi režiimi.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows ei viinud kontrollerit WinUSB-le, seega ei saadetud midagi. Lülitage see selle enda lülitiga tagasi DInputi režiimi.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Peatatud. Lülitage kontroller selle enda lülitiga välja ja uuesti sisse enne uuesti saatmist.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Kontrollerisse on pilt veel teel. Kas peatada saatmine?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Paki failid (*.mpk)|*.mpk|Kõik failid (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Paki port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Taasta Controller Pak</value></data>
@@ -1138,6 +1179,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulsspäästikud</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Päästikute võimendus, mootorite vahetus, adaptiivsed vibratsioonid, Päästiku püsijõud</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Edastab päästikupõhised mootorikäsud (Xbox Impulse Triggers) virtuaalselt kontrollerilt määratud füüsilisele Xbox One, Elite või Series kontrollerile. Mängu juhitud päästikuvibratsioon edastatakse automaatselt. Allolevad juhtelemendid skaleerivad tugevust iga päästiku jaoks eraldi.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Esitab päästikupõhised mootorikäsud (Xbox Impulse Triggers) virtuaalselt kontrollerilt vibratsioonina selle kontrolleri päästikutes. Mängu juhitud päästikuvibratsioon edastatakse automaatselt. Allolevad juhtelemendid skaleerivad tugevust iga päästiku jaoks eraldi.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Vasak päästik</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Parem päästik</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Vaheta vasaku ja parema päästiku mootorid</value></data>
@@ -1202,6 +1244,8 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptiivsed päästikud</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Seadistage määratud füüsilise DualSense'i päästikute tagasiside efektid. Mängu või mängumodi päästikuefektid edastatakse automaatselt. Siinsed sätted lisavad kasutaja seadistatud kihi, mis töötab siis, kui kumbki efekte ei kirjuta.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Seadistage selle kontrolleri jõupäästikute tagasiside efektid. Virtuaalse DualSense'i mängu või mängumodi päästikuefektid esitatakse automaatselt. Siinsed sätted lisavad kasutaja seadistatud kihi, mis töötab siis, kui kumbki efekte ei kirjuta.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Seadistage selle kontrolleri päästikute tagasiside efektid. Selle päästikud vibreerivad ega paku vastupanu, seega esitatakse iga efekt vibratsioonina, mis järgib efekti tegevust: hoog seal, kus päästik murdub, ülesehitus ja vabastus vibu puhul. Virtuaalse DualSense'i mängu või mängumodi päästikuefektid esitatakse automaatselt. Siinsed sätted lisavad kasutaja seadistatud kihi, mis töötab siis, kui kumbki efekte ei kirjuta.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Kangid</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Kangipõhised surnud tsoonid, surnud tsooni kompensatsioonid, tundlikkuskõverad ja keskpunkti nihke kalibreerimine. Iga allolev jaotis on mõeldud aktiivse väljundi ühele analoogkangile. Laiendatud profiilidel võib olla kuni neli kangi. Tavalistel mängupultidel on neid kaks.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Päästikud</value></data>
@@ -3266,7 +3310,7 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Vii oktavi võrra alla</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Tooni piir</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Esita DualSense'i haptikat sellel kontrolleril</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kui mäng juhib seda pesa virtuaalse DualSense'ina, millel on loodud haptiline heli, esitatakse see rada selle kontrolleri täituritel. Steam Controller 2026 esitab raja ise USB või oma dongli kaudu. Kõik teised kontrollerid, samuti see Bluetoothi kaudu, saavad helist tuletatud toonid, mis ligikaudu jäljendavad kujundaja kavandatud tunnetust, kuid ei taasta seda täpselt.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Kui mäng juhib seda pesa virtuaalse DualSense'ina, millel on loodud haptiline heli, esitatakse see rada selle kontrolleri täituritel. Steam Controller 2026 USB või oma dongli kaudu ja Flydigi Apex 6 Pro esitavad raja ise. Kõik teised kontrollerid, samuti see Steam Controller Bluetoothi kaudu, saavad helist tuletatud toonid, mis ligikaudu jäljendavad kujundaja kavandatud tunnetust, kuid ei taasta seda täpselt.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptika võimendus</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Lähtesta vaikeväärtusele (väljas)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Lähtesta vaikeväärtusele (100%)</value></data>
@@ -3457,6 +3501,14 @@ Eelmise versiooni koopia on selles kaustas: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controlleri (2015) haptilise aruande paigutus ja nootide perioodi matemaatika, autorid Pila ja Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 ja Steam Decki LFO-tooni haptiline paigutus, autorid Pila, Crazy ja AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apexi päästikuefektide teisendus ja kirjutamise tempo, Apex 6 Pro päästikute esitus, haptikavoog ja valgustusplokk ning Apex 5 valgustuse kirjutused, autor ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5 ja Apex 6 protokolli märkmed, valgustusploki edastus ja ekraani jadaliidese üleslaadimine, autor Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4 valgustusplokk, profiilipesa ja ekraani üleslaadimine Xboxi režiimis, autorid Uilton Lopes ja kaasautorid.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4 jõupäästikute käsud ja puldil mõõdetud tempo, autor Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD puhastamise semantika Snap Tapi režiimide jaoks, autor valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4760,6 +4812,7 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Nihe Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Valige, mida see näitab. Miski ei muutu enne salvestamist.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} määrati: {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Pilt saadeti kontrolleri ekraanile.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Laaditakse alla Mad Catzi S.T.R.I.K.E. 7 SDK…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 laadib nüüd: {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Laaditakse alla ja installitakse Microsofti Visual C++ 2008 käituskeskkond…</value></data>

@@ -390,6 +390,15 @@ namespace PadForge.Common.Input.Peripherals
         /// isStreamDeckRunning).</summary>
         public static readonly VendorProgram ElgatoStreamDeck = new("Stream Deck", "StreamDeck");
 
+        /// <summary>Flydigi Space Station, by the service that talks to the
+        /// pad for it: SpaceStationService.exe, the name ApexSenseBridge
+        /// looks for (WindowsPhysicalControllerIsolation.cpp
+        /// kSpaceStationService) and openflydigi and
+        /// flydigi-space-station-mac found doing the device I/O under the
+        /// program's window (openflydigi PROTOCOL.md section 1,
+        /// spacestation4-analysis.md).</summary>
+        public static readonly VendorProgram FlydigiSpaceStation = new("Flydigi Space Station", "SpaceStationService");
+
         /// <summary>Every program, in the order the presence lists the ones
         /// that run.</summary>
         public static readonly IReadOnlyList<VendorProgram> All = new[]
@@ -399,6 +408,7 @@ namespace PadForge.Common.Input.Peripherals
             RoccatSwarm, XpgPrime, WootingWootility, OpenRgb, LogitechGHub, LogitechGamingSoftware, GloriousCore,
             AorusEngine, RgbFusion, NzxtCam, PatriotViperMouse, TurtleBeachSwarmII, Skydimo, HyteNexus, LuxaforApp,
             AmBx, Blink1Control, ElgatoStreamDeck, RazerSynapse, Orios, ThermaltakeItake, KbmTeclado,
+            FlydigiSpaceStation,
         };
     }
 

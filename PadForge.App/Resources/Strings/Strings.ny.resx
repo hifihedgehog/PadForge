@@ -1475,4 +1475,42 @@
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Pamene layer ili yoyatsidwa imasunga flyout pa sikirini mpaka layer isinthe. Kwa masekondi 2 imaiwonetsa pamene layer iyatsidwa, kenako imaisiya ichoke yokha. Ndi Osati konse, layer iyi siwonetsa flyout, ndipo Base siwonetsa flyout pamene layer yatha.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>Kwa masekondi 2 imawonetsa dzina la Base pamene shift layer yatha. Ndi Osati konse, Base siwonetsa flyout.</value></data>
   <data name="Extras_Crosshair_PictureFilter" xml:space="preserve"><value>Zithunzi (*.png, *.gif, *.bmp, *.ico, *.tif, *.jpg, *.webp)|*.png;*.gif;*.bmp;*.ico;*.tif;*.tiff;*.jpg;*.jpeg;*.webp|Mafayilo onse (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Sikirini ya chowongolera</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Palibe chomwe chimafika ku chowongolera mpaka mutatumiza.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Kukwanira</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Dzazani sikirini</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Onetsani chithunzi chonse</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Tambasulani kufika sikirini</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Tumizani</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Mafelemu: {0}. Kutumiza kumatenga pafupifupi {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Chowongolera chimalandira mafelemu osapitirira {0}, choncho mafelemu omaliza asiyidwa: {1}.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Lumikizani chowongolera ndi chingwe. Chimayambiranso chokha patatha masekondi pafupifupi 15 chithunzi chitalowa.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Lumikizani chowongolera ndi chingwe. Pa kutumiza, PadForge imachisinthira ku Xbox mode ndi kuchichotsa pa dalaivala ya Xbox ya Windows kupita ku WinUSB, kenako imabwezeretsa zonse ziwiri.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge isinthira chowongolera ku Xbox mode, ichisamutsira ku WinUSB pa kutumiza, kenako ichibwezera ku dalaivala ya Xbox ya Windows ndi kuchibwezera ku DInput mode. Choyamba chotsani chowongolera china chilichonse cha Xbox 360. Tumizani tsopano?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Kuyamba…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Kusintha chowongolera…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Kudikirira port ya sikirini…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Kusamutsira chowongolera ku WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Kupanga malo a chithunzi… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Kutumiza chithunzi… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Kumaliza…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Kubwezera chowongolera ku Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Chatumizidwa. Chowongolera chimaonetsa chithunzi chikangoyambiranso.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Chatumizidwa. Chowongolera chikuonetsa chithunzi.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Lumikizani chowongolera ndi chingwe. Sikirini yake imalandira chithunzi kudzera pa USB yokha.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Port ya sikirini sinaonekere. Zimitsani ndi kuyatsa chowongolera ndi switchi yake, chilumikizeni ndi chingwe, ndipo tumizaninso.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Sikirini zoposa imodzi za zowongolera zikudikirira chithunzi. Chotsani zina ndipo tumizaninso.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Port ya sikirini sinatseguke. Tsekani Flydigi Space Station ndipo tumizaninso.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Sikirini yasiya kuyankha. Zimitsani ndi kuyatsa chowongolera ndi switchi yake ndipo tumizaninso.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Sikirini yakana chithunzi. Tumizaninso.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Chowongolera sichinabwerere ngati chowongolera cha Xbox 360, choncho palibe chomwe chatumizidwa. Chibwezereni ku DInput mode ndi switchi yake ndipo tumizaninso.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Chotsani chowongolera china chilichonse cha Xbox 360 ndipo tumizaninso. Kusintha dalaivala kukanazisamutsanso. Chowongolera chotsala mu Xbox mode chimabwerera ku DInput mode ndi switchi yake.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Chowongolera chili mu Xbox mode sichinayankhe ngati Apex 4, choncho palibe chomwe chatumizidwa ndipo Windows yachibwezeretsa. Chibwezereni ku DInput mode ndi switchi yake.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows sinasamutsire chowongolera ku WinUSB, choncho palibe chomwe chatumizidwa. Chibwezereni ku DInput mode ndi switchi yake.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Kwaimitsidwa. Zimitsani ndi kuyatsa chowongolera ndi switchi yake musanatumizenso.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Chithunzi chikutumizidwabe ku chowongolera. Muimitse kutumiza?</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

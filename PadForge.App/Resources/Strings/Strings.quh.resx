@@ -1643,4 +1643,13 @@
   <data name="Pad_Shift_Flyout_Off" xml:space="preserve"><value>Mana hayk'aqpas</value></data>
   <data name="Pad_Shift_Flyout_Tooltip" xml:space="preserve"><value>Capa activo kachkaptin nisqawanqa flyout rikhurichkan capa t'ikrakunankama. 2 segundopaq nisqawanqa capa qallarikuptin rikuchin, chaymanta kikillanmanta chinkan. Mana hayk'aqpas nisqawanqa kay capa mana flyoutta rikuchinchu, capa tukukuptintaq Basepas mana rikuchinchu.</value></data>
   <data name="Pad_Shift_Flyout_Base_Tooltip" xml:space="preserve"><value>2 segundopaq nisqawanqa shift capa tukukuptin Basepa sutin rikhurin. Mana hayk'aqpas nisqawanqa Base mana flyoutta rikuchinchu.</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Kachanaykikama mana imapas controladorman chayanchu.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Tupachiy</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Pantallata hunt'achiy</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Tukuy rikch'ayta rikuchiy</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Pantallaman chutay</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

@@ -171,7 +171,8 @@ namespace PadForge.Services
 
         /// <summary>What the mods hold on the virtual controllers this device
         /// feeds, as this device carries it: a DualSense's triggers and
-        /// lights, a DualShock 4's lightbar, the lightbar color on a mouse,
+        /// lights, a Flydigi Apex pad's (#586), a DualShock 4's lightbar,
+        /// the lightbar color on a mouse,
         /// keyboard or lighting row the slot lights, or the vibrations an
         /// Xbox pad's impulse triggers play with Translate Adaptive Trigger
         /// Vibrations on. Empty when none of that reaches it.</summary>
@@ -197,6 +198,9 @@ namespace PadForge.Services
             bool sony = GameModEffects.IsSonyPad(ud.VendorId, ud.ProdId);
             bool dualSense = GameModEffects.IsDualSense(ud.VendorId, ud.ProdId);
             bool impulse = !sony && ud.Device != null && ud.Device.HasRumbleTriggers;
+            // A Flydigi Apex pad with a session plays a mod's trigger effects
+            // themselves, and its lights are the controller's own (#586).
+            bool flydigi = !sony && PadForge.Common.Input.Flydigi.FlydigiApexService.SessionOf(ud.InstanceGuid) != null;
             bool triggers = false, lights = false, peripheralLights = false, impulseVibrations = false;
             string name = null;
             foreach (var (slot, translate) in fed)
@@ -222,10 +226,16 @@ namespace PadForge.Services
                     // claim on the row is that dispatcher's own answer.
                     if (hold.Lightbar != null && PadForge.Common.Input.Peripherals.PeripheralOutputs.IsLitBy(ud.InstanceGuid, slot))
                     {
-                        peripheralLights = true;
+                        if (flydigi) lights = true;
+                        else peripheralLights = true;
                         reached = true;
                     }
-                    if (impulse && translate && hold.HasTriggers)
+                    if (flydigi && hold.HasTriggers)
+                    {
+                        triggers = true;
+                        reached = true;
+                    }
+                    else if (impulse && translate && hold.HasTriggers)
                     {
                         impulseVibrations = true;
                         reached = true;

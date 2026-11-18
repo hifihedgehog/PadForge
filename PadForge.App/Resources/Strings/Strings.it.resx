@@ -2016,6 +2016,8 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>Implementazione di riferimento per il passthrough audio USB del controller. Di WujekFoliarz.</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Grilletti adattivi</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Configura gli effetti dei grilletti sul DualSense fisico assegnato. Gli effetti dei grilletti provenienti da un gioco o da una mod di gioco vengono inoltrati automaticamente. Le impostazioni qui aggiungono un livello configurato dall'utente che si attiva quando nessuno dei due sta scrivendo.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Configura gli effetti dei grilletti sui grilletti a forza di questo controller. Gli effetti dei grilletti provenienti da un gioco su un DualSense virtuale o da una mod di gioco vengono riprodotti automaticamente. Le impostazioni qui aggiungono un livello configurato dall'utente che si attiva quando nessuno dei due sta scrivendo.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Configura gli effetti dei grilletti su questo controller. I suoi grilletti vibrano e non oppongono resistenza, quindi ogni effetto viene riprodotto come una vibrazione che segue ciò che l'effetto fa: un impulso dove un grilletto scatta, una salita e un rilascio per un arco. Gli effetti dei grilletti provenienti da un gioco su un DualSense virtuale o da una mod di gioco vengono riprodotti automaticamente. Le impostazioni qui aggiungono un livello configurato dall'utente che si attiva quando nessuno dei due sta scrivendo.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Levette</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Per ogni levetta: zone morte, anti-zone morte, curve di sensibilità e calibrazione dell'offset centrale. Ogni sezione sotto si applica a una levetta analogica dell'uscita attiva. I profili estesi possono avere fino a quattro levette. I gamepad standard ne hanno due.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Grilletti</value></data>
@@ -2380,6 +2382,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Grilletti Impulse</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Guadagno per grilletto, scambio motori, vibrazioni adattive, Forza costante sui grilletti</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Inoltra i comandi per motore di grilletto (grilletti Impulse Xbox) dal controller virtuale al controller fisico Xbox One, Elite o Series assegnato. La vibrazione dei grilletti generata da un gioco passa automaticamente. I controlli sottostanti regolano l'intensità per grilletto.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Riproduce i comandi per motore di grilletto (grilletti Impulse Xbox) del controller virtuale come vibrazione nei grilletti di questo controller. La vibrazione dei grilletti generata da un gioco passa automaticamente. I controlli sottostanti regolano l'intensità per grilletto.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Grilletto sinistro</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Grilletto destro</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Scambia motori dei grilletti sinistro e destro</value></data>
@@ -2794,7 +2797,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Ripiegarli un'ottava più in basso</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Limite di tono</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Riproduci l'aptica DualSense su questo controller</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Quando un gioco pilota questo slot come DualSense virtuale con audio aptico d'autore, quella traccia viene riprodotta sugli attuatori di questo controller. Uno Steam Controller 2026 via USB o con il suo dongle riproduce la traccia stessa. Ogni altro controller, e quello via Bluetooth, riceve toni derivati dall'audio, che approssimano la sensazione progettata invece di riprodurla.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Quando un gioco pilota questo slot come DualSense virtuale con audio aptico d'autore, quella traccia viene riprodotta sugli attuatori di questo controller. Uno Steam Controller 2026 via USB o con il suo dongle, e un Flydigi Apex 6 Pro, riproducono la traccia stessa. Ogni altro controller, e quello Steam Controller via Bluetooth, riceve toni derivati dall'audio, che approssimano la sensazione progettata invece di riprodurla.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Guadagno aptico</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Ripristina il valore predefinito (disattivato)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Ripristina il valore predefinito (100%)</value></data>
@@ -3243,6 +3246,8 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Imposta il numero giocatore di questa porta, da 1 a 4. L'adattatore lo memorizza e si ricollega come quel giocatore.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Schermo Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Imposta cosa mostra la VMU del controller Dreamcast: l'immagine dell'adattatore stesso, il nome, il numero o l'immagine del profilo attivo, l'orologio, il tempo di gioco o un'immagine a tua scelta.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Schermo del controller…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Invia un'immagine allo schermo del controller: un'immagine o una GIF a tua scelta, oppure l'immagine, il nome o il numero del profilo attivo. Il controller la conserva fino alla successiva.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Esegui backup del Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Salva il Controller Pak di questo controller N64 in un file .mpk da 32 KB, il formato letto dagli emulatori N64.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Ripristina Controller Pak…</value></data>
@@ -3276,6 +3281,45 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Rimuovi immagine del profilo</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Immagini (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Tutti i file (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Quel file non contiene un'immagine che PadForge possa leggere.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Schermo del controller</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Niente arriva al controller finché non invii.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Un'immagine o una GIF a tua scelta, adattata ai 160 per 80 pixel dello schermo. Il controller la conserva finché non ne invii un'altra.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>L'immagine del profilo attivo, o il suo nome se non ne ha una, così com'è al momento dell'invio. Il controller la conserva anche se cambi profilo.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Il nome del profilo attivo così com'è al momento dell'invio. Il controller lo conserva anche se cambi profilo.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>La posizione del profilo attivo nell'elenco dei profili così com'è al momento dell'invio. Il profilo predefinito è lo 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Adatta</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Riempi lo schermo</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Mostra l'immagine intera</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Allunga allo schermo</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Immagini (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Tutti i file (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Invia</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Fotogrammi: {0}. L'invio richiede circa {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Il controller accetta al massimo {0} fotogrammi, quindi gli ultimi {1} sono stati tralasciati.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Collega il controller con il cavo. Si riavvia da solo circa 15 secondi dopo l'arrivo dell'immagine.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Collega il controller con il cavo. Per l'invio, PadForge lo porta in modalità Xbox e lo sposta dal driver Xbox di Windows a WinUSB, poi rimette tutto com'era.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge porterà il controller in modalità Xbox, lo sposterà su WinUSB per l'invio, poi lo restituirà al driver Xbox di Windows e lo riporterà in modalità DInput. Scollega prima ogni altro controller Xbox 360. Inviare ora?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Avvio…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Cambio di modalità del controller…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>In attesa della porta dello schermo…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Spostamento del controller su WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Preparo lo spazio per l'immagine… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Invio dell'immagine… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Completamento…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Restituzione del controller a Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Inviata. Il controller mostra l'immagine dopo il riavvio.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Inviata. Il controller mostra l'immagine.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Collega il controller con il cavo. Il suo schermo riceve un'immagine solo via USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>La porta dello schermo non è comparsa. Spegni e riaccendi il controller con il suo interruttore, collegalo con il cavo e invia di nuovo.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Più di uno schermo di controller è in attesa di un'immagine. Scollega gli altri e invia di nuovo.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>La porta dello schermo non si è aperta. Chiudi Flydigi Space Station e invia di nuovo.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Lo schermo ha smesso di rispondere. Spegni e riaccendi il controller con il suo interruttore e invia di nuovo.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Lo schermo ha rifiutato l'immagine. Invia di nuovo.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Il controller non è tornato come controller Xbox 360, quindi non è stato inviato nulla. Riportalo in modalità DInput con il suo interruttore e invia di nuovo.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Scollega ogni altro controller Xbox 360 e invia di nuovo. Il cambio di driver sposterebbe anche quelli. Un controller rimasto in modalità Xbox torna in modalità DInput con il suo interruttore.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Il controller in modalità Xbox non ha risposto come un Apex 4, quindi non è stato inviato nulla e Windows lo ha riavuto. Riportalo in modalità DInput con il suo interruttore.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows non ha spostato il controller su WinUSB, quindi non è stato inviato nulla. Riportalo in modalità DInput con il suo interruttore.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Interrotto. Spegni e riaccendi il controller con il suo interruttore prima di inviare di nuovo.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Un'immagine sta ancora arrivando al controller. Interrompere l'invio?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>File del Controller Pak (*.mpk)|*.mpk|Tutti i file (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak porta {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Ripristina Controller Pak</value></data>
@@ -3379,6 +3423,14 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Layout del report aptico dello Steam Controller (2015) e calcolo della durata delle note, di Pila e Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Layout aptico a tono LFO per Steam Controller 2026 e Steam Deck, di Pila, Crazy e AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Traduzione degli effetti dei grilletti Flydigi Apex e ritmo di scrittura, resa dei grilletti, flusso aptico e blocco luci dell'Apex 6 Pro e scritture delle luci dell'Apex 5, di ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Note sul protocollo di Flydigi Apex 5 e Apex 6, trasferimento del blocco luci e caricamento seriale dello schermo, di Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Blocco luci, slot del profilo e caricamento dell'immagine in modalità Xbox di Flydigi Apex 4, di Uilton Lopes e collaboratori.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Comandi dei grilletti a forza di Flydigi Apex 4 e ritmo misurato sul controller, di Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Semantica di pulizia SOCD per le modalità Snap Tap, di valignatev.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -4992,6 +5044,7 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Sposta Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Scegli cosa mostra. Niente cambia finché non salvi.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} impostato su {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>L'immagine è arrivata allo schermo del controller.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Download dell'SDK S.T.R.I.K.E. 7 di Mad Catz in corso…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>La S.T.R.I.K.E. 7 ora carica {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Download e installazione del runtime Visual C++ 2008 di Microsoft in corso…</value></data>

@@ -939,6 +939,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>ဤပေါ့တ်၏ ကစားသူနံပါတ်ကို 1 မှ 4 အထိ သတ်မှတ်သည်။ အဒက်ပ်တာက ၎င်းကို သိမ်းထားပြီး ထိုကစားသူအဖြစ် ပြန်ချိတ်ဆက်သည်။</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast မျက်နှာပြင်…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Dreamcast ပက်ဒ်၏ VMU တွင် ပြသမည့်အရာကို သတ်မှတ်သည်: အဒက်ပ်တာ၏ ကိုယ်ပိုင်ပုံ၊ အသုံးပြုနေသော ပရိုဖိုင်၏ အမည်၊ နံပါတ် သို့မဟုတ် ပုံ၊ နာရီ၊ ကစားချိန် သို့မဟုတ် သင်ရွေးသော ပုံ။</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>ကွန်ထရိုလာ မျက်နှာပြင်…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>ကွန်ထရိုလာ၏ မျက်နှာပြင်သို့ ပုံတစ်ပုံ ပို့သည်: သင်ရွေးသော ပုံ သို့မဟုတ် GIF၊ သို့မဟုတ် အသုံးပြုနေသော ပရိုဖိုင်၏ ပုံ၊ အမည် သို့မဟုတ် နံပါတ်။ နောက်တစ်ပုံ မရောက်မချင်း ကွန်ထရိုလာက ၎င်းကို သိမ်းထားသည်။</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Controller Pak ကို အရန်ကူးရန်…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>ဤ N64 ကွန်ထရိုလာရှိ Controller Pak ကို N64 အီမြူလေတာများ ဖတ်သော ဖော်မတ်ဖြစ်သည့် 32 KB .mpk ဖိုင်အဖြစ် သိမ်းဆည်းသည်။</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Controller Pak ကို ပြန်ယူရန်…</value></data>
@@ -972,6 +974,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>ပရိုဖိုင်ပုံကို ဖယ်ရှားရန်</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>ပုံများ (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|ဖိုင်အားလုံး (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>ထိုဖိုင်တွင် PadForge ဖတ်နိုင်သော ပုံ မပါပါ။</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>ကွန်ထရိုလာ မျက်နှာပြင်</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>သင် မပို့မချင်း ကွန်ထရိုလာသို့ ဘာမှ မရောက်ပါ။</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>သင်ရွေးသော ပုံ သို့မဟုတ် GIF ကို မျက်နှာပြင်၏ အလျား 160 ပစ်ဆယ်၊ အမြင့် 80 ပစ်ဆယ်နှင့် ကိုက်အောင် ညှိသည်။ နောက်တစ်ပုံ မပို့မချင်း ကွန်ထရိုလာက ၎င်းကို သိမ်းထားသည်။</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>သင် ပို့သည့်အချိန်က အသုံးပြုနေသော ပရိုဖိုင်၏ ပုံ၊ ပုံမရှိလျှင် ၎င်း၏ အမည်။ ပရိုဖိုင်ပြောင်းသော်လည်း ကွန်ထရိုလာက ၎င်းကို ဆက်သိမ်းထားသည်။</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>သင် ပို့သည့်အချိန်က အသုံးပြုနေသော ပရိုဖိုင်၏ အမည်။ ပရိုဖိုင်ပြောင်းသော်လည်း ကွန်ထရိုလာက ၎င်းကို ဆက်သိမ်းထားသည်။</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>သင် ပို့သည့်အချိန်က ပရိုဖိုင်စာရင်းရှိ အသုံးပြုနေသော ပရိုဖိုင်၏ နေရာ။ မူလ ပရိုဖိုင်သည် 0 ဖြစ်သည်။</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>အရွယ်ညှိရန်</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>မျက်နှာပြင် အပြည့်ဖြည့်</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>ပုံတစ်ခုလုံး ပြ</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>မျက်နှာပြင်အထိ ဆွဲချဲ့</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>ပုံများ (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|ဖိုင်အားလုံး (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>ပို့</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>ဖရိမ်: {0}။ ပို့ရန် {1} ခန့် ကြာသည်။</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>ကွန်ထရိုလာသည် အများဆုံး ဖရိမ် {0} ခုသာ လက်ခံသဖြင့် နောက်ဆုံး ဖရိမ် {1} ခုကို ချန်ထားခဲ့သည်။</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>ကွန်ထရိုလာကို ကြိုးဖြင့် ချိတ်ပါ။ ပုံရောက်ပြီး 15 စက္ကန့်ခန့်အကြာတွင် ၎င်းသည် အလိုအလျောက် ပြန်စတင်သည်။</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>ကွန်ထရိုလာကို ကြိုးဖြင့် ချိတ်ပါ။ ပို့ရန်အတွက် PadForge က ၎င်းကို Xbox မုဒ်သို့ ပြောင်းပြီး Windows ၏ Xbox ဒရိုက်ဘာမှ WinUSB သို့ ရွှေ့ကာ ပြီးနောက် နှစ်ခုစလုံးကို မူလအတိုင်း ပြန်ထားသည်။</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge သည် ကွန်ထရိုလာကို Xbox မုဒ်သို့ ပြောင်းပြီး ပို့ရန်အတွက် WinUSB သို့ ရွှေ့ကာ ထို့နောက် Windows ၏ Xbox ဒရိုက်ဘာသို့ ပြန်ပေးပြီး DInput မုဒ်သို့ ပြန်ပြောင်းပါမည်။ အခြား Xbox 360 ကွန်ထရိုလာအားလုံးကို ဦးစွာ ဖြုတ်ပါ။ ယခု ပို့မလား?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>စတင်နေသည်…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>ကွန်ထရိုလာကို ပြောင်းနေသည်…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>မျက်နှာပြင်၏ ပေါ့တ်ကို စောင့်နေသည်…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>ကွန်ထရိုလာကို WinUSB သို့ ရွှေ့နေသည်…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>ပုံအတွက် နေရာ ရှင်းနေသည်… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>ပုံကို ပို့နေသည်… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>အပြီးသတ်နေသည်…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>ကွန်ထရိုလာကို Windows သို့ ပြန်ပေးနေသည်…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>ပို့ပြီးပါပြီ။ ကွန်ထရိုလာ ပြန်စတင်ပြီးသည်နှင့် ပုံကို ပြပါမည်။</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>ပို့ပြီးပါပြီ။ ကွန်ထရိုလာက ပုံကို ပြနေပါပြီ။</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>ကွန်ထရိုလာကို ကြိုးဖြင့် ချိတ်ပါ။ ၎င်း၏ မျက်နှာပြင်သည် USB မှတစ်ဆင့်သာ ပုံကို လက်ခံသည်။</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>မျက်နှာပြင်၏ ပေါ့တ် မပေါ်လာပါ။ ကွန်ထရိုလာကို ၎င်း၏ ကိုယ်ပိုင်ခလုတ်ဖြင့် ပိတ်ပြီး ပြန်ဖွင့်ကာ ကြိုးဖြင့် ချိတ်၍ ထပ်ပို့ပါ။</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>ကွန်ထရိုလာ မျက်နှာပြင် တစ်ခုထက်ပို၍ ပုံကို စောင့်နေသည်။ အခြားကွန်ထရိုလာများကို ဖြုတ်ပြီး ထပ်ပို့ပါ။</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>မျက်နှာပြင်၏ ပေါ့တ် မပွင့်ပါ။ Flydigi Space Station ကို ပိတ်ပြီး ထပ်ပို့ပါ။</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>မျက်နှာပြင်က တုံ့ပြန်မှု ရပ်သွားသည်။ ကွန်ထရိုလာကို ၎င်း၏ ကိုယ်ပိုင်ခလုတ်ဖြင့် ပိတ်ပြီး ပြန်ဖွင့်ကာ ထပ်ပို့ပါ။</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>မျက်နှာပြင်က ပုံကို ငြင်းပယ်သည်။ ထပ်ပို့ပါ။</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>ကွန်ထရိုလာသည် Xbox 360 ကွန်ထရိုလာအဖြစ် ပြန်မပေါ်လာသဖြင့် ဘာမှ မပို့ခဲ့ပါ။ ၎င်း၏ ကိုယ်ပိုင်ခလုတ်ဖြင့် DInput မုဒ်သို့ ပြန်ပြောင်းပြီး ထပ်ပို့ပါ။</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>အခြား Xbox 360 ကွန်ထရိုလာအားလုံးကို ဖြုတ်ပြီး ထပ်ပို့ပါ။ ဒရိုက်ဘာပြောင်းခြင်းက ၎င်းတို့ကိုပါ ရွှေ့သွားမည်ဖြစ်သည်။ Xbox မုဒ်တွင် ကျန်နေသော ကွန်ထရိုလာကို ၎င်း၏ ကိုယ်ပိုင်ခလုတ်ဖြင့် DInput မုဒ်သို့ ပြန်ပြောင်းနိုင်သည်။</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox မုဒ်ရှိ ကွန်ထရိုလာသည် Apex 4 အဖြစ် မတုံ့ပြန်သဖြင့် ဘာမှ မပို့ခဲ့ဘဲ Windows သို့ ပြန်ပေးထားပြီးဖြစ်သည်။ ၎င်း၏ ကိုယ်ပိုင်ခလုတ်ဖြင့် DInput မုဒ်သို့ ပြန်ပြောင်းပါ။</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows က ကွန်ထရိုလာကို WinUSB သို့ မရွှေ့ပေးသဖြင့် ဘာမှ မပို့ခဲ့ပါ။ ၎င်း၏ ကိုယ်ပိုင်ခလုတ်ဖြင့် DInput မုဒ်သို့ ပြန်ပြောင်းပါ။</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>ရပ်လိုက်ပါပြီ။ ထပ်မပို့မီ ကွန်ထရိုလာကို ၎င်း၏ ကိုယ်ပိုင်ခလုတ်ဖြင့် ပိတ်ပြီး ပြန်ဖွင့်ပါ။</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>ပုံတစ်ပုံကို ကွန်ထရိုလာသို့ ပို့နေဆဲ ဖြစ်သည်။ ပို့ခြင်းကို ရပ်မလား?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak ဖိုင်များ (*.mpk)|*.mpk|ဖိုင်အားလုံး (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak ပေါ့တ် {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak ကို ပြန်ယူရန်</value></data>
@@ -1138,6 +1179,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulse ထရီဂါများ</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ထရီဂါအလိုက် ပြင်းအား၊ မော်တာ လဲလှယ်ခြင်း၊ အလိုက်သင့်ထရီဂါ တုန်ခါမှုများ၊ အမြဲတမ်း ထရီဂါ အား</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ထရီဂါတစ်ခုချင်းစီ၏ မော်တာအမိန့်များ (Xbox Impulse Triggers) ကို ဗာချွယ်ကွန်ထရိုလာမှ သတ်မှတ်ထားသော ရုပ်ပိုင်း Xbox One၊ Elite သို့မဟုတ် Series ကွန်ထရိုလာသို့ ပို့ပေးသည်။ ဂိမ်းမှ မောင်းနှင်သော ထရီဂါ တုန်ခါမှုသည် အလိုအလျောက် ဖြတ်သန်းသည်။ အောက်ပါ ထိန်းချုပ်မှုများက ထရီဂါတစ်ခုချင်းစီ၏ ပြင်းအားကို ချိန်ညှိသည်။</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>ထရီဂါတစ်ခုချင်းစီ၏ မော်တာအမိန့်များ (Xbox Impulse Triggers) ကို ဗာချွယ်ကွန်ထရိုလာမှ ဤကွန်ထရိုလာ၏ ထရီဂါများတွင် တုန်ခါမှုအဖြစ် ဖွင့်ပေးသည်။ ဂိမ်းမှ မောင်းနှင်သော ထရီဂါ တုန်ခါမှုသည် အလိုအလျောက် ဖြတ်သန်းသည်။ အောက်ပါ ထိန်းချုပ်မှုများက ထရီဂါတစ်ခုချင်းစီ၏ ပြင်းအားကို ချိန်ညှိသည်။</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>ဘယ် ထရီဂါ</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>ညာ ထရီဂါ</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>ဘယ်နှင့်ညာ ထရီဂါ မော်တာများကို လဲလှယ်ရန်</value></data>
@@ -1202,6 +1244,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>အလိုက်သင့် ထရီဂါများ</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>သတ်မှတ်ထားသော ရုပ်ပိုင်း DualSense ပေါ်ရှိ ထရီဂါ တုံ့ပြန်မှု အာနိသင်များကို ပြင်ဆင်သည်။ ဂိမ်း သို့မဟုတ် ဂိမ်းမော့ဒ်မှ ထရီဂါ အာနိသင်များကို အလိုအလျောက် ပို့ပေးသည်။ ဤနေရာရှိ ဆက်တင်များသည် နှစ်ခုစလုံး မရေးနေချိန်တွင် အလုပ်လုပ်သော အသုံးပြုသူ ပြင်ဆင်ထားသည့် အလွှာတစ်ခု ထပ်ထည့်သည်။</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>ဤကွန်ထရိုလာ၏ ခုခံအားပေး ထရီဂါများပေါ်ရှိ ထရီဂါ တုံ့ပြန်မှု အာနိသင်များကို ပြင်ဆင်သည်။ ဗာချွယ် DualSense ပေါ်ရှိ ဂိမ်း သို့မဟုတ် ဂိမ်းမော့ဒ်မှ ထရီဂါ အာနိသင်များကို အလိုအလျောက် ဖွင့်ပေးသည်။ ဤနေရာရှိ ဆက်တင်များသည် နှစ်ခုစလုံး မရေးနေချိန်တွင် အလုပ်လုပ်သော အသုံးပြုသူ ပြင်ဆင်ထားသည့် အလွှာတစ်ခု ထပ်ထည့်သည်။</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>ဤကွန်ထရိုလာပေါ်ရှိ ထရီဂါ တုံ့ပြန်မှု အာနိသင်များကို ပြင်ဆင်သည်။ ၎င်း၏ ထရီဂါများသည် တုန်ခါသော်လည်း ခုခံခြင်း မပြုသဖြင့် အာနိသင်တိုင်းကို ၎င်းလုပ်ဆောင်သည့်အတိုင်း လိုက်သော တုန်ခါမှုအဖြစ် ဖွင့်သည်: ထရီဂါ ကျိုးသည့်နေရာတွင် ရုတ်တရက် တုန်ခါမှု၊ လေးအတွက် တဖြည်းဖြည်း တိုးလာပြီး လွှတ်ချခြင်း။ ဗာချွယ် DualSense ပေါ်ရှိ ဂိမ်း သို့မဟုတ် ဂိမ်းမော့ဒ်မှ ထရီဂါ အာနိသင်များကို အလိုအလျောက် ဖွင့်ပေးသည်။ ဤနေရာရှိ ဆက်တင်များသည် နှစ်ခုစလုံး မရေးနေချိန်တွင် အလုပ်လုပ်သော အသုံးပြုသူ ပြင်ဆင်ထားသည့် အလွှာတစ်ခု ထပ်ထည့်သည်။</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>စတစ်များ</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>စတစ်တစ်ခုချင်း၏ ဒက်ဇုန်များ၊ အန်တီဒက်ဇုန်များ၊ အာရုံခံနိုင်စွမ်း မျဉ်းကွေးများနှင့် ဗဟိုအလွဲပြင်ဆင်ချက် ချိန်ညှိခြင်း။ အောက်ပါ အပိုင်းတစ်ခုစီသည် အသုံးပြုနေသော အထွက်ပေါ်ရှိ အန်နာလော့ စတစ်တစ်ခုကို ရည်ညွှန်းသည်။ Extended ပရိုဖိုင်များတွင် စတစ် လေးခုအထိ ရှိနိုင်သည်။ စံ ဂိမ်းပက်ဒ်များတွင် နှစ်ခု ရှိသည်။</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ထရီဂါများ</value></data>
@@ -3260,7 +3304,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>အောက်တာ့ဗ်တစ်ခု ခေါက်ချ</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>အသံ ကန့်သတ်ချက်</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>ဤကွန်ထရိုလာတွင် DualSense ဟက်ပတစ် ဖွင့်</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ဂိမ်းတစ်ခုက ဤဆလော့ကို ဟက်ပတစ်အသံ ပါရှိသော ဗာချွယ် DualSense အဖြစ် မောင်းနှင်သည့်အခါ ထိုအသံလမ်းကြောင်းကို ဤကွန်ထရိုလာ၏ တုန်ခါကိရိယာများတွင် ဖွင့်သည်။ USB သို့မဟုတ် ၎င်း၏ လက်ခံကိရိယာဖြင့် ချိတ်ထားသော Steam Controller 2026 သည် အသံလမ်းကြောင်းကို ကိုယ်တိုင် ဖွင့်သည်။ အခြား ကွန်ထရိုလာတိုင်း နှင့် Bluetooth ဖြင့် ချိတ်ထားသော ထိုကွန်ထရိုလာသည် အသံမှ ထုတ်ယူထားသော အသံများကို ရရှိပြီး ၎င်းတို့က ဒီဇိုင်နာ၏ ခံစားမှုကို အတိအကျ ပြန်ထုတ်ခြင်း မဟုတ်ဘဲ ခန့်မှန်းခြေ ပေးသည်။</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ဂိမ်းတစ်ခုက ဤဆလော့ကို ဟက်ပတစ်အသံ ပါရှိသော ဗာချွယ် DualSense အဖြစ် မောင်းနှင်သည့်အခါ ထိုအသံလမ်းကြောင်းကို ဤကွန်ထရိုလာ၏ တုန်ခါကိရိယာများတွင် ဖွင့်သည်။ USB သို့မဟုတ် ၎င်း၏ လက်ခံကိရိယာဖြင့် ချိတ်ထားသော Steam Controller 2026 နှင့် Flydigi Apex 6 Pro တို့သည် အသံလမ်းကြောင်းကို ကိုယ်တိုင် ဖွင့်သည်။ အခြား ကွန်ထရိုလာတိုင်း နှင့် Bluetooth ဖြင့် ချိတ်ထားသော ထို Steam Controller သည် အသံမှ ထုတ်ယူထားသော အသံများကို ရရှိပြီး ၎င်းတို့က ဒီဇိုင်နာ၏ ခံစားမှုကို အတိအကျ ပြန်ထုတ်ခြင်း မဟုတ်ဘဲ ခန့်မှန်းခြေ ပေးသည်။</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>ဟက်ပတစ် အမြှင့်အား</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>မူလ (ပိတ်) သို့ ပြန်လည်သတ်မှတ်</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>မူလ (100%) သို့ ပြန်လည်သတ်မှတ်</value></data>
@@ -3451,6 +3495,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) ဟက်ပတစ် ရီပို့ ပုံစံ နှင့် နုတ် ကာလ သင်္ချာ၊ Pila နှင့် Roboron3042 မှ။</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 နှင့် Steam Deck LFO အသံ ဟက်ပတစ် ပုံစံ၊ Pila၊ Crazy နှင့် AAGaming မှ။</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex ထရီဂါ အာနိသင် ဘာသာပြန်ခြင်းနှင့် ရေးသွင်းနှုန်း ထိန်းညှိခြင်း၊ Apex 6 Pro ထရီဂါ ပြသခြင်း၊ ဟက်ပတစ် စီးကြောင်းနှင့် အလင်းဘလောက်၊ Apex 5 အလင်း ရေးသွင်းမှုများ၊ ReynArts မှ။</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5 နှင့် Apex 6 ပရိုတိုကော မှတ်စုများ၊ အလင်းဘလောက် လွှဲပြောင်းခြင်းနှင့် မျက်နှာပြင်၏ စီးရီးယယ် အပ်လုဒ်၊ Mikalai Kaliaha မှ။</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4 အလင်းဘလောက်၊ ပရိုဖိုင်ဆလော့နှင့် Xbox မုဒ်ရှိ မျက်နှာပြင် အပ်လုဒ်၊ Uilton Lopes နှင့် ပံ့ပိုးသူများ မှ။</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4 ခုခံအားပေး ထရီဂါ အမိန့်များနှင့် ပက်ဒ်ပေါ်တွင် တိုင်းတာထားသော အချိန်ညှိနှုန်း၊ Jackwmtr မှ။</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap မုဒ်များအတွက် SOCD သန့်စင်ခြင်း စည်းမျဉ်းများ၊ valignatev မှ။</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4752,6 +4804,7 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>ရွှေ့ကြည့် Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>၎င်းပြသမည့်အရာကို ရွေးပါ။ သင် မသိမ်းဆည်းမချင်း ဘာမှ မပြောင်းပါ။</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} ကို {1} သို့ သတ်မှတ်ပြီးပါပြီ။</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>ပုံကို ကွန်ထရိုလာ၏ မျက်နှာပြင်သို့ ပို့ပြီးပါပြီ။</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mad Catz ၏ S.T.R.I.K.E. 7 SDK ကို ဒေါင်းလုဒ်လုပ်နေသည်…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 သည် ယခု {0} ကို ဖွင့်သည်။</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Microsoft ၏ Visual C++ 2008 ရန်တိုင်းကို ဒေါင်းလုဒ်လုပ်ပြီး ထည့်သွင်းနေသည်…</value></data>

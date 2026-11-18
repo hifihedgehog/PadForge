@@ -939,6 +939,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Бұл порттың ойыншы нөмірін орнатады, 1-ден 4-ке дейін. Адаптер оны сақтайды және сол ойыншы ретінде қайта қосылады.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast экраны…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Dreamcast геймпадындағы VMU не көрсететінін орнатады: адаптердің өз суреті, белсенді профильдің аты, нөмірі не суреті, сағат, ойын уақыты немесе өзіңіз таңдаған сурет.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Контроллер экраны…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Контроллердің экранына сурет жібереді: өзіңіз таңдаған сурет не GIF, немесе белсенді профильдің суреті, аты не нөмірі. Контроллер оны келесі сурет келгенше сақтайды.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Controller Pak сақтық көшірмесін жасау…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Осы N64 контроллеріндегі Controller Pak мазмұнын N64 эмуляторлары оқитын 32 КБ .mpk файлына сақтайды.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Controller Pak қалпына келтіру…</value></data>
@@ -972,6 +974,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Профиль суретін алып тастау</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Суреттер (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Барлық файлдар (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Бұл файлда PadForge оқи алатын сурет жоқ.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Контроллер экраны</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Жібермейінше контроллер ештеңе алмайды.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Өзіңіз таңдаған сурет не GIF экранның 160 бойынша 80 пикселіне сыйғызылады. Контроллер оны басқа сурет жібергенше сақтайды.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Белсенді профильдің суреті, ал суреті жоқ болса, аты, жіберу сәтіндегідей. Контроллер оны профиль ауысқанда да сақтайды.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Белсенді профильдің аты жіберу сәтіндегідей. Контроллер оны профиль ауысқанда да сақтайды.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Белсенді профильдің профильдер тізіміндегі орны жіберу сәтіндегідей. «Әдепкі» профилінің нөмірі 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Сыйғызу</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Экранды толтыру</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Бүкіл суретті көрсету</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Экранға созу</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Суреттер (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Барлық файлдар (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Жіберу</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Кадрлар: {0}. Жіберу шамамен {1} алады.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Контроллер ең көбі {0} кадр қабылдайды, сондықтан соңғы {1} кадр қалдырылды.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Контроллерді кабельмен қосыңыз. Сурет түскеннен кейін шамамен 15 секундтан соң ол өздігінен қайта іске қосылады.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Контроллерді кабельмен қосыңыз. Жіберу үшін PadForge оны Xbox режиміне ауыстырып, Windows жүйесінің Xbox драйверінен WinUSB драйверіне көшіреді, содан кейін екеуін де орнына қайтарады.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge контроллерді Xbox режиміне ауыстырады, жіберу үшін WinUSB драйверіне көшіреді, содан кейін оны Windows жүйесінің Xbox драйверіне қайтарып, DInput режиміне қайта ауыстырады. Алдымен басқа Xbox 360 контроллерлерінің бәрін ажыратыңыз. Қазір жіберейін бе?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Басталуда…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Контроллер ауыстырылуда…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Экран портын күтуде…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Контроллер WinUSB драйверіне көшірілуде…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Сурет үшін орын босатылуда… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Сурет жіберілуде… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Аяқталуда…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Контроллер Windows жүйесіне қайтарылуда…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Жіберілді. Контроллер қайта іске қосылғаннан кейін суретті көрсетеді.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Жіберілді. Контроллер суретті көрсетеді.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Контроллерді кабельмен қосыңыз. Оның экраны суретті тек USB арқылы қабылдайды.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Экран порты пайда болмады. Контроллерді өз қосқышымен өшіріп, қайта қосыңыз, кабельмен жалғаңыз да, қайта жіберіңіз.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Суретті бірнеше контроллер экраны күтіп тұр. Басқаларын ажыратып, қайта жіберіңіз.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Экран порты ашылмады. Flydigi Space Station бағдарламасын жауып, қайта жіберіңіз.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Экран жауап беруді тоқтатты. Контроллерді өз қосқышымен өшіріп, қайта қосыңыз да, қайта жіберіңіз.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Экран суретті қабылдамады. Қайта жіберіңіз.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Контроллер Xbox 360 контроллері ретінде қайта көрінбеді, сондықтан ештеңе жіберілмеді. Оны өз қосқышымен DInput режиміне қайтарып, қайта жіберіңіз.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Басқа Xbox 360 контроллерлерінің бәрін ажыратып, қайта жіберіңіз. Драйверді ауыстыру оларды да көшірер еді. Xbox режимінде қалған контроллерді өз қосқышымен DInput режиміне қайтарады.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox режиміндегі контроллер Apex 4 ретінде жауап бермеді, сондықтан ештеңе жіберілмеді, ал Windows оны қайта алды. Оны өз қосқышымен DInput режиміне қайтарыңыз.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows контроллерді WinUSB драйверіне көшіре алмады, сондықтан ештеңе жіберілмеді. Оны өз қосқышымен DInput режиміне қайтарыңыз.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Тоқтатылды. Қайта жіберер алдында контроллерді өз қосқышымен өшіріп, қайта қосыңыз.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Контроллерге сурет әлі жіберіліп жатыр. Жіберуді тоқтату керек пе?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak файлдары (*.mpk)|*.mpk|Барлық файлдар (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak порт {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak қалпына келтіру</value></data>
@@ -1138,6 +1179,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Импульстік триггерлер</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Әр триггер күшейтуі, мотор алмастыру, бейімделгіш триггер дірілі, Тұрақты триггер күші</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Триггерлердің жеке мотор командаларын (Xbox Impulse Triggers) виртуалды контроллерден тағайындалған физикалық Xbox One, Elite немесе Series контроллеріне жібереді. Ойын басқаратын триггер дірілі автоматты түрде өтеді. Төмендегі басқару элементтері әр триггер үшін қарқындылықты масштабтайды.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Триггерлердің жеке мотор командаларын (Xbox Impulse Triggers) виртуалды контроллерден осы контроллердің триггерлеріндегі діріл ретінде ойнатады. Ойын басқаратын триггер дірілі автоматты түрде өтеді. Төмендегі басқару элементтері әр триггер үшін қарқындылықты масштабтайды.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Сол триггер</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Оң триггер</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Сол және оң триггер моторларын алмастыру</value></data>
@@ -1202,6 +1244,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Бейімделгіш триггерлер</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Тағайындалған физикалық DualSense контроллеріндегі триггердің кері байланыс эффектілерін баптаңыз. Ойыннан немесе ойын модынан келген триггер эффектілері автоматты түрде жіберіледі. Мұндағы параметрлер екеуі де жазбай тұрғанда жұмыс істейтін, пайдаланушы баптаған қабат қосады.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Осы контроллердің күш триггерлеріндегі кері байланыс эффектілерін баптаңыз. Виртуалды DualSense арқылы ойыннан немесе ойын модынан келген триггер эффектілері автоматты түрде ойнатылады. Мұндағы параметрлер екеуі де жазбай тұрғанда жұмыс істейтін, пайдаланушы баптаған қабат қосады.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Осы контроллердегі триггердің кері байланыс эффектілерін баптаңыз. Оның триггерлері діріл береді және қарсы тұрмайды, сондықтан әр эффект өз әрекетіне сай діріл ретінде ойнатылады: триггер сынатын жерде серпін, садақта күшею мен босау. Виртуалды DualSense арқылы ойыннан немесе ойын модынан келген триггер эффектілері автоматты түрде ойнатылады. Мұндағы параметрлер екеуі де жазбай тұрғанда жұмыс істейтін, пайдаланушы баптаған қабат қосады.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Стиктер</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Әр стиктің өлі аймақтары, анти-өлі аймақтары, сезімталдық қисықтары және орталық ығысуын калибрлеу. Төмендегі әр бөлім белсенді шығыстағы бір аналогтық стикке арналған. Кеңейтілген профильдерде төрт стикке дейін болуы мүмкін. Стандартты геймпадтарда екеу болады.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Триггерлер</value></data>
@@ -3262,7 +3306,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Бір октаваға төмен түсіру</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Тон шегі</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense хаптикасын осы контроллерде ойнату</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Ойын бұл ұяшықты авторлық хаптикалық дыбысы бар виртуалды DualSense ретінде басқарғанда, сол жолды осы контроллердің жетектерінде ойнату. USB немесе өз донглы арқылы қосылған Steam Controller 2026 жолды өзі ойнатады. Басқа барлық контроллерлер, сондай-ақ Bluetooth арқылы қосылған сол контроллер дыбыстан алынған тондарды алады, олар дизайнердің ойлаған сезімін дәл қайталамай, шамамен жеткізеді.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Ойын бұл ұяшықты авторлық хаптикалық дыбысы бар виртуалды DualSense ретінде басқарғанда, сол жолды осы контроллердің жетектерінде ойнату. USB немесе өз донглы арқылы қосылған Steam Controller 2026 және Flydigi Apex 6 Pro жолды өзі ойнатады. Басқа барлық контроллерлер, сондай-ақ Bluetooth арқылы қосылған сол Steam Controller дыбыстан алынған тондарды алады, олар дизайнердің ойлаған сезімін дәл қайталамай, шамамен жеткізеді.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Хаптика күшейтуі</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Әдепкі мәнге қайтару (өшірулі)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Әдепкі мәнге қайтару (100%)</value></data>
@@ -3453,6 +3497,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) хаптикалық есеп құрылымы және нота кезеңі математикасы. Авторлары Pila және Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 және Steam Deck үшін LFO-тон хаптикалық құрылымы. Авторлары Pila, Crazy және AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex триггер эффектілерін аудару мен жазу қарқыны, Apex 6 Pro триггерлерін кескіндеу, хаптикалық ағын және жарық блогы, сондай-ақ Apex 5 жарық жазулары. Авторы ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5 және Apex 6 хаттама жазбалары, жарық блогын тасымалдау және экранның сериялық жүктемесі. Авторы Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4 жарық блогы, профиль ұяшығы және Xbox режиміндегі экран жүктемесі. Авторлары Uilton Lopes және қатысушылар.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4 күш триггерлерінің командалары және геймпадта өлшенген қарқын. Авторы Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap режимдеріне арналған SOCD реттеу семантикасы. Авторы valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4757,6 +4809,7 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Y бойынша жылжыту</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Оның нені көрсететінін таңдаңыз. Сақтамайынша ештеңе өзгермейді.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} орнатылды: {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Сурет контроллердің экранына жіберілді.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mad Catz компаниясының S.T.R.I.K.E. 7 SDK жинағы жүктелуде…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 енді {0} жүктейді.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Microsoft Visual C++ 2008 орындау ортасы жүктеліп, орнатылуда…</value></data>

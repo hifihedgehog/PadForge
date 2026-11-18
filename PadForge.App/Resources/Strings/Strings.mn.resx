@@ -939,6 +939,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Энэ портын тоглогчийн дугаарыг (1-ээс 4 хүртэл) тохируулна. Адаптер үүнийг хадгалж, тэр тоглогч болж дахин холбогдоно.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast дэлгэц…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Dreamcast геймпадын VMU юу харуулахыг тохируулна: адаптерийн өөрийн зураг, идэвхтэй профайлын нэр, дугаар эсвэл зураг, цаг, тоглосон хугацаа, эсвэл таны сонгосон зураг.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Контроллерын дэлгэц…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Контроллерын дэлгэц рүү зураг илгээнэ: таны сонгосон зураг эсвэл GIF, эсвэл идэвхтэй профайлын зураг, нэр, дугаар. Контроллер дараагийн зураг ирэх хүртэл түүнийг хадгална.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Controller Pak-ыг нөөцлөх…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Энэ N64 контроллер дахь Controller Pak-ыг N64 эмуляторуудын уншдаг 32 КБ хэмжээтэй .mpk файлд хадгална.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Controller Pak-ыг сэргээх…</value></data>
@@ -972,6 +974,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Профайлын зургийг хасах</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Зургууд (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Бүх файл (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Тэр файлд PadForge-ийн унших боломжтой зураг алга.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Контроллерын дэлгэц</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Илгээх хүртэл контроллер руу юу ч очихгүй.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Таны сонгосон зураг эсвэл GIF, дэлгэцийн 160 × 80 пикселд тааруулсан. Контроллер таныг өөр зураг илгээх хүртэл түүнийг хадгална.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Илгээх үеийн идэвхтэй профайлын зураг, зураггүй бол нэр нь. Контроллер профайл солигдсон ч түүнийг хадгална.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Илгээх үеийн идэвхтэй профайлын нэр. Контроллер профайл солигдсон ч түүнийг хадгална.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Илгээх үеийн идэвхтэй профайлын жагсаалт дахь байр. Үндсэн профайл 0 байна.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Тааруулах</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Дэлгэцийг дүүргэх</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Зургийг бүтнээр харуулах</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Дэлгэцэнд сунгах</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Зургууд (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Бүх файл (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Илгээх</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Кадр: {0}. Илгээхэд ойролцоогоор {1} зарцуулна.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Контроллер хамгийн ихдээ {0} кадр авдаг тул сүүлийн {1} кадрыг орхисон.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Контроллерыг кабелиар холбоно уу. Зураг орсноос хойш ойролцоогоор 15 секундийн дараа контроллер өөрөө дахин эхэлнэ.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Контроллерыг кабелиар холбоно уу. Илгээхийн тулд PadForge түүнийг Xbox горимд шилжүүлж, Windows-ийн Xbox драйвераас WinUSB руу шилжүүлээд, дараа нь хоёуланг нь буцааж тавина.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge контроллерыг Xbox горимд шилжүүлж, илгээхийн тулд WinUSB руу шилжүүлээд, дараа нь Windows-ийн Xbox драйверт буцааж өгч, DInput горимд буцааж шилжүүлнэ. Эхлээд бусад бүх Xbox 360 контроллерыг салгана уу. Одоо илгээх үү?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Эхэлж байна…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Контроллерыг шилжүүлж байна…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Дэлгэцийн портыг хүлээж байна…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Контроллерыг WinUSB руу шилжүүлж байна…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Зурагт зай гаргаж байна… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Зургийг илгээж байна… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Дуусгаж байна…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Контроллерыг Windows-д буцааж өгч байна…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Илгээлээ. Контроллер дахин эхэлсний дараа зургийг харуулна.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Илгээлээ. Контроллер зургийг харуулж байна.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Контроллерыг кабелиар холбоно уу. Түүний дэлгэц зөвхөн USB-ээр зураг хүлээн авна.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Дэлгэцийн порт гарч ирсэнгүй. Контроллерыг өөрийн унтраалгаар нь унтрааж асаагаад, кабелиар холбож, дахин илгээнэ үү.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Нэгээс олон контроллерын дэлгэц зураг хүлээж байна. Бусдыг нь салгаад дахин илгээнэ үү.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Дэлгэцийн порт нээгдсэнгүй. Flydigi Space Station-ийг хаагаад дахин илгээнэ үү.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Дэлгэц хариу өгөхөө больсон. Контроллерыг өөрийн унтраалгаар нь унтрааж асаагаад дахин илгээнэ үү.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Дэлгэц зургийг хүлээж авсангүй. Дахин илгээнэ үү.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Контроллер Xbox 360 контроллер болж буцаж ирээгүй тул юу ч илгээгдсэнгүй. Түүнийг өөрийн шилжүүлэгчээр нь DInput горимд буцааж шилжүүлээд дахин илгээнэ үү.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Бусад бүх Xbox 360 контроллерыг салгаад дахин илгээнэ үү. Драйвер солиход тэд мөн шилжинэ. Xbox горимд үлдсэн контроллерыг өөрийн шилжүүлэгчээр нь DInput горимд буцаана.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox горимд байгаа контроллер Apex 4 гэж хариулсангүй тул юу ч илгээгдээгүй бөгөөд Windows түүнийг буцааж авлаа. Түүнийг өөрийн шилжүүлэгчээр нь DInput горимд буцааж шилжүүлнэ үү.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows контроллерыг WinUSB руу шилжүүлсэнгүй тул юу ч илгээгдсэнгүй. Түүнийг өөрийн шилжүүлэгчээр нь DInput горимд буцааж шилжүүлнэ үү.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Зогсоолоо. Дахин илгээхийн өмнө контроллерыг өөрийн унтраалгаар нь унтрааж асаана уу.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Зураг контроллер руу илгээгдсээр байна. Илгээхийг зогсоох уу?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Controller Pak файлууд (*.mpk)|*.mpk|Бүх файл (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak порт {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Controller Pak сэргээх</value></data>
@@ -1138,6 +1179,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Импульсийн гох</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Гох бүрийн өсгөлт, моторыг солих, дасан зохицох гохны чичиргээ, Гохны тогтмол хүч</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Гох тус бүрийн моторын командыг (Xbox Impulse Triggers) виртуал контроллероос оноосон физик Xbox One, Elite эсвэл Series контроллер руу дамжуулна. Тоглоомын үүсгэсэн гохны чичиргээ автоматаар дамжина. Доорх тохиргоонууд гох тус бүрийн хүчийг тохируулна.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Гох тус бүрийн моторын командыг (Xbox Impulse Triggers) виртуал контроллероос авч энэ контроллерын гохонд чичиргээ болгон тоглуулна. Тоглоомын үүсгэсэн гохны чичиргээ автоматаар дамжина. Доорх тохиргоонууд гох тус бүрийн хүчийг тохируулна.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Зүүн гох</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Баруун гох</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Зүүн ба баруун гохны моторыг солих</value></data>
@@ -1202,6 +1244,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Дасан зохицох гох</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Оноосон физик DualSense дээрх гохны эргэх холбооны эффектүүдийг тохируулна. Тоглоом эсвэл тоглоомын модоос ирсэн гохны эффектүүд автоматаар дамжуулагдана. Энд хийсэн тохиргоо нь аль аль нь бичээгүй үед ажиллах, хэрэглэгчийн тохируулсан давхаргыг нэмнэ.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Энэ контроллерын хүчний гохнууд дээрх гохны эргэх холбооны эффектүүдийг тохируулна. Виртуал DualSense дээрх тоглоом эсвэл тоглоомын модоос ирсэн гохны эффектүүд автоматаар тоглогдоно. Энд хийсэн тохиргоо нь аль аль нь бичээгүй үед ажиллах, хэрэглэгчийн тохируулсан давхаргыг нэмнэ.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Энэ контроллер дээрх гохны эргэх холбооны эффектүүдийг тохируулна. Түүний гохнууд чичирдэг боловч эсэргүүцэл үзүүлдэггүй тул эффект бүр өөрийн үйлдлийг дагасан чичиргээ болж тоглогдоно: гох тасрах үед огцом цохилт, нумын хувьд хүч хуримтлагдаад суларна. Виртуал DualSense дээрх тоглоом эсвэл тоглоомын модоос ирсэн гохны эффектүүд автоматаар тоглогдоно. Энд хийсэн тохиргоо нь аль аль нь бичээгүй үед ажиллах, хэрэглэгчийн тохируулсан давхаргыг нэмнэ.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Стикүүд</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Стик тус бүрийн үхсэн бүс, үхсэн бүсийн нөхөлт, мэдрэмжийн муруй, төвийн шилжилтийн калибровк. Доорх хэсэг бүр идэвхтэй гаралтын нэг аналог стикт хамаарна. Өргөтгөсөн профайл дөрвөн хүртэл стиктэй байж болно. Стандарт геймпад хоёр стиктэй.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Гохууд</value></data>
@@ -3267,7 +3311,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Нэг октаваар доош нугалах</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Аяны хязгаар</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense хаптикийг энэ контроллер дээр тоглуулах</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Тоглоом энэ слотыг тусгай хаптик аудиотой виртуал DualSense болгон удирдах үед тэр аудиог энэ контроллерын актуатор дээр тоглуулна. Steam Controller 2026 нь USB эсвэл өөрийн донглоор холбогдсон бол уг аудиог өөрөө тоглуулна. Бусад бүх контроллер, мөн Bluetooth-ээр холбогдсон тэр контроллер аудиогоос гаргасан ая хүлээн авна. Энэ нь зохиогчийн мэдрэмжийг яг давтахгүй, ойролцоогоор илэрхийлнэ.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Тоглоом энэ слотыг тусгай хаптик аудиотой виртуал DualSense болгон удирдах үед тэр аудиог энэ контроллерын актуатор дээр тоглуулна. USB эсвэл өөрийн донглоор холбогдсон Steam Controller 2026, мөн Flydigi Apex 6 Pro уг аудиог өөрөө тоглуулна. Бусад бүх контроллер, мөн Bluetooth-ээр холбогдсон тэр Steam Controller аудиогоос гаргасан ая хүлээн авна. Энэ нь зохиогчийн мэдрэмжийг яг давтахгүй, ойролцоогоор илэрхийлнэ.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Хаптикийн өсгөлт</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Үндсэн рүү дахин тохируулах (Унтраалттай)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Үндсэн рүү дахин тохируулах (100%)</value></data>
@@ -3458,6 +3502,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015)-ын хаптик репортын бүтэц ба нотын үеийн тооцоо. Зохиогч Pila ба Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 ба Steam Deck-ийн LFO аяны хаптик бүтэц. Зохиогч Pila, Crazy, AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex гохны эффектийн хөрвүүлэлт ба бичих хэмнэл, Apex 6 Pro-ийн гохны дүрслэл, хаптик урсгал ба гэрэлтүүлгийн блок, мөн Apex 5-ийн гэрэлтүүлгийн бичилт. Зохиогч ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5 ба Apex 6-ийн протоколын тэмдэглэл, гэрэлтүүлгийн блок дамжуулалт ба дэлгэцийн сериал ачаалалт. Зохиогч Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4-ийн гэрэлтүүлгийн блок, профайлын слот ба Xbox горим дахь дэлгэцийн ачаалалт. Зохиогч Uilton Lopes болон хувь нэмэр оруулагчид.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4-ийн хүчний гохны командууд ба геймпад дээр хэмжсэн хэмнэл. Зохиогч Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap горимуудын SOCD цэвэрлэгээний утга зүй. Зохиогч valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4744,6 +4796,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Гүйлгэх Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Юу харуулахыг сонгоно уу. Хадгалах хүртэл юу ч өөрчлөгдөхгүй.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0}: {1} болгож тохирууллаа.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Зураг контроллерын дэлгэц рүү илгээгдлээ.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mad Catz-ийн S.T.R.I.K.E. 7 SDK-г татаж байна…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 одоо {0} файлыг ачаална.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Microsoft-ын Visual C++ 2008 ажиллах орчныг татаж суулгаж байна…</value></data>

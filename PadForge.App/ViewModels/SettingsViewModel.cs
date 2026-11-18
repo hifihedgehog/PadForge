@@ -374,6 +374,12 @@ namespace PadForge.ViewModels
         /// driver from the Devices page (hifihedgehog/SDL#33 Part 15).</summary>
         public ObservableCollection<string> WinUsbOptIns { get; } = new();
 
+        /// <summary>The Flydigi Apex 4 nodes a screen send moved to WinUSB
+        /// and has not yet given back to Windows' Xbox driver (#586). A send
+        /// adds the node before the move and drops it after the hand-back, so
+        /// one cut off by a crash is given back at the next start.</summary>
+        public ObservableCollection<string> FlydigiScreenBindings { get; } = new();
+
         /// <summary>The keyboards the user took from Windows for PadForge
         /// alone from the Devices page (#549), each with the row it had as a
         /// Raw Input keyboard.</summary>

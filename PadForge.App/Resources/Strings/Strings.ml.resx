@@ -937,6 +937,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>ഈ പോർട്ടിന്റെ പ്ലെയർ നമ്പർ 1 മുതൽ 4 വരെ സജ്ജമാക്കുന്നു. അഡാപ്റ്റർ അത് സംഭരിച്ച് ആ പ്ലെയറായി വീണ്ടും കണക്റ്റ് ചെയ്യും.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>ഡ്രീംകാസ്റ്റ് സ്ക്രീൻ…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>ഡ്രീംകാസ്റ്റ് പാഡിലെ VMU എന്ത് കാണിക്കണമെന്ന് സജ്ജമാക്കുന്നു: അഡാപ്റ്ററിന്റെ സ്വന്തം ചിത്രം, സജീവ പ്രൊഫൈലിന്റെ പേര്, നമ്പർ അല്ലെങ്കിൽ ചിത്രം, ക്ലോക്ക്, കളിച്ച സമയം, അല്ലെങ്കിൽ നിങ്ങൾ തിരഞ്ഞെടുക്കുന്ന ചിത്രം.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>കൺട്രോളർ സ്ക്രീൻ…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>കൺട്രോളറിന്റെ സ്ക്രീനിലേക്ക് ഒരു ചിത്രം അയയ്ക്കുന്നു: നിങ്ങൾ തിരഞ്ഞെടുക്കുന്ന ചിത്രമോ GIF-ഓ, അല്ലെങ്കിൽ സജീവ പ്രൊഫൈലിന്റെ ചിത്രം, പേര് അല്ലെങ്കിൽ നമ്പർ. അടുത്തത് അയയ്ക്കുന്നതുവരെ കൺട്രോളർ അത് സൂക്ഷിക്കുന്നു.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>കൺട്രോളർ പാക് ബാക്കപ്പ് ചെയ്യുക…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>ഈ N64 കൺട്രോളറിലെ കൺട്രോളർ പാക് 32 KB .mpk ഫയലായി സേവ് ചെയ്യുന്നു. N64 എമുലേറ്ററുകൾ വായിക്കുന്ന ഫോർമാറ്റാണിത്.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>കൺട്രോളർ പാക് പുനഃസ്ഥാപിക്കുക…</value></data>
@@ -970,6 +972,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>പ്രൊഫൈൽ ചിത്രം നീക്കം ചെയ്യുക</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>ചിത്രങ്ങൾ (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|എല്ലാ ഫയലുകളും (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>PadForge-ന് വായിക്കാവുന്ന ചിത്രമൊന്നും ആ ഫയലിൽ ഇല്ല.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>കൺട്രോളർ സ്ക്രീൻ</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>നിങ്ങൾ അയയ്ക്കുന്നതുവരെ കൺട്രോളറിലേക്ക് ഒന്നും എത്തില്ല.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>നിങ്ങൾ തിരഞ്ഞെടുക്കുന്ന ചിത്രമോ GIF-ഓ, സ്ക്രീനിന്റെ 160×80 പിക്സലുകൾക്ക് ഒതുക്കിയത്. മറ്റൊന്ന് അയയ്ക്കുന്നതുവരെ കൺട്രോളർ അത് സൂക്ഷിക്കുന്നു.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>നിങ്ങൾ അയയ്ക്കുമ്പോഴുള്ള സജീവ പ്രൊഫൈലിന്റെ ചിത്രം, ചിത്രമില്ലെങ്കിൽ അതിന്റെ പേര്. പ്രൊഫൈൽ മാറിയാലും കൺട്രോളർ അത് സൂക്ഷിക്കുന്നു.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>നിങ്ങൾ അയയ്ക്കുമ്പോഴുള്ള സജീവ പ്രൊഫൈലിന്റെ പേര്. പ്രൊഫൈൽ മാറിയാലും കൺട്രോളർ അത് സൂക്ഷിക്കുന്നു.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>നിങ്ങൾ അയയ്ക്കുമ്പോൾ പ്രൊഫൈൽ പട്ടികയിൽ സജീവ പ്രൊഫൈലിനുള്ള സ്ഥാനം. സ്ഥിരസ്ഥിതി പ്രൊഫൈൽ 0 ആണ്.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>പൊരുത്തം</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>സ്ക്രീൻ നിറയ്ക്കുക</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>ചിത്രം മുഴുവൻ കാണിക്കുക</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>സ്ക്രീനിലേക്ക് വലിച്ചുനീട്ടുക</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>ചിത്രങ്ങൾ (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|എല്ലാ ഫയലുകളും (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>അയയ്ക്കുക</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>ഫ്രെയിമുകൾ: {0}. അയയ്ക്കാൻ ഏകദേശം {1} എടുക്കും.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>കൺട്രോളർ പരമാവധി {0} ഫ്രെയിമുകൾ മാത്രം സ്വീകരിക്കുന്നതിനാൽ അവസാനത്തെ {1} ഒഴിവാക്കി.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>കൺട്രോളർ കേബിൾ വഴി ബന്ധിപ്പിക്കുക. ചിത്രം കയറി ഏകദേശം 15 സെക്കൻഡിനു ശേഷം അത് സ്വയം റീസ്റ്റാർട്ട് ആകും.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>കൺട്രോളർ കേബിൾ വഴി ബന്ധിപ്പിക്കുക. അയയ്ക്കാൻ PadForge അതിനെ Xbox മോഡിലേക്ക് മാറ്റുകയും Windows-ന്റെ Xbox ഡ്രൈവറിൽ നിന്ന് WinUSB-യിലേക്ക് മാറ്റുകയും ചെയ്യുന്നു, പിന്നീട് രണ്ടും തിരികെ വയ്ക്കുന്നു.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge കൺട്രോളറിനെ Xbox മോഡിലേക്ക് മാറ്റും, അയയ്ക്കാനായി WinUSB-യിലേക്ക് മാറ്റും, പിന്നീട് Windows-ന്റെ Xbox ഡ്രൈവറിനു തിരികെ നൽകി DInput മോഡിലേക്ക് മാറ്റും. ആദ്യം മറ്റെല്ലാ Xbox 360 കൺട്രോളറുകളും അൺപ്ലഗ് ചെയ്യുക. ഇപ്പോൾ അയയ്ക്കട്ടേ?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>ആരംഭിക്കുന്നു…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>കൺട്രോളർ മാറ്റുന്നു…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>സ്ക്രീനിന്റെ പോർട്ടിനായി കാത്തിരിക്കുന്നു…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>കൺട്രോളറിനെ WinUSB-യിലേക്ക് മാറ്റുന്നു…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>ചിത്രത്തിനായി സ്ഥലം ഒഴിവാക്കുന്നു… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>ചിത്രം അയയ്ക്കുന്നു… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>പൂർത്തിയാക്കുന്നു…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>കൺട്രോളറിനെ Windows-ന് തിരികെ നൽകുന്നു…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>അയച്ചു. റീസ്റ്റാർട്ട് ആയ ശേഷം കൺട്രോളർ ചിത്രം കാണിക്കും.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>അയച്ചു. കൺട്രോളർ ചിത്രം കാണിക്കുന്നു.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>കൺട്രോളർ കേബിൾ വഴി ബന്ധിപ്പിക്കുക. അതിന്റെ സ്ക്രീൻ USB വഴി മാത്രമേ ചിത്രം സ്വീകരിക്കൂ.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>സ്ക്രീനിന്റെ പോർട്ട് പ്രത്യക്ഷപ്പെട്ടില്ല. കൺട്രോളറിന്റെ സ്വന്തം സ്വിച്ച് ഉപയോഗിച്ച് ഓഫാക്കി വീണ്ടും ഓണാക്കുക, കേബിൾ വഴി ബന്ധിപ്പിച്ച് വീണ്ടും അയയ്ക്കുക.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>ഒന്നിലധികം കൺട്രോളർ സ്ക്രീനുകൾ ചിത്രത്തിനായി കാത്തിരിക്കുന്നു. മറ്റുള്ളവ അൺപ്ലഗ് ചെയ്ത് വീണ്ടും അയയ്ക്കുക.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>സ്ക്രീനിന്റെ പോർട്ട് തുറന്നില്ല. Flydigi Space Station അടച്ച് വീണ്ടും അയയ്ക്കുക.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>സ്ക്രീൻ പ്രതികരിക്കുന്നത് നിർത്തി. കൺട്രോളറിന്റെ സ്വന്തം സ്വിച്ച് ഉപയോഗിച്ച് ഓഫാക്കി വീണ്ടും ഓണാക്കി വീണ്ടും അയയ്ക്കുക.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>സ്ക്രീൻ ചിത്രം നിരസിച്ചു. വീണ്ടും അയയ്ക്കുക.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>കൺട്രോളർ Xbox 360 കൺട്രോളറായി തിരിച്ചുവന്നില്ല, അതിനാൽ ഒന്നും അയച്ചില്ല. അതിന്റെ സ്വന്തം സ്വിച്ച് ഉപയോഗിച്ച് DInput മോഡിലേക്ക് മാറ്റി വീണ്ടും അയയ്ക്കുക.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>മറ്റെല്ലാ Xbox 360 കൺട്രോളറുകളും അൺപ്ലഗ് ചെയ്ത് വീണ്ടും അയയ്ക്കുക. ഡ്രൈവർ മാറ്റം അവയെയും മാറ്റും. Xbox മോഡിൽ അവശേഷിച്ച കൺട്രോളർ അതിന്റെ സ്വന്തം സ്വിച്ച് ഉപയോഗിച്ച് DInput മോഡിലേക്ക് തിരികെ പോകും.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox മോഡിലെ കൺട്രോളർ Apex 4 ആയി പ്രതികരിച്ചില്ല, അതിനാൽ ഒന്നും അയച്ചില്ല, Windows-ന് അത് തിരികെ ലഭിച്ചു. അതിന്റെ സ്വന്തം സ്വിച്ച് ഉപയോഗിച്ച് DInput മോഡിലേക്ക് മാറ്റുക.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows കൺട്രോളറിനെ WinUSB-യിലേക്ക് മാറ്റിയില്ല, അതിനാൽ ഒന്നും അയച്ചില്ല. അതിന്റെ സ്വന്തം സ്വിച്ച് ഉപയോഗിച്ച് DInput മോഡിലേക്ക് മാറ്റുക.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>നിർത്തി. വീണ്ടും അയയ്ക്കുന്നതിനു മുമ്പ് കൺട്രോളറിന്റെ സ്വന്തം സ്വിച്ച് ഉപയോഗിച്ച് ഓഫാക്കി വീണ്ടും ഓണാക്കുക.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>ഒരു ചിത്രം ഇപ്പോഴും കൺട്രോളറിലേക്ക് പോകുന്നു. അയയ്ക്കൽ നിർത്തട്ടേ?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>കൺട്രോളർ പാക് ഫയലുകൾ (*.mpk)|*.mpk|എല്ലാ ഫയലുകളും (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>കൺട്രോളർ പാക് പോർട്ട് {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>കൺട്രോളർ പാക് പുനഃസ്ഥാപിക്കുക</value></data>
@@ -1136,6 +1177,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>ഇംപൾസ് ട്രിഗറുകൾ</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>ഓരോ ട്രിഗറിന്റെയും ഗെയിൻ, മോട്ടോർ മാറ്റം, അഡാപ്റ്റീവ് ട്രിഗർ വൈബ്രേഷനുകൾ, സ്ഥിരമായ ട്രിഗർ ഫോഴ്സ്</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>ഓരോ ട്രിഗറിനുമുള്ള മോട്ടോർ കമാൻഡുകൾ (Xbox ഇംപൾസ് ട്രിഗറുകൾ) വെർച്വൽ കൺട്രോളറിൽ നിന്ന് നൽകിയിട്ടുള്ള ഫിസിക്കൽ Xbox One, Elite, അല്ലെങ്കിൽ Series കൺട്രോളറിലേക്ക് കൈമാറുന്നു. ഗെയിം നിയന്ത്രിക്കുന്ന ട്രിഗർ റംബിൾ സ്വയമേവ കടന്നുപോകുന്നു. താഴെയുള്ള നിയന്ത്രണങ്ങൾ ഓരോ ട്രിഗറിന്റെയും തീവ്രത ക്രമീകരിക്കുന്നു.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>ഓരോ ട്രിഗറിനുമുള്ള മോട്ടോർ കമാൻഡുകൾ (Xbox ഇംപൾസ് ട്രിഗറുകൾ) വെർച്വൽ കൺട്രോളറിൽ നിന്ന് ഈ കൺട്രോളറിന്റെ ട്രിഗറുകളിൽ വൈബ്രേഷനായി പ്ലേ ചെയ്യുന്നു. ഗെയിം നിയന്ത്രിക്കുന്ന ട്രിഗർ റംബിൾ സ്വയമേവ കടന്നുപോകുന്നു. താഴെയുള്ള നിയന്ത്രണങ്ങൾ ഓരോ ട്രിഗറിന്റെയും തീവ്രത ക്രമീകരിക്കുന്നു.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>ഇടത് ട്രിഗർ</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>വലത് ട്രിഗർ</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>ഇടത്, വലത് ട്രിഗർ മോട്ടോറുകൾ പരസ്പരം മാറ്റുക</value></data>
@@ -1200,6 +1242,8 @@
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>അഡാപ്റ്റീവ് ട്രിഗറുകൾ</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>നൽകിയിട്ടുള്ള ഫിസിക്കൽ DualSense-ൽ ട്രിഗർ ഫീഡ്ബാക്ക് ഇഫക്റ്റുകൾ ക്രമീകരിക്കുക. ഒരു ഗെയിമിൽ നിന്നോ ഗെയിം മോഡിൽ നിന്നോ ഉള്ള ട്രിഗർ ഇഫക്റ്റുകൾ സ്വയമേവ കൈമാറും. രണ്ടും എഴുതാത്തപ്പോൾ പ്രവർത്തിക്കുന്ന, ഉപയോക്താവ് ക്രമീകരിച്ച ഒരു ലെയർ ഇവിടത്തെ ക്രമീകരണങ്ങൾ ചേർക്കുന്നു.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>ഈ കൺട്രോളറിന്റെ ഫോഴ്സ് ട്രിഗറുകളിൽ ട്രിഗർ ഫീഡ്ബാക്ക് ഇഫക്റ്റുകൾ ക്രമീകരിക്കുക. വെർച്വൽ DualSense-ലെ ഒരു ഗെയിമിൽ നിന്നോ ഗെയിം മോഡിൽ നിന്നോ ഉള്ള ട്രിഗർ ഇഫക്റ്റുകൾ സ്വയമേവ പ്ലേ ചെയ്യും. രണ്ടും എഴുതാത്തപ്പോൾ പ്രവർത്തിക്കുന്ന, ഉപയോക്താവ് ക്രമീകരിച്ച ഒരു ലെയർ ഇവിടത്തെ ക്രമീകരണങ്ങൾ ചേർക്കുന്നു.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>ഈ കൺട്രോളറിൽ ട്രിഗർ ഫീഡ്ബാക്ക് ഇഫക്റ്റുകൾ ക്രമീകരിക്കുക. ഇതിന്റെ ട്രിഗറുകൾ വൈബ്രേറ്റ് ചെയ്യുകയാണ്, പ്രതിരോധിക്കുന്നില്ല, അതിനാൽ ഓരോ ഇഫക്റ്റും അതിന്റെ പ്രവർത്തനം പിന്തുടരുന്ന വൈബ്രേഷനായി പ്ലേ ചെയ്യുന്നു: ട്രിഗർ പൊട്ടുന്നിടത്ത് ഒരു ആഘാതം, വില്ലിന് ഒരു മുറുകലും ഒരു വിടുതലും. വെർച്വൽ DualSense-ലെ ഒരു ഗെയിമിൽ നിന്നോ ഗെയിം മോഡിൽ നിന്നോ ഉള്ള ട്രിഗർ ഇഫക്റ്റുകൾ സ്വയമേവ പ്ലേ ചെയ്യും. രണ്ടും എഴുതാത്തപ്പോൾ പ്രവർത്തിക്കുന്ന, ഉപയോക്താവ് ക്രമീകരിച്ച ഒരു ലെയർ ഇവിടത്തെ ക്രമീകരണങ്ങൾ ചേർക്കുന്നു.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>സ്റ്റിക്കുകൾ</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>ഓരോ സ്റ്റിക്കിനുമുള്ള ഡെഡ് സോണുകൾ, ആന്റി-ഡെഡ് സോണുകൾ, സെൻസിറ്റിവിറ്റി കർവുകൾ, സെന്റർ ഓഫ്സെറ്റ് കാലിബ്രേഷൻ. താഴെയുള്ള ഓരോ വിഭാഗവും സജീവ ഔട്ട്പുട്ടിലെ ഒരു അനലോഗ് സ്റ്റിക്കിനെ ലക്ഷ്യമിടുന്നു. എക്സ്റ്റെൻഡഡ് പ്രൊഫൈലുകൾക്ക് നാല് സ്റ്റിക്കുകൾ വരെ ഉണ്ടാകാം. സാധാരണ ഗെയിംപാഡുകൾക്ക് രണ്ട്.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>ട്രിഗറുകൾ</value></data>
@@ -3230,7 +3274,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>ഒരു ഒക്ടേവ് താഴേക്ക് മടക്കുക</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>ടോൺ പരിധി</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>ഈ കൺട്രോളറിൽ DualSense ഹാപ്റ്റിക്സ് പ്ലേ ചെയ്യുക</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ഒരു ഗെയിം ഈ സ്ലോട്ടിനെ രചിച്ച ഹാപ്റ്റിക് ഓഡിയോ ഉള്ള വെർച്വൽ DualSense ആയി ഓടിക്കുമ്പോൾ, ആ ട്രാക്ക് ഈ കൺട്രോളറിന്റെ ആക്ച്വേറ്ററുകളിൽ പ്ലേ ചെയ്യുക. USB വഴിയോ ഡോംഗിൾ വഴിയോ ഉള്ള Steam Controller 2026 ട്രാക്ക് സ്വയം പ്ലേ ചെയ്യും. മറ്റെല്ലാ കൺട്രോളറുകൾക്കും, ബ്ലൂടൂത്ത് വഴിയുള്ള അതിനും, ഓഡിയോയിൽ നിന്ന് ഉരുത്തിരിഞ്ഞ ടോണുകൾ ലഭിക്കും. അവ ഡിസൈനറുടെ അനുഭവം പുനർനിർമ്മിക്കുന്നതിനു പകരം ഏകദേശം അനുകരിക്കുന്നു.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ഒരു ഗെയിം ഈ സ്ലോട്ടിനെ രചിച്ച ഹാപ്റ്റിക് ഓഡിയോ ഉള്ള വെർച്വൽ DualSense ആയി ഓടിക്കുമ്പോൾ, ആ ട്രാക്ക് ഈ കൺട്രോളറിന്റെ ആക്ച്വേറ്ററുകളിൽ പ്ലേ ചെയ്യുക. USB വഴിയോ ഡോംഗിൾ വഴിയോ ഉള്ള Steam Controller 2026 ഉം Flydigi Apex 6 Pro ഉം ട്രാക്ക് സ്വയം പ്ലേ ചെയ്യും. മറ്റെല്ലാ കൺട്രോളറുകൾക്കും, ബ്ലൂടൂത്ത് വഴിയുള്ള ആ Steam Controller-നും, ഓഡിയോയിൽ നിന്ന് ഉരുത്തിരിഞ്ഞ ടോണുകൾ ലഭിക്കും. അവ ഡിസൈനറുടെ അനുഭവം പുനർനിർമ്മിക്കുന്നതിനു പകരം ഏകദേശം അനുകരിക്കുന്നു.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>ഹാപ്റ്റിക്സ് ഗെയിൻ</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>സ്ഥിരസ്ഥിതിയിലേക്ക് പുനഃസജ്ജമാക്കുക (ഓഫ്)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>സ്ഥിരസ്ഥിതിയിലേക്ക് പുനഃസജ്ജമാക്കുക (100%)</value></data>
@@ -3421,6 +3465,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) ഹാപ്റ്റിക് റിപ്പോർട്ട് ലേഔട്ടും നോട്ട്-പിരീഡ് ഗണിതവും, Pila, Roboron3042 എന്നിവർ നിർമ്മിച്ചത്.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026, Steam Deck LFO-ടോൺ ഹാപ്റ്റിക് ലേഔട്ട്, Pila, Crazy, AAGaming എന്നിവർ നിർമ്മിച്ചത്.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex ട്രിഗർ ഇഫക്റ്റ് വിവർത്തനവും റൈറ്റ് പേസിംഗും, Apex 6 Pro ട്രിഗർ റെൻഡറിംഗ്, ഹാപ്റ്റിക് സ്ട്രീം, ലൈറ്റിംഗ് ബ്ലോക്ക്, Apex 5 ലൈറ്റിംഗ് റൈറ്റുകൾ, ReynArts നിർമ്മിച്ചത്.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5, Apex 6 പ്രോട്ടോക്കോൾ കുറിപ്പുകൾ, ലൈറ്റിംഗ് ബ്ലോക്ക് കൈമാറ്റം, സ്ക്രീനിന്റെ സീരിയൽ അപ്‌ലോഡ്, Mikalai Kaliaha നിർമ്മിച്ചത്.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4 ലൈറ്റിംഗ് ബ്ലോക്ക്, പ്രൊഫൈൽ സ്ലോട്ട്, Xbox മോഡിലെ സ്ക്രീൻ അപ്‌ലോഡ്, Uilton Lopes ഉം സംഭാവകരും നിർമ്മിച്ചത്.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4 ഫോഴ്സ് ട്രിഗർ കമാൻഡുകളും പാഡിൽ അളന്ന പേസിംഗും, Jackwmtr നിർമ്മിച്ചത്.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap മോഡുകൾക്കുള്ള SOCD ക്ലീനിംഗ് സെമാന്റിക്സ്, valignatev നിർമ്മിച്ചത്.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -4727,6 +4779,7 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>പാൻ Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>അത് എന്ത് കാണിക്കണമെന്ന് തിരഞ്ഞെടുക്കുക. നിങ്ങൾ സേവ് ചെയ്യുന്നതുവരെ ഒന്നും മാറില്ല.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} {1} ആയി സജ്ജമാക്കി.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>ചിത്രം കൺട്രോളറിന്റെ സ്ക്രീനിലേക്ക് പോയി.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mad Catz-ന്റെ S.T.R.I.K.E. 7 SDK ഡൗൺലോഡ് ചെയ്യുന്നു…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 ഇപ്പോൾ {0} ലോഡ് ചെയ്യുന്നു.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Microsoft-ന്റെ Visual C++ 2008 റൺടൈം ഡൗൺലോഡ് ചെയ്ത് ഇൻസ്റ്റാൾ ചെയ്യുന്നു…</value></data>

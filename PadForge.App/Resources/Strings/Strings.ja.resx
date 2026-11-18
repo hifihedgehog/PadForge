@@ -1996,6 +1996,8 @@
   <data name="About_DualSenseYDesc" xml:space="preserve"><value>USBコントローラー音声パススルーの参照実装。WujekFoliarz作。</value></data>
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>アダプティブトリガー</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>割り当てられた物理 DualSense のトリガーエフェクトを設定します。ゲームまたはゲーム MOD からのトリガーエフェクトは自動的に転送されます。ここでの設定は、どちらも書き込んでいないときに動作するユーザー設定レイヤーを追加します。</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>このコントローラーのフォーストリガーのトリガーエフェクトを設定します。仮想 DualSense 上のゲームまたはゲーム MOD からのトリガーエフェクトは自動的に再生されます。ここでの設定は、どちらも書き込んでいないときに動作するユーザー設定レイヤーを追加します。</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>このコントローラーのトリガーエフェクトを設定します。トリガーは振動するだけで抵抗しないため、各エフェクトはその動きに沿った振動として再生されます。トリガーが折れる場面では一瞬の振動、弓では高まりと解放です。仮想 DualSense 上のゲームまたはゲーム MOD からのトリガーエフェクトは自動的に再生されます。ここでの設定は、どちらも書き込んでいないときに動作するユーザー設定レイヤーを追加します。</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>スティック</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>スティックごとのデッドゾーン、アンチデッドゾーン、感度カーブ、中心オフセットキャリブレーション。下記の各セクションはアクティブな出力上の 1 本のアナログスティックを対象とします。拡張プロファイルは最大 4 本のスティックを持ち、標準ゲームパッドは 2 本です。</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>トリガー</value></data>
@@ -2360,6 +2362,7 @@
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>インパルストリガー</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>トリガーごとのゲイン、モーターの入れ替え、アダプティブトリガーの振動、トリガー定常力</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>仮想コントローラーから割り当てられた物理 Xbox One / Elite / Series コントローラーへ、トリガーごとのモーターコマンド（Xbox インパルストリガー）を転送します。ゲームが発するトリガー振動は自動的に通過します。下のコントロールでトリガーごとの強度を調整できます。</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>仮想コントローラーからのトリガーごとのモーターコマンド（Xbox インパルストリガー）を、このコントローラーのトリガーの振動として再生します。ゲームが発するトリガー振動は自動的に通過します。下のコントロールでトリガーごとの強度を調整できます。</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>左トリガー</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>右トリガー</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>左右のトリガーモーターを入れ替える</value></data>
@@ -2772,7 +2775,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>1オクターブずつ折り下げる</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>トーン上限</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense ハプティクスをこのコントローラーで再生</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ゲームがこのスロットを仮想 DualSense として駆動し、オーサリングされたハプティクスオーディオを出力する場合、そのトラックをこのコントローラーのアクチュエーターで再生します。USB またはドングル接続の Steam Controller 2026 はトラックをそのまま再生します。それ以外のコントローラー、および Bluetooth 接続のこのコントローラーでは、オーディオから導出したトーンで再生され、デザイナーの意図した感触を再現するのではなく近似します。</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ゲームがこのスロットを仮想 DualSense として駆動し、オーサリングされたハプティクスオーディオを出力する場合、そのトラックをこのコントローラーのアクチュエーターで再生します。USB またはドングル接続の Steam Controller 2026 と Flydigi Apex 6 Pro は、トラックをそのまま再生します。それ以外のコントローラー、および Bluetooth 接続のその Steam Controller では、オーディオから導出したトーンで再生され、デザイナーの意図した感触を再現するのではなく近似します。</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>ハプティクス ゲイン</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>既定に戻す (オフ)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>既定に戻す (100%)</value></data>
@@ -3221,6 +3224,8 @@
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>このポートのプレイヤー番号 (1～4) を設定します。アダプターはそれを保存し、そのプレイヤーとして再接続します。</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast 画面…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Dreamcast コントローラーのビジュアルメモリに表示する内容を設定します。アダプター自身の画像、アクティブなプロファイルの名前・番号・画像、時計、プレイ時間、または選んだ画像です。</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>コントローラー画面…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>コントローラーの画面に画像を送信します。選んだ画像や GIF、またはアクティブなプロファイルの画像、名前、番号が使えます。コントローラーは次の画像を送るまで保持します。</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>コントローラパックをバックアップ…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>この N64 コントローラーのコントローラパックを、N64 エミュレーターが読み込める 32 KB の .mpk ファイルに保存します。</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>コントローラパックを復元…</value></data>
@@ -3254,6 +3259,45 @@
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>プロファイルの画像を削除</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>画像 (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|すべてのファイル (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>そのファイルには PadForge が読み取れる画像がありません。</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>コントローラー画面</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>送信するまでコントローラーには何も送られません。</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>選んだ画像または GIF を、画面の 160×80 ピクセルに合わせて表示します。コントローラーは次の画像を送るまで保持します。</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>送信時点のアクティブなプロファイルの画像を表示し、画像がない場合は名前を表示します。コントローラーはプロファイルを切り替えても保持します。</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>送信時点のアクティブなプロファイルの名前を表示します。コントローラーはプロファイルを切り替えても保持します。</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>送信時点のプロファイル一覧でのアクティブなプロファイルの位置を表示します。デフォルト プロファイルは 0 です。</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>合わせ方</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>画面全体を埋める</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>画像全体を表示</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>画面に合わせて伸ばす</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>画像 (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|すべてのファイル (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>送信</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>フレーム数：{0}。送信には約 {1} かかります。</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>コントローラーが受け付けるのは最大 {0} フレームのため、最後の {1} フレームは除外しました。</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>コントローラーをケーブルで接続してください。画像の転送後、約 15 秒で自動的に再起動します。</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>コントローラーをケーブルで接続してください。送信中は、PadForge がコントローラーを Xbox モードに切り替え、Windows の Xbox ドライバーから WinUSB に移し、送信後に両方を元に戻します。</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge はコントローラーを Xbox モードに切り替え、送信のあいだ WinUSB に移し、その後 Windows の Xbox ドライバーに戻して DInput モードに切り替え直します。先に、ほかの Xbox 360 コントローラーをすべて取り外してください。今すぐ送信しますか？</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>開始しています…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>コントローラーを切り替えています…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>画面のポートを待っています…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>コントローラーを WinUSB に移しています…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>画像の領域を空けています… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>画像を送信しています… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>仕上げています…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>コントローラーを Windows に戻しています…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>送信しました。コントローラーが再起動すると画像が表示されます。</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>送信しました。コントローラーに画像が表示されます。</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>コントローラーをケーブルで接続してください。この画面は USB でのみ画像を受け取ります。</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>画面のポートが現れませんでした。コントローラー本体のスイッチでオフにしてからオンにし、ケーブルで接続して、もう一度送信してください。</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>画像待ちのコントローラー画面が複数あります。ほかを取り外して、もう一度送信してください。</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>画面のポートを開けませんでした。Flydigi Space Station を閉じて、もう一度送信してください。</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>画面が応答しなくなりました。コントローラー本体のスイッチでオフにしてからオンにし、もう一度送信してください。</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>画面が画像を受け付けませんでした。もう一度送信してください。</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>コントローラーが Xbox 360 コントローラーとして戻らなかったため、何も送信されていません。本体のスイッチで DInput モードに戻してから、もう一度送信してください。</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>ほかの Xbox 360 コントローラーをすべて取り外してから、もう一度送信してください。ドライバーの変更はそれらにも及ぶためです。Xbox モードのままのコントローラーは、本体のスイッチで DInput モードに戻せます。</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Xbox モードのコントローラーが Apex 4 として応答しなかったため、何も送信されず、Windows に戻っています。本体のスイッチで DInput モードに戻してください。</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows がコントローラーを WinUSB に移せなかったため、何も送信されていません。本体のスイッチで DInput モードに戻してください。</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>停止しました。もう一度送信する前に、コントローラー本体のスイッチでオフにしてからオンにしてください。</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>コントローラーへ画像を送信中です。送信を中止しますか？</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>コントローラパックのファイル (*.mpk)|*.mpk|すべてのファイル (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>コントローラパック ポート {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>コントローラパックを復元</value></data>
@@ -3357,6 +3401,14 @@
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) のハプティックレポートレイアウトと音符周期の計算。Pila および Roboron3042 製。</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 と Steam Deck の LFO トーンハプティックレイアウト。Pila、Crazy、AAGaming 製。</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Flydigi Apex のトリガーエフェクト変換と書き込みのタイミング制御、Apex 6 Pro のトリガー描画、ハプティクスストリーム、ライティングブロック、Apex 5 のライティング書き込み。ReynArts 製。</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Flydigi Apex 5 と Apex 6 のプロトコルメモ、ライティングブロックの転送、画面のシリアルアップロード。Mikalai Kaliaha 製。</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Flydigi Apex 4 のライティングブロック、プロファイルスロット、Xbox モードでの画面アップロード。Uilton Lopes とコントリビューター製。</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Flydigi Apex 4 のフォーストリガーコマンドと、実機で計測したタイミング。Jackwmtr 製。</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap モード向けの SOCD クリーニングのセマンティクス。valignatev 製。</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
@@ -4970,6 +5022,7 @@
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>パン Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>表示する内容を選びます。保存するまで何も変わりません。</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} を {1} に設定しました。</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>コントローラーの画面に画像を送信しました。</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Mad Catz の S.T.R.I.K.E. 7 SDK をダウンロードしています…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 は {0} を読み込むようになりました。</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Microsoft の Visual C++ 2008 ランタイムをダウンロードしてインストールしています…</value></data>

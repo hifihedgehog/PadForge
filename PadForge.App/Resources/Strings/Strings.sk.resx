@@ -952,6 +952,8 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Nastaví číslo hráča pre tento port, 1 až 4. Adaptér ho uloží a znova sa pripojí ako tento hráč.</value></data>
   <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Obrazovka Dreamcast…</value></data>
   <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Nastaví, čo zobrazuje VMU ovládača Dreamcast: vlastný obrázok adaptéra, názov, číslo alebo obrázok aktívneho profilu, hodiny, čas hrania alebo obrázok, ktorý si vyberiete.</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Obrazovka ovládača…</value></data>
+  <data name="Devices_FlydigiScreenTooltip" xml:space="preserve"><value>Pošle obrázok na obrazovku ovládača: obrázok alebo GIF, ktorý si vyberiete, alebo obrázok, názov či číslo aktívneho profilu. Ovládač ho drží do ďalšieho odoslania.</value></data>
   <data name="Devices_PakBackup" xml:space="preserve"><value>Zálohovať Controller Pak…</value></data>
   <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Uloží Controller Pak v tomto ovládači N64 do súboru .mpk s veľkosťou 32 KB, vo formáte, ktorý čítajú emulátory N64.</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Obnoviť Controller Pak…</value></data>
@@ -985,6 +987,45 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Odstrániť obrázok profilu</value></data>
   <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Obrázky (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Všetky súbory (*.*)|*.*</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Tento súbor neobsahuje obrázok, ktorý PadForge dokáže prečítať.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Obrazovka ovládača</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Nič sa nedostane do ovládača, kým neodošlete.</value></data>
+  <data name="FlydigiScreen_Hint_Picture" xml:space="preserve"><value>Obrázok alebo GIF, ktorý si vyberiete, prispôsobený obrazovke s rozlíšením 160 × 80 pixelov. Ovládač ho drží, kým neodošlete ďalší.</value></data>
+  <data name="FlydigiScreen_Hint_ProfilePicture" xml:space="preserve"><value>Vlastný obrázok aktívneho profilu, alebo jeho názov, ak obrázok nemá, v stave pri odoslaní. Ovládač ho zachová aj po prepnutí profilov.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileName" xml:space="preserve"><value>Názov aktívneho profilu v stave pri odoslaní. Ovládač ho zachová aj po prepnutí profilov.</value></data>
+  <data name="FlydigiScreen_Hint_ProfileNumber" xml:space="preserve"><value>Poradie aktívneho profilu v zozname profilov v stave pri odoslaní. Predvolený profil má číslo 0.</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Prispôsobenie</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Vyplniť obrazovku</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Zobraziť celý obrázok</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Roztiahnuť na obrazovku</value></data>
+  <data name="FlydigiScreen_PictureFilter" xml:space="preserve"><value>Obrázky (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Všetky súbory (*.*)|*.*</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Odoslať</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Snímky: {0}. Odoslanie potrvá približne {1}.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Ovládač prijme najviac snímok: {0}. Vynechané snímky na konci: {1}.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Pripojte ovládač káblom. Po nahraní obrázka sa asi po 15 sekundách sám reštartuje.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Pripojte ovládač káblom. Na odoslanie ho PadForge prepne do režimu Xbox a presunie z ovládača Xbox vo Windowse na WinUSB, potom oboje vráti späť.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>PadForge prepne ovládač do režimu Xbox, na odoslanie ho presunie na WinUSB, potom ho vráti ovládaču Xbox vo Windowse a prepne späť do režimu DInput. Najprv odpojte všetky ostatné ovládače Xbox 360. Odoslať teraz?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Spúšťa sa…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Prepína sa ovládač…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Čaká sa na port obrazovky…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Ovládač sa presúva na WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Uvoľňuje sa miesto pre obrázok… {0} %</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Odosiela sa obrázok… {0} %</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Dokončuje sa…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Ovládač sa vracia Windowsu…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Odoslané. Ovládač zobrazí obrázok po reštarte.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Odoslané. Ovládač zobrazuje obrázok.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Pripojte ovládač káblom. Jeho obrazovka prijíma obrázok iba cez USB.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Port obrazovky sa neobjavil. Vypnite a zapnite ovládač jeho vlastným vypínačom, pripojte ho káblom a odošlite znova.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Na obrázok čaká viac než jedna obrazovka ovládača. Odpojte ostatné a odošlite znova.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Port obrazovky sa nepodarilo otvoriť. Zavrite Flydigi Space Station a odošlite znova.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Obrazovka prestala odpovedať. Vypnite a zapnite ovládač jeho vlastným vypínačom a odošlite znova.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Obrazovka obrázok odmietla. Odošlite znova.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Ovládač sa nevrátil ako ovládač Xbox 360, preto sa nič neodoslalo. Prepnite ho späť do režimu DInput jeho vlastným prepínačom a odošlite znova.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Odpojte všetky ostatné ovládače Xbox 360 a odošlite znova. Zmena ovládača by presunula aj ich. Ovládač ponechaný v režime Xbox sa vráti do režimu DInput jeho vlastným prepínačom.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Ovládač v režime Xbox neodpovedal ako Apex 4, preto sa nič neodoslalo a Windows ho má späť. Prepnite ho späť do režimu DInput jeho vlastným prepínačom.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Windows nepresunul ovládač na WinUSB, preto sa nič neodoslalo. Prepnite ho späť do režimu DInput jeho vlastným prepínačom.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Zastavené. Pred ďalším odoslaním ovládač vypnite a zapnite jeho vlastným vypínačom.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Obrázok sa stále odosiela do ovládača. Zastaviť odosielanie?</value></data>
   <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>Súbory Controller Pak (*.mpk)|*.mpk|Všetky súbory (*.*)|*.*</value></data>
   <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak port {0}.mpk</value></data>
   <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Obnoviť Controller Pak</value></data>
@@ -1218,6 +1259,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_ImpulseTriggers_Header" xml:space="preserve"><value>Impulzné spúšte</value></data>
   <data name="Pad_More_ImpulseTriggers" xml:space="preserve"><value>Zosilnenie spúští, zámena motorov, vibrácie adaptívnych spúští, Konštantná sila spúští</value></data>
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Preposiela príkazy motorov jednotlivých spúští (Xbox Impulse Triggers) z virtuálneho ovládača do priradeného fyzického ovládača Xbox One, Elite alebo Series. Vibrácie spúští riadené hrou sa prepúšťajú automaticky. Ovládacie prvky nižšie menia intenzitu pre každú spúšť zvlášť.</value></data>
+  <data name="Pad_ImpulseTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Prehráva príkazy motorov jednotlivých spúští (Xbox Impulse Triggers) z virtuálneho ovládača ako vibrácie v spúštiach tohto ovládača. Vibrácie spúští riadené hrou sa prepúšťajú automaticky. Ovládacie prvky nižšie menia intenzitu pre každú spúšť zvlášť.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Ľavá spúšť</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Pravá spúšť</value></data>
   <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Zameniť motory ľavej a pravej spúšte</value></data>
@@ -1282,6 +1324,8 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <!-- Adaptive Triggers tab (DualSense / DualSense Edge only) -->
   <data name="Pad_AdaptiveTriggers_Header" xml:space="preserve"><value>Adaptívne spúšte</value></data>
   <data name="Pad_AdaptiveTriggers_Subtitle" xml:space="preserve"><value>Nastavte efekty spätnej väzby spúští na priradenom fyzickom ovládači DualSense. Efekty spúští z hry alebo herného módu sa preposielajú automaticky. Tieto nastavenia pridávajú používateľskú vrstvu, ktorá sa uplatní, keď nepíše ani jedno z nich.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_Flydigi" xml:space="preserve"><value>Nastavte efekty spätnej väzby spúští na silových spúštiach tohto ovládača. Efekty spúští z hry na virtuálnom DualSense alebo z herného módu sa prehrávajú automaticky. Tieto nastavenia pridávajú používateľskú vrstvu, ktorá sa uplatní, keď nepíše ani jedno z nich.</value></data>
+  <data name="Pad_AdaptiveTriggers_Subtitle_FlydigiVibration" xml:space="preserve"><value>Nastavte efekty spätnej väzby spúští na tomto ovládači. Jeho spúšte vibrujú a nekladú odpor, takže každý efekt sa prehrá ako vibrácia podľa toho, čo efekt robí: úder pri prelomení spúšte, nárast a uvoľnenie pri luku. Efekty spúští z hry na virtuálnom DualSense alebo z herného módu sa prehrávajú automaticky. Tieto nastavenia pridávajú používateľskú vrstvu, ktorá sa uplatní, keď nepíše ani jedno z nich.</value></data>
   <data name="Pad_Sticks_Header" xml:space="preserve"><value>Páčky</value></data>
   <data name="Pad_Sticks_Subtitle" xml:space="preserve"><value>Mŕtve zóny, anti-mŕtve zóny, krivky citlivosti a kalibrácia posunu stredu pre každú páčku. Každá sekcia nižšie sa týka jednej analógovej páčky na aktívnom výstupe. Rozšírené profily môžu mať až štyri páčky. Štandardné gamepady majú dve.</value></data>
   <data name="Pad_Triggers_Header" xml:space="preserve"><value>Spúšte</value></data>
@@ -3457,7 +3501,7 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Posunúť o oktávu nižšie</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Limit tónov</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Prehrávať haptiku DualSense na tomto ovládači</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Keď hra ovláda tento slot ako virtuálny DualSense s autorským haptickým zvukom, prehrá túto stopu na aktuátoroch tohto ovládača. Steam Controller 2026 cez USB alebo svoj dongle prehrá samotnú stopu. Každý iný ovládač, a aj ten cez Bluetooth, dostane tóny odvodené zo zvuku, ktoré sa zámeru tvorcu len približujú a nereprodukujú ho.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Keď hra ovláda tento slot ako virtuálny DualSense s autorským haptickým zvukom, prehrá túto stopu na aktuátoroch tohto ovládača. Steam Controller 2026 cez USB alebo svoj dongle a Flydigi Apex 6 Pro prehrávajú samotnú stopu. Každý iný ovládač, a aj ten Steam Controller cez Bluetooth, dostane tóny odvodené zo zvuku, ktoré sa zámeru tvorcu len približujú a nereprodukujú ho.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Zosilnenie haptiky</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Resetovať na predvolené (vypnuté)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Resetovať na predvolené (100 %)</value></data>
@@ -3652,6 +3696,14 @@ Kópia predchádzajúcej verzie je v tomto priečinku: {1}</value></data>
   <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Rozloženie haptických hlásení Steam Controller (2015) a výpočty periód nôt, od autorov Pila a Roboron3042.</value></data>
   <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Rozloženie haptiky s tónmi LFO pre Steam Controller 2026 a Steam Deck, od autorov Pila, Crazy a AAGaming.</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_ApexSenseBridgeDesc" xml:space="preserve"><value>Preklad efektov spúští Flydigi Apex a časovanie zápisov, vykresľovanie spúští Apex 6 Pro, haptický prúd a svetelný blok, a svetelné zápisy Apex 5, od ReynArts.</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_OpenFlydigiDesc" xml:space="preserve"><value>Poznámky k protokolu Flydigi Apex 5 a Apex 6, prenos svetelného bloku a sériové nahrávanie na obrazovku, od autora Mikalai Kaliaha.</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiSpaceStationMacDesc" xml:space="preserve"><value>Svetelný blok Flydigi Apex 4, slot profilu a nahrávanie na obrazovku v režime Xbox, od autora Uilton Lopes a prispievateľov.</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
+  <data name="About_FlydigiApex4LinuxDesc" xml:space="preserve"><value>Príkazy pre silové spúšte Flydigi Apex 4 a časovanie odmerané na ovládači, od autora Jackwmtr.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Sémantika čistenia SOCD pre režimy Snap Tap, od autora valignatev.</value></data>
   <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
@@ -5021,6 +5073,7 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="KeyboardScreen_PanY" xml:space="preserve"><value>Posun Y</value></data>
   <data name="KeyboardScreen_Subtitle" xml:space="preserve"><value>Vyberte, čo zobrazuje. Nič sa nezmení, kým neuložíte.</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>{0} nastavené na {1}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Obrázok sa odoslal na obrazovku ovládača.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Sťahuje sa SDK pre Mad Catz S.T.R.I.K.E. 7…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 teraz načítava {0}.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Sťahuje a inštaluje sa Microsoft Visual C++ 2008 runtime…</value></data>

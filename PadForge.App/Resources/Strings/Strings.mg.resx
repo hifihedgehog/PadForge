@@ -325,6 +325,8 @@
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Misafidiana sary ho an'ny {0}…</value></data>
   <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Esory ny sarin'ny profil</value></data>
   <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Tsy misy sary azon'i PadForge vakiana ao amin'io rakitra io.</value></data>
+  <data name="FlydigiScreen_Title" xml:space="preserve"><value>Efijerin'ny contrôleur</value></data>
+  <data name="FlydigiScreen_Subtitle" xml:space="preserve"><value>Tsy misy tonga any amin'ny contrôleur mandra-pandefasanao.</value></data>
   <data name="BlissBoxPak_RestoreAction" xml:space="preserve"><value>Avereno</value></data>
   <data name="BlissBoxJob_WrongController" xml:space="preserve"><value>Mila contrôleur N64 ao amin'ny port izany.</value></data>
   <data name="BlissBoxJob_NoPak" xml:space="preserve"><value>Tsy misy Controller Pak ao amin'ny contrôleur.</value></data>
@@ -1898,6 +1900,7 @@
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Mampiseho ny lokon'ny lightbar amin'ny DualShock 4 na DualSense ao amin'ny slot ambany indrindra mifandray aminy ny efijery, na ao amin'ny slot ambany indrindra amin'ny rehetra raha tsy misy slot mifandray aminy. Ny efijery mainty sy fotsy dia mampiseho ny hazavany amin'ny alalan'ny teboka. Raha tsy mbola misy loko tonga amin'ny lightbar, dia tsy mampiseho na inona na inona ny PadForge.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Sary (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Rakitra rehetra (*.*)|*.*</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>Napetraka ho {1} ny {0}.</value></data>
+  <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Tonga tany amin'ny efijerin'ny contrôleur ny sary.</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>Misintona ny SDK S.T.R.I.K.E. 7 an'ny Mad Catz…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>Mampiditra ny {0} izao ny S.T.R.I.K.E. 7.</value></data>
   <data name="Status_InstallingVc2008" xml:space="preserve"><value>Misintona sy mametraka ny runtime Visual C++ 2008 an'ny Microsoft…</value></data>
@@ -2229,4 +2232,41 @@
   <data name="Pad_Chip_ShiftLayers" xml:space="preserve"><value>Layer Shift</value></data>
   <data name="Pad_Chip_Inverted" xml:space="preserve"><value>Avadika</value></data>
   <data name="Pad_Audio_Crossfeed_Bs2bDefault" xml:space="preserve"><value>Fototra bs2b</value></data>
+  <data name="Devices_FlydigiScreen" xml:space="preserve"><value>Efijerin'ny contrôleur…</value></data>
+  <data name="FlydigiScreen_Fit_Label" xml:space="preserve"><value>Fampifanarahana</value></data>
+  <data name="FlydigiScreen_Fit_Fill" xml:space="preserve"><value>Fenoy ny efijery</value></data>
+  <data name="FlydigiScreen_Fit_Fit" xml:space="preserve"><value>Asehoy ny sary manontolo</value></data>
+  <data name="FlydigiScreen_Fit_Stretch" xml:space="preserve"><value>Ahinjiro amin'ny efijery</value></data>
+  <data name="FlydigiScreen_Send" xml:space="preserve"><value>Alefaso</value></data>
+  <data name="FlydigiScreen_Size_Format" xml:space="preserve"><value>Isan'ny sary: {0}. Mila {1} eo ho eo ny fandefasana.</value></data>
+  <data name="FlydigiScreen_Cut_Format" xml:space="preserve"><value>Sary {0} farafahabetsany no raisin'ny contrôleur, koa navela ireo sary {1} farany.</value></data>
+  <data name="FlydigiScreen_Note_Serial" xml:space="preserve"><value>Ampifandraiso amin'ny tariby ny contrôleur. Manomboka indray ho azy izy 15 segondra eo ho eo aorian'ny nahatongavan'ny sary.</value></data>
+  <data name="FlydigiScreen_Note_Apex4" xml:space="preserve"><value>Ampifandraiso amin'ny tariby ny contrôleur. Mandritra ny fandefasana, avadik'i PadForge ho mode Xbox izy ary afindrany avy amin'ny pilote Xbox an'ny Windows ho any amin'ny WinUSB, avy eo averiny daholo izy roa.</value></data>
+  <data name="FlydigiScreen_Apex4Confirm" xml:space="preserve"><value>Havadik'i PadForge ho mode Xbox ny contrôleur, hafindra any amin'ny WinUSB izy mandritra ny fandefasana, avy eo haverina amin'ny pilote Xbox an'ny Windows ary haverina ho mode DInput. Esory aloha ny contrôleur Xbox 360 hafa rehetra. Alefa izao ve?</value></data>
+  <data name="FlydigiScreen_Step_Starting" xml:space="preserve"><value>Manomboka…</value></data>
+  <data name="FlydigiScreen_Step_Switching" xml:space="preserve"><value>Manova ny mode an'ny contrôleur…</value></data>
+  <data name="FlydigiScreen_Step_WaitingForPort" xml:space="preserve"><value>Miandry ny port an'ny efijery…</value></data>
+  <data name="FlydigiScreen_Step_Binding" xml:space="preserve"><value>Mamindra ny contrôleur any amin'ny WinUSB…</value></data>
+  <data name="FlydigiScreen_Step_Erasing_Format" xml:space="preserve"><value>Mamafa toerana ho an'ny sary… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Writing_Format" xml:space="preserve"><value>Mandefa ny sary… {0}%</value></data>
+  <data name="FlydigiScreen_Step_Finishing" xml:space="preserve"><value>Mamarana…</value></data>
+  <data name="FlydigiScreen_Step_HandingBack" xml:space="preserve"><value>Mamerina ny contrôleur amin'ny Windows…</value></data>
+  <data name="FlydigiScreen_Done_Serial" xml:space="preserve"><value>Lasa. Hiseho amin'ny contrôleur ny sary rehefa avy nanomboka indray izy.</value></data>
+  <data name="FlydigiScreen_Done_Apex4" xml:space="preserve"><value>Lasa. Miseho amin'ny contrôleur ny sary.</value></data>
+  <data name="FlydigiScreen_Fail_NotWired" xml:space="preserve"><value>Ampifandraiso amin'ny tariby ny contrôleur. Amin'ny USB ihany no mandray sary ny efijeriny.</value></data>
+  <data name="FlydigiScreen_Fail_NoPort" xml:space="preserve"><value>Tsy niseho ny port an'ny efijery. Vonoy dia ampandehano indray amin'ny bokotra fandrehitra azy ny contrôleur, ampifandraiso amin'ny tariby izy, ary alefaso indray ny sary.</value></data>
+  <data name="FlydigiScreen_Fail_SeveralPorts" xml:space="preserve"><value>Efijerin'ny contrôleur maromaro no miandry sary. Esory ireo hafa ary alefaso indray ny sary.</value></data>
+  <data name="FlydigiScreen_Fail_PortDidNotOpen" xml:space="preserve"><value>Tsy nisokatra ny port an'ny efijery. Akatony ny Flydigi Space Station ary alefaso indray ny sary.</value></data>
+  <data name="FlydigiScreen_Fail_NoReply" xml:space="preserve"><value>Nitsahatra namaly ny efijery. Vonoy dia ampandehano indray amin'ny bokotra fandrehitra azy ny contrôleur ary alefaso indray ny sary.</value></data>
+  <data name="FlydigiScreen_Fail_Refused" xml:space="preserve"><value>Nolavin'ny efijery ny sary. Alefaso indray.</value></data>
+  <data name="FlydigiScreen_Fail_NoXboxPad" xml:space="preserve"><value>Tsy niverina ho contrôleur Xbox 360 ny contrôleur, koa tsy nisy nalefa. Avereno ho mode DInput amin'ny bokotra fanovana mode azy izy ary alefaso indray ny sary.</value></data>
+  <data name="FlydigiScreen_Fail_OtherXboxPads" xml:space="preserve"><value>Esory ny contrôleur Xbox 360 hafa rehetra ary alefaso indray ny sary. Hamindra azy ireo koa ny fanovana pilote. Ny contrôleur mijanona amin'ny mode Xbox dia miverina ho mode DInput amin'ny bokotra fanovana mode azy.</value></data>
+  <data name="FlydigiScreen_Fail_NotApex4" xml:space="preserve"><value>Tsy namaly ho Apex 4 ny contrôleur amin'ny mode Xbox, koa tsy nisy nalefa ary efa azon'ny Windows indray izy. Avereno ho mode DInput amin'ny bokotra fanovana mode azy izy.</value></data>
+  <data name="FlydigiScreen_Fail_BindFailed" xml:space="preserve"><value>Tsy nafindran'ny Windows any amin'ny WinUSB ny contrôleur, koa tsy nisy nalefa. Avereno ho mode DInput amin'ny bokotra fanovana mode azy izy.</value></data>
+  <data name="FlydigiScreen_Fail_Canceled" xml:space="preserve"><value>Najanona. Vonoy dia ampandehano indray amin'ny bokotra fandrehitra azy ny contrôleur alohan'ny handefasanao indray.</value></data>
+  <data name="FlydigiScreen_LeaveWhileSending" xml:space="preserve"><value>Mbola mandeha any amin'ny contrôleur ny sary. Hajanona ve ny fandefasana?</value></data>
+  <data name="About_ApexSenseBridge" xml:space="preserve"><value>ApexSenseBridge</value></data>
+  <data name="About_OpenFlydigi" xml:space="preserve"><value>openflydigi</value></data>
+  <data name="About_FlydigiSpaceStationMac" xml:space="preserve"><value>flydigi-space-station-mac</value></data>
+  <data name="About_FlydigiApex4Linux" xml:space="preserve"><value>flydigi-apex4-linux</value></data>
 </root>

@@ -518,6 +518,8 @@ namespace PadForge.Tests
             new object[] { VirtualController, "public void Connect()", "if (seam == null && OffLimitsForTest)", "_ctx.CreateController(_profile, _identityKey)" },
             new object[] { Kbm, "private IKbmHidSink CreateSink(HMProfile profile, bool keyboard)", "if (HMaestroVirtualController.OffLimitsForTest)", "_ctx.CreateController(profile, key)" },
             new object[] { Input + "HapticToneService.cs", "private static bool BuildSink(Sink s, Func<Action, bool> publish = null)", "if (DirectDeviceAccess.Refuses(path)) return false;", "h = CreateFileW(path, GENERIC_WRITE | GENERIC_READ, SHARE_RW," },
+            // The Flydigi screen bootloader's serial port (#586).
+            new object[] { Input + "Flydigi/FlydigiScreenSender.cs", "internal static IOtaLink Open(string comName)", "DirectDeviceAccess.Refuses(path)) return null;", "CreateFileW(path, 0xC0000000," },
             new object[] { HeadTracker, "internal sealed class FreeTrackReader : IDisposable", "if (OffLimitsForTest && (_heapName == HeapName || _mutexName == MutexName))", "MemoryMappedFile.CreateOrOpen(" },
             new object[] { Input + "InputManager.Step5.VirtualDevices.cs", "private void EnsureHMaestroContext()", "if (HMaestroVirtualController.OffLimitsForTest) return;", "lock (_hmaestroContextLock)" },
             new object[] { Input + "InputManager.cs", "private bool InitializeSdl()", "if (DirectDeviceAccess.RefusesAll)", "SDL_Init(" },
@@ -681,6 +683,7 @@ namespace PadForge.Tests
                 "PadForge.App/Common/Input/AudioPassthroughService.cs",
                 "PadForge.App/Common/Input/BluetoothLinkHelper.cs",
                 "PadForge.App/Common/Input/Ds3DirectService.cs",
+                "PadForge.App/Common/Input/Flydigi/FlydigiScreenSender.cs",
                 "PadForge.App/Common/Input/HapticToneService.cs",
                 "PadForge.App/Common/Input/KeyboardScreens/G19UsbScreen.cs",
                 "PadForge.App/Common/Input/Peripherals/OwnLightingChannels.cs",

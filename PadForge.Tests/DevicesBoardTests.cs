@@ -89,7 +89,6 @@ namespace PadForge.Tests
             var s = Strings.Instance;
             var pad = Row("DualSense Wireless Controller", "Gamepad", DualSenseBluetooth, true, 0x054C, 0x0CE6);
             Assert.Equal(DeviceFilter.Gamepad, pad.Section);
-            Assert.True(pad.IsControllerRow);
             Assert.True(pad.IsBluetoothLink, "control: the Bluetooth path is a Bluetooth link");
             Assert.True(pad.HasLink);
             Assert.Equal(s.Pad_Transport_Bluetooth, pad.LinkText);
@@ -105,22 +104,15 @@ namespace PadForge.Tests
 
             var mouse = Row("Mouse", "Mouse", MousePath, true, 0x046D, 0xC08B);
             Assert.Equal(DeviceFilter.Mouse, mouse.Section);
-            Assert.False(mouse.IsControllerRow);
             Assert.Equal(DeviceFilter.Other, Row("Microphone", "Microphone", "mic://capture/0", true).Section);
 
-            // A wheel and a flight stick have parts of their own, and each
-            // is a controller's row. So are a Falcon and a VR controller,
-            // from the Other part: the row's height goes by the type, and
-            // not by the part.
+            // A wheel and a flight stick have parts of their own, and a
+            // Falcon stands in the Other part.
             var wheel = Row("G29", "Wheel", @"\\?\HID#VID_046D&PID_C24F#8&6&0&0000", true, 0x046D, 0xC24F);
-            Assert.Equal((DeviceFilter.Wheel, true), (wheel.Section, wheel.IsControllerRow));
+            Assert.Equal(DeviceFilter.Wheel, wheel.Section);
             var stick = Row("T.16000M", "FlightStick", @"\\?\HID#VID_044F&PID_B10A#8&7&0&0000", true, 0x044F, 0xB10A);
-            Assert.Equal((DeviceFilter.Joystick, true), (stick.Section, stick.IsControllerRow));
-            var falcon = Row("Falcon", "NovintFalcon", "falcon://0", true);
-            Assert.Equal((DeviceFilter.Other, true), (falcon.Section, falcon.IsControllerRow));
-            Assert.True(Row("Left Hand", "VrController", "openxr://left", true).IsControllerRow);
-            Assert.False(Row("Keyboard", "Keyboard", KeyboardPath, true).IsControllerRow);
-            Assert.False(Row("Touchpad", "Touchpad", "aggregate://touchpads", true).IsControllerRow);
+            Assert.Equal(DeviceFilter.Joystick, stick.Section);
+            Assert.Equal(DeviceFilter.Other, Row("Falcon", "NovintFalcon", "falcon://0", true).Section);
 
             // Low is at or under the level, and never while charging.
             Assert.False(pad.BatteryLow);
@@ -152,7 +144,6 @@ namespace PadForge.Tests
 
             row.DeviceTypeKey = "Gamepad";
             Assert.Contains(nameof(DeviceRowViewModel.Section), raised);
-            Assert.Contains(nameof(DeviceRowViewModel.IsControllerRow), raised);
 
             raised.Clear();
             row.DevicePath = DualSenseBluetooth;
@@ -813,21 +804,42 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void ARowIsTallerForAControllerAndLitWhileItSends()
+        public void EveryRowIsOneFormWithItsTypeUnderItsNameAndLitWhileItSends()
         {
             var page = Page();
             var template = Keyed(page, "DeviceRowTemplate");
-            Assert.Equal("47", Attr(Named(page, "Row"), "MinHeight"));
+            Assert.Equal("63", Attr(Named(page, "Row"), "MinHeight"));
             var triggers = template.Elements().Single(e => e.Name.LocalName == "DataTemplate.Triggers").Elements().ToList();
             Dictionary<string, string> Setters(XElement trigger) => trigger.Elements()
                 .ToDictionary(s => Attr(s, "TargetName") + "." + Attr(s, "Property"), s => Attr(s, "Value"));
 
-            var controller = Setters(triggers.Single(t => Attr(t, "Binding") == "{Binding IsControllerRow}"));
-            Assert.Equal("63", controller["Row.MinHeight"]);
-            Assert.Equal("Collapsed", controller["OneLine.Visibility"]);
-            Assert.Equal("Visible", controller["TwoLines.Visibility"]);
-            // Every row's tile is one size, a controller's taller row's too
-            // (owner, 2026-11-17): no trigger sizes the tile or its kind.
+            // One form for every kind (owner, 2026-11-17): a keyboard's row
+            // and a mouse's read as a controller's. The name stands over
+            // the type once, no trigger changes the row's height or shows
+            // one form of the name in place of another, and no row is asked
+            // whether it is a controller's.
+            var words = Named(page, "NameAndType");
+            Assert.Equal("StackPanel", words.Name.LocalName);
+            Assert.Null(Attr(words, "Orientation"));
+            Assert.Null(Attr(words, "Visibility"));
+            Assert.Equal("1", Attr(words, "Grid.Column"));
+            var lines = words.Elements().ToList();
+            Assert.Equal(2, lines.Count);
+            Assert.Same(Named(page, "RowName"), lines[0]);
+            Assert.Equal(("{Binding DeviceName}", "SemiBold", "CharacterEllipsis"),
+                (Attr(lines[0], "Text"), Attr(lines[0], "FontWeight"), Attr(lines[0], "TextTrimming")));
+            Assert.Equal(("StackPanel", "Horizontal"), (lines[1].Name.LocalName, Attr(lines[1], "Orientation")));
+            Assert.Same(Named(page, "RowType"), lines[1].Elements().First());
+            Assert.Equal(("{Binding DeviceType}", "{StaticResource DeviceSmall}"),
+                (Attr(Named(page, "RowType"), "Text"), Attr(Named(page, "RowType"), "Style")));
+            Assert.Single(template.Descendants(), e => Attr(e, "Text") == "{Binding DeviceName}");
+            Assert.Single(template.Descendants(), e => Attr(e, "Text") == "{Binding DeviceType}");
+            Assert.DoesNotContain(triggers.SelectMany(t => t.Elements()), s => Attr(s, "Property") is "MinHeight" or "Height"
+                || (Attr(s, "TargetName") is "NameAndType" or "RowName" or "RowType" && Attr(s, "Property") == "Visibility"));
+            Assert.DoesNotContain("IsControllerRow", RepoText("PadForge.App", "Views", "DevicesPage.xaml"));
+            Assert.Null(typeof(DeviceRowViewModel).GetProperty("IsControllerRow"));
+            // Every row's tile is one size (owner, 2026-11-17): no trigger
+            // sizes the tile or its kind.
             var tile = Named(page, "Tile");
             Assert.Equal(("36", "36", "9"), (Attr(tile, "Width"), Attr(tile, "Height"), Attr(tile, "CornerRadius")));
             Assert.Equal("18", Attr(Named(page, "Glyph"), "FontSize"));
@@ -849,11 +861,9 @@ namespace PadForge.Tests
 
             // A name runs on into the columns its row has nothing in.
             var noLink = Setters(triggers.Single(t => Attr(t, "Binding") == "{Binding HasLink}"));
-            Assert.Equal("2", noLink["OneLine.Grid.ColumnSpan"]);
-            Assert.Equal("2", noLink["TwoLines.Grid.ColumnSpan"]);
+            Assert.Equal(new Dictionary<string, string> { ["NameAndType.Grid.ColumnSpan"] = "2" }, noLink);
             var neither = Setters(triggers.Single(t => Attr(t, "Binding") == "{Binding HasLinkOrBattery}"));
-            Assert.Equal("3", neither["OneLine.Grid.ColumnSpan"]);
-            Assert.Equal("3", neither["TwoLines.Grid.ColumnSpan"]);
+            Assert.Equal(new Dictionary<string, string> { ["NameAndType.Grid.ColumnSpan"] = "3" }, neither);
             Assert.True(triggers.FindIndex(t => Attr(t, "Binding") == "{Binding HasLink}")
                 < triggers.FindIndex(t => Attr(t, "Binding") == "{Binding HasLinkOrBattery}"), "the wider span is set last");
 
@@ -865,15 +875,13 @@ namespace PadForge.Tests
             Assert.Equal(new Dictionary<string, string>
             {
                 ["LinkCell.Visibility"] = "Collapsed", ["BatteryCell.Visibility"] = "Collapsed",
-                ["OneLineFacts.Visibility"] = "Visible", ["TwoLinesFacts.Visibility"] = "Visible",
+                ["FactsAfterType.Visibility"] = "Visible",
             }, Setters(narrow));
-            foreach (string facts in new[] { "OneLineFacts", "TwoLinesFacts" })
-            {
-                var panel = Named(page, facts);
-                Assert.Equal("Collapsed", Attr(panel, "Visibility"));
-                Assert.Equal(new[] { "{StaticResource DeviceLinkFact}", "{StaticResource DeviceBatteryFact}" },
-                    panel.Elements().Select(e => Attr(e, "ContentTemplate")).ToArray());
-            }
+            var facts = Named(page, "FactsAfterType");
+            Assert.Same(lines[1], facts.Parent);
+            Assert.Equal("Collapsed", Attr(facts, "Visibility"));
+            Assert.Equal(new[] { "{StaticResource DeviceLinkFact}", "{StaticResource DeviceBatteryFact}" },
+                facts.Elements().Select(e => Attr(e, "ContentTemplate")).ToArray());
             Assert.Equal("{StaticResource DeviceLinkFact}", Attr(Named(page, "LinkCell"), "ContentTemplate"));
             Assert.Equal("{StaticResource DeviceBatteryFact}", Attr(Named(page, "BatteryCell"), "ContentTemplate"));
 

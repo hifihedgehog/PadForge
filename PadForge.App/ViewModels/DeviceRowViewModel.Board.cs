@@ -15,11 +15,6 @@ namespace PadForge.ViewModels
         /// its type, as the Show segments sort the types.</summary>
         public DeviceFilter Section => DevicesViewModel.FilterOf(DeviceTypeKey);
 
-        /// <summary>Whether the row is a controller's: a taller row, with
-        /// its type under its name. The game controllers, a Falcon and a VR
-        /// controller, whichever part each stands in.</summary>
-        public bool IsControllerRow => IsGameControllerType || DeviceTypeKey is "NovintFalcon" or "VrController";
-
         /// <summary>The link in words where PadForge knows it
         /// (<see cref="Link"/>): Bluetooth, USB, PS/2 or I2C, for a keyboard
         /// and a mouse as for a controller (owner, 2026-11-17). A wireless
@@ -94,7 +89,6 @@ namespace PadForge.ViewModels
             {
                 case nameof(DeviceTypeKey):
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(Section)));
-                    base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(IsControllerRow)));
                     break;
                 case nameof(IsOnline):
                 case nameof(IsBluetoothLink):

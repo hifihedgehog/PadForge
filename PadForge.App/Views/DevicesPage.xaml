@@ -316,15 +316,16 @@
              is a meter of the level and the percentage, gold with the word
              Low at or under the level Settings names. Used By is a pill for
              each virtual controller that uses the device, or Use for a
-             connected game controller nothing uses. A controller's row is
-             taller, with its type under its name. Every other row is one
-             line. Each of the three columns is as wide in every row of the
-             card as its widest cell (the card is one shared scope), and a
-             column no row fills takes no room. A name runs on into the
-             columns its own row has nothing in. Where the list is too
-             narrow for Link and Battery as columns (DevicesPage.IsWideTable),
-             a row shows the two after its type and the table keeps Used By
-             alone, so a name is never cut to a few letters. -->
+             connected game controller nothing uses. Every row is one height
+             with its type under its name, a keyboard's and a mouse's as a
+             controller's (owner, 2026-11-17). Each of the three columns is
+             as wide in every row of the card as its widest cell (the card
+             is one shared scope), and a column no row fills takes no room.
+             A name runs on into the columns its own row has nothing in.
+             Where the list is too narrow for Link and Battery as columns
+             (DevicesPage.IsWideTable), a row shows the two after its type
+             and the table keeps Used By alone, so a name is never cut to a
+             few letters. -->
         <DataTemplate x:Key="DeviceRowTemplate" DataType="{x:Type vm:DeviceRowViewModel}">
             <!-- The row is a Border with the three drag handlers:
                  DeviceCard_MouseDown wants a Border whose data is a row, and
@@ -332,13 +333,12 @@
                  a controller in the sidebar assigns the device. The Border
                  has no name, since the allowlist knows it by its handlers:
                  the grid inside is the row the triggers read. Under the
-                 container's hairline a controller's row is the board's 64
-                 and any other row its 48. -->
+                 container's hairline every row is the board's 64. -->
             <Border Background="Transparent" Padding="18,0,16,0"
                     PreviewMouseLeftButtonDown="DeviceCard_MouseDown"
                     PreviewMouseMove="DeviceCard_MouseMove"
                     PreviewMouseLeftButtonUp="DeviceCard_MouseUp">
-                <Grid x:Name="Row" MinHeight="47">
+                <Grid x:Name="Row" MinHeight="63">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="40"/>
                         <ColumnDefinition Width="*"/>
@@ -350,8 +350,7 @@
                     <!-- The kind, on a tile that lights while the device
                          sends input. Ember is for what is live, so the
                          picked row's tile stays steel. Every row's tile is
-                         one size, a controller's taller row's too (owner,
-                         2026-11-17). -->
+                         one size (owner, 2026-11-17). -->
                     <controls:Halo CornerRadius="11" Radius="19.5" Strength="0.2" IsLit="{Binding IsSending}"
                                    HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Border x:Name="Tile" Width="36" Height="36" CornerRadius="9" BorderThickness="1"
@@ -362,40 +361,18 @@
                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </controls:Halo>
-                    <!-- One line: the name, then the type, then the link
-                         and the battery where the list is narrow. The name
-                         gives way first when the row is narrow, so the grid
-                         is as wide as its parts need and no wider. -->
-                    <Grid x:Name="OneLine" Grid.Column="1" Margin="14,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="OneLineName" Text="{Binding DeviceName}" FontSize="14" VerticalAlignment="Center"
-                                   TextTrimming="CharacterEllipsis" ToolTip="{Binding DeviceName}"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding DeviceType}" Margin="10,0,0,0" FontSize="13" VerticalAlignment="Center"
-                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                        <StackPanel x:Name="OneLineFacts" Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Visibility="Collapsed">
-                            <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource DeviceLinkFact}" Margin="12,0,0,0"
-                                              Visibility="{Binding HasLink, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                            <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource DeviceBatteryFact}" Margin="12,0,0,0"
-                                              Visibility="{Binding HasBattery, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                        </StackPanel>
-                    </Grid>
-                    <!-- Two lines, for a controller: the name over the type,
-                         and after the type the link and the battery where
-                         the list is narrow. -->
-                    <StackPanel x:Name="TwoLines" Grid.Column="1" Margin="14,8,0,8" VerticalAlignment="Center" Visibility="Collapsed">
-                        <TextBlock x:Name="TwoLinesName" Text="{Binding DeviceName}" FontSize="14" FontWeight="SemiBold"
+                    <!-- The name over the type, on every row, and after the
+                         type the link and the battery where the list is
+                         narrow. -->
+                    <StackPanel x:Name="NameAndType" Grid.Column="1" Margin="14,8,0,8" VerticalAlignment="Center">
+                        <TextBlock x:Name="RowName" Text="{Binding DeviceName}" FontSize="14" FontWeight="SemiBold"
                                    LineHeight="20.3" LineStackingStrategy="BlockLineHeight"
                                    TextTrimming="CharacterEllipsis" ToolTip="{Binding DeviceName}"
                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Style="{StaticResource DeviceSmall}" Text="{Binding DeviceType}" VerticalAlignment="Center"
+                            <TextBlock x:Name="RowType" Style="{StaticResource DeviceSmall}" Text="{Binding DeviceType}" VerticalAlignment="Center"
                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                            <StackPanel x:Name="TwoLinesFacts" Orientation="Horizontal" VerticalAlignment="Center" Visibility="Collapsed">
+                            <StackPanel x:Name="FactsAfterType" Orientation="Horizontal" VerticalAlignment="Center" Visibility="Collapsed">
                                 <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource DeviceLinkFact}" Margin="12,0,0,0"
                                                   Visibility="{Binding HasLink, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource DeviceBatteryFact}" Margin="12,0,0,0"
@@ -492,32 +469,23 @@
                 </Grid>
             </Border>
             <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding IsControllerRow}" Value="True">
-                    <Setter TargetName="Row" Property="MinHeight" Value="63"/>
-                    <Setter TargetName="OneLine" Property="Visibility" Value="Collapsed"/>
-                    <Setter TargetName="TwoLines" Property="Visibility" Value="Visible"/>
-                </DataTrigger>
                 <!-- The name runs on into the columns the row has nothing
                      in: Link alone, or Link and Battery. -->
                 <DataTrigger Binding="{Binding HasLink}" Value="False">
-                    <Setter TargetName="OneLine" Property="Grid.ColumnSpan" Value="2"/>
-                    <Setter TargetName="TwoLines" Property="Grid.ColumnSpan" Value="2"/>
+                    <Setter TargetName="NameAndType" Property="Grid.ColumnSpan" Value="2"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding HasLinkOrBattery}" Value="False">
-                    <Setter TargetName="OneLine" Property="Grid.ColumnSpan" Value="3"/>
-                    <Setter TargetName="TwoLines" Property="Grid.ColumnSpan" Value="3"/>
+                    <Setter TargetName="NameAndType" Property="Grid.ColumnSpan" Value="3"/>
                 </DataTrigger>
                 <!-- A narrow list: the two facts after the type, and no
                      column of their own. -->
                 <Trigger SourceName="Row" Property="local:DevicesPage.IsWideTable" Value="False">
                     <Setter TargetName="LinkCell" Property="Visibility" Value="Collapsed"/>
                     <Setter TargetName="BatteryCell" Property="Visibility" Value="Collapsed"/>
-                    <Setter TargetName="OneLineFacts" Property="Visibility" Value="Visible"/>
-                    <Setter TargetName="TwoLinesFacts" Property="Visibility" Value="Visible"/>
+                    <Setter TargetName="FactsAfterType" Property="Visibility" Value="Visible"/>
                 </Trigger>
                 <DataTrigger Binding="{Binding IsOnline}" Value="False">
-                    <Setter TargetName="OneLineName" Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <Setter TargetName="TwoLinesName" Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    <Setter TargetName="RowName" Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
                     <Setter TargetName="Glyph" Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>

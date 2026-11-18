@@ -2,7 +2,7 @@ namespace PadForge.Engine
 {
     /// <summary>
     /// Whether a USB VID and PID belong to an SInput pad (#584): the list
-    /// SDL_IsJoystickSInputController keeps (SDL fork 91e1a5afa3,
+    /// SDL_IsJoystickSInputController keeps (SDL fork c82e5afffc,
     /// src/joystick/SDL_joystick.c:4469-4485, with the IDs at usb_ids.h:30,
     /// 94 and 313-323). SDL opens these through its HIDAPI SInput driver,
     /// SDL_hidapi_sinput.c, which lights the pad's player LED from the

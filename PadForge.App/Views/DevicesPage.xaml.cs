@@ -34,7 +34,10 @@ namespace PadForge.Views
             InitializeComponent();
             DataContextChanged += OnDataContextChanged;
             SizeChanged += (_, e) => ApplyLayout(IsStacked(e.NewSize.Width));
-            IsVisibleChanged += OnIsVisibleChanged;
+            // Nothing here selects a device as the page is shown (owner,
+            // 2026-11-18). A device is selected by a pick in a list or by a
+            // request that names it (ShowDevice), never by the page itself.
+
             // A list's rows change when its view arrives through the
             // binding, when the segment or the search filters it, and when
             // a row moves to another list. The lists live as long as the
@@ -292,23 +295,6 @@ namespace PadForge.Views
         /// their rows.</summary>
         private void OnListViewChanged(object sender, NotifyCollectionChangedEventArgs e)
             => Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(SyncListSelection));
-
-        /// <summary>The page shown with no device selected selects the first
-        /// connected one, as the board draws a selected device.</summary>
-        private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue is not true || DataContext is not ViewModels.DevicesViewModel vm
-                || vm.SelectedDevice != null || vm.MainView == null)
-                return;
-            foreach (object item in vm.MainView)
-            {
-                if (item is ViewModels.DeviceRowViewModel row)
-                {
-                    vm.SelectedDevice = row;
-                    return;
-                }
-            }
-        }
 
         /// <summary>Use It on a row: the type bar under the button, and the
         /// controller made there takes the row's device.</summary>

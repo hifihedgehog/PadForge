@@ -8332,12 +8332,13 @@ Start-Sleep -Milliseconds 500
 # The search box and the Show segments (#574) keep the shot's old name, so
 # its links hold.
 Reset-DeviceFilters | Out-Null
-Cap "devices-facet-chips"
-# The board's pick, the DualSense, with the folds and Details closed.
+# The board's pick, the DualSense, with the folds and Details closed. The
+# page opens with no device picked, so the pick is made before both shots.
 if (-not (Select-DeviceByName36 "DualSense Wireless Controller")) {
     Write-Host "  !! no DualSense Wireless Controller row -- capturing without that pick" -ForegroundColor Yellow
 }
 Close-DeviceFolds
+Cap "devices-facet-chips"
 Cap "devices"
 
 # ---- 4-12. Xbox slot (slot 0 -- macros/mappings/sticks/triggers/ff here) ----

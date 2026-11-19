@@ -332,6 +332,53 @@ namespace PadForge.Tests
             Assert.Equal((int)FlydigiApexModel.Apex5, ud.FlydigiApexModel);
         }
 
+        /// <summary>The trigger engine sends each command while it holds its
+        /// gate, and the session's send takes the session's queue. The
+        /// session's writer asks the engine whether a rhythm is armed while
+        /// it holds that queue. With a getter that took the gate, a send on
+        /// one thread and that question on another stopped each other for
+        /// good: on 2026-11-19 a full run of this suite stood still for 36
+        /// minutes in the test above, the close of a session inside Clear
+        /// and its writer inside the getter. In PadForge the sender is the
+        /// engine's polling thread, so every controller would have stopped
+        /// with it. The getter now takes no lock. Here a send held at its
+        /// queue meets the question from the thread that holds the
+        /// queue.</summary>
+        [Fact]
+        public void TheRhythmQuestion_IsAnsweredWhileASendWaitsForTheQueue()
+        {
+            object queue = new();
+            using var holdsQueue = new ManualResetEventSlim();
+            using var inSend = new ManualResetEventSlim();
+            var engine = new FlydigiTriggerEngine(emulate: true, _ =>
+            {
+                inSend.Set();
+                lock (queue) { }
+            });
+
+            bool answered = false;
+            var writer = new Thread(() =>
+            {
+                lock (queue)
+                {
+                    holdsQueue.Set();
+                    // The other thread is inside the engine's gate, at its send.
+                    if (!inSend.Wait(5000)) return;
+                    _ = engine.RhythmArmed;
+                    answered = true;
+                }
+            }) { IsBackground = true };
+            var sender = new Thread(() => engine.Clear(FlydigiTriggerSide.Left)) { IsBackground = true };
+
+            writer.Start();
+            Assert.True(holdsQueue.Wait(5000));
+            sender.Start();
+
+            Assert.True(writer.Join(5000), "the writer never got its answer: the getter waits for the gate a send holds");
+            Assert.True(sender.Join(5000), "the send never finished");
+            Assert.True(answered);
+        }
+
         /// <summary>The open that records the model runs only against a
         /// pad, which the test host refuses, so the two seams that carry
         /// the model to disk are read from the source: the open records

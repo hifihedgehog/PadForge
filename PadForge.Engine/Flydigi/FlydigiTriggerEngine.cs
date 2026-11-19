@@ -100,11 +100,17 @@ namespace PadForge.Engine.Flydigi
         }
 
         /// <summary>True while a rhythm is armed on either trigger, so
-        /// <see cref="StepRhythm"/> has work.</summary>
+        /// <see cref="StepRhythm"/> has work. Read with no lock. The
+        /// session's writer asks while it holds its queue, and every send
+        /// here takes that queue while this class holds its gate
+        /// (<see cref="SendLocked"/>), so a getter that took the gate and a
+        /// send on another thread stopped each other for good. Both flags
+        /// are written under the gate, and the session wakes its writer
+        /// after a rhythm is armed, so the writer's next read sees
+        /// it.</summary>
         public bool RhythmArmed
-        {
-            get { lock (_gate) return _left.RhythmArmed || _right.RhythmArmed; }
-        }
+            => System.Threading.Volatile.Read(ref _left.RhythmArmed)
+               || System.Threading.Volatile.Read(ref _right.RhythmArmed);
 
         private Side Of(FlydigiTriggerSide side) => side == FlydigiTriggerSide.Left ? _left : _right;
 

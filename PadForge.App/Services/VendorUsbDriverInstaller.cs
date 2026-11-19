@@ -673,8 +673,8 @@ namespace PadForge.Services
                     return false;
                 }
 
-                // Each driver's package in its own folder, since Inf2Cat
-                // catalogs every INF it finds in one.
+                // Each driver's package in its own folder, since the catalog
+                // step catalogs every INF it finds in one.
                 string dir = StagingDirectory(xusb ? plan.BindId + "_xusb22" : plan.BindId);
                 Directory.CreateDirectory(dir);
                 string catalog = xusb ? XusbCatalogName : CatalogName;

@@ -403,14 +403,25 @@ namespace PadForge.Tests
         /// fit the state. The set is HIDMaestro's own
         /// (HMProfile.BuildsItsOwnReports): from 2.0.0 the Switch Pro on both
         /// descriptors and the DualShock 3 build theirs as the Switch 2 Pro
-        /// composite does.</summary>
+        /// composite does. From 2.3.0 so do the Joy-Cons and the Nintendo
+        /// Switch Online pads, each on its Bluetooth descriptor and in its
+        /// USB form, which now answer the Switch protocol, and
+        /// xbox-one-s-full, the wired Xbox One S pad Windows' own Xbox
+        /// drivers bind.</summary>
         [Fact]
         public void APersonaThatBuildsItsOwnReportsHasNoPacker()
         {
             var own = HMaestroProfileCatalog.AllProfiles
                 .Where(HMaestroVirtualController.DeviceBuildsReports)
                 .Select(p => p.Id).OrderBy(id => id, StringComparer.Ordinal).ToArray();
-            Assert.Equal(new[] { "dualshock-3-full", S1, "switch-pro-usb", Full }, own);
+            Assert.Equal(new[]
+            {
+                "dualshock-3-full",
+                "genesis-nso", "genesis-nso-usb", "joycon-l", "joycon-l-usb", "joycon-r", "joycon-r-usb",
+                "n64-nso", "n64-nso-usb", "snes-nso", "snes-nso-usb",
+                S1, "switch-pro-usb", Full,
+                "xbox-one-s-full",
+            }, own);
 
             Assert.False(HMaestroVirtualController.DeviceBuildsReports(Profile(Plain)));
             Assert.False(HMaestroVirtualController.DeviceBuildsReports(Profile("dualsense-composite")));

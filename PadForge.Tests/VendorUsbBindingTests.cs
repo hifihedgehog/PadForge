@@ -182,14 +182,14 @@ namespace PadForge.Tests
                 VendorUsbDriverInstaller.BuildInf(@"USB\VID_0001&PID_0002", "A \"%B"));
         }
 
-        /// <summary>The check Windows' catalog tool makes of the package, with
-        /// the /os value the signing step passes on each architecture, and no
-        /// certificate and no install.</summary>
+        /// <summary>The catalog the signing step writes for the package on
+        /// each architecture, every element of it, with no certificate and no
+        /// install.</summary>
         [Fact]
-        public void Inf2Cat_AcceptsThePackageOnBothArchitectures()
-            => Inf2Cat.AssertCatalogs(VendorUsbDriverInstaller.InfName,
+        public void ThePackage_CatalogsOnBothArchitectures()
+            => DriverCatalogReader.AssertPackage(VendorUsbDriverInstaller.InfName,
                 VendorUsbDriverInstaller.BuildInf(@"USB\VID_8086&PID_C013&MI_00", "Test interface"),
-                VendorUsbDriverInstaller.CatalogName, _output);
+                VendorUsbDriverInstaller.CatalogName, _output, @"usb\vid_8086&pid_c013&mi_00");
 
         // ── xusb22 for the Xbox 360 devices xusb22.inf does not name ──
 
@@ -239,10 +239,10 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Inf2Cat_AcceptsTheXusb22PackageOnBothArchitectures()
-            => Inf2Cat.AssertCatalogs(VendorUsbDriverInstaller.XusbInfName,
+        public void TheXusb22Package_CatalogsOnBothArchitectures()
+            => DriverCatalogReader.AssertPackage(VendorUsbDriverInstaller.XusbInfName,
                 VendorUsbDriverInstaller.BuildXusbInf(@"USB\VID_045E&PID_02A9", "Xbox 360 Wireless Receiver for Windows"),
-                VendorUsbDriverInstaller.XusbCatalogName, _output);
+                VendorUsbDriverInstaller.XusbCatalogName, _output, @"usb\vid_045e&pid_02a9");
 
         /// <summary>This PC's xusb22.inf still installs through the two sections
         /// the package names, and names none of the four IDs, which is why
@@ -378,11 +378,11 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Inf2Cat_AcceptsARevisionPackage()
-            => Inf2Cat.AssertCatalogs(VendorUsbDriverInstaller.InfName,
+        public void ARevisionPackage_CatalogsOnBothArchitectures()
+            => DriverCatalogReader.AssertPackage(VendorUsbDriverInstaller.InfName,
                 VendorUsbDriverInstaller.BuildInf(@"USB\VID_045E&PID_028E&REV_0114",
                     VendorUsbDriverInstaller.NameOf(VendorUsbDriverInstaller.OptInKind.Xbox360Pad)),
-                VendorUsbDriverInstaller.CatalogName, _output);
+                VendorUsbDriverInstaller.CatalogName, _output, @"usb\vid_045e&pid_028e&rev_0114");
 
         /// <summary>The bind's proof reads interfaces with PadForge's GUID.
         /// A node that has none, here one that does not exist, is never

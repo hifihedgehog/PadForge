@@ -182,8 +182,10 @@ namespace PadForge.Common.Input
         /// <summary>True for a persona whose device side builds every input
         /// report from a state block, HIDMaestro's own
         /// <see cref="HMProfile.BuildsItsOwnReports"/> (2.0.0): switch-pro,
-        /// switch-pro-usb, dualshock-3-full and the Switch 2 Pro composite.
-        /// It takes state and no finished frame. A raw submit on it is its
+        /// switch-pro-usb, dualshock-3-full and the Switch 2 Pro composite,
+        /// and from 2.3.0 the Joy-Cons, the Nintendo Switch Online pads and
+        /// xbox-one-s-full with them (the whole set is pinned in
+        /// Switch2ProCompositeTests). It takes state and no finished frame. A raw submit on it is its
         /// state block, and HMController.SubmitRawReport throws
         /// ArgumentException for any other length. PadForge once kept a test
         /// of its own here, a USB/IP controller on 057E:2069, which named the

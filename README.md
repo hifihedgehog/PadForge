@@ -26,7 +26,7 @@ Free Windows app. No subscription. No paywall. No nag screens. Built on HelixToo
 
 PadForge is for sim racers running wheels in games that only understand Xbox controllers. For DualSense owners who want adaptive triggers and lightbar effects in Steam games that ignore them. For accessibility users mapping whatever hardware they can use. For anyone whose controller doesn't match what their game expects.
 
-<p align="center"><b>16</b> virtual controllers at once · <b>2,669</b> devices known by USB identity · <b>338</b> device profiles · <b>1000 Hz</b> polling · <b>$0</b> forever</p>
+<p align="center"><b>16</b> virtual controllers at once · <b>2,669</b> devices known by USB identity · <b>344</b> device profiles · <b>1000 Hz</b> polling · <b>$0</b> forever</p>
 
 ![Dashboard](screenshots/dashboard.jpg)
 
@@ -47,7 +47,7 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
     </picture>
   </a>
   <br>
-  <em>Powered by HIDMaestro. One driver, 338 device profiles.</em>
+  <em>Powered by HIDMaestro. One driver, 344 device profiles.</em>
 </p>
 
 <details>
@@ -893,7 +893,7 @@ Hold a mouse button and flick up, down, left, or right. Each direction, plus a c
 
 ### Extended virtual controller
 ![Extended](screenshots/extended.jpg)
-Flight sticks, racing wheels, HOTAS, third-party gamepads. HIDMaestro ships 338 profiles, and PadForge offers the 240 that carry a captured HID descriptor, all but the GameCube adapter's Full persona: 137 controllers across the Xbox, PlayStation, Nintendo and Extended types, and 51 keyboards and 52 mice for the Keyboard + Mouse type. A Custom mode builds a HID descriptor from scratch. Up to 8 axes, 128 buttons, 4 POV hats. Configurable VID, PID, and product string.
+Flight sticks, racing wheels, HOTAS, third-party gamepads. HIDMaestro ships 344 profiles, and PadForge offers the 246 that carry a captured HID descriptor, all but the GameCube adapter's Full persona: 143 controllers across the Xbox, PlayStation, Nintendo and Extended types, and 51 keyboards and 52 mice for the Keyboard + Mouse type. A Custom mode builds a HID descriptor from scratch. Up to 8 axes, 128 buttons, 4 POV hats. Configurable VID, PID, and product string.
 
 ### Steam Deck virtual controller
 ![An Extended slot presenting a Steam Deck](screenshots/pad-extended-steam-deck.jpg)
@@ -1055,7 +1055,7 @@ Windows 10 or 11 on x64, or Windows 11 on ARM64 ([preliminary](#windows-on-arm-p
 
 ### Windows on ARM (preliminary)
 
-The `win-arm64` download is a native build for Windows 11 on ARM64. It works as the x64 build does: virtual controllers, HidHide, the DualShock 3 Bluetooth driver, Vosk voice recognition and Xbox Elite paddles all run there, and each driver installs its ARM64 version.
+The `win-arm64` download is a native build for Windows 11 on ARM64. It works as the x64 build does: virtual controllers, HidHide, the DualShock 3 Bluetooth driver, Vosk voice recognition and Xbox Elite paddles all run there. HidHide and the DualShock 3 Bluetooth driver install their ARM64 versions. A virtual controller there is a USB device on usbip-win2's host controller, which HIDMaestro installs, and Windows' own drivers bind it.
 
 A few features wait on their vendors, because an ARM64 program can load ARM64 libraries only:
 
@@ -1070,7 +1070,7 @@ The ARM64 build has not run on ARM64 hardware yet.
 
 ### Drivers
 
-PadForge installs **HIDMaestro** the first time it starts an Xbox, PlayStation, Nintendo, or Extended virtual controller. HIDMaestro is the engine that creates virtual controllers. Assign a device to a slot and HIDMaestro spins up a HID device matching the controller "shape" you picked. The first composite USB controller it creates also installs usbip-win2's virtual USB host controller from the driver HIDMaestro carries inside itself.
+PadForge installs **HIDMaestro** the first time it starts an Xbox, PlayStation, Nintendo, or Extended virtual controller. HIDMaestro is the engine that creates virtual controllers. Assign a device to a slot and HIDMaestro spins up a HID device matching the controller "shape" you picked. A controller that is a USB device needs usbip-win2's virtual USB host controller, and the first one created installs it from the driver HIDMaestro carries inside itself. On x64 those are the composite USB controllers and a few profiles such as Xbox One S: Full. On Windows on ARM every virtual controller is one.
 
 To take HIDMaestro off the PC, open **Settings → HIDMaestro Driver** and select **Uninstall**. PadForge lists what HIDMaestro left first: its virtual controllers, its driver and signing certificate, its registry keys and its files, and the Windows settings it changed go back to what they were. Other programs that use HIDMaestro lose its driver until they next start, and PadForge installs it again the next time it starts a virtual controller. On a PC where PadForge is already gone, run `HIDMaestroUninstall.exe` from the [HIDMaestro release](https://github.com/hifihedgehog/HIDMaestro/releases/latest).
 
@@ -1102,7 +1102,7 @@ See [BUILD.md](BUILD.md) for project structure, architecture notes, and develope
 
 ## Don't see your controller in the picker?
 
-PadForge's controller picker is the set of HIDMaestro profiles that ship with a captured HID descriptor. Of HIDMaestro's 338 profiles, 97 are missing their captures, so they don't appear yet. If you own one of those controllers, you can capture it yourself from inside PadForge. No extra tools, no admin.
+PadForge's controller picker is the set of HIDMaestro profiles that ship with a captured HID descriptor. Of HIDMaestro's 344 profiles, 97 are missing their captures, so they don't appear yet. If you own one of those controllers, you can capture it yourself from inside PadForge. No extra tools, no admin.
 
 To capture and use a profile locally:
 
@@ -1196,7 +1196,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 | HID device references | The reports behind the SDL fork's drivers for the Speed Force Wireless, PhoenixRC adapter, SideWinder Game Voice, P5 Glove, Dream Cheeky drum kit, OCZ NIA, Gametrak, Rift DK1, Windows Mixed Reality controllers, SteelSeries Nimbus and Prodikeys, read from [acassis.wordpress.com](https://acassis.wordpress.com/2023/05/04/khobby-phoenixrc-flight-controller-usb-adapter-clone/), [drwho.virtadpt.net](https://drwho.virtadpt.net/archive/2009-03-18/ocz-neural-impulse-actuator-notes-and-roll-up-post/), [Foculus Rift Tracker](https://github.com/michael-betz/Foculus_Rift_Tracker_STM32F3DISCOVERY), [GameTrak-Liberation](https://github.com/CreativeInquiry/GameTrak-Liberation), [libgametrak](https://github.com/casiez/libgametrak), [libp5glove](https://github.com/ezrec/libp5glove), [Linux kernel](https://github.com/torvalds/linux), [Linux VR Adventures wiki](https://vronlinux.org/docs/fossvr/envision/wmr_controllers_on_arch/), [marcusfolkesson.se](https://www.marcusfolkesson.se/blog/hid-report-descriptors/), [MFIGamepadFeeder](https://github.com/Axadiw/MFIGamepadFeeder), [ml-driver](https://github.com/mavam/ml-driver), [Monado](https://gitlab.freedesktop.org/monado/monado), [new-lg4ff](https://github.com/berarma/new-lg4ff), [nia_reaction_lab](https://github.com/zeittresor/nia_reaction_lab), [nia4linux](https://sourceforge.net/projects/nia4linux/), [Oculus SDK](https://github.com/jherico/OculusSDK), [OpenHMD](https://github.com/OpenHMD/OpenHMD), [P5 Glove USB Packet Format](https://web.archive.org/web/20051215112447/http://zzz.com.ru/zzz_original_site/roid/USB%20Packet%20Format.doc), [PCSX2](https://github.com/PCSX2/pcsx2), [pynia](https://github.com/kevinmershon/pynia), [Scratchpad wiki](https://web.archive.org/web/20210729185426/https://scratchpad.fandom.com/wiki/P5_Glove:Specs), [seewald.at](https://www.seewald.at/en/2009/07/ocz_neural_impulse_actuator__linux_driver), [VRPN](https://github.com/vrpn/vrpn), [weewx](https://github.com/weewx/weewx) and [WiiBrew](https://wiibrew.org/). Documentation only. The OpenHMD and Monado code in the fork has its own entries | BSL-1.0, CC BY-SA, GPL-2.0, GPL-2.0-or-later, GPL-3.0, GPL-3.0-or-later, LGPL-2.1-or-later, MIT, Oculus VR SDK License 2.0, none published (acassis.wordpress.com, drwho.virtadpt.net, Foculus Rift Tracker, Linux VR Adventures wiki, marcusfolkesson.se, nia_reaction_lab, P5 Glove USB Packet Format, seewald.at, WiiBrew) |
 | [HIDAPI](https://github.com/libusb/hidapi) | The HID layer compiled into the bundled SDL3.dll, by Alan Ott, Signal 11 Software. PadForge's own raw HID writes follow its Windows backend | BSD-style (LICENSE-bsd.txt) |
 | [HidHide](https://github.com/nefarius/HidHide) | Per-device hiding driver to prevent double input. The x64 setup, and upstream's Microsoft-signed ARM64 driver for Windows on ARM | MIT |
-| [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro) | User-mode UMDF2 virtual HID controller engine with 338 device profiles | MIT |
+| [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro) | User-mode UMDF2 virtual HID controller engine with 344 device profiles | MIT |
 | [hitboxer](https://github.com/valignatev/hitboxer) | SOCD-cleaning semantics reference for the Keyboard & Mouse Snap Tap modes, by valignatev | MIT |
 | I-Force references | The I-Force commands and reports behind the SDL fork's driver for USB and serial I-Force wheels and joysticks, read from [forcers](https://github.com/jeffintheusa/forcers), [iforce-binary-driver](https://github.com/timschumi/iforce-binary-driver), [iforce-feedback-wheel-driver-port](https://github.com/jsmolina/iforce-feedback-wheel-driver-port), [JUa9Win11Driver](https://github.com/spenc302/JUa9Win11Driver), [linuxconsole](https://sourceforge.net/p/linuxconsole/code/) and [Linux kernel](https://github.com/torvalds/linux). Documentation only, no code ships | GPL-2.0-or-later, MIT/GPL-2.0-or-later, none published (forcers, iforce-binary-driver, JUa9Win11Driver) |
 | Icon sources | The flame glyph from [Material Design Icons](https://github.com/Templarian/MaterialDesign) (Pictogrammers), the Extended joystick from [Jam Icons](https://jam-icons.com/) (Michael Amprimo), and the Xbox and PlayStation icons from [SVG Repo](https://www.svgrepo.com/) | Apache-2.0 (Material Design Icons), MIT (Jam Icons), license per icon page (SVG Repo) |
@@ -1271,7 +1271,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 | [TriggerEffectGenerator](https://gist.github.com/Nielk1/6d54cc2c00d2201ccb8c2720ad7538db) | DualSense adaptive-trigger effect layouts and the zone bitmap packing, reproduced in C#, by John "Nielk1" Klein | MIT |
 | [TritonLib](https://github.com/Pixel1011/TritonLib) | Steam Controller 2026 PCM haptics stream (reports 0x86, 0x88, 0x44), with [sc2ds](https://github.com/ga2mer/sc2ds), [steam-controller-live-haptics](https://github.com/FamBoy32-dev/steam-controller-live-haptics), [steam-controller-stuff](https://github.com/iczero/steam-controller-stuff) and [SteamHapticsPlayer](https://github.com/Pixel1011/SteamHapticsPlayer). Documentation only, no code ships | Apache-2.0, MIT, none published (sc2ds) |
 | Twitch chat references | Reading chat without signing in and the `!` command rule, read from [tmi.js](https://github.com/tmijs/tmi.js) and [ComfyJS](https://github.com/instafluff/ComfyJS), and keeping only the newest 20 commands, from DougDoug's [TwitchPlays](https://github.com/DougDougGithub/TwitchPlays) template. Documentation only, no code ships | MIT |
-| [usbip-win2](https://github.com/vadimgrn/usbip-win2) | USB transport for HIDMaestro's composite USB controllers. Its Microsoft-signed 0.9.8.1 host controller driver for x64 and ARM64 ships unmodified inside `HIDMaestro.Core.dll` and installs the first time a composite controller is created | BSD 2-Clause |
+| [usbip-win2](https://github.com/vadimgrn/usbip-win2) | USB transport for the HIDMaestro controllers that are USB devices: the composite controllers and a few other profiles on x64, and every controller on Windows on ARM. Its Microsoft-signed 0.9.8.1 host controller driver for x64 and ARM64 ships unmodified inside `HIDMaestro.Core.dll` and installs the first time such a controller is created | BSD 2-Clause |
 | [Valve Steam Controller CAD](https://gitlab.steamos.cloud/SteamHardware/SteamController) | Steam Controller (2015) and Steam Controller (2026) 3D models, meshed from Valve's published STEP files. Not associated with or endorsed by Valve | CC BY-NC-SA 4.0 |
 | [ViGEmClient](https://github.com/nefarius/ViGEmClient) | The DS4_REPORT_EX layout behind the virtual DualShock 4 input report, by Benjamin Höglinger-Stelzer | MIT |
 | [VIIPER (hbashton fork)](https://github.com/hbashton/VIIPER) | The virtual DualSense microphone's 48 dB attenuation range. Documentation only, no GPL code ships | GPL-3.0-or-later |
@@ -1430,7 +1430,7 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **Train controller references**: the protocols behind the SDL fork's drivers for Densha de GO!, Multi Train, Train Mascon and Master Controller train controllers were read from [amy.hi-ho.ne.jp](http://www.amy.hi-ho.ne.jp/takatani/shop/keikyu/keikyu_pwm.htm) by Takatani (no license published), [bvets.net](http://bvets.net/) by Mackoy (no license published), [ConToJREts](https://github.com/cracrayol/ConToJREts) (no license published), [ddgo-pnp-controller](https://github.com/marcriera/ddgo-pnp-controller) (GPL-3.0), [OpenBVE](https://github.com/leezer3/OpenBVE) (BSD-2-Clause, MIT for SanYingInput), [PCSX2](https://github.com/PCSX2/pcsx2) (GPL-3.0-or-later), [Qiita](https://qiita.com/kazuhidet/items/849c259f57e51ab32ab6) by kazuhidet (no license published), [RPCS3](https://github.com/RPCS3/rpcs3) (GPL-2.0), [Scrapbox](https://scrapbox.io/p4ken/) by p4ken (no license published) and [Train Controller Database](https://github.com/marcriera/train-controller-db) (no license published) as documentation. No code from them ships.
 - **TriggerEffectGenerator** is licensed under the MIT License. Copyright (c) 2021-2022 John "Nielk1" Klein. PadForge's DualSense adaptive-trigger effect layouts and zone bitmap packing reproduce it in C#.
 - **Twitch chat references**: reading chat without signing in and the `!` command rule were read from [tmi.js](https://github.com/tmijs/tmi.js) (MIT, Copyright (c) 2022 tmi.js contributors) and [ComfyJS](https://github.com/instafluff/ComfyJS) (MIT, Copyright (c) 2019 Instafluff), and keeping only the newest 20 commands from DougDoug's [TwitchPlays](https://github.com/DougDougGithub/TwitchPlays) template (MIT, Copyright (c) 2024 DougDoug). Read as documentation only, no code ships.
-- **usbip-win2** is licensed under the BSD 2-Clause License. Copyright (c) 2021-2026, Vadym Hrynchyshyn. HIDMaestro carries the unmodified 0.9.8.1 host controller driver, which Microsoft signed, and installs it only when a composite USB controller is first created. Full license text in [LICENSE](LICENSE).
+- **usbip-win2** is licensed under the BSD 2-Clause License. Copyright (c) 2021-2026, Vadym Hrynchyshyn. HIDMaestro carries the unmodified 0.9.8.1 host controller driver, which Microsoft signed, and installs it only when a controller that is a USB device is first created: a composite controller or one of a few other profiles on x64, and any controller on Windows on ARM. Full license text in [LICENSE](LICENSE).
 - **Valve Steam Controller CAD** is licensed under CC BY-NC-SA 4.0. Copyright 2016 and 2026 Valve Corporation. The Steam Controller (2015) and Steam Controller (2026) 3D models are meshed from Valve's published STEP files. PadForge is not associated with or endorsed by Valve.
 - **ViGEmClient** (MIT, by Benjamin Höglinger-Stelzer) documented the DS4_REPORT_EX layout behind the virtual DualShock 4 input report. No code from it ships.
 - **VIIPER (hbashton fork)** is licensed under the GPL-3.0-or-later. It documented the virtual DualSense microphone's 48 dB attenuation range. Read as documentation only, no GPL code ships.

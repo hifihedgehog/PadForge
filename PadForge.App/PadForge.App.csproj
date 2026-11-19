@@ -340,7 +340,22 @@
          unstable in-progress work from the HIDMaestro repo. Update by
          copying the Release build of HIDMaestro.Core.dll from the
          HIDMaestro repo into Resources\HIDMaestro\ after tagging a
-         release there. Current: v2.2.0, which adds the sinput persona
+         release there. Current: v2.3.0, which runs every profile on
+         Windows on ARM64. Windows there does not install HIDMaestro's
+         driver, so each controller is a USB device on usbip-win2's host
+         controller, and Windows' own drivers bind it. The backend is a
+         choice (HMBackend), Auto by default: UMDF2 on x64, USB/IP on
+         ARM64. It adds xbox-one-s-full, which is a wired Xbox One S pad
+         Windows' own Xbox drivers bind, and the USB forms of the Joy-Cons
+         and the Nintendo Switch Online pads. The Joy-Cons and those pads
+         now build their own reports (HMProfile.BuildsItsOwnReports), so
+         a slot on one submits state. It carries no signtool.exe and no
+         Inf2Cat.exe: it writes its catalogs and signatures in its own
+         process. PadForge ran those two tools on its own driver
+         packages, and now does the same (Services\DriverPackageCatalog).
+         It embeds the 2.1.0 driver unchanged (2.1.0.1716), so nothing
+         reinstalls on x64.
+         v2.2.0 before it adds the sinput persona
          (HIDMaestro#75, PadForge #584): SInput's 139-byte descriptor at
          2E8A:10C6, the features answer SDL's SInput driver asks for before
          it opens a pad, and leftMotor and rightMotor decoded from its

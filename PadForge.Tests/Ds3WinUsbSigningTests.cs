@@ -52,35 +52,37 @@ namespace PadForge.Tests
             Assert.Contains("CatalogFile = ds3_winusb.cat", text, StringComparison.OrdinalIgnoreCase);
         }
 
-        /// <summary>The shipped INF catalogs with the /os value each
-        /// architecture gets. Handed 10_ARM64, which Inf2Cat does not know,
-        /// the ARM64 catalog was never generated, so a docked DualShock 3 or
-        /// Navigation controller could not leave HidUsb on ARM64
-        /// Windows.</summary>
+        /// <summary>The shipped INF catalogs for both architectures, with
+        /// both of its devices and the INF as the catalog's one file. Without
+        /// an ARM64 catalog a docked DualShock 3 or Navigation controller
+        /// could not leave HidUsb on ARM64 Windows.</summary>
         [Fact]
         public void Inf_CatalogsOnBothArchitectures()
         {
             string inf = Path.Combine(RepoRoot(), "PadForge.App", "Resources",
                 "BthPS3", "WinUSB", "ds3_winusb.inf");
-            Inf2Cat.AssertCatalogs("ds3_winusb.inf", File.ReadAllText(inf), "ds3_winusb.cat", _output);
+            DriverCatalogReader.AssertPackage("ds3_winusb.inf", File.ReadAllText(inf), "ds3_winusb.cat", _output,
+                @"usb\vid_054c&pid_0268", @"usb\vid_054c&pid_042f");
         }
 
-        /// <summary>The pipeline's wiring: the certificate is ensured, the
-        /// catalog generated and the signature made with that certificate's
-        /// thumbprint. The pipeline itself is not run here. It adds a
-        /// certificate to this PC's stores, LocalMachine\Root among them, and
-        /// starts Inf2Cat and signtool, which the test host does to no PC
+        /// <summary>The pipeline's wiring: the certificate is made or found,
+        /// the catalog written and the signature made with that certificate,
+        /// found again by its thumbprint. The pipeline itself is not run
+        /// here. It adds a certificate to this PC's stores,
+        /// LocalMachine\Root among them, which the test host does to no PC
         /// (Ds3DriverOffLimits). It ran in a test host with administrator
         /// rights before, and wrote that certificate on the PC the tests ran
-        /// on.</summary>
+        /// on. DriverPackageCatalogTests runs the catalog and the signature
+        /// themselves, on a folder and a certificate of its own.</summary>
         [Fact]
         public void SigningPipeline_IsWiredFromCertificateToSignature()
         {
             string src = File.ReadAllText(Path.Combine(RepoRoot(),
                 "PadForge.App", "Services", "Ds3DriverInstaller.cs"));
-            Assert.Contains("EnsureSigningCertificate()", src, StringComparison.Ordinal);
-            Assert.Contains("Inf2Cat.exe", src, StringComparison.Ordinal);
-            Assert.Contains("/sha1 {thumb}", src, StringComparison.Ordinal);
+            Assert.Contains("string thumb = EnsureSigningCertificate();", src, StringComparison.Ordinal);
+            Assert.Contains("DriverPackageCatalog.Write(dir, RuntimeInformation.OSArchitecture)", src, StringComparison.Ordinal);
+            Assert.Contains("using (var certificate = SigningCertificate(thumb))", src, StringComparison.Ordinal);
+            Assert.Contains("DriverPackageCatalog.Sign(cat, certificate)", src, StringComparison.Ordinal);
             // The success path speaks. A log that only reports failures cannot
             // tell "it worked" from "it never ran", which is the state that
             // made #283 undiagnosable in the first place.
@@ -114,13 +116,14 @@ namespace PadForge.Tests
             // Every earlier catalog is deleted before the new one is made.
             int sign = src.IndexOf("internal static bool SignDriverPackage", StringComparison.Ordinal);
             int delete = src.IndexOf("foreach (string stale in Directory.GetFiles(dir, \"*.cat\"))", sign, StringComparison.Ordinal);
-            int generate = src.IndexOf("RunTool(inf2cat,", sign, StringComparison.Ordinal);
+            int generate = src.IndexOf("DriverPackageCatalog.Write(dir,", sign, StringComparison.Ordinal);
             Assert.True(sign > 0 && delete > sign && generate > delete, "the stale catalog is not deleted before the new one is generated");
         }
 
         /// <summary>Wiring the audit round locked, where no seam exists to
-        /// call: the tool runner drains asynchronously and kills a timed-out
-        /// child, signing is serialized against its two concurrent callers,
+        /// call: the program runner (BthPS3's uninstaller goes through it)
+        /// drains asynchronously and kills a timed-out child, signing is
+        /// serialized against its two concurrent callers,
         /// and the pairing dialog reports the step that actually failed
         /// rather than blaming the certificate for all of them.</summary>
         [Fact]

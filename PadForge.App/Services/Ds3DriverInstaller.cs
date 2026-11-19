@@ -58,7 +58,7 @@ namespace PadForge.Services
         /// radio cycled or toggled, device nodes removed, a profile service
         /// advertised, BthPS3 and BTHPORT registry keys written, owned and
         /// deleted, the PSM filter armed and disarmed, a signing certificate
-        /// added to the machine stores, Inf2Cat and signtool run. While this
+        /// added to the machine stores, a driver package signed. While this
         /// is set, none of it happens: each of those members returns or
         /// throws as a failed call would, and so does the pairing ceremony's
         /// own open of a controller (Ds3PairingService). Reads are as they
@@ -286,14 +286,12 @@ namespace PadForge.Services
         // signing certificate.
         //
         // So the package is signed ON THE MACHINE THAT INSTALLS IT, which is
-        // exactly what HIDMaestro already does for its own drivers
-        // (HIDMaestro.Internal.DriverBuilder.EnsureTestCertificate +
-        // GenerateCatalogs). We own our own certificate rather than borrowing
-        // HIDMaestro's, because its subject is that SDK's internal detail,
-        // and we borrow only its extracted toolchain (Inf2Cat.exe,
-        // signtool.exe), which is stable. Since HIDMaestro 2.0.0 it stages
-        // that toolchain under %ProgramFiles%\HIDMaestro\Staging, for an
-        // elevated process only, which PadForge always is.
+        // exactly what HIDMaestro already does for its own drivers. PadForge
+        // owns every part of it: its own certificate, and its own catalog
+        // and signature, written in this process through the Windows
+        // functions Inf2Cat and signtool call (DriverPackageCatalog). Through
+        // HIDMaestro 2.2.0 this step ran the Inf2Cat.exe and signtool.exe
+        // HIDMaestro staged for its driver. HIDMaestro 2.3.0 carries neither.
         //
         // Shipping a pre-signed catalog is what broke: the one in the repo
         // was signed by a prototype certificate that existed on exactly one
@@ -336,8 +334,8 @@ namespace PadForge.Services
                 HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
             req.CertificateExtensions.Add(new X509KeyUsageExtension(
                 X509KeyUsageFlags.DigitalSignature, critical: false));
-            // Code Signing EKU: without it signtool will not use the cert and
-            // Windows will not accept the catalog.
+            // Code Signing EKU: without it Windows will not accept the
+            // catalog this certificate signs.
             req.CertificateExtensions.Add(new X509EnhancedKeyUsageExtension(
                 new OidCollection { new Oid("1.3.6.1.5.5.7.3.3") }, critical: false));
             req.CertificateExtensions.Add(new X509SubjectKeyIdentifierExtension(
@@ -348,9 +346,11 @@ namespace PadForge.Services
             fresh.FriendlyName = Ds3CertFriendlyName;
 
             // Re-import with PersistKeySet + MachineKeySet so the private key
-            // lands in the machine key store, which is where signtool reads it
-            // from. A cert added straight from CreateSelfSigned has an
-            // ephemeral key and signtool cannot use it.
+            // lands in the machine key store. Every later bind, in this run
+            // and the next, reads the certificate back from LocalMachine\My
+            // to sign with it (SigningCertificate), and a cert added straight
+            // from CreateSelfSigned has an ephemeral key that is gone by
+            // then.
             using var persisted = X509CertificateLoader.LoadPkcs12(
                 fresh.Export(X509ContentType.Pfx, ""), "",
                 X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet
@@ -399,39 +399,32 @@ namespace PadForge.Services
             try
             {
                 string thumb = EnsureSigningCertificate();
-                string tools = HIDMaestro.Internal.DriverBuilder.EnsureExtracted();
-                string inf2cat = Path.Combine(tools, "Inf2Cat.exe");
-                string signtool = Path.Combine(tools, "signtool.exe");
-                if (!File.Exists(inf2cat) || !File.Exists(signtool))
-                {
-                    log("Driver signing tools are unavailable; cannot prepare the USB driver.");
-                    return false;
-                }
 
                 foreach (string stale in Directory.GetFiles(dir, "*.cat"))
                     try { File.Delete(stale); } catch { }
 
-                // The catalog names the OS it is for, and that is the machine
-                // doing the install, not the architecture this process was
-                // built for: an x64 PadForge running emulated on ARM64 Windows
-                // still installs an ARM64 driver. OSArchitecture reports the
-                // real machine under emulation. Inf2Cat itself is one x64
-                // program on either machine (its PE header says so, whatever
-                // the WDK folder it ships in is called), and ARM64 Windows
-                // runs it emulated. Only the /os value it is handed changes.
-                string catalogOs = CatalogOs(RuntimeInformation.OSArchitecture);
-                var (rc, output) = RunTool(inf2cat, $"/driver:\"{dir}\" /os:{catalogOs}", dir);
-                if (rc != 0) { log("Catalog generation failed: " + output); return false; }
+                // The catalog is written for the machine doing the install,
+                // not for the architecture this process was built for
+                // (DriverPackageCatalog.OsAttribute).
+                try { DriverPackageCatalog.Write(dir, RuntimeInformation.OSArchitecture); }
+                catch (InvalidOperationException ex) { log("Catalog generation failed: " + ex.Message); return false; }
 
                 string cat = Path.Combine(dir, catalogName);
                 if (!File.Exists(cat)) { log($"Catalog generation produced no {catalogName}."); return false; }
 
-                // /sha1 rather than /n: the thumbprint names exactly the cert
-                // we just ensured, on a machine that may hold several
-                // code-signing certs.
-                var (rc2, out2) = RunTool(signtool,
-                    $"sign /sm /s My /sha1 {thumb} /fd SHA256 \"{cat}\"", dir);
-                if (rc2 != 0) { log("Catalog signing failed: " + out2); return false; }
+                // By thumbprint, not by name: it names exactly the cert
+                // EnsureSigningCertificate returned, on a machine that may
+                // hold several code-signing certs.
+                using (var certificate = SigningCertificate(thumb))
+                {
+                    if (certificate == null)
+                    {
+                        log("Catalog signing failed: this PC's certificate is not in its store with its key.");
+                        return false;
+                    }
+                    try { DriverPackageCatalog.Sign(cat, certificate); }
+                    catch (InvalidOperationException ex) { log("Catalog signing failed: " + ex.Message); return false; }
+                }
                 // Say so on SUCCESS too. This path's whole history is silent
                 // failure, and a log that only speaks when something breaks
                 // cannot distinguish "it worked" from "it never ran".
@@ -441,27 +434,33 @@ namespace PadForge.Services
             catch (Exception ex) { log("Preparing the USB driver failed: " + ex.Message); return false; }
         }
 
-        /// <summary>Inf2Cat's /os value for the machine. Inf2Cat has no
-        /// "10_ARM64": its ARM64 values name a Windows release, starting at
-        /// 10_RS3_ARM64, version 1709, the first Windows 10 on ARM64. Handed
-        /// 10_ARM64, the Inf2Cat HIDMaestro carries prints "Operating systems
-        /// parameter invalid." and exits -1, so no ARM64 catalog was ever
-        /// generated (run on 2026-09-26). 10_X64 is valid as it
-        /// stands.</summary>
-        internal static string CatalogOs(Architecture machine)
-            => machine == Architecture.Arm64 ? "10_RS3_ARM64" : "10_X64";
+        /// <summary>The certificate with this thumbprint from
+        /// LocalMachine\My, with its private key, or null. The caller
+        /// disposes it.</summary>
+        private static X509Certificate2 SigningCertificate(string thumbprint)
+        {
+            using var my = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+            my.Open(OpenFlags.ReadOnly);
+            X509Certificate2 found = null;
+            // Every certificate the store hands out is a handle of its own,
+            // so each one that is not kept is closed here.
+            foreach (var c in my.Certificates)
+            {
+                if (found == null && c.HasPrivateKey
+                    && string.Equals(c.Thumbprint, thumbprint, StringComparison.OrdinalIgnoreCase))
+                    found = c;
+                else c.Dispose();
+            }
+            return found;
+        }
 
-        /// <summary>Runs a build tool and returns its exit code plus merged
+        /// <summary>Runs a program and returns its exit code plus merged
         /// output. Async-drain, because a synchronous ReadToEnd on one stream
         /// before WaitForExit deadlocks the moment the child fills the OTHER
         /// stream's 4 KB pipe buffer: the child blocks writing stderr while we
-        /// wait for a stdout EOF that only arrives at exit. signtool and
-        /// inf2cat both write warnings to stderr as a matter of course. Same
-        /// shape as HIDMaestro's DriverBuilder.Run, which documents the same
-        /// trap. A timed-out child is killed rather than orphaned, or it keeps
-        /// a handle on the catalog and fails the NEXT attempt's delete.
-        /// Two minutes for a build tool, longer for BthPS3's own
-        /// uninstaller.</summary>
+        /// wait for a stdout EOF that only arrives at exit. A timed-out child
+        /// is killed rather than orphaned. Two minutes by default, longer
+        /// for BthPS3's own uninstaller.</summary>
         private static (int Code, string Output) RunTool(string exe, string args, string workingDir, int timeoutMs = 120000)
         {
             if (OffLimitsForTest)
